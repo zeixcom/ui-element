@@ -1,5 +1,5 @@
 /**
- * @name UIElement
+ * @name UIElement DEV_MODE
  * @version 0.9.4
  * @author Esther Brunner
  */

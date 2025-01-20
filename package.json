@@ -1,55 +1,46 @@
 {
-  "name": "@efflore/ui-element",
-  "version": "0.8.5",
+  "name": "@zeix/ui-element",
+  "version": "0.9.4",
   "description": "UIElement - minimal reactive framework based on Web Components",
-  "main": "index.min.js",
-  "types": "types/ui-element.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
-    "build": "npm run lint && npm run build:main && npm run build:cause-effect && npm run build:types && npm run build:docs",
-    "build:main": "NODE_ENV=production rollup -c && rollup -c rollup.main.min.config.js",
-    "build:cause-effect": "NODE_ENV=production rollup -c rollup.cause-effect.config.js && rollup -c rollup.cause-effect.min.config.js",
-    "build:types": "tsc -p tsconfig.types.json",
+    "build": "bun build index.ts --outdir ./ --minify --define process.env.DEV_MODE=false && bunx tsc",
+    "build:dev": "BUN_ENV=development bun build index.dev.ts --outdir ./ --define process.env.DEV_MODE=true",
     "build:docs": "rollup -c rollup.docs.config.js",
     "lint": "npx eslint src/",
     "test": "run-s test:setup test:ci",
     "test:setup": "npx playwright install-deps",
     "test:ci": "web-test-runner \"test/*-test.html\" --node-resolve --playwright --browsers chromium firefox webkit",
-    "watch": "web-test-runner \"test/*-test.html\" --node-resolve --watch --playwright --browsers chromium firefox webkit"
+    "watch": "BUN_ENV=development web-test-runner \"test/*-test.html\" --node-resolve --watch --playwright --browsers chromium firefox webkit"
   },
   "keywords": [
     "UIElement",
     "Web Components",
     "Custom Elements",
     "Reactivity",
+    "States",
     "Signals",
-    "Effects"
+    "Effects",
+    "UI Accessors"
   ],
   "author": "Esther Brunner",
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "@efflore/ui-element": "^0.8.5",
-    "@eslint/js": "^9.12.0",
     "@esm-bundle/chai": "^4.3.4-fix.0",
-    "@rollup/plugin-node-resolve": "^15.3.0",
-    "@rollup/plugin-replace": "^6.0.1",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.0",
     "@types/eslint__js": "^8.42.3",
     "@web/test-runner": "^0.19.0",
     "@web/test-runner-playwright": "^0.11.0",
     "dotenv": "^16.4.5",
-    "eslint": "^9.12.0",
-    "globals": "^15.10.0",
-    "npm-run-all": "^4.1.5",
     "playwright": "^1.47.2",
-    "prismjs": "^1.29.0",
-    "rollup": "^4.24.0",
-    "rollup-plugin-copy": "^3.5.0",
-    "sinon": "^19.0.2",
-    "terser": "^5.34.1",
-    "tslib": "^2.7.0",
-    "typescript": "^5.6.2",
-    "typescript-eslint": "^8.8.0"
+    "prismjs": "^1.29.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@zeix/cause-effect": "^0.9.7",
+    "@zeix/pulse": "^0.9.3"
   }
 }

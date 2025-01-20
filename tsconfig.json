@@ -1,17 +1,33 @@
 {
-	"compileOnSave": false,
 	"compilerOptions": {
-		"noEmit": true,
-		"allowJs": true,
-		"checkJs": false,
-		"target": "esnext",
-		"resolveJsonModule": true,
-		"outDir": "./",
-		"noUncheckedIndexedAccess": true,
+		// Enable latest features
+		"lib": ["ESNext", "DOM"],
+		"target": "ESNext",
+		"module": "ESNext",
 		"moduleDetection": "force",
-		"module": "Preserve",
-		"verbatimModuleSyntax": true
+		"jsx": "react-jsx",
+		"allowJs": true,
+	
+		// Bundler mode
+		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": true,
+		"verbatimModuleSyntax": true,
+		
+		// Best practices
+		"strict": true,
+		"skipLibCheck": true,
+		"noFallthroughCasesInSwitch": true,
+	
+		// Some stricter flags (disabled by default)
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"noPropertyAccessFromIndexSignature": false,
+	
+		// Declarations
+		"declaration": true,
+		"declarationDir": "./",
+		"emitDeclarationOnly": true,
 	},
-	"include": ["./"],
+	"include": ["./*.ts", "./lib/*.ts"],
 	"exclude": ["node_modules", "test"],
 }

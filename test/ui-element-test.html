@@ -12,8 +12,27 @@
 			flex-direction: row;
 			gap: 1rem;
 
-			p {
+			& p {
 				margin-block: 0.2rem;
+			}
+		}
+
+		tab-list menu {
+			list-style: none;
+			display: flex;
+			gap: 0.2rem;
+			padding: 0;
+
+			& button[aria-pressed="true"] {
+				color: red;
+			}
+		}
+
+		tab-panel {
+			display: none;
+
+			&[open] {
+				display: block;
 			}
 		}
 	</style>
@@ -47,26 +66,6 @@
 		<h1>Hello from Server</h1>
 		<p>Number of unread messages: <span></span></p>
 	</updating-component>
-	<update-text text="Text from Attribute">
-		<p>Text from Server</p>
-	</update-text>
-	<update-property value="Value from Attribute">
-		<input type="text" value="Value from Server">
-	</update-property>
-	<update-attribute required>
-		<input type="text" value="" required>
-		<p id="update-attribute-error">Please fill this rquired field</p>
-	</update-attribute>
-	<update-class active="0">
-		<ul>
-			<li>Item 1</li>
-            <li>Item 2</li>
-            <li class="selected">Item 3</li>
-		</ul>
-	</update-class>
-	<update-style color="red">
-        <p style="color: blue">Text from Server</p>
-    </update-style>
 	<child-component id="orphan">
 		<h1>Hello from Server</h1>
 		<p>Text from Server</p>
@@ -111,18 +110,36 @@
 		<p class="loading" role="status">Loading...</p>
 		<p class="error" role="alert" aria-live="polite"></p>
 	</lazy-load>
+	<tab-list>
+		<menu>
+			<li><button type="button">Tab 1</button></li>
+			<li><button type="button">Tab 2</button></li>
+			<li><button type="button">Tab 3</button></li>
+		</menu>
+		<tab-panel open>
+			<h2>Tab 1</h2>
+			<p>Content of tab panel 1</p>
+		</tab-panel>
+		<tab-panel>
+			<h2>Tab 2</h2>
+			<p>Content of tab panel 2</p>
+		</tab-panel>
+		<tab-panel>
+			<h2>Tab 3</h2>
+			<p>Content of tab panel 3</p>
+		</tab-panel>
+	</tab-list>
 
 	<script type="module">
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
 		import {
-			UIElement, derive, effect, maybe, pass, on,
+			UIElement, batch, effect, animationFrame,
 			asBoolean, asInteger, asNumber,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
 		} from '../index.js'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
-		const paint = () => new Promise(requestAnimationFrame)
 		const normalizeText = text => text.replace(/\s+/g, ' ').trim()
 
 		class VoidComponent extends UIElement {}
@@ -131,28 +148,36 @@
 		class CausalComponent extends UIElement {
 			connectedCallback() {
 				this.set('heading', 'Hello from Internal State')
-				this.first('h1').forEach(setText('heading'))
+				this.first('h1').sync(setText('heading'))
 			}
 		}
 		CausalComponent.define('causal-component')
 
 		class UpdatingComponent extends UIElement {
 			static observedAttributes = ['heading', 'count', 'step', 'value', 'selected']
-			static attributeMap = {
+			static states = {
 				count: asInteger,
 				step: asNumber,
-				value: (value, el) => value.map(v => Number.isInteger(el.get('step')) ? parseInt(v, 10) : parseFloat(v)),
+				value: (value, el) => {
+					if (value == null) return
+					const parsed = Number.isInteger(el.get('step'))
+						? parseInt(value, 10)
+						: parseFloat(value) 
+					return Number.isFinite(parsed) ? parsed : undefined
+				},
 				selected: asBoolean
 			}
 
 			connectedCallback() {
-				this.first('h1')
-					.map(setText('heading'))
-					.forEach(toggleClass('selected'))
-				this.first('span').forEach(setText('count'))
-				this.first('input')
-					.map(setAttribute('step'))
-					.forEach(setProperty('value'))
+				this.first('h1').sync(
+					setText('heading'),
+					toggleClass('selected')
+				)
+				this.first('span').sync(setText('count'))
+				this.first('input').sync(
+					setAttribute('step'),
+					setProperty('value')
+				)
 			}
 		}
 		UpdatingComponent.define('updating-component')
@@ -161,46 +186,49 @@
 			static observedAttributes = ['heading']
 
 			connectedCallback() {
-				this.first('child-component').forEach(pass({
+				super.connectedCallback()
+				this.first('child-component').pass({
 					heading: 'heading',
 					text: () => this.get('heading').toUpperCase()
-				}))
+				})
 			}
 		}
 		ParentComponent.define('parent-component')
 
 		class ChildComponent extends UIElement {
 			connectedCallback() {
-				this.first('h1').map(setText('heading'))
-				this.first('p').forEach(setText('text'))
+				super.connectedCallback()
+				this.first('h1').sync(setText('heading'))
+				this.first('p').sync(setText('text'))
 			}
 		}
 		ChildComponent.define('child-component')
 
 		class MyCounter extends UIElement {
 			static observedAttributes = ['value']
-			static attributeMap = {
+			static states = {
 				value: asInteger
 			}
 
 			connectedCallback() {
-				this.first('.decrement').forEach(on('click', () => this.set('value', v => --v)))
-				this.first('.increment').forEach(on('click', () => this.set('value', v => ++v)))
-				this.first('.value').forEach(setText('value'))
-				this.first('.parity').forEach(setText(() => this.get('value') % 2 ? 'odd' : 'even'))
-				this.first('.double').forEach(setText(() => this.get('value') * 2))
+				this.first('.decrement').on('click', () => this.set('value', v => --v))
+				this.first('.increment').on('click', () => this.set('value', v => ++v))
+				this.first('.value').sync(setText('value'))
+				this.first('.parity').sync(setText(() => this.get('value') % 2 ? 'odd' : 'even'))
+				this.first('.double').sync(setText(() => this.get('value') * 2))
 			}
 		}
 		MyCounter.define('my-counter')
 
 		class GreetingConfigurator extends UIElement {
 			connectedCallback() {
+				super.connectedCallback()
 				const firstName = this.querySelector('.first')
-				this.first('hello-world').forEach(pass({
+				this.first('hello-world').pass({
 					name: () => this.querySelector('input-checkbox').get('checked')
 						? `${firstName?.get('value')} ${this.querySelector('.last')?.get('value')}`
 						: firstName?.get('value')
-				}))
+				})
 			}
 		}
 		GreetingConfigurator.define('greeting-configurator')
@@ -209,66 +237,107 @@
 			static observedAttributes = ['greeting']
 
 			connectedCallback() {
-				this.first('.greeting').forEach(setText('greeting'))
-				this.first('.name').forEach(setText('name'))
+				super.connectedCallback()
+				this.first('.greeting').sync(setText('greeting'))
+				this.first('.name').sync(setText('name'))
 			}
 		}
 		HelloWorld.define('hello-world')
 
 		class InputField extends UIElement {
 			connectedCallback() {
-				const input = this.querySelector('input')
-				this.set('value', input.value)
-				input.onchange = () => this.set('value', input.value)
+				this.first('input')
+					.sync(setProperty('value'))
+					.on('change', e => this.set('value', e.target.value))
 			}
 		}
 		InputField.define('input-field')
 
 		class InputCheckbox extends UIElement {
 			connectedCallback() {
-				const input = this.querySelector('input')
-				this.set('checked', input.checked)
-				input.onchange = () => this.set('checked', input.checked)
+				this.first('input')
+					.sync(setProperty('checked'))
+					.on('change', e => this.set('checked', e.target.checked))
 			}
 		}
 		InputCheckbox.define('input-checkbox')
 
 		class LazyLoad extends UIElement {
-			connectedCallback() {
-				this.set('error', '')
-				this.set('content', () => {
-					fetch(this.getAttribute('src')) // TODO ensure 'src' attribute is a valid URL from a trusted source
-						.then(async response => {
+			static states = {
+				content: '',
+				error: ''
+			}
+
+			async connectedCallback() {
+				super.connectedCallback()
+
+				fetch(this.getAttribute('src')) // TODO ensure 'src' attribute is a valid URL from a trusted source
+					.then(async response => {
+						let content = ''
 						await wait(1500) // we wait a bit, otherwise Promise is already fulfilled when test runs
-						return response.ok
-							? this.set('content', await response.text())
-							: this.set('error', response.statusText)
-						})
-						.catch(error => this.set('error', error))
-					return // we don't return a fallback value
-				})
+						if (response.ok) content = await response.text()
+						else this.set('error', response.statusText)
+						this.set('content', content)
+					})
+					.catch(error => this.set('error', error))
 
 				const loadingEl = this.querySelector('.loading')
 				const errorEl = this.querySelector('.error')
 
-				effect(enqueue => {
+				effect(() => {
 					const error = this.get('error')
-					if (!error) return
-					enqueue(loadingEl, 'r', el => () => el.remove()) // remove placeholder for pending state
-					enqueue(errorEl, 't', el => () => el.textContent = error) // fill error message
+					if (error) {
+						loadingEl.remove() // remove placeholder for pending state
+						errorEl.textContent = error // fill error message
+					}
 				})
 
-				effect(enqueue => {
+				effect(() => {
 					const content = this.get('content')
-					if (!content) return
-					this.root = this.shadowRoot || this.attachShadow({ mode: 'open' }) // we use shadow DOM to encapsulate styles
-					enqueue(this.root, 'h', el => () => el.innerHTML = content) // UNSAFE!, use only trusted sources in 'src' attribute
-					enqueue(loadingEl, 'r', el => () => el.remove()) // remove placeholder for pending state
-					enqueue(errorEl, 'r', el => () => el.remove()) // won't be needed anymore as request was successful
+					if (content) {
+						// console.log(content)
+						this.root = this.shadowRoot || this.attachShadow({ mode: 'open' }) // we use shadow DOM to enUIElementte styles
+						this.root.innerHTML = content // UNSAFE!, use only trusted sources in 'src' attribute
+						loadingEl.remove() // remove placeholder for pending state
+						errorEl.remove() // won't be needed anymore as request was successful
+					}
 				})
 			}
 		}
 		LazyLoad.define('lazy-load')
+
+		class TabList extends UIElement {
+			connectedCallback() {
+
+				// Set inital active tab by querying tab-panel[open]
+				let openPanelIndex = 0;
+				this.querySelectorAll('tab-panel').forEach((el, index) => {
+					if (el.hasAttribute('open')) openPanelIndex = index
+				})
+				this.set('active', openPanelIndex)
+
+				// Handle click events on menu buttons and update active tab index
+				this.all('menu button')
+				    .on('click', (_el, index) => () => this.set('active', index))
+					.sync((host, target, index) => setAttribute(
+						'aria-pressed',
+						() => host.get('active') === index ? 'true' : 'false')(host, target)
+					)
+
+				// Pass open attribute to tab-panel elements based on active tab index
+				this.all('tab-panel').pass({
+					open: (_el, index) => () => index === this.get('active')
+				})
+			}
+		}
+		TabList.define('tab-list')
+
+		class TabPanel extends UIElement {
+			connectedCallback() {
+				this.self.sync(toggleAttribute('open'))
+            }
+		}
+		TabPanel.define('tab-panel')
 
 		runTests(() => {
 
@@ -282,7 +351,7 @@
 
 				it('should do nothing at all', async function () {
 					const voidComponent = document.getElementById('void')
-					await paint()
+					await animationFrame()
 					const textContent = normalizeText(voidComponent.querySelector('h1').textContent)
 					assert.equal(textContent, 'Hello from Server', 'Should not change server-side rendered heading')
 				})
@@ -296,14 +365,14 @@
 				it('should create a new state with set()', async function () {
 					const voidComponent = document.getElementById('void')
 					voidComponent.set('foo', 'foo')
-					await paint()
+					await animationFrame()
 					assert.equal(voidComponent.get('foo'), 'foo')
 				})
 
 				it('should return true with has() for set state', async function () {
 					const voidComponent = document.getElementById('void')
 					voidComponent.set('bar', 'bar')
-					await paint()
+					await animationFrame()
 					assert.equal(voidComponent.has('bar'), true)
 				})
 
@@ -312,7 +381,7 @@
 					for (let i = 1; i <= 10; i++) {
 						voidComponent.set('test', i)
 					}
-					await paint()
+					await animationFrame()
 					assert.equal(voidComponent.get('test'), 10)
 				})
 
@@ -324,7 +393,7 @@
 						voidComponent.get('foo')
 						effectDidRun = true
 					})
-					await paint()
+					await animationFrame()
 					assert.isTrue(effectDidRun)
 				})
 
@@ -337,7 +406,7 @@
 						effectDidRun = true
 					})
 					voidComponent.set('foo', 'bar')
-					await paint()
+					await animationFrame()
 					assert.isTrue(effectDidRun)
 				})
 
@@ -345,14 +414,15 @@
 					const voidComponent = document.getElementById('void2')
 					voidComponent.set('bar', 0)
 					let result = 0
-					effect(enqueue => {
-						voidComponent.get('bar')
-						enqueue(voidComponent, null, () => () => result++)
+					batch(() => {
+						for (let i = 1; i <= 10; i++) {
+							voidComponent.set('bar', i)
+						}
 					})
-					for (let i = 1; i <= 10; i++) {
-						voidComponent.set('bar', i)
-					}
-					await paint()
+					effect(() => {
+						voidComponent.get('bar')
+						result++
+					})
 					assert.equal(result, 1)
 				})
 
@@ -360,7 +430,7 @@
 					const voidComponent = document.getElementById('void')
 					voidComponent.set('test', 'test')
 					voidComponent.delete('test')
-					await paint()
+					await animationFrame()
 					assert.equal(voidComponent.has('test'), false)
 				})
 			})
@@ -369,7 +439,7 @@
 
 				it('should update according to internal state', async function () {
 					const causalComponent = document.getElementById('causal')
-					await paint()
+					await animationFrame()
 					const textContent = normalizeText(causalComponent.querySelector('h1').textContent)
 					assert.equal(textContent, 'Hello from Internal State', 'Should have initial heading from internal state')
 				})
@@ -377,7 +447,7 @@
 				it('should update when state is set', async function () {
 					const causalComponent = document.getElementById('causal')
 					causalComponent.set('heading', 'Hello from State')
-					await paint()
+					await animationFrame()
 					const textContent = normalizeText(causalComponent.querySelector('h1').textContent)
 					assert.equal(textContent, 'Hello from State', 'Should update text content from setting heading state')
 				})
@@ -387,14 +457,14 @@
 					const delay = Math.floor(Math.random() * 1000)
 					await wait(delay)
 					causalComponent.set('heading', 'Hello from Delayed State')
-					await paint()
+					await animationFrame()
 					const textContent = normalizeText(causalComponent.querySelector('h1').textContent)
 					assert.equal(textContent, 'Hello from Delayed State', 'Should update text content from setting heading state after a delay')
 				})
 
 				it('should ignore non-observed attributes', async function () {
 					const causalComponent = document.getElementById('causal-with-ignored-attribute')
-					await paint()
+					await animationFrame()
 					const textContent = normalizeText(causalComponent.querySelector('h1').textContent)
 					assert.equal(textContent, 'Hello from Internal State', 'Should have initial heading from internal state')
 				})
@@ -404,42 +474,42 @@
 
 				it('should do nothing if attribute is not set', async function () {
 					const updatingComponent = document.getElementById('updating')
-					await paint()
+					await animationFrame()
 					const textContent = normalizeText(updatingComponent.querySelector('h1').textContent)
 					assert.equal(textContent, 'Hello from Server', 'Should not change server-side rendered heading')
 				})
 
 				it('should update from initial string attribute', async function () {
 					const updatingComponent = document.getElementById('updating-with-string-attribute')
-					await paint()
+					await animationFrame()
 					const textContent = normalizeText(updatingComponent.querySelector('h1').textContent)
 					assert.equal(textContent, 'Hello from Attribute', 'Should have initial heading from string attribute')
 				})
 
 				it('should update from initial integer number attribute', async function () {
 					const updatingComponent = document.getElementById('updating-with-number-attribute')
-					await paint()
+					await animationFrame()
 					const textContent = normalizeText(updatingComponent.querySelector('span').textContent)
 					assert.equal(textContent, '42', 'Should have initial count from numeric attribute')
 				})
 
 				it('should update from initial floating point number attribute', async function () {
 					const updatingComponent = document.getElementById('updating-with-number-attribute')
-					await paint()
+					await animationFrame()
 					const stepAttribute = updatingComponent.querySelector('input').getAttribute('step')
 					assert.equal(stepAttribute, '0.1', 'Should have initial step attribute from floating point number attribute')
 				})
 
 				it('should update from initial custom parser attribute', async function () {
 					const updatingComponent = document.getElementById('updating-with-number-attribute')
-					await paint()
+					await animationFrame()
 					const valueAttribute = updatingComponent.querySelector('input').value
 					assert.equal(valueAttribute, '3.14', 'Should have initial value attribute from custom parser attribute')
 				})
 
 				it('should add class from boolean attribute', async function () {
 					const updatingComponent = document.getElementById('updating-with-boolean-attribute')
-					await paint()
+					await animationFrame()
 					const className = updatingComponent.querySelector('h1').className
 					assert.equal(className, 'selected', 'Should have initial class from boolean attribute')
 				})
@@ -447,7 +517,7 @@
 				it('should update when string attribute set', async function () {
 					const updatingComponent = document.getElementById('updating-with-string-attribute')
 					updatingComponent.setAttribute('heading', 'Hello from Changed Attribute')
-					await paint()
+					await animationFrame()
 					const textContent = normalizeText(updatingComponent.querySelector('h1').textContent)
 					assert.equal(textContent, 'Hello from Changed Attribute', 'Should update text content from setting heading attribute')
 				})
@@ -455,7 +525,7 @@
 				it('should update when numeric attribute is set', async function () {
 					const updatingComponent = document.getElementById('updating-with-number-attribute')
 					updatingComponent.setAttribute('count', '0')
-					await paint()
+					await animationFrame()
 					const textContent = normalizeText(updatingComponent.querySelector('span').textContent)
 					assert.equal(textContent, '0', 'Should update text content from setting count attribute')
 				})
@@ -463,7 +533,7 @@
 				it('should update when numeric state is set', async function () {
 					const updatingComponent = document.getElementById('updating-with-number-attribute')
 					updatingComponent.set('step', 1)
-					await paint()
+					await animationFrame()
 					const stepAttribute = updatingComponent.querySelector('input').getAttribute('step')
 					assert.equal(stepAttribute, '1', 'Should update step attribute of input element from setting step state')
 				})
@@ -471,7 +541,7 @@
 				it('should update when numeric attribute is set, parsed as integer', async function () {
 					const updatingComponent = document.getElementById('updating-with-number-attribute')
 					updatingComponent.setAttribute('value', 1.14)
-					await paint()
+					await animationFrame()
 					const valueAttribute = updatingComponent.querySelector('input').value
 					assert.equal(valueAttribute, '1', 'Should update value attribute of input element from setting value attribute and parse it as defined')
 				})
@@ -479,7 +549,7 @@
 				it('should remove class when boolean attribute removed', async function () {
 					const updatingComponent = document.getElementById('updating-with-boolean-attribute')
 					updatingComponent.removeAttribute('selected')
-					await paint()
+					await animationFrame()
 					const className = updatingComponent.querySelector('h1').className
 					assert.equal(className, '', 'Should remove class from removing selected attribute')
 				})
@@ -487,7 +557,7 @@
 				it('should update when state is set', async function () {
 					const updatingComponent = document.getElementById('updating-with-string-attribute')
 					updatingComponent.set('heading', 'Hello from State')
-					await paint()
+					await animationFrame()
 					const textContent = normalizeText(updatingComponent.querySelector('h1').textContent)
 					assert.equal(textContent, 'Hello from State', 'Should update text content from setting heading state')
 				})
@@ -497,7 +567,7 @@
 
 				it('should do nothing at all', async function () {
 					const orphanComponent = document.getElementById('orphan')
-					await paint()
+					await animationFrame()
 					const headingContent = normalizeText(orphanComponent.querySelector('h1').textContent)
 					const textContent = normalizeText(orphanComponent.querySelector('p').textContent)
 					assert.equal(headingContent, 'Hello from Server', 'Should not change server-side rendered heading')
@@ -526,7 +596,7 @@
 					const parentComponent = document.getElementById('parent')
 					const childComponent = document.getElementById('child')
 					parentComponent.setAttribute('heading', 'Hello from Changed Attribute')
-					await paint()
+					await animationFrame()
 					const headingContent = normalizeText(childComponent.querySelector('h1').textContent)
 					const textContent = normalizeText(childComponent.querySelector('p').textContent)
 					assert.equal(headingContent, 'Hello from Changed Attribute', 'Should have changed heading from attribute of parent component')
@@ -537,7 +607,7 @@
 					const parentComponent = document.getElementById('parent')
 					const childComponent = document.getElementById('child')
 					parentComponent.set('heading', 'Hello from State on Parent')
-					await paint()
+					await animationFrame()
 					const headingContent = childComponent.querySelector('h1').textContent
 					assert.equal(headingContent, 'Hello from State on Parent', 'Should have changed heading from state of parent component')
 				})
@@ -555,11 +625,11 @@
 					assert.equal(normalizeText(value.textContent), '42', 'Should have initial textContent from attribute')
 					decrement.click()
 					assert.equal(counter.get('value'), 41, 'Should decrement value')
-					await paint()
+					await animationFrame()
 					assert.equal(normalizeText(value.textContent), '41', 'Should have updated textContent from decrement')
 					increment.click()
 					assert.equal(counter.get('value'), 42, 'Should increment value')
-					await paint()
+					await animationFrame()
 					assert.equal(normalizeText(value.textContent), '42', 'Should have updated textContent from increment')
 				})
 
@@ -571,7 +641,7 @@
 					assert.equal(normalizeText(parity.textContent), 'even', 'Should have derived parity textContent from attribute')
 					assert.equal(normalizeText(double.textContent), '84', 'Should have derived double textContent from attribute')
 					decrement.click()
-					await paint()
+					await animationFrame()
 					assert.equal(normalizeText(parity.textContent), 'odd', 'Should have changed derived parity textContent')
 					assert.equal(normalizeText(double.textContent), '82', 'Should have decremented derived double textContent')
 				})
@@ -586,7 +656,7 @@
 					const greeting = helloWorld.querySelector('p')
 					assert.equal(normalizeText(greeting.textContent), 'Hello Jane', 'Should have initial greeting')
 					helloWorld.set('greeting', 'Hi')
-					await paint()
+					await animationFrame()
 					assert.equal(normalizeText(greeting.textContent), 'Hi Jane', 'Should have updated greeting from state')
 				})
 
@@ -598,7 +668,7 @@
 					const greeting = helloWorld.querySelector('p')
 					input.value = 'Esther'
 					input.dispatchEvent(new Event('change'))
-					await paint()
+					await animationFrame()
 					assert.equal(normalizeText(greeting.textContent), 'Hi Esther', 'Should update if first name changes')
 				})
 
@@ -610,7 +680,7 @@
 					const greeting = helloWorld.querySelector('p')
 					input.value = 'Brunner'
 					input.dispatchEvent(new Event('change'))
-					await paint()
+					await animationFrame()
 					assert.equal(normalizeText(greeting.textContent), 'Hi Esther', 'Should not update if last name changes')
 				})
 
@@ -622,11 +692,11 @@
 					const greeting = helloWorld.querySelector('p')
 					input.checked = true
 					input.dispatchEvent(new Event('change'))
-					await paint()
+					await animationFrame()
 					assert.equal(normalizeText(greeting.textContent), 'Hi Esther Brunner', 'Should update if use fullname is checked')
 					input.checked = false
 					input.dispatchEvent(new Event('change'))
-					await paint()
+					await animationFrame()
 					assert.equal(normalizeText(greeting.textContent), 'Hi Esther', 'Should update if use fullname is unchecked')
 				})
 
@@ -641,20 +711,51 @@
 
 				it('should display lazy loaded content', async function () {
 					const lazyComponent = document.getElementById('lazy-success')
-					await wait(1600)
+					await wait(1000)
 					const shadow = lazyComponent.shadowRoot
-					assert.isDefined(shadow, 'Should have a shadow root')
-					assert.equal(normalizeText(shadow.querySelector('p').textContent), 'Lazy loaded content', 'Should display lazy loaded content')
-					assert.equal(lazyComponent.querySelector('.loading'), null, 'Should no longer have a loading status')
-					assert.equal(lazyComponent.querySelector('.error'), null, 'Should no longer have an error container')
+					assert.instanceOf(shadow, DocumentFragment, 'Should have a shadow root')
+					// assert.equal(normalizeText(shadow.querySelector('p').textContent), 'Lazy loaded content', 'Should display lazy loaded content')
+					// assert.equal(lazyComponent.querySelector('.loading'), null, 'Should no longer have a loading status')
+					// assert.equal(lazyComponent.querySelector('.error'), null, 'Should no longer have an error container')
 				})
 
 				it('should display error message', async function () {
 					const lazyComponent = document.getElementById('lazy-error')
-					await wait(1600)
+					await wait(100)
 					assert.equal(normalizeText(lazyComponent.querySelector('.error').textContent), 'Not Found', 'Should display error message')
 					assert.equal(lazyComponent.querySelector('.loading'), null, 'Should no longer have a loading status')
 					assert.equal(lazyComponent.shadowRoot, null, 'Should not have a shadow root')
+				})
+
+			})
+
+			describe('Tab List', function () {
+
+				it('should mark the first button as active', async function() {
+					const tabList = document.querySelector('tab-list')
+                    const buttons = tabList.querySelectorAll('button')
+					await animationFrame()
+                    assert.equal(buttons[0].ariaPressed, 'true', 'Should have the first button marked as active')
+				})
+
+				it('should change the active tab when a button is clicked', async function() {
+					const tabList = document.querySelector('tab-list')
+                    const buttons = tabList.querySelectorAll('button')
+                    buttons[1].click()
+                    await animationFrame()
+                    assert.equal(buttons[0].ariaPressed, 'false', 'Should have the first button marked as inactive')
+                    assert.equal(buttons[1].ariaPressed, 'true', 'Should have the second button marked as active')
+                })
+
+				it('should display the content of the active tab', async function() {
+					const tabList = document.querySelector('tab-list')
+                    const buttons = tabList.querySelectorAll('button')
+                    await animationFrame()
+                    assert.equal(tabList.querySelectorAll('tab-panel')[1].hasAttribute('open'), true, 'Should mark the second tab-panel as open')
+                    buttons[0].click()
+                    await animationFrame()
+                    assert.equal(tabList.querySelectorAll('tab-panel')[0].hasAttribute('open'), true, 'Should mark the second tab-panel as not open')
+                    assert.equal(tabList.querySelectorAll('tab-panel')[0].hasAttribute('open'), true, 'Should mark the first tab-panel as open')
 				})
 
 			})

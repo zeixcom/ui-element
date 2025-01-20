@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Auto-Effects Tests</title>
+	<title>Effects Tests</title>
 </head>
 <body>
 	<update-text text="Text from Attribute">
@@ -12,7 +12,7 @@
 		<input type="text" value="Value from Server">
 	</update-property>
 	<update-attribute required>
-		<input type="text" value="" required>
+		<input type="text" required>
 		<p id="update-attribute-error">Please fill this required field</p>
 	</update-attribute>
 	<update-class active="0">
@@ -30,20 +30,19 @@
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
 		import {
-			UIElement, derive, effect, maybe, pass, on,
+			UIElement, effect, animationFrame,
 			asBoolean, asInteger, asNumber,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
 		} from '../index.js'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
-		const paint = () => new Promise(requestAnimationFrame)
 		const normalizeText = text => text.replace(/\s+/g, ' ').trim()
 
 		class UpdateText extends UIElement {
 			static observedAttributes = ['text']
 
 			connectedCallback() {
-				this.first('p').forEach(setText('text'))
+				this.first('p').sync(setText('text'))
 			}
 		}
 		UpdateText.define('update-text')
@@ -52,38 +51,47 @@
 			static observedAttributes = ['value']
 
 			connectedCallback() {
-                this.first('input').forEach(setProperty('value'))
+                this.first('input').sync(setProperty('value'))
             }
 		}
 		UpdateProperty.define('update-property')
 
 		class UpdateAttribute extends UIElement {
 			static observedAttributes = ['required']
-			static attributeMap = {
+			static states = {
                 required: asBoolean
             }
 
 			connectedCallback() {
-				const errorId = this.querySelector('p').id
+				super.connectedCallback()
 				this.set('ariaInvalid', 'false') // should not be true before the user interacted
-				this.set('aria-errormessage', () => this.get('required') && this.get('ariaInvalid') === 'true' ? errorId : null)
+				this.set(
+					'aria-errormessage',
+					() => this.get('required') && this.get('ariaInvalid') !== 'false'
+						? this.querySelector('p').id
+						: null
+				)
                 this.first('input')
-				    .map(setProperty('ariaInvalid'))
-					.map(setAttribute('aria-errormessage'))
-					.map(toggleAttribute('required'))
-					.forEach(on('change', e => this.set('ariaInvalid', String(!e.target.checkValidity()))))
+				    .on('change', e => this.set('ariaInvalid', String(!e.target.checkValidity())))
+					.sync(
+						toggleAttribute('required'),
+						setProperty('ariaInvalid'),
+						setAttribute('aria-errormessage')
+					)
             }
 		}
 		UpdateAttribute.define('update-attribute')
 
 		class UpdateClass extends UIElement {
 			static observedAttributes = ['active']
-			static attributeMap = {
+			static states = {
                 active: asInteger
             }
 
 			connectedCallback() {
-                this.all('li').forEach((ui, idx) => toggleClass('selected', () => this.get('active') === idx)(ui))
+                this.all('li').sync((host, target, index) =>
+					toggleClass('selected', () => this.get('active') === index)(host, target)
+				)
             }
 		}
 		UpdateClass.define('update-class')
@@ -92,7 +100,7 @@
 			static observedAttributes = ['color']
 
 			connectedCallback() {
-                this.first('p').forEach(setStyle('color'))
+                this.first('p').sync(setStyle('color'))
             }
 		}
 		UpdateStyle.define('update-style')
@@ -104,15 +112,15 @@
 				it('should prove setText() working correctly', async function () {
 					const component = document.querySelector('update-text')
 					const paragraph = component.querySelector('p')
-					await paint()
+					await animationFrame()
 					let textContent = normalizeText(paragraph.textContent)
 					assert.equal(textContent, 'Text from Attribute', 'Should display text content from attribute')
 					component.set('text', 'New Text')
-					await paint()
+					await animationFrame()
 					textContent = normalizeText(paragraph.textContent)
 					assert.equal(textContent, 'New Text', 'Should update text content from text signal')
 					component.set('text', undefined)
-					await paint()
+					await animationFrame()
 					textContent = normalizeText(paragraph.textContent)
 					assert.equal(textContent, 'Text from Server', 'Should revert text content to server-rendered version')
 				})
@@ -124,13 +132,13 @@
 				it('should prove setProperty() working correctly', async function () {
 					const component = document.querySelector('update-property')
 					const input = component.querySelector('input')
-					await paint()
+					await animationFrame()
 					assert.equal(input.value, 'Value from Attribute', 'Should display value from attribute')
 					component.set('value', 'New Value')
-					await paint()
+					await animationFrame()
 					assert.equal(input.value, 'New Value', 'Should update value from text signal')
 					component.set('value', undefined)
-					await paint()
+					await animationFrame()
 					assert.equal(input.value, 'Value from Server', 'Should revert value to server-rendered version')
 				})
 
@@ -141,22 +149,22 @@
 				it('should prove setAttribute() and toggleAttribute() working correctly', async function () {
 					const component = document.querySelector('update-attribute')
 					const input = component.querySelector('input')
-					await paint()
+					await animationFrame()
 					assert.equal(input.required, true, 'Should set required property from attribute')
 					assert.equal(input.hasAttribute('aria-errormessage'), false, 'Should not have aria-errormessage before interaction')
 					input.value = 'New Value'
 					input.dispatchEvent(new Event('change'))
-					await paint()
+					await animationFrame()
 					assert.equal(input.hasAttribute('aria-errormessage'), false, 'Should not have aria-errormessage if field is not empty')
 					input.value = ''
 					input.dispatchEvent(new Event('change'))
-					await paint()
-					assert.equal(input.hasAttribute('aria-errormessage'), true, 'Should have aria-errormessage if field is empty')
+					await animationFrame()
+					assert.equal(input.hasAttribute('aria-errormessage'), true, 'Should have aria-errormessage if field is empty and required')
 					component.toggleAttribute('required')
-					await paint()
+					await animationFrame()
 					assert.equal(input.hasAttribute('aria-errormessage'), false, 'Should not have aria-errormessage if field is not required')
 					component.set('required', undefined)
-					await paint()
+					await animationFrame()
 					assert.equal(input.required, true, 'Should revert required attribute to server-rendered version')
 				})
 
@@ -167,15 +175,15 @@
 				it('should prove toggleClass() working correctly', async function () {
 					const component = document.querySelector('update-class')
 					const items = Array.from(component.querySelectorAll('li'))
-                    await paint()
+                    await animationFrame()
                     assert.equal(items[0].classList.contains('selected'), true, 'First item should have selected class from active attribute')
                     assert.equal(items[2].classList.contains('selected'), false, 'Third item should not have selected class removed')
                     component.set('active', 1)
-                    await paint()
+                    await animationFrame()
                     assert.equal(items[1].classList.contains('selected'), true, 'Second item should have selected class from active signal')
                     assert.equal(items[0].classList.contains('selected'), false, 'First item should not have selected class removed')
                     component.set('active', undefined)
-                    await paint()
+                    await animationFrame()
                     assert.equal(items[1].classList.contains('selected'), false, 'Second item should have selected class removed')
 					// restore can't work because the selected class for each item is derived on the fly and not stored in a signal
                     // assert.equal(items[2].classList.contains('selected'), true, 'Third item should not have selected class restored to server-rendered version')
@@ -188,13 +196,13 @@
 				it('should prove setStyle() working correctly', async function () {
 					const component = document.querySelector('update-style')
                     const paragraph = component.querySelector('p')
-                    await paint()
+                    await animationFrame()
                     assert.equal(paragraph.style.color, 'red', 'Should set color from attribute')
                     component.set('color', 'green')
-                    await paint()
+                    await animationFrame()
                     assert.equal(paragraph.style.color,'green', 'Should update color from color signal')
                     component.set('color', undefined)
-                    await paint()
+                    await animationFrame()
                     assert.equal(paragraph.style.color, 'blue', 'Should revert color to server-rendered version')
 				})
 
