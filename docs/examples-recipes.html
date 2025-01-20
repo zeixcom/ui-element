@@ -5,11 +5,11 @@
 		<link rel="stylesheet" href="assets/css/global.css">
 		<link rel="stylesheet" href="assets/css/okaidia.css">
 		<link rel="stylesheet" href="assets/css/components.css">
-		<script type="module" src="assets/js/main.min.js"></script>
+		<script type="module" src="assets/js/main.js"></script>
 	</head>
 	<body>
 		<header class="content-grid">
-			<h1 class="content">UIElement Docs <small>Version 0.8.5</small></h1>
+			<h1 class="content">UIElement Docs <small>Version 0.9.4</small></h1>
 			<nav class="breakout">
 				<ol>
 					<li>
@@ -504,7 +504,7 @@
 				<details>
 				  <summary>Source Code</summary>
 				  <pre class="language-js"><code>
-			  import { UIElement, maybe } from '@efflore/ui-element'
+			  import { UIElement, maybe } from '@zeix/ui-element'
 			  
 			  const VIEWPORT_XS = 'xs';
 			  const VIEWPORT_SM = 'sm';
@@ -625,7 +625,7 @@
 					<tab-panel label="JavaScript">
 					  <h3>JavaScript</h3>
 					  <pre class="language-js"><code>
-			  import { UIElement, toggleClass } from '@efflore/ui-element';
+			  import { UIElement, toggleClass } from '@zeix/ui-element';
 			  
 			  class ThemedComponent extends UIElement {
 				static consumedContexts = ['media-theme'];
@@ -723,7 +723,7 @@
 					<tab-panel label="JavaScript">
 					  <h3>JavaScript</h3>
 					  <pre class="language-js"><code>
-			  import { UIElement, toggleClass } from '@efflore/ui-element';
+			  import { UIElement, toggleClass } from '@zeix/ui-element';
 			  
 			  class AnimatedComponent extends UIElement {
 				static consumedContexts = ['media-motion'];
@@ -866,7 +866,7 @@
 					<tab-panel label="JavaScript">
 					  <h3>JavaScript</h3>
 					  <pre class="language-js"><code>
-			  import { UIElement, on, pass, toggleClass } from '@efflore/ui-element';
+			  import { UIElement, on, pass, toggleClass } from '@zeix/ui-element';
 			  
 			  // TabList Component
 			  class TabList extends UIElement {
@@ -1004,7 +1004,7 @@
 					<tab-panel label="JavaScript">
 					  <h3>JavaScript</h3>
 					  <pre class="language-js"><code>
-			  import { UIElement, toggleClass, effect } from '@efflore/ui-element';
+			  import { UIElement, toggleClass, effect } from '@zeix/ui-element';
 			  import { MySlider } from './my-slider.js'; // Assume this is the existing MySlider component
 			  
 			  class ResponsiveImageGallery extends UIElement {
