@@ -1,9 +1,6 @@
-import {
-	type Computed, type Signal,
-	State, UNSET, isSignal, isState, toSignal
-} from "@zeix/cause-effect"
+import { signal } from "alien-signals"
 
-import { isDefinedObject, isFunction } from "./core/util"
+import { isFunction } from "./core/util"
 import { DEV_MODE, elementName, log, LOG_ERROR, valueString } from "./core/log"
 import { UI } from "./core/ui"
 import { parse } from "./core/parse"
@@ -52,9 +49,9 @@ export class UIElement extends HTMLElement {
 
 	/**
 	 * @since 0.9.0
-	 * @property {Map<PropertyKey, Signal<any>>} signals - map of observable properties
+	 * @property {Map<PropertyKey, () => any} signals - map of observable properties
 	 */
-	signals = new Map<PropertyKey, Signal<any>>()
+	signals = new Map<PropertyKey, (v?: any) => any>()
 
 	/**
 	 * @since 0.9.0
@@ -149,11 +146,7 @@ export class UIElement extends HTMLElement {
 	 * @returns {T | undefined} current value of state; undefined if state does not exist
 	 */
 	get<T>(key: any): T | undefined {
-		const unwrap = (v: any): any =>
-			!isDefinedObject(v) ? v // shortcut for non-object values
-				: isFunction(v) ? unwrap(v())
-				: isSignal(v) ? unwrap(v.get())
-				: v
+		const unwrap = (v: any): any => isFunction(v) ? unwrap(v()) : v
 		const value = unwrap(this.signals.get(key))
 		if (DEV_MODE && this.debug)
 			log(value, `Get current value of state ${valueString(key)} in ${elementName(this)}`)
@@ -165,12 +158,12 @@ export class UIElement extends HTMLElement {
 	 * 
 	 * @since 0.2.0
 	 * @param {any} key - state to set value to
-	 * @param {T | ((old?: T) => T) | Signal<T>} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
+	 * @param {T | ((old?: T) => T)} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
 	 * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
 	 */
 	set<T>(
 		key: any,
-		value: T | Signal<T> | ((old?: T) => T),
+		value: T | ((old?: T) => T),
 		update: boolean = true
 	): void {
 		let op: string;
@@ -178,7 +171,7 @@ export class UIElement extends HTMLElement {
 		// State does not exist => create new state
 		if (!this.signals.has(key)) {
 			if (DEV_MODE && this.debug) op = 'Create'
-			this.signals.set(key, toSignal(value as State<T> | Computed<T> | T, true))
+			this.signals.set(key, signal(value))
 
 
 		// State already exists => update existing state
@@ -186,16 +179,15 @@ export class UIElement extends HTMLElement {
 			const s = this.signals.get(key)
 
 			// Value is a Signal => replace state with new signal
-			if (isSignal(value)) {
+			if (isFunction(value)) {
 				if (DEV_MODE && this.debug) op = 'Replace'
 				this.signals.set(key, value)
-				if (isState(s)) s.set(UNSET) // clear previous state so watchers re-subscribe to new signal
 
 			// Value is not a Signal => set existing state to new value
 			} else {
-				if (isState(s)) {
+				if (isFunction(s)) {
 					if (DEV_MODE && this.debug) op = 'Update'
-					s.set(value)
+					s(value)
 				} else {
 					log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_ERROR)
 					return

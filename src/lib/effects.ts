@@ -1,4 +1,4 @@
-import { effect } from '@zeix/cause-effect'
+import { effect } from 'alien-signals'
 import { ce, ra, re, rs, sa, ss, st, ta, tc } from '@zeix/pulse'
 
 import { isFunction, isString } from '../core/util'
@@ -27,12 +27,14 @@ type StateKeyOrFunction<T> = PropertyKey | ((v?: T | null) => T)
 const emit = <E extends Element, T>(
 	event: string,
 	s: StateKeyOrFunction<T> = event
-) => (host: UIElement, target: E): void => effect(() => {
+) => (host: UIElement, target: E): void => {
+	effect(() => {
 		target.dispatchEvent(new CustomEvent(event, {
 			detail: host.get(s),
 			bubbles: true
 		}))
 	})
+}
 
 /**
  * Auto-effect for setting properties of a target element according to a given state

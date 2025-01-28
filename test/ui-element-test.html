@@ -133,8 +133,9 @@
 	<script type="module">
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
+		import { effect, startBatch, endBatch } from 'alien-signals'
 		import {
-			UIElement, batch, effect, animationFrame,
+			UIElement, animationFrame,
 			asBoolean, asInteger, asNumber,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
 		} from '../index.js'
@@ -414,11 +415,11 @@
 					const voidComponent = document.getElementById('void2')
 					voidComponent.set('bar', 0)
 					let result = 0
-					batch(() => {
-						for (let i = 1; i <= 10; i++) {
-							voidComponent.set('bar', i)
-						}
-					})
+					startBatch()
+					for (let i = 1; i <= 10; i++) {
+						voidComponent.set('bar', i)
+					}
+					endBatch()
 					effect(() => {
 						voidComponent.get('bar')
 						result++

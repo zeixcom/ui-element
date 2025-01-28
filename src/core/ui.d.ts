@@ -1,6 +1,5 @@
-import { type Signal } from '@zeix/cause-effect';
 import { UIElement } from '../ui-element';
-type StateLike<T> = PropertyKey | Signal<T> | ((v?: T) => T);
+type StateLike<T> = PropertyKey | ((v?: T) => T);
 type Factory<T> = (element: Element, index: number) => T;
 type FactoryOrValue<T> = T | Factory<T>;
 type StateLikeOrStateLikeFactory<T> = FactoryOrValue<StateLike<T>>;

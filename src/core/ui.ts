@@ -1,4 +1,4 @@
-import { type Signal, toSignal } from '@zeix/cause-effect'
+import { signal } from 'alien-signals'
 
 import { UIElement } from '../ui-element'
 import { log, LOG_ERROR, valueString } from './log'
@@ -6,7 +6,7 @@ import { isFunction, isPropertyKey } from './util'
 
 /* === Types === */
 
-type StateLike<T> = PropertyKey | Signal<T> | ((v?: T) => T)
+type StateLike<T> = PropertyKey | ((v?: T) => T)
 type Factory<T> = (element: Element, index: number) => T
 type FactoryOrValue<T> = T | Factory<T>
 type StateLikeOrStateLikeFactory<T> = FactoryOrValue<StateLike<T>>
@@ -54,7 +54,7 @@ class UI<T extends Element> {
 					const result = fromFactory(source, target, index)
 					const value = isPropertyKey(result)
 						? this.host.signals.get(result)
-						: toSignal(result, true)
+						: signal(result)
 					if (value) target.set(name, value)
 				    else log(source, `Invalid source for state ${valueString(name)}`, LOG_ERROR)
 				})

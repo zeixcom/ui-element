@@ -1,9 +1,8 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.9.4
+ * @version 0.10.0
  * @author Esther Brunner
  */
-export { type Signal, type State, type Computed, UNSET, state, computed, effect, batch, isState, isSignal, toSignal } from '@zeix/cause-effect';
 export { type EnqueueDedupe, enqueue, animationFrame } from '@zeix/pulse';
 export { type AttributeParser, type ValueOrAttributeParser, UIElement } from './src/ui-element';
 export { type StateLike, type StateLikeOrStateLikeFactory, type EventListenerOrEventListenerFactory, UI } from './src/core/ui';
