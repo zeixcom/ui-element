@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Context Tests</title>
+</head>
+<body>
+	<script type="module">
+		import { runTests } from '@web/test-runner-mocha'
+		import { assert } from '@esm-bundle/chai'
+		import { signal, effect } from 'alien-signals';
+
+		runTests(() => {
+
+			describe('Async Alien Signals', function () {
+
+				it('should update signals', async function () {
+					// Step 1: Create a reactive signal
+					const data = signal("Initial value");
+
+					// Step 2: Define an effect that should re-run when `data` updates
+					effect(() => {
+						console.log("Effect ran. Current data:", data());
+					});
+					assert.equal(data(), "Initial value", "Should have initial value")
+
+					// Step 3: Async function that updates the signal after a delay
+					function forceUpdate(signal, value) {
+						Promise.resolve().then(() => signal(value));
+					}
+					async function asyncUpdate() {
+						console.log("Async function started...");
+						await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate network delay
+						console.log("Async function updating signal...");
+						forceUpdate(data, "New async data"); // Force the signal update within a microtask
+					}
+
+					// Step 4: Run the async function
+					asyncUpdate();
+					assert.equal(data(), "New async data", "Should have updated signal after async function")
+				})
+
+			})
+
+		})
+	</script>
+</body>
+</html>

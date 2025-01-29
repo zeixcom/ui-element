@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@zeix/cause-effect": "^0.9.7",
-    "@zeix/pulse": "^0.9.3"
+    "@zeix/pulse": "^0.9.3",
+    "alien-signals": "^1.0.1"
   }
 }

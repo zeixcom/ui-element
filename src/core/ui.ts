@@ -1,12 +1,12 @@
-import { type Signal, toSignal } from '@zeix/cause-effect'
+import { computed, signal } from 'alien-signals'
 
 import { UIElement } from '../ui-element'
 import { log, LOG_ERROR, valueString } from './log'
-import { isFunction, isPropertyKey } from './util'
+import { isFunction, isPropertyKey, isSignal } from './util'
 
 /* === Types === */
 
-type StateLike<T> = PropertyKey | Signal<T> | ((v?: T) => T)
+type StateLike<T> = PropertyKey | ((v?: T) => T)
 type Factory<T> = (element: Element, index: number) => T
 type FactoryOrValue<T> = T | Factory<T>
 type StateLikeOrStateLikeFactory<T> = FactoryOrValue<StateLike<T>>
@@ -32,29 +32,25 @@ class UI<T extends Element> {
 		public readonly targets: T[] = [host as unknown as T]
 	) {}
 
-	on(event: string, listener: EventListenerOrEventListenerFactory): UI<T> {
-		this.targets.forEach((target, index) =>
-			target.addEventListener(event, fromFactory(listener, target, index))
-		)
-        return this
-	}
-
-	off(event: string, listener: EventListenerOrEventListenerFactory): UI<T> {
-		this.targets.forEach((target, index) =>
-			target.removeEventListener(event, fromFactory(listener, target, index))
-		)
-        return this
+	on(event: string, listeners: EventListenerOrEventListenerFactory): UI<T> {
+		this.targets.forEach((target, index) => {
+			const listener = fromFactory(listeners, target, index)
+			target.addEventListener(event, listener)
+			this.host.listeners.push(() => target.removeEventListener(event, listener))
+		})
+		return this
 	}
 
 	pass(states: Record<string, StateLikeOrStateLikeFactory<any>>): UI<T> {
 		this.targets.forEach(async (target, index) => {
 			await UIElement.registry.whenDefined(target.localName)
 			if (target instanceof UIElement) {
-				Object.entries(states).forEach(([name, source]) => {
-					const result = fromFactory(source, target, index)
-					const value = isPropertyKey(result)
-						? this.host.signals.get(result)
-						: toSignal(result, true)
+				Object.entries(states).forEach(([name, sources]) => {
+					const source = fromFactory(sources, target, index)
+					const value = isPropertyKey(source) ? this.host.signals.get(source)
+						: isSignal(source) ? source
+						: isFunction(source) ? computed(source)
+						: signal(source)
 					if (value) target.set(name, value)
 				    else log(source, `Invalid source for state ${valueString(name)}`, LOG_ERROR)
 				})
@@ -62,12 +58,12 @@ class UI<T extends Element> {
                 log(target, `Target is not a UIElement`, LOG_ERROR)
             }
         })
-        return this
+		return this
 	}
 
 	sync(...fns: ((host: UIElement, target: T, index: number) => void)[]): UI<T> {
 		this.targets.forEach((target, index) => fns.forEach(fn => fn(this.host, target, index)))
-        return this
+		return this
 	}
 
 }

@@ -20,8 +20,9 @@
 	<script type="module">
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
-		import { UIElement, useContext, setText, animationFrame } from '../index.js'
+		import { UIElement, useContext, setText } from '../index.js'
 
+		const animationFrame = () => new Promise(requestAnimationFrame)
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 		const normalizeText = text => text.replace(/\s+/g, ' ').trim()
 

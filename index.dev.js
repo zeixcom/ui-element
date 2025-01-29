@@ -1,238 +1,474 @@
-// node_modules/@zeix/cause-effect/lib/util.ts
-var isFunction = (value) => typeof value === "function";
-var isAsyncFunction = (value) => isFunction(value) && /^async\s+/.test(value.toString());
-var isInstanceOf = (type) => (value) => value instanceof type;
-var isError = /* @__PURE__ */ isInstanceOf(Error);
-var isPromise = /* @__PURE__ */ isInstanceOf(Promise);
-
-// node_modules/@zeix/cause-effect/lib/computed.ts
-var TYPE_COMPUTED = "Computed";
-var computed = (fn, memo) => {
-  memo = memo ?? isAsyncFunction(fn);
-  const watchers = [];
-  let value;
-  let error = null;
-  let stale = true;
-  const mark = () => {
-    stale = true;
-    if (memo)
-      notify(watchers);
-  };
-  const c = {
-    [Symbol.toStringTag]: TYPE_COMPUTED,
-    get: () => {
-      if (memo)
-        subscribe(watchers);
-      if (!memo || stale)
-        watch(() => {
-          const handleOk = (v) => {
-            value = v;
-            stale = false;
-            error = null;
-          };
-          const handleErr = (e) => {
-            error = isError(e) ? e : new Error(`Computed function failed: ${e}`);
-          };
-          try {
-            const res = fn(value);
-            isPromise(res) ? res.then(handleOk).catch(handleErr) : handleOk(res);
-          } catch (e) {
-            handleErr(e);
-          }
-        }, mark);
-      if (isError(error))
-        throw error;
-      return value;
-    },
-    map: (fn2) => computed(() => fn2(c.get()))
-  };
-  return c;
-};
-var isComputed = (value) => !!value && typeof value === "object" && value[Symbol.toStringTag] === TYPE_COMPUTED;
-
-// node_modules/@zeix/cause-effect/lib/signal.ts
-var active;
-var batching = false;
-var pending = [];
-var isSignal = (value) => isState(value) || isComputed(value);
-var toSignal = (value, memo = false) => isSignal(value) ? value : isFunction(value) ? computed(value, memo) : state(value);
-var subscribe = (watchers) => {
-  if (active && !watchers.includes(active))
-    watchers.push(active);
-};
-var notify = (watchers) => watchers.forEach((n) => batching ? pending.push(n) : n());
-var watch = (run, mark) => {
-  const prev = active;
-  active = mark;
-  run();
-  active = prev;
-};
-var batch = (run) => {
-  batching = true;
-  run();
-  batching = false;
-  pending.forEach((n) => n());
-  pending.length = 0;
-};
-
-// node_modules/@zeix/cause-effect/lib/state.ts
-var UNSET = Symbol();
-
-class State {
-  value;
-  watchers = [];
-  constructor(value) {
-    this.value = value;
-  }
-  get() {
-    subscribe(this.watchers);
-    return this.value;
-  }
-  set(value) {
-    if (UNSET !== value) {
-      const newValue = isFunction(value) ? value(this.value) : value;
-      if (Object.is(this.value, newValue))
+// node_modules/alien-signals/esm/index.mjs
+function createReactiveSystem({
+  updateComputed,
+  notifyEffect: notifyEffect2
+}) {
+  let queuedEffects;
+  let queuedEffectsTail;
+  return {
+    link(dep, sub) {
+      const currentDep = sub.depsTail;
+      if (currentDep !== undefined && currentDep.dep === dep) {
         return;
-      this.value = newValue;
+      }
+      const nextDep = currentDep !== undefined ? currentDep.nextDep : sub.deps;
+      if (nextDep !== undefined && nextDep.dep === dep) {
+        sub.depsTail = nextDep;
+        return;
+      }
+      const depLastSub = dep.subsTail;
+      if (depLastSub !== undefined && depLastSub.sub === sub && isValidLink(depLastSub, sub)) {
+        return;
+      }
+      return linkNewDep(dep, sub, nextDep, currentDep);
+    },
+    propagate(link2) {
+      let targetFlag = 32;
+      let subs = link2;
+      let stack = 0;
+      top:
+        do {
+          const sub = link2.sub;
+          const subFlags = sub.flags;
+          if (!(subFlags & (4 | 16 | 224)) && (sub.flags = subFlags | targetFlag | 8, true) || subFlags & 16 && !(subFlags & 4) && (sub.flags = subFlags & ~16 | targetFlag | 8, true) || !(subFlags & 224) && isValidLink(link2, sub) && (sub.flags = subFlags | 16 | targetFlag | 8, sub.subs !== undefined)) {
+            const subSubs = sub.subs;
+            if (subSubs !== undefined) {
+              if (subSubs.nextSub !== undefined) {
+                subSubs.prevSub = subs;
+                link2 = subs = subSubs;
+                targetFlag = 64;
+                ++stack;
+              } else {
+                link2 = subSubs;
+                targetFlag = subFlags & 2 ? 128 : 64;
+              }
+              continue;
+            }
+            if (subFlags & 2) {
+              if (queuedEffectsTail !== undefined) {
+                queuedEffectsTail.depsTail.nextDep = sub.deps;
+              } else {
+                queuedEffects = sub;
+              }
+              queuedEffectsTail = sub;
+            }
+          } else if (!(subFlags & (4 | targetFlag))) {
+            sub.flags = subFlags | targetFlag | 8;
+            if ((subFlags & (2 | 8)) === 2) {
+              if (queuedEffectsTail !== undefined) {
+                queuedEffectsTail.depsTail.nextDep = sub.deps;
+              } else {
+                queuedEffects = sub;
+              }
+              queuedEffectsTail = sub;
+            }
+          } else if (!(subFlags & targetFlag) && subFlags & 224 && isValidLink(link2, sub)) {
+            sub.flags = subFlags | targetFlag;
+          }
+          if ((link2 = subs.nextSub) !== undefined) {
+            subs = link2;
+            targetFlag = stack ? 64 : 32;
+            continue;
+          }
+          while (stack) {
+            --stack;
+            const dep = subs.dep;
+            const depSubs = dep.subs;
+            subs = depSubs.prevSub;
+            depSubs.prevSub = undefined;
+            if ((link2 = subs.nextSub) !== undefined) {
+              subs = link2;
+              targetFlag = stack ? 64 : 32;
+              continue top;
+            }
+          }
+          break;
+        } while (true);
+    },
+    startTracking(sub) {
+      sub.depsTail = undefined;
+      sub.flags = sub.flags & ~(8 | 16 | 224) | 4;
+    },
+    endTracking(sub) {
+      const depsTail = sub.depsTail;
+      if (depsTail !== undefined) {
+        const nextDep = depsTail.nextDep;
+        if (nextDep !== undefined) {
+          clearTracking(nextDep);
+          depsTail.nextDep = undefined;
+        }
+      } else if (sub.deps !== undefined) {
+        clearTracking(sub.deps);
+        sub.deps = undefined;
+      }
+      sub.flags &= ~4;
+    },
+    updateDirtyFlag(sub, flags) {
+      if (checkDirty(sub.deps)) {
+        sub.flags = flags | 32;
+        return true;
+      } else {
+        sub.flags = flags & ~64;
+        return false;
+      }
+    },
+    processComputedUpdate(computed2, flags) {
+      if (flags & 32) {
+        if (updateComputed(computed2)) {
+          const subs = computed2.subs;
+          if (subs !== undefined) {
+            shallowPropagate(subs);
+          }
+        }
+      } else if (flags & 64) {
+        if (checkDirty(computed2.deps)) {
+          if (updateComputed(computed2)) {
+            const subs = computed2.subs;
+            if (subs !== undefined) {
+              shallowPropagate(subs);
+            }
+          }
+        } else {
+          computed2.flags = flags & ~64;
+        }
+      }
+    },
+    processPendingInnerEffects(sub, flags) {
+      if (flags & 128) {
+        sub.flags = flags & ~128;
+        let link2 = sub.deps;
+        do {
+          const dep = link2.dep;
+          if ("flags" in dep && dep.flags & 2 && dep.flags & 224) {
+            notifyEffect2(dep);
+          }
+          link2 = link2.nextDep;
+        } while (link2 !== undefined);
+      }
+    },
+    processEffectNotifications() {
+      while (queuedEffects !== undefined) {
+        const effect2 = queuedEffects;
+        const depsTail = effect2.depsTail;
+        const queuedNext = depsTail.nextDep;
+        if (queuedNext !== undefined) {
+          depsTail.nextDep = undefined;
+          queuedEffects = queuedNext.sub;
+        } else {
+          queuedEffects = undefined;
+          queuedEffectsTail = undefined;
+        }
+        if (!notifyEffect2(effect2)) {
+          effect2.flags &= ~8;
+        }
+      }
     }
-    notify(this.watchers);
-    if (UNSET === value)
-      this.watchers = [];
+  };
+  function linkNewDep(dep, sub, nextDep, depsTail) {
+    const newLink = {
+      dep,
+      sub,
+      nextDep,
+      prevSub: undefined,
+      nextSub: undefined
+    };
+    if (depsTail === undefined) {
+      sub.deps = newLink;
+    } else {
+      depsTail.nextDep = newLink;
+    }
+    if (dep.subs === undefined) {
+      dep.subs = newLink;
+    } else {
+      const oldTail = dep.subsTail;
+      newLink.prevSub = oldTail;
+      oldTail.nextSub = newLink;
+    }
+    sub.depsTail = newLink;
+    dep.subsTail = newLink;
+    return newLink;
   }
-  map(fn) {
-    return computed(() => fn(this.get()));
+  function checkDirty(link2) {
+    let stack = 0;
+    let dirty;
+    top:
+      do {
+        dirty = false;
+        const dep = link2.dep;
+        if ("flags" in dep) {
+          const depFlags = dep.flags;
+          if ((depFlags & (1 | 32)) === (1 | 32)) {
+            if (updateComputed(dep)) {
+              const subs = dep.subs;
+              if (subs.nextSub !== undefined) {
+                shallowPropagate(subs);
+              }
+              dirty = true;
+            }
+          } else if ((depFlags & (1 | 64)) === (1 | 64)) {
+            const depSubs = dep.subs;
+            if (depSubs.nextSub !== undefined) {
+              depSubs.prevSub = link2;
+            }
+            link2 = dep.deps;
+            ++stack;
+            continue;
+          }
+        }
+        if (!dirty && link2.nextDep !== undefined) {
+          link2 = link2.nextDep;
+          continue;
+        }
+        if (stack) {
+          let sub = link2.sub;
+          do {
+            --stack;
+            const subSubs = sub.subs;
+            if (dirty) {
+              if (updateComputed(sub)) {
+                if ((link2 = subSubs.prevSub) !== undefined) {
+                  subSubs.prevSub = undefined;
+                  shallowPropagate(sub.subs);
+                  sub = link2.sub;
+                } else {
+                  sub = subSubs.sub;
+                }
+                continue;
+              }
+            } else {
+              sub.flags &= ~64;
+            }
+            if ((link2 = subSubs.prevSub) !== undefined) {
+              subSubs.prevSub = undefined;
+              if (link2.nextDep !== undefined) {
+                link2 = link2.nextDep;
+                continue top;
+              }
+              sub = link2.sub;
+            } else {
+              if ((link2 = subSubs.nextDep) !== undefined) {
+                continue top;
+              }
+              sub = subSubs.sub;
+            }
+            dirty = false;
+          } while (stack);
+        }
+        return dirty;
+      } while (true);
+  }
+  function shallowPropagate(link2) {
+    do {
+      const sub = link2.sub;
+      const subFlags = sub.flags;
+      if ((subFlags & (64 | 32)) === 64) {
+        sub.flags = subFlags | 32 | 8;
+        if ((subFlags & (2 | 8)) === 2) {
+          if (queuedEffectsTail !== undefined) {
+            queuedEffectsTail.depsTail.nextDep = sub.deps;
+          } else {
+            queuedEffects = sub;
+          }
+          queuedEffectsTail = sub;
+        }
+      }
+      link2 = link2.nextSub;
+    } while (link2 !== undefined);
+  }
+  function isValidLink(checkLink, sub) {
+    const depsTail = sub.depsTail;
+    if (depsTail !== undefined) {
+      let link2 = sub.deps;
+      do {
+        if (link2 === checkLink) {
+          return true;
+        }
+        if (link2 === depsTail) {
+          break;
+        }
+        link2 = link2.nextDep;
+      } while (link2 !== undefined);
+    }
+    return false;
+  }
+  function clearTracking(link2) {
+    do {
+      const dep = link2.dep;
+      const nextDep = link2.nextDep;
+      const nextSub = link2.nextSub;
+      const prevSub = link2.prevSub;
+      if (nextSub !== undefined) {
+        nextSub.prevSub = prevSub;
+      } else {
+        dep.subsTail = prevSub;
+      }
+      if (prevSub !== undefined) {
+        prevSub.nextSub = nextSub;
+      } else {
+        dep.subs = nextSub;
+      }
+      if (dep.subs === undefined && "deps" in dep) {
+        const depFlags = dep.flags;
+        if (!(depFlags & 32)) {
+          dep.flags = depFlags | 32;
+        }
+        const depDeps = dep.deps;
+        if (depDeps !== undefined) {
+          link2 = depDeps;
+          dep.depsTail.nextDep = nextDep;
+          dep.deps = undefined;
+          dep.depsTail = undefined;
+          continue;
+        }
+      }
+      link2 = nextDep;
+    } while (link2 !== undefined);
   }
 }
-var state = (value) => new State(value);
-var isState = /* @__PURE__ */ isInstanceOf(State);
-// node_modules/@zeix/cause-effect/lib/effect.ts
-var effect = (fn) => {
-  const run = () => watch(() => {
+var {
+  link,
+  propagate,
+  updateDirtyFlag,
+  startTracking,
+  endTracking,
+  processEffectNotifications,
+  processComputedUpdate,
+  processPendingInnerEffects
+} = createReactiveSystem({
+  updateComputed(computed2) {
+    const prevSub = activeSub;
+    activeSub = computed2;
+    startTracking(computed2);
     try {
-      fn();
-    } catch (error) {
-      console.error(error);
+      const oldValue = computed2.currentValue;
+      const newValue = computed2.getter(oldValue);
+      if (oldValue !== newValue) {
+        computed2.currentValue = newValue;
+        return true;
+      }
+      return false;
+    } finally {
+      activeSub = prevSub;
+      endTracking(computed2);
     }
-  }, run);
-  run();
-};
-// node_modules/@zeix/pulse/lib/pulse.ts
-if (!("requestAnimationFrame" in globalThis))
-  globalThis.requestAnimationFrame = (callback) => setTimeout(callback, 16);
-var dedupeMap = new Map;
-var queue = [];
-var requestId;
-var flush = () => {
-  requestId = null;
-  queue.forEach((fn) => fn());
-  queue = [];
-  dedupeMap.clear();
-};
-var requestTick = () => {
-  if (requestId)
-    cancelAnimationFrame(requestId);
-  requestId = requestAnimationFrame(flush);
-};
-queueMicrotask(flush);
-var enqueue = (callback, dedupe) => new Promise((resolve, reject) => {
-  const wrappedCallback = () => {
-    try {
-      resolve(callback());
-    } catch (error) {
-      reject(error);
+  },
+  notifyEffect(e) {
+    if ("isScope" in e) {
+      return notifyEffectScope(e);
+    } else {
+      return notifyEffect(e);
     }
-  };
-  if (dedupe) {
-    const [el, op] = dedupe;
-    if (!dedupeMap.has(el))
-      dedupeMap.set(el, new Map);
-    const elementMap = dedupeMap.get(el);
-    if (elementMap.has(op)) {
-      const idx = queue.indexOf(callback);
-      if (idx > -1)
-        queue.splice(idx, 1);
-    }
-    elementMap.set(op, wrappedCallback);
   }
-  queue.push(wrappedCallback);
-  requestTick();
 });
-var animationFrame = async () => new Promise(requestAnimationFrame);
-// node_modules/@zeix/pulse/lib/util.ts
-var isComment = (node) => node.nodeType === Node.COMMENT_NODE;
-var isSafeAttribute = (attr) => !/^on/i.test(attr);
-var isSafeURL = (value) => {
-  if (/^(mailto|tel):/i.test(value))
-    return true;
-  if (value.includes("://")) {
-    try {
-      const url = new URL(value, window.location.origin);
-      return !["http:", "https:", "ftp:"].includes(url.protocol);
-    } catch (error) {
-      return true;
-    }
+var batchDepth = 0;
+var activeSub;
+var activeScope;
+function signal(oldValue) {
+  return signalGetterSetter.bind({
+    currentValue: oldValue,
+    subs: undefined,
+    subsTail: undefined
+  });
+}
+function computed(getter) {
+  return computedGetter.bind({
+    currentValue: undefined,
+    subs: undefined,
+    subsTail: undefined,
+    deps: undefined,
+    depsTail: undefined,
+    flags: 1 | 32,
+    getter
+  });
+}
+function effect(fn) {
+  const e = {
+    fn,
+    subs: undefined,
+    subsTail: undefined,
+    deps: undefined,
+    depsTail: undefined,
+    flags: 2
+  };
+  if (activeSub !== undefined) {
+    link(e, activeSub);
+  } else if (activeScope !== undefined) {
+    link(e, activeScope);
+  }
+  runEffect(e);
+  return effectStop.bind(e);
+}
+function runEffect(e) {
+  const prevSub = activeSub;
+  activeSub = e;
+  startTracking(e);
+  try {
+    e.fn();
+  } finally {
+    activeSub = prevSub;
+    endTracking(e);
+  }
+}
+function notifyEffect(e) {
+  const flags = e.flags;
+  if (flags & 32 || flags & 64 && updateDirtyFlag(e, flags)) {
+    runEffect(e);
+  } else {
+    processPendingInnerEffects(e, e.flags);
   }
   return true;
-};
-var safeSetAttribute = (element, attr, value) => {
-  if (!isSafeAttribute(attr))
-    throw new Error(`Unsafe attribute: ${attr}`);
-  value = String(value).trim();
-  if (!isSafeURL(value))
-    throw new Error(`Unsafe URL for ${attr}: ${value}`);
-  element.setAttribute(attr, value);
-};
+}
+function notifyEffectScope(e) {
+  const flags = e.flags;
+  if (flags & 128) {
+    processPendingInnerEffects(e, e.flags);
+    return true;
+  }
+  return false;
+}
+function computedGetter() {
+  const flags = this.flags;
+  if (flags & (32 | 64)) {
+    processComputedUpdate(this, flags);
+  }
+  if (activeSub !== undefined) {
+    link(this, activeSub);
+  } else if (activeScope !== undefined) {
+    link(this, activeScope);
+  }
+  return this.currentValue;
+}
+function signalGetterSetter(...value) {
+  if (value.length) {
+    if (this.currentValue !== (this.currentValue = value[0])) {
+      const subs = this.subs;
+      if (subs !== undefined) {
+        propagate(subs);
+        if (!batchDepth) {
+          processEffectNotifications();
+        }
+      }
+    }
+  } else {
+    if (activeSub !== undefined) {
+      link(this, activeSub);
+    }
+    return this.currentValue;
+  }
+}
+function effectStop() {
+  startTracking(this);
+  endTracking(this);
+}
 
-// node_modules/@zeix/pulse/lib/update.ts
-var ce = (parent, tag, attributes = {}, text) => enqueue(() => {
-  const child = document.createElement(tag);
-  for (const [key, value] of Object.entries(attributes))
-    safeSetAttribute(child, key, value);
-  if (text)
-    child.textContent = text;
-  parent.append(child);
-  return child;
-}, [parent, "e"]);
-var re = (element) => enqueue(() => {
-  element.remove();
-  return null;
-}, [element, "r"]);
-var st = (element, text) => enqueue(() => {
-  Array.from(element.childNodes).filter((node) => !isComment(node)).forEach((node) => node.remove());
-  element.append(document.createTextNode(text));
-  return element;
-}, [element, "t"]);
-var sa = (element, attribute, value) => enqueue(() => {
-  safeSetAttribute(element, attribute, value);
-  return element;
-}, [element, `a:${attribute}`]);
-var ra = (element, attribute) => enqueue(() => {
-  element.removeAttribute(attribute);
-  return element;
-}, [element, `a:${attribute}`]);
-var ta = (element, attribute, value) => enqueue(() => {
-  element.toggleAttribute(attribute, value);
-  return element;
-}, [element, `a:${attribute}`]);
-var tc = (element, token, value) => enqueue(() => {
-  element.classList.toggle(token, value);
-  return element;
-}, [element, `c:${token}`]);
-var ss = (element, property, value) => enqueue(() => {
-  element.style.setProperty(property, value);
-  return element;
-}, [element, `s:${property}`]);
-var rs = (element, property) => enqueue(() => {
-  element.style.removeProperty(property);
-  return element;
-}, [element, `s:${property}`]);
 // src/core/util.ts
-var isFunction2 = (value) => typeof value === "function";
+var isFunction = (value) => typeof value === "function";
 var isDefinedObject = (value) => !!value && typeof value === "object";
 var isNumber = (value) => typeof value === "number";
 var isString = (value) => typeof value === "string";
 var isSymbol = (value) => typeof value === "symbol";
 var isPropertyKey = (value) => isString(value) || isSymbol(value) || isNumber(value);
+var isSignal = (value) => isFunction(value) && (("currentValue" in value.bind({})) || ("getter" in value));
 
 // src/core/log.ts
 var DEV_MODE = true;
@@ -251,7 +487,7 @@ var log = (value, msg, level = LOG_DEBUG) => {
 };
 
 // src/core/ui.ts
-var isFactoryFunction = (fn) => isFunction2(fn) && fn.length === 2;
+var isFactoryFunction = (fn) => isFunction(fn) && fn.length === 2;
 var fromFactory = (fn, element, index = 0) => isFactoryFunction(fn) ? fn(element, index) : fn;
 
 class UI {
@@ -261,21 +497,21 @@ class UI {
     this.host = host;
     this.targets = targets;
   }
-  on(event, listener) {
-    this.targets.forEach((target, index) => target.addEventListener(event, fromFactory(listener, target, index)));
-    return this;
-  }
-  off(event, listener) {
-    this.targets.forEach((target, index) => target.removeEventListener(event, fromFactory(listener, target, index)));
+  on(event, listeners) {
+    this.targets.forEach((target, index) => {
+      const listener = fromFactory(listeners, target, index);
+      target.addEventListener(event, listener);
+      this.host.listeners.push(() => target.removeEventListener(event, listener));
+    });
     return this;
   }
   pass(states) {
     this.targets.forEach(async (target, index) => {
       await UIElement.registry.whenDefined(target.localName);
       if (target instanceof UIElement) {
-        Object.entries(states).forEach(([name, source]) => {
-          const result = fromFactory(source, target, index);
-          const value = isPropertyKey(result) ? this.host.signals.get(result) : toSignal(result, true);
+        Object.entries(states).forEach(([name, sources]) => {
+          const source = fromFactory(sources, target, index);
+          const value = isPropertyKey(source) ? this.host.signals.get(source) : isSignal(source) ? source : isFunction(source) ? computed(source) : signal(source);
           if (value)
             target.set(name, value);
           else
@@ -302,7 +538,7 @@ var parseNumber = (parseFn, value) => {
 };
 var parse = (host, name, value, old = undefined) => {
   const parser = host.constructor.states[name];
-  return isFunction2(parser) && !!parser.length ? parser(value, host, old) : value;
+  return isFunction(parser) && !!parser.length ? parser(value, host, old) : value;
 };
 var asBoolean = (value) => value != null;
 var asInteger = (value) => parseNumber(parseInt, value);
@@ -330,15 +566,15 @@ var CONTEXT_REQUEST = "context-request";
 class ContextRequestEvent extends Event {
   context;
   callback;
-  subscribe2;
-  constructor(context, callback, subscribe2 = false) {
+  subscribe;
+  constructor(context, callback, subscribe = false) {
     super(CONTEXT_REQUEST, {
       bubbles: true,
       composed: true
     });
     this.context = context;
     this.callback = callback;
-    this.subscribe = subscribe2;
+    this.subscribe = subscribe;
   }
 }
 var useContext = (host) => {
@@ -353,7 +589,7 @@ var useContext = (host) => {
     return false;
   host.addEventListener(CONTEXT_REQUEST, (e) => {
     const { context, callback } = e;
-    if (!provided.includes(context) || !isFunction2(callback))
+    if (!provided.includes(context) || !isFunction(callback))
       return;
     e.stopPropagation();
     callback(host.signals.get(String(context)));
@@ -378,6 +614,7 @@ class UIElement extends HTMLElement {
     }
   }
   signals = new Map;
+  listeners = [];
   self = new UI(this);
   root = this.shadowRoot || this;
   debug = false;
@@ -395,7 +632,7 @@ class UIElement extends HTMLElement {
         log(this, "Connected");
     }
     Object.entries(this.constructor.states).forEach(([name, source]) => {
-      const value = isFunction2(source) ? parse(this, name, this.getAttribute(name) ?? undefined, undefined) : source;
+      const value = isFunction(source) ? parse(this, name, this.getAttribute(name) ?? undefined, undefined) : source;
       this.set(name, value, false);
     });
     useContext(this);
@@ -403,6 +640,7 @@ class UIElement extends HTMLElement {
   disconnectedCallback() {
     if (DEV_MODE && this.debug)
       log(this, "Disconnected");
+    this.listeners.forEach((off) => off());
   }
   adoptedCallback() {
     if (DEV_MODE && this.debug)
@@ -412,33 +650,31 @@ class UIElement extends HTMLElement {
     return this.signals.has(key);
   }
   get(key) {
-    const unwrap = (v) => !isDefinedObject(v) ? v : isFunction2(v) ? unwrap(v()) : isSignal(v) ? unwrap(v.get()) : v;
+    const unwrap = (v) => isFunction(v) ? unwrap(v()) : v;
     const value = unwrap(this.signals.get(key));
     if (DEV_MODE && this.debug)
       log(value, `Get current value of state ${valueString(key)} in ${elementName(this)}`);
     return value;
   }
-  set(key, value, update2 = true) {
+  set(key, value, update = true) {
     let op;
     if (!this.signals.has(key)) {
       if (DEV_MODE && this.debug)
         op = "Create";
-      this.signals.set(key, toSignal(value, true));
-    } else if (update2) {
+      this.signals.set(key, isFunction(value) ? computed(value) : signal(value));
+    } else if (update) {
       const s = this.signals.get(key);
       if (isSignal(value)) {
         if (DEV_MODE && this.debug)
           op = "Replace";
         this.signals.set(key, value);
-        if (isState(s))
-          s.set(UNSET);
-      } else {
-        if (isState(s)) {
+      } else if (isFunction(s)) {
+        try {
+          isFunction(value) && value.length === 1 ? s(value(s())) : s(value);
           if (DEV_MODE && this.debug)
             op = "Update";
-          s.set(value);
-        } else {
-          log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_ERROR);
+        } catch (error) {
+          log(value, `Read-only state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_ERROR);
           return;
         }
       }
@@ -461,73 +697,120 @@ class UIElement extends HTMLElement {
   }
 }
 // src/lib/effects.ts
-var emit = (event, s = event) => (host, target) => effect(() => {
-  target.dispatchEvent(new CustomEvent(event, {
-    detail: host.get(s),
-    bubbles: true
-  }));
-});
+var isSafeURL = (value) => {
+  if (/^(mailto|tel):/i.test(value))
+    return true;
+  if (value.includes("://")) {
+    try {
+      const url = new URL(value, window.location.origin);
+      return ["http:", "https:", "ftp:"].includes(url.protocol);
+    } catch (error) {
+      return false;
+    }
+  }
+  return true;
+};
+var safeSetAttribute = (element, attr, value) => {
+  if (/^on/i.test(attr))
+    throw new Error(`Unsafe attribute: ${attr}`);
+  value = String(value).trim();
+  if (!isSafeURL(value))
+    throw new Error(`Unsafe URL for ${attr}: ${value}`);
+  element.setAttribute(attr, value);
+};
+var emit = (event, s = event) => (host, target) => {
+  effect(() => {
+    target.dispatchEvent(new CustomEvent(event, {
+      detail: host.get(s),
+      bubbles: true
+    }));
+  });
+};
 var updateElement = (s, updater) => (host, target) => {
-  const { read, update: update2 } = updater;
-  const fallback = read(target);
-  if (!isFunction2(s)) {
+  const { r, u, d } = updater;
+  const fallback = r(target);
+  if (!isFunction(s)) {
     const value = isString(s) && isString(fallback) ? parse(host, s, fallback) : fallback;
     host.set(s, value, false);
   }
   effect(() => {
-    const current = read(target);
-    const value = isFunction2(s) ? s(current) : host.get(s);
+    const current = r(target);
+    const value = isFunction(s) ? s(current) : host.get(s);
     if (!Object.is(value, current)) {
-      if (value === null && updater.delete)
-        updater.delete(target);
+      if (value === null && d)
+        d(target);
       else if (value == null && fallback)
-        update2(target, fallback);
+        u(target, fallback);
       else if (value != null)
-        update2(target, value);
+        u(target, value);
     }
   });
 };
-var createElement = (tag, s) => updateElement(s, {
-  read: () => null,
-  update: (el, value) => ce(el, tag, value)
+var createElement = (tag, s, text) => updateElement(s, {
+  r: () => null,
+  u: (el, attributes) => {
+    const child = document.createElement(tag);
+    for (const [key, value] of Object.entries(attributes))
+      safeSetAttribute(child, key, value);
+    if (text)
+      child.textContent = text;
+    el.append(child);
+  }
 });
 var removeElement = (s) => updateElement(s, {
-  read: (el) => el != null,
-  update: (el, value) => value ? re(el) : Promise.resolve(null)
+  r: (el) => el != null,
+  u: (el, really) => {
+    really && el.remove();
+  }
 });
 var setText = (s) => updateElement(s, {
-  read: (el) => el.textContent,
-  update: (el, value) => st(el, value)
+  r: (el) => el.textContent,
+  u: (el, value) => {
+    Array.from(el.childNodes).filter((node) => node.nodeType !== Node.COMMENT_NODE).forEach((node) => node.remove());
+    el.append(document.createTextNode(value));
+  }
 });
 var setProperty = (key, s = key) => updateElement(s, {
-  read: (el) => el[key],
-  update: (el, value) => el[key] = value
+  r: (el) => el[key],
+  u: (el, value) => {
+    el[key] = value;
+  }
 });
 var setAttribute = (name, s = name) => updateElement(s, {
-  read: (el) => el.getAttribute(name),
-  update: (el, value) => sa(el, name, value),
-  delete: (el) => ra(el, name)
+  r: (el) => el.getAttribute(name),
+  u: (el, value) => {
+    safeSetAttribute(el, name, value);
+  },
+  d: (el) => {
+    el.removeAttribute(name);
+  }
 });
 var toggleAttribute = (name, s = name) => updateElement(s, {
-  read: (el) => el.hasAttribute(name),
-  update: (el, value) => ta(el, name, value)
+  r: (el) => el.hasAttribute(name),
+  u: (el, value) => {
+    el.toggleAttribute(name, value);
+  }
 });
 var toggleClass = (token, s = token) => updateElement(s, {
-  read: (el) => el.classList.contains(token),
-  update: (el, value) => tc(el, token, value)
+  r: (el) => el.classList.contains(token),
+  u: (el, value) => {
+    el.classList.toggle(token, value);
+  }
 });
 var setStyle = (prop, s = prop) => updateElement(s, {
-  read: (el) => el.style.getPropertyValue(prop),
-  update: (el, value) => ss(el, prop, value),
-  delete: (el) => rs(el, prop)
+  r: (el) => el.style.getPropertyValue(prop),
+  u: (el, value) => {
+    el.style.setProperty(prop, value);
+  },
+  d: (el) => {
+    el.style.removeProperty(prop);
+  }
 });
 export {
   useContext,
   updateElement,
   toggleClass,
   toggleAttribute,
-  toSignal,
-  state,
   setText,
   setStyle,
   setProperty,
@@ -535,22 +818,14 @@ export {
   removeElement,
   parse,
   log,
-  isState,
-  isSignal,
-  enqueue,
   emit,
-  effect,
   createElement,
-  computed,
-  batch,
   asString,
   asNumber,
   asJSON,
   asInteger,
   asEnum,
   asBoolean,
-  animationFrame,
-  UNSET,
   UIElement,
   UI,
   LOG_WARN,

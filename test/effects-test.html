@@ -29,12 +29,14 @@
 	<script type="module">
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
+		import { effect } from 'alien-signals'
 		import {
-			UIElement, effect, animationFrame,
+			UIElement,
 			asBoolean, asInteger, asNumber,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
 		} from '../index.js'
 
+		const animationFrame = () => new Promise(requestAnimationFrame)
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 		const normalizeText = text => text.replace(/\s+/g, ' ').trim()
 
