@@ -1,6 +1,6 @@
-import { signal } from "alien-signals"
+import { signal, computed } from "alien-signals"
 
-import { isFunction } from "./core/util"
+import { isFunction, isSignal, isState, type Signal } from "./core/util"
 import { DEV_MODE, elementName, log, LOG_ERROR, valueString } from "./core/log"
 import { UI } from "./core/ui"
 import { parse } from "./core/parse"
@@ -49,9 +49,15 @@ export class UIElement extends HTMLElement {
 
 	/**
 	 * @since 0.9.0
-	 * @property {Map<PropertyKey, () => any} signals - map of observable properties
+	 * @property {Map<PropertyKey, Signal<any>>} signals - map of reactive properties
 	 */
-	signals = new Map<PropertyKey, (v?: any) => any>()
+	signals = new Map<PropertyKey, Signal<any>>()
+
+	/**
+	 * @since 0.10.0
+	 * @property {Array<() => void>} listeners - array of functions to remove bound event listeners
+	 */
+	listeners: Array<() => void> = []
 
 	/**
 	 * @since 0.9.0
@@ -120,6 +126,7 @@ export class UIElement extends HTMLElement {
 	disconnectedCallback(): void {
 		if (DEV_MODE && this.debug)
 			log(this, 'Disconnected')
+		this.listeners.forEach(off => off())
 	}
 
 	adoptedCallback(): void {
@@ -158,12 +165,12 @@ export class UIElement extends HTMLElement {
 	 * 
 	 * @since 0.2.0
 	 * @param {any} key - state to set value to
-	 * @param {T | ((old?: T) => T)} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
+	 * @param {T | Signal<T> | ((old?: T) => T)} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
 	 * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
 	 */
 	set<T>(
 		key: any,
-		value: T | ((old?: T) => T),
+		value: T | Signal<T>| ((old?: T) => T),
 		update: boolean = true
 	): void {
 		let op: string;
@@ -171,7 +178,7 @@ export class UIElement extends HTMLElement {
 		// State does not exist => create new state
 		if (!this.signals.has(key)) {
 			if (DEV_MODE && this.debug) op = 'Create'
-			this.signals.set(key, signal(value))
+			this.signals.set(key, isFunction(value) ? computed(value) : signal(value))
 
 
 		// State already exists => update existing state
@@ -179,19 +186,19 @@ export class UIElement extends HTMLElement {
 			const s = this.signals.get(key)
 
 			// Value is a Signal => replace state with new signal
-			if (isFunction(value)) {
+			if (isSignal(value)) {
 				if (DEV_MODE && this.debug) op = 'Replace'
 				this.signals.set(key, value)
 
 			// Value is not a Signal => set existing state to new value
-			} else {
-				if (isFunction(s)) {
+			} else if (isFunction(s)) {
+				try {
+					isFunction(value) && value.length === 1 ? s(value(s())) : s(value)
 					if (DEV_MODE && this.debug) op = 'Update'
-					s(value)
-				} else {
-					log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_ERROR)
-					return
-				}
+				} catch (error) {
+					log(value, `Read-only state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_ERROR)
+                    return
+                }
 			}
 
 		// Do nothing if state already exists and update is false

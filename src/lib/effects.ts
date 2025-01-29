@@ -1,5 +1,4 @@
 import { effect } from 'alien-signals'
-import { ce, ra, re, rs, sa, ss, st, ta, tc } from '@zeix/pulse'
 
 import { isFunction, isString } from '../core/util'
 import { parse } from '../core/parse'
@@ -8,12 +7,38 @@ import type { UIElement } from '../ui-element'
 /* === Types === */
 
 type ElementUpdater<E extends Element, T> = {
-    read: (element: E) => T | null,
-    update: (element: E, value: T) => Promise<E | null>,
-    delete?: (element: E) => Promise<E | null>,
+    r: (element: E) => T | null, // read
+    u: (element: E, value: T) => void, // update
+    d?: (element: E) => void, // delete
 }
 
 type StateKeyOrFunction<T> = PropertyKey | ((v?: T | null) => T)
+
+/* === Internal Functions === */
+
+const isSafeURL = /*#__PURE__*/ (value: string): boolean => {
+	if (/^(mailto|tel):/i.test(value)) return true
+	if (value.includes('://')) {
+		try {
+			const url = new URL(value, window.location.origin)
+			return ['http:', 'https:', 'ftp:'].includes(url.protocol)
+		} catch (error) {
+			return false
+		}
+	}
+	return true
+}
+
+const safeSetAttribute = /*#__PURE__*/ (
+	element: Element,
+	attr: string,
+	value: string
+): void => {
+	if (/^on/i.test(attr)) throw new Error(`Unsafe attribute: ${attr}`)
+	value = String(value).trim()
+	if (!isSafeURL(value)) throw new Error(`Unsafe URL for ${attr}: ${value}`)
+	element.setAttribute(attr, value)
+}
 
 /* === Exported Functions === */
 
@@ -47,8 +72,8 @@ const updateElement = <E extends Element, T>(
 	s: StateKeyOrFunction<T>,
 	updater: ElementUpdater<E, T>
 ) => (host: UIElement, target: E): void => {
-	const { read, update } = updater
-	const fallback = read(target)
+	const { r, u, d } = updater // read, update, delete methods
+	const fallback = r(target)
 	if (!isFunction(s)) { // s is PropertyKey
 		const value = isString(s) && isString(fallback)
 			? parse(host, s, fallback)
@@ -56,18 +81,18 @@ const updateElement = <E extends Element, T>(
 		host.set(s, value, false)
 	}
 	effect(() => {
-		const current = read(target)
+		const current = r(target)
 		const value = isFunction(s) ? s(current) : host.get<T>(s)
 		if (!Object.is(value, current)) {
 
 			// A value of null triggers deletion
-			if (null === value && updater.delete) updater.delete(target)
+			if (null === value && d) d(target)
 			
 			// A value of undefined triggers reset to the default value
-			else if (null == value && fallback) update(target, fallback)
+			else if (null == value && fallback) u(target, fallback)
 
 			// Otherwise, update the value
-			else if (null != value) update(target, value)
+			else if (null != value) u(target, value)
 
 			// Do nothing if value is nullish and neither delete method or fallback value is provided
 		}
@@ -83,24 +108,32 @@ const updateElement = <E extends Element, T>(
  */
 const createElement = (
     tag: string,
-    s: StateKeyOrFunction<Record<string, string>>
+    s: StateKeyOrFunction<Record<string, string>>,
+	text?: string,
 ) => updateElement(s, {
-	read: () => null,
-	update: (el: Element, value) => ce(el, tag, value),
+	r: () => null,
+	u: (el, attributes) => {
+		const child = document.createElement(tag)
+		for (const [key, value] of Object.entries(attributes))
+			safeSetAttribute(child, key, value)
+		if (text) child.textContent = text
+		el.append(child)
+	},
 })
 
 /**
  * Remove an element from the DOM
  * 
  * @since 0.9.0
- * @param {StateKeyOrFunction<string>} s - state bound to the element removal
+ * @param {StateKeyOrFunction<boolean>} s - state bound to the element removal
  */
-const removeElement = <E extends Element>(
-	s: StateKeyOrFunction<boolean>
-) => updateElement(s, {
-	read: (el: E) => null != el,
-    update: (el: E, value: boolean) => value ? re(el) : Promise.resolve(null)
-})
+const removeElement = (s: StateKeyOrFunction<boolean>) =>
+	updateElement(s, {
+		r: el => null != el,
+		u: (el, really) => {
+			really && el.remove()
+		}
+	})
 
 /**
  * Set text content of an element
@@ -108,12 +141,16 @@ const removeElement = <E extends Element>(
  * @since 0.8.0
  * @param {StateKeyOrFunction<string>} s - state bound to the text content
  */
-const setText = <E extends Element>(
-	s: StateKeyOrFunction<string>
-) => updateElement(s, {
-	read: (el: E) => el.textContent,
-	update: (el: E, value) => st(el, value)
-})
+const setText = (s: StateKeyOrFunction<string>) =>
+	updateElement(s, {
+		r: el => el.textContent,
+		u: (el, value) => {
+			Array.from(el.childNodes)
+				.filter(node => node.nodeType !== Node.COMMENT_NODE)
+				.forEach(node => node.remove())
+			el.append(document.createTextNode(value))
+		}
+	})
 
 /**
  * Set property of an element
@@ -122,12 +159,14 @@ const setText = <E extends Element>(
  * @param {PropertyKey} key - name of property to be set
  * @param {StateKeyOrFunction<unknown>} s - state bound to the property value
  */
-const setProperty = <E extends Element>(
+const setProperty = (
 	key: PropertyKey,
 	s: StateKeyOrFunction<unknown> = key
 ) => updateElement(s, {
-	read: (el: E) => (el as Record<PropertyKey, any>)[key],
-	update: (el: E, value: any) => (el as Record<PropertyKey, any>)[key] = value,
+	r: el => (el as Record<PropertyKey, any>)[key],
+	u: (el, value) => {
+		(el as Record<PropertyKey, any>)[key] = value
+	}
 })
 
 /**
@@ -137,13 +176,17 @@ const setProperty = <E extends Element>(
  * @param {string} name - name of attribute to be set
  * @param {StateKeyOrFunction<string>} s - state bound to the attribute value
  */
-const setAttribute = <E extends Element>(
+const setAttribute = (
 	name: string,
 	s: StateKeyOrFunction<string> = name
 ) => updateElement(s, {
-	read: (el: E) => el.getAttribute(name),
-	update: (el: E, value: string) => sa(el, name, value),
-	delete: (el: E) => ra(el, name)
+	r: el => el.getAttribute(name),
+	u: (el, value) => {
+		safeSetAttribute(el, name, value)
+	},
+	d: el => {
+		el.removeAttribute(name)
+	}
 })
 
 /**
@@ -153,12 +196,14 @@ const setAttribute = <E extends Element>(
  * @param {string} name - name of attribute to be toggled
  * @param {StateKeyOrFunction<boolean>} s - state bound to the attribute existence
  */
-const toggleAttribute = <E extends Element>(
+const toggleAttribute = (
 	name: string,
 	s: StateKeyOrFunction<boolean> = name
 ) => updateElement(s, {
-	read: (el: E) => el.hasAttribute(name),
-	update: (el: E, value: boolean) => ta(el, name, value)
+	r: el => el.hasAttribute(name),
+	u: (el, value) => {
+		el.toggleAttribute(name, value)
+	}
 })
 
 /**
@@ -168,12 +213,14 @@ const toggleAttribute = <E extends Element>(
  * @param {string} token - class token to be toggled
  * @param {StateKeyOrFunction<boolean>} s - state bound to the class existence
  */
-const toggleClass = <E extends Element>(
+const toggleClass = (
 	token: string,
 	s: StateKeyOrFunction<boolean> = token
 ) => updateElement(s, {
-	read: (el: E) => el.classList.contains(token),
-	update: (el: E, value: boolean) => tc(el, token, value)
+	r: el => el.classList.contains(token),
+	u: (el, value) => {
+		el.classList.toggle(token, value)
+	}
 })
 
 /**
@@ -187,9 +234,13 @@ const setStyle = <E extends (HTMLElement | SVGElement | MathMLElement)>(
 	prop: string,
 	s: StateKeyOrFunction<string> = prop
 ) => updateElement(s, {
-		read: (el: E) => el.style.getPropertyValue(prop),
-		update: (el: E, value: string) => ss(el, prop, value) as Promise<E>,
-		delete: (el: E) => rs(el, prop) as Promise<E>
+		r: (el: E) => el.style.getPropertyValue(prop),
+		u: (el: E, value) => {
+			el.style.setProperty(prop, value)
+		},
+		d: (el: E) => {
+			el.style.removeProperty(prop)
+		}
 	})
 
 

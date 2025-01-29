@@ -1,3 +1,4 @@
+import { type Signal } from "./core/util";
 import { UI } from "./core/ui";
 import { type UnknownContext } from "./core/context";
 export type AttributeParser<T> = (value: string | undefined, element: UIElement, old: string | undefined) => T | undefined;
@@ -24,9 +25,14 @@ export declare class UIElement extends HTMLElement {
     static define(tag: string): void;
     /**
      * @since 0.9.0
-     * @property {Map<PropertyKey, () => any} signals - map of observable properties
+     * @property {Map<PropertyKey, Signal<any>>} signals - map of reactive properties
      */
-    signals: Map<PropertyKey, (v?: any) => any>;
+    signals: Map<PropertyKey, Signal<any>>;
+    /**
+     * @since 0.10.0
+     * @property {Array<() => void>} listeners - array of functions to remove bound event listeners
+     */
+    listeners: Array<() => void>;
     /**
      * @since 0.9.0
      * @property {ElementInternals | undefined} internals - native internal properties of the custom element
@@ -87,10 +93,10 @@ export declare class UIElement extends HTMLElement {
      *
      * @since 0.2.0
      * @param {any} key - state to set value to
-     * @param {T | ((old?: T) => T)} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
+     * @param {T | Signal<T> | ((old?: T) => T)} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
      * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
      */
-    set<T>(key: any, value: T | ((old?: T) => T), update?: boolean): void;
+    set<T>(key: any, value: T | Signal<T> | ((old?: T) => T), update?: boolean): void;
     /**
      * Delete a state, also removing all effects dependent on the state
      *

@@ -4,11 +4,6 @@
  * @author Esther Brunner
  */
 export {
-	type EnqueueDedupe,
-	enqueue, animationFrame
-} from '@zeix/pulse'
-
-export {
 	type AttributeParser, type ValueOrAttributeParser,
 	UIElement
 } from './src/ui-element'

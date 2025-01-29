@@ -8,8 +8,7 @@ declare class UI<T extends Element> {
     readonly host: UIElement;
     readonly targets: T[];
     constructor(host: UIElement, targets?: T[]);
-    on(event: string, listener: EventListenerOrEventListenerFactory): UI<T>;
-    off(event: string, listener: EventListenerOrEventListenerFactory): UI<T>;
+    on(event: string, listeners: EventListenerOrEventListenerFactory): UI<T>;
     pass(states: Record<string, StateLikeOrStateLikeFactory<any>>): UI<T>;
     sync(...fns: ((host: UIElement, target: T, index: number) => void)[]): UI<T>;
 }
