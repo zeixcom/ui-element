@@ -2,13 +2,13 @@
 
 UIElement - the "look ma, no JS framework!" library bringing signals-based reactivity to vanilla Web Components
 
-Version 0.8.5
+Version 0.9.4
 
 ## What is UIElement?
 
 `UIElement` is a base class for your reactive Web Components. It extends the native `HTMLElement` class and adds a public property and a few methods that allow you to implement inter- and intra-component reactivity with ease. You extend the base class `UIElement` and call the static `define()` method on it to register a tag name in the `CustomElementsRegistry`.
 
-`UIElement` will parse attributes in the `attributeChangedCallback()` and assign the values to reactive states according to the mapping to key and primitive type in the `attributeMap` property of your component. By declaratively setting `static observedAttributes` and `static attributeMap` you will almost never have to override `attributeChangedCallback()`. Your reactive states will be automatically setup with initial values from attributes.
+`UIElement` will parse attributes in the `attributeChangedCallback()` and assign the values to reactive states according to the mapping to key and primitive type in the `states` property of your component. By declaratively setting `static observedAttributes` and `static states` you will almost never have to override `attributeChangedCallback()`. Your reactive states will be automatically setup with initial values from attributes.
 
 `UIElement` implements a `Map`-like interface on top of `HTMLElement` to access and modify reactive states. The method names `this.has()`, `this.get()`, `this.set()` and `this.delete()` feel familar to JavaScript developers and mirror what you already know.
 
@@ -61,7 +61,7 @@ import { UIElement, on, setText } from '@efflore/ui-element'
 
 class MyCounter extends UIElement {
   static observedAttributes = ['value']
-  attributeMap = {
+  states = {
     value: v => parseInt(v, 10)
   }
 

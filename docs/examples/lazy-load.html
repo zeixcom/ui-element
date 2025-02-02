@@ -38,7 +38,7 @@
 
 class LazyLoad extends UIElement {
 	static observedAttributes = ['src']
-	static attributeMap = {
+	static states = {
 		src: v => v.map(src => {
 				let url = ''
 				try {

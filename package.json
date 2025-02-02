@@ -7,7 +7,7 @@
   "scripts": {
     "build": "bun build index.ts --outdir ./ --minify --define process.env.DEV_MODE=false && bunx tsc",
     "build:dev": "BUN_ENV=development bun build index.dev.ts --outdir ./ --define process.env.DEV_MODE=true",
-    "build:docs": "rollup -c rollup.docs.config.js",
+    "build:docs": "bun build docs/assets/js/main.ts --outdir ./docs/assets/js/ --minify",
     "lint": "npx eslint src/",
     "test": "run-s test:setup test:ci",
     "test:setup": "npx playwright install-deps",

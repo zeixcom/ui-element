@@ -283,7 +283,7 @@ const parseNumber = (v, int = false) => int ? parseInt(v, 10) : parseFloat(v)
 
 class InputField extends UIElement {
 	static observedAttributes = ['value', 'description']
-	static attributeMap = {
+	static states = {
 		value: value => this.isNumber
 			? value.map(v => parseNumber(v, this.isInteger)).filter(Number.isFinite)
 			: value
