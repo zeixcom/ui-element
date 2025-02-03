@@ -155,7 +155,7 @@
 					<span class="file">input-button.js</span>
 					<span class="language">js</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, asBoolean, setText, setProperty } from '@efflore/ui-element'
+				<pre class="language-js"><code>import { UIElement, asBoolean, setText, setProperty } from '@zeix/ui-element'
 
 class InputButton extends UIElement {
 	static observedAttributes = ['disabled']
@@ -164,9 +164,10 @@ class InputButton extends UIElement {
 	}
 
 	connectedCallback() {
-		this.first('button')
-			.map(setText('label'))
-			.forEach(setProperty('disabled'))
+		this.first('button').sync(
+			setText('label'),
+			setProperty('disabled')
+		)
 	}
 }
 InputButton.define('input-button')</code></pre>

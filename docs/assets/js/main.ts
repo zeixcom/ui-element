@@ -13,33 +13,18 @@ class MyCounter extends UIElement {
 
 	connectedCallback() {
 		this.set('parity', () => this.get('count') as number % 2 ? 'odd' : 'even')
-        this.first('.increment').on(
-			'click',
-			() => this.set('count', v => ++v)
-		)
-        this.first('.decrement').on(
-			'click',
-			() => this.set('count', v => --v)
-		)
-		this.first('.count').sync(
-			setText('count')
-		)
-		this.first('.parity').sync(
-			setText('parity')
-		)
+        this.first('.increment').on('click', () => this.set('count', v => ++v))
+        this.first('.decrement').on('click', () => this.set('count', v => --v))
+		this.first('.count').sync(setText('count'))
+		this.first('.parity').sync(setText('parity'))
     }
 }
 MyCounter.define('my-counter')
 
 class HelloWorld extends UIElement {
 	connectedCallback() {
-        this.first('span').sync(
-			setText('name')
-		)
-		this.first('input').on(
-			'input',
-			e => this.set('name', e.target.value || undefined)
-		)
+        this.first('span').sync(setText('name'))
+		this.first('input').on('input', e => this.set('name', e.target.value || undefined))
 	}
 }
 HelloWorld.define('hello-world')
@@ -53,20 +38,18 @@ class MySlider extends UIElement {
 		// Event listeners for navigation
 		const total = this.querySelectorAll('.slide').length
 		const getNewIndex = (prev: number, direction: number) => (prev + direction + total) % total
-		this.first('.prev').on(
-			'click',
-			() => this.set('active', v => getNewIndex(v, -1))
-		)
-		this.first('.next').on(
-			'click',
-			() => this.set('active', v => getNewIndex(v, 1))
-		)
+		this.first('.prev').on('click', () => this.set('active', v => getNewIndex(v, -1)))
+		this.first('.next').on('click', () => this.set('active', v => getNewIndex(v, 1)))
 	
 		// Auto-effects for updating slides and dots
-		this.all('.slide')
-			.sync((host, target, index) => toggleClass('active', () => index === this.get('active'))(host, target))
-		this.all('.dots span')
-			.sync((host, target, index) => toggleClass('active', () => index === this.get('active'))(host, target))
+		this.all('.slide').sync((host, target, index) => toggleClass(
+			'active',
+			() => index === this.get('active')
+		)(host, target))
+		this.all('.dots span').sync((host, target, index) => toggleClass(
+			'active',
+			() => index === this.get('active')
+		)(host, target))
 	}
 }
 MySlider.define('my-slider')
@@ -88,7 +71,7 @@ class CodeBlock extends UIElement {
 				// Apply syntax highlighting while preserving Lit's marker nodes in Storybook
 				const code = document.createElement('code')
 				code.innerHTML = Prism.highlight(this.get('code'), Prism.languages[language], language)
-				enqueue(() => () => {
+				enqueue(() => {
 					Array.from(code.childNodes)
 						.filter(node => node.nodeType !== Node.COMMENT_NODE)
 						.forEach(node => node.remove())
@@ -98,35 +81,27 @@ class CodeBlock extends UIElement {
 			})
 
 			// Copy to clipboard
-			this.first('.copy').on(
-				'click',
-				async e => {
-					const copyButton = e.target
-					const label = copyButton.textContent
-					let status = 'success'
-					try {
-						await navigator.clipboard.writeText(content.textContent ?? '')
-					} catch (err) {
-						console.error('Error when trying to use navigator.clipboard.writeText()', err)
-						status = 'error'
-					}
-					copyButton.set('disabled', true)
-					copyButton.set('label', this.getAttribute(`copy-${status}`))
-					setTimeout(() => {
-						copyButton.set('disabled', false)
-						copyButton.set('label', label)
-					}, status === 'success' ? 1000 : 3000)
+			this.first('.copy').on('click', async e => {
+				const copyButton = e.target
+				const label = copyButton.textContent
+				let status = 'success'
+				try {
+					await navigator.clipboard.writeText(content.textContent ?? '')
+				} catch (err) {
+					console.error('Error when trying to use navigator.clipboard.writeText()', err)
+					status = 'error'
 				}
-			)
+				copyButton.set('disabled', true)
+				copyButton.set('label', this.getAttribute(`copy-${status}`))
+				setTimeout(() => {
+					copyButton.set('disabled', false)
+					copyButton.set('label', label)
+				}, status === 'success' ? 1000 : 3000)
+			})
 
 			// Expand
-			this.first('.overlay').on(
-				'click',
-				() => this.set('collapsed', false)
-			)
-			this.self.sync(
-				toggleAttribute('collapsed')
-			)
+			this.first('.overlay').on('click', () => this.set('collapsed', false))
+			this.self.sync(toggleAttribute('collapsed'))
 		}
 	}
 }
@@ -146,34 +121,28 @@ class TabList extends UIElement {
 		// Dynamically adjust accordion based on viewport size
 		setTimeout(() => {
 			if (this.get('media-viewport'))
-				this.set('accordion', () => ['xs', 'sm'].includes(this.get('media-viewport')))
+				this.set('accordion', () => ['xs', 'sm'].includes(String(this.get('media-viewport'))))
 		}, 0)
 
 		// Reflect accordion attribute (may be used for styling)
-		this.self.sync(
-			toggleAttribute('accordion')
-		)
+		this.self.sync(toggleAttribute('accordion'))
 
 		// Hide accordion tab navigation when in accordion mode
-		this.first('menu').sync(
-			setProperty('ariaHidden', 'accordion')
-		)
+		this.first('menu').sync(setProperty('ariaHidden', 'accordion'))
 
 		// Update active tab state and bind click handlers
-		this.all('menu button').on(
-			'click',
-			(_target, index) => () => this.set('active', index)
-		).sync(
-			(host, target, index) => setProperty('ariaPressed', () => this.get('active') === index)(host, target)
-		)
+		this.all('menu button')
+			.on('click', (_target, index) => () => this.set('active', index))
+			.sync((host, target, index) => setProperty(
+				'ariaPressed',
+				() => this.get('active') === index
+			)(host, target))
 
 		// Pass open and collapsible states to accordion panels
-		this.all('accordion-panel').pass(
-			(_target, index) => ({
-				open: () => this.get('active') === index,
-				collapsible: 'accordion'
-			})
-		)
+		this.all('accordion-panel').pass({
+			open: (_target, index) => () => this.get('active') === index,
+			collapsible: 'accordion'
+		})
 	}
 }
 TabList.define('tab-list')
@@ -257,12 +226,12 @@ class InputField extends UIElement {
 
 				// Validate input value against a server-side endpoint
 				await fetch(`${validate}?name=${this.input.name}value=${this.input.value}`)
-				.then(async response => {
-					const text = await response.text()
-					this.input.setCustomValidity(text)
-					this.set('error', text)
-				})
-				.catch(err => this.set('error', err.message))
+					.then(async response => {
+						const text = await response.text()
+						this.input.setCustomValidity(text)
+						this.set('error', text)
+					})
+					.catch(err => this.set('error', err.message))
 			}
 			if (this.isNumber && !isNumber(value)) // ensure value is a number if it is not already a number
 				return this.set('value', parseNumber(value, this.isInteger)) // effect will be called again with numeric value
@@ -298,13 +267,14 @@ class InputField extends UIElement {
 
 		// Derived states
 		this.set('ariaInvalid', () => String(Boolean(this.get('error'))))
-		this.set('aria-errormessage', () => this.get('error') ? error[0]?.target.id : undefined)
+		this.set('aria-errormessage', () => this.get('error') ? this.querySelector('.error')?.id : undefined)
 
 		// Effects
-		error.forEach(setText('error'))
-		this.first('input')
-			.map(setProperty('ariaInvalid'))
-			.forEach(setAttribute('aria-errormessage'))
+		this.first('.error').sync(setText('error'))
+		this.first('input').sync(
+			setProperty('ariaInvalid'),
+			setAttribute('aria-errormessage')
+		)
 	}
 
 	// Setup description
@@ -333,8 +303,8 @@ class InputField extends UIElement {
 		)
 
 		// Effects
-		description.forEach(setText('description'))
-		input.forEach(setAttribute('aria-describedby'))
+		description.sync(setText('description'))
+		input.sync(setAttribute('aria-describedby'))
 	}
 
 	// Setup spin button
@@ -369,12 +339,18 @@ class InputField extends UIElement {
 		this.set('increment-disabled', () => isNumber(max) && (this.get('value') + step > max))
 
 		// Handle spin button clicks and update their disabled state
-		this.first('.decrement')
-			.map(setProperty('disabled', 'decrement-disabled'))
-			.forEach(on('click', e => this.stepDown(e.shiftKey ? step * 10 : step)))
-		this.first('.increment')
-			.map(setProperty('disabled', 'increment-disabled'))
-			.forEach(on('click', e => this.stepUp(e.shiftKey ? step * 10 : step)))
+		this.first('.decrement').on(
+			'click',
+			e => this.stepDown(e.shiftKey ? step * 10 : step)
+		).sync(
+			setProperty('disabled', 'decrement-disabled')
+		)
+		this.first('.increment').on(
+			'click',
+			e => this.stepUp(e.shiftKey ? step * 10 : step)
+		).sync(
+			setProperty('disabled', 'increment-disabled')
+		)
 
 		// Handle arrow key events
 		this.input.onkeydown = e => {
@@ -392,11 +368,11 @@ class InputField extends UIElement {
 	// Setup clear button
 	#setupClearButton() {
 		this.first('.clear')
-			.map(toggleClass('hidden', 'empty'))
-			.forEach(on('click', () => {
+			.on('click', () => {
 				this.clear()
 				this.input.focus()
-			}))
+			})
+			.sync(toggleClass('hidden', 'empty'))
 	}
 
 }
@@ -405,19 +381,14 @@ InputField.define('input-field')
 class InputCheckbox extends UIElement {
 	static observedAttributes = ['checked']
 	static states = {
-		checked: asBoolean,
+		checked: asBoolean
 	}
 
 	connectedCallback() {
-		this.first('input').on(
-			'change',
-			e => this.set('checked', Boolean(e.target.checked))
-		).sync(
-			setProperty('checked')
-		)
-		this.self.sync(
-			toggleAttribute('checked')
-		)
+		this.first('input')
+			.on('change', e => this.set('checked', Boolean(e.target.checked)))
+			.sync(setProperty('checked'))
+		this.self.sync(toggleAttribute('checked'))
 	}
 }
 InputCheckbox.define('input-checkbox')
@@ -426,19 +397,12 @@ export class InputRadiogroup extends UIElement {
 	static observedAttributes = ['value']
 
 	connectedCallback() {
-		this.self.sync(
-			setAttribute('value')
-		)
-        this.all('input').on(
-			'change',
-			e => this.set('value', e.target.value)
-		)
-		this.all('label').sync(
-			(host, target) => toggleClass(
-				'selected',
-				() => host.get('value') === target.querySelector('input')?.value
-			)(host, target)
-		)
+		this.self.sync(setAttribute('value'))
+        this.all('input').on('change', e => this.set('value', e.target.value))
+		this.all('label').sync((host, target) => toggleClass(
+			'selected',
+			() => host.get('value') === target.querySelector('input')?.value
+		)(host, target))
     }
 }
 InputRadiogroup.define('input-radiogroup')
@@ -465,30 +429,31 @@ class LazyLoad extends UIElement {
 
 		// Show / hide loading message
 		this.first('.loading')
-			.forEach(setProperty('ariaHidden', () => !!this.get('error')))
+			.sync(setProperty('ariaHidden', () => !!this.get('error')))
 
 		// Set and show / hide error message
-		this.first('.error')
-			.map(setText('error'))
-			.forEach(setProperty('ariaHidden', () => !this.get('error')))
+		this.first('.error').sync(
+			setText('error')),
+			setProperty('ariaHidden', () => !this.get('error')
+		)
 
 		// Load content from provided URL
-		effect(enqueue => {
+		effect(() => {
 			const src = this.get('src')
 			if (!src) return // silently fail if no valid URL is provided
 			fetch(src)
 				.then(async response => {
 					if (response.ok) {
 						const content = await response.text()
-						enqueue(this.root, 'h', el => () => {
+						enqueue(() => {
 							// UNSAFE!, use only trusted sources in 'src' attribute
-							el.innerHTML = content
-							el.querySelectorAll('script').forEach(script => {
+							this.root.innerHTML = content
+							this.root.querySelectorAll('script').forEach(script => {
 								const newScript = document.createElement('script')
-								newScript.appendChild(document.createTextNode(script.textContent))
-								el.appendChild(newScript)
+								newScript.appendChild(document.createTextNode(script.textContent ?? ''))
+								this.root.appendChild(newScript)
 								script.remove()
-							})
+							}, [this.root, 'h'])
 						})
 						this.set('error', '')
 					} else {
@@ -573,10 +538,9 @@ class MediaContext extends UIElement {
 		screenMedium.addEventListener('change', () => this.set(MEDIA_VIEWPORT, getViewport()))
 		screenLarge.addEventListener('change', () => this.set(MEDIA_VIEWPORT, getViewport()))
 		screenXLarge.addEventListener('change', () => this.set(MEDIA_VIEWPORT, getViewport()))
-		screenOrientation.addEventListener(
-			'change',
-			e => this.set(MEDIA_THEME, e.matches ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT)
-		)
+		screenOrientation.addEventListener('change', e => {
+			this.set(MEDIA_THEME, e.matches ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT)
+		})
 	}
 }
 MediaContext.define('media-context')
@@ -597,14 +561,11 @@ class TodoList extends UIElement {
 		this.#updateList()
 
 		// Event listener and attribute on own element
-		this.self.on(
-			'click',
-			e => {
+		this.self
+			.on('click', e => {
 				if (e.target.localName === 'button') this.removeItem(e.target)
-			}
-		).sync(
-			setAttribute('filter')
-		)
+			})
+			.sync(setAttribute('filter'))
 
 		// Update count on each change
 		this.set('count', () => {
@@ -653,10 +614,7 @@ class TodoApp extends UIElement {
 		const todoFilter: InputRadiogroup | null = this.querySelector('input-radiogroup') as InputRadiogroup
 
 		// Event listener on own element
-		this.self.on(
-			'add-todo',
-			e => todoList?.addItem(e.detail)
-		)
+		this.self.on('add-todo', e => todoList?.addItem(e.detail))
 		
 		// Coordinate todo-count
 		this.first('todo-count').pass({
@@ -669,12 +627,11 @@ class TodoApp extends UIElement {
 		})
 
 		// Coordinate .clear-completed button
-		this.first('.clear-completed').on(
-			'click',
-			() => todoList?.clearCompleted()
-		).pass({
-			disabled: () => !(todoList?.get('count') as TodoCountObject).completed
-		})
+		this.first('.clear-completed')
+			.on('click', () => todoList?.clearCompleted())
+			.pass({
+				disabled: () => !(todoList?.get('count') as TodoCountObject).completed
+			})
 	}
 }
 TodoApp.define('todo-app')
@@ -683,22 +640,13 @@ class TodoCount extends UIElement {
 	static states = {
 		active: 0
 	}
+
 	connectedCallback() {
-		this.first('.count').sync(
-			setText('active')
-		)
-		this.first('.singular').sync(
-			setProperty('ariaHidden', () => this.get('active') as number > 1)
-		)
-		this.first('.plural').sync(
-			setProperty('ariaHidden', () => this.get('active') === 1)
-		)
-		this.first('.remaining').sync(
-			setProperty('ariaHidden', () => !this.get('active'))
-		)
-		this.first('.all-done').sync(
-			setProperty('ariaHidden', () => !!this.get('active'))
-		)
+		this.first('.count').sync(setText('active'))
+		this.first('.singular').sync(setProperty('ariaHidden', () => this.get('active') as number > 1))
+		this.first('.plural').sync(setProperty('ariaHidden', () => this.get('active') === 1))
+		this.first('.remaining').sync(setProperty('ariaHidden', () => !this.get('active')))
+		this.first('.all-done').sync(setProperty('ariaHidden', () => !!this.get('active')))
 	}
 }
 TodoCount.define('todo-count')
@@ -707,19 +655,16 @@ class TodoForm extends UIElement {
 	connectedCallback() {
 		const inputField: InputField | null = this.querySelector('input-field')
 
-        this.first('form').on(
-			'submit',
-			e => {
-				e.preventDefault()
-				setTimeout(() => {
-					this.dispatchEvent(new CustomEvent('add-todo', {
-						bubbles: true,
-						detail: inputField?.get('value')
-					}))
-					inputField?.clear()
-				}, 0)
-			}
-		)
+        this.first('form').on('submit', e => {
+			e.preventDefault()
+			setTimeout(() => {
+				this.dispatchEvent(new CustomEvent('add-todo', {
+					bubbles: true,
+					detail: inputField?.get('value')
+				}))
+				inputField?.clear()
+			}, 0)
+		})
 	
 		this.first('input-button').pass({
 			disabled: () => inputField?.get('empty')

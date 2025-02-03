@@ -218,7 +218,7 @@ this.set('isEven', () => this.get('count') % 2 === 0); // Create a derived signa
 						<span class="language">js</span>
 					</p>
 				<pre class="language-js"><code>static states = {
-	date: value => value.map(v => new Date(v)),
+	date: v => new Date(v),
 }</code></pre>
 					<input-button class="copy">
 						<button type="button" class="secondary small">Copy</button>
@@ -229,12 +229,12 @@ this.set('isEven', () => this.get('count') % 2 === 0); // Create a derived signa
 
 			<section>
 				<h2>Events & State Changes</h2>
-				<p>Use <code>.map()</code> and <code>on()</code> to attach event listeners to elements. These event handlers can trigger state changes and update the DOM.</p>
+				<p>Use <code>on()</code> to attach event listeners to elements. These event handlers can trigger state changes and update the DOM.</p>
 				<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 					<p class="meta">
 						<span class="language">js</span>
 					</p>
-                    <pre class="language-js"><code>this.first('.increment').map(on('click', () => this.set('count', v => ++v)));</code></pre>
+                    <pre class="language-js"><code>this.first('.increment').on('click', () => this.set('count', v => ++v));</code></pre>
 					<input-button class="copy">
 						<button type="button" class="secondary small">Copy</button>
 					</input-button>
@@ -245,12 +245,12 @@ this.set('isEven', () => this.get('count') % 2 === 0); // Create a derived signa
 			<section>
 				<h2>Effects & Reactive Bindings</h2>
 				<p>UIElement uses effects to manage side-effects to the DOM, external APIs and the server.</p>
-				<p>For the most common DOM manipulations UIElement provides auto-effects like <code>setText()</code> to automatically update the text content when signals change. Use the chainable <code>.map()</code> method to bind auto-effects for signals to HTML elements.</p>
+				<p>For the most common DOM manipulations UIElement provides auto-effects like <code>setText()</code> to automatically update the text content when signals change. Use the chainable <code>.sync()</code> method to bind auto-effects for signals to HTML elements.</p>
 				<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 					<p class="meta">
 						<span class="language">js</span>
 					</p>
-                    <pre class="language-js"><code>this.first('.count').map(setText('count'));</code></pre>
+                    <pre class="language-js"><code>this.first('.count').sync(setText('count'));</code></pre>
 					<input-button class="copy">
 						<button type="button" class="secondary small">Copy</button>
 					</input-button>

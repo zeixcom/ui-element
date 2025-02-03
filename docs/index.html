@@ -149,7 +149,7 @@
 				<p><strong>Signals & Auto-Effects:</strong> Signals automatically trigger updates to the DOM when they change.</p>
 				<code-block language="js">
 					<pre class="language-js"><code>this.set('count', 0) // Define a signal for 'count'
-this.first('.count').forEach(setText('count')) // Automatically update content when 'count' changes</code></pre>
+this.first('.count').sync(setText('count')) // Automatically update content when 'count' changes</code></pre>
 				</code-block>
 			</section>
 		  

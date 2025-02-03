@@ -157,7 +157,7 @@
 					<p class="meta">
 						<span class="language">js</span>
 					</p>
-					<pre class="language-js"><code>import { UIElement } from '@efflore/ui-element'</code></pre>
+					<pre class="language-js"><code>import { UIElement } from '@zeix/ui-element'</code></pre>
 					<input-button class="copy">
 						<button type="button" class="secondary small">Copy</button>
 					</input-button>
@@ -173,16 +173,16 @@
 						<span class="language">js</span>
 					</p>
 					<pre class="language-js"><code>&lt;script type="module"&gt;
-	import { UIElement, setText, on } from 'https://cdn.jsdelivr.net/npm/@efflore/ui-element@latest/index.min.js'
+	import { UIElement, setText } from 'https://cdn.jsdelivr.net/npm/@efflore/ui-element@latest/index.min.js'
 
 	class HelloWorld extends UIElement {
 		connectedCallback() {
 
 			// Update content dynamically based on the 'name' signal
-			this.first('span').forEach(setText('name'))
+			this.first('span').sync(setText('name'))
 
 			// Handle user input to change the 'name'
-			this.first('input').forEach(on('input', e =&gt; this.set('name', e.target.value || undefined)))
+			this.first('input').on('input', e =&gt; this.set('name', e.target.value || undefined))
 		}
 	}
 	HelloWorld.define('hello-world')

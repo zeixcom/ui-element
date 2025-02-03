@@ -119,7 +119,7 @@
 					<span class="file">input-checkbox.js</span>
 					<span class="language">js</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, asBoolean, on, setProperty, toggleAttribute } from '@efflore/ui-element'
+				<pre class="language-js"><code>import { UIElement, asBoolean, setProperty, toggleAttribute } from '@zeix/ui-element'
 
 class InputCheckbox extends UIElement {
 	static observedAttributes = ['checked']
@@ -129,9 +129,9 @@ class InputCheckbox extends UIElement {
 
 	connectedCallback() {
 		this.first('input')
-			.map(on('change', e => this.set('checked', Boolean(e.target.checked))))
-			.forEach(setProperty('checked'))
-		this.self.forEach(toggleAttribute('checked'))
+			.on('change', e => this.set('checked', Boolean(e.target.checked)))
+			.sync(setProperty('checked'))
+		this.self.sync(toggleAttribute('checked'))
 	}
 }
 InputCheckbox.define('input-checkbox')</code></pre>
