@@ -5,11 +5,11 @@
 		<link rel="stylesheet" href="assets/css/global.css">
 		<link rel="stylesheet" href="assets/css/okaidia.css">
 		<link rel="stylesheet" href="assets/css/components.css">
-		<script type="module" src="assets/js/main.min.js"></script>
+		<script type="module" src="assets/js/main.js"></script>
 	</head>
 	<body>
 		<header class="content-grid">
-			<h1 class="content">UIElement Docs <small>Version 0.8.5</small></h1>
+			<h1 class="content">UIElement Docs <small>Version 0.9.4</small></h1>
 			<nav class="breakout">
 				<ol>
 					<li>
@@ -200,12 +200,12 @@ this.set('isEven', () => this.get('count') % 2 === 0); // Create a derived signa
 						<button type="button" class="secondary small">Copy</button>
 					</input-button>
                 </code-block>
-				<p>To parse and map attributes to specific state types, use the <code>attributeMap</code> static property.</p>
+				<p>To parse and map attributes to specific state types, use the <code>states</code> static property.</p>
 				<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 					<p class="meta">
 						<span class="language">js</span>
 					</p>
-					<pre class="language-js"><code>static attributeMap = {
+					<pre class="language-js"><code>static states = {
 	count: asInteger,
 }</code></pre>
 					<input-button class="copy">
@@ -217,8 +217,8 @@ this.set('isEven', () => this.get('count') % 2 === 0); // Create a derived signa
 					<p class="meta">
 						<span class="language">js</span>
 					</p>
-				<pre class="language-js"><code>static attributeMap = {
-	date: value => value.map(v => new Date(v)),
+				<pre class="language-js"><code>static states = {
+	date: v => new Date(v),
 }</code></pre>
 					<input-button class="copy">
 						<button type="button" class="secondary small">Copy</button>
@@ -229,12 +229,12 @@ this.set('isEven', () => this.get('count') % 2 === 0); // Create a derived signa
 
 			<section>
 				<h2>Events & State Changes</h2>
-				<p>Use <code>.map()</code> and <code>on()</code> to attach event listeners to elements. These event handlers can trigger state changes and update the DOM.</p>
+				<p>Use <code>on()</code> to attach event listeners to elements. These event handlers can trigger state changes and update the DOM.</p>
 				<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 					<p class="meta">
 						<span class="language">js</span>
 					</p>
-                    <pre class="language-js"><code>this.first('.increment').map(on('click', () => this.set('count', v => ++v)));</code></pre>
+                    <pre class="language-js"><code>this.first('.increment').on('click', () => this.set('count', v => ++v));</code></pre>
 					<input-button class="copy">
 						<button type="button" class="secondary small">Copy</button>
 					</input-button>
@@ -245,12 +245,12 @@ this.set('isEven', () => this.get('count') % 2 === 0); // Create a derived signa
 			<section>
 				<h2>Effects & Reactive Bindings</h2>
 				<p>UIElement uses effects to manage side-effects to the DOM, external APIs and the server.</p>
-				<p>For the most common DOM manipulations UIElement provides auto-effects like <code>setText()</code> to automatically update the text content when signals change. Use the chainable <code>.map()</code> method to bind auto-effects for signals to HTML elements.</p>
+				<p>For the most common DOM manipulations UIElement provides auto-effects like <code>setText()</code> to automatically update the text content when signals change. Use the chainable <code>.sync()</code> method to bind auto-effects for signals to HTML elements.</p>
 				<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 					<p class="meta">
 						<span class="language">js</span>
 					</p>
-                    <pre class="language-js"><code>this.first('.count').map(setText('count'));</code></pre>
+                    <pre class="language-js"><code>this.first('.count').sync(setText('count'));</code></pre>
 					<input-button class="copy">
 						<button type="button" class="secondary small">Copy</button>
 					</input-button>

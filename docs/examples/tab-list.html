@@ -89,18 +89,18 @@
 					<span class="file">tab-list.js</span>
 					<span class="language">js</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, on, pass, setProperty, toggleAttribute } from '@efflore/ui-element'
+				<pre class="language-js"><code>import { UIElement, setProperty, toggleAttribute } from '@zeix/ui-element'
 
 class TabList extends UIElement {
 	static observedAttributes = ['accordion']
-	static attributeMap = {
+	static states = {
+		active: 0,
 		accordion: asBoolean
 	}
 	static consumedContexts = ['media-viewport']
 
 	connectedCallback() {
 		super.connectedCallback()
-		this.set('active', 0, false) // initial active tab
 
 		// Dynamically adjust accordion based on viewport size
 		setTimeout(() => {
@@ -109,21 +109,26 @@ class TabList extends UIElement {
 		}, 0)
 
 		// Reflect accordion attribute (may be used for styling)
-		this.self.forEach(toggleAttribute('accordion'))
+		this.self.sync(toggleAttribute('accordion'))
 
 		// Hide accordion tab navigation when in accordion mode
-		this.first('menu').forEach(setProperty('ariaHidden', 'accordion'))
+		this.first('menu').sync(setProperty('ariaHidden', 'accordion'))
 
 		// Update active tab state and bind click handlers
 		this.all('menu button')
-			.map((ui, idx) => setProperty('ariaPressed', () => this.get('active') === idx)(ui))
-			.forEach((ui, idx) => on('click', () => this.set('active', idx))(ui))
+			.on('click', (_target, index) => () => {
+				this.set('active', index)
+			})
+			.sync((host, target, index) => setProperty(
+				'ariaPressed',
+				() => this.get('active') === index
+			)(host, target))
 
 		// Pass open and collapsible states to accordion panels
-		this.all('accordion-panel').forEach((ui, idx) => pass({
-			open: () => ui.host.get('active') === idx,
+		this.all('accordion-panel').pass((_target, index) => ({
+			open: () => this.get('active') === index,
 			collapsible: 'accordion'
-		})(ui))
+		}))
 	}
 }
 TabList.define('tab-list')</code></pre>

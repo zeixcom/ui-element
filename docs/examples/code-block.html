@@ -154,12 +154,12 @@
 					<span class="file">code-block.js</span>
 					<span class="language">js</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, asBoolean, on, effect, toggleAttribute } from '@efflore/ui-element'
+				<pre class="language-js"><code>import { UIElement, asBoolean, effect, toggleAttribute } from '@zeix/ui-element'
 import Prism from 'prismjs'
 
 class CodeBlock extends UIElement {
 	static observedAttributes = ['collapsed']
-	static attributeMap = {
+	static states = {
 		collapsed: asBoolean
 	}
 
@@ -183,7 +183,7 @@ class CodeBlock extends UIElement {
 		})
 
 		// Copy to clipboard
-		this.first('.copy').map(ui => on('click', async () => {
+		this.first('.copy').on('click', (target, index) => async () => {
 			const copyButton = ui.target
 			const label = copyButton.textContent
 			let status = 'success'
@@ -199,11 +199,11 @@ class CodeBlock extends UIElement {
 				copyButton.set('disabled', false)
 				copyButton.set('label', label)
 			}, status === 'success' ? 1000 : 3000)
-		})(ui))
+		})
 
 		// Expand
-		this.first('.overlay').map(on('click', () => this.set('collapsed', false)))
-		this.self.map(toggleAttribute('collapsed'))
+		this.first('.overlay').on('click', () => this.set('collapsed', false))
+		this.self.sync(toggleAttribute('collapsed'))
 	}
 }
 CodeBlock.define('code-block')</code></pre>

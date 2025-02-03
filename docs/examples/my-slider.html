@@ -131,23 +131,35 @@
 					<span class="file">my-slider.js</span>
 					<span class="language">js</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, on, toggleClass } from '@efflore/ui-element'
+				<pre class="language-js"><code>import { UIElement, toggleClass } from '@zeix/ui-element'
 
 class MySlider extends UIElement {
+	static states = {
+		active: 0
+	}
+
 	connectedCallback() {
-	
-		// Initialize state for the active slide index
-		this.set('active', 0)
 	
 		// Event listeners for navigation
 		const total = this.querySelectorAll('.slide').length
-		const getNewIndex = (prev, direction) => (prev + direction + total) % total
-		this.first('.prev').map(on('click', () => this.set('active', v => getNewIndex(v, -1))))
-		this.first('.next').map(on('click', () => this.set('active', v => getNewIndex(v, 1))))
+		const getNewIndex = (prev, direction) =>
+			(prev + direction + total) % total
+		this.first('.prev')
+			.on('click', () => this.set('active', v => getNewIndex(v, -1)))
+		this.first('.next')
+			.on('click', () => this.set('active', v => getNewIndex(v, 1)))
 	
 		// Auto-effects for updating slides and dots
-		this.all('.slide').map((ui, idx) => toggleClass('active', () => idx === this.get('active'))(ui))
-		this.all('.dots span').map((ui, idx) => toggleClass('active', () => idx === this.get('active'))(ui))
+		this.all('.slide')
+			.sync((host, target, index) => toggleClass(
+				'active',
+				() => index === this.get('active')
+			)(host, target))
+		this.all('.dots span')
+			.sync((host, target, index) => toggleClass(
+				'active',
+				() => index === this.get('active')
+			)(host, target))
 	}
 }
 MySlider.define('my-slider')</code></pre>

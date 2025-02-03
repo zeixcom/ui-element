@@ -2,21 +2,21 @@
 
 UIElement - the "look ma, no JS framework!" library bringing signals-based reactivity to vanilla Web Components
 
-Version 0.8.5
+Version 0.9.4
 
 ## What is UIElement?
 
 `UIElement` is a base class for your reactive Web Components. It extends the native `HTMLElement` class and adds a public property and a few methods that allow you to implement inter- and intra-component reactivity with ease. You extend the base class `UIElement` and call the static `define()` method on it to register a tag name in the `CustomElementsRegistry`.
 
-`UIElement` will parse attributes in the `attributeChangedCallback()` and assign the values to reactive states according to the mapping to key and primitive type in the `attributeMap` property of your component. By declaratively setting `static observedAttributes` and `static attributeMap` you will almost never have to override `attributeChangedCallback()`. Your reactive states will be automatically setup with initial values from attributes.
+`UIElement` will parse attributes in the `attributeChangedCallback()` and assign the values to reactive states according to the mapping to key and primitive type in the `states` property of your component. By declaratively setting `static observedAttributes` and `static states` you will almost never have to override `attributeChangedCallback()`. Your reactive states will be automatically setup with initial values from attributes.
 
 `UIElement` implements a `Map`-like interface on top of `HTMLElement` to access and modify reactive states. The method names `this.has()`, `this.get()`, `this.set()` and `this.delete()` feel familar to JavaScript developers and mirror what you already know.
 
 To bind events on, pass states to, and execute effects on elements, UIElement offers a chainable API on `this.self`, `this.first(selector)` or `this.all(selector)` with a `map()` method - just like arrays.
 
-For example, `this.self.map(on('click', () => this.set('clicked', true))` binds an event handler for `'click'` on the custom element itself, setting its `'clicked'` state to `true`. With `this.all('sub-component').map(pass({ color: 'color' }))` you pass the `'color'` state on `this` to every instance of `<sub-component>` in the DOM subtree.
+For example, `this.self.on('click', () => this.set('clicked', true))` binds an event handler for `'click'` on the custom element itself, setting its `'clicked'` state to `true`. With `this.all('sub-component').pass({ color: 'color' })` you pass the `'color'` state on `this` to every instance of `<sub-component>` in the DOM subtree.
 
-There are 7 pre-defined auto-effects that can be applied on elements with `this.[self|first(selector)|all(selector)].map()`:
+There are 7 pre-defined auto-effects that can be applied on elements with `this.[self|first(selector)|all(selector)].sync()`:
 
 - `setText(state)`: set text content of the target element to the value of state; expects a state of type string; will preserve comment nodes inside the element
 - `setProperty(key, state=key)`: set a property of the target element to the value of state; accepts a state of any type
@@ -57,18 +57,18 @@ npm install @efflore/ui-element
 In JavaScript:
 
 ```js
-import { UIElement, on, setText } from '@efflore/ui-element'
+import { UIElement, setText } from '@zeix/ui-element'
 
 class MyCounter extends UIElement {
   static observedAttributes = ['value']
-  attributeMap = {
+  states = {
     value: v => parseInt(v, 10)
   }
 
   connectedCallback() {
-    this.first('.decrement').map(on('click', () => this.set('value', v => --v)))
-    this.first('.increment').map(on('click', () => this.set('value', v => ++v)))
-    this.first('span').map(setText('value'))
+    this.first('.decrement').on('click', () => this.set('value', v => --v))
+    this.first('.increment').on('click', () => this.set('value', v => ++v))
+    this.first('span').sync(setText('value'))
   }
 }
 MyCounter.define('my-counter')
@@ -103,7 +103,7 @@ In HTML:
 So, for example, for server side:
 
 ```js
-import UIElement from '@efflore/ui-element';
+import UIElement from '@zeix/ui-element';
 
 (class extends UIElement {
   /* ... */
@@ -136,7 +136,7 @@ Within the reactive chain everything is done synchronously. But you can have asy
 #### Usage
 
 ```js
-import { UIElement,  effect } from '@efflore/ui-element';
+import { UIElement,  effect } from '@zeix/ui-element';
 
 class LazyLoad extends UIElement {
 
@@ -182,7 +182,7 @@ Context consumers request a context through `ContextRequestEvent`. The events th
 #### Context Provider Usage
 
 ```js
-import { UIElement } from '@efflore/ui-element';
+import { UIElement } from '@zeix/ui-element';
 
 class MotionContext extends UIElement {
   static providedContexts = ['reduced-motion'];
@@ -200,7 +200,7 @@ MotionContext.define('motion-context');
 #### Context Consumer Usage
 
 ```js
-import { UIElement, effect } from '@efflore/ui-element';
+import { UIElement, effect } from '@zeix/ui-element';
 
 class MyAnimation extends UIElement {
   static consumedContexts = ['reduced-motion'];
@@ -231,7 +231,7 @@ An example:
 
 ```js
 // in connectedCallback()
-effect(enqueue => {
+effect(() => {
 
   // prepare
   const description = this.querySelector('span')
@@ -239,8 +239,8 @@ effect(enqueue => {
   const value = this.get('value')
 
   // schedule for DOM update phase
-  enqueue(description, 'text description', el => () => (el.textContent = value))
-  enqueue(card, 'class highlight', el => () => el.classList.add('highlight'))
+  enqueue(() => (description.textContent = value), [description, 'text description'])
+  enqueue(() => card.classList.add('highlight'), [card, 'class highlight'])
 
   // cleanup
   return () => setTimeout(() => card.classList.remove('highlight'), 200)
@@ -294,7 +294,7 @@ Visibility Observer is a showcase how you can add composable functionality to `U
 #### Usage
 
 ```js
-import UIElement from '@efflore/ui-element';
+import UIElement from '@zeix/ui-element';
 import VisibilityObserver from './src/lib/visibility-observer';
 
 class MyAnimation extends UIElement {

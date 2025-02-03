@@ -5,11 +5,11 @@
 		<link rel="stylesheet" href="assets/css/global.css">
 		<link rel="stylesheet" href="assets/css/okaidia.css">
 		<link rel="stylesheet" href="assets/css/components.css">
-		<script type="module" src="assets/js/main.min.js"></script>
+		<script type="module" src="assets/js/main.js"></script>
 	</head>
 	<body>
 		<header class="content-grid">
-			<h1 class="content">UIElement Docs <small>Version 0.8.5</small></h1>
+			<h1 class="content">UIElement Docs <small>Version 0.9.4</small></h1>
 			<nav class="breakout">
 				<ol>
 					<li>
@@ -140,7 +140,7 @@
 		  
 			connectedCallback() {
 			  super.connectedCallback();
-			  this.first('.box').map(setStyle('background-color', () =>
+			  this.first('.box').sync(setStyle('background-color', () =>
 				this.get('media-theme') ? 'black' : 'white'
 			  ));
 			}
@@ -165,12 +165,13 @@
 			  <p>
 				This is where signals are accessed and processed synchronously. You can also enqueue DOM updates and cleanup functions manually.
 			  </p>
-			  <pre><code>this.effect(enqueue => {
+			  <pre><code>this.effect(() => {
 			const newItem = this.get('add');
 			if (newItem) {
+			  const list = this.querySelector('ul');
 			  const template = this.querySelector('template').content.cloneNode(true);
 			  template.querySelector('li').textContent = newItem; // fill content from signal
-			  enqueue(this.querySelector('ul'), 'insert', el => () => el.appendChild(template));
+			  enqueue(() => list.appendChild(template), [list, 'insert']);
 			  this.set('add', ''); // clear the 'add' signal
 			}
 			return () => console.log(`New item '${newItem}' added`);
@@ -184,8 +185,8 @@
 				All DOM updates are efficiently batched and flushed on the next animation frame. Multiple updates to the same element within the same tick are merged, reducing unnecessary reflows.
 			  </p>
 			  <pre><code>// Multiple updates on the same element
-		  this.first('.status').map(setText('statusText'));
-		  this.first('.status').map(setStyle('color', 'textColor')); // Deduplicated</code></pre>
+		  this.first('.status').sync(setText('statusText'));
+		  this.first('.status').sync(setStyle('color', 'textColor')); // Deduplicated</code></pre>
 		  
 			  <h3>Cleanup Phase</h3>
 			  <p>
@@ -253,7 +254,7 @@
 			connectedCallback() {
 			  super.connectedCallback();
 			  this.visibilityObserver.connect(this); // Connect the observer
-			  this.first('.box').map(setText(() => this.get('visible') ? 'Visible' : 'Hidden'));
+			  this.first('.box').sync(setText(() => this.get('visible') ? 'Visible' : 'Hidden'));
 			}
 		  
 			disconnectedCallback() {

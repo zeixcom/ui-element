@@ -1,6 +1,6 @@
 import type { UIElement } from '../ui-element';
 /**
- * Parse according to static attributeMap
+ * Parse according to static states
  *
  * @since 0.8.4
  * @param {UIElement} host - host UIElement

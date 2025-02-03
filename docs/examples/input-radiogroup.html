@@ -153,18 +153,18 @@
 					<span class="file">input-radiogroup.js</span>
 					<span class="language">js</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, on, setAttribute, toggleClass } from '@efflore/ui-element'
+				<pre class="language-js"><code>import { UIElement, setAttribute, toggleClass } from '@zeix/ui-element'
 
 export class InputRadiogroup extends UIElement {
 	static observedAttributes = ['value']
 
 	connectedCallback() {
-		this.self.forEach(setAttribute('value'))
-		this.all('input').forEach(on('change', e => this.set('value', e.target.value)))
-		this.all('label').forEach(ui => toggleClass(
+		this.self.sync(setAttribute('value'))
+		this.all('input').on('change', e => this.set('value', e.target.value))
+		this.all('label').sync((host, target) => toggleClass(
 			'selected',
-			() => ui.host.get('value') === ui.target.querySelector('input').value
-		)(ui))
+			() => host.get('value') === target.querySelector('input').value
+		)(host, target))
 	}
 }
 InputRadiogroup.define('input-radiogroup')</code></pre>

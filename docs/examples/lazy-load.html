@@ -34,11 +34,11 @@
 					<span class="file">lazy-load.js</span>
 					<span class="language">js</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, setText, setProperty, effect } from '@efflore/ui-element';
+				<pre class="language-js"><code>import { UIElement, setText, setProperty, effect } from '@zeix/ui-element';
 
 class LazyLoad extends UIElement {
 	static observedAttributes = ['src']
-	static attributeMap = {
+	static states = {
 		src: v => v.map(src => {
 				let url = ''
 				try {
@@ -58,12 +58,13 @@ class LazyLoad extends UIElement {
 
 		// Show / hide loading message
 		this.first('.loading')
-			.forEach(setProperty('ariaHidden', () => !!this.get('error')))
+			.sync(setProperty('ariaHidden', () => !!this.get('error')))
 
 		// Set and show / hide error message
-		this.first('.error')
-			.map(setText('error'))
-			.forEach(setProperty('ariaHidden', () => !this.get('error')))
+		this.first('.error').sync(
+			setText('error'),
+			setProperty('ariaHidden', () => !this.get('error'))
+		)
 
 		// Load content from provided URL
 		effect(enqueue => {

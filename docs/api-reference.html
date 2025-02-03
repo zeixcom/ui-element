@@ -5,11 +5,11 @@
 		<link rel="stylesheet" href="assets/css/global.css">
 		<link rel="stylesheet" href="assets/css/okaidia.css">
 		<link rel="stylesheet" href="assets/css/components.css">
-		<script type="module" src="assets/js/main.min.js"></script>
+		<script type="module" src="assets/js/main.js"></script>
 	</head>
 	<body>
 		<header class="content-grid">
-			<h1 class="content">UIElement Docs <small>Version 0.8.5</small></h1>
+			<h1 class="content">UIElement Docs <small>Version 0.9.4</small></h1>
 			<nav class="breakout">
 				<ol>
 					<li>
@@ -161,9 +161,9 @@
 					</p>
 				</details>
 
-				<!-- attributeMap -->
+				<!-- states -->
 				<details>
-					<summary><strong>attributeMap</strong>: { [key: string]: (value: string | null) => any }</summary>
+					<summary><strong>states</strong>: { [key: string]: (value: string | null) => any }</summary>
 					<p>
 						An object defining how observed attributes are parsed into signals. The key is the attribute name, and the value is a parser function that transforms the attribute's value into an appropriate signal type.
 					</p>

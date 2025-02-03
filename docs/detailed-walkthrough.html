@@ -5,11 +5,11 @@
 		<link rel="stylesheet" href="assets/css/global.css">
 		<link rel="stylesheet" href="assets/css/okaidia.css">
 		<link rel="stylesheet" href="assets/css/components.css">
-		<script type="module" src="assets/js/main.min.js"></script>
+		<script type="module" src="assets/js/main.js"></script>
 	</head>
 	<body>
 		<header class="content-grid">
-			<h1 class="content">UIElement Docs <small>Version 0.8.5</small></h1>
+			<h1 class="content">UIElement Docs <small>Version 0.9.4</small></h1>
 			<nav class="breakout">
 				<ol>
 					<li>
@@ -111,16 +111,16 @@
 				<p>State in a component can come from several sources, each with its own way of being initialized and managed.</p>
 			
 				<h3>Observed Attributes</h3>
-				<p>Attributes declared in <code>static observedAttributes</code> are automatically parsed and converted into reactive signals using <code>static attributeMap</code>.</p>
+				<p>Attributes declared in <code>static observedAttributes</code> are automatically parsed and converted into reactive signals using <code>static states</code>.</p>
 				<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 					<p class="meta">
 						<span class="language">js</span>
 					</p>
-					<pre class="language-js"><code>import { UIElement, asInteger } from '@efflore/ui-element'
+					<pre class="language-js"><code>import { UIElement, asInteger } from '@zeix/ui-element'
 
 class CounterComponent extends UIElement {
 	static observedAttributes = ['count']
-	static attributeMap = { count: asInteger }
+	static states = { count: asInteger }
 }</code></pre>
 					<input-button class="copy">
 						<button type="button" class="secondary small">Copy</button>
@@ -141,11 +141,11 @@ class CounterComponent extends UIElement {
 					<li><code>asBoolean</code>: Convert boolean attributes like <code>disabled</code> to actual booleans.</li>
 					<li><code>asInteger</code>: Try to parse numeric attributes as integer numbers.</li>
 					<li><code>asNumber</code>: Try to parse numeric attributes as floating point numbers.</li>
-					<li><code>asString</code>: Does nothing as all attributes are strings; string attributes may be omitted in <code>attributeMap</code>.</li>
+					<li><code>asString</code>: Does nothing as all attributes are strings; string attributes may be omitted in <code>states</code>.</li>
 					<li><code>asJSON</code>: Try to parse structured data in an attribute as JSON.</li>
 				</ul>
 				<p>If the parser fails, for example because numeric attribute evaluate to <code>NaN</code> or the supplied JSON is invalid, the signal will silently default to <code>undefined</code>, just as if the attribute wasn't there. Undefined signals won't trigger any effects.</p>
-				<p>The pre-defined attribute parser functions connect to the <code>Maybe</code> interface used in the <code>attributeChangedCallback()</code> of the <code>UIElement</code> base class. Attribute parser functions are pure functions that <code>.map()</code> an array of zero or one strings to the desired type and <code>.filter()</code> invalid values out. This allows you to define your own attribute parser functions and reuse them across components.</p>
+				<p>The pre-defined attribute parser functions connect to the <code>Maybe</code> interface used in the <code>attributeChangedCallback()</code> of the <code>UIElement</code> base class. Attribute parser functions are pure functions that map a string to the desired type. This allows you to define your own attribute parser functions and reuse them across components.</p>
 		  
 				<h3>Defaults from DOM in Auto-Effects</h3>
 				<p>When an auto-effect like <code>setText()</code> is used, the content of the target DOM element is taken as the default value of the signal if it hasn't been set manually.</p>
@@ -164,7 +164,7 @@ class CounterComponent extends UIElement {
 					<p class="meta">
 						<span class="language">js</span>
 					</p>
-					<pre class="language-js"><code>this.first('.name').map(setText('name'))</code></pre>
+					<pre class="language-js"><code>this.first('.name').sync(setText('name'))</code></pre>
 					<input-button class="copy">
 						<button type="button" class="secondary small">Copy</button>
 					</input-button>
@@ -212,7 +212,7 @@ this.set('even', () => this.get('count') % 2 === 0)</code></pre>
 					<p class="meta">
 						<span class="language">js</span>
 					</p>
-					<pre class="language-js"><code>this.first('.count').map(setText('count'))</code></pre>
+					<pre class="language-js"><code>this.first('.count').sync(setText('count'))</code></pre>
 					<input-button class="copy">
 						<button type="button" class="secondary small">Copy</button>
 					</input-button>
@@ -224,7 +224,7 @@ this.set('even', () => this.get('count') % 2 === 0)</code></pre>
 					<p class="meta">
 						<span class="language">js</span>
 					</p>
-					<pre class="language-js"><code>this.all('.item').map(toggleClass('active', 'isActive'))</code></pre>
+					<pre class="language-js"><code>this.all('.item').sync(toggleClass('active', 'isActive'))</code></pre>
 					<input-button class="copy">
 						<button type="button" class="secondary small">Copy</button>
 					</input-button>
@@ -248,13 +248,13 @@ this.set('even', () => this.get('count') % 2 === 0)</code></pre>
 					</p>
 					<pre class="language-js"><code>// Example chaining event handler and effect
 this.first('button')
-	.map(on('click', () => this.set('clicked', true)))
-	.map(toggleClass('clicked'))
+	.on('click', () => this.set('clicked', true))
+	.sync(toggleClass('clicked'))
 
 // Example filtering elements
 this.all('.item')
 	.filter(item => item.target.textContent.includes('Important'))
-	.map(toggleClass('highlight'))</code></pre>
+	.sync(toggleClass('highlight'))</code></pre>
 					<input-button class="copy">
 						<button type="button" class="secondary small">Copy</button>
 					</input-button>
@@ -266,12 +266,12 @@ this.all('.item')
 				<p>Once signals are established, they can be mutated through user interactions or asynchronous operations.</p>
 		  
 				<h3>Event Handlers</h3>
-				<p>Event handlers are the primary way to mutate state based on user input. You can use <code>.map()</code> and <code>on()</code> to attach event listeners to elements within the component.</p>
+				<p>Event handlers are the primary way to mutate state based on user input. You can use <code>on()</code> to attach event listeners to elements within the component.</p>
 				<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 					<p class="meta">
 						<span class="language">js</span>
 					</p>
-					<pre class="language-js"><code>this.first('input').map(on('input', e => this.set('name', e.target.value)))</code></pre>
+					<pre class="language-js"><code>this.first('input').on('input', e => this.set('name', e.target.value))</code></pre>
 					<input-button class="copy">
 						<button type="button" class="secondary small">Copy</button>
 					</input-button>
@@ -326,9 +326,9 @@ this.all('.item')
 						<span class="language">js</span>
 					</p>
 					<pre><code>// Using multiple auto-effects
-this.first('.count').map(setText('count'))
-this.all('.item').map(toggleClass('active'))
-this.self.map(toggleAttribute('selected'))</code></pre>
+this.first('.count').sync(setText('count'))
+this.all('.item').sync(toggleClass('active'))
+this.self.sync(toggleAttribute('selected'))</code></pre>
 					<input-button class="copy">
 						<button type="button" class="secondary small">Copy</button>
 					</input-button>

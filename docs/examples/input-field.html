@@ -276,14 +276,14 @@
 					<span class="file">input-field.js</span>
 					<span class="language">js</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, effect, maybe, on, setText, setProperty, setAttribute, toggleClass } from '@efflore/ui-element'
+				<pre class="language-js"><code>import { UIElement, effect, maybe, setText, setProperty, setAttribute, toggleClass } from '@zeix/ui-element'
 
 const isNumber = num => typeof num === 'number'
 const parseNumber = (v, int = false) => int ? parseInt(v, 10) : parseFloat(v)
 
 class InputField extends UIElement {
 	static observedAttributes = ['value', 'description']
-	static attributeMap = {
+	static states = {
 		value: value => this.isNumber
 			? value.map(v => parseNumber(v, this.isInteger)).filter(Number.isFinite)
 			: value
@@ -356,17 +356,17 @@ class InputField extends UIElement {
 
 	// Setup error message
 	#setupErrorMessage() {
-		const error = this.first('.error')
 
 		// Derived states
 		this.set('ariaInvalid', () => String(Boolean(this.get('error'))))
-		this.set('aria-errormessage', () => this.get('error') ? error[0]?.target.id : undefined)
+		this.set('aria-errormessage', () => this.get('error') ? this.querySelector('.error')?.id : undefined)
 
 		// Effects
-		error.forEach(setText('error'))
-		this.first('input')
-			.map(setProperty('ariaInvalid'))
-			.forEach(setAttribute('aria-errormessage'))
+		this.first('.error').sync(setText('error'))
+		this.first('input').sync(
+			setProperty('ariaInvalid'),
+			setAttribute('aria-errormessage')
+		)
 	}
 
 	// Setup description
@@ -395,8 +395,8 @@ class InputField extends UIElement {
 		)
 
 		// Effects
-		description.forEach(setText('description'))
-		input.forEach(setAttribute('aria-describedby'))
+		description.sync(setText('description'))
+		input.sync(setAttribute('aria-describedby'))
 	}
 
 	// Setup spin button
@@ -432,11 +432,11 @@ class InputField extends UIElement {
 
 		// Handle spin button clicks and update their disabled state
 		this.first('.decrement')
-			.map(setProperty('disabled', 'decrement-disabled'))
-			.forEach(on('click', e => this.stepDown(e.shiftKey ? step * 10 : step)))
+			.sync(setProperty('disabled', 'decrement-disabled'))
+			.on('click', e => this.stepDown(e.shiftKey ? step * 10 : step))
 		this.first('.increment')
-			.map(setProperty('disabled', 'increment-disabled'))
-			.forEach(on('click', e => this.stepUp(e.shiftKey ? step * 10 : step)))
+			.sync(setProperty('disabled', 'increment-disabled'))
+			.on('click', e => this.stepUp(e.shiftKey ? step * 10 : step))
 
 		// Handle arrow key events
 		this.input.onkeydown = e => {
@@ -454,11 +454,11 @@ class InputField extends UIElement {
 	// Setup clear button
 	#setupClearButton() {
 		this.first('.clear')
-			.map(toggleClass('hidden', 'empty'))
-			.forEach(on('click', () => {
+			.sync(toggleClass('hidden', 'empty'))
+			.on('click', () => {
 				this.clear()
 				this.input.focus()
-			}))
+			})
 	}
 
 }

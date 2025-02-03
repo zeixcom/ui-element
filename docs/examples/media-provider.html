@@ -74,20 +74,20 @@
 					<span class="file">media-provider.js</span>
 					<span class="language">js</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, asInteger, on, setText } from '@efflore/ui-element'
+				<pre class="language-js"><code>import { UIElement, asInteger, setText } from '@zeix/ui-element'
 
 class MyCounter extends UIElement {
 	static observedAttributes = ['count']
-	static attributeMap = {
+	static states = {
 		count: asInteger
 	}
 
 	connectedCallback() {
 		this.set('parity', () => this.get('count') % 2 ? 'odd' : 'even')
-		this.first('.increment').map(on('click', () => this.set('count', v => ++v)))
-		this.first('.decrement').map(on('click', () => this.set('count', v => --v)))
-		this.first('.count').map(setText('count'))
-		this.first('.parity').map(setText('parity'))
+		this.first('.increment').on('click', () => this.set('count', v => ++v))
+		this.first('.decrement').on('click', () => this.set('count', v => --v))
+		this.first('.count').sync(setText('count'))
+		this.first('.parity').sync(setText('parity'))
 	}
 }
 MyCounter.define('media-provider')</code></pre>

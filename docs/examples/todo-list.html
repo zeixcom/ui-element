@@ -94,7 +94,7 @@
 					<span class="file">todo-list.js</span>
 					<span class="language">js</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, on, setAttribute } from '@efflore/ui-element'
+				<pre class="language-js"><code>import { UIElement, setAttribute } from '@zeix/ui-element'
 
 class TodoList extends UIElement {
 	connectedCallback() {
@@ -103,10 +103,10 @@ class TodoList extends UIElement {
 
 		// Event listener and attribute on own element
 		this.self
-			.map(on('click', e => {
+			.on('click', e => {
 				if (e.target.localName === 'button') this.removeItem(e.target)
-			}))
-			.forEach(setAttribute('filter'))
+			})
+			.sync(setAttribute('filter'))
 
 		// Update count on each change
 		this.set('count', () => {
