@@ -51,7 +51,7 @@ Most importantly, it **does not render components**. We suggest, you render comp
 Installation:
 
 ```sh
-npm install @efflore/ui-element
+npm install @zeix/ui-element
 ```
 
 In JavaScript:
