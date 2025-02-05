@@ -1,0 +1,35 @@
+tab-list {
+	display: block;
+	margin-bottom: var(--space-l);
+
+	> menu {
+		display: flex;
+		margin: 0 0 var(--space-s);
+		padding: 0;
+
+		> li {
+			display: inline-block;
+			margin: 0;
+			padding: 0;
+		}
+
+		& button {
+			border: 0;
+			border-top: 2px solid transparent;
+			background: transparent;
+			font-size: var(--font-size-s);
+			padding: var(--space-xs) var(--space-s);
+			color: var(--color-text);
+			background-color: var(--color-secondary);
+
+			&:hover {
+                background-color: var(--color-secondary-hover);
+            }
+
+			&[aria-pressed="true"] {
+				border-top: 2px solid var(--color-primary);
+				background-color: var(--color-secondary-active);
+			}
+		}
+	}
+}
