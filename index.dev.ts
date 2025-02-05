@@ -24,7 +24,7 @@ export {
 	LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, log
 } from './src/core/log'
 export {
-	type UnknownContext,
+	type Context, type UnknownContext,
 	useContext
 } from './src/core/context'
 export {

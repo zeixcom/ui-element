@@ -7,7 +7,8 @@
   "scripts": {
     "build": "bun build index.ts --outdir ./ --minify --define process.env.DEV_MODE=false && bunx tsc",
     "build:dev": "BUN_ENV=development bun build index.dev.ts --outdir ./ --define process.env.DEV_MODE=true",
-    "build:docs": "bun build docs/assets/js/main.ts --outdir ./docs/assets/js/ --minify",
+    "build:docs": "bun build docs-src/main.ts --outdir ./docs/assets/js/ --minify",
+	"serve:docs": "bun ./docs.ts",
     "lint": "npx eslint src/",
     "test": "run-s test:setup test:ci",
     "test:setup": "npx playwright install-deps",
@@ -29,6 +30,7 @@
   "type": "module",
   "devDependencies": {
     "@esm-bundle/chai": "^4.3.4-fix.0",
+    "@types/bun": "^1.2.2",
     "@types/eslint__js": "^8.42.3",
     "@web/test-runner": "^0.19.0",
     "@web/test-runner-playwright": "^0.11.0",

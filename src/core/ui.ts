@@ -7,18 +7,17 @@ import { isFunction, isPropertyKey } from './util'
 /* === Types === */
 
 type StateLike<T> = PropertyKey | Signal<T> | ((v?: T) => T)
-type Factory<T> = (element: Element, index: number) => T
-type FactoryOrValue<T> = T | Factory<T>
-type StateLikeOrStateLikeFactory<T> = FactoryOrValue<StateLike<T>>
-type EventListenerOrEventListenerFactory = FactoryOrValue<EventListenerOrEventListenerObject>
+type ValueOrFactory<T> = T | ((element: Element, index: number) => T)
+type StateLikeOrStateLikeFactory<T> = ValueOrFactory<StateLike<T>>
+type EventListenerOrEventListenerFactory = ValueOrFactory<EventListenerOrEventListenerObject>
 
 /* === Internal Functions === */
 
-const isFactoryFunction = /*#__PURE__*/ <T>(fn: FactoryOrValue<T>): fn is Factory<T> =>
+const isFactoryFunction = /*#__PURE__*/ <T>(fn: ValueOrFactory<T>): fn is ((element: Element, index: number) => T) =>
 	isFunction(fn) && fn.length === 2
 
 const fromFactory = /*#__PURE__*/ <T>(
-	fn: FactoryOrValue<T>,
+	fn: ValueOrFactory<T>,
 	element: Element,
 	index: number = 0,
 ): T =>
@@ -32,16 +31,16 @@ class UI<T extends Element> {
 		public readonly targets: T[] = [host as unknown as T]
 	) {}
 
-	on(event: string, listener: EventListenerOrEventListenerFactory): UI<T> {
+	on(type: keyof ElementEventMap, listener: EventListenerOrEventListenerFactory): UI<T> {
 		this.targets.forEach((target, index) =>
-			target.addEventListener(event, fromFactory(listener, target, index))
+			target.addEventListener(type, fromFactory(listener, target, index))
 		)
         return this
 	}
 
-	off(event: string, listener: EventListenerOrEventListenerFactory): UI<T> {
+	off(type: keyof ElementEventMap, listener: EventListenerOrEventListenerFactory): UI<T> {
 		this.targets.forEach((target, index) =>
-			target.removeEventListener(event, fromFactory(listener, target, index))
+			target.removeEventListener(type, fromFactory(listener, target, index))
 		)
         return this
 	}
