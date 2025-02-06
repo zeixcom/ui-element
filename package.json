@@ -7,8 +7,11 @@
   "scripts": {
     "build": "bun build index.ts --outdir ./ --minify --define process.env.DEV_MODE=false && bunx tsc",
     "build:dev": "BUN_ENV=development bun build index.dev.ts --outdir ./ --define process.env.DEV_MODE=true",
-    "build:docs": "bun build docs-src/main.ts --outdir ./docs/assets/js/ --minify",
-	"serve:docs": "bun ./docs.ts",
+    "build:docs-js": "bun build docs-src/main.ts --outdir ./docs/assets/ --minify",
+	"build:docs-css": "lightningcss --minify --bundle --targets \">= 0.25%\" docs-src/main.css -o ./docs/assets/main.css",
+	"build:docs-html": "bun run ./docs-src/generate-fragments.ts",
+	"build:docs": "bun run build:docs-js & bun run build:docs-css & bun run build:docs-html",
+    "serve:docs": "bun run build:docs & bun ./docs.ts",
     "lint": "npx eslint src/",
     "test": "run-s test:setup test:ci",
     "test:setup": "npx playwright install-deps",
@@ -36,6 +39,7 @@
     "@web/test-runner-playwright": "^0.11.0",
     "@zeix/ui-element": "^0.9.4",
     "dotenv": "^16.4.7",
+    "lightningcss-cli": "^1.29.1",
     "playwright": "^1.50.1",
     "prismjs": "^1.29.0"
   },

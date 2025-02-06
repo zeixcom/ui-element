@@ -4,7 +4,7 @@ import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-typescript';
 
-import type { InputButton } from './input-button'
+import type { InputButton } from '../input-button/input-button'
 
 export class CodeBlock extends UIElement {
 	static observedAttributes = ['collapsed']

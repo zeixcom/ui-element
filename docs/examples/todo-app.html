@@ -1,9 +1,11 @@
+
 <tab-list>
 	<menu>
 		<li><button type="button" aria-pressed="true">HTML</button></li>
-		<li><button type="button">CSS</button></li>
-		<li><button type="button">JavaScript</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
 	</menu>
+	
 	<accordion-panel open>
 		<details open aria-disabled="true">
 			<summary class="visually-hidden">
@@ -16,60 +18,60 @@
 				</p>
 				<pre class="language-html"><code>&lt;&lt;todo-app&gt;
 	&lt;todo-form&gt;
-		&lt;form action="#"&gt;
+		&lt;form action=&quot;#&quot;&gt;
 			&lt;input-field&gt;
-				&lt;label for="add-todo"&gt;What needs to be done?&lt;/label&gt;
-				&lt;div class="row"&gt;
-					&lt;div class="group auto"&gt;
-						&lt;input id="add-todo" type="text" value="" required&gt;
+				&lt;label for=&quot;add-todo&quot;&gt;What needs to be done?&lt;/label&gt;
+				&lt;div class=&quot;row&quot;&gt;
+					&lt;div class=&quot;group auto&quot;&gt;
+						&lt;input id=&quot;add-todo&quot; type=&quot;text&quot; value=&quot;&quot; required&gt;
 					&lt;/div&gt;
 				&lt;/div&gt;
 			&lt;/input-field&gt;
-			&lt;input-button class="submit"&gt;
-				&lt;button type="submit" class="primary" disabled&gt;Add Todo&lt;/button&gt;
+			&lt;input-button class=&quot;submit&quot;&gt;
+				&lt;button type=&quot;submit&quot; class=&quot;primary&quot; disabled&gt;Add Todo&lt;/button&gt;
 			&lt;/input-button&gt;
 		&lt;/form&gt;
 	&lt;/todo-form&gt;
-	&lt;todo-list filter="all"&gt;
+	&lt;todo-list filter=&quot;all&quot;&gt;
 		&lt;ol&gt;&lt;/ol&gt;
 		&lt;template&gt;
 			&lt;li&gt;
-				&lt;input-checkbox class="todo"&gt;
+				&lt;input-checkbox class=&quot;todo&quot;&gt;
 					&lt;label&gt;
-						&lt;input type="checkbox" class="visually-hidden" /&gt;
+						&lt;input type=&quot;checkbox&quot; class=&quot;visually-hidden&quot; /&gt;
 						&lt;span&gt;&lt;/span&gt;
 					&lt;/label&gt;
 				&lt;/input-checkbox&gt;
 				&lt;input-button&gt;
-					&lt;button type="button"&gt;Delete&lt;/button&gt;
+					&lt;button type=&quot;button&quot;&gt;Delete&lt;/button&gt;
 				&lt;/input-button&gt;
 			&lt;/li&gt;
 		&lt;/template&gt;
 	&lt;/todo-list&gt;
 	&lt;footer&gt;
 		&lt;todo-count&gt;
-			&lt;p class="all-done"&gt;Well done, all done!&lt;/p&gt;
-			&lt;p class="remaining"&gt;&lt;span&gt;&lt;/span&gt; tasks left&lt;/p&gt;
+			&lt;p class=&quot;all-done&quot;&gt;Well done, all done!&lt;/p&gt;
+			&lt;p class=&quot;remaining&quot;&gt;&lt;span&gt;&lt;/span&gt; tasks left&lt;/p&gt;
 		&lt;/todo-count&gt;
-		&lt;input-radiogroup value="all" class="split-button"&gt;
+		&lt;input-radiogroup value=&quot;all&quot; class=&quot;split-button&quot;&gt;
 			&lt;fieldset&gt;
-				&lt;legend class="visually-hidden"&gt;Filter&lt;/legend&gt;
-					&lt;label class="selected"&gt;
-						&lt;input type="radio" class="visually-hidden" name="filter" value="all" checked&gt;
+				&lt;legend class=&quot;visually-hidden&quot;&gt;Filter&lt;/legend&gt;
+					&lt;label class=&quot;selected&quot;&gt;
+						&lt;input type=&quot;radio&quot; class=&quot;visually-hidden&quot; name=&quot;filter&quot; value=&quot;all&quot; checked&gt;
 						&lt;span&gt;All&lt;/span&gt;
 					&lt;/label&gt;
 					&lt;label&gt;
-						&lt;input type="radio" class="visually-hidden" name="filter" value="active"&gt;
+						&lt;input type=&quot;radio&quot; class=&quot;visually-hidden&quot; name=&quot;filter&quot; value=&quot;active&quot;&gt;
 						&lt;span&gt;Active&lt;/span&gt;
 					&lt;/label&gt;
 					&lt;label&gt;
-						&lt;input type="radio" class="visually-hidden" name="filter" value="completed"&gt;
+						&lt;input type=&quot;radio&quot; class=&quot;visually-hidden&quot; name=&quot;filter&quot; value=&quot;completed&quot;&gt;
 						&lt;span&gt;Completed&lt;/span&gt;
 					&lt;/label&gt;
 			&lt;/fieldset&gt;
 		&lt;/input-radiogroup&gt;
-		&lt;input-button class="clear-completed"&gt;
-			&lt;button type="button"&gt;Clear Completed&lt;/button&gt;
+		&lt;input-button class=&quot;clear-completed&quot;&gt;
+			&lt;button type=&quot;button&quot;&gt;Clear Completed&lt;/button&gt;
 		&lt;/input-button&gt;
 	&lt;/footer&gt;
 &lt;/todo-app&gt;</code></pre>
@@ -79,6 +81,7 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
@@ -94,82 +97,70 @@
 	flex-direction: column;
 	gap: var(--space-l);
 
-	& footer {
+	&amp; footer {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		align-items: center;
 		gap: var(--space-m);
 		margin: 0;
-	
+  
 		.clear-completed {
 			justify-self: end;
 		}
 	}
 }
-
-todo-count {
-	justify-self: start;
-	
-	& p {
-		font-size: var(--font-size-s);
-		margin: 0;
-	}
-}</code></pre>
+</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
-				<div class="summary">JavaScript</div>
+				<div class="summary">TS</div>
 			</summary>
-			<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">todo-app.js</span>
-					<span class="language">js</span>
+					<span class="file">todo-app.ts</span>
+					<span class="language">ts</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, setText, setProperty } from '@zeix/ui-element'
+				<pre class="language-ts"><code>import { UIElement } from &quot;@zeix/ui-element&quot;
+import type { TodoCountObject, TodoList } from &quot;../todo-list/todo-list&quot;
+import type { InputRadiogroup } from &quot;../input-radiogroup/input-radiogroup&quot;
+import type { AddTodoEvent } from &quot;../todo-form/todo-form&quot;
 
-class TodoApp extends UIElement {
+export class TodoApp extends UIElement {
 	connectedCallback() {
-		const [todoList, todoFilter] = ['todo-list', 'input-radiogroup']
-			.sync(selector => this.querySelector(selector))
+		const todoList: TodoList | null = this.querySelector(&#39;todo-list&#39;)
+		const todoFilter: InputRadiogroup | null = this.querySelector(&#39;input-radiogroup&#39;)
 
 		// Event listener on own element
-		this.self.on('add-todo', e => todoList?.addItem(e.detail))
+		this.self.on(&#39;add-todo&#39;, (e: Event) =&gt; {
+			todoList?.addItem((e as AddTodoEvent).detail)
+		})
 		
 		// Coordinate todo-count
-		this.first('todo-count').pass({
-			active: () => todoList?.get('count').active
+		this.first(&#39;todo-count&#39;).pass({
+			active: () =&gt; (todoList?.get(&#39;count&#39;) as TodoCountObject).active
 		})
 
 		// Coordinate todo-list
-		this.first('todo-list').pass({
-			filter: () => todoFilter?.get('value')
+		this.first(&#39;todo-list&#39;).pass({
+			filter: () =&gt; todoFilter?.get(&#39;value&#39;)
 		})
 
 		// Coordinate .clear-completed button
-		this.first('.clear-completed')
-			.on('click', () => todoList?.clearCompleted())
-			.pass({ disabled: () => !todoList?.get('count').completed })
+		this.first(&#39;.clear-completed&#39;)
+			.on(&#39;click&#39;, () =&gt; todoList?.clearCompleted())
+			.pass({
+				disabled: () =&gt; !(todoList?.get(&#39;count&#39;) as TodoCountObject).completed
+			})
 	}
 }
-TodoApp.define('todo-app')
-
-class TodoCount extends UIElement {
-	connectedCallback() {
-		this.set('active', 0, false)
-		this.first('.count').sync(setText('active'))
-		this.first('.singular').sync(setProperty('ariaHidden', () => this.get('active') > 1))
-		this.first('.plural').sync(setProperty('ariaHidden', () => this.get('active') === 1))
-		this.first('.remaining').sync(setProperty('ariaHidden', () => !this.get('active')))
-		this.first('.all-done').sync(setProperty('ariaHidden', () => !!this.get('active')))
-	}
-}
-TodoCount.define('todo-count')</code></pre>
+TodoApp.define(&#39;todo-app&#39;)</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

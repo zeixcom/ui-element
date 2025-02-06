@@ -1,5 +1,5 @@
 import { UIElement } from "@zeix/ui-element"
-import type { InputField } from "./input-field"
+import type { InputField } from "../input-field/input-field"
 
 export type AddTodoEvent = CustomEvent & { detail: string }
 

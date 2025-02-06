@@ -1,0 +1,35 @@
+
+<tab-list>
+	<menu>
+		<li><button type="button" aria-pressed="true">CSS</button></li>
+	</menu>
+	
+	<accordion-panel>
+		<details aria-disabled="true">
+			<summary class="visually-hidden">
+				<div class="summary">CSS</div>
+			</summary>
+			<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+				<p class="meta">
+					<span class="file">component-demo.css</span>
+					<span class="language">css</span>
+				</p>
+				<pre class="language-css"><code>component-demo {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-m);
+	margin-block-end: var(--space-l);
+
+	.preview {
+		border: 1px dotted var(--color-border);
+		border-radius: var(--space-xs); 
+		padding: var(--space-s);
+	}
+}</code></pre>
+				<input-button class="copy">
+					<button type="button" class="secondary small">Copy</button>
+				</input-button>
+			</code-block>
+		</details>
+	</accordion-panel>
+</tab-list>

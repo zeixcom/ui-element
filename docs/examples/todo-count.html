@@ -1,0 +1,88 @@
+
+<tab-list>
+	<menu>
+		<li><button type="button" aria-pressed="true">HTML</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
+	</menu>
+	
+	<accordion-panel open>
+		<details open aria-disabled="true">
+			<summary class="visually-hidden">
+				<div class="summary">HTML</div>
+			</summary>
+			<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+				<p class="meta">
+					<span class="file">todo-count.html</span>
+					<span class="language">html</span>
+				</p>
+				<pre class="language-html"><code>&lt;todo-count&gt;
+	&lt;p class=&quot;all-done&quot;&gt;Well done, all done!&lt;/p&gt;
+	&lt;p class=&quot;remaining&quot;&gt;&lt;span&gt;&lt;/span&gt; tasks left&lt;/p&gt;
+&lt;/todo-count&gt;</code></pre>
+				<input-button class="copy">
+					<button type="button" class="secondary small">Copy</button>
+				</input-button>
+			</code-block>
+		</details>
+	</accordion-panel>
+
+	<accordion-panel>
+		<details aria-disabled="true">
+			<summary class="visually-hidden">
+				<div class="summary">CSS</div>
+			</summary>
+			<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+				<p class="meta">
+					<span class="file">todo-count.css</span>
+					<span class="language">css</span>
+				</p>
+				<pre class="language-css"><code>todo-count {
+	justify-self: start;
+	
+	&amp; p {
+		font-size: var(--font-size-s);
+		margin: 0;
+	}
+}</code></pre>
+				<input-button class="copy">
+					<button type="button" class="secondary small">Copy</button>
+				</input-button>
+			</code-block>
+		</details>
+	</accordion-panel>
+
+	<accordion-panel>
+		<details aria-disabled="true">
+			<summary class="visually-hidden">
+				<div class="summary">TS</div>
+			</summary>
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+				<p class="meta">
+					<span class="file">todo-count.ts</span>
+					<span class="language">ts</span>
+				</p>
+				<pre class="language-ts"><code>import { setProperty, setText, UIElement } from &quot;@zeix/ui-element&quot;
+
+export class TodoCount extends UIElement {
+	static states = {
+		active: 0
+	}
+
+	connectedCallback() {
+		this.first(&#39;.count&#39;).sync(setText(&#39;active&#39;))
+		this.first(&#39;.singular&#39;).sync(setProperty(&#39;ariaHidden&#39;, () =&gt; this.get(&#39;active&#39;) as number &gt; 1))
+		this.first(&#39;.plural&#39;).sync(setProperty(&#39;ariaHidden&#39;, () =&gt; this.get(&#39;active&#39;) === 1))
+		this.first(&#39;.remaining&#39;).sync(setProperty(&#39;ariaHidden&#39;, () =&gt; !this.get(&#39;active&#39;)))
+		this.first(&#39;.all-done&#39;).sync(setProperty(&#39;ariaHidden&#39;, () =&gt; !!this.get(&#39;active&#39;)))
+	}
+}
+TodoCount.define(&#39;todo-count&#39;)
+</code></pre>
+				<input-button class="copy">
+					<button type="button" class="secondary small">Copy</button>
+				</input-button>
+			</code-block>
+		</details>
+	</accordion-panel>
+</tab-list>

@@ -1,0 +1,110 @@
+
+<tab-list>
+	<menu>
+		<li><button type="button" aria-pressed="true">TypeScript</button></li>
+	</menu>
+	
+	<accordion-panel>
+		<details aria-disabled="true">
+			<summary class="visually-hidden">
+				<div class="summary">TS</div>
+			</summary>
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+				<p class="meta">
+					<span class="file">media-context.ts</span>
+					<span class="language">ts</span>
+				</p>
+				<pre class="language-ts"><code>import { UIElement } from &quot;@zeix/ui-element&quot;
+import { Context } from &quot;@zeix/ui-element/src/core/context&quot;
+
+/* === Pure Functions === */
+
+const parseBreakpoint = (value: string | null, fallback: string) =&gt; {
+	const attr = value?.trim()
+	if (!attr) return fallback
+	const unit = attr.match(/em$/) ? &#39;em&#39; : &#39;px&#39;
+	const v = parseFloat(attr)
+	return Number.isFinite(v) ? v + unit : fallback
+}
+
+/* === Provided Context Keys === */
+
+const MEDIA_MOTION = &#39;media-motion&#39; as Context&lt;string, boolean&gt;
+const MEDIA_THEME = &#39;media-theme&#39; as Context&lt;string, string&gt;
+const MEDIA_VIEWPORT = &#39;media-viewport&#39; as Context&lt;string, string&gt;
+const MEDIA_ORIENTATION = &#39;media-orientation&#39; as Context&lt;string, string&gt;
+
+/* === Class Definition === */
+
+export class MediaContext extends UIElement {
+	static providedContexts = [MEDIA_MOTION, MEDIA_THEME, MEDIA_VIEWPORT, MEDIA_ORIENTATION]
+
+	connectedCallback() {
+		super.connectedCallback()
+
+		const THEME_LIGHT = &#39;light&#39;
+		const THEME_DARK = &#39;dark&#39;
+		const VIEWPORT_XS = &#39;xs&#39;
+		const VIEWPORT_SM = &#39;sm&#39;
+		const VIEWPORT_MD = &#39;md&#39;
+		const VIEWPORT_LG = &#39;lg&#39;
+		const VIEWPORT_XL = &#39;xl&#39;
+		const ORIENTATION_LANDSCAPE = &#39;landscape&#39;
+		const ORIENTATION_PORTRAIT = &#39;portrait&#39;
+
+		const getBreakpoints = () =&gt; ({
+			sm: parseBreakpoint(this.getAttribute(VIEWPORT_SM), &#39;32em&#39;),
+			md: parseBreakpoint(this.getAttribute(VIEWPORT_MD), &#39;48em&#39;),
+			lg: parseBreakpoint(this.getAttribute(VIEWPORT_LG), &#39;72em&#39;),
+			xl: parseBreakpoint(this.getAttribute(VIEWPORT_XL), &#39;108em&#39;),
+		})
+		const breakpoints = getBreakpoints()
+
+		const reducedMotion = matchMedia(&#39;(prefers-reduced-motion: reduce)&#39;)
+		const colorScheme = matchMedia(&#39;(prefers-color-scheme: dark)&#39;)
+		const screenSmall = matchMedia(`(min-width: ${breakpoints.sm})`)
+		const screenMedium = matchMedia(`(min-width: ${breakpoints.md})`)
+		const screenLarge = matchMedia(`(min-width: ${breakpoints.lg})`)
+		const screenXLarge = matchMedia(`(min-width: ${breakpoints.xl})`)
+		const screenOrientation = matchMedia(&#39;(orientation: landscape)&#39;)
+
+		const getViewport = () =&gt; {
+			if (screenXLarge.matches) return VIEWPORT_XL
+            if (screenLarge.matches) return VIEWPORT_LG
+            if (screenMedium.matches) return VIEWPORT_MD
+            if (screenSmall.matches) return VIEWPORT_SM
+            return VIEWPORT_XS
+		}
+
+		// set initial values
+		this.set(MEDIA_MOTION, reducedMotion.matches)
+		this.set(MEDIA_THEME, colorScheme.matches ? THEME_DARK : THEME_LIGHT)
+		this.set(MEDIA_VIEWPORT, getViewport())
+		this.set(MEDIA_ORIENTATION, screenOrientation.matches ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT)
+
+		// event listeners
+		reducedMotion.addEventListener(
+			&#39;change&#39;,
+			e =&gt; this.set(MEDIA_MOTION, e.matches)
+		)
+		colorScheme.addEventListener(
+			&#39;change&#39;,
+			e =&gt; this.set(MEDIA_THEME, e.matches ? THEME_DARK : THEME_LIGHT)
+		)
+		screenSmall.addEventListener(&#39;change&#39;, () =&gt; this.set(MEDIA_VIEWPORT, getViewport()))
+		screenMedium.addEventListener(&#39;change&#39;, () =&gt; this.set(MEDIA_VIEWPORT, getViewport()))
+		screenLarge.addEventListener(&#39;change&#39;, () =&gt; this.set(MEDIA_VIEWPORT, getViewport()))
+		screenXLarge.addEventListener(&#39;change&#39;, () =&gt; this.set(MEDIA_VIEWPORT, getViewport()))
+		screenOrientation.addEventListener(&#39;change&#39;, e =&gt; {
+			this.set(MEDIA_THEME, e.matches ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT)
+		})
+	}
+}
+MediaContext.define(&#39;media-context&#39;)</code></pre>
+				<input-button class="copy">
+					<button type="button" class="secondary small">Copy</button>
+				</input-button>
+			</code-block>
+		</details>
+	</accordion-panel>
+</tab-list>

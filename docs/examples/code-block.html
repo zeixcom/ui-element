@@ -1,9 +1,11 @@
+
 <tab-list>
 	<menu>
 		<li><button type="button" aria-pressed="true">HTML</button></li>
-		<li><button type="button">CSS</button></li>
-		<li><button type="button">JavaScript</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
 	</menu>
+	
 	<accordion-panel open>
 		<details open aria-disabled="true">
 			<summary class="visually-hidden">
@@ -14,26 +16,26 @@
 					<span class="file">code-block.html</span>
 					<span class="language">html</span>
 				</p>
-				<pre class="language-html"><code>&lt;code-block collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!"&gt;
-	&lt;p class="meta"&gt;
-		&lt;span class="file"&gt;code-block.html&lt;/span&gt;
-		&lt;span class="language"&gt;html&lt;/span&gt;
+				<pre class="language-html"><code>&lt;code-block collapsed language=&quot;html&quot; copy-success=&quot;Copied!&quot; copy-error=&quot;Error trying to copy to clipboard!&quot;&gt;
+	&lt;p class=&quot;meta&quot;&gt;
+		&lt;span class=&quot;file&quot;&gt;code-block.html&lt;/span&gt;
+		&lt;span class=&quot;language&quot;&gt;html&lt;/span&gt;
 	&lt;/p&gt;
-	&lt;pre&gt;&lt;code class="language-html"&gt;&lt;code-block collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!"&gt;
-	&lt;p class="meta"&gt;
-		&lt;span class="file"&gt;code-block.html&lt;/span&gt;
-		&lt;span class="language"&gt;html&lt;/span&gt;
+	&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&lt;code-block collapsed language=&quot;html&quot; copy-success=&quot;Copied!&quot; copy-error=&quot;Error trying to copy to clipboard!&quot;&gt;
+	&lt;p class=&quot;meta&quot;&gt;
+		&lt;span class=&quot;file&quot;&gt;code-block.html&lt;/span&gt;
+		&lt;span class=&quot;language&quot;&gt;html&lt;/span&gt;
 	&lt;/p&gt;
-	&lt;pre&gt;&lt;code class="language-html"&gt;&lt;/code&gt;&lt;/pre&gt;
-	&lt;input-button class="copy"&gt;
-		&lt;button type="button" class="secondary small"&gt;Copy&lt;/button&gt;
+	&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&lt;/code&gt;&lt;/pre&gt;
+	&lt;input-button class=&quot;copy&quot;&gt;
+		&lt;button type=&quot;button&quot; class=&quot;secondary small&quot;&gt;Copy&lt;/button&gt;
 	&lt;/input-button&gt;
-	&lt;button type="button" class="overlay"&gt;Expand&lt;/button&gt;
+	&lt;button type=&quot;button&quot; class=&quot;overlay&quot;&gt;Expand&lt;/button&gt;
 &lt;/code-block&gt;&lt;/code&gt;&lt;/pre&gt;
-	&lt;input-button class="copy"&gt;
-		&lt;button type="button" class="secondary small"&gt;Copy&lt;/button&gt;
+	&lt;input-button class=&quot;copy&quot;&gt;
+		&lt;button type=&quot;button&quot; class=&quot;secondary small&quot;&gt;Copy&lt;/button&gt;
 	&lt;/input-button&gt;
-	&lt;button type="button" class="overlay"&gt;Expand&lt;/button&gt;
+	&lt;button type=&quot;button&quot; class=&quot;overlay&quot;&gt;Expand&lt;/button&gt;
 &lt;/code-block&gt;</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
@@ -41,6 +43,7 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
@@ -51,7 +54,9 @@
 					<span class="file">code-block.css</span>
 					<span class="language">css</span>
 				</p>
-				<pre class="language-css"><code>code-block {
+				<pre class="language-css"><code>@import &#39;./okaidia.css&#39;;
+
+code-block {
 	position: relative;
 	display: block;
 	margin: 0 0 var(--space-l);
@@ -62,7 +67,7 @@
 		font-size: var(--font-size-s);
 		color: var(--color-text-soft);
 
-		&:not(:has(.file)) .language {
+		&amp;:not(:has(.file)) .language {
 			margin-block-start: calc(-1 * var(--space-m));
 		}
 	}
@@ -72,7 +77,7 @@
 		text-transform: uppercase;
 	}
 
-	& pre {
+	&amp; pre {
 		color: var(--color-gray-10);
 		background: var(--color-gray-90);
 		padding: var(--space-s);
@@ -91,12 +96,12 @@
 		display: none;
 	}
 
-	&[collapsed] {
+	&amp;[collapsed] {
 		max-height: 12rem;
 		overflow: hidden;
 
-		&::after {
-			content: '';
+		&amp;::after {
+			content: &#39;&#39;;
 			display: block;
 			position: absolute;
 			bottom: 0;
@@ -131,8 +136,8 @@
 			transition: background-color var(--transition-short) var(--easing-inout);
 			text-shadow: var(--color-background) 1px 0 var(--space-xs);
 
-			&:hover,
-			&:active {
+			&amp;:hover,
+			&amp;:active {
 				text-shadow: var(--color-text-inverted) var(--space-xs) 0 var(--space-s);
 			}
 		}
@@ -144,69 +149,81 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
-				<div class="summary">JavaScript</div>
+				<div class="summary">TS</div>
 			</summary>
-			<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">code-block.js</span>
-					<span class="language">js</span>
+					<span class="file">code-block.ts</span>
+					<span class="language">ts</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, asBoolean, effect, toggleAttribute } from '@zeix/ui-element'
-import Prism from 'prismjs'
+				<pre class="language-ts"><code>import { asBoolean, effect, enqueue, toggleAttribute, UIElement } from &quot;@zeix/ui-element&quot;
+import Prism from &#39;prismjs&#39;
+import &#39;prismjs/components/prism-bash&#39;;
+import &#39;prismjs/components/prism-json&#39;;
+import &#39;prismjs/components/prism-typescript&#39;;
 
-class CodeBlock extends UIElement {
-	static observedAttributes = ['collapsed']
+import type { InputButton } from &#39;../input-button/input-button&#39;
+
+export class CodeBlock extends UIElement {
+	static observedAttributes = [&#39;collapsed&#39;]
 	static states = {
 		collapsed: asBoolean
 	}
 
-		connectedCallback() {
+  	connectedCallback() {
 
 		// Enhance code block with Prism.js
-		const language = this.getAttribute('language') || 'html'
-		const content = this.querySelector('code')
-		this.set('code', content.textContent.trim(), false)
-		effect(enqueue => {
-			// Apply syntax highlighting while preserving Lit's marker nodes in Storybook
-			const code = document.createElement('code')
-			code.innerHTML = Prism.highlight(this.get('code'), Prism.languages[language], language)
-			enqueue(content, 'h', el => () => {
-				Array.from(el.childNodes)
-					.filter(node => node.nodeType !== Node.COMMENT_NODE)
-					.forEach(node => node.remove())
-				Array.from(code.childNodes)
-					.forEach(node => el.appendChild(node))
+		const language = this.getAttribute(&#39;language&#39;) || &#39;html&#39;
+		const content = this.querySelector(&#39;code&#39;)
+		if (content) {
+			this.set(&#39;code&#39;, content.textContent?.trim(), false)
+			effect(() =&gt; {
+				// Apply syntax highlighting while preserving Lit&#39;s marker nodes in Storybook
+				const code = document.createElement(&#39;code&#39;)
+				code.innerHTML = Prism.highlight(
+					this.get(&#39;code&#39;) ?? &#39;&#39;,
+					Prism.languages[language],
+					language
+				)
+				enqueue(() =&gt; {
+					Array.from(code.childNodes)
+						.filter(node =&gt; node.nodeType !== Node.COMMENT_NODE)
+						.forEach(node =&gt; node.remove())
+					Array.from(code.childNodes)
+						.forEach(node =&gt; code.appendChild(node))
+				}, [code, &#39;h&#39;])
 			})
-		})
 
-		// Copy to clipboard
-		this.first('.copy').on('click', (target, index) => async () => {
-			const copyButton = ui.target
-			const label = copyButton.textContent
-			let status = 'success'
-			try {
-				await navigator.clipboard.writeText(content.textContent)
-			} catch (err) {
-				console.error('Error when trying to use navigator.clipboard.writeText()', err)
-				status = 'error'
-			}
-			copyButton.set('disabled', true)
-			copyButton.set('label', ui.host.getAttribute(`copy-${status}`))
-			setTimeout(() => {
-				copyButton.set('disabled', false)
-				copyButton.set('label', label)
-			}, status === 'success' ? 1000 : 3000)
-		})
+			// Copy to clipboard
+			this.first(&#39;.copy&#39;).on(&#39;click&#39;, async (e: Event) =&gt; {
+				const copyButton = e.currentTarget as InputButton
+				const label = copyButton.textContent
+				let status = &#39;success&#39;
+				try {
+					await navigator.clipboard.writeText(content.textContent ?? &#39;&#39;)
+				} catch (err) {
+					console.error(&#39;Error when trying to use navigator.clipboard.writeText()&#39;, err)
+					status = &#39;error&#39;
+				}
+				copyButton.set(&#39;disabled&#39;, true)
+				copyButton.set(&#39;label&#39;, this.getAttribute(`copy-${status}`))
+				setTimeout(() =&gt; {
+					copyButton.set(&#39;disabled&#39;, false)
+					copyButton.set(&#39;label&#39;, label)
+				}, status === &#39;success&#39; ? 1000 : 3000)
+			})
 
-		// Expand
-		this.first('.overlay').on('click', () => this.set('collapsed', false))
-		this.self.sync(toggleAttribute('collapsed'))
+			// Expand
+			this.first(&#39;.overlay&#39;).on(&#39;click&#39;, () =&gt; this.set(&#39;collapsed&#39;, false))
+			this.self.sync(toggleAttribute(&#39;collapsed&#39;))
+		}
 	}
 }
-CodeBlock.define('code-block')</code></pre>
+CodeBlock.define(&#39;code-block&#39;)</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

@@ -1,33 +1,10 @@
+
 <tab-list>
 	<menu>
-		<li><button type="button" aria-pressed="true">HTML</button></li>
-		<li><button type="button">CSS</button></li>
-		<li><button type="button">JavaScript</button></li>
+		<li><button type="button" aria-pressed="true">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
 	</menu>
-	<accordion-panel open>
-		<details open aria-disabled="true">
-			<summary class="visually-hidden">
-				<div class="summary">HTML</div>
-			</summary>
-			<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-				<p class="meta">
-					<span class="file">my-counter.html</span>
-					<span class="language">html</span>
-				</p>
-				<pre class="language-html"><code>&lt;my-counter count="42"&gt;
-	&lt;p&gt;
-		Count: &lt;span class="count"&gt;&lt;/span&gt;
-		Parity: &lt;span class="parity"&gt;&lt;/span&gt;
-	&lt;/p&gt;
-	&lt;button type="button" class="increment"&gt;+&lt;/button&gt;
-	&lt;button type="button" class="decrement"&gt;−&lt;/button&gt;
-&lt;/my-counter&gt;</code></pre>
-				<input-button class="copy">
-					<button type="button" class="secondary small">Copy</button>
-				</input-button>
-			</code-block>
-		</details>
-	</accordion-panel>
+	
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
@@ -57,40 +34,46 @@
 		padding: 0.25rem 0.5rem;
 		flex: 0;
 	}
-}</code></pre>
+}
+</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
-				<div class="summary">JavaScript</div>
+				<div class="summary">TS</div>
 			</summary>
-			<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">my-counter.js</span>
-					<span class="language">js</span>
+					<span class="file">my-counter.ts</span>
+					<span class="language">ts</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, asInteger, setText } from '@zeix/ui-element'
+				<pre class="language-ts"><code>import { asInteger, setText, UIElement } from &quot;@zeix/ui-element&quot;
 
-class MyCounter extends UIElement {
-	static observedAttributes = ['count']
+export class MyCounter extends UIElement {
+	static observedAttributes = [&#39;count&#39;]
 	static states = {
 		count: asInteger
 	}
 
 	connectedCallback() {
-		this.set('parity', () => this.get('count') % 2 ? 'odd' : 'even')
-		this.first('.increment').on('click', () => this.set('count', v => ++v))
-		this.first('.decrement').on('click', () => this.set('count', v => --v))
-		this.first('.count').sync(setText('count'))
-		this.first('.parity').sync(setText('parity'))
+		this.set(&#39;parity&#39;, () =&gt; (this.get&lt;number&gt;(&#39;count&#39;) ?? 0) % 2 ? &#39;odd&#39; : &#39;even&#39;)
+		this.first(&#39;.increment&#39;).on(&#39;click&#39;, () =&gt; {
+			this.set(&#39;count&#39;, (v?: number) =&gt; null != v ? ++v : 1)
+		})
+		this.first(&#39;.decrement&#39;).on(&#39;click&#39;, () =&gt; {
+			this.set(&#39;count&#39;, (v?: number) =&gt; null != v ? --v : 0)
+		})
+		this.first(&#39;.count&#39;).sync(setText(&#39;count&#39;))
+		this.first(&#39;.parity&#39;).sync(setText(&#39;parity&#39;))
 	}
 }
-MyCounter.define('my-counter')</code></pre>
+MyCounter.define(&#39;my-counter&#39;)</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

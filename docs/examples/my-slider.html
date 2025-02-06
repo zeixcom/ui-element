@@ -1,9 +1,11 @@
+
 <tab-list>
 	<menu>
 		<li><button type="button" aria-pressed="true">HTML</button></li>
-		<li><button type="button">CSS</button></li>
-		<li><button type="button">JavaScript</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
 	</menu>
+	
 	<accordion-panel open>
 		<details open aria-disabled="true">
 			<summary class="visually-hidden">
@@ -15,15 +17,15 @@
 					<span class="language">html</span>
 				</p>
 				<pre class="language-html"><code>&lt;my-slider&gt;
-	&lt;button type="button" class="prev" aria-label="Previous"&gt;‹&lt;/button&gt;
-	&lt;div class="slides"&gt;
-		&lt;div class="slide active"&gt;Slide 1&lt;/div&gt;
-		&lt;div class="slide"&gt;Slide 2&lt;/div&gt;
-		&lt;div class="slide"&gt;Slide 3&lt;/div&gt;
+	&lt;button type=&quot;button&quot; class=&quot;prev&quot; aria-label=&quot;Previous&quot;&gt;‹&lt;/button&gt;
+	&lt;div class=&quot;slides&quot;&gt;
+		&lt;div class=&quot;slide active&quot;&gt;Slide 1&lt;/div&gt;
+		&lt;div class=&quot;slide&quot;&gt;Slide 2&lt;/div&gt;
+		&lt;div class=&quot;slide&quot;&gt;Slide 3&lt;/div&gt;
 	&lt;/div&gt;
-	&lt;button type="button" class="next" aria-label="Next"&gt;›&lt;/button&gt;
-	&lt;div class="dots"&gt;
-		&lt;span class="active"&gt;&lt;/span&gt;
+	&lt;button type=&quot;button&quot; class=&quot;next&quot; aria-label=&quot;Next&quot;&gt;›&lt;/button&gt;
+	&lt;div class=&quot;dots&quot;&gt;
+		&lt;span class=&quot;active&quot;&gt;&lt;/span&gt;
 		&lt;span&gt;&lt;/span&gt;
 		&lt;span&gt;&lt;/span&gt;
 	&lt;/div&gt;
@@ -34,6 +36,7 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
@@ -61,7 +64,7 @@
 		min-width: 100%;
 		text-align: center;
 
-		&:not(.active) {
+		&amp;:not(.active) {
 			display: none;
 		}
 	}
@@ -76,20 +79,20 @@
 		gap: var(--space-xs);
 		padding-block: var(--space-s);
 
-		> span {
-			width: var(--space-s);
-			height: var(--space-s);
-			border-radius: 50%;
-			background-color: var(--color-text);
+		&gt; span {
+            width: var(--space-s);
+            height: var(--space-s);
+            border-radius: 50%;
+            background-color: var(--color-text);
 			opacity: var(--opacity-translucent);
 
-			&.active {
-				opacity: var(--opacity-solid);
-			}
+            &amp;.active {
+                opacity: var(--opacity-solid);
+            }
 		}
 	}
 	
-	> button {
+	&gt; button {
 		position: absolute;
 		top: 0;
 		height: 100%;
@@ -100,19 +103,19 @@
 		color: var(--color-text);
 		opacity: var(--opacity-dimmed);
 
-		&:hover,
-		&:active,
-		&:focus {
-			opacity: var(--opacity-solid);
-		}
+		&amp;:hover,
+		&amp;:active,
+		&amp;:focus {
+            opacity: var(--opacity-solid);
+        }
 
-		&.prev {
+		&amp;.prev {
 			left: 0;
 		}
 
-		&.next {
-			right: 0;
-		}
+		&amp;.next {
+            right: 0;
+        }
 	}
 }</code></pre>
 				<input-button class="copy">
@@ -121,48 +124,50 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
-				<div class="summary">JavaScript</div>
+				<div class="summary">TS</div>
 			</summary>
-			<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">my-slider.js</span>
-					<span class="language">js</span>
+					<span class="file">my-slider.ts</span>
+					<span class="language">ts</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, toggleClass } from '@zeix/ui-element'
+				<pre class="language-ts"><code>import { toggleClass, UIElement } from &quot;@zeix/ui-element&quot;
 
-class MySlider extends UIElement {
-	static states = {
-		active: 0
-	}
+// Pure functions
+const getNewIndex = (prev: number = 0, direction: number, total: number) =&gt;
+	(prev + direction + total) % total
 
+export class MySlider extends UIElement {
 	connectedCallback() {
-	
+
+		// Initialize state for the active slide index
+		this.set(&#39;active&#39;, 0)
+
 		// Event listeners for navigation
-		const total = this.querySelectorAll('.slide').length
-		const getNewIndex = (prev, direction) =>
-			(prev + direction + total) % total
-		this.first('.prev')
-			.on('click', () => this.set('active', v => getNewIndex(v, -1)))
-		this.first('.next')
-			.on('click', () => this.set('active', v => getNewIndex(v, 1)))
+		const total = this.querySelectorAll(&#39;.slide&#39;).length
+		this.first(&#39;.prev&#39;).on(&#39;click&#39;, () =&gt; {
+			this.set(&#39;active&#39;, (v?: number) =&gt; getNewIndex(v, -1, total))
+		})
+		this.first(&#39;.next&#39;).on(&#39;click&#39;, () =&gt; {
+			this.set(&#39;active&#39;, (v?: number) =&gt; getNewIndex(v, 1, total))
+		})
 	
 		// Auto-effects for updating slides and dots
-		this.all('.slide')
-			.sync((host, target, index) => toggleClass(
-				'active',
-				() => index === this.get('active')
-			)(host, target))
-		this.all('.dots span')
-			.sync((host, target, index) => toggleClass(
-				'active',
-				() => index === this.get('active')
-			)(host, target))
+		this.all(&#39;.slide&#39;).sync((host, target, index) =&gt; toggleClass(
+			&#39;active&#39;,
+			() =&gt; index === this.get(&#39;active&#39;)
+		)(host, target))
+		this.all(&#39;.dots span&#39;).sync((host, target, index) =&gt; toggleClass(
+			&#39;active&#39;,
+			() =&gt; index === this.get(&#39;active&#39;)
+		)(host, target))
 	}
 }
-MySlider.define('my-slider')</code></pre>
+MySlider.define(&#39;my-slider&#39;)</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

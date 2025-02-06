@@ -1,5 +1,5 @@
 import { setAttribute, UIElement } from '@zeix/ui-element'
-import type { InputCheckbox } from './input-checkbox'
+import type { InputCheckbox } from '../input-checkbox/input-checkbox'
 
 export type TodoCountObject = {
 	active: number
