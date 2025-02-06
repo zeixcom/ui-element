@@ -1,9 +1,11 @@
+
 <tab-list>
 	<menu>
 		<li><button type="button" aria-pressed="true">HTML</button></li>
-		<li><button type="button">CSS</button></li>
-		<li><button type="button">JavaScript</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
 	</menu>
+	
 	<accordion-panel open>
 		<details open aria-disabled="true">
 			<summary class="visually-hidden">
@@ -16,14 +18,14 @@
 				</p>
 				<pre class="language-html"><code>&lt;input-checkbox&gt;
 	&lt;label&gt;
-		&lt;input type="checkbox"&gt;
+		&lt;input type=&quot;checkbox&quot;&gt;
 		&lt;span &gt;Checkbox&lt;/span&gt;
 	&lt;/label&gt;
 &lt;/input-checkbox&gt;
 
-&lt;input-checkbox class="todo"&gt;
+&lt;input-checkbox class=&quot;todo&quot;&gt;
 	&lt;label&gt;
-		&lt;input type="checkbox" class="visually-hidden"&gt;
+		&lt;input type=&quot;checkbox&quot; class=&quot;visually-hidden&quot;&gt;
 		&lt;span &gt;Task&lt;/span&gt;
 	&lt;/label&gt;
 &lt;/input-checkbox&gt;</code></pre>
@@ -33,6 +35,7 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
@@ -46,20 +49,20 @@
 				<pre class="language-css"><code>input-checkbox {
 	flex-grow: 1;
 
-	& label {
+	&amp; label {
 		font-size: var(--font-size-s);
 	}
 
-	&.todo label {
+	&amp;.todo label {
 		display: flex;
 		gap: var(--space-s);
 		line-height: var(--input-height);
 		cursor: pointer;
 
-		&::before {
+		&amp;::before {
 			display: inline-block;
 			box-sizing: border-box;
-			content: '';
+			content: &#39;&#39;;
 			font-size: var(--font-size-l);
 			text-align: center;
 			width: var(--input-height);
@@ -69,36 +72,36 @@
 			background-color: var(--color-secondary);
 		}
 
-		&:hover::before {
+		&amp;:hover::before {
 			background-color: var(--color-secondary-hover);
 			opacity: var(--opacity-solid);
 		}
 
-		&:active::before {
+		&amp;:active::before {
 			background-color: var(--color-secondary-active);
 		}
 	}
 
-	&.todo[checked] label {
+	&amp;.todo[checked] label {
 		opacity: var(--opacity-translucent);
 
-		& span {
+		&amp; span {
 			text-decoration: line-through;
 		}
 
-		&::before {
+		&amp;::before {
 			color: var(--color-text-inverted);
 			background-color: var(--color-success);
 			border-color: var(--color-success-active);
 			text-shadow: 0 0 var(--space-xs) var(--color-success-active);
-			content: '✓';
+			content: &#39;✓&#39;;
 		}
 
-		&:hover::before {
+		&amp;:hover::before {
 			background-color: var(--color-success-hover);
 		}
 
-		&:active::before {
+		&amp;:active::before {
 			background-color: var(--color-success-active);
 		}
 	}
@@ -109,32 +112,35 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
-				<div class="summary">JavaScript</div>
+				<div class="summary">TS</div>
 			</summary>
-			<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">input-checkbox.js</span>
-					<span class="language">js</span>
+					<span class="file">input-checkbox.ts</span>
+					<span class="language">ts</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, asBoolean, setProperty, toggleAttribute } from '@zeix/ui-element'
+				<pre class="language-ts"><code>import { asBoolean, setProperty, toggleAttribute, UIElement } from &quot;@zeix/ui-element&quot;
 
-class InputCheckbox extends UIElement {
-	static observedAttributes = ['checked']
+export class InputCheckbox extends UIElement {
+	static observedAttributes = [&#39;checked&#39;]
 	static states = {
-		checked: asBoolean,
+		checked: asBoolean
 	}
 
 	connectedCallback() {
-		this.first('input')
-			.on('change', e => this.set('checked', Boolean(e.target.checked)))
-			.sync(setProperty('checked'))
-		this.self.sync(toggleAttribute('checked'))
+		this.first(&#39;input&#39;)
+			.on(&#39;change&#39;, (e: Event) =&gt; {
+				this.set(&#39;checked&#39;, Boolean((e.target as HTMLInputElement)?.checked))
+			})
+			.sync(setProperty(&#39;checked&#39;))
+		this.self.sync(toggleAttribute(&#39;checked&#39;))
 	}
 }
-InputCheckbox.define('input-checkbox')</code></pre>
+InputCheckbox.define(&#39;input-checkbox&#39;)</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

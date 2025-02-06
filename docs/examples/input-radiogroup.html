@@ -1,9 +1,11 @@
+
 <tab-list>
 	<menu>
 		<li><button type="button" aria-pressed="true">HTML</button></li>
-		<li><button type="button">CSS</button></li>
-		<li><button type="button">JavaScript</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
 	</menu>
+	
 	<accordion-panel open>
 		<details open aria-disabled="true">
 			<summary class="visually-hidden">
@@ -14,37 +16,37 @@
 					<span class="file">input-radiogroup.html</span>
 					<span class="language">html</span>
 				</p>
-				<pre class="language-html"><code>&lt;input-radiogroup value="other"&gt;
+				<pre class="language-html"><code>&lt;input-radiogroup value=&quot;other&quot;&gt;
 	&lt;fieldset&gt;
 		&lt;legend&gt;Gender&lt;/legend&gt;
 			&lt;label&gt;
-				&lt;input type="radio" name="gender" value="female"&gt;
+				&lt;input type=&quot;radio&quot; name=&quot;gender&quot; value=&quot;female&quot;&gt;
 				&lt;span&gt;Female&lt;/span&gt;
 			&lt;/label&gt;
 			&lt;label&gt;
-				&lt;input type="radio" name="gender" value="male"&gt;
+				&lt;input type=&quot;radio&quot; name=&quot;gender&quot; value=&quot;male&quot;&gt;
 				&lt;span&gt;Male&lt;/span&gt;
 			&lt;/label&gt;
-			&lt;label class="selected"&gt;
-				&lt;input type="radio" name="gender" value="other" checked&gt;
+			&lt;label class=&quot;selected&quot;&gt;
+				&lt;input type=&quot;radio&quot; name=&quot;gender&quot; value=&quot;other&quot; checked&gt;
 				&lt;span&gt;Other&lt;/span&gt;
 			&lt;/label&gt;
 	&lt;/fieldset&gt;
 &lt;/input-radiogroup&gt;
 
-&lt;input-radiogroup value="all" class="split-button"&gt;
+&lt;input-radiogroup value=&quot;all&quot; class=&quot;split-button&quot;&gt;
 	&lt;fieldset&gt;
-		&lt;legend class="visually-hidden"&gt;Filter&lt;/legend&gt;
-			&lt;label class="selected"&gt;
-				&lt;input type="radio" class="visually-hidden" name="filter" value="all" checked&gt;
+		&lt;legend class=&quot;visually-hidden&quot;&gt;Filter&lt;/legend&gt;
+			&lt;label class=&quot;selected&quot;&gt;
+				&lt;input type=&quot;radio&quot; class=&quot;visually-hidden&quot; name=&quot;filter&quot; value=&quot;all&quot; checked&gt;
 				&lt;span&gt;All&lt;/span&gt;
 			&lt;/label&gt;
 			&lt;label&gt;
-				&lt;input type="radio" class="visually-hidden" name="filter" value="active"&gt;
+				&lt;input type=&quot;radio&quot; class=&quot;visually-hidden&quot; name=&quot;filter&quot; value=&quot;active&quot;&gt;
 				&lt;span&gt;Active&lt;/span&gt;
 			&lt;/label&gt;
 			&lt;label&gt;
-				&lt;input type="radio" class="visually-hidden" name="filter" value="completed"&gt;
+				&lt;input type=&quot;radio&quot; class=&quot;visually-hidden&quot; name=&quot;filter&quot; value=&quot;completed&quot;&gt;
 				&lt;span&gt;Completed&lt;/span&gt;
 			&lt;/label&gt;
 	&lt;/fieldset&gt;
@@ -55,6 +57,7 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
@@ -68,27 +71,27 @@
 				<pre class="language-css"><code>input-radiogroup {
 	display: inline-block;
 
-	> fieldset {
+    &gt; fieldset {
 		display: flex;
 		gap: var(--space-m);
-		border: none;
-		margin: 0;
-		padding: var(--space-xs) 0 var(--space-s);
-	}
+        border: none;
+        margin: 0;
+        padding: var(--space-xs) 0 var(--space-s);
+    }
 
-	& legend,
-	& label {
+	&amp; legend,
+	&amp; label {
 		font-size: var(--font-size-s);
 	}
 
-	&.split-button {
+	&amp;.split-button {
 
-		& fieldset {
+		&amp; fieldset {
 			gap: 0;
 			padding: 0;
 		}
 
-		& label {
+		&amp; label {
 			display: inline-block;
 			box-sizing: border-box;
 			height: var(--input-height);
@@ -103,36 +106,36 @@
 			opacity: var(--opacity-dimmed);
 			transition: opacity var(--transition-short) var(--easing-inout);
 
-			&:hover {
+			&amp;:hover {
 				background-color: var(--color-secondary-hover);
-				opacity: var(--opacity-solid);
+                opacity: var(--opacity-solid);
 			}
-		
-			&:active {
+	  
+			&amp;:active {
 				background-color: var(--color-secondary-active);
 			}
-		
-			&.selected {
+	  
+			&amp;.selected {
 				color: var(--color-text-inverted);
 				background-color: var(--color-primary);
 				border-color: var(--color-primary-active);
 
-				&:hover {
-					background-color: var(--color-primary-hover);
-				}
+				&amp;:hover {
+                    background-color: var(--color-primary-hover);
+                }
 		
-				&:active {
+				&amp;:active {
 					background-color: var(--color-primary-active);
 				}
 			}
 		}
-		
-		& legend + label {
+	  
+		&amp; legend + label {
 			border-radius: var(--space-xs) 0 0 var(--space-xs);
 			border-left-width: 1px;
 		}
-		
-		& label:last-child {
+	  
+		&amp; label:last-child {
 			border-radius: 0 var(--space-xs) var(--space-xs) 0;
 		}
 	}
@@ -143,31 +146,35 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
-				<div class="summary">JavaScript</div>
+				<div class="summary">TS</div>
 			</summary>
-			<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">input-radiogroup.js</span>
-					<span class="language">js</span>
+					<span class="file">input-radiogroup.ts</span>
+					<span class="language">ts</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, setAttribute, toggleClass } from '@zeix/ui-element'
+				<pre class="language-ts"><code>import { setAttribute, toggleClass, UIElement } from &quot;@zeix/ui-element&quot;
 
 export class InputRadiogroup extends UIElement {
-	static observedAttributes = ['value']
+	static observedAttributes = [&#39;value&#39;]
 
 	connectedCallback() {
-		this.self.sync(setAttribute('value'))
-		this.all('input').on('change', e => this.set('value', e.target.value))
-		this.all('label').sync((host, target) => toggleClass(
-			'selected',
-			() => host.get('value') === target.querySelector('input').value
+		this.self.sync(setAttribute(&#39;value&#39;))
+		this.all(&#39;input&#39;).on(&#39;change&#39;, (e: Event) =&gt; {
+			this.set(&#39;value&#39;, (e.target as HTMLInputElement)?.value)
+		})
+		this.all(&#39;label&#39;).sync((host, target) =&gt; toggleClass(
+			&#39;selected&#39;,
+			() =&gt; host.get(&#39;value&#39;) === target.querySelector(&#39;input&#39;)?.value
 		)(host, target))
 	}
 }
-InputRadiogroup.define('input-radiogroup')</code></pre>
+InputRadiogroup.define(&#39;input-radiogroup&#39;)
+</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

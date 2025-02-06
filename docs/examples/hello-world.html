@@ -1,0 +1,58 @@
+
+<tab-list>
+	<menu>
+		<li><button type="button" aria-pressed="true">HTML</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
+	</menu>
+	
+	<accordion-panel open>
+		<details open aria-disabled="true">
+			<summary class="visually-hidden">
+				<div class="summary">HTML</div>
+			</summary>
+			<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+				<p class="meta">
+					<span class="file">hello-world.html</span>
+					<span class="language">html</span>
+				</p>
+				<pre class="language-html"><code>&lt;hello-world&gt;
+	&lt;label&gt;Your name&lt;br&gt;
+		&lt;input type=&quot;text&quot;&gt;
+	&lt;/label&gt;
+	&lt;p&gt;Hello, &lt;span&gt;World&lt;/span&gt;!&lt;/p&gt;
+&lt;/hello-world&gt;</code></pre>
+				<input-button class="copy">
+					<button type="button" class="secondary small">Copy</button>
+				</input-button>
+			</code-block>
+		</details>
+	</accordion-panel>
+
+	<accordion-panel>
+		<details aria-disabled="true">
+			<summary class="visually-hidden">
+				<div class="summary">TS</div>
+			</summary>
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+				<p class="meta">
+					<span class="file">hello-world.ts</span>
+					<span class="language">ts</span>
+				</p>
+				<pre class="language-ts"><code>import { setText, UIElement } from &quot;@zeix/ui-element&quot;
+
+export class HelloWorld extends UIElement {
+	connectedCallback() {
+		this.first(&#39;span&#39;).sync(setText(&#39;name&#39;))
+		this.first(&#39;input&#39;).on(&#39;input&#39;, (e: Event) =&gt; {
+			this.set(&#39;name&#39;, (e.target as HTMLInputElement)?.value || undefined)
+		})
+	}
+}
+HelloWorld.define(&#39;hello-world&#39;)</code></pre>
+				<input-button class="copy">
+					<button type="button" class="secondary small">Copy</button>
+				</input-button>
+			</code-block>
+		</details>
+	</accordion-panel>
+</tab-list>

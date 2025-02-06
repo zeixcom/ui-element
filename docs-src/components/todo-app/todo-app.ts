@@ -1,7 +1,7 @@
 import { UIElement } from "@zeix/ui-element"
-import type { TodoCountObject, TodoList } from "./todo-list"
-import type { InputRadiogroup } from "./input-radiogroup"
-import type { AddTodoEvent } from "./todo-form"
+import type { TodoCountObject, TodoList } from "../todo-list/todo-list"
+import type { InputRadiogroup } from "../input-radiogroup/input-radiogroup"
+import type { AddTodoEvent } from "../todo-form/todo-form"
 
 export class TodoApp extends UIElement {
 	connectedCallback() {

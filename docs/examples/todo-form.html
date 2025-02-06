@@ -1,9 +1,11 @@
+
 <tab-list>
 	<menu>
 		<li><button type="button" aria-pressed="true">HTML</button></li>
-		<li><button type="button">CSS</button></li>
-		<li><button type="button">JavaScript</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
 	</menu>
+	
 	<accordion-panel open>
 		<details open aria-disabled="true">
 			<summary class="visually-hidden">
@@ -15,17 +17,17 @@
 					<span class="language">html</span>
 				</p>
 				<pre class="language-html"><code>&lt;todo-form&gt;
-	&lt;form action="#"&gt;
+	&lt;form action=&quot;#&quot;&gt;
 		&lt;input-field&gt;
-			&lt;label for="add-todo"&gt;What needs to be done?&lt;/label&gt;
-			&lt;div class="row"&gt;
-				&lt;div class="group auto"&gt;
-					&lt;input id="add-todo" type="text" value="" required&gt;
+			&lt;label for=&quot;add-todo&quot;&gt;What needs to be done?&lt;/label&gt;
+			&lt;div class=&quot;row&quot;&gt;
+				&lt;div class=&quot;group auto&quot;&gt;
+					&lt;input id=&quot;add-todo&quot; type=&quot;text&quot; value=&quot;&quot; required&gt;
 				&lt;/div&gt;
 			&lt;/div&gt;
 		&lt;/input-field&gt;
-		&lt;input-button class="submit"&gt;
-			&lt;button type="submit" class="primary" disabled&gt;Add Todo&lt;/button&gt;
+		&lt;input-button class=&quot;submit&quot;&gt;
+			&lt;button type=&quot;submit&quot; class=&quot;primary&quot; disabled&gt;Add Todo&lt;/button&gt;
 		&lt;/input-button&gt;
 	&lt;/form&gt;
 &lt;/todo-form&gt;</code></pre>
@@ -35,6 +37,7 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
@@ -45,65 +48,69 @@
 					<span class="file">todo-form.css</span>
 					<span class="language">css</span>
 				</p>
-				<pre class="language-css"><code>todo-form.html {
-	display: flex;
-	gap: 0.5rem;
-	margin-block: 1rem;
+				<pre class="language-css"><code>todo-form {
+	display: block;
+	container-type: inline-size;
 
-	p {
-		display: inline-block;
-		margin: 0;
-		flex: 1;
+	form {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--space-m);
+		justify-content: space-between;
 	}
+}
 
-	span {
-		margin-right: 0.5rem;
+@container (width &gt; 32rem) {
+	todo-form form {
+		flex-direction: row;
+		align-items: flex-end;
 	}
-
-	button {
-		padding: 0.25rem 0.5rem;
-		flex: 0;
-	}
-}</code></pre>
+}
+</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
-				<div class="summary">JavaScript</div>
+				<div class="summary">TS</div>
 			</summary>
-			<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">todo-form.js</span>
-					<span class="language">js</span>
+					<span class="file">todo-form.ts</span>
+					<span class="language">ts</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement } from '@zeix/ui-element'
+				<pre class="language-ts"><code>import { UIElement } from &quot;@zeix/ui-element&quot;
+import type { InputField } from &quot;../input-field/input-field&quot;
 
-class TodoForm extends UIElement {
+export type AddTodoEvent = CustomEvent &amp; { detail: string }
+
+export class TodoForm extends UIElement {
 	connectedCallback() {
-		const inputField = this.querySelector('input-field')
+		const inputField: InputField | null = this.querySelector(&#39;input-field&#39;)
 
-		this.first('form').on('submit', e => {
+        this.first(&#39;form&#39;).on(&#39;submit&#39;, (e: Event) =&gt; {
 			e.preventDefault()
-			setTimeout(() => {
-				this.dispatchEvent(new CustomEvent('add-todo', {
+			setTimeout(() =&gt; {
+				this.dispatchEvent(new CustomEvent(&#39;add-todo&#39;, {
 					bubbles: true,
-					detail: inputField.get('value')
+					detail: inputField?.get(&#39;value&#39;) ?? &#39;&#39;
 				}))
-				inputField.clear()
+				inputField?.clear()
 			}, 0)
 		})
-		
-		this.first('input-button').pass({
-			disabled: () => inputField.get('empty')
+	
+		this.first(&#39;input-button&#39;).pass({
+			disabled: () =&gt; inputField?.get(&#39;empty&#39;)
 		})
-	}
+    }
 }
-TodoForm.define('todo-form')</code></pre>
+TodoForm.define(&#39;todo-form&#39;)</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

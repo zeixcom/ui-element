@@ -1,0 +1,35 @@
+<input-field>
+	<label for="name-input">Name</label>
+	<div class="row">
+		<div class="group auto">
+			<input type="text" id="name-input" name="name" autocomplete="name" required>
+		</div>
+	</div>
+	<p class="error" aria-live="assertive" id="name-error"></p>
+</input-field>
+
+<input-field integer>
+	<label for="bday-year-input">Birthday Year</label>
+	<div class="row">
+		<div class="group short">
+			<input type="number" id="bday-year-input" name="bday-year" autocomplete="bday-year" required minlength="4" maxlength="4" min="1900" max="2024" step="1">
+		</div>
+		<div class="spinbutton" data-step="1">
+			<button type="button" class="decrement" aria-label="Decrement">−</button>
+			<button type="button" class="increment" aria-label="Increment">+</button>
+		</div>
+	</div>
+	<p class="error" aria-live="assertive" id="bday-year-error"></p>
+	<p class="description" aria-live="polite" id="bday-year-description"></p>
+</input-field>
+
+<input-field validate="./examples/snippets/validate.html">
+	<label for="username-input">Username</label>
+	<div class="row">
+		<div class="group auto">
+			<input type="text" id="username-input" name="username" autocomplete="username" aria-describedby="username-description" required minlength="4" maxlength="20">
+		</div>
+	</div>
+	<p class="error" aria-live="assertive" id="username-error"></p>
+	<p class="description" aria-live="polite" id="username-description" data-remaining="${x} characters remaining">Max. 20 characters</p>
+</input-field>

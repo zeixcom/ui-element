@@ -1,9 +1,11 @@
+
 <tab-list>
 	<menu>
 		<li><button type="button" aria-pressed="true">HTML</button></li>
-		<li><button type="button">CSS</button></li>
-		<li><button type="button">JavaScript</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
 	</menu>
+	
 	<accordion-panel open>
 		<details open aria-disabled="true">
 			<summary class="visually-hidden">
@@ -16,9 +18,9 @@
 				</p>
 				<pre class="language-html"><code>&lt;tab-list&gt;
 	&lt;menu&gt;
-		&lt;li&gt;&lt;button type="button" aria-pressed="true"&gt;Tab 1&lt;/button&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;button type="button"&gt;Tab 2&lt;/button&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;button type="button"&gt;Tab 3&lt;/button&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;button type=&quot;button&quot; aria-pressed=&quot;true&quot;&gt;Tab 1&lt;/button&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;button type=&quot;button&quot;&gt;Tab 2&lt;/button&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;button type=&quot;button&quot;&gt;Tab 3&lt;/button&gt;&lt;/li&gt;
 	&lt;/menu&gt;
 	&lt;!-- Accordion panels here --&gt;
 &lt;/tab-list&gt;</code></pre>
@@ -28,6 +30,7 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
@@ -42,18 +45,18 @@
 	display: block;
 	margin-bottom: var(--space-l);
 
-	> menu {
+	&gt; menu {
 		display: flex;
 		margin: 0 0 var(--space-s);
 		padding: 0;
 
-		> li {
+		&gt; li {
 			display: inline-block;
 			margin: 0;
 			padding: 0;
 		}
 
-		& button {
+		&amp; button {
 			border: 0;
 			border-top: 2px solid transparent;
 			background: transparent;
@@ -62,11 +65,11 @@
 			color: var(--color-text);
 			background-color: var(--color-secondary);
 
-			&:hover {
-				background-color: var(--color-secondary-hover);
-			}
+			&amp;:hover {
+                background-color: var(--color-secondary-hover);
+            }
 
-			&[aria-pressed="true"] {
+			&amp;[aria-pressed=&quot;true&quot;] {
 				border-top: 2px solid var(--color-primary);
 				background-color: var(--color-secondary-active);
 			}
@@ -79,59 +82,59 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
-				<div class="summary">JavaScript</div>
+				<div class="summary">TS</div>
 			</summary>
-			<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">tab-list.js</span>
-					<span class="language">js</span>
+					<span class="file">tab-list.ts</span>
+					<span class="language">ts</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, setProperty, toggleAttribute } from '@zeix/ui-element'
+				<pre class="language-ts"><code>import { asBoolean, setProperty, toggleAttribute, UIElement } from &quot;@zeix/ui-element&quot;
+import { Context } from &quot;@zeix/ui-element/src/core/context&quot;
 
-class TabList extends UIElement {
-	static observedAttributes = ['accordion']
+export class TabList extends UIElement {
+	static observedAttributes = [&#39;accordion&#39;]
 	static states = {
-		active: 0,
-		accordion: asBoolean
+		accordion: asBoolean,
 	}
-	static consumedContexts = ['media-viewport']
+	static consumedContexts = [&#39;media-viewport&#39; as Context&lt;string, string&gt;]
 
 	connectedCallback() {
 		super.connectedCallback()
+		this.set(&#39;active&#39;, 0, false) // initial active tab
 
 		// Dynamically adjust accordion based on viewport size
-		setTimeout(() => {
-			if (this.get('media-viewport'))
-				this.set('accordion', () => ['xs', 'sm'].includes(this.get('media-viewport')))
+		setTimeout(() =&gt; {
+			if (this.get(&#39;media-viewport&#39;))
+				this.set(&#39;accordion&#39;, () =&gt; [&#39;xs&#39;, &#39;sm&#39;].includes(String(this.get(&#39;media-viewport&#39;))))
 		}, 0)
 
 		// Reflect accordion attribute (may be used for styling)
-		this.self.sync(toggleAttribute('accordion'))
+		this.self.sync(toggleAttribute(&#39;accordion&#39;))
 
 		// Hide accordion tab navigation when in accordion mode
-		this.first('menu').sync(setProperty('ariaHidden', 'accordion'))
+		this.first(&#39;menu&#39;).sync(setProperty(&#39;ariaHidden&#39;, &#39;accordion&#39;))
 
 		// Update active tab state and bind click handlers
-		this.all('menu button')
-			.on('click', (_target, index) => () => {
-				this.set('active', index)
-			})
-			.sync((host, target, index) => setProperty(
-				'ariaPressed',
-				() => this.get('active') === index
+		this.all(&#39;menu button&#39;)
+			.on(&#39;click&#39;, (_target, index) =&gt; () =&gt; this.set(&#39;active&#39;, index))
+			.sync((host, target, index) =&gt; setProperty(
+				&#39;ariaPressed&#39;,
+				() =&gt; this.get(&#39;active&#39;) === index
 			)(host, target))
 
 		// Pass open and collapsible states to accordion panels
-		this.all('accordion-panel').pass((_target, index) => ({
-			open: () => this.get('active') === index,
-			collapsible: 'accordion'
-		}))
+		this.all(&#39;accordion-panel&#39;).pass({
+			open: (_target, index) =&gt; () =&gt; this.get(&#39;active&#39;) === index,
+			collapsible: &#39;accordion&#39;
+		})
 	}
 }
-TabList.define('tab-list')</code></pre>
+TabList.define(&#39;tab-list&#39;)</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

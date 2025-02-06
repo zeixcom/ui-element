@@ -1,9 +1,11 @@
+
 <tab-list>
 	<menu>
 		<li><button type="button" aria-pressed="true">HTML</button></li>
-		<li><button type="button">CSS</button></li>
-		<li><button type="button">JavaScript</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
 	</menu>
+	
 	<accordion-panel open>
 		<details open aria-disabled="true">
 			<summary class="visually-hidden">
@@ -14,18 +16,18 @@
 					<span class="file">todo-list.html</span>
 					<span class="language">html</span>
 				</p>
-				<pre class="language-html"><code>&lt;todo-list filter="all"&gt;
+				<pre class="language-html"><code>&lt;todo-list filter=&quot;all&quot;&gt;
 	&lt;ol&gt;&lt;/ol&gt;
 	&lt;template&gt;
 		&lt;li&gt;
-			&lt;input-checkbox class="todo"&gt;
+			&lt;input-checkbox class=&quot;todo&quot;&gt;
 				&lt;label&gt;
-					&lt;input type="checkbox" class="visually-hidden" /&gt;
+					&lt;input type=&quot;checkbox&quot; class=&quot;visually-hidden&quot; /&gt;
 					&lt;span&gt;&lt;/span&gt;
 				&lt;/label&gt;
 			&lt;/input-checkbox&gt;
 			&lt;input-button&gt;
-				&lt;button type="button"&gt;Delete&lt;/button&gt;
+				&lt;button type=&quot;button&quot;&gt;Delete&lt;/button&gt;
 			&lt;/input-button&gt;
 		&lt;/li&gt;
 	&lt;/template&gt;
@@ -36,6 +38,7 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
@@ -49,7 +52,7 @@
 				<pre class="language-css"><code>todo-list {
 	display: block;
 
-	& ol {
+	&amp; ol {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-m);
@@ -58,7 +61,7 @@
 		padding: 0;
 	}
 
-	& li {
+	&amp; li {
 		display: flex;
 		justify-content: space-between;
 		gap: var(--space-m);
@@ -66,86 +69,103 @@
 		padding: 0;
 	}
 
-	&[filter="completed"] {
-		li:not(:has([checked])) {
-			display: none;
-		}
-	}
+	&amp;[filter=&quot;completed&quot;] {
+        li:not(:has([checked])) {
+            display: none;
+        }
+    }
 
-	&[filter="active"] {
-		li:has([checked]) {
-			display: none;
-		}
-	}
-}</code></pre>
+    &amp;[filter=&quot;active&quot;] {
+        li:has([checked]) {
+            display: none;
+        }
+    }
+}
+</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
-				<div class="summary">JavaScript</div>
+				<div class="summary">TS</div>
 			</summary>
-			<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">todo-list.js</span>
-					<span class="language">js</span>
+					<span class="file">todo-list.ts</span>
+					<span class="language">ts</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, setAttribute } from '@zeix/ui-element'
+				<pre class="language-ts"><code>import { setAttribute, UIElement } from &#39;@zeix/ui-element&#39;
+import type { InputCheckbox } from &#39;../input-checkbox/input-checkbox&#39;
 
-class TodoList extends UIElement {
+export type TodoCountObject = {
+	active: number
+	completed: number
+	total: number
+}
+
+export class TodoList extends UIElement {
+	static states = {
+		tasks: [],
+		filter: &#39;all&#39;
+	}
+
 	connectedCallback() {
-		this.set('filter', 'all') // set initial filter
 		this.#updateList()
 
 		// Event listener and attribute on own element
 		this.self
-			.on('click', e => {
-				if (e.target.localName === 'button') this.removeItem(e.target)
+			.on(&#39;click&#39;, (e: Event) =&gt; {
+				if ((e.target as HTMLElement).localName === &#39;button&#39;)
+					this.removeItem(e.target as HTMLElement)
 			})
-			.sync(setAttribute('filter'))
+			.sync(setAttribute(&#39;filter&#39;))
 
 		// Update count on each change
-		this.set('count', () => {
-			const tasks = this.get('tasks').map(el => el.signal('checked'))
-			const completed = tasks.filter(fn => fn()).length
+		this.set(&#39;count&#39;, () =&gt; {
+			const tasks = (this.get(&#39;tasks&#39;) as InputCheckbox[])
+				.map(el =&gt; el.signals.get(&#39;checked&#39;))
+			const completed = tasks.filter(fn =&gt; fn?.get()).length
 			const total = tasks.length
 			return {
 				active: total - completed,
 				completed,
 				total
-			}
+			} as TodoCountObject
 		})
 	}
 
-	addItem = task => {
-		const template = this.querySelector('template').content.cloneNode(true)
-		template.querySelector('span').textContent = task
-		this.querySelector('ol').appendChild(template)
+	addItem = (task: string) =&gt; {
+		const template = this.querySelector(&#39;template&#39;)?.content.cloneNode(true) as HTMLElement
+		if (template &amp;&amp; template.querySelector(&#39;span&#39;)) {
+			template.querySelector(&#39;span&#39;)!.textContent = task
+			this.querySelector(&#39;ol&#39;)?.appendChild(template)
+			this.#updateList()
+		}
+	}
+
+	removeItem = (element: HTMLElement) =&gt; {
+		element.closest(&#39;li&#39;)?.remove()
 		this.#updateList()
 	}
 
-	removeItem = element => {
-		element.closest('li').remove()
-		this.#updateList()
-	}
-
-	clearCompleted = () => {
-		this.get('tasks')
-			.filter(el => el.get('checked'))
-			.forEach(el => el.parentElement.remove())
+	clearCompleted = () =&gt; {
+		(this.get(&#39;tasks&#39;) as InputCheckbox[])
+			.filter(el =&gt; el.get(&#39;checked&#39;))
+			.forEach(el =&gt; el.parentElement?.remove())
 		this.#updateList()
 	}
 
 	#updateList() {
-		this.set('tasks', Array.from(this.querySelectorAll('input-checkbox')))
+		this.set(&#39;tasks&#39;, Array.from(this.querySelectorAll(&#39;input-checkbox&#39;)))
 	}
 
 }
-TodoList.define('todo-list')</code></pre>
+TodoList.define(&#39;todo-list&#39;)</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

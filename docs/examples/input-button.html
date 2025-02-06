@@ -1,9 +1,11 @@
+
 <tab-list>
 	<menu>
 		<li><button type="button" aria-pressed="true">HTML</button></li>
-		<li><button type="button">CSS</button></li>
-		<li><button type="button">JavaScript</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
 	</menu>
+	
 	<accordion-panel open>
 		<details open aria-disabled="true">
 			<summary class="visually-hidden">
@@ -15,11 +17,11 @@
 					<span class="language">html</span>
 				</p>
 				<pre class="language-html"><code>&lt;input-button&gt;
-	&lt;button type="button"&gt;Button&lt;/button&gt;
+	&lt;button type=&quot;button&quot;&gt;Button&lt;/button&gt;
 &lt;/input-button&gt;
 
 &lt;input-button&gt;
-	&lt;button type="submit" class="primary" disabled&gt;Submit&lt;/button&gt;
+	&lt;button type=&quot;submit&quot; class=&quot;primary&quot; disabled&gt;Submit&lt;/button&gt;
 &lt;/input-button&gt;</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
@@ -27,6 +29,7 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
@@ -34,14 +37,14 @@
 			</summary>
 			<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">input-button.html.css</span>
+					<span class="file">input-button.css</span>
 					<span class="language">css</span>
 				</p>
 				<pre class="language-css"><code>input-button {
 	display: inline-block;
 	flex: 0;
 
-	& button {
+	&amp; button {
 		height: var(--input-height);
 		min-width: var(--input-height);
 		border: 1px solid var(--color-border);
@@ -55,122 +58,125 @@
 		opacity: var(--opacity-dimmed);
 		transition: all var(--transition-shorter) var(--easing-inout);
 
-		&:disabled {
+		&amp;:disabled {
 			opacity: var(--opacity-translucent);
 		}
 
-		&:not(:disabled) {
+		&amp;:not(:disabled) {
 			cursor: pointer;
 			opacity: var(--opacity-solid);
 
-			&:hover {
+			&amp;:hover {
 				background-color: var(--color-secondary-hover);
 			}
 
-			&:active {
+			&amp;:active {
 				background-color: var(--color-secondary-active);
 			}
 		}
 
-		&.primary {
+		&amp;.primary {
 			color: var(--color-text-inverted);
 			background-color: var(--color-primary);
 			border-color: var(--color-primary-active);
 			opacity: var(--opacity-solid);
 
-			&:not(:disabled) {
+			&amp;:not(:disabled) {
 
-				&:hover {
+				&amp;:hover {
 					background-color: var(--color-primary-hover);
 				}
 
-				&:active {
+				&amp;:active {
 					background-color: var(--color-primary-active);
 				}
 			}
 		}
 
-		&.destructive {
+		&amp;.destructive {
 			color: var(--color-text-inverted);
 			background-color: var(--color-error);
 			border-color: var(--color-error-active);
 			opacity: var(--opacity-solid);
 
-			&:not(:disabled) {
+			&amp;:not(:disabled) {
 				
-				&:hover {
+				&amp;:hover {
 					background-color: var(--color-error-hover);
 				}
 
-				&:active {
+				&amp;:active {
 					background-color: var(--color-error-active);
 				}
 			}
 		}
 
-		&.constructive {
+		&amp;.constructive {
 			color: var(--color-text-inverted);
 			background-color: var(--color-success);
 			border-color: var(--color-success-active);
 			opacity: var(--opacity-solid);
 
-			&:not(:disabled) {
+			&amp;:not(:disabled) {
 				
-				&:hover {
+				&amp;:hover {
 					background-color: var(--color-success-hover);
 				}
 
-				&:active {
+				&amp;:active {
 					background-color: var(--color-success-active);
 				}
 			}
 		}
 
-		&.small {
+		&amp;.small {
 			--input-height: var(--space-l);
 			font-size: var(--font-size-xs);
 			padding-inline: var(--space-xs);
 		}
 
-		&.large {
+		&amp;.large {
 			--input-height: var(--space-xl);
 			font-size: var(--font-size-m);
 			padding-inline: var(--space-m);
 		}
 	}
-}</code></pre>
+}
+</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
-				<div class="summary">JavaScript</div>
+				<div class="summary">TS</div>
 			</summary>
-			<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">input-button.js</span>
-					<span class="language">js</span>
+					<span class="file">input-button.ts</span>
+					<span class="language">ts</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, asBoolean, setText, setProperty } from '@zeix/ui-element'
+				<pre class="language-ts"><code>import { asBoolean, setProperty, setText, UIElement } from &quot;@zeix/ui-element&quot;
 
-class InputButton extends UIElement {
-	static observedAttributes = ['disabled']
+export class InputButton extends UIElement {
+	static observedAttributes = [&#39;disabled&#39;]
 	static states = {
 		disabled: asBoolean
 	}
 
 	connectedCallback() {
-		this.first('button').sync(
-			setText('label'),
-			setProperty('disabled')
+		this.first(&#39;button&#39;).sync(
+			setText(&#39;label&#39;),
+			setProperty(&#39;disabled&#39;)
 		)
 	}
 }
-InputButton.define('input-button')</code></pre>
+InputButton.define(&#39;input-button&#39;)
+</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

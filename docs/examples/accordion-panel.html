@@ -1,9 +1,11 @@
+
 <tab-list>
 	<menu>
 		<li><button type="button" aria-pressed="true">HTML</button></li>
-		<li><button type="button">CSS</button></li>
-		<li><button type="button">JavaScript</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
 	</menu>
+	
 	<accordion-panel open>
 		<details open aria-disabled="true">
 			<summary class="visually-hidden">
@@ -15,25 +17,25 @@
 					<span class="language">html</span>
 				</p>
 				<pre class="language-html"><code>&lt;accordion-panel&gt;
-	&lt;details open aria-disabled="true"&gt;
-		&lt;summary class="visually-hidden"&gt;
-			&lt;div class="summary"&gt;Tab 1&lt;/div&gt;
+	&lt;details open aria-disabled=&quot;true&quot;&gt;
+		&lt;summary class=&quot;visually-hidden&quot;&gt;
+			&lt;div class=&quot;summary&quot;&gt;Tab 1&lt;/div&gt;
 		&lt;/summary&gt;
 		Content for Tab 1
 	&lt;/details&gt;
 &lt;/accordion-panel&gt;
 &lt;accordion-panel&gt;
-	&lt;details aria-disabled="true"&gt;
-		&lt;summary class="visually-hidden"&gt;
-			&lt;div class="summary"&gt;Tab 2&lt;/div&gt;
+	&lt;details aria-disabled=&quot;true&quot;&gt;
+		&lt;summary class=&quot;visually-hidden&quot;&gt;
+			&lt;div class=&quot;summary&quot;&gt;Tab 2&lt;/div&gt;
 		&lt;/summary&gt;
 		Content for Tab 2
 	&lt;/details&gt;
 &lt;/accordion-panel&gt;
 &lt;accordion-panel&gt;
-	&lt;details aria-disabled="true"&gt;
-		&lt;summary class="visually-hidden"&gt;
-			&lt;div class="summary"&gt;Tab 3&lt;/div&gt;
+	&lt;details aria-disabled=&quot;true&quot;&gt;
+		&lt;summary class=&quot;visually-hidden&quot;&gt;
+			&lt;div class=&quot;summary&quot;&gt;Tab 3&lt;/div&gt;
 		&lt;/summary&gt;
 		Content for Tab 3
 	&lt;/details&gt;
@@ -44,6 +46,7 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
@@ -57,13 +60,13 @@
 				<pre class="language-css"><code>accordion-panel {
 	display: block;
 
-	> details {
+	&gt; details {
 
-		& summary {
+		&amp; summary {
 			cursor: pointer;
 			font-size: var(--font-size-m);
 			font-weight: var(--font-weight-bold);
-			margin: 0 0 var(--space-s);
+            margin: 0 0 var(--space-s);
 		}
 
 		::marker,
@@ -76,13 +79,13 @@
 			margin-left: var(--space-xs);
 		}
 
-		&[open] {
+		&amp;[open] {
 			margin-bottom: var(--space-m);
 		}
 
-		&[aria-disabled="true"] {
+		&amp;[aria-disabled=&quot;true&quot;] {
 			
-			& summary {
+			&amp; summary {
 				pointer-events: none;
 				display: block;
 				cursor: text;
@@ -94,8 +97,8 @@
 			}
 
 			.summary {
-				margin-left: 0;
-			}
+                margin-left: 0;
+            }
 		}
 	}
 }</code></pre>
@@ -105,40 +108,41 @@
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
-				<div class="summary">JavaScript</div>
+				<div class="summary">TS</div>
 			</summary>
-			<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">accordion-panel.js</span>
-					<span class="language">js</span>
+					<span class="file">accordion-panel.ts</span>
+					<span class="language">ts</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, setProperty, toggleAttribute } from '@zeix/ui-element'
+				<pre class="language-ts"><code>import { setProperty, toggleAttribute, UIElement } from &quot;@zeix/ui-element&quot;
 
-class AccordionPanel extends UIElement {
+export class AccordionPanel extends UIElement {
 	connectedCallback() {
 
 		// Set defaults from attributes
-		this.set('open', this.hasAttribute('open'), false)
-		this.set('collapsible', this.hasAttribute('collapsible'), false)
+		this.set(&#39;open&#39;, this.hasAttribute(&#39;open&#39;), false)
+		this.set(&#39;collapsible&#39;, this.hasAttribute(&#39;collapsible&#39;), false)
 
 		// Handle open and collapsible state changes
 		this.self.sync(
-			toggleAttribute('open'),
-			toggleAttribute('collapsible'),
-			setProperty('ariaHidden', () => !this.get('open') && !this.get('collapsible'))
+			toggleAttribute(&#39;open&#39;),
+			toggleAttribute(&#39;collapsible&#39;),
+			setProperty(&#39;ariaHidden&#39;, () =&gt; !this.get(&#39;open&#39;) &amp;&amp; !this.get(&#39;collapsible&#39;))
 		)
 
 		// Control inner details panel
-		this.first('details').sync(
-			setProperty('open'),
-			setProperty('ariaDisabled', () => !this.get('collapsible'))
+		this.first(&#39;details&#39;).sync(
+			setProperty(&#39;open&#39;),
+			setProperty(&#39;ariaDisabled&#39;, () =&gt; !this.get(&#39;collapsible&#39;))
 		)
 	}
 }
-AccordionPanel.define('accordion-panel')</code></pre>
+AccordionPanel.define(&#39;accordion-panel&#39;)</code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
