@@ -8,10 +8,10 @@
     "build": "bun build index.ts --outdir ./ --minify --define process.env.DEV_MODE=false && bunx tsc",
     "build:dev": "BUN_ENV=development bun build index.dev.ts --outdir ./ --define process.env.DEV_MODE=true",
     "build:docs-js": "bun build docs-src/main.ts --outdir ./docs/assets/ --minify",
-	"build:docs-css": "lightningcss --minify --bundle --targets \">= 0.25%\" docs-src/main.css -o ./docs/assets/main.css",
-	"build:docs-html": "bun run ./docs-src/generate-fragments.ts",
-	"build:docs": "bun run build:docs-js & bun run build:docs-css & bun run build:docs-html",
-    "serve:docs": "bun run build:docs & bun ./docs.ts",
+    "build:docs-css": "lightningcss --minify --bundle --targets \">= 0.25%\" docs-src/main.css -o ./docs/assets/main.css",
+    "build:docs-html": "bun run ./docs-src/generate-pages.ts & bun run ./docs-src/generate-fragments.ts",
+    "build:docs": "bun run build:docs-js & bun run build:docs-css & bun run build:docs-html",
+    "serve:docs": "bun run build:docs & bun ./docs-src/serve-docs.ts",
     "lint": "npx eslint src/",
     "test": "run-s test:setup test:ci",
     "test:setup": "npx playwright install-deps",
@@ -48,6 +48,8 @@
   },
   "dependencies": {
     "@zeix/cause-effect": "^0.9.7",
-    "@zeix/pulse": "^0.9.3"
+    "@zeix/pulse": "^0.9.3",
+    "gray-matter": "^4.0.3",
+    "marked": "^15.0.6"
   }
 }

@@ -358,10 +358,6 @@ header {
 	li {
 		padding: 0;
 		margin: 0;
-
-		&.active {
-			background-color: var(--color-background-alt);
-		}
 	}
 
 	a {
@@ -378,6 +374,10 @@ header {
 		&:hover,
 		&:focus {
 			background-color: var(--color-secondary-hover);
+		}
+
+		&.active {
+			background-color: var(--color-background-alt);
 		}
 
 		.icon {
