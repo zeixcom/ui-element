@@ -14,93 +14,93 @@
 					<span class="file">media-context.ts</span>
 					<span class="language">ts</span>
 				</p>
-				<pre class="language-ts"><code>import { UIElement } from &quot;@zeix/ui-element&quot;
-import { Context } from &quot;@zeix/ui-element/src/core/context&quot;
-
-/* === Pure Functions === */
-
-const parseBreakpoint = (value: string | null, fallback: string) =&gt; {
-	const attr = value?.trim()
-	if (!attr) return fallback
-	const unit = attr.match(/em$/) ? &#39;em&#39; : &#39;px&#39;
-	const v = parseFloat(attr)
-	return Number.isFinite(v) ? v + unit : fallback
-}
-
-/* === Provided Context Keys === */
-
-const MEDIA_MOTION = &#39;media-motion&#39; as Context&lt;string, boolean&gt;
-const MEDIA_THEME = &#39;media-theme&#39; as Context&lt;string, string&gt;
-const MEDIA_VIEWPORT = &#39;media-viewport&#39; as Context&lt;string, string&gt;
-const MEDIA_ORIENTATION = &#39;media-orientation&#39; as Context&lt;string, string&gt;
-
-/* === Class Definition === */
-
-export class MediaContext extends UIElement {
-	static providedContexts = [MEDIA_MOTION, MEDIA_THEME, MEDIA_VIEWPORT, MEDIA_ORIENTATION]
-
-	connectedCallback() {
-		super.connectedCallback()
-
-		const THEME_LIGHT = &#39;light&#39;
-		const THEME_DARK = &#39;dark&#39;
-		const VIEWPORT_XS = &#39;xs&#39;
-		const VIEWPORT_SM = &#39;sm&#39;
-		const VIEWPORT_MD = &#39;md&#39;
-		const VIEWPORT_LG = &#39;lg&#39;
-		const VIEWPORT_XL = &#39;xl&#39;
-		const ORIENTATION_LANDSCAPE = &#39;landscape&#39;
-		const ORIENTATION_PORTRAIT = &#39;portrait&#39;
-
-		const getBreakpoints = () =&gt; ({
-			sm: parseBreakpoint(this.getAttribute(VIEWPORT_SM), &#39;32em&#39;),
-			md: parseBreakpoint(this.getAttribute(VIEWPORT_MD), &#39;48em&#39;),
-			lg: parseBreakpoint(this.getAttribute(VIEWPORT_LG), &#39;72em&#39;),
-			xl: parseBreakpoint(this.getAttribute(VIEWPORT_XL), &#39;108em&#39;),
-		})
-		const breakpoints = getBreakpoints()
-
-		const reducedMotion = matchMedia(&#39;(prefers-reduced-motion: reduce)&#39;)
-		const colorScheme = matchMedia(&#39;(prefers-color-scheme: dark)&#39;)
-		const screenSmall = matchMedia(`(min-width: ${breakpoints.sm})`)
-		const screenMedium = matchMedia(`(min-width: ${breakpoints.md})`)
-		const screenLarge = matchMedia(`(min-width: ${breakpoints.lg})`)
-		const screenXLarge = matchMedia(`(min-width: ${breakpoints.xl})`)
-		const screenOrientation = matchMedia(&#39;(orientation: landscape)&#39;)
-
-		const getViewport = () =&gt; {
-			if (screenXLarge.matches) return VIEWPORT_XL
-            if (screenLarge.matches) return VIEWPORT_LG
-            if (screenMedium.matches) return VIEWPORT_MD
-            if (screenSmall.matches) return VIEWPORT_SM
-            return VIEWPORT_XS
-		}
-
-		// set initial values
-		this.set(MEDIA_MOTION, reducedMotion.matches)
-		this.set(MEDIA_THEME, colorScheme.matches ? THEME_DARK : THEME_LIGHT)
-		this.set(MEDIA_VIEWPORT, getViewport())
-		this.set(MEDIA_ORIENTATION, screenOrientation.matches ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT)
-
-		// event listeners
-		reducedMotion.addEventListener(
-			&#39;change&#39;,
-			e =&gt; this.set(MEDIA_MOTION, e.matches)
-		)
-		colorScheme.addEventListener(
-			&#39;change&#39;,
-			e =&gt; this.set(MEDIA_THEME, e.matches ? THEME_DARK : THEME_LIGHT)
-		)
-		screenSmall.addEventListener(&#39;change&#39;, () =&gt; this.set(MEDIA_VIEWPORT, getViewport()))
-		screenMedium.addEventListener(&#39;change&#39;, () =&gt; this.set(MEDIA_VIEWPORT, getViewport()))
-		screenLarge.addEventListener(&#39;change&#39;, () =&gt; this.set(MEDIA_VIEWPORT, getViewport()))
-		screenXLarge.addEventListener(&#39;change&#39;, () =&gt; this.set(MEDIA_VIEWPORT, getViewport()))
-		screenOrientation.addEventListener(&#39;change&#39;, e =&gt; {
-			this.set(MEDIA_THEME, e.matches ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT)
-		})
-	}
-}
-MediaContext.define(&#39;media-context&#39;)</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "@zeix/ui-element"</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { Context } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "@zeix/ui-element/src/core/context"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">/* === Pure Functions === */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> parseBreakpoint</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F92672"> |</span><span style="color:#66D9EF;font-style:italic"> null</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">fallback</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> attr </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> value?.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F92672">	if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">attr) </span><span style="color:#F92672">return</span><span style="color:#F8F8F2"> fallback</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> unit </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> attr.</span><span style="color:#A6E22E">match</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">/em</span><span style="color:#F92672">$</span><span style="color:#E6DB74">/</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'em'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'px'</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> v </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> parseFloat</span><span style="color:#F8F8F2">(attr)</span></span>
+<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> Number.</span><span style="color:#A6E22E">isFinite</span><span style="color:#F8F8F2">(v) </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> v </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> unit </span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> fallback</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">/* === Provided Context Keys === */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> MEDIA_MOTION </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'media-motion'</span><span style="color:#F92672"> as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Context</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF;font-style:italic">boolean</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> MEDIA_THEME </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'media-theme'</span><span style="color:#F92672"> as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Context</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> MEDIA_VIEWPORT </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'media-viewport'</span><span style="color:#F92672"> as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Context</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> MEDIA_ORIENTATION </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'media-orientation'</span><span style="color:#F92672"> as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Context</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">/* === Class Definition === */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">MediaContext</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> providedContexts </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [MEDIA_MOTION, MEDIA_THEME, MEDIA_VIEWPORT, MEDIA_ORIENTATION]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">		super</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">connectedCallback</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> THEME_LIGHT </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'light'</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> THEME_DARK </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'dark'</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> VIEWPORT_XS </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'xs'</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> VIEWPORT_SM </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'sm'</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> VIEWPORT_MD </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'md'</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> VIEWPORT_LG </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'lg'</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> VIEWPORT_XL </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'xl'</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> ORIENTATION_LANDSCAPE </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'landscape'</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> ORIENTATION_PORTRAIT </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'portrait'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#A6E22E"> getBreakpoints</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> ({</span></span>
+<span class="line"><span style="color:#F8F8F2">			sm: </span><span style="color:#A6E22E">parseBreakpoint</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(VIEWPORT_SM), </span><span style="color:#E6DB74">'32em'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">			md: </span><span style="color:#A6E22E">parseBreakpoint</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(VIEWPORT_MD), </span><span style="color:#E6DB74">'48em'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">			lg: </span><span style="color:#A6E22E">parseBreakpoint</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(VIEWPORT_LG), </span><span style="color:#E6DB74">'72em'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">			xl: </span><span style="color:#A6E22E">parseBreakpoint</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(VIEWPORT_XL), </span><span style="color:#E6DB74">'108em'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> breakpoints </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> getBreakpoints</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> reducedMotion </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> matchMedia</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'(prefers-reduced-motion: reduce)'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> colorScheme </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> matchMedia</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'(prefers-color-scheme: dark)'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> screenSmall </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> matchMedia</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">`(min-width: </span><span style="color:#F92672">${</span><span style="color:#F8F8F2">breakpoints.sm</span><span style="color:#F92672">}</span><span style="color:#E6DB74">)`</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> screenMedium </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> matchMedia</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">`(min-width: </span><span style="color:#F92672">${</span><span style="color:#F8F8F2">breakpoints.md</span><span style="color:#F92672">}</span><span style="color:#E6DB74">)`</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> screenLarge </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> matchMedia</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">`(min-width: </span><span style="color:#F92672">${</span><span style="color:#F8F8F2">breakpoints.lg</span><span style="color:#F92672">}</span><span style="color:#E6DB74">)`</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> screenXLarge </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> matchMedia</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">`(min-width: </span><span style="color:#F92672">${</span><span style="color:#F8F8F2">breakpoints.xl</span><span style="color:#F92672">}</span><span style="color:#E6DB74">)`</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> screenOrientation </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> matchMedia</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'(orientation: landscape)'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#A6E22E"> getViewport</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (screenXLarge.matches) </span><span style="color:#F92672">return</span><span style="color:#F8F8F2"> VIEWPORT_XL</span></span>
+<span class="line"><span style="color:#F92672">            if</span><span style="color:#F8F8F2"> (screenLarge.matches) </span><span style="color:#F92672">return</span><span style="color:#F8F8F2"> VIEWPORT_LG</span></span>
+<span class="line"><span style="color:#F92672">            if</span><span style="color:#F8F8F2"> (screenMedium.matches) </span><span style="color:#F92672">return</span><span style="color:#F8F8F2"> VIEWPORT_MD</span></span>
+<span class="line"><span style="color:#F92672">            if</span><span style="color:#F8F8F2"> (screenSmall.matches) </span><span style="color:#F92672">return</span><span style="color:#F8F8F2"> VIEWPORT_SM</span></span>
+<span class="line"><span style="color:#F92672">            return</span><span style="color:#F8F8F2"> VIEWPORT_XS</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// set initial values</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(MEDIA_MOTION, reducedMotion.matches)</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(MEDIA_THEME, colorScheme.matches </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> THEME_DARK </span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> THEME_LIGHT)</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(MEDIA_VIEWPORT, </span><span style="color:#A6E22E">getViewport</span><span style="color:#F8F8F2">())</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(MEDIA_ORIENTATION, screenOrientation.matches </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> ORIENTATION_LANDSCAPE </span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> ORIENTATION_PORTRAIT)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// event listeners</span></span>
+<span class="line"><span style="color:#F8F8F2">		reducedMotion.</span><span style="color:#A6E22E">addEventListener</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'change'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">			e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(MEDIA_MOTION, e.matches)</span></span>
+<span class="line"><span style="color:#F8F8F2">		)</span></span>
+<span class="line"><span style="color:#F8F8F2">		colorScheme.</span><span style="color:#A6E22E">addEventListener</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'change'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">			e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(MEDIA_THEME, e.matches </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> THEME_DARK </span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> THEME_LIGHT)</span></span>
+<span class="line"><span style="color:#F8F8F2">		)</span></span>
+<span class="line"><span style="color:#F8F8F2">		screenSmall.</span><span style="color:#A6E22E">addEventListener</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(MEDIA_VIEWPORT, </span><span style="color:#A6E22E">getViewport</span><span style="color:#F8F8F2">()))</span></span>
+<span class="line"><span style="color:#F8F8F2">		screenMedium.</span><span style="color:#A6E22E">addEventListener</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(MEDIA_VIEWPORT, </span><span style="color:#A6E22E">getViewport</span><span style="color:#F8F8F2">()))</span></span>
+<span class="line"><span style="color:#F8F8F2">		screenLarge.</span><span style="color:#A6E22E">addEventListener</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(MEDIA_VIEWPORT, </span><span style="color:#A6E22E">getViewport</span><span style="color:#F8F8F2">()))</span></span>
+<span class="line"><span style="color:#F8F8F2">		screenXLarge.</span><span style="color:#A6E22E">addEventListener</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(MEDIA_VIEWPORT, </span><span style="color:#A6E22E">getViewport</span><span style="color:#F8F8F2">()))</span></span>
+<span class="line"><span style="color:#F8F8F2">		screenOrientation.</span><span style="color:#A6E22E">addEventListener</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(MEDIA_THEME, e.matches </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> ORIENTATION_LANDSCAPE </span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> ORIENTATION_PORTRAIT)</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">MediaContext.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'media-context'</span><span style="color:#F8F8F2">)</span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

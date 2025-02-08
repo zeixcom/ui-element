@@ -1,8 +1,8 @@
-import { asBoolean, effect, enqueue, toggleAttribute, UIElement } from "@zeix/ui-element"
-import Prism from 'prismjs'
-import 'prismjs/components/prism-bash';
-import 'prismjs/components/prism-json';
-import 'prismjs/components/prism-typescript';
+import { asBoolean, toggleAttribute, UIElement } from "@zeix/ui-element"
+// import Prism from 'prismjs'
+// import 'prismjs/components/prism-bash';
+// import 'prismjs/components/prism-json';
+// import 'prismjs/components/prism-typescript';
 
 import type { InputButton } from '../input-button/input-button'
 
@@ -15,10 +15,10 @@ export class CodeBlock extends UIElement {
   	connectedCallback() {
 
 		// Enhance code block with Prism.js
-		const language = this.getAttribute('language') || 'html'
+		// const language = this.getAttribute('language') || 'html' 
 		const content = this.querySelector('code')
 		if (content) {
-			this.set('code', content.textContent?.trim(), false)
+			/* this.set('code', content.textContent?.trim(), false)
 			effect(() => {
 				// Apply syntax highlighting while preserving Lit's marker nodes in Storybook
 				const code = document.createElement('code')
@@ -34,7 +34,7 @@ export class CodeBlock extends UIElement {
 					Array.from(code.childNodes)
 						.forEach(node => code.appendChild(node))
 				}, [code, 'h'])
-			})
+			}) */
 
 			// Copy to clipboard
 			this.first('.copy').on('click', async (e: Event) => {

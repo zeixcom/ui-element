@@ -1,4 +1,4 @@
-@import './lib/global.css';
+@import './global.css';
 
 @import './components/my-counter/my-counter.css';
 @import './components/my-slider/my-slider.css';

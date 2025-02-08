@@ -15,10 +15,10 @@
 					<span class="file">lazy-load.html</span>
 					<span class="language">html</span>
 				</p>
-				<pre class="language-html"><code>&lt;lazy-load src=&quot;./examples/snippets/snippet.html&quot;&gt;
-	&lt;p class=&quot;loading&quot;&gt;Loading...&lt;/p&gt;
-	&lt;p class=&quot;error&quot;&gt;&lt;/p&gt;
-&lt;/lazy-load&gt;</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">lazy-load</span><span style="color:#A6E22E"> src</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"./examples/snippets/snippet.html"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"loading"</span><span style="color:#F8F8F2">>Loading...&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"error"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">lazy-load</span><span style="color:#F8F8F2">></span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
@@ -36,64 +36,64 @@
 					<span class="file">lazy-load.ts</span>
 					<span class="language">ts</span>
 				</p>
-				<pre class="language-ts"><code>import { effect, enqueue, removeElement, setText, UIElement } from &quot;@zeix/ui-element&quot;
-
-export class LazyLoad extends UIElement {
-	static states = {
-		content: &#39;&#39;,
-		error: &#39;&#39;,
-		loaded: false
-	}
-
-	connectedCallback() {
-		super.connectedCallback()
-
-		const url = this.getAttribute(&#39;src&#39;)
-		if (url) { // Do sanity checks on the user-provided URL here
-			this.loadContent(url).then(([error, content]) =&gt; {
-				this.set(&#39;content&#39;, content)
-				this.set(&#39;error&#39;, error)
-				this.set(&#39;loaded&#39;, true)
-			})
-		}
-
-		// Remove loading element when &#39;loaded&#39; becomes true
-		this.first(&#39;.loading&#39;).sync(removeElement(&#39;loaded&#39;))
-
-		// Set error text when &#39;error&#39; is set
-		this.first(&#39;.error&#39;).sync(setText(&#39;error&#39;))
-
-		// Update the shadow DOM or innerHTML when content changes
-		effect(() =&gt; {
-			const content = this.get(&#39;content&#39;) as string
-			if (content) {
-				enqueue(() =&gt; {
-					// this.root = this.shadowRoot || this.attachShadow({ mode: &#39;open&#39; })
-					this.root.innerHTML = content 
-					this.root.querySelectorAll(&#39;script&#39;).forEach(script =&gt; {
-						const newScript = document.createElement(&#39;script&#39;)
-						newScript.appendChild(document.createTextNode(script.textContent ?? &#39;&#39;))
-						this.root.appendChild(newScript)
-						script.remove()
-					})
-				}, [this.root as Element, &#39;h&#39;])
-			}
-		})
-	}
-
-	async loadContent(url: string): Promise&lt;[string, string]&gt; {
-		try {
-			const response = await fetch(url)
-			if (!response.ok) return [response.statusText, &#39;&#39;]
-			const text = await response.text()
-			return [&#39;&#39;, text]
-		} catch (error) {
-			return [error.message, &#39;&#39;]
-		}
-	}
-
-}
-LazyLoad.define(&#39;lazy-load&#39;)</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { effect, enqueue, removeElement, setText, UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "@zeix/ui-element"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">LazyLoad</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">		content: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">		error: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">		loaded: </span><span style="color:#AE81FF">false</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">		super</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">connectedCallback</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> url </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'src'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (url) { </span><span style="color:#88846F">// Do sanity checks on the user-provided URL here</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">loadContent</span><span style="color:#F8F8F2">(url).</span><span style="color:#A6E22E">then</span><span style="color:#F8F8F2">(([</span><span style="color:#FD971F;font-style:italic">error</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">content</span><span style="color:#F8F8F2">]) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'content'</span><span style="color:#F8F8F2">, content)</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'error'</span><span style="color:#F8F8F2">, error)</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'loaded'</span><span style="color:#F8F8F2">, </span><span style="color:#AE81FF">true</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">			})</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Remove loading element when 'loaded' becomes true</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.loading'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">removeElement</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'loaded'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Set error text when 'error' is set</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.error'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'error'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Update the shadow DOM or innerHTML when content changes</span></span>
+<span class="line"><span style="color:#A6E22E">		effect</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> content </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'content'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">as</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
+<span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (content) {</span></span>
+<span class="line"><span style="color:#A6E22E">				enqueue</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">					// this.root = this.shadowRoot || this.attachShadow({ mode: 'open' })</span></span>
+<span class="line"><span style="color:#FD971F">					this</span><span style="color:#F8F8F2">.root.innerHTML </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> content </span></span>
+<span class="line"><span style="color:#FD971F">					this</span><span style="color:#F8F8F2">.root.</span><span style="color:#A6E22E">querySelectorAll</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'script'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">forEach</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">script</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> newScript </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">createElement</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'script'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">						newScript.</span><span style="color:#A6E22E">appendChild</span><span style="color:#F8F8F2">(document.</span><span style="color:#A6E22E">createTextNode</span><span style="color:#F8F8F2">(script.textContent </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#FD971F">						this</span><span style="color:#F8F8F2">.root.</span><span style="color:#A6E22E">appendChild</span><span style="color:#F8F8F2">(newScript)</span></span>
+<span class="line"><span style="color:#F8F8F2">						script.</span><span style="color:#A6E22E">remove</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">					})</span></span>
+<span class="line"><span style="color:#F8F8F2">				}, [</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.root </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Element</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'h'</span><span style="color:#F8F8F2">])</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">	async</span><span style="color:#A6E22E"> loadContent</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">url</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">)</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Promise</span><span style="color:#F8F8F2">&#x3C;[</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">]> {</span></span>
+<span class="line"><span style="color:#F92672">		try</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> response </span><span style="color:#F92672">=</span><span style="color:#F92672"> await</span><span style="color:#A6E22E"> fetch</span><span style="color:#F8F8F2">(url)</span></span>
+<span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">response.ok) </span><span style="color:#F92672">return</span><span style="color:#F8F8F2"> [response.statusText, </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">]</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> text </span><span style="color:#F92672">=</span><span style="color:#F92672"> await</span><span style="color:#F8F8F2"> response.</span><span style="color:#A6E22E">text</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F92672">			return</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">, text]</span></span>
+<span class="line"><span style="color:#F8F8F2">		} </span><span style="color:#F92672">catch</span><span style="color:#F8F8F2"> (error) {</span></span>
+<span class="line"><span style="color:#F92672">			return</span><span style="color:#F8F8F2"> [error.message, </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">]</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">LazyLoad.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'lazy-load'</span><span style="color:#F8F8F2">)</span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

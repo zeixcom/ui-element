@@ -1,5 +1,3 @@
-@import './okaidia.css';
-
 code-block {
 	position: relative;
 	display: block;
@@ -22,6 +20,7 @@ code-block {
 	}
 
 	& pre {
+		font-size: var(--font-size-s);
 		color: var(--color-gray-10);
 		background: var(--color-gray-90);
 		padding: var(--space-s);
