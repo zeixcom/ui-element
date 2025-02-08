@@ -73,7 +73,7 @@ Parity: <span class="parity"></span>
 </component-demo>
 
 * ✅ **Zero re-renders** – Only updates what changes.
-* ✅ **No Abstraction over the DOM** – Works with plain HTML.
+* ✅ **No abstraction over the DOM** – Works with plain HTML.
 * ✅ **Fully self-contained** – Can be used anywhere, even inside CMS templates.
 
 <section>

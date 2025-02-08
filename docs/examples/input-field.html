@@ -16,41 +16,41 @@
 					<span class="file">input-field.html</span>
 					<span class="language">html</span>
 				</p>
-				<pre class="language-html"><code>&lt;input-field&gt;
-	&lt;label for=&quot;name-input&quot;&gt;Name&lt;/label&gt;
-	&lt;div class=&quot;row&quot;&gt;
-		&lt;div class=&quot;group auto&quot;&gt;
-			&lt;input type=&quot;text&quot; id=&quot;name-input&quot; name=&quot;name&quot; autocomplete=&quot;name&quot; required&gt;
-		&lt;/div&gt;
-	&lt;/div&gt;
-	&lt;p class=&quot;error&quot; aria-live=&quot;assertive&quot; id=&quot;name-error&quot;&gt;&lt;/p&gt;
-&lt;/input-field&gt;
-
-&lt;input-field integer&gt;
-	&lt;label for=&quot;bday-year-input&quot;&gt;Birthday Year&lt;/label&gt;
-	&lt;div class=&quot;row&quot;&gt;
-		&lt;div class=&quot;group short&quot;&gt;
-			&lt;input type=&quot;number&quot; id=&quot;bday-year-input&quot; name=&quot;bday-year&quot; autocomplete=&quot;bday-year&quot; required minlength=&quot;4&quot; maxlength=&quot;4&quot; min=&quot;1900&quot; max=&quot;2024&quot; step=&quot;1&quot;&gt;
-		&lt;/div&gt;
-		&lt;div class=&quot;spinbutton&quot; data-step=&quot;1&quot;&gt;
-			&lt;button type=&quot;button&quot; class=&quot;decrement&quot; aria-label=&quot;Decrement&quot;&gt;−&lt;/button&gt;
-			&lt;button type=&quot;button&quot; class=&quot;increment&quot; aria-label=&quot;Increment&quot;&gt;+&lt;/button&gt;
-		&lt;/div&gt;
-	&lt;/div&gt;
-	&lt;p class=&quot;error&quot; aria-live=&quot;assertive&quot; id=&quot;bday-year-error&quot;&gt;&lt;/p&gt;
-	&lt;p class=&quot;description&quot; aria-live=&quot;polite&quot; id=&quot;bday-year-description&quot;&gt;&lt;/p&gt;
-&lt;/input-field&gt;
-
-&lt;input-field validate=&quot;./examples/snippets/validate.html&quot;&gt;
-	&lt;label for=&quot;username-input&quot;&gt;Username&lt;/label&gt;
-	&lt;div class=&quot;row&quot;&gt;
-		&lt;div class=&quot;group auto&quot;&gt;
-			&lt;input type=&quot;text&quot; id=&quot;username-input&quot; name=&quot;username&quot; autocomplete=&quot;username&quot; aria-describedby=&quot;username-description&quot; required minlength=&quot;4&quot; maxlength=&quot;20&quot;&gt;
-		&lt;/div&gt;
-	&lt;/div&gt;
-	&lt;p class=&quot;error&quot; aria-live=&quot;assertive&quot; id=&quot;username-error&quot;&gt;&lt;/p&gt;
-	&lt;p class=&quot;description&quot; aria-live=&quot;polite&quot; id=&quot;username-description&quot; data-remaining=&quot;${x} characters remaining&quot;&gt;Max. 20 characters&lt;/p&gt;
-&lt;/input-field&gt;</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">input-field</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> for</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"name-input"</span><span style="color:#F8F8F2">>Name&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"row"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"group auto"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"name-input"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"name"</span><span style="color:#A6E22E"> autocomplete</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"name"</span><span style="color:#A6E22E"> required</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"error"</span><span style="color:#A6E22E"> aria-live</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"assertive"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"name-error"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">input-field</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">input-field</span><span style="color:#A6E22E"> integer</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> for</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"bday-year-input"</span><span style="color:#F8F8F2">>Birthday Year&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"row"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"group short"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"number"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"bday-year-input"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"bday-year"</span><span style="color:#A6E22E"> autocomplete</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"bday-year"</span><span style="color:#A6E22E"> required</span><span style="color:#A6E22E"> minlength</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"4"</span><span style="color:#A6E22E"> maxlength</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"4"</span><span style="color:#A6E22E"> min</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"1900"</span><span style="color:#A6E22E"> max</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"2024"</span><span style="color:#A6E22E"> step</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"1"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"spinbutton"</span><span style="color:#A6E22E"> data-step</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"1"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"decrement"</span><span style="color:#A6E22E"> aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Decrement"</span><span style="color:#F8F8F2">>−&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"increment"</span><span style="color:#A6E22E"> aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Increment"</span><span style="color:#F8F8F2">>+&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"error"</span><span style="color:#A6E22E"> aria-live</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"assertive"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"bday-year-error"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"description"</span><span style="color:#A6E22E"> aria-live</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"polite"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"bday-year-description"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">input-field</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">input-field</span><span style="color:#A6E22E"> validate</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"./examples/snippets/validate.html"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> for</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"username-input"</span><span style="color:#F8F8F2">>Username&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"row"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"group auto"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"username-input"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"username"</span><span style="color:#A6E22E"> autocomplete</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"username"</span><span style="color:#A6E22E"> aria-describedby</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"username-description"</span><span style="color:#A6E22E"> required</span><span style="color:#A6E22E"> minlength</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"4"</span><span style="color:#A6E22E"> maxlength</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"20"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"error"</span><span style="color:#A6E22E"> aria-live</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"assertive"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"username-error"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"description"</span><span style="color:#A6E22E"> aria-live</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"polite"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"username-description"</span><span style="color:#A6E22E"> data-remaining</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"${x} characters remaining"</span><span style="color:#F8F8F2">>Max. 20 characters&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">input-field</span><span style="color:#F8F8F2">></span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
@@ -68,202 +68,202 @@
 					<span class="file">input-field.css</span>
 					<span class="language">css</span>
 				</p>
-				<pre class="language-css"><code>input-field {
-	width: 100%;
-
-	&amp;[value=&quot;0&quot;] input {
-		color: color-mix(in srgb, var(--color-text) 50%, transparent);
-	}
-
-	&amp;:hover button {
-		opacity: var(--opacity-translucent);
-
-		&amp;:not(:disabled) {
-			opacity: var(--opacity-solid);
-			cursor: pointer;
-		}
-	}
-
-	&amp;:focus-within {
-
-		&amp; label,
-		&amp; p,
-		&amp; span {
-			opacity: var(--opacity-solid);
-		}
-
-		&amp; button {
-			opacity: var(--opacity-translucent);
-
-			&amp;:not(:disabled) {
-				opacity: var(--opacity-solid);
-				cursor: pointer;
-			}
-		}
-
-		&amp; input {
-			color: var(--color-text);
-		}
-	}
-
-	&amp; label,
-	&amp; p,
-	&amp; span {
-		opacity: var(--opacity-dimmed);
-		transition: opacity var(--transition-short) var(--easing-inout);
-	}
-
-	&amp; label {
-		display: block;
-		font-size: var(--font-size-s);
-		color: var(--color-text);
-		margin-bottom: var(--space-xxs);
-	}
-
-	.row {
-		display: flex;
-		gap: var(--space-s);
-	}
-
-	.group {
-		display: flex;
-		align-items: baseline;
-		background: var(--color-input);
-		border-bottom: 1px solid var(--color-border);
-		width: 100%;
-
-		&amp;.short {
-			width: 6rem;
-		}
-
-		.clear {
-			border: 0;
-			border-radius: 50%;
-			color: var(--color-input);
-			width: var(--space-m);
-			height: var(--space-m);
-			line-height: 1.1;
-			align-self: center;
-			text-align: center;
-			padding: 0;
-			margin: 0 var(--space-xxs);
-		}
-
-		.hidden {
-			display: none;
-		}
-
-		&amp; span:first-child {
-			padding-left: var(--space-xs);
-		}
-
-		&amp; span:last-child {
-			padding-right: var(--space-xs);
-		}
-	}
-
-	&amp; input {
-		flex-grow: 1;
-		display: inline-block;
-		box-sizing: border-box;
-		background: var(--color-input);
-		color: var(--color-text);
-		border: 0;
-		padding: var(--space-xs) var(--space-xxs);
-		font-size: var(--font-size-m);
-		height: 2rem;
-		width: 100%;
-		transition: color var(--transition-short) var(--easing-inout);
-
-		&amp;::placeholder {
-			color: var(--color-text);
-			opacity: var(--opacity-translucent);
-		}
-	}
-
-	&amp; input[type=&quot;number&quot;] {
-		text-align: right;
-	}
-
-	&amp; input[aria-invalid=&quot;true&quot;] {
-		box-shadow: 0 0 var(--space-xxs) 2px var(--color-error);
-	}
-
-	&amp; span {
-		flex-grow: 0;
-	}
-
-	::-webkit-textfield-decoration-container {
-		height: 100%;
-	}
-
-	::-webkit-inner-spin-button {
-		appearance: none;
-	}
-
-	.spinbutton {
-		display: flex;
-	}
-
-	&amp; button {
-		border: 1px solid var(--color-border);
-		background-color: var(--color-secondary);
-		color: var(--color-text);
-		padding: var(--space-xs) var(--space-s);
-		font-size: var(--font-size-s);
-		line-height: var(--line-height-s);
-		width: 2rem;
-		height: 2rem;
-		opacity: var(--opacity-transparent);
-		transition: opacity var(--transition-short) var(--easing-inout);
-		user-select: none;
-
-		&amp;:disabled {
-			cursor: revert;
-			background-color: var(--color-background);
-		}
-
-		&amp;:not(:disabled) {
-
-			&amp;:hover {
-				background-color: var(--color-secondary-hover);
-			}
-
-			&amp;:active {
-				background-color: var(--color-secondary-active);
-			}
-		}
-	}
-
-	.decrement {
-		border-radius: var(--space-xs) 0 0 var(--space-xs); 
-	}
-
-	.increment {
-		border-radius: 0 var(--space-xs) var(--space-xs) 0;
-		border-left: 0;
-	}
-
-	.error,
-	.description {
-		margin: var(--space-xs) 0 0;
-		font-size: var(--font-size-xs);
-		line-height: var(--line-height-s);
-
-		&amp;:empty {
-			display: none;
-		}
-	}
-
-	.error {
-		color: color-mix(in srgb, var(--color-text) 50%, var(--color-error));
-	}
-
-	.description {
-		color: var(--color-text-soft);
-	}
-}
-</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">input-field</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">100</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26;[value="0"] input {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">color-mix</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">in</span><span style="color:#66D9EF"> srgb</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text) </span><span style="color:#AE81FF">50</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF">transparent</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26;</span><span style="color:#A6E22E">:hover</span><span style="color:#F92672"> button</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		opacity</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--opacity-translucent);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;:not(:</span><span style="color:#66D9EF">disabled</span><span style="color:#F8F8F2">) {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			opacity</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--opacity-solid);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			cursor</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">pointer</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26;</span><span style="color:#A6E22E">:focus-within</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26; </span><span style="color:#66D9EF;font-style:italic">label</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26; p,</span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26; </span><span style="color:#66D9EF;font-style:italic">span</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			opacity</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--opacity-solid);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26; </span><span style="color:#F92672">button</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			opacity</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--opacity-translucent);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">			&#x26;:not(:</span><span style="color:#66D9EF">disabled</span><span style="color:#F8F8F2">) {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				opacity</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--opacity-solid);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				cursor</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">pointer</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26; </span><span style="color:#F92672">input</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">label</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">p</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">span</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		opacity</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--opacity-dimmed);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		transition</span><span style="color:#F8F8F2">: opacity </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--transition-short) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--easing-inout);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">label</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">block</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin-bottom</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xxs);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	.row</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	.group</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		align-items</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">baseline</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-input);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		border-bottom</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> solid</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--color-border);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">100</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;.short {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">6</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">		.clear</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			border-radius</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">50</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-input);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			width</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			height</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			line-height</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1.1</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			align-self</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">center</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			text-align</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">center</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-xxs);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">		.hidden</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">none</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26; </span><span style="color:#F92672">span</span><span style="color:#A6E22E">:first-child</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			padding-left</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26; </span><span style="color:#F92672">span</span><span style="color:#A6E22E">:last-child</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			padding-right</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">input</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		flex-grow</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">inline-block</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		box-sizing</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">border-box</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-input);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xxs);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		height</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">2</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">100</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		transition</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">color</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--transition-short) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--easing-inout);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;::placeholder {</span></span>
+<span class="line"><span style="color:#66D9EF">			color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			opacity</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--opacity-translucent);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">input</span><span style="color:#F8F8F2">[</span><span style="color:#A6E22E">type</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"number"</span><span style="color:#F8F8F2">] {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		text-align</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">right</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">input</span><span style="color:#F8F8F2">[</span><span style="color:#A6E22E">aria-invalid</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"true"</span><span style="color:#F8F8F2">] {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		box-shadow</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#AE81FF"> 0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-xxs) </span><span style="color:#AE81FF">2</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--color-error);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">span</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		flex-grow</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	::-webkit-textfield-decoration-container</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		height</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">100</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	::-webkit-inner-spin-button</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		appearance</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">none</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	.spinbutton</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">button</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> solid</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--color-border);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		line-height</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--line-height-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">2</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		height</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">2</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		opacity</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--opacity-transparent);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		transition</span><span style="color:#F8F8F2">: opacity </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--transition-short) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--easing-inout);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		user-select</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">none</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;:</span><span style="color:#66D9EF">disabled</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">			cursor: </span><span style="color:#66D9EF">revert</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-background);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;</span><span style="color:#A6E22E">:not</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">:disabled</span><span style="color:#F8F8F2">) {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">			&#x26;:hover {</span></span>
+<span class="line"><span style="color:#F8F8F2">				background-color: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary-hover);</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">			&#x26;</span><span style="color:#A6E22E">:active</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary-active);</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	.decrement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		border-radius</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#AE81FF">0</span><span style="color:#AE81FF"> 0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-xs); </span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	.increment</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		border-radius</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		border-left</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	.error</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">	.description</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#AE81FF">0</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-xs);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		line-height</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--line-height-s);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;:empty {</span></span>
+<span class="line"><span style="color:#F8F8F2">			display: </span><span style="color:#66D9EF">none</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	.error</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">color-mix</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">in</span><span style="color:#66D9EF"> srgb</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text) </span><span style="color:#AE81FF">50</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-error));</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	.description</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text-soft);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
@@ -281,232 +281,232 @@
 					<span class="file">input-field.ts</span>
 					<span class="language">ts</span>
 				</p>
-				<pre class="language-ts"><code>import { effect, setAttribute, setProperty, setText, toggleClass, UIElement } from &quot;@zeix/ui-element&quot;
-
-/* === Pure functions === */
-
-// Check if value is a number
-const isNumber = (num: any) =&gt; typeof num === &#39;number&#39;
-
-// Parse a value as a number with optional integer flag and fallback value
-const parseNumber = (v: any, int = false, fallback = 0): number =&gt; {
-	const temp = int ? parseInt(v, 10) : parseFloat(v)
-	return Number.isFinite(temp) ? temp : fallback
-}
-
-// Round a value to the nearest step
-const nearestStep = (
-	v: number,
-	min: number,
-    max: number,
-    step: number,
-	int: boolean = false
-) =&gt; {
-	const steps = Math.round((max - min) / step)
-	// Bring to 0-1 range
-	let zerone = Math.round((v - min) * steps / (max - min)) / steps
-	// Keep in range in case value is off limits
-	zerone = Math.min(Math.max(zerone, 0), 1)
-	const value = zerone * (max - min) + min
-	return int ? Math.round(value) : value
-}
-
-/* === Class definition === */
-
-export class InputField extends UIElement {
-	static observedAttributes = [&#39;value&#39;, &#39;description&#39;]
-	static states = {
-		value: (v: string, el: InputField) =&gt;
-			el.isNumber ? parseNumber(v, el.isInteger, 0) : v
-	}
-	isNumber?: boolean
-	isInteger?: boolean
-	input: HTMLInputElement | null = null
-	step: number = 1
-	min: number | undefined
-	max: number | undefined
-
-	connectedCallback() {
-
-		// Set properties
-		this.input = this.querySelector(&#39;input&#39;)
-		this.isNumber = (this.input &amp;&amp; this.input.type === &#39;number&#39;) ?? false
-		this.isInteger = this.hasAttribute(&#39;integer&#39;)
-		if (this.input &amp;&amp; this.isNumber) {
-			this.step = parseNumber(this.input.step, this.isInteger, 1)
-			this.min = parseNumber(this.input.min, this.isInteger, 0)
-			this.max = parseNumber(this.input.max, this.isInteger, 0)
-		}
-
-		// Set default states
-		this.set(&#39;value&#39;, this.isNumber ? this.input?.valueAsNumber : this.input?.value, false)
-		this.set(&#39;length&#39;, this.input?.value.length)
-		
-		// Derived states
-		this.set(&#39;empty&#39;, () =&gt; !this.get(&#39;length&#39;))
-
-		// Handle input changes
-		this.first(&#39;input&#39;)
-			.on(&#39;change&#39;, () =&gt; {
-				this.#triggerChange(this.isNumber ? this.input?.valueAsNumber : this.input?.value)
-			})
-			.on(&#39;input&#39;, () =&gt; {
-				this.set(&#39;length&#39;, this.input?.value.length)
-			})
-
-		// Handle arrow key events to increment / decrement value
-		if (this.isNumber) {
-			this.first(&#39;input&#39;).on(&#39;keydown&#39;, (e: Event) =&gt; {
-				const evt = e as KeyboardEvent
-				if ([&#39;ArrowUp&#39;, &#39;ArrowDown&#39;].includes(evt.key)) {
-					e.stopPropagation()
-					e.preventDefault()
-					if (evt.key === &#39;ArrowDown&#39;)
-						this.stepDown(evt.shiftKey ? this.step * 10 : this.step)
-					if (evt.key === &#39;ArrowUp&#39;)
-						this.stepUp(evt.shiftKey ? this.step * 10 : this.step)
-				}
-			})
-		}
-
-		// Setup error message
-		this.set(&#39;ariaInvalid&#39;, () =&gt; String(Boolean(this.get(&#39;error&#39;))))
-		this.set(&#39;aria-errormessage&#39;, () =&gt; this.get(&#39;error&#39;) ? this.querySelector(&#39;.error&#39;)?.id : undefined)
-		this.first(&#39;.error&#39;).sync(setText(&#39;error&#39;))
-		this.first(&#39;input&#39;).sync(
-			setProperty(&#39;ariaInvalid&#39;),
-			setAttribute(&#39;aria-errormessage&#39;)
-		)
-
-		// Setup description
-		const description = this.querySelector(&#39;.description&#39;) as HTMLElement | null
-		if (description) {
-			
-			// Derived states
-			const maxLength = this.input?.maxLength
-			const remainingMessage = maxLength &amp;&amp; description.dataset.remaining
-			const defaultDescription = description.textContent
-			this.set(&#39;description&#39;, remainingMessage
-				? () =&gt; {
-					const length = this.get&lt;number&gt;(&#39;length&#39;) ?? 0
-					return length &gt; 0
-						? remainingMessage.replace(&#39;${x}&#39;, String(maxLength - length))
-						: defaultDescription
-				}
-				: defaultDescription
-			)
-			this.set(&#39;aria-describedby&#39;, () =&gt; this.get(&#39;description&#39;)
-				? description.id
-				: undefined
-			)
-
-			// Effects
-			this.first(&#39;.description&#39;).sync(setText(&#39;description&#39;))
-			this.first(&#39;input&#39;).sync(setAttribute(&#39;aria-describedby&#39;))
-		}
-
-		// Handle spin button clicks and update their disabled state
-		const spinButton = this.querySelector(&#39;.spinbutton&#39;) as HTMLElement | null
-		if (!this.isNumber || !spinButton) {
-			this.first(&#39;.decrement&#39;)
-				.on(&#39;click&#39;, (e: Event) =&gt; {
-					this.stepDown((e as MouseEvent).shiftKey ? this.step * 10 : this.step)
-				}).sync(setProperty(
-					&#39;disabled&#39;,
-					() =&gt; isNumber(this.min) &amp;&amp; (this.get(&#39;value&#39;) ?? 0 - this.step &lt; this.min)
-				))
-			this.first(&#39;.increment&#39;)
-				.on(&#39;click&#39;, (e: Event) =&gt; {
-					this.stepUp((e as MouseEvent).shiftKey ? this.step * 10 : this.step)
-				})
-				.sync(setProperty(
-					&#39;disabled&#39;,
-					() =&gt; isNumber(this.max) &amp;&amp; (this.get(&#39;value&#39;) ?? 0 + this.step &gt; this.max)
-				))
-		}
-
-		// Setup clear button
-		this.first(&#39;.clear&#39;)
-			.on(&#39;click&#39;, () =&gt; {
-				this.clear()
-				this.input?.focus()
-			})
-			.sync(toggleClass(&#39;hidden&#39;, &#39;empty&#39;))
-
-		// Update value
-		effect(() =&gt; {
-			const value = this.get(&#39;value&#39;)
-			const validate = this.getAttribute(&#39;validate&#39;)
-			if (value &amp;&amp; validate) {
-
-				// Validate input value against a server-side endpoint
-				fetch(`${validate}?name=${this.input?.name}value=${this.input?.value}`)
-					.then(async response =&gt; {
-						const text = await response.text()
-						this.input?.setCustomValidity(text)
-						this.set(&#39;error&#39;, text)
-					})
-					.catch(err =&gt; this.set(&#39;error&#39;, err.message))
-			}
-
-			// Ensure value is a number if it is not already a number
-			if (this.isNumber &amp;&amp; !isNumber(value))
-				// Effect will be called again with numeric value
-				return this.set(&#39;value&#39;, parseNumber(value, this.isInteger, 0))
-
-			// Change value only if it is a valid number
-			if (this.input &amp;&amp; this.isNumber &amp;&amp; Number.isFinite(value))
-				this.input.value = String(value)
-		})
- 	}
-
-	// Clear the input field
-	clear() {
-		this.set(&#39;value&#39;, &#39;&#39;)
-		this.set(&#39;length&#39;, 0)
-		if (this.input) {
-			this.input.value = &#39;&#39;
-			this.input.focus()
-		}
-	}
-
-	stepUp(stepIncrement: number = this.step) {
-		if (this.isNumber)
-			this.#triggerChange(v =&gt; nearestStep(
-				v + stepIncrement,
-				this.min ?? 0,
-				this.max ?? 100,
-				this.step,
-				this.isInteger
-			))
-	}
-
-	stepDown(stepDecrement: number = this.step) {
-		if (this.isNumber)
-			this.#triggerChange(v =&gt; nearestStep(
-				v - stepDecrement,
-				this.min ?? 0,
-				this.max ?? 100,
-				this.step,
-				this.isInteger
-			))
-    }
-
-	// Trigger value-change event to commit the value change
-	#triggerChange = (value: string | number | ((v: any) =&gt; string | number) | undefined)  =&gt; {
-		this.set(&#39;value&#39;, value)
-		this.set(&#39;error&#39;, this.input?.validationMessage)
-		if (typeof value === &#39;function&#39;)
-			value = this.get(&#39;value&#39;)
-		if (this.input?.value !== String(value))
-			this.dispatchEvent(new CustomEvent(&#39;value-change&#39;, {
-				detail: value,
-				bubbles: true
-			}))
-	}
-
-}
-InputField.define(&#39;input-field&#39;)</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { effect, setAttribute, setProperty, setText, toggleClass, UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "@zeix/ui-element"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">/* === Pure functions === */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// Check if value is a number</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> isNumber</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">num</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> any</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> typeof</span><span style="color:#F8F8F2"> num </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'number'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// Parse a value as a number with optional integer flag and fallback value</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> parseNumber</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> any</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">int</span><span style="color:#F92672"> =</span><span style="color:#AE81FF"> false</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">fallback</span><span style="color:#F92672"> =</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">)</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> temp </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> int </span><span style="color:#F92672">?</span><span style="color:#A6E22E"> parseInt</span><span style="color:#F8F8F2">(v, </span><span style="color:#AE81FF">10</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">:</span><span style="color:#A6E22E"> parseFloat</span><span style="color:#F8F8F2">(v)</span></span>
+<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> Number.</span><span style="color:#A6E22E">isFinite</span><span style="color:#F8F8F2">(temp) </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> temp </span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> fallback</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// Round a value to the nearest step</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> nearestStep</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">	v</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">	min</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">    max</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">    step</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">	int</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> boolean</span><span style="color:#F92672"> =</span><span style="color:#AE81FF"> false</span></span>
+<span class="line"><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> steps </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> Math.</span><span style="color:#A6E22E">round</span><span style="color:#F8F8F2">((max </span><span style="color:#F92672">-</span><span style="color:#F8F8F2"> min) </span><span style="color:#F92672">/</span><span style="color:#F8F8F2"> step)</span></span>
+<span class="line"><span style="color:#88846F">	// Bring to 0-1 range</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	let</span><span style="color:#F8F8F2"> zerone </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> Math.</span><span style="color:#A6E22E">round</span><span style="color:#F8F8F2">((v </span><span style="color:#F92672">-</span><span style="color:#F8F8F2"> min) </span><span style="color:#F92672">*</span><span style="color:#F8F8F2"> steps </span><span style="color:#F92672">/</span><span style="color:#F8F8F2"> (max </span><span style="color:#F92672">-</span><span style="color:#F8F8F2"> min)) </span><span style="color:#F92672">/</span><span style="color:#F8F8F2"> steps</span></span>
+<span class="line"><span style="color:#88846F">	// Keep in range in case value is off limits</span></span>
+<span class="line"><span style="color:#F8F8F2">	zerone </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> Math.</span><span style="color:#A6E22E">min</span><span style="color:#F8F8F2">(Math.</span><span style="color:#A6E22E">max</span><span style="color:#F8F8F2">(zerone, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">), </span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> zerone </span><span style="color:#F92672">*</span><span style="color:#F8F8F2"> (max </span><span style="color:#F92672">-</span><span style="color:#F8F8F2"> min) </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> min</span></span>
+<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> int </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> Math.</span><span style="color:#A6E22E">round</span><span style="color:#F8F8F2">(value) </span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> value</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">/* === Class definition === */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">InputField</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> observedAttributes </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'description'</span><span style="color:#F8F8F2">]</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#A6E22E">		value</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">InputField</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#F8F8F2">			el.isNumber </span><span style="color:#F92672">?</span><span style="color:#A6E22E"> parseNumber</span><span style="color:#F8F8F2">(v, el.isInteger, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> v</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">	isNumber</span><span style="color:#F92672">?:</span><span style="color:#66D9EF;font-style:italic"> boolean</span></span>
+<span class="line"><span style="color:#F8F8F2">	isInteger</span><span style="color:#F92672">?:</span><span style="color:#66D9EF;font-style:italic"> boolean</span></span>
+<span class="line"><span style="color:#F8F8F2">	input</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLInputElement</span><span style="color:#F92672"> |</span><span style="color:#66D9EF;font-style:italic"> null</span><span style="color:#F92672"> =</span><span style="color:#AE81FF"> null</span></span>
+<span class="line"><span style="color:#F8F8F2">	step</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F92672"> =</span><span style="color:#AE81FF"> 1</span></span>
+<span class="line"><span style="color:#F8F8F2">	min</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F92672"> |</span><span style="color:#66D9EF;font-style:italic"> undefined</span></span>
+<span class="line"><span style="color:#F8F8F2">	max</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F92672"> |</span><span style="color:#66D9EF;font-style:italic"> undefined</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Set properties</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.input </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.isNumber </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.input.type </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'number'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> false</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.isInteger </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">hasAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'integer'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.isNumber) {</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.step </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> parseNumber</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input.step, </span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.isInteger, </span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.min </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> parseNumber</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input.min, </span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.isInteger, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.max </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> parseNumber</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input.max, </span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.isInteger, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Set default states</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.isNumber </span><span style="color:#F92672">?</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.input?.valueAsNumber </span><span style="color:#F92672">:</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.input?.value, </span><span style="color:#AE81FF">false</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'length'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input?.value.length)</span></span>
+<span class="line"><span style="color:#F8F8F2">		</span></span>
+<span class="line"><span style="color:#88846F">		// Derived states</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'empty'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'length'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Handle input changes</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">#triggerChange</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.isNumber </span><span style="color:#F92672">?</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.input?.valueAsNumber </span><span style="color:#F92672">:</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.input?.value)</span></span>
+<span class="line"><span style="color:#F8F8F2">			})</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'length'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input?.value.length)</span></span>
+<span class="line"><span style="color:#F8F8F2">			})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Handle arrow key events to increment / decrement value</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.isNumber) {</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'keydown'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> evt </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">KeyboardEvent</span></span>
+<span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> ([</span><span style="color:#E6DB74">'ArrowUp'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'ArrowDown'</span><span style="color:#F8F8F2">].</span><span style="color:#A6E22E">includes</span><span style="color:#F8F8F2">(evt.key)) {</span></span>
+<span class="line"><span style="color:#F8F8F2">					e.</span><span style="color:#A6E22E">stopPropagation</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">					e.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (evt.key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'ArrowDown'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#FD971F">						this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">stepDown</span><span style="color:#F8F8F2">(evt.shiftKey </span><span style="color:#F92672">?</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.step </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 10</span><span style="color:#F92672"> :</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.step)</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (evt.key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'ArrowUp'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#FD971F">						this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">stepUp</span><span style="color:#F8F8F2">(evt.shiftKey </span><span style="color:#F92672">?</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.step </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 10</span><span style="color:#F92672"> :</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.step)</span></span>
+<span class="line"><span style="color:#F8F8F2">				}</span></span>
+<span class="line"><span style="color:#F8F8F2">			})</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Setup error message</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaInvalid'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">Boolean</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'error'</span><span style="color:#F8F8F2">))))</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-errormessage'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'error'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">?</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.error'</span><span style="color:#F8F8F2">)?.id </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> undefined</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.error'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'error'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaInvalid'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">			setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-errormessage'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">		)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Setup description</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> description </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.description'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F92672"> |</span><span style="color:#66D9EF;font-style:italic"> null</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (description) {</span></span>
+<span class="line"><span style="color:#F8F8F2">			</span></span>
+<span class="line"><span style="color:#88846F">			// Derived states</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> maxLength </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.input?.maxLength</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> remainingMessage </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> maxLength </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> description.dataset.remaining</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> defaultDescription </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> description.textContent</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'description'</span><span style="color:#F8F8F2">, remainingMessage</span></span>
+<span class="line"><span style="color:#F92672">				?</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> length </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">number</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'length'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span></span>
+<span class="line"><span style="color:#F92672">					return</span><span style="color:#F8F8F2"> length </span><span style="color:#F92672">></span><span style="color:#AE81FF"> 0</span></span>
+<span class="line"><span style="color:#F92672">						?</span><span style="color:#F8F8F2"> remainingMessage.</span><span style="color:#A6E22E">replace</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'${x}'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">String</span><span style="color:#F8F8F2">(maxLength </span><span style="color:#F92672">-</span><span style="color:#F8F8F2"> length))</span></span>
+<span class="line"><span style="color:#F92672">						:</span><span style="color:#F8F8F2"> defaultDescription</span></span>
+<span class="line"><span style="color:#F8F8F2">				}</span></span>
+<span class="line"><span style="color:#F92672">				:</span><span style="color:#F8F8F2"> defaultDescription</span></span>
+<span class="line"><span style="color:#F8F8F2">			)</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-describedby'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'description'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">				?</span><span style="color:#F8F8F2"> description.id</span></span>
+<span class="line"><span style="color:#F92672">				:</span><span style="color:#AE81FF"> undefined</span></span>
+<span class="line"><span style="color:#F8F8F2">			)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">			// Effects</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.description'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'description'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-describedby'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Handle spin button clicks and update their disabled state</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> spinButton </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.spinbutton'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F92672"> |</span><span style="color:#66D9EF;font-style:italic"> null</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.isNumber </span><span style="color:#F92672">||</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">spinButton) {</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.decrement'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">				.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">					this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">stepDown</span><span style="color:#F8F8F2">((e </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">MouseEvent</span><span style="color:#F8F8F2">).shiftKey </span><span style="color:#F92672">?</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.step </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 10</span><span style="color:#F92672"> :</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.step)</span></span>
+<span class="line"><span style="color:#F8F8F2">				}).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">					'disabled'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">					() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> isNumber</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.min) </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> -</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.step </span><span style="color:#F92672">&#x3C;</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.min)</span></span>
+<span class="line"><span style="color:#F8F8F2">				))</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.increment'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">				.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">					this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">stepUp</span><span style="color:#F8F8F2">((e </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">MouseEvent</span><span style="color:#F8F8F2">).shiftKey </span><span style="color:#F92672">?</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.step </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 10</span><span style="color:#F92672"> :</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.step)</span></span>
+<span class="line"><span style="color:#F8F8F2">				})</span></span>
+<span class="line"><span style="color:#F8F8F2">				.</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">					'disabled'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">					() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> isNumber</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.max) </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> +</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.step </span><span style="color:#F92672">></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.max)</span></span>
+<span class="line"><span style="color:#F8F8F2">				))</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Setup clear button</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.clear'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">clear</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.input?.</span><span style="color:#A6E22E">focus</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">			})</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'empty'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Update value</span></span>
+<span class="line"><span style="color:#A6E22E">		effect</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> validate </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'validate'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (value </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> validate) {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">				// Validate input value against a server-side endpoint</span></span>
+<span class="line"><span style="color:#A6E22E">				fetch</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">`</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">validate</span><span style="color:#F92672">}</span><span style="color:#E6DB74">?name=</span><span style="color:#F92672">${</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input?.name</span><span style="color:#F92672">}</span><span style="color:#E6DB74">value=</span><span style="color:#F92672">${</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input?.value</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">					.</span><span style="color:#A6E22E">then</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">async</span><span style="color:#FD971F;font-style:italic"> response</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> text </span><span style="color:#F92672">=</span><span style="color:#F92672"> await</span><span style="color:#F8F8F2"> response.</span><span style="color:#A6E22E">text</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#FD971F">						this</span><span style="color:#F8F8F2">.input?.</span><span style="color:#A6E22E">setCustomValidity</span><span style="color:#F8F8F2">(text)</span></span>
+<span class="line"><span style="color:#FD971F">						this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'error'</span><span style="color:#F8F8F2">, text)</span></span>
+<span class="line"><span style="color:#F8F8F2">					})</span></span>
+<span class="line"><span style="color:#F8F8F2">					.</span><span style="color:#A6E22E">catch</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">err</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'error'</span><span style="color:#F8F8F2">, err.message))</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">			// Ensure value is a number if it is not already a number</span></span>
+<span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.isNumber </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F92672"> !</span><span style="color:#A6E22E">isNumber</span><span style="color:#F8F8F2">(value))</span></span>
+<span class="line"><span style="color:#88846F">				// Effect will be called again with numeric value</span></span>
+<span class="line"><span style="color:#F92672">				return</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">parseNumber</span><span style="color:#F8F8F2">(value, </span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.isInteger, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">			// Change value only if it is a valid number</span></span>
+<span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.isNumber </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> Number.</span><span style="color:#A6E22E">isFinite</span><span style="color:#F8F8F2">(value))</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.input.value </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(value)</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#F8F8F2"> 	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">	// Clear the input field</span></span>
+<span class="line"><span style="color:#A6E22E">	clear</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'length'</span><span style="color:#F8F8F2">, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input) {</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.input.value </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.input.</span><span style="color:#A6E22E">focus</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	stepUp</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">stepIncrement</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F92672"> =</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.step) {</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.isNumber)</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">#triggerChange</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> nearestStep</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">				v </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> stepIncrement,</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.min </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.max </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 100</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.step,</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.isInteger</span></span>
+<span class="line"><span style="color:#F8F8F2">			))</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	stepDown</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">stepDecrement</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F92672"> =</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.step) {</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.isNumber)</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">#triggerChange</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> nearestStep</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">				v </span><span style="color:#F92672">-</span><span style="color:#F8F8F2"> stepDecrement,</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.min </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.max </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 100</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.step,</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.isInteger</span></span>
+<span class="line"><span style="color:#F8F8F2">			))</span></span>
+<span class="line"><span style="color:#F8F8F2">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">	// Trigger value-change event to commit the value change</span></span>
+<span class="line"><span style="color:#A6E22E">	#triggerChange</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F92672"> |</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F92672"> |</span><span style="color:#F8F8F2"> ((</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> any</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F92672"> |</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">|</span><span style="color:#66D9EF;font-style:italic"> undefined</span><span style="color:#F8F8F2">)  </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">, value)</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'error'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input?.validationMessage)</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">typeof</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'function'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">			value </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input?.value </span><span style="color:#F92672">!==</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(value))</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">dispatchEvent</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">new</span><span style="color:#A6E22E"> CustomEvent</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value-change'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">				detail: value,</span></span>
+<span class="line"><span style="color:#F8F8F2">				bubbles: </span><span style="color:#AE81FF">true</span></span>
+<span class="line"><span style="color:#F8F8F2">			}))</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">InputField.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-field'</span><span style="color:#F8F8F2">)</span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

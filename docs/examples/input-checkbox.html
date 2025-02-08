@@ -16,19 +16,19 @@
 					<span class="file">input-checkbox.html</span>
 					<span class="language">html</span>
 				</p>
-				<pre class="language-html"><code>&lt;input-checkbox&gt;
-	&lt;label&gt;
-		&lt;input type=&quot;checkbox&quot;&gt;
-		&lt;span &gt;Checkbox&lt;/span&gt;
-	&lt;/label&gt;
-&lt;/input-checkbox&gt;
-
-&lt;input-checkbox class=&quot;todo&quot;&gt;
-	&lt;label&gt;
-		&lt;input type=&quot;checkbox&quot; class=&quot;visually-hidden&quot;&gt;
-		&lt;span &gt;Task&lt;/span&gt;
-	&lt;/label&gt;
-&lt;/input-checkbox&gt;</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">input-checkbox</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"checkbox"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2"> >Checkbox&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">input-checkbox</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">input-checkbox</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"todo"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"checkbox"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2"> >Task&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">input-checkbox</span><span style="color:#F8F8F2">></span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
@@ -46,66 +46,66 @@
 					<span class="file">input-checkbox.css</span>
 					<span class="language">css</span>
 				</p>
-				<pre class="language-css"><code>input-checkbox {
-	flex-grow: 1;
-
-	&amp; label {
-		font-size: var(--font-size-s);
-	}
-
-	&amp;.todo label {
-		display: flex;
-		gap: var(--space-s);
-		line-height: var(--input-height);
-		cursor: pointer;
-
-		&amp;::before {
-			display: inline-block;
-			box-sizing: border-box;
-			content: &#39;&#39;;
-			font-size: var(--font-size-l);
-			text-align: center;
-			width: var(--input-height);
-			height: var(--input-height);
-			border: 1px solid var(--color-border);
-			border-radius: 100%;
-			background-color: var(--color-secondary);
-		}
-
-		&amp;:hover::before {
-			background-color: var(--color-secondary-hover);
-			opacity: var(--opacity-solid);
-		}
-
-		&amp;:active::before {
-			background-color: var(--color-secondary-active);
-		}
-	}
-
-	&amp;.todo[checked] label {
-		opacity: var(--opacity-translucent);
-
-		&amp; span {
-			text-decoration: line-through;
-		}
-
-		&amp;::before {
-			color: var(--color-text-inverted);
-			background-color: var(--color-success);
-			border-color: var(--color-success-active);
-			text-shadow: 0 0 var(--space-xs) var(--color-success-active);
-			content: &#39;✓&#39;;
-		}
-
-		&amp;:hover::before {
-			background-color: var(--color-success-hover);
-		}
-
-		&amp;:active::before {
-			background-color: var(--color-success-active);
-		}
-	}
-}</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">input-checkbox</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	flex-grow</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#66D9EF;font-style:italic">label</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-s);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26;</span><span style="color:#A6E22E">.todo</span><span style="color:#F92672"> label</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		line-height</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--input-height);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		cursor</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">pointer</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;::before {</span></span>
+<span class="line"><span style="color:#F8F8F2">			display: </span><span style="color:#66D9EF">inline-block</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			box-sizing</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">border-box</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			content</span><span style="color:#F8F8F2">: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-l);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			text-align</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">center</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			width</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--input-height);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			height</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--input-height);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> solid</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--color-border);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			border-radius</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">100</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;</span><span style="color:#A6E22E">:hover::before</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary-hover);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			opacity</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--opacity-solid);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;</span><span style="color:#A6E22E">:active::before</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary-active);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26;</span><span style="color:#A6E22E">.todo</span><span style="color:#F8F8F2">[</span><span style="color:#A6E22E">checked</span><span style="color:#F8F8F2">] </span><span style="color:#F92672">label</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		opacity</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--opacity-translucent);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26; </span><span style="color:#66D9EF;font-style:italic">span</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			text-decoration</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">line-through</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;</span><span style="color:#A6E22E">::before</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text-inverted);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-success);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			border-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-success-active);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			text-shadow</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#AE81FF"> 0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-success-active);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			content</span><span style="color:#F8F8F2">: </span><span style="color:#E6DB74">'✓'</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;</span><span style="color:#A6E22E">:hover::before</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-success-hover);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;</span><span style="color:#A6E22E">:active::before</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-success-active);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
@@ -123,24 +123,24 @@
 					<span class="file">input-checkbox.ts</span>
 					<span class="language">ts</span>
 				</p>
-				<pre class="language-ts"><code>import { asBoolean, setProperty, toggleAttribute, UIElement } from &quot;@zeix/ui-element&quot;
-
-export class InputCheckbox extends UIElement {
-	static observedAttributes = [&#39;checked&#39;]
-	static states = {
-		checked: asBoolean
-	}
-
-	connectedCallback() {
-		this.first(&#39;input&#39;)
-			.on(&#39;change&#39;, (e: Event) =&gt; {
-				this.set(&#39;checked&#39;, Boolean((e.target as HTMLInputElement)?.checked))
-			})
-			.sync(setProperty(&#39;checked&#39;))
-		this.self.sync(toggleAttribute(&#39;checked&#39;))
-	}
-}
-InputCheckbox.define(&#39;input-checkbox&#39;)</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asBoolean, setProperty, toggleAttribute, UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "@zeix/ui-element"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">InputCheckbox</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> observedAttributes </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'checked'</span><span style="color:#F8F8F2">]</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">		checked: asBoolean</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'checked'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">Boolean</span><span style="color:#F8F8F2">((e.target </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLInputElement</span><span style="color:#F8F8F2">)?.checked))</span></span>
+<span class="line"><span style="color:#F8F8F2">			})</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'checked'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.self.</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">toggleAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'checked'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">InputCheckbox.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-checkbox'</span><span style="color:#F8F8F2">)</span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

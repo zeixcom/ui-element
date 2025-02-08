@@ -9,9 +9,9 @@
     "build:dev": "BUN_ENV=development bun build index.dev.ts --outdir ./ --define process.env.DEV_MODE=true",
     "build:docs-js": "bun build docs-src/main.ts --outdir ./docs/assets/ --minify",
     "build:docs-css": "lightningcss --minify --bundle --targets \">= 0.25%\" docs-src/main.css -o ./docs/assets/main.css",
-    "build:docs-html": "bun ./docs-src/generate-pages.ts & bun ./docs-src/generate-fragments.ts",
+    "build:docs-html": "bun ./docs-src/server/generate-pages.ts & bun ./docs-src/server/generate-fragments.ts",
     "build:docs": "bun run build:docs-js & bun run build:docs-css & bun run build:docs-html",
-    "serve:docs": "bun run build:docs & bun ./docs-src/serve-docs.ts",
+    "serve:docs": "bun run build:docs & bun ./docs-src/server/serve-docs.ts",
     "lint": "npx eslint src/",
     "test": "run-s test:setup test:ci",
     "test:setup": "npx playwright install-deps",
@@ -39,17 +39,18 @@
     "@web/test-runner-playwright": "^0.11.0",
     "@zeix/ui-element": "^0.9.4",
     "dotenv": "^16.4.7",
+    "gray-matter": "^4.0.3",
     "lightningcss-cli": "^1.29.1",
+    "marked": "^15.0.6",
     "playwright": "^1.50.1",
-    "prismjs": "^1.29.0"
+    "prismjs": "^1.29.0",
+    "shiki": "^2.3.2"
   },
   "peerDependencies": {
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.2"
   },
   "dependencies": {
     "@zeix/cause-effect": "^0.9.7",
-    "@zeix/pulse": "^0.9.3",
-    "gray-matter": "^4.0.3",
-    "marked": "^15.0.6"
+    "@zeix/pulse": "^0.9.3"
   }
 }

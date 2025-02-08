@@ -21,27 +21,19 @@ UIElement works **without build tools** but also supports **NPM and module bundl
 
 For the easiest setup, include <strong>UIElement</strong> via a CDN. This is ideal for **testing or quick projects** where you want lightweight interactivity without additional tooling.
 
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">html</span></p>
-<pre class="language-html"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"&gt;&lt;/script&gt;</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+```html
+<script src="https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"></script>
+```
 
 Or use `<script type="module">` to import UIElement in your HTML:
 
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">html</span></p>
-<pre class="language-html"><code>&lt;script type="module"&gt;
+```html
+<script type="module">
 import { UIElement } from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
 
 // Your code here
-&lt;/script&gt;</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+</script>
+```
 
 * ✅ **No build step** required
 * ✅ **Works with any server-rendered HTML**
@@ -59,13 +51,9 @@ For production use, you may want to **self-host UIElement** to avoid relying on 
 
 Simply host the file on your server and include it like this:
 
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">html</span></p>
-<pre class="language-html"><code>&lt;script src="/path/to/your/hosted/ui-element.js"&gt;&lt;/script&gt;</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+```html
+<script src="/path/to/your/hosted/ui-element.js"></script>
+```
 
 **Why self-host?**
 
@@ -82,23 +70,15 @@ Remember to keep the hosted file updated to use the latest features and bug fixe
 
 If you’re using a **bundler** like **Vite, Webpack, or Rollup**, install UIElement via NPM:
 
-<code-block language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">bash</span></p>
-<pre class="language-bash"><code>npm install @zeix/ui-element</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+```bash
+npm install @zeix/ui-element
+```
 
 Then import `UIElement` in your JavaScript:
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>import { UIElement } from '@zeix/ui-element'</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+```js
+import { UIElement } from '@zeix/ui-element'
+```
 
 * ✅ Best for **larger projects** using a build pipeline
 * ✅ Works with **modern JavaScript/TypeScript tooling**
@@ -120,44 +100,36 @@ Now, let’s create an interactive Web Component to verify your setup.
 
 Include the following in your server-rendered HTML:
 
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">html</span></p>
-<pre class="language-html"><code>&lt;hello-world&gt;
-&lt;label&gt;Your name&lt;br&gt;
-&lt;input type="text"&gt;
-&lt;/label&gt;
-&lt;p&gt;Hello, &lt;span&gt;World&lt;/span&gt;!&lt;/p&gt;
-&lt;/hello-world&gt;</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+```html
+<hello-world>
+	<label>Your name<br>
+		<input type="text">
+	</label>
+	<p>Hello, <span>World</span>!</p>
+</hello-world>
+```
 
 ### Component Definition
 
 Save the following inside a `<script type="module">` tag or an external JavaScript file.
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>&lt;script type="module"&gt;
-import { UIElement, setText } from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
+```html
+<script type="module">
+	import { UIElement, setText } from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
 
-class HelloWorld extends UIElement {
-	connectedCallback() {
+	class HelloWorld extends UIElement {
+		connectedCallback() {
 
-		// Update content dynamically based on the 'name' signal
-		this.first('span').sync(setText('name'))
+			// Update content dynamically based on the 'name' signal
+			this.first('span').sync(setText('name'))
 
-		// Handle user input to change the 'name'
-		this.first('input').on('input', e =&gt; this.set('name', e.target.value || undefined))
+			// Handle user input to change the 'name'
+			this.first('input').on('input', e => this.set('name', e.target.value || undefined))
+		}
 	}
-}
-HelloWorld.define('hello-world')
-&lt;/script&gt;</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+	HelloWorld.define('hello-world');
+</script>
+```
 
 **What Happens Here?**
 

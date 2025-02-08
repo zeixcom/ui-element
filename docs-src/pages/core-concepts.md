@@ -21,39 +21,27 @@ UIElement builds on **Web Components**, extending `HTMLElement` to provide **bui
 
 A UIElement component is created by extending `UIElement`:
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>class MyComponent extends UIElement {
+```js
+class MyComponent extends UIElement {
 	/* component definition */
-}</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+}
+```
 
 ### Registering a Custom Element
 
 Every UIElement component must be registered with a valid custom tag name (two or more words joined with `-`) using `.define()`.
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>MyComponent.define('my-component');</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+```js
+MyComponent.define('my-component');
+```
 
 ### Using the Custom Element in HTML
 
 Once registered, the component can be used like any native HTML element:
 
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">html</span></p>
-<pre class="language-html"><code>&lt;my-component&gt;Content goes here&lt;/my-component&gt;</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+```html
+<my-component>Content goes here</my-component>
+```
 
 </section>
 
@@ -75,20 +63,16 @@ Runs when the component is added to the page. This is where you:
 * ✅ **Set up event listeners**
 * ✅ **Apply effects**
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>class MyComponent extends UIElement {
+```js
+class MyComponent extends UIElement {
 	connectedCallback() {
-		this.first('.increment').on('click', () =&gt; { // Add click event listener
-			this.set('count', v =&gt; null != v ? ++v : 1)
+		this.first('.increment').on('click', () => { // Add click event listener
+			this.set('count', v => null != v ? ++v : 1)
 		});
 		this.first('.count').sync(setText('count')); // Apply effect to update text
 	}
-}</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+}
+```
 
 ### Removed from the DOM (disconnectedCallback())
 
@@ -108,25 +92,17 @@ UIElement manages state using **signals**, which are reactive values that trigge
 
 ### Defining & Using Signals
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>this.set('count', 0); // Create a state signal
-this.set('isEven', () =&gt; !((this.get('count') ?? 0) % 2)); // Create a derived signal</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+```js
+this.set('count', 0); // Create a state signal
+this.set('isEven', () => !((this.get('count') ?? 0) % 2)); // Create a derived signal
+```
 
 ### Checking & Removing Signals
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>if (this.has('count')) { /* Do something */ }
-this.delete('count'); // Removes the signal and its dependencies</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+```js
+if (this.has('count')) { /* Do something */ }
+this.delete('count'); // Removes the signal and its dependencies
+```
 
 ### Why Signals with a Map Interface?
 
@@ -159,16 +135,12 @@ UIElement **uses signals** instead of standard properties or attributes because 
 
 ### Parsing Attribute Values
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>static states = {
-	count: asInteger, // Convert '42' -&gt; 42
-	date: v =&gt; new Date(v), // Custom parser: '2025-02-14' -&gt; Date object
-};</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+```js
+static states = {
+	count: asInteger, // Convert '42' -> 42
+	date: v => new Date(v), // Custom parser: '2025-02-14' -> Date object
+};
+```
 
 ### Pre-defined Parsers in UIElement
 
@@ -195,20 +167,18 @@ UIElement provides the following methods for **element selection**:
 | `this.first(selector)` | Selects **the first matching element** inside the component. |
 | `this.all(selector)`   | Selects **all matching elements** inside the component. |
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>// Select the component itself
-this.self.sync(setProperty('hidden')); 
+```js
+// Select the component itself
+this.self.sync(setProperty('hidden'));
+
 // Select the first '.increment' button & add a click event
-this.first('.increment').on('click', () =&gt; {
-	this.set('count', v =&gt; null != v ? ++v : 1);
+this.first('.increment').on('click', () => {
+	this.set('count', v => null != v ? ++v : 1);
 });
-// Select all '&lt;button&gt;' elements & sync their 'disabled' properties
-this.all('button').sync(setProperty('disabled', 'hidden'));</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+
+// Select all <button> elements & sync their 'disabled' properties
+this.all('button').sync(setProperty('disabled', 'hidden'));
+```
 
 </section>
 
@@ -220,18 +190,14 @@ User interactions should **update signals**, not the DOM directly. This keeps th
 
 Bind event handlers to one or many elements using the `.on()` method:
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>this.first('.increment').on('click, () =&gt; {
-	this.set('count', v =&gt; null != v ? v++ : 1)
+```js
+this.first('.increment').on('click', () => {
+	this.set('count', v => null != v ? v++ : 1)
 });
-this.first('input').on('input', e =&gt; {
+this.first('input').on('input', e => {
 	this.set('name', e.target.value || undefined)
-});</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+});
+```
 
 </section>
 
@@ -245,16 +211,12 @@ Effects **automatically update the DOM** when signals change, avoiding manual DO
 
 Apply one or multiple effects to elements using `.sync()`:
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>this.first('.count').sync(
+```js
+this.first('.count').sync(
 	setText('count'), // Update text content according to 'count' signal
 	toggleClass('even', 'isEven') // Toggle 'even' class according to 'isEven' signal
-);</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+);
+```
 
 ### Pre-defined Effects in UIElement
 
@@ -274,13 +236,9 @@ For effects that take two arguments, **the second argument can be omitted** if t
 
 **Simplified Notation (Key Matches Property Name):**
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>this.first('.count').sync(toggleClass('even'));</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+```js
+this.first('.count').sync(toggleClass('even'));
+```
 
 Here, `toggleClass('even')` automatically uses the `"even"` signal.
 
@@ -288,13 +246,9 @@ Here, `toggleClass('even')` automatically uses the `"even"` signal.
 
 Instead of a signal key, you can **pass a function** that derives a value dynamically:
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>this.first('.count').sync(toggleClass('even', () =&gt; !((this.get('count') ?? 0) % 2)));</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+```js
+this.first('.count').sync(toggleClass('even', () => !((this.get('count') ?? 0) % 2)));
+```
 
 **When to Use a Function Instead of a Signal Key?**
 
@@ -307,20 +261,16 @@ For complex DOM manipulations, **define your own effect** using `effect()`.
 
 Here's an example effect that attaches a Shadow DOM and updates its content:
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>// Update the shadow DOM when content changes
-effect(() =&gt; {
+```js
+// Update the shadow DOM when content changes
+effect(() => {
 	const content = this.get('content')
 	if (content) {
 		this.root = this.shadowRoot || this.attachShadow({ mode: 'open' })
 		this.root.innerHTML = content
 	}
-});</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+});
+```
 
 ### Efficient & Fine-Grained Updates
 

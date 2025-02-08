@@ -1,8 +1,7 @@
 import { readFile, writeFile, readdir, stat } from 'fs/promises';
 import { join } from 'path';
-
-const EXAMPLES_DIR = './docs-src/components';
-const OUTPUT_DIR = './docs/examples';
+import { COMPONENTS_DIR, FRAGMENTS_DIR } from './config';
+import { highlightedCode } from './transform-code-blocks';
 
 // Function to check if a file exists
 const fileExists = async (path: string) => {
@@ -14,25 +13,17 @@ const fileExists = async (path: string) => {
 	}
 };
 
-// Function to escape special HTML characters
-const escapeHtml = (str: string) => str.replace(
-	/[&<>"']/g,
-	match => ({
-		'&': '&amp;',
-		'<': '&lt;',
-		'>': '&gt;',
-		'"': '&quot;',
-		"'": '&#39;'
-	}[match])
-);
-
 // Function to generate accordion panels dynamically
 const generatePanel = async (name: string, type: string, label: string) => {
-	const filePath = join(EXAMPLES_DIR, name, `${name}.${type}`);
+	const filePath = join(COMPONENTS_DIR, name, `${name}.${type}`);
 	if (!(await fileExists(filePath))) return '';
 
 	const open = type === 'html'? ' open' : '';
-	const content = escapeHtml(await readFile(filePath, 'utf8'));
+	const content = await readFile(filePath, 'utf8');
+
+	// Apply syntax highlighting
+	const highlighted = await highlightedCode(content, type);
+
 	return `
 	<accordion-panel${open}>
 		<details${open} aria-disabled="true">
@@ -44,7 +35,7 @@ const generatePanel = async (name: string, type: string, label: string) => {
 					<span class="file">${name}.${type}</span>
 					<span class="language">${type}</span>
 				</p>
-				<pre class="language-${type}"><code>${content}</code></pre>
+				${highlighted}
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
@@ -79,14 +70,14 @@ const processComponent = async (name: string) => {
 </tab-list>
 `;
 
-	await writeFile(join(OUTPUT_DIR, `${name}.html`), fragment, 'utf8');
+	await writeFile(join(FRAGMENTS_DIR, `${name}.html`), fragment, 'utf8');
 	console.log(`✅ Generated: ${name}.html`);
 };
 
 // Main function to run the script
 const run = async () => {
 	console.log('🔄 Generating fragments...');
-	const components = await readdir(EXAMPLES_DIR);
+	const components = await readdir(COMPONENTS_DIR);
 	await Promise.all(components.map(processComponent));
 	console.log('✨ All fragments generated!');
 };
