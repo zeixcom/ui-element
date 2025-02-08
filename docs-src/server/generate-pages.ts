@@ -102,7 +102,7 @@ const processMarkdownFile = async (filename: string) => {
         title: frontmatter.title || 'Untitled', 
         emoji: frontmatter.emoji || '📄', 
         description: frontmatter.description || '',
-        url: `/${outputFilename}`
+        url: outputFilename
     };
 };
 
