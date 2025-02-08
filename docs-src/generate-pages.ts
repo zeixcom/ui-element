@@ -11,7 +11,38 @@ const OUTPUT_DIR = './docs';
 const SITEMAP_FILE = join(OUTPUT_DIR, 'sitemap.xml');
 
 // Define a manual order for the menu
-const PAGE_ORDER = ['index', 'component-library'];
+const PAGE_ORDER = [
+	'index',
+	'installation-setup',
+	'core-concepts',
+	'detailed-walkthrough',
+    'best-practices-patterns',
+	'advanced-topics',
+	'examples-recipes',
+    'troubleshooting-faqs',
+    'api-reference',
+	'contributing-development',
+    'changelog-versioning',
+	'licensing-credits',
+];
+
+/* const PAGE_LIST_FILE = './docs-src/.file-pages.json';
+
+let lastPageList: string[] = [];
+
+// Load last known page list
+const loadPageList = async () => {
+    try {
+        lastPageList = JSON.parse(await readFile(PAGE_LIST_FILE, 'utf8'));
+    } catch {
+        lastPageList = [];
+    }
+};
+
+// Save the new page list
+const savePageList = async (pageList: string[]) => {
+    await writeFile(PAGE_LIST_FILE, JSON.stringify(pageList, null, 2), 'utf8');
+}; */
 
 // Custom function to replace includes asynchronously
 const replaceAsync = async (str: string, regex: RegExp, asyncFn: (match: string, ...args: any[]) => Promise<string>): Promise<string> => {
@@ -38,7 +69,7 @@ const loadIncludes = async (html: string): Promise<string> => {
     return await replaceAsync(html, /{{ include '(.+?)' }}/g, async (_, filename) => {
         const includePath = join(INCLUDES_DIR, filename);
         try {
-            console.log(`📄 Loading include: ${filename}`);
+            // console.log(`📄 Loading include: ${filename}`);
             return await readFile(includePath, 'utf8');
         } catch {
             console.warn(`⚠️ Warning: Missing include file: ${filename}`);
@@ -69,34 +100,24 @@ const processMarkdownFile = async (filename: string) => {
     layout = await loadIncludes(layout);
     // console.log(`📎 After Includes Processing:`, layout);
 
-    // 2️⃣ Replace {{ content }} SECOND
-    layout = layout.replace('{{ content }}', htmlContent);
-    // console.log(`✅ After Content Injection:`, layout);
-
-    // 3️⃣ Replace frontmatter placeholders LAST
-    layout = layout.replace(/{{ (.*?) }}/g, (_, key) => {
-        // console.log(`🔍 Replacing: {{ ${key} }} →`, frontmatter[key] || '');
-        return frontmatter[key] || '';
-    });
-
-    // console.log(`✅ Final Processed HTML Output:`, layout);
-
-	// Set the current page's URL
-    const pageUrl = `/${filename.replace('.md', '.html')}`;
-
-    // Post-process menu to add active class
+	// Use regex to match the correct <li> by href and add class="active"
     let menuHtml = await readFile(MENU_FILE, 'utf8');
-
-    // Use regex to match the correct <li> by href and add class="active"
+    const pageUrl = `/${filename.replace('.md', '.html')}`;
     menuHtml = menuHtml.replace(
         new RegExp(`(<li>\\s*<a href="${pageUrl}")`, 'g'),
         '$1 class="active"'
     );
-
-    // console.log(`✅ Post-processed menu for ${filename}:`, menuHtml);
-
-    // Replace the original menu in the layout with the modified version
     layout = layout.replace('{{ include \'menu.html\' }}', menuHtml);
+
+	// 2️⃣ Replace {{ content }} SECOND
+	layout = layout.replace('{{ content }}', htmlContent);
+	// console.log(`✅ After Content Injection:`, layout);
+
+	// 3️⃣ Replace frontmatter placeholders LAST
+	layout = layout.replace(/{{ (.*?) }}/g, (_, key) => {
+		// console.log(`🔍 Replacing: {{ ${key} }} →`, frontmatter[key] || '');
+		return frontmatter[key] || '';
+	});
 
     // Save output file
     const outputFilename = filename.replace('.md', '.html');
@@ -120,7 +141,7 @@ const generateMenu = async (pages) => {
 
     const menuHtml = `
     <nav class="breakout">
-        <ul>
+        <ol>
             ${pages.map(page => `
                 <li>
                     <a href="${page.url}">
@@ -129,7 +150,7 @@ const generateMenu = async (pages) => {
 						<small>${page.description}</small>
                     </a>
                 </li>`).join('\n')}
-        </ul>
+        </ol>
     </nav>`;
 
     await writeFile(MENU_FILE, menuHtml, 'utf8');
@@ -155,17 +176,30 @@ const generateSitemap = async (pages) => {
 
 // Main function
 const run = async () => {
-    console.log('🔄 Generating static pages...');
+    // console.log('🔄 Checking for page list changes...');
 
     const files = await readdir(CONTENT_DIR);
     const mdFiles = files.filter(file => file.endsWith('.md'));
 
+    /* // Check if page list has changed
+    if (JSON.stringify(mdFiles) !== JSON.stringify(lastPageList)) {
+        console.log(`📄 Page list changed! Rebuilding menu and sitemap.`);
+        await savePageList(mdFiles);
+    } else {
+        console.log(`⚡ No page list changes detected.`);
+    } */
+
+    // Process all Markdown files
     const pages = await Promise.all(mdFiles.map(processMarkdownFile));
 
-    await generateMenu(pages);
-    await generateSitemap(pages);
+    // Only regenerate menu and sitemap if the page list changed
+    // if (JSON.stringify(mdFiles) !== JSON.stringify(lastPageList)) {
+        await generateMenu(pages);
+        await generateSitemap(pages);
+    // }
 
     console.log('✨ All pages generated!');
 };
 
+// await loadPageList();
 run();
