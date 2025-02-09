@@ -1,14 +1,14 @@
 ---
-title: "Installation & Setup"
-emoji: "⚙️"
-description: "How to install and set up the library"
+title: "Getting Started"
+emoji: "🚀"
+description: "Installation, setup, and first steps"
 ---
 
 <section class="hero">
 
-# ⚙️ Installation & Setup
+# 🚀 Getting Started
 
-<p class="lead">Start using <strong>UIElement</strong> to enhance server-rendered pages with interactive Web Components – no framework required.</p>
+<p class="lead"><strong>Set up UIElement in minutes – no build tools required</strong>. Whether you’re enhancing server-rendered HTML with lightweight interactivity or integrating Web Components into a modern JavaScript project, UIElement makes it simple to get started.</p>
 </section>
 
 <section>

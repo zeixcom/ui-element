@@ -1,0 +1,1093 @@
+<!doctype html>
+<html>
+	<head>
+		<title>UIElement Docs – Examples & Recipes</title>
+		<link rel="stylesheet" href="assets/main.css">
+		<script type="module" src="assets/main.js"></script>
+	</head>
+	<body>
+		<header class="content-grid">
+			<h1 class="content">UIElement Docs <small>Version 0.9.4</small></h1>
+			<nav class="breakout">
+				<ol>
+					<li>
+						<a href="index.html">
+							<span class="icon">📘</span>
+							<strong>Introduction</strong>
+							<small>Overview and key benefits of UIElement</small>
+						</a>
+					</li>
+					<li>
+						<a href="installation-setup.html">
+							<span class="icon">⚙️</span>
+							<strong>Installation & Setup</strong>
+							<small>How to install and set up the library</small>
+						</a>
+					</li>
+					<li>
+						<a href="core-concepts.html">
+							<span class="icon">🧩</span>
+							<strong>Core Concepts</strong>
+							<small>Learn about signals, state, and reactivity</small>
+						</a>
+					</li>
+					<li>
+						<a href="detailed-walkthrough.html">
+							<span class="icon">📋</span>
+							<strong>Detailed Walkthrough</strong>
+							<small>Step-by-step guide to creating components</small>
+						</a>
+					</li>
+					<li>
+						<a href="best-practices-patterns.html">
+							<span class="icon">💡</span>
+							<strong>Best Practices & Patterns</strong>
+							<small>Tips for effective and scalable usage</small>
+						</a>
+					</li>
+					<li>
+						<a href="advanced-topics.html">
+							<span class="icon">🚀</span>
+							<strong>Advanced Topics</strong>
+							<small>Diving deeper into contexts and performance</small>
+						</a>
+					</li>
+					<li class="active">
+						<a href="examples-recipes.html">
+							<span class="icon">🧪</span>
+							<strong>Examples & Recipes</strong>
+							<small>Sample components and practical use cases</small>
+						</a>
+					</li>
+					<li>
+						<a href="troubleshooting-faqs.html">
+							<span class="icon">❓</span>
+							<strong>Troubleshooting & FAQs</strong>
+							<small>Common issues and frequently asked questions</small>
+						</a>
+					</li>
+					<li>
+						<a href="api-reference.html">
+							<span class="icon">📚</span>
+							<strong>API Reference</strong>
+							<small>Detailed documentation of classes and methods</small>
+						</a>
+					</li>
+					<li>
+						<a href="contributing-development.html">
+							<span class="icon">🤝</span>
+							<strong>Contributing & Development</strong>
+							<small>How to contribute and set up the dev environment</small>
+						</a>
+					</li>
+					<li>
+						<a href="changelog-versioning.html">
+							<span class="icon">📝</span>
+							<strong>Changelog & Versioning</strong>
+							<small>Track changes and understand versioning</small>
+						</a>
+					</li>
+					<li>
+						<a href="licensing-credits.html">
+							<span class="icon">⚖️</span>
+							<strong>Licensing & Credits</strong>
+							<small>License details and acknowledgments</small>
+						</a>
+					</li>
+				</ol>				  
+			</nav>
+		</header>
+
+		<main>
+			<section class="hero">
+				<h1>🧪 Examples & Recipes</h1>
+				<p class="lead">Discover practical examples and patterns for building reactive, modular components with UIElement. Each example focuses on showcasing a specific feature or best practice, guiding you through real-world use cases.</p>
+			</section>
+		  
+			<section>
+				<h2>What You'll Learn</h2>
+				<p>This collection of examples demonstrates a range of scenarios, from simple state updates in a single component to managing complex interactions across multiple components. Here's an overview of what you'll find:</p>
+				<ul>
+					<li><strong>Basic Example: <code>MySlider</code></strong> - Learn how to create a slider component with prev/next buttons and a dot indicator, demonstrating single-component reactivity.</li>
+					<li><strong>Basic Composition: <code>TabList</code> and <code>AccordionPanel</code></strong> - See how a parent component can control the visibility of multiple child components, showcasing state sharing and communication between components.</li>
+					<li><strong>Syntax Highlighting</strong> - See how wrapping content in a <code>CodeBlock</code> component enables syntax highlighting on the client, demonstrating integration with third-party libraries.</li>
+					<li><strong>Fetching Data Example: <code>LazyLoad</code> Component</strong> - Learn how to fetch content only when needed, handling asynchronous operations and updating state reactively as data is loaded.</li>
+					<li><strong>Form Validation Example: <code>InputField</code> with Client-Side & Server-Side Validation</strong> - Validate input fields based on requirements passed from the server and dynamically check the validity of entries, such as checking the availability of usernames via server requests.</li>
+					<li><strong>Simple Application: TodoMVC-like Example</strong> - Build an interactive to-do list app that uses multiple coordinated components, covering signals, event handling, and state management in a more complex structure.</li>
+					<li><strong>Context Example: <code>MediaProvider</code></strong> - Discover how to share state globally across components using context, with practical use cases like adapting to media queries and responsive design.</li>
+				</ul>
+				<p>Whether you're getting started with a basic component or building a full-featured application, these examples will help you understand how to use <code>UIElement</code> effectively to build reactive Web Components.</p>
+			</section>
+
+			<section>
+				<h2>MySlider Example</h2>
+				<component-demo>
+					<div class="preview">
+						<my-slider>
+							<button type="button" class="prev" aria-label="Previous">‹</button>
+							<div class="slides">
+								<div class="slide active">Slide 1</div>
+								<div class="slide">Slide 2</div>
+								<div class="slide">Slide 3</div>
+							</div>
+							<button type="button" class="next" aria-label="Next">›</button>
+							<div class="dots">
+								<span class="active"></span>
+								<span></span>
+								<span></span>
+							</div>
+						</my-slider>
+					</div>
+					<accordion-panel collapsible>
+						<details>
+							<summary>MySlider Source Code</summary>
+							<lazy-load src="./examples/my-slider.html">
+								<p class="loading">Loading...</p>
+							</lazy-load>
+						</details>
+					</accordion-panel>
+				</component-demo>
+			</section>
+
+			<section>
+				<h2>TabList and AccordionPanel Example</h2>
+				<component-demo>
+					<div class="preview">
+						<tab-list>
+							<menu>
+								<li><button type="button" aria-pressed="true">Tab 1</button></li>
+								<li><button type="button">Tab 2</button></li>
+								<li><button type="button">Tab 3</button></li>
+							</menu>
+							<accordion-panel>
+								<details open aria-disabled="true">
+									<summary class="visually-hidden">
+										<div class="summary">Tab 1</div>
+									</summary>
+									Content for Tab 1
+								</details>
+							</accordion-panel>
+							<accordion-panel>
+								<details aria-disabled="true">
+									<summary class="visually-hidden">
+										<div class="summary">Tab 2</div>
+									</summary>
+									Content for Tab 2
+								</details>
+							</accordion-panel>
+							<accordion-panel>
+								<details aria-disabled="true">
+									<summary class="visually-hidden">
+										<div class="summary">Tab 3</div>
+									</summary>
+									Content for Tab 3
+								</details>
+							</accordion-panel>
+						</tab-list>
+					</div>
+					<accordion-panel collapsible>
+						<details>
+							<summary>TabList Source Code</summary>
+							<lazy-load src="./examples/tab-list.html">
+								<p class="loading">Loading...</p>
+							</lazy-load>
+						</details>
+					</accordion-panel>
+					<accordion-panel collapsible>
+						<details>
+							<summary>AccordionPanel Source Code</summary>
+							<lazy-load src="./examples/accordion-panel.html">
+								<p class="loading">Loading...</p>
+							</lazy-load>
+						</details>
+					</accordion-panel>
+				</component-demo>
+			</section>
+
+			<section>
+				<h2>CodeBlock Example</h2>
+				<component-demo>
+					<div class="preview">
+						<code-block collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+							<p class="meta">
+								<span class="file">code-block.html</span>
+								<span class="language">html</span>
+							</p>
+							<pre class="language-html"><code>&lt;code-block collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!"&gt;
+	&lt;p class="meta"&gt;
+		&lt;span class="file"&gt;code-block.html&lt;/span&gt;
+		&lt;span class="language"&gt;html&lt;/span&gt;
+	&lt;/p&gt;
+	&lt;pre&gt;&lt;code class="language-html"&gt;&lt;code-block collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!"&gt;
+	&lt;p class="meta"&gt;
+		&lt;span class="file"&gt;code-block.html&lt;/span&gt;
+		&lt;span class="language"&gt;html&lt;/span&gt;
+	&lt;/p&gt;
+	&lt;pre&gt;&lt;code class="language-html"&gt;&lt;/code&gt;&lt;/pre&gt;
+	&lt;input-button class="copy"&gt;
+		&lt;button type="button" class="secondary small"&gt;Copy&lt;/button&gt;
+	&lt;/input-button&gt;
+	&lt;button type="button" class="overlay"&gt;Expand&lt;/button&gt;
+&lt;/code-block&gt;&lt;/code&gt;&lt;/pre&gt;
+	&lt;input-button class="copy"&gt;
+		&lt;button type="button" class="secondary small"&gt;Copy&lt;/button&gt;
+	&lt;/input-button&gt;
+	&lt;button type="button" class="overlay"&gt;Expand&lt;/button&gt;
+&lt;/code-block&gt;</code></pre>
+							<input-button class="copy">
+								<button type="button" class="secondary small">Copy</button>
+							</input-button>
+							<button type="button" class="overlay">Expand</button>
+						</code-block>
+					</div>
+					<accordion-panel collapsible>
+						<details>
+							<summary>CodeBlock Source Code</summary>
+							<lazy-load src="./examples/code-block.html">
+								<p class="loading">Loading...</p>
+							</lazy-load>
+						</details>
+					</accordion-panel>
+					<accordion-panel collapsible>
+						<details>
+							<summary>InputButton Source Code</summary>
+							<lazy-load src="./examples/input-button.html">
+								<p class="loading">Loading...</p>
+							</lazy-load>
+						</details>
+					</accordion-panel>
+				</component-demo>
+			</section>
+
+			<section>
+				<h2>LazyLoad Example</h2>
+				<component-demo>
+					<div class="preview">
+						<lazy-load src="./examples/snippets/snippet.html">
+							<p class="loading">Loading...</p>
+							<p class="error"></p>
+						</lazy-load>
+					</div>
+					<accordion-panel collapsible>
+						<details>
+							<summary>LazyLoad Source Code</summary>
+							<lazy-load src="./examples/lazy-load.html">
+								<p class="loading">Loading...</p>
+							</lazy-load>
+						</details>
+					</accordion-panel>
+				</component-demo>
+			</section>
+
+			<section>
+				<h2>InputField Example</h2>
+				<component-demo>
+					<div class="preview">
+						<input-field>
+							<label for="name-input">Name</label>
+							<div class="row">
+								<div class="group auto">
+									<input type="text" id="name-input" name="name" autocomplete="name" required>
+								</div>
+							</div>
+							<p class="error" aria-live="assertive" id="name-error"></p>
+						</input-field>
+						
+						<input-field integer>
+							<label for="bday-year-input">Birthday Year</label>
+							<div class="row">
+								<div class="group short">
+									<input type="number" id="bday-year-input" name="bday-year" autocomplete="bday-year" required minlength="4" maxlength="4" min="1900" max="2024" step="1">
+								</div>
+								<div class="spinbutton" data-step="1">
+									<button type="button" class="decrement" aria-label="Decrement">−</button>
+									<button type="button" class="increment" aria-label="Increment">+</button>
+								</div>
+							</div>
+							<p class="error" aria-live="assertive" id="bday-year-error"></p>
+							<p class="description" aria-live="polite" id="bday-year-description"></p>
+						</input-field>
+						
+						<input-field validate="./examples/snippets/validate.html">
+							<label for="username-input">Username</label>
+							<div class="row">
+								<div class="group auto">
+									<input type="text" id="username-input" name="username" autocomplete="username" aria-describedby="username-description" required minlength="4" maxlength="20">
+								</div>
+							</div>
+							<p class="error" aria-live="assertive" id="username-error"></p>
+							<p class="description" aria-live="polite" id="username-description" data-remaining="${x} characters remaining">Max. 20 characters</p>
+						</input-field>
+					</div>
+					<accordion-panel collapsible>
+						<details>
+							<summary>InputField Source Code</summary>
+							<lazy-load src="./examples/input-field.html">
+								<p class="loading">Loading...</p>
+							</lazy-load>
+						</details>
+					</accordion-panel>
+				</component-demo>
+			</section>
+			
+			<section>
+				<h2>TodoApp Example</h2>
+				<component-demo>
+					<div class="preview">
+						<todo-app>
+							<todo-form>
+								<form action="#">
+									<input-field>
+										<label for="add-todo">What needs to be done?</label>
+										<div class="row">
+                                            <div class="group auto">
+                                                <input id="add-todo" type="text" value="" required>
+                                            </div>
+                                        </div>
+									</input-field>
+									<input-button class="submit">
+										<button type="submit" class="primary" disabled>Add Todo</button>
+									</input-button>
+								</form>
+							</todo-form>
+							<todo-list filter="all">
+								<ol></ol>
+								<template>
+									<li>
+										<input-checkbox class="todo">
+											<label>
+												<input type="checkbox" class="visually-hidden" />
+												<span></span>
+											</label>
+										</input-checkbox>
+										<input-button>
+											<button type="button">Delete</button>
+										</input-button>
+									</li>
+								</template>
+							</todo-list>
+							<footer>
+								<todo-count>
+									<p class="all-done">Well done, all done!</p>
+									<p class="remaining"><span></span> tasks left</p>
+								</todo-count>
+								<input-radiogroup value="all" class="split-button">
+									<fieldset>
+										<legend class="visually-hidden">Filter</legend>
+											<label class="selected">
+												<input type="radio" class="visually-hidden" name="filter" value="all" checked>
+												<span>All</span>
+											</label>
+											<label>
+												<input type="radio" class="visually-hidden" name="filter" value="active">
+												<span>Active</span>
+											</label>
+											<label>
+												<input type="radio" class="visually-hidden" name="filter" value="completed">
+												<span>Completed</span>
+											</label>
+									</fieldset>
+								</input-radiogroup>
+								<input-button class="clear-completed">
+									<button type="button">Clear Completed</button>
+								</input-button>
+							</footer>
+						</todo-app>
+					</div>
+					<accordion-panel collapsible>
+						<details>
+                            <summary>TodoApp Source Code</summary>
+                            <lazy-load src="./examples/todo-app.html">
+                                <p class="loading">Loading...</p>
+                            </lazy-load>
+                        </details>
+					</accordion-panel>
+					<accordion-panel collapsible>
+						<details>
+                            <summary>TodoForm Source Code</summary>
+                            <lazy-load src="./examples/todo-form.html">
+                                <p class="loading">Loading...</p>
+                            </lazy-load>
+                        </details>
+					</accordion-panel>
+					<accordion-panel collapsible>
+						<details>
+                            <summary>TodoList Source Code</summary>
+                            <lazy-load src="./examples/todo-list.html">
+                                <p class="loading">Loading...</p>
+                            </lazy-load>
+                        </details>
+					</accordion-panel>
+					<accordion-panel collapsible>
+						<details>
+                            <summary>InputField Source Code</summary>
+                            <lazy-load src="./examples/input-field.html">
+                                <p class="loading">Loading...</p>
+                            </lazy-load>
+                        </details>
+					</accordion-panel>
+					<accordion-panel collapsible>
+						<details>
+                            <summary>InputButton Source Code</summary>
+                            <lazy-load src="./examples/input-button.html">
+                                <p class="loading">Loading...</p>
+                            </lazy-load>
+                        </details>
+					</accordion-panel>
+					<accordion-panel collapsible>
+						<details>
+                            <summary>InputCheckbox Source Code</summary>
+                            <lazy-load src="./examples/input-checkbox.html">
+                                <p class="loading">Loading...</p>
+                            </lazy-load>
+                        </details>
+					</accordion-panel>
+					<accordion-panel collapsible>
+						<details>
+                            <summary>InputRadiogroup Source Code</summary>
+                            <lazy-load src="./examples/input-radiogroup.html">
+                                <p class="loading">Loading...</p>
+                            </lazy-load>
+                        </details>
+					</accordion-panel>
+				</component-demo>
+			</section>			  
+			
+			<section>
+				<h2>MediaContext Example</h2>
+			  
+				<!-- Explanation of MediaContext -->
+				<p>
+				  The <code>MediaContext</code> component provides global state to any sub-components in its DOM tree by exposing context for responsive and adaptive features. It tracks the following:
+				</p>
+			  
+				<ul>
+				  <li>
+					<strong>Media Motion (<code>media-motion</code>)</strong>:
+					Indicates whether the user prefers reduced motion based on the <code>(prefers-reduced-motion)</code> media query.
+				  </li>
+				  <li>
+					<strong>Media Theme (<code>media-theme</code>)</strong>:
+					Provides the user's preferred color scheme, such as dark mode, based on the <code>(prefers-color-scheme)</code> media query.
+				  </li>
+				  <li>
+					<strong>Media Viewport (<code>media-viewport</code>)</strong>:
+					Indicates the current viewport size and is classified into different sizes (e.g., <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code>, <code>xl</code>).
+					Custom breakpoints can be configured by setting attributes on the <code>media-context</code> element.
+				  </li>
+				  <li>
+					<strong>Media Orientation (<code>media-orientation</code>)</strong>:
+					Tracks the device's screen orientation, switching between <code>landscape</code> and <code>portrait</code>.
+				  </li>
+				</ul>
+			  
+				<h3>Configuring Breakpoints</h3>
+				<p>
+				  The viewport sizes can be customized by providing attributes on the <code>media-context</code> element:
+				</p>
+				<ul>
+				  <li><code>sm</code>: Small screen breakpoint (default: <code>32em</code>).</li>
+				  <li><code>md</code>: Medium screen breakpoint (default: <code>48em</code>).</li>
+				  <li><code>lg</code>: Large screen breakpoint (default: <code>72em</code>).</li>
+				  <li><code>xl</code>: Extra large screen breakpoint (default: <code>108em</code>).</li>
+				</ul>
+				<p>
+				  For example, to set a small breakpoint at 40em and a medium breakpoint at 60em, use:
+				</p>
+				<pre class="language-html"><code>
+			  &lt;media-context sm="40em" md="60em"&gt;&lt;/media-context&gt;
+				</code></pre>
+			  
+				<!-- Source code collapsible -->
+				<details>
+				  <summary>Source Code</summary>
+				  <pre class="language-js"><code>
+			  import { UIElement, maybe } from '@zeix/ui-element'
+			  
+			  const VIEWPORT_XS = 'xs';
+			  const VIEWPORT_SM = 'sm';
+			  const VIEWPORT_MD = 'md';
+			  const VIEWPORT_LG = 'lg';
+			  const VIEWPORT_XL = 'xl';
+			  const ORIENTATION_LANDSCAPE = 'landscape';
+			  const ORIENTATION_PORTRAIT = 'portrait';
+			  
+			  class MediaContext extends UIElement {
+				static providedContexts = ['media-motion', 'media-theme', 'media-viewport', 'media-orientation'];
+			  
+				connectedCallback() {
+				  const getBreakpoints = () => {
+					const parseBreakpoint = (breakpoint) => {
+					  const attr = this.getAttribute(breakpoint)?.trim();
+					  if (!attr) return null;
+					  const unit = attr.match(/em$/) ? 'em' : 'px';
+					  const value = maybe(parseFloat(attr)).filter(Number.isFinite)[0];
+					  return value ? value + unit : null;
+					};
+			  
+					const sm = parseBreakpoint(VIEWPORT_SM) || '32em';
+					const md = parseBreakpoint(VIEWPORT_MD) || '48em';
+					const lg = parseBreakpoint(VIEWPORT_LG) || '72em';
+					const xl = parseBreakpoint(VIEWPORT_XL) || '108em';
+					return { sm, md, lg, xl };
+				  };
+				  
+				  const breakpoints = getBreakpoints();
+			  
+				  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+				  const darkMode = matchMedia('(prefers-color-scheme: dark)');
+				  const screenSmall = matchMedia(`(min-width: ${breakpoints.sm})`);
+				  const screenMedium = matchMedia(`(min-width: ${breakpoints.md})`);
+				  const screenLarge = matchMedia(`(min-width: ${breakpoints.lg})`);
+				  const screenXLarge = matchMedia(`(min-width: ${breakpoints.xl})`);
+				  const screenOrientation = matchMedia('(orientation: landscape)');
+			  
+				  const getViewport = () => {
+					if (screenXLarge.matches) return VIEWPORT_XL;
+					if (screenLarge.matches) return VIEWPORT_LG;
+					if (screenMedium.matches) return VIEWPORT_MD;
+					if (screenSmall.matches) return VIEWPORT_SM;
+					return VIEWPORT_XS;
+				  };
+			  
+				  this.set('media-motion', reducedMotion.matches);
+				  this.set('media-theme', darkMode.matches);
+				  this.set('media-viewport', getViewport());
+				  this.set('media-orientation', screenOrientation.matches ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT);
+			  
+				  reducedMotion.onchange = (e) => this.set('media-motion', e.matches);
+				  darkMode.onchange = (e) => this.set('media-theme', e.matches);
+				  screenSmall.onchange = () => this.set('media-viewport', getViewport());
+				  screenMedium.onchange = () => this.set('media-viewport', getViewport());
+				  screenLarge.onchange = () => this.set('media-viewport', getViewport());
+				  screenXLarge.onchange = () => this.set('media-viewport', getViewport());
+				  screenOrientation.onchange = (e) => this.set('media-orientation', e.matches ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT);
+				}
+			  }
+			  
+			  MediaContext.define('media-context');
+				  </code></pre>
+				</details>
+			</section>
+			
+			<section>
+				<h2>ThemedComponent Example</h2>
+			  
+				<!-- Live component preview wrapped in media-context -->
+				<media-context>
+				  <themed-component>
+					This component changes its background based on the theme!
+				  </themed-component>
+				</media-context>
+			  
+				<!-- Source code with progressive disclosure -->
+				<details>
+				  <summary>Source Code</summary>
+			  
+				  <!-- Tabs for HTML, CSS, and JavaScript -->
+				  <tab-list>
+					<!-- HTML Tab Panel -->
+					<tab-panel label="HTML">
+					  <h3>HTML</h3>
+					  <pre class="language-html"><code>
+			  &lt;media-context&gt;
+				&lt;themed-component&gt;
+				  This component changes its background based on the theme!
+				&lt;/themed-component&gt;
+			  &lt;/media-context&gt;
+					  </code></pre>
+					</tab-panel>
+			  
+					<!-- CSS Tab Panel -->
+					<tab-panel label="CSS">
+					  <h3>CSS</h3>
+					  <pre class="language-css"><code>
+			  themed-component {
+				display: block;
+				padding: 20px;
+				color: white;
+				transition: background-color 0.3s ease;
+			  
+				&.dark {
+				  background-color: black;
+				}
+			  
+				&.light {
+				  background-color: lightgray;
+				}
+			  }
+					  </code></pre>
+					</tab-panel>
+			  
+					<!-- JavaScript Tab Panel -->
+					<tab-panel label="JavaScript">
+					  <h3>JavaScript</h3>
+					  <pre class="language-js"><code>
+			  import { UIElement, toggleClass } from '@zeix/ui-element';
+			  
+			  class ThemedComponent extends UIElement {
+				static consumedContexts = ['media-theme'];
+			  
+				connectedCallback() {
+				  // Toggle the class based on 'media-theme' signal
+				  this.self.sync(toggleClass('dark', () => this.get('media-theme')));
+				  this.self.sync(toggleClass('light', () => !this.get('media-theme')));
+				}
+			  }
+			  
+			  ThemedComponent.define('themed-component');
+					  </code></pre>
+					</tab-panel>
+				  </tab-list>
+				</details>
+			</section>
+			
+			<section>
+				<h2>AnimatedComponent Example</h2>
+			  
+				<!-- Live component preview wrapped in media-context -->
+				<media-context>
+				  <animated-component>
+					<div class="animated-box">Box 1</div>
+					<div class="animated-box">Box 2</div>
+					<div class="animated-box">Box 3</div>
+				  </animated-component>
+				</media-context>
+			  
+				<!-- Source code with progressive disclosure -->
+				<details>
+				  <summary>Source Code</summary>
+			  
+				  <!-- Tabs for HTML, CSS, and JavaScript -->
+				  <tab-list>
+					<!-- HTML Tab Panel -->
+					<tab-panel label="HTML">
+					  <h3>HTML</h3>
+					  <pre class="language-html"><code>
+			  &lt;media-context&gt;
+				&lt;animated-component&gt;
+				  &lt;div class="animated-box"&gt;Box 1&lt;/div&gt;
+				  &lt;div class="animated-box"&gt;Box 2&lt;/div&gt;
+				  &lt;div class="animated-box"&gt;Box 3&lt;/div&gt;
+				&lt;/animated-component&gt;
+			  &lt;/media-context&gt;
+					  </code></pre>
+					</tab-panel>
+			  
+					<!-- CSS Tab Panel -->
+					<tab-panel label="CSS">
+					  <h3>CSS</h3>
+					  <pre class="language-css"><code>
+			  animated-component {
+				display: block;
+				padding: 20px;
+				overflow: hidden;
+			  
+				.animated-box {
+				  width: 50px;
+				  height: 50px;
+				  margin: 10px;
+				  background-color: lightblue;
+				  text-align: center;
+				  line-height: 50px;
+				  font-weight: bold;
+				  color: white;
+				}
+			  
+				&.no-motion .animated-box {
+				  opacity: 0;
+				  transition: opacity 1s ease-in;
+				}
+			  
+				&.motion .animated-box {
+				  animation: moveAndFlash 2s infinite ease-in-out alternate;
+				}
+			  
+				@keyframes moveAndFlash {
+				  0% {
+					transform: translateX(0);
+					background-color: lightblue;
+				  }
+				  100% {
+					transform: translateX(100px);
+					background-color: lightcoral;
+				  }
+				}
+			  }
+					  </code></pre>
+					</tab-panel>
+			  
+					<!-- JavaScript Tab Panel -->
+					<tab-panel label="JavaScript">
+					  <h3>JavaScript</h3>
+					  <pre class="language-js"><code>
+			  import { UIElement, toggleClass } from '@zeix/ui-element';
+			  
+			  class AnimatedComponent extends UIElement {
+				static consumedContexts = ['media-motion'];
+			  
+				connectedCallback() {
+				  // Toggle classes based on 'media-motion' context
+				  this.self.sync(toggleClass('motion', () => !this.get('media-motion')));
+				  this.self.sync(toggleClass('no-motion', 'media-motion'));
+				}
+			  }
+			  
+			  AnimatedComponent.define('animated-component');
+					  </code></pre>
+					</tab-panel>
+				  </tab-list>
+				</details>
+			</section>
+			
+			<section>
+				<h2>Responsive TabList Example</h2>
+			  
+				<!-- Live component preview wrapped in media-context -->
+				<media-context>
+				  <tab-list>
+					<button class="tab-button">Tab 1</button>
+					<button class="tab-button">Tab 2</button>
+					<button class="tab-button">Tab 3</button>
+			  
+					<tab-panel>
+					  <button class="panel-header">Tab 1</button>
+					  <div class="panel-content">Content for Tab 1</div>
+					</tab-panel>
+					<tab-panel>
+					  <button class="panel-header">Tab 2</button>
+					  <div class="panel-content">Content for Tab 2</div>
+					</tab-panel>
+					<tab-panel>
+					  <button class="panel-header">Tab 3</button>
+					  <div class="panel-content">Content for Tab 3</div>
+					</tab-panel>
+				  </tab-list>
+				</media-context>
+			  
+				<!-- Source code with progressive disclosure -->
+				<details>
+				  <summary>Source Code</summary>
+			  
+				  <!-- Tabs for HTML, CSS, and JavaScript -->
+				  <tab-list>
+					<!-- HTML Tab Panel -->
+					<tab-panel label="HTML">
+					  <h3>HTML</h3>
+					  <pre class="language-html"><code>
+			  &lt;media-context&gt;
+				&lt;tab-list&gt;
+				  &lt;button class="tab-button"&gt;Tab 1&lt;/button&gt;
+				  &lt;button class="tab-button"&gt;Tab 2&lt;/button&gt;
+				  &lt;button class="tab-button"&gt;Tab 3&lt;/button&gt;
+			  
+				  &lt;tab-panel&gt;
+					&lt;button class="panel-header"&gt;Tab 1&lt;/button&gt;
+					&lt;div class="panel-content"&gt;Content for Tab 1&lt;/div&gt;
+				  &lt;/tab-panel&gt;
+				  &lt;tab-panel&gt;
+					&lt;button class="panel-header"&gt;Tab 2&lt;/button&gt;
+					&lt;div class="panel-content"&gt;Content for Tab 2&lt;/div&gt;
+				  &lt;/tab-panel&gt;
+				  &lt;tab-panel&gt;
+					&lt;button class="panel-header"&gt;Tab 3&lt;/button&gt;
+					&lt;div class="panel-content"&gt;Content for Tab 3&lt;/div&gt;
+				  &lt;/tab-panel&gt;
+				&lt;/tab-list&gt;
+			  &lt;/media-context&gt;
+					  </code></pre>
+					</tab-panel>
+			  
+					<!-- CSS Tab Panel -->
+					<tab-panel label="CSS">
+					  <h3>CSS</h3>
+					  <pre class="language-css"><code>
+			  tab-list {
+				display: flex;
+				flex-direction: column;
+			  
+				&.accordion .tab-button {
+				  display: none; /* Hide tab buttons in accordion mode */
+				}
+			  
+				.tab-button {
+				  cursor: pointer;
+				  padding: 10px;
+				  border: none;
+				  background: lightgray;
+				  transition: background-color 0.2s ease;
+				}
+			  
+				.tab-button.active {
+				  background-color: gray;
+				}
+			  }
+			  
+			  tab-panel {
+				display: none;
+			  
+				&.active {
+				  display: block;
+				}
+			  
+				&.collapsible {
+				  .panel-header {
+					cursor: pointer;
+					padding: 10px;
+					background-color: lightgray;
+					border: none;
+					outline: none;
+				  }
+			  
+				  .panel-header:hover {
+					background-color: darkgray;
+				  }
+			  
+				  .panel-header.active {
+					background-color: gray;
+				  }
+			  
+				  .panel-content {
+					display: none;
+					padding: 10px;
+				  }
+			  
+				  &.active .panel-content {
+					display: block;
+				  }
+				}
+			  }
+					  </code></pre>
+					</tab-panel>
+			  
+					<!-- JavaScript Tab Panel -->
+					<tab-panel label="JavaScript">
+					  <h3>JavaScript</h3>
+					  <pre class="language-js"><code>
+			  import { UIElement, toggleClass } from '@zeix/ui-element';
+			  
+			  // TabList Component
+			  class TabList extends UIElement {
+				static consumedContexts = ['media-viewport'];
+			  
+				connectedCallback() {
+				  super.connectedCallback(); // Necessary to consume context
+			  
+				  // Set 'accordion' signal based on viewport size
+				  this.set('accordion', () => ['xs', 'sm'].includes(this.get('media-viewport')));
+			  
+				  // Toggle 'accordion' class based on the signal
+				  this.self.sync(toggleClass('accordion'));
+			  
+				  // Pass 'collapsible' state to tab-panels based on 'accordion' state
+				  this.all('tab-panel').pass({
+					collapsible: 'accordion'
+				  });
+			  
+				  // Handle tab clicks in normal tabbed mode
+				  this.all('.tab-button').on('click', () => this.set('activeIndex', index))
+			  
+				  // Set active tab-panel based on 'activeIndex'
+				  this.all('tab-panel').sync((host, target, index) =>
+					this.self.sync(toggleClass('active', () => index === this.get('activeIndex'))(host, target))
+				  );
+				}
+			  }
+			  
+			  TabList.define('tab-list');
+			  
+			  // TabPanel Component
+			  class TabPanel extends UIElement {
+				static observedAttributes = ['collapsible'];
+			  
+				connectedCallback() {
+				  super.connectedCallback(); // Ensure correct setup with context
+			  
+				  // Handle expanding/collapsing if 'collapsible' is true
+				  this.self.sync(toggleClass('collapsible', 'collapsible'));
+			  
+				  if (this.get('collapsible')) {
+					const header = this.querySelector('.panel-header');
+					header.addEventListener('click', () => {
+					  this.set('expanded', !this.get('expanded'));
+					});
+			  
+					this.self.sync(toggleClass('active', 'expanded'));
+				  }
+				}
+			  }
+			  
+			  TabPanel.define('tab-panel');
+					  </code></pre>
+					</tab-panel>
+				  </tab-list>
+				</details>
+			</section>
+
+			<section>
+				<h2>Responsive Image Gallery Example</h2>
+			  
+				<!-- Live component preview wrapped in media-context -->
+				<media-context>
+				  <responsive-image-gallery>
+					<img src="image1.jpg" alt="Image 1">
+					<img src="image2.jpg" alt="Image 2">
+					<img src="image3.jpg" alt="Image 3">
+					<img src="image4.jpg" alt="Image 4">
+					<img src="image5.jpg" alt="Image 5">
+				  </responsive-image-gallery>
+				</media-context>
+			  
+				<!-- Source code with progressive disclosure -->
+				<details>
+				  <summary>Source Code</summary>
+			  
+				  <!-- Tabs for HTML, CSS, and JavaScript -->
+				  <tab-list>
+					<!-- HTML Tab Panel -->
+					<tab-panel label="HTML">
+					  <h3>HTML</h3>
+					  <pre class="language-html"><code>
+			  &lt;media-context&gt;
+				&lt;responsive-image-gallery&gt;
+				  &lt;img src="image1.jpg" alt="Image 1"&gt;
+				  &lt;img src="image2.jpg" alt="Image 2"&gt;
+				  &lt;img src="image3.jpg" alt="Image 3"&gt;
+				  &lt;img src="image4.jpg" alt="Image 4"&gt;
+				  &lt;img src="image5.jpg" alt="Image 5"&gt;
+				&lt;/responsive-image-gallery&gt;
+			  &lt;/media-context&gt;
+					  </code></pre>
+					</tab-panel>
+			  
+					<!-- CSS Tab Panel -->
+					<tab-panel label="CSS">
+					  <h3>CSS</h3>
+					  <pre class="language-css"><code>
+			  responsive-image-gallery {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 10px;
+				padding: 10px;
+				transition: all 0.3s ease;
+			  
+				&.landscape {
+				  flex-direction: row;
+				  justify-content: space-between;
+				}
+			  
+				&.portrait {
+				  flex-direction: column;
+				}
+			  
+				img {
+				  flex: 1 1 calc(20% - 10px); /* Creates a grid with up to 5 images per row */
+				  max-width: calc(20% - 10px);
+				  height: auto;
+				  border: 2px solid transparent;
+				  border-radius: 5px;
+				  cursor: pointer;
+				}
+			  
+				&.portrait img {
+				  flex: 0 0 100%; /* Each image takes full width in slider mode */
+				  max-width: 100%;
+				  margin-bottom: 10px;
+				}
+			  }
+					  </code></pre>
+					</tab-panel>
+			  
+					<!-- JavaScript Tab Panel -->
+					<tab-panel label="JavaScript">
+					  <h3>JavaScript</h3>
+					  <pre class="language-js"><code>
+			  import { UIElement, toggleClass, effect, enqueue } from '@zeix/ui-element';
+			  import { MySlider } from './my-slider.js'; // Assume this is the existing MySlider component
+			  
+			  class ResponsiveImageGallery extends UIElement {
+				static consumedContexts = ['media-orientation'];
+			  
+				connectedCallback() {
+				  super.connectedCallback(); // Ensure correct setup with context
+			  
+				  // Toggle classes based on orientation
+				  this.self.sync(toggleClass('landscape', () => this.get('media-orientation') === 'landscape'));
+				  this.self.sync(toggleClass('portrait', () => this.get('media-orientation') === 'portrait'));
+			  
+				  // Dynamically wrap images in <my-slider> for portrait mode
+				  effect(() => {
+					if (this.get('media-orientation') === 'portrait') {
+					  if (!this.slider) {
+						this.slider = document.createElement('my-slider');
+						while (this.firstChild) {
+						  this.slider.appendChild(this.firstChild);
+						}
+						enqueue(() => this.appendChild(this.slider), [this, 'add-slider']);
+					  }
+					} else {
+					  // Remove <my-slider> and display images as a grid in landscape mode
+					  if (this.slider) enqueue(() => this.slider.remove(), [this.slider, 'remove-slider']);
+					}
+				  });
+				}
+			  }
+			  ResponsiveImageGallery.define('responsive-image-gallery');
+					  </code></pre>
+					</tab-panel>
+				  </tab-list>
+				</details>
+			</section>
+			
+			<section>
+				<h2>Wrap-Up</h2>
+			  
+				<p>
+				  The examples we've explored showcase the versatility and power of UIElement in building interactive and responsive Web Components. UIElement provides:
+				</p>
+			  
+				<ul>
+				  <li>
+					<strong>Declarative State Management</strong>: Use signals to synchronize state with the DOM, auto-effects to handle changes efficiently, and context to share state across the component tree.
+				  </li>
+				  <li>
+					<strong>Adaptive Layout & Responsiveness</strong>: Build components that dynamically adapt to viewport size, orientation, and user preferences for reduced motion.
+				  </li>
+				  <li>
+					<strong>Flexible Composability</strong>: Easily compose smaller components into more complex applications, passing state seamlessly and ensuring components remain loosely coupled.
+				  </li>
+				  <li>
+					<strong>Enhanced User Experience</strong>: Integrate third-party libraries to add features like syntax highlighting and validation, while ensuring accessible and user-friendly interactions.
+				  </li>
+				  <li>
+					<strong>Server-Client Reactivity</strong>: UIElement handles client-side reactivity seamlessly, working with server-rendered HTML to provide a smooth, reactive UI without unnecessary re-renders.
+				  </li>
+				</ul>
+			  
+				<p>
+				  The wide range of use cases from context-aware components to enhanced input handling demonstrates how UIElement can simplify state management and reactive programming in your Web Components.
+				</p>
+			  
+				<h3>What's Next?</h3>
+				<p>
+				  Now that you've seen UIElement in action, here are some recommended next steps:
+				</p>
+			  
+				<ul>
+				  <li>
+					<a href="/troubleshooting.html"><strong>Troubleshooting & FAQ</strong></a>: Find solutions to common issues, learn best practices for debugging, and explore how to optimize your components for performance.
+				  </li>
+				  <li>
+					<a href="/api-reference.html"><strong>API Reference</strong></a>: Dive deeper into the UIElement API, with detailed explanations of methods, properties, signals, and lifecycle hooks.
+				  </li>
+				</ul>
+			  
+				<p>
+				  Whether you are developing simple UI components or building complex, data-driven applications, UIElement offers a solid foundation for building fast, modular, and adaptive web experiences.
+				</p>
+			</section>			  
+
+		</main>
+		  
+	</body>
+</html>

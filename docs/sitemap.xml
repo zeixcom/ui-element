@@ -3,73 +3,55 @@
 		
 		<url>
 			<loc>index.html</loc>
-			<lastmod>2025-02-08T16:40:46.363Z</lastmod>
+			<lastmod>2025-02-09T19:42:31.865Z</lastmod>
 			<priority>1.0</priority>
 		</url>
 
 		<url>
-			<loc>installation-setup.html</loc>
-			<lastmod>2025-02-08T16:40:46.363Z</lastmod>
+			<loc>getting-started.html</loc>
+			<lastmod>2025-02-09T19:42:31.865Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 
 		<url>
-			<loc>core-concepts.html</loc>
-			<lastmod>2025-02-08T16:40:46.363Z</lastmod>
+			<loc>building-components.html</loc>
+			<lastmod>2025-02-09T19:42:31.865Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 
 		<url>
-			<loc>detailed-walkthrough.html</loc>
-			<lastmod>2025-02-08T16:40:46.363Z</lastmod>
+			<loc>styling-components.html</loc>
+			<lastmod>2025-02-09T19:42:31.865Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 
 		<url>
-			<loc>best-practices-patterns.html</loc>
-			<lastmod>2025-02-08T16:40:46.363Z</lastmod>
+			<loc>data-flow.html</loc>
+			<lastmod>2025-02-09T19:42:31.865Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 
 		<url>
-			<loc>advanced-topics.html</loc>
-			<lastmod>2025-02-08T16:40:46.363Z</lastmod>
+			<loc>patterns-techniques.html</loc>
+			<lastmod>2025-02-09T19:42:31.865Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 
 		<url>
 			<loc>examples-recipes.html</loc>
-			<lastmod>2025-02-08T16:40:46.363Z</lastmod>
-			<priority>0.8</priority>
-		</url>
-
-		<url>
-			<loc>troubleshooting-faqs.html</loc>
-			<lastmod>2025-02-08T16:40:46.363Z</lastmod>
+			<lastmod>2025-02-09T19:42:31.865Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 
 		<url>
 			<loc>api-reference.html</loc>
-			<lastmod>2025-02-08T16:40:46.363Z</lastmod>
+			<lastmod>2025-02-09T19:42:31.865Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 
 		<url>
-			<loc>contributing-development.html</loc>
-			<lastmod>2025-02-08T16:40:46.363Z</lastmod>
-			<priority>0.8</priority>
-		</url>
-
-		<url>
-			<loc>changelog-versioning.html</loc>
-			<lastmod>2025-02-08T16:40:46.363Z</lastmod>
-			<priority>0.8</priority>
-		</url>
-
-		<url>
-			<loc>licensing-credits.html</loc>
-			<lastmod>2025-02-08T16:40:46.363Z</lastmod>
+			<loc>about-community.html</loc>
+			<lastmod>2025-02-09T19:42:31.865Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 	</urlset>

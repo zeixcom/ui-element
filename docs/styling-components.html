@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styling Components – UIElement Docs</title>
+    <meta name="description" content="Scoped styles, CSS custom properties">
+    <link rel="stylesheet" href="assets/main.css">
+	<script type="module" src="assets/main.js"></script>
+</head>
+<body>
+	<header class="content-grid">
+		<h1 class="content">UIElement Docs <small>Version 0.9.4</small></h1>
+		
+	<nav class="breakout">
+		<ol>
+			
+				<li>
+					<a href="index.html">
+						<span class="icon">📖</span>
+						<strong>Introduction</strong>
+						<small>Overview and key benefits of UIElement</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="getting-started.html">
+						<span class="icon">🚀</span>
+						<strong>Getting Started</strong>
+						<small>Installation, setup, and first steps</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="building-components.html">
+						<span class="icon">🏗️</span>
+						<strong>Building Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="styling-components.html">
+						<span class="icon">🎨</span>
+						<strong>Styling Components</strong>
+						<small>Scoped styles, CSS custom properties</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="data-flow.html">
+						<span class="icon">🔄</span>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="patterns-techniques.html">
+						<span class="icon">💡</span>
+						<strong>Patterns & Techniques</strong>
+						<small>Composition, scheduling, best practices</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="examples-recipes.html">
+						<span class="icon">🍽️</span>
+						<strong>Examples & Recipes</strong>
+						<small>Common use cases and demos</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="api-reference.html">
+						<span class="icon">📚</span>
+						<strong>API Reference</strong>
+						<small>Detailed documentation of classes and methods</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="about-community.html">
+						<span class="icon">🤝</span>
+						<strong>About & Community</strong>
+						<small>License, versioning, getting involved</small>
+					</a>
+				</li>
+		</ol>
+	</nav>
+	</header>
+    
+    <main>
+        <section class="hero">
+
+<h1>🎨 Styling Components</h1>
+<p class="lead"><strong>Keep your components’ styles self-contained while supporting shared design tokens.</strong> UIElement does not enforce a specific styling method, but we recommend techniques that help balance encapsulation, reusability, and maintainability.</p>
+</section>
+
+<section>
+
+<h2>UIElement and Styling</h2>
+<p>UIElement is focused on <strong>state management and reactivity</strong>, not styling. However, to <strong>ensure consistent, maintainable, and reusable styles</strong>, we recommend techniques that <strong>scope component styles properly while allowing shared design tokens</strong> (e.g., spacing, font sizes, colors, layout grids).</p>
+</section>
+
+<section>
+
+<h2>Scope Styles via Custom Element Name</h2>
+<p>If you control the page and the components within, it&#39;s best to scope component styles to the custom element name. This allows you to use the CSS cascade. You don&#39;t need Shadow DOM and duplicate style rules from the outer context to achieve the desired appearance.</p>
+<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">css</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">my-component</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; button {</span></span>
+<span class="line"><span style="color:#88846F">		/* Button style rules */</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">	/* More selectors for inner elements */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	
+</code-block>
+<p><strong>Advantages of Custom Element Names:</strong></p>
+<ul>
+<li>✅ By definition <strong>unique within the document</strong> with a descriptive name.</li>
+<li>✅ <strong>Low specificity</strong>, making it easy to overwrite when you need to.</li>
+</ul>
+<p><strong>When to Use</strong></p>
+<ul>
+<li>✅ <strong>Best when</strong> you control the page and need styles to cascade naturally.</li>
+<li>❌ <strong>Avoid if</strong> you expect style clashes from third-party styles.</li>
+</ul>
+</section>
+
+<section>
+
+<h2>Encapsulate Styles with Shadow DOM</h2>
+<p>If your component is going to be used in a pages where you don&#39;t control the styles, it&#39;s best to encapsulate neccessary styles in a Shadow DOM. This way you make sure page styles don&#39;t leak in and component styles don&#39;t leak out.</p>
+<code-block collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">html</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">my-component</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">template</span><span style="color:#A6E22E"> shadowrootmode</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"open"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">style</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F92672">			button</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">				/* Button style rules */</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">			/* More selectors for inner elements */</span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">style</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#88846F">		&#x3C;!-- inner elements --></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">template</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">my-component</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<p><strong>When to Use</strong></p>
+<ul>
+<li>✅ <strong>Best when</strong> your component is used in environments where you don’t control styles.</li>
+<li>❌ <strong>Avoid if</strong> you need global styles to apply inside the component.</li>
+</ul>
+</section>
+
+<section>
+
+<h2>Shared Design Tokens with CSS Custom Properties</h2>
+<p>Web Components can’t inherit global styles inside <strong>Shadow DOM</strong>, but CSS custom properties allow components to remain <strong>flexible and themeable</strong>.</p>
+<h3>Defining Design Tokens</h3>
+<p>Set global tokens in a stylesheet:</p>
+<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">css</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">:root</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	--button-bg: </span><span style="color:#AE81FF">#007bff</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	--button-text: </span><span style="color:#AE81FF">#fff</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	--spacing: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	
+</code-block>
+<h3>Using Tokens in a Component</h3>
+<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">css</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">my-component</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	padding</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--spacing);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; button {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--button-bg);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--button-text);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	
+</code-block>
+<p><strong>Advantages of CSS Custom Properties:</strong></p>
+<ul>
+<li>✅ <strong>Supports theming</strong> – Users can override styles globally.</li>
+<li>✅ <strong>Works inside Shadow DOM</strong> – Unlike normal CSS, custom properties are inherited inside the shadow tree.</li>
+</ul>
+</section>
+
+<section>
+
+<h2>Next Steps</h2>
+<p>Now that you know how to style components, explore:</p>
+<ul>
+<li><a href="data-flow.html">Data Flow</a> – Learn about inter-component communication.</li>
+<li><a href="examples-recipes.html">Examples &amp; Recipes</a> – See styling techniques in action.</li>
+</ul>
+</section>
+    </main>
+    <footer>
+		<p>© 2025 Zeix AG</p>
+	</footer>
+</body>
+</html>

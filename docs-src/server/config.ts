@@ -13,15 +13,12 @@ export const FRAGMENTS_DIR = './docs/examples';
 // Define a manual order for the menu
 export const PAGE_ORDER = [
 	'index',
-	'installation-setup',
-	'core-concepts',
-	'detailed-walkthrough',
-	'best-practices-patterns',
-	'advanced-topics',
+	'getting-started',
+	'building-components',
+	'styling-components',
+	'data-flow',
+	'patterns-techniques',
 	'examples-recipes',
-	'troubleshooting-faqs',
 	'api-reference',
-	'contributing-development',
-	'changelog-versioning',
-	'licensing-credits',
+	'about-community',
 ];

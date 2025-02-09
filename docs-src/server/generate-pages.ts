@@ -9,6 +9,11 @@ import { replaceAsync } from './replace-async';
 import { generateMenu } from './generate-menu';
 import { generateSitemap } from './generate-sitemap';
 
+marked.setOptions({
+    gfm: true, // Enables tables, task lists, and strikethroughs
+    breaks: true, // Allows line breaks without needing double spaces
+});
+
 /* const PAGE_LIST_FILE = './docs-src/.file-pages.json';
 
 let lastPageList: string[] = [];

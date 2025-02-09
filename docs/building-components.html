@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Core Concepts – UIElement Docs</title>
-    <meta name="description" content="Learn about Web Components, signals, and effects">
+    <title>Building Components – UIElement Docs</title>
+    <meta name="description" content="Anatomy, lifecycle, signals, effects">
     <link rel="stylesheet" href="assets/main.css">
 	<script type="module" src="assets/main.js"></script>
 </head>
@@ -17,65 +17,57 @@
 			
 				<li>
 					<a href="index.html">
-						<span class="icon">📘</span>
+						<span class="icon">📖</span>
 						<strong>Introduction</strong>
 						<small>Overview and key benefits of UIElement</small>
 					</a>
 				</li>
 
 				<li>
-					<a href="installation-setup.html">
-						<span class="icon">⚙️</span>
-						<strong>Installation & Setup</strong>
-						<small>How to install and set up the library</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="core-concepts.html">
-						<span class="icon">🧩</span>
-						<strong>Core Concepts</strong>
-						<small>Learn about Web Components, signals, and effects</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="detailed-walkthrough.html">
-						<span class="icon">📋</span>
-						<strong>Detailed Walkthrough</strong>
-						<small>Step-by-step guide to creating components</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="best-practices-patterns.html">
-						<span class="icon">💡</span>
-						<strong>Best Practices & Patterns</strong>
-						<small>Tips for effective and scalable usage</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="advanced-topics.html">
+					<a href="getting-started.html">
 						<span class="icon">🚀</span>
-						<strong>Advanced Topics</strong>
-						<small>Diving deeper into contexts and performance</small>
+						<strong>Getting Started</strong>
+						<small>Installation, setup, and first steps</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="building-components.html">
+						<span class="icon">🏗️</span>
+						<strong>Building Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="styling-components.html">
+						<span class="icon">🎨</span>
+						<strong>Styling Components</strong>
+						<small>Scoped styles, CSS custom properties</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="data-flow.html">
+						<span class="icon">🔄</span>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="patterns-techniques.html">
+						<span class="icon">💡</span>
+						<strong>Patterns & Techniques</strong>
+						<small>Composition, scheduling, best practices</small>
 					</a>
 				</li>
 
 				<li>
 					<a href="examples-recipes.html">
-						<span class="icon">🧪</span>
+						<span class="icon">🍽️</span>
 						<strong>Examples & Recipes</strong>
-						<small>Sample components and practical use cases</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="troubleshooting-faqs.html">
-						<span class="icon">❓</span>
-						<strong>Troubleshooting & FAQs</strong>
-						<small>Common issues and frequently asked questions</small>
+						<small>Common use cases and demos</small>
 					</a>
 				</li>
 
@@ -88,26 +80,10 @@
 				</li>
 
 				<li>
-					<a href="contributing-development.html">
+					<a href="about-community.html">
 						<span class="icon">🤝</span>
-						<strong>Contributing & Development</strong>
-						<small>How to contribute and set up the dev environment</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="changelog-versioning.html">
-						<span class="icon">📝</span>
-						<strong>Changelog & Versioning</strong>
-						<small>Track changes and understand versioning</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="licensing-credits.html">
-						<span class="icon">⚖️</span>
-						<strong>Licensing & Credits</strong>
-						<small>License details and acknowledgments</small>
+						<strong>About & Community</strong>
+						<small>License, versioning, getting involved</small>
 					</a>
 				</li>
 		</ol>
@@ -117,8 +93,8 @@
     <main>
         <section class="hero">
 
-<h1>🧩 Core Concepts</h1>
-<p class="lead">UIElement enhances Web Components with <strong>state management and reactive updates</strong>, allowing you to build lightweight, interactive components without a full JavaScript framework.</p>  
+<h1>🏗️ Building Components</h1>
+<p class="lead"><strong>Create lightweight, self-contained Web Components with built-in reactivity</strong>. UIElement lets you define custom elements that manage state efficiently, update the DOM automatically, and enhance server-rendered pages without a framework.</p>
 </section>
 
 <section>
@@ -286,13 +262,38 @@
 	
 </code-block>
 <h3>Pre-defined Parsers in UIElement</h3>
-<p>| <strong>Function</strong> | <strong>Description</strong> |
-| <code>asBoolean</code>  | Converts <code>&quot;true&quot;</code> / <code>&quot;false&quot;</code> to a <strong>boolean</strong> (<code>true</code> / <code>false</code>). Also treats empty attributes (<code>checked</code>) as <code>true</code>. |
-| <code>asInteger</code>  | Converts a numeric string (e.g., <code>&quot;42&quot;</code>) to an <strong>integer</strong> (<code>42</code>). |
-| <code>asNumber</code>   | Converts a numeric string (e.g., <code>&quot;3.14&quot;</code>) to a <strong>floating-point number</strong> (<code>3.14</code>). |
-| <code>asString</code>   | Returns the attribute value as a <strong>string</strong> (unchanged). |
-| <code>asEnum([...])</code> | Ensures the string matches <strong>one of the allowed values</strong>. Example: <code>asEnum([&#39;small&#39;, &#39;medium&#39;, &#39;large&#39;])</code>. If the value is not in the list, it defaults to the first option. |
-| <code>asJSON</code>     | Parses a JSON string (e.g., <code>&#39;[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]&#39;</code>) into an <strong>array</strong> or <strong>object</strong>. If invalid, returns <code>null</code>. |</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>asBoolean</code></td>
+<td>Converts <code>&quot;true&quot;</code> / <code>&quot;false&quot;</code> to a <strong>boolean</strong> (<code>true</code> / <code>false</code>). Also treats empty attributes (<code>checked</code>) as <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>asInteger</code></td>
+<td>Converts a numeric string (e.g., <code>&quot;42&quot;</code>) to an <strong>integer</strong> (<code>42</code>).</td>
+</tr>
+<tr>
+<td><code>asNumber</code></td>
+<td>Converts a numeric string (e.g., <code>&quot;3.14&quot;</code>) to a <strong>floating-point number</strong> (<code>3.14</code>).</td>
+</tr>
+<tr>
+<td><code>asString</code></td>
+<td>Returns the attribute value as a <strong>string</strong> (unchanged).</td>
+</tr>
+<tr>
+<td><code>asEnum([...])</code></td>
+<td>Ensures the string matches <strong>one of the allowed values</strong>. Example: <code>asEnum([&#39;small&#39;, &#39;medium&#39;, &#39;large&#39;])</code>. If the value is not in the list, it defaults to the first option.</td>
+</tr>
+<tr>
+<td><code>asJSON</code></td>
+<td>Parses a JSON string (e.g., <code>&#39;[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]&#39;</code>) into an <strong>array</strong> or <strong>object</strong>. If invalid, returns <code>null</code>.</td>
+</tr>
+</tbody></table>
 </section>
 
 <section>
@@ -300,10 +301,26 @@
 <h2>Accessing Sub-elements within the Component</h2>
 <p>Before adding <strong>event listeners</strong>, <strong>applying effects</strong>, or <strong>passing states</strong>, you need to select elements inside the component.</p>
 <p>UIElement provides the following methods for <strong>element selection</strong>:</p>
-<p>| <strong>Method</strong>             | <strong>Description</strong> |
-| <code>this.self</code>            | Selects <strong>the component itself</strong>. |
-| <code>this.first(selector)</code> | Selects <strong>the first matching element</strong> inside the component. |
-| <code>this.all(selector)</code>   | Selects <strong>all matching elements</strong> inside the component. |</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>this.self</code></td>
+<td>Selects <strong>the component itself</strong>.</td>
+</tr>
+<tr>
+<td><code>this.first(selector)</code></td>
+<td>Selects <strong>the first matching element</strong> inside the component.</td>
+</tr>
+<tr>
+<td><code>this.all(selector)</code></td>
+<td>Selects <strong>all matching elements</strong> inside the component.</td>
+</tr>
+</tbody></table>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -373,15 +390,46 @@
 	
 </code-block>
 <h3>Pre-defined Effects in UIElement</h3>
-<p>| <strong>Function</strong>        | <strong>Description</strong> |
-| <code>setText()</code>         | Updates <strong>text content</strong> with a <code>string</code> signal value (while preserving comment nodes). |
-| <code>setProperty()</code>     | Updates a given <strong>property</strong> with any signal value. |
-| <code>setAttribute()</code>    | Updates a given <strong>attribute</strong> with a <code>string</code> signal value. |
-| <code>toggleAttribute()</code> | Toggles a given <strong>boolean attribute</strong> with a <code>boolean</code> signal value. |
-| <code>toggleClass()</code>     | Toggles a given <strong>CSS class</strong> with a <code>boolean</code> signal value. |
-| <code>setStyle()</code>        | Updates a given <strong>CSS property</strong> with a <code>string</code> signal value. |
-| <code>createElement()</code>   | Inserts a <strong>new element</strong> with a given tag name with a <code>Record&lt;string, string&gt;</code> signal value for attributes. |
-| <code>removeElement()</code>   | Removes an element if the <code>boolean</code> signal value is <code>true</code>. |</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>setText()</code></td>
+<td>Updates <strong>text content</strong> with a <code>string</code> signal value (while preserving comment nodes).</td>
+</tr>
+<tr>
+<td><code>setProperty()</code></td>
+<td>Updates a given <strong>property</strong> with any signal value.</td>
+</tr>
+<tr>
+<td><code>setAttribute()</code></td>
+<td>Updates a given <strong>attribute</strong> with a <code>string</code> signal value.</td>
+</tr>
+<tr>
+<td><code>toggleAttribute()</code></td>
+<td>Toggles a given <strong>boolean attribute</strong> with a <code>boolean</code> signal value.</td>
+</tr>
+<tr>
+<td><code>toggleClass()</code></td>
+<td>Toggles a given <strong>CSS class</strong> with a <code>boolean</code> signal value.</td>
+</tr>
+<tr>
+<td><code>setStyle()</code></td>
+<td>Updates a given <strong>CSS property</strong> with a <code>string</code> signal value.</td>
+</tr>
+<tr>
+<td><code>createElement()</code></td>
+<td>Inserts a <strong>new element</strong> with a given tag name with a <code>Record&lt;string, string&gt;</code> signal value for attributes.</td>
+</tr>
+<tr>
+<td><code>removeElement()</code></td>
+<td>Removes an element if the <code>boolean</code> signal value is <code>true</code>.</td>
+</tr>
+</tbody></table>
 <h3>Simplifying Effect Notation</h3>
 <p>For effects that take two arguments, <strong>the second argument can be omitted</strong> if the signal key matches the targeted property name, attribute, class, or style property.</p>
 <p><strong>Simplified Notation (Key Matches Property Name):</strong></p>
