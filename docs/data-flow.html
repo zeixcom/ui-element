@@ -48,7 +48,7 @@
 				</li>
 
 				<li>
-					<a href="data-flow.html">
+					<a href="data-flow.html" class="active">
 						<span class="icon">🔄</span>
 						<strong>Data Flow</strong>
 						<small>Passing state, events, context</small>
@@ -94,16 +94,67 @@
         <section class="hero">
 
 <h1>🔄 Data Flow</h1>
-<p class="lead">Get started with <strong>UIElement</strong> by including it directly in your HTML or installing it via npm. Follow the steps below to set up your environment and start building reactive Web Components.</p>
+<p class="lead"></p>
 </section>
 
 <section>
 
-<h2></h2>
+<h2>Passing State Down</h2>
+<p>Let&#39;s consider a parent component called <code>TodoApp</code> that coordinates an inner component called <code>TodoList</code>. <code>TodoApp</code> needs to be able to add new tasks to the <code>TodoList</code> and modify how it is filtered.</p>
+<h3>Parent Component: TodoApp</h3>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">TodoApp</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">TodoApp.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'todo-app'</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	
+</code-block>
+<h3>Child Component: TodoList</h3>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">TodoList</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">TodoApp.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'todo-list'</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	
+</code-block>
+</section>
+
+<section>
+
+<h2>Events Bubbling Up</h2>
+</section>
+
+<section>
+
+<h2>Providing Context</h2>
+</section>
+
+<section>
+
+<h2>Consuming Context</h2>
 </section>
     </main>
-    <footer>
-		<p>© 2025 Zeix AG</p>
+    <footer class="content-grid">
+		<div class="content">
+			<h2 class="visually-hidden">Footer</h2>
+			<p>© 2025 Zeix AG</p>
+		</div>
 	</footer>
 </body>
 </html>

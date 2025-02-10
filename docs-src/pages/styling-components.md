@@ -23,7 +23,7 @@ UIElement is focused on **state management and reactivity**, not styling. Howeve
 
 ## Scope Styles via Custom Element Name
 
-If you control the page and the components within, it's best to scope component styles to the custom element name. This allows you to use the CSS cascade. You don't need Shadow DOM and duplicate style rules from the outer context to achieve the desired appearance.
+If you control the page and the components within, it's best to scope component styles to the custom element name. This protects against component styles leaking out, while still allowing to use the CSS cascade. You don't need Shadow DOM and duplicate style rules from the outer context to achieve the desired appearance.
 
 ```css
 my-component {
@@ -37,12 +37,12 @@ my-component {
 }
 ```
 
-**Advantages of Custom Element Names:**
+### Advantages of Custom Element Names
 
 * ✅ By definition **unique within the document** with a descriptive name.
-* ✅ **Low specificity**, making it easy to overwrite when you need to.
+* ✅ **Low specificity**, making it easy to override when you need to with a single class.
 
-**When to Use**
+### When to Use
 
 * ✅ **Best when** you control the page and need styles to cascade naturally.
 * ❌ **Avoid if** you expect style clashes from third-party styles.
@@ -70,7 +70,9 @@ If your component is going to be used in a pages where you don't control the sty
 </my-component>
 ```
 
-**When to Use**
+Parent components may apply styles to the wrapper element of known sub-components for layout purposes. But avoid styling inner elements of sub-components directly. This would tightly couple the styles of the outer and inner components.
+
+### When to Use
 
 * ✅ **Best when** your component is used in environments where you don’t control styles.
 * ❌ **Avoid if** you need global styles to apply inside the component.
@@ -109,10 +111,40 @@ my-component {
 }
 ```
 
-**Advantages of CSS Custom Properties:**
+### Advantages of CSS Custom Properties
 
 * ✅ **Supports theming** – Users can override styles globally.
 * ✅ **Works inside Shadow DOM** – Unlike normal CSS, custom properties are inherited inside the shadow tree.
+
+</section>
+
+<section>
+
+## Defined Variants with Classes
+
+If your components can appear in a limited set of specific manifestations, classes are a good way to achieve this. For example, buttons could come in certain sizes and have primary, secondary and tertiary variants.
+
+```css
+my-button {
+	/* Style rules for default (medium-sized, secondary) buttons */
+
+	&.small {
+		/* Style rules for small buttons */
+	}
+
+	&.large {
+		/* Style rules for large buttons */
+	}
+
+	&.primary {
+		/* Style rules for primary buttons */
+	}
+
+	&.tertiary {
+		/* Style rules for tertiary buttons */
+	}
+}
+```
 
 </section>
 

@@ -32,7 +32,7 @@
 				</li>
 
 				<li>
-					<a href="building-components.html">
+					<a href="building-components.html" class="active">
 						<span class="icon">🏗️</span>
 						<strong>Building Components</strong>
 						<small>Anatomy, lifecycle, signals, effects</small>
@@ -238,13 +238,17 @@
 <h2>Initializing State from Attributes</h2>
 <h3>Declaring Observed Attributes</h3>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>static observedAttributes = ['count']; // Automatically becomes a signal</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">static observedAttributes </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">]; </span><span style="color:#88846F">// Automatically becomes a signal</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	
 </code-block>
-
 <h3>Parsing Attribute Values</h3>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
@@ -432,7 +436,7 @@
 </tbody></table>
 <h3>Simplifying Effect Notation</h3>
 <p>For effects that take two arguments, <strong>the second argument can be omitted</strong> if the signal key matches the targeted property name, attribute, class, or style property.</p>
-<p><strong>Simplified Notation (Key Matches Property Name):</strong></p>
+<p>When signal key matches property name:</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -460,7 +464,7 @@
 	</input-button>
 	
 </code-block>
-<p><strong>When to Use a Function Instead of a Signal Key?</strong></p>
+<h3>When to Use a Function Instead of a Signal Key?</h3>
 <ul>
 <li><strong>Use a signal key</strong> when the state is already <strong>stored as a signal</strong>.</li>
 <li><strong>Use a function</strong> when you <strong>derive the value on the fly</strong> that you need only in one place and you don&#39;t want to expose it as a signal on the element.</li>
@@ -507,8 +511,11 @@
 </ul>
 </section>
     </main>
-    <footer>
-		<p>© 2025 Zeix AG</p>
+    <footer class="content-grid">
+		<div class="content">
+			<h2 class="visually-hidden">Footer</h2>
+			<p>© 2025 Zeix AG</p>
+		</div>
 	</footer>
 </body>
 </html>

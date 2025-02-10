@@ -40,7 +40,7 @@
 				</li>
 
 				<li>
-					<a href="styling-components.html">
+					<a href="styling-components.html" class="active">
 						<span class="icon">🎨</span>
 						<strong>Styling Components</strong>
 						<small>Scoped styles, CSS custom properties</small>
@@ -106,7 +106,7 @@
 <section>
 
 <h2>Scope Styles via Custom Element Name</h2>
-<p>If you control the page and the components within, it&#39;s best to scope component styles to the custom element name. This allows you to use the CSS cascade. You don&#39;t need Shadow DOM and duplicate style rules from the outer context to achieve the desired appearance.</p>
+<p>If you control the page and the components within, it&#39;s best to scope component styles to the custom element name. This protects against component styles leaking out, while still allowing to use the CSS cascade. You don&#39;t need Shadow DOM and duplicate style rules from the outer context to achieve the desired appearance.</p>
 <code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -127,12 +127,12 @@
 	</input-button>
 	
 </code-block>
-<p><strong>Advantages of Custom Element Names:</strong></p>
+<h3>Advantages of Custom Element Names</h3>
 <ul>
 <li>✅ By definition <strong>unique within the document</strong> with a descriptive name.</li>
-<li>✅ <strong>Low specificity</strong>, making it easy to overwrite when you need to.</li>
+<li>✅ <strong>Low specificity</strong>, making it easy to override when you need to with a single class.</li>
 </ul>
-<p><strong>When to Use</strong></p>
+<h3>When to Use</h3>
 <ul>
 <li>✅ <strong>Best when</strong> you control the page and need styles to cascade naturally.</li>
 <li>❌ <strong>Avoid if</strong> you expect style clashes from third-party styles.</li>
@@ -166,7 +166,8 @@
 	</input-button>
 	<button type="button" class="overlay">Expand</button>
 </code-block>
-<p><strong>When to Use</strong></p>
+<p>Parent components may apply styles to the wrapper element of known sub-components for layout purposes. But avoid styling inner elements of sub-components directly. This would tightly couple the styles of the outer and inner components.</p>
+<h3>When to Use</h3>
 <ul>
 <li>✅ <strong>Best when</strong> your component is used in environments where you don’t control styles.</li>
 <li>❌ <strong>Avoid if</strong> you need global styles to apply inside the component.</li>
@@ -215,11 +216,47 @@
 	</input-button>
 	
 </code-block>
-<p><strong>Advantages of CSS Custom Properties:</strong></p>
+<h3>Advantages of CSS Custom Properties</h3>
 <ul>
 <li>✅ <strong>Supports theming</strong> – Users can override styles globally.</li>
 <li>✅ <strong>Works inside Shadow DOM</strong> – Unlike normal CSS, custom properties are inherited inside the shadow tree.</li>
 </ul>
+</section>
+
+<section>
+
+<h2>Defined Variants with Classes</h2>
+<p>If your components can appear in a limited set of specific manifestations, classes are a good way to achieve this. For example, buttons could come in certain sizes and have primary, secondary and tertiary variants.</p>
+<code-block collapsed language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">css</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">my-button</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">	/* Style rules for default (medium-sized, secondary) buttons */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26;.small {</span></span>
+<span class="line"><span style="color:#88846F">		/* Style rules for small buttons */</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26;</span><span style="color:#A6E22E">.large</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">		/* Style rules for large buttons */</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26;</span><span style="color:#A6E22E">.primary</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">		/* Style rules for primary buttons */</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26;</span><span style="color:#A6E22E">.tertiary</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">		/* Style rules for tertiary buttons */</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
 </section>
 
 <section>
@@ -232,8 +269,11 @@
 </ul>
 </section>
     </main>
-    <footer>
-		<p>© 2025 Zeix AG</p>
+    <footer class="content-grid">
+		<div class="content">
+			<h2 class="visually-hidden">Footer</h2>
+			<p>© 2025 Zeix AG</p>
+		</div>
 	</footer>
 </body>
 </html>

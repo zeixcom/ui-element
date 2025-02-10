@@ -125,13 +125,9 @@ UIElement **uses signals** instead of standard properties or attributes because 
 
 ### Declaring Observed Attributes
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>static observedAttributes = ['count']; // Automatically becomes a signal</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+```js
+static observedAttributes = ['count']; // Automatically becomes a signal
+```
 
 ### Parsing Attribute Values
 
@@ -237,7 +233,7 @@ this.first('.count').sync(
 
 For effects that take two arguments, **the second argument can be omitted** if the signal key matches the targeted property name, attribute, class, or style property.
 
-**Simplified Notation (Key Matches Property Name):**
+When signal key matches property name:
 
 ```js
 this.first('.count').sync(toggleClass('even'));
@@ -253,7 +249,7 @@ Instead of a signal key, you can **pass a function** that derives a value dynami
 this.first('.count').sync(toggleClass('even', () => !((this.get('count') ?? 0) % 2)));
 ```
 
-**When to Use a Function Instead of a Signal Key?**
+### When to Use a Function Instead of a Signal Key?
 
 * **Use a signal key** when the state is already **stored as a signal**.
 * **Use a function** when you **derive the value on the fly** that you need only in one place and you don't want to expose it as a signal on the element.
