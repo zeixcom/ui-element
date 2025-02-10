@@ -24,6 +24,8 @@
 	--line-height-l: 1.618;
   
 	--color-white: white;
+	--color-black: black;
+
 	--color-gray-10: #f6f7f8;
 	--color-gray-20: #ebeef0;
 	--color-gray-30: #dee3e5;
@@ -33,7 +35,7 @@
 	--color-gray-70: #8e9295;
 	--color-gray-80: #6d6f71;
 	--color-gray-90: #404142;
-	--color-black: black;
+
 	--color-primary: #325df1;
 	--color-primary-hover: #2144ca;
 	--color-primary-active: #18338f;

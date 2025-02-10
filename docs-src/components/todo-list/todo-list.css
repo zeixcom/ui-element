@@ -18,15 +18,11 @@ todo-list {
 		padding: 0;
 	}
 
-	&[filter="completed"] {
-        li:not(:has([checked])) {
-            display: none;
-        }
+	&[filter="completed"] li:not(:has([checked])) {
+        display: none;
     }
 
-    &[filter="active"] {
-        li:has([checked]) {
-            display: none;
-        }
-    }
+    &[filter="active"] li:has([checked]) {
+		display: none;
+	}
 }

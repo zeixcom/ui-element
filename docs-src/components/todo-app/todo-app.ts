@@ -6,7 +6,6 @@ import type { AddTodoEvent } from "../todo-form/todo-form"
 export class TodoApp extends UIElement {
 	connectedCallback() {
 		const todoList: TodoList | null = this.querySelector('todo-list')
-		const todoFilter: InputRadiogroup | null = this.querySelector('input-radiogroup')
 
 		// Event listener on own element
 		this.self.on('add-todo', (e: Event) => {
@@ -20,7 +19,7 @@ export class TodoApp extends UIElement {
 
 		// Coordinate todo-list
 		this.first('todo-list').pass({
-			filter: () => todoFilter?.get('value')
+			filter: () => this.querySelector<InputRadiogroup>('input-radiogroup')?.get('value')
 		})
 
 		// Coordinate .clear-completed button

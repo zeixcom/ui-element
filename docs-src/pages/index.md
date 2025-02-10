@@ -1,12 +1,12 @@
 ---
 title: "Introduction"
-emoji: "📘"
+emoji: "📖"
 description: "Overview and key benefits of UIElement"
 ---
 
 <section class="hero">
 
-# 📘 Introduction
+# 📖 Introduction
 
 <p class="lead">Enhance server-rendered pages with lightweight, self-contained Web Components. No framework, no hydration issues, no unnecessary complexity.</p>
 </section>

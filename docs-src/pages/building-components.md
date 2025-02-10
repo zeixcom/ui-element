@@ -1,14 +1,14 @@
 ---
-title: "Core Concepts"
-emoji: "🧩"
-description: "Learn about Web Components, signals, and effects"
+title: "Building Components"
+emoji: "🏗️"
+description: "Anatomy, lifecycle, signals, effects"
 ---
 
 <section class="hero">
 
-# 🧩 Core Concepts
+# 🏗️ Building Components
 
-<p class="lead">UIElement enhances Web Components with <strong>state management and reactive updates</strong>, allowing you to build lightweight, interactive components without a full JavaScript framework.</p>  
+<p class="lead"><strong>Create lightweight, self-contained Web Components with built-in reactivity</strong>. UIElement lets you define custom elements that manage state efficiently, update the DOM automatically, and enhance server-rendered pages without a framework.</p>
 </section>
 
 <section>
@@ -125,13 +125,9 @@ UIElement **uses signals** instead of standard properties or attributes because 
 
 ### Declaring Observed Attributes
 
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-<p class="meta"><span class="language">js</span></p>
-<pre class="language-js"><code>static observedAttributes = ['count']; // Automatically becomes a signal</code></pre>
-<input-button class="copy">
-<button type="button" class="secondary small">Copy</button>
-</input-button>
-</code-block>
+```js
+static observedAttributes = ['count']; // Automatically becomes a signal
+```
 
 ### Parsing Attribute Values
 
@@ -144,7 +140,8 @@ static states = {
 
 ### Pre-defined Parsers in UIElement
 
-| **Function** | **Description** |
+| Function     | Description |
+| ------------ | ----------- |
 | `asBoolean`  | Converts `"true"` / `"false"` to a **boolean** (`true` / `false`). Also treats empty attributes (`checked`) as `true`. |
 | `asInteger`  | Converts a numeric string (e.g., `"42"`) to an **integer** (`42`). |
 | `asNumber`   | Converts a numeric string (e.g., `"3.14"`) to a **floating-point number** (`3.14`). |
@@ -162,7 +159,8 @@ Before adding **event listeners**, **applying effects**, or **passing states**, 
 
 UIElement provides the following methods for **element selection**:
 
-| **Method**             | **Description** |
+| Method                 | Description |
+| -----------------------| ----------- |
 | `this.self`            | Selects **the component itself**. |
 | `this.first(selector)` | Selects **the first matching element** inside the component. |
 | `this.all(selector)`   | Selects **all matching elements** inside the component. |
@@ -220,7 +218,8 @@ this.first('.count').sync(
 
 ### Pre-defined Effects in UIElement
 
-| **Function**        | **Description** |
+| Function            | Description |
+| ------------------- | ----------- |
 | `setText()`         | Updates **text content** with a `string` signal value (while preserving comment nodes). |
 | `setProperty()`     | Updates a given **property** with any signal value. |
 | `setAttribute()`    | Updates a given **attribute** with a `string` signal value. |
@@ -234,7 +233,7 @@ this.first('.count').sync(
 
 For effects that take two arguments, **the second argument can be omitted** if the signal key matches the targeted property name, attribute, class, or style property.
 
-**Simplified Notation (Key Matches Property Name):**
+When signal key matches property name:
 
 ```js
 this.first('.count').sync(toggleClass('even'));
@@ -250,7 +249,7 @@ Instead of a signal key, you can **pass a function** that derives a value dynami
 this.first('.count').sync(toggleClass('even', () => !((this.get('count') ?? 0) % 2)));
 ```
 
-**When to Use a Function Instead of a Signal Key?**
+### When to Use a Function Instead of a Signal Key?
 
 * **Use a signal key** when the state is already **stored as a signal**.
 * **Use a function** when you **derive the value on the fly** that you need only in one place and you don't want to expose it as a signal on the element.

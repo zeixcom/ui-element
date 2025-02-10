@@ -9,6 +9,11 @@ import { replaceAsync } from './replace-async';
 import { generateMenu } from './generate-menu';
 import { generateSitemap } from './generate-sitemap';
 
+marked.setOptions({
+    gfm: true, // Enables tables, task lists, and strikethroughs
+    breaks: true, // Allows line breaks without needing double spaces
+});
+
 /* const PAGE_LIST_FILE = './docs-src/.file-pages.json';
 
 let lastPageList: string[] = [];
@@ -68,18 +73,18 @@ const processMarkdownFile = async (filename: string) => {
     let layout = await readFile(LAYOUT_FILE, 'utf8');
     // console.log(`📄 Layout before processing:`, layout);
 
-    // 1️⃣ Process includes FIRST
-    layout = await loadIncludes(layout);
-    // console.log(`📎 After Includes Processing:`, layout);
-
 	// Use regex to match the correct <li> by href and add class="active"
     let menuHtml = await readFile(MENU_FILE, 'utf8');
-    const pageUrl = `/${filename.replace('.md', '.html')}`;
+    const pageUrl = filename.replace('.md', '.html');
     menuHtml = menuHtml.replace(
-        new RegExp(`(<li>\\s*<a href="${pageUrl}")`, 'g'),
+        new RegExp(`(<a href="${pageUrl}")`, 'g'),
         '$1 class="active"'
     );
     layout = layout.replace('{{ include \'menu.html\' }}', menuHtml);
+
+	// 1️⃣ Process includes FIRST
+    layout = await loadIncludes(layout);
+	// console.log(`📎 After Includes Processing:`, layout);
 
 	// 2️⃣ Replace {{ content }} SECOND
 	layout = layout.replace('{{ content }}', htmlContent);

@@ -19,8 +19,8 @@ export class TodoList extends UIElement {
 		// Event listener and attribute on own element
 		this.self
 			.on('click', (e: Event) => {
-				if ((e.target as HTMLElement).localName === 'button')
-					this.removeItem(e.target as HTMLElement)
+				const el = e.target as HTMLElement
+				if (el.localName === 'button') this.removeItem(el)
 			})
 			.sync(setAttribute('filter'))
 
@@ -39,10 +39,12 @@ export class TodoList extends UIElement {
 	}
 
 	addItem = (task: string) => {
-		const template = this.querySelector('template')?.content.cloneNode(true) as HTMLElement
-		if (template && template.querySelector('span')) {
-			template.querySelector('span')!.textContent = task
-			this.querySelector('ol')?.appendChild(template)
+		const ol = this.querySelector('ol')
+		const fragment = this.querySelector('template')?.content.cloneNode(true) as DocumentFragment
+		const span = fragment.querySelector('span')
+		if (ol && fragment && span) {
+			span.textContent = task
+			ol.appendChild(fragment)
 			this.#updateList()
 		}
 	}

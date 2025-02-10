@@ -1,12 +1,12 @@
 ---
-title: "Best Practices & Patterns"
+title: "Patterns & Techniques"
 emoji: "💡"
-description: "Tips for effective and scalable usage"
+description: "Composition, scheduling, best practices"
 ---
 
 <section class="hero">
 
-# 💡 Best Practices & Patterns
+# 💡 Patterns & Techniques
 
 <p class="lead">Get started with <strong>UIElement</strong> by including it directly in your HTML or installing it via npm. Follow the steps below to set up your environment and start building reactive Web Components.</p>
 </section>
