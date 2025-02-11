@@ -464,11 +464,15 @@
 	</input-button>
 	
 </code-block>
-<h3>When to Use a Function Instead of a Signal Key?</h3>
+<callout-box class="tip">
+
+<p><strong>When to use</strong></p>
 <ul>
 <li><strong>Use a signal key</strong> when the state is already <strong>stored as a signal</strong>.</li>
-<li><strong>Use a function</strong> when you <strong>derive the value on the fly</strong> that you need only in one place and you don&#39;t want to expose it as a signal on the element.</li>
+<li><strong>Use a function</strong> when you <strong>derive a value on the fly</strong> needed only in this one place and you don&#39;t want to expose it as a signal on the element.</li>
 </ul>
+</callout-box>
+
 <h3>Custom Effects</h3>
 <p>For complex DOM manipulations, <strong>define your own effect</strong> using <code>effect()</code>.</p>
 <p>Here&#39;s an example effect that attaches a Shadow DOM and updates its content:</p>

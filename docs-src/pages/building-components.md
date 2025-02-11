@@ -249,10 +249,14 @@ Instead of a signal key, you can **pass a function** that derives a value dynami
 this.first('.count').sync(toggleClass('even', () => !((this.get('count') ?? 0) % 2)));
 ```
 
-### When to Use a Function Instead of a Signal Key?
+<callout-box class="tip">
+
+**When to use**
 
 * **Use a signal key** when the state is already **stored as a signal**.
-* **Use a function** when you **derive the value on the fly** that you need only in one place and you don't want to expose it as a signal on the element.
+* **Use a function** when you **derive a value on the fly** needed only in this one place and you don't want to expose it as a signal on the element.
+
+</callout-box>
 
 ### Custom Effects
 
