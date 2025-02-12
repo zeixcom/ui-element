@@ -31,17 +31,12 @@ class UI<T extends Element> {
 		public readonly targets: T[] = [host as unknown as T]
 	) {}
 
-	on(type: keyof ElementEventMap, listener: EventListenerOrEventListenerFactory): UI<T> {
-		this.targets.forEach((target, index) =>
-			target.addEventListener(type, fromFactory(listener, target, index))
-		)
-        return this
-	}
-
-	off(type: keyof ElementEventMap, listener: EventListenerOrEventListenerFactory): UI<T> {
-		this.targets.forEach((target, index) =>
-			target.removeEventListener(type, fromFactory(listener, target, index))
-		)
+	on(type: keyof ElementEventMap, listeners: EventListenerOrEventListenerFactory): UI<T> {
+		this.targets.forEach((target, index) => {
+			const listener = fromFactory(listeners, target, index)
+			target.addEventListener(type, listener)
+			this.host.listeners.push(() => target.removeEventListener(type, listener))
+		})
         return this
 	}
 

@@ -57,6 +57,12 @@ export class UIElement extends HTMLElement {
 	signals = new Map<PropertyKey, Signal<any>>()
 
 	/**
+	 * @since 0.10.0
+	 * @property {Array<() => void>} listeners - array of functions to remove bound event listeners
+	 */
+	listeners: Array<() => void> = []
+
+	/**
 	 * @since 0.9.0
 	 * @property {ElementInternals | undefined} internals - native internal properties of the custom element
 	 * /
@@ -121,6 +127,7 @@ export class UIElement extends HTMLElement {
 	}
 
 	disconnectedCallback(): void {
+		this.listeners.forEach(off => off())
 		if (DEV_MODE && this.debug)
 			log(this, 'Disconnected')
 	}

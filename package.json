@@ -8,7 +8,7 @@
     "build": "bun build index.ts --outdir ./ --minify --define process.env.DEV_MODE=false && bunx tsc",
     "build:dev": "BUN_ENV=development bun build index.dev.ts --outdir ./ --define process.env.DEV_MODE=true",
     "build:docs": "bun build docs-src/main.ts --outdir ./docs/assets/js/ --minify",
-	"serve:docs": "bun ./docs.ts",
+    "serve:docs": "bun ./docs.ts",
     "lint": "npx eslint src/",
     "test": "run-s test:setup test:ci",
     "test:setup": "npx playwright install-deps",
@@ -29,6 +29,7 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
+    "@eslint/js": "^9.20.0",
     "@esm-bundle/chai": "^4.3.4-fix.0",
     "@types/bun": "^1.2.2",
     "@types/eslint__js": "^8.42.3",
@@ -36,8 +37,14 @@
     "@web/test-runner-playwright": "^0.11.0",
     "@zeix/ui-element": "^0.9.4",
     "dotenv": "^16.4.7",
+    "eslint": "^9.20.1",
+    "globals": "^15.14.0",
+    "gray-matter": "^4.0.3",
+    "lightningcss-cli": "^1.29.1",
+    "marked": "^15.0.7",
     "playwright": "^1.50.1",
-    "prismjs": "^1.29.0"
+    "prismjs": "^1.29.0",
+    "typescript-eslint": "^8.24.0"
   },
   "peerDependencies": {
     "typescript": "^5.6.3"
