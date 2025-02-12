@@ -156,7 +156,37 @@ Here’s how everything comes together:
 
 ## Events Bubbling Up
 
+Passing state down works well when a **parent component can directly observe child state**, but sometimes a **child needs to notify its parent** about an action **without managing shared state itself**.
 
+Let’s consider a Todo App, where users can add tasks:
+
+* `TodoApp` **(Parent)**:
+	- Holds the list of todos as a state signal.
+	- Listens for an `'add-todo'` event from the child (`TodoForm`).
+	- Updates the state when a new todo is submitted.
+* `TodoForm` **(Child)**:
+	- Handles **user input** but does **not** store todos.
+	- Emits an `'add-todo'` event when the user submits the form.
+	- Lets the parent decide **what to do with the data**.
+
+### Why use events here?
+
+* The child **doesn’t need to know where the data goes** – it just **emits an event**.
+* The parent **decides what to do** with the new todo (e.g., adding it to a list).
+* This keeps `TodoForm` **reusable** – it could work in different apps without modification.
+
+### Parent Component: TodoApp
+
+```js
+
+```
+
+
+### Child Component: TodoForm
+
+```js
+
+```
 
 </section>
 
@@ -171,6 +201,14 @@ Here’s how everything comes together:
 <section>
 
 ## Consuming Context
+
+
+
+</section>
+
+<section>
+
+## Next Steps
 
 
 
