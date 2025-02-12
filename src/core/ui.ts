@@ -6,7 +6,7 @@ import { isFunction, isPropertyKey } from './util'
 
 /* === Types === */
 
-type StateLike<T> = PropertyKey | Signal<T> | ((v?: T) => T)
+type StateLike<T> = string | Signal<T> | ((v?: T) => T)
 type ValueOrFactory<T> = T | ((element: Element, index: number) => T)
 type StateLikeOrStateLikeFactory<T> = ValueOrFactory<StateLike<T>>
 type EventListenerOrEventListenerFactory = ValueOrFactory<EventListenerOrEventListenerObject>
@@ -25,13 +25,28 @@ const fromFactory = /*#__PURE__*/ <T>(
 
 /* === Exported Class === */
 
+/**
+ * UI class for managing UI elements and their events, passed states and applied effects
+ * 
+ * @since 0.8.0
+ * @class UI
+ * @type {UI}
+ */
 class UI<T extends Element> {
 	constructor(
 		public readonly host: UIElement,
 		public readonly targets: T[] = [host as unknown as T]
 	) {}
 
-	on(type: keyof ElementEventMap, listeners: EventListenerOrEventListenerFactory): UI<T> {
+	/**
+	 * Add event listener to target element(s)
+	 * 
+	 * @since 0.9.0
+	 * @param {string} type - event type
+	 * @param {EventListenerOrEventListenerFactory} listeners - event listener or factory function
+	 * @returns {UI<T>} - self
+	 */
+	on(type: string, listeners: EventListenerOrEventListenerFactory): UI<T> {
 		this.targets.forEach((target, index) => {
 			const listener = fromFactory(listeners, target, index)
 			target.addEventListener(type, listener)
@@ -40,7 +55,32 @@ class UI<T extends Element> {
         return this
 	}
 
-	pass(states: Record<string, StateLikeOrStateLikeFactory<any>>): UI<T> {
+	/**
+	 * Emit custom event to target element(s)
+	 * 
+	 * @since 0.10.0
+	 * @param {string} type - event type
+	 * @param {unknown} detail - event detail
+	 * @returns {UI<T>} - self
+	 */
+	emit(type: string, detail?: unknown): UI<T> {
+		this.targets.forEach(target => {
+			target.dispatchEvent(new CustomEvent(type, {
+				detail,
+				bubbles: true
+			}))
+		})
+		return this
+	}
+
+	/**
+	 * Pass states to target element(s) of type UIElement using provided sources
+	 * 
+	 * @since 0.9.0
+	 * @param {S extends Record<PropertyKey, StateLikeOrStateLikeFactory<unknown>>} states - state sources
+	 * @returns {UI<T>} - self
+	 */
+	pass<S extends Record<PropertyKey, StateLikeOrStateLikeFactory<unknown>>>(states: S): UI<T> {
 		this.targets.forEach(async (target, index) => {
 			await UIElement.registry.whenDefined(target.localName)
 			if (target instanceof UIElement) {
@@ -59,6 +99,13 @@ class UI<T extends Element> {
         return this
 	}
 
+	/**
+	 * Sync state changes to target element(s) using provided functions
+	 * 
+	 * @since 0.9.0
+	 * @param {((host: UIElement, target: T, index: number) => void)[]} fns - state sync functions
+	 * @returns {UI<T>} - self
+	 */
 	sync(...fns: ((host: UIElement, target: T, index: number) => void)[]): UI<T> {
 		this.targets.forEach((target, index) => fns.forEach(fn => fn(this.host, target, index)))
         return this

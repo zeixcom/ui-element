@@ -1,5 +1,5 @@
 import { isFunction } from './util'
-import type { UIElement } from '../ui-element'
+import type { AttributeParser, StateInitializer, UIElement } from '../ui-element'
 import { log, LOG_ERROR } from './log'
 
 /* === Internal Function === */
@@ -17,21 +17,20 @@ const parseNumber = (parseFn: (v: string) => number, value?: string): number | u
  * 
  * @since 0.8.4
  * @param {UIElement} host - host UIElement
- * @param {string} name - attribute name
+ * @param {StateInitializer<T>} initializer - attribute parser or initial value
  * @param {string | undefined} value - attribute value
  * @param {string | undefined} [old=undefined] - old attribute value
- * @returns {unknown}
+ * @returns {T | string | undefined}
  */
-const parse = (
+const parse = <T>(
 	host: UIElement,
-	name: string,
-	value: string | undefined,
-	old: string | undefined = undefined
-): unknown => {
-	const parser = (host.constructor as typeof UIElement).states[name]
-	return isFunction(parser) && !!parser.length
-		? parser(value, host, old)
-		: value
+	initializer?: StateInitializer<T>,
+	value?: string,
+	old?: string
+): T | string | undefined => {
+	const isAttributeParser = (value?: StateInitializer<T>): value is AttributeParser<T> =>
+		isFunction(value) && !!value.length
+	return (isAttributeParser(initializer) ? initializer(value, host, old) : value) ?? initializer as T
 }
 
 /**
@@ -42,7 +41,7 @@ const parse = (
  * @returns {boolean}
  */
 const asBoolean = (value?: string): boolean =>
-	value != null
+	value !== 'false' && value != null
 
 /**
  * Parse an attribute as a number forced to integer
@@ -98,12 +97,6 @@ const asEnum = (valid: string[]) =>
  * @returns {unknown}
  */
 const asJSON = (value?: string): unknown => {
-	/* result(() => value ? JSON.parse(value) : null).match({
-		Err: error => {
-			log(error, 'Failed to parse JSON', LOG_ERROR)
-			return
-		}
-	}).get() */
     if (value == null) return
     try {
         return JSON.parse(value)

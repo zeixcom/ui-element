@@ -17,20 +17,30 @@ export type AttributeParser<T> = (
 	old: string | undefined
 ) => T | undefined
 
-export type ValueOrAttributeParser<T> = T | AttributeParser<T>
+export type StateInitializer<T> = T | AttributeParser<T>
+
+type InferStateType<S> = S extends AttributeParser<infer V> ? V : S
+
+type ExtractStateObject<T> = T extends Record<string, StateInitializer<unknown>> ? T : never
 
 /* === Exported Class === */
 
 /**
  * Base class for reactive custom elements
  * 
+ * @since 0.1.0
  * @class UIElement
  * @extends HTMLElement
  * @type {UIElement}
  */
 export class UIElement extends HTMLElement {
+	// Correctly type `this.constructor` as a subclass of `UIElement`
+	private get ctor(): typeof UIElement {
+        return this.constructor as typeof UIElement;
+    }
+
 	static registry: CustomElementRegistry = customElements
-	static states: Record<string, ValueOrAttributeParser<any>> = {}
+	static states: Record<string, StateInitializer<unknown>> = {}
 	static observedAttributes: string[]
 	static consumedContexts: UnknownContext[]
 	static providedContexts: UnknownContext[]
@@ -51,10 +61,13 @@ export class UIElement extends HTMLElement {
 	}
 
 	/**
-	 * @since 0.9.0
-	 * @property {Map<PropertyKey, Signal<any>>} signals - map of observable properties
-	 */
-	signals = new Map<PropertyKey, Signal<any>>()
+     * @since 0.9.0
+     * @property {Map<PropertyKey, Signal<InferStateType<typeof this.ctor.states[keyof typeof this.ctor.states]>>>} signals - map of state signals bound to the custom element
+     */
+	signals = new Map<
+		keyof ExtractStateObject<typeof this.ctor.states>,
+		Signal<InferStateType<ExtractStateObject<typeof this.ctor.states>[keyof ExtractStateObject<typeof this.ctor.states>]>>
+    >()
 
 	/**
 	 * @since 0.10.0
@@ -100,7 +113,7 @@ export class UIElement extends HTMLElement {
 		if (value === old) return
 		if (DEV_MODE && this.debug)
 			log(`${valueString(old)} => ${valueString(value)}`, `Attribute "${name}" of ${elementName(this)} changed`)
-		this.set(name, parse(this, name, value, old))
+		this.set(name, parse(this, this.ctor.states[name], value, old))
 	}
 
 	/**
@@ -116,22 +129,27 @@ export class UIElement extends HTMLElement {
 			this.debug = this.hasAttribute('debug')
 			if (this.debug) log(this, 'Connected')
 		}
-		Object.entries((this.constructor as typeof UIElement).states)
-			.forEach(([name, source]) => {
-				const value = isFunction(source)
-					? parse(this, name, this.getAttribute(name) ?? undefined, undefined)
-					: source
-				this.set(name, value, false)
-			})
+		Object.entries(this.ctor.states).forEach(([name, source]) => {
+			const value = isFunction(source)
+				? parse(this, this.ctor.states[name], this.getAttribute(name) ?? undefined)
+				: source
+			this.set(name, value, false)
+		})
 		useContext(this)
 	}
 
+	/**
+	 * Native callback function when the custom element is disconnected from the document
+	 */
 	disconnectedCallback(): void {
 		this.listeners.forEach(off => off())
 		if (DEV_MODE && this.debug)
 			log(this, 'Disconnected')
 	}
 
+	/**
+     * Native callback function when the custom element is adopted into a new document
+     */
 	adoptedCallback(): void {
 		if (DEV_MODE && this.debug)
 			log(this, 'Adopted')
@@ -141,10 +159,10 @@ export class UIElement extends HTMLElement {
 	 * Check whether a state is set
 	 * 
 	 * @since 0.2.0
-	 * @param {any} key - state to be checked
+	 * @param {string} key - state to be checked
 	 * @returns {boolean} `true` if this element has state with the given key; `false` otherwise
 	 */
-	has(key: any): boolean {
+	has(key: string): boolean {
 		return this.signals.has(key)
 	}
 
@@ -152,16 +170,16 @@ export class UIElement extends HTMLElement {
 	 * Get the current value of a state
 	 *
 	 * @since 0.2.0
-	 * @param {any} key - state to get value from
+	 * @param {string} key - state to get value from
 	 * @returns {T | undefined} current value of state; undefined if state does not exist
 	 */
-	get<T>(key: any): T | undefined {
-		const unwrap = (v: any): any =>
+	get<T>(key: string): T | undefined {
+		const unwrap = (v: T | (() => T) | Signal<T> | undefined): T | (() => T) | Signal<T> | undefined =>
 			!isDefinedObject(v) ? v // shortcut for non-object values
-				: isFunction(v) ? unwrap(v())
+				: isFunction<T>(v) ? unwrap(v())
 				: isSignal(v) ? unwrap(v.get())
 				: v
-		const value = unwrap(this.signals.get(key))
+		const value = unwrap(this.signals.get(key) as Signal<T>) as T | undefined
 		if (DEV_MODE && this.debug)
 			log(value, `Get current value of state ${valueString(key)} in ${elementName(this)}`)
 		return value
@@ -171,12 +189,12 @@ export class UIElement extends HTMLElement {
 	 * Create a state or update its value and return its current value
 	 * 
 	 * @since 0.2.0
-	 * @param {any} key - state to set value to
+	 * @param {string} key - state to set value to
 	 * @param {T | ((old?: T) => T) | Signal<T>} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
 	 * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
 	 */
 	set<T>(
-		key: any,
+		key: string,
 		value: T | Signal<T> | ((old?: T) => T),
 		update: boolean = true
 	): void {
@@ -185,7 +203,7 @@ export class UIElement extends HTMLElement {
 		// State does not exist => create new state
 		if (!this.signals.has(key)) {
 			if (DEV_MODE && this.debug) op = 'Create'
-			this.signals.set(key, toSignal(value as State<T> | Computed<T> | T, true))
+			this.signals.set(key, toSignal(value as State<T> | Computed<T> | T, true) as Signal<unknown>)
 
 
 		// State already exists => update existing state
@@ -221,10 +239,10 @@ export class UIElement extends HTMLElement {
 	 * Delete a state, also removing all effects dependent on the state
 	 * 
 	 * @since 0.4.0
-	 * @param {any} key - state to be deleted
+	 * @param {string} key - state to be deleted
 	 * @returns {boolean} `true` if the state existed and was deleted; `false` if ignored
 	 */
-	delete(key: any): boolean {
+	delete(key: string): boolean {
 		if (DEV_MODE && this.debug) log(
 			key,
 			`Delete state ${valueString(key)} from ${elementName(this)}`
