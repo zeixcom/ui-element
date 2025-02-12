@@ -13,10 +13,10 @@
     "build:docs": "bun run build:docs-js & bun run build:docs-css & bun run build:docs-html",
     "serve:docs": "bun run build:docs & bun ./docs-src/server/serve-docs.ts",
     "lint": "npx eslint src/",
-    "test": "run-s test:setup test:ci",
-    "test:setup": "npx playwright install-deps",
+    "test": "bun run test:setup && bun run test:ci",
+    "test:setup": "playwright install-deps",
     "test:ci": "web-test-runner \"test/*-test.html\" --node-resolve --playwright --browsers chromium firefox webkit",
-    "watch": "BUN_ENV=development web-test-runner \"test/*-test.html\" --node-resolve --watch --playwright --browsers chromium firefox webkit"
+    "test:watch": "BUN_ENV=development web-test-runner \"test/*-test.html\" --node-resolve --watch --playwright --browsers chromium firefox webkit"
   },
   "keywords": [
     "UIElement",
@@ -40,12 +40,15 @@
     "@web/test-runner-playwright": "^0.11.0",
     "@zeix/ui-element": "^0.9.4",
     "dotenv": "^16.4.7",
+    "eslint": "^9.20.1",
+    "globals": "^15.14.0",
     "gray-matter": "^4.0.3",
     "lightningcss-cli": "^1.29.1",
-    "marked": "^15.0.6",
+    "marked": "^15.0.7",
     "playwright": "^1.50.1",
     "prismjs": "^1.29.0",
-    "shiki": "^2.3.2"
+    "shiki": "^2.3.2",
+    "typescript-eslint": "^8.24.0"
   },
   "peerDependencies": {
     "typescript": "^5.6.2"
