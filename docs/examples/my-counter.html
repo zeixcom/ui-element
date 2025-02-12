@@ -1,9 +1,11 @@
+
 <tab-list>
 	<menu>
 		<li><button type="button" aria-pressed="true">HTML</button></li>
-		<li><button type="button">CSS</button></li>
-		<li><button type="button">JavaScript</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
 	</menu>
+	
 	<accordion-panel open>
 		<details open aria-disabled="true">
 			<summary class="visually-hidden">
@@ -14,20 +16,21 @@
 					<span class="file">my-counter.html</span>
 					<span class="language">html</span>
 				</p>
-				<pre class="language-html"><code>&lt;my-counter count="42"&gt;
-	&lt;p&gt;
-		Count: &lt;span class="count"&gt;&lt;/span&gt;
-		Parity: &lt;span class="parity"&gt;&lt;/span&gt;
-	&lt;/p&gt;
-	&lt;button type="button" class="increment"&gt;+&lt;/button&gt;
-	&lt;button type="button" class="decrement"&gt;−&lt;/button&gt;
-&lt;/my-counter&gt;</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">my-counter</span><span style="color:#A6E22E"> count</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"42"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		Count: &#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"count"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>&#x3C;</span><span style="color:#F92672">br</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		Parity: &#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"parity"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"decrement"</span><span style="color:#F8F8F2">>−&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"increment"</span><span style="color:#F8F8F2">>+&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">my-counter</span><span style="color:#F8F8F2">></span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
@@ -38,59 +41,65 @@
 					<span class="file">my-counter.css</span>
 					<span class="language">css</span>
 				</p>
-				<pre class="language-css"><code>my-counter {
-	display: flex;
-	gap: 0.5rem;
-	margin-block: 1rem;
-
-	p {
-		display: inline-block;
-		margin: 0;
-		flex: 1;
-	}
-
-	span {
-		margin-right: 0.5rem;
-	}
-
-	button {
-		padding: 0.25rem 0.5rem;
-		flex: 0;
-	}
-}</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">my-counter</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	gap</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0.5</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	margin-block</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	p {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">inline-block</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		flex</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">	span</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin-right</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0.5</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">	button</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0.25</span><span style="color:#F92672">rem</span><span style="color:#AE81FF"> 0.5</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		flex</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
-				<div class="summary">JavaScript</div>
+				<div class="summary">TS</div>
 			</summary>
-			<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">my-counter.js</span>
-					<span class="language">js</span>
+					<span class="file">my-counter.ts</span>
+					<span class="language">ts</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, asInteger, setText } from '@zeix/ui-element'
-
-class MyCounter extends UIElement {
-	static observedAttributes = ['count']
-	static states = {
-		count: asInteger
-	}
-
-	connectedCallback() {
-		this.set('parity', () => this.get('count') % 2 ? 'odd' : 'even')
-		this.first('.increment').on('click', () => this.set('count', v => ++v))
-		this.first('.decrement').on('click', () => this.set('count', v => --v))
-		this.first('.count').sync(setText('count'))
-		this.first('.parity').sync(setText('parity'))
-	}
-}
-MyCounter.define('my-counter')</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asInteger, setText, UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "@zeix/ui-element"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">MyCounter</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> observedAttributes </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">]</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">		count: asInteger</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'parity'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">number</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">%</span><span style="color:#AE81FF"> 2</span><span style="color:#F92672"> ?</span><span style="color:#E6DB74"> 'odd'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'even'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.increment'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#F92672">?:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#AE81FF"> null</span><span style="color:#F92672"> !=</span><span style="color:#F8F8F2"> v </span><span style="color:#F92672">?</span><span style="color:#F92672"> ++</span><span style="color:#F8F8F2">v </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.decrement'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#F92672">?:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#AE81FF"> null</span><span style="color:#F92672"> !=</span><span style="color:#F8F8F2"> v </span><span style="color:#F92672">?</span><span style="color:#F92672"> --</span><span style="color:#F8F8F2">v </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.parity'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'parity'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">MyCounter.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-counter'</span><span style="color:#F8F8F2">)</span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

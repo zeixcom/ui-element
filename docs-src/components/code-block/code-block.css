@@ -1,0 +1,88 @@
+code-block {
+	position: relative;
+	display: block;
+	margin: 0 0 var(--space-l);
+
+	.meta {
+		display: flex;
+		margin-bottom: var(--space-xs);
+		font-size: var(--font-size-s);
+		color: var(--color-text-soft);
+
+		&:not(:has(.file)) .language {
+			margin-block-start: calc(-1 * var(--space-m));
+		}
+	}
+
+	.language {
+		margin-left: auto;
+		text-transform: uppercase;
+	}
+
+	& pre {
+		font-size: var(--font-size-s);
+		color: var(--color-gray-10);
+		background: var(--color-gray-90);
+		padding: var(--space-s);
+		margin: var(--space-xs) 0;
+		overflow: auto;
+		border-radius: var(--space-xs);
+	}
+
+	.copy {
+		position: absolute;
+		right: var(--space-s);
+		bottom: var(--space-s);
+	}
+
+	.overlay {
+		display: none;
+	}
+
+	&[collapsed] {
+		max-height: 12rem;
+		overflow: hidden;
+
+		&::after {
+			content: '';
+			display: block;
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			height: var(--space-m);
+			background: linear-gradient(-135deg, var(--color-secondary) 0.5rem, transparent 0) 0 0.5rem, linear-gradient(135deg, var(--color-secondary) 0.5rem, var(--color-background) 0) 0 0.5rem;
+			background-color: var(--color-secondary);
+			background-size: var(--space-m) var(--space-m);
+			background-position: bottom;
+		}
+
+		.copy {
+			display: none;
+		}
+
+		.overlay {
+			display: flex;
+			flex-direction: column-reverse;
+			align-items: center;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 6rem;
+			color: var(--color-text);
+			background: linear-gradient(transparent, var(--color-secondary));
+			border: 0;
+			cursor: pointer;
+			padding: var(--space-xs) var(--space-s);
+			margin-bottom: var(--space-m);
+			font-size: var(--font-size-s);
+			transition: background-color var(--transition-short) var(--easing-inout);
+			text-shadow: var(--color-background) 1px 0 var(--space-xs);
+
+			&:hover,
+			&:active {
+				text-shadow: var(--color-text-inverted) var(--space-xs) 0 var(--space-s);
+			}
+		}
+	}
+}

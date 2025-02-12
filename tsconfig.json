@@ -28,6 +28,6 @@
 		"declarationDir": "./",
 		"emitDeclarationOnly": true,
 	},
-	"include": ["./*.ts", "./src/**/*.ts"],
-	"exclude": ["node_modules", "test", "docs.ts"],
+	"include": ["./*.ts", "./src/**/*.ts", "docs-src/docs.ts"],
+	"exclude": ["node_modules", "test", "docs-src"],
 }

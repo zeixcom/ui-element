@@ -1,0 +1,8 @@
+todo-count {
+	justify-self: start;
+	
+	& p {
+		font-size: var(--font-size-s);
+		margin: 0;
+	}
+}

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started – UIElement Docs</title>
+    <meta name="description" content="Installation, setup, and first steps">
+    <link rel="stylesheet" href="assets/main.css">
+	<script type="module" src="assets/main.js"></script>
+</head>
+<body>
+	<header class="content-grid">
+		<h1 class="content">UIElement Docs <small>Version 0.9.4</small></h1>
+		
+	<nav class="breakout">
+		<ol>
+			
+				<li>
+					<a href="index.html">
+						<span class="icon">📖</span>
+						<strong>Introduction</strong>
+						<small>Overview and key benefits of UIElement</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="getting-started.html" class="active">
+						<span class="icon">🚀</span>
+						<strong>Getting Started</strong>
+						<small>Installation, setup, and first steps</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="building-components.html">
+						<span class="icon">🏗️</span>
+						<strong>Building Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="styling-components.html">
+						<span class="icon">🎨</span>
+						<strong>Styling Components</strong>
+						<small>Scoped styles, CSS custom properties</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="data-flow.html">
+						<span class="icon">🔄</span>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="patterns-techniques.html">
+						<span class="icon">💡</span>
+						<strong>Patterns & Techniques</strong>
+						<small>Composition, scheduling, best practices</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="examples-recipes.html">
+						<span class="icon">🍽️</span>
+						<strong>Examples & Recipes</strong>
+						<small>Common use cases and demos</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="api-reference.html">
+						<span class="icon">📚</span>
+						<strong>API Reference</strong>
+						<small>Detailed documentation of classes and methods</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="about-community.html">
+						<span class="icon">🤝</span>
+						<strong>About & Community</strong>
+						<small>License, versioning, getting involved</small>
+					</a>
+				</li>
+		</ol>
+	</nav>
+	</header>
+    
+    <main>
+        <section class="hero">
+
+<h1>🚀 Getting Started</h1>
+<p class="lead"><strong>Set up UIElement in minutes – no build tools required</strong>. Whether you’re enhancing server-rendered HTML with lightweight interactivity or integrating Web Components into a modern JavaScript project, UIElement makes it simple to get started.</p>
+</section>
+
+<section>
+
+<h2>How to Install UIElement</h2>
+<p>UIElement works <strong>without build tools</strong> but also supports <strong>NPM and module bundlers</strong> for larger projects. Choose the option that best fits your needs.</p>
+<h3>Using a CDN</h3>
+<p>For the easiest setup, include <strong>UIElement</strong> via a CDN. This is ideal for <strong>testing or quick projects</strong> where you want lightweight interactivity without additional tooling.</p>
+<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">html</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> src</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	
+</code-block>
+<p>Or use <code>&lt;script type=&quot;module&quot;&gt;</code> to import UIElement in your HTML:</p>
+<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">html</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"module"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// Your code here</span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	
+</code-block>
+<ul>
+<li>✅ <strong>No build step</strong> required</li>
+<li>✅ <strong>Works with any server-rendered HTML</strong></li>
+<li>✅ <strong>Automatic hydration</strong> when components are dynamically inserted</li>
+</ul>
+</section>
+
+<section>
+
+<h3>Self-Hosting UIElement</h3>
+<p>For production use, you may want to <strong>self-host UIElement</strong> to avoid relying on a CDN. You can download the latest version from:</p>
+<p><a href="https://github.com/zeixcom/ui-element/blob/main/index.js" target="_blank">Github Repository</a></p>
+<p>Simply host the file on your server and include it like this:</p>
+<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">html</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> src</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"/path/to/your/hosted/ui-element.js"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	
+</code-block>
+<p><strong>Why self-host?</strong></p>
+<ul>
+<li>You <strong>control updates</strong> and avoid breaking changes from external CDNs.</li>
+<li>Works for <strong>projects with stricter Content Security Policy rules</strong>.</li>
+</ul>
+<p>Remember to keep the hosted file updated to use the latest features and bug fixes.</p>
+</section>
+
+<section>
+
+<h3>Installing via NPM</h3>
+<p>If you’re using a <strong>bundler</strong> like <strong>Vite, Webpack, or Rollup</strong>, install UIElement via NPM:</p>
+<code-block language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">bash</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">npm</span><span style="color:#E6DB74"> install</span><span style="color:#E6DB74"> @zeix/ui-element</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	
+</code-block>
+<p>Then import <code>UIElement</code> in your JavaScript:</p>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	
+</code-block>
+<ul>
+<li>✅ Best for <strong>larger projects</strong> using a build pipeline</li>
+<li>✅ Works with <strong>modern JavaScript/TypeScript tooling</strong></li>
+</ul>
+</section>
+
+<section>
+
+<h2>Creating Your First Component</h2>
+<p>Now, let’s create an interactive Web Component to verify your setup.</p>
+<p><strong>What This Component Does</strong></p>
+<ul>
+<li>Displays <strong>“Hello, World!”</strong> by default.</li>
+<li>Updates dynamically when you <strong>type into the input field</strong>.</li>
+</ul>
+<h3>Markup</h3>
+<p>Include the following in your server-rendered HTML:</p>
+<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">html</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">>Your name&#x3C;</span><span style="color:#F92672">br</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>World&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	
+</code-block>
+<h3>Component Definition</h3>
+<p>Save the following inside a <code>&lt;script type=&quot;module&quot;&gt;</code> tag or an external JavaScript file.</p>
+<code-block collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">html</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"module"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F92672">	import</span><span style="color:#F8F8F2"> { UIElement, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HelloWorld</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#A6E22E">		connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">			// Update content dynamically based on the 'name' signal</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">			// Handle user input to change the 'name'</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">, e.target.value </span><span style="color:#F92672">||</span><span style="color:#AE81FF"> undefined</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">	HelloWorld.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<p><strong>What Happens Here?</strong></p>
+<ul>
+<li>✅ The <code>setText(&#39;name&#39;)</code> effect <strong>syncs the state</strong> with the <code>&lt;span&gt;</code>.</li>
+<li>✅ The <code>.on(&#39;input&#39;)</code> event <strong>updates the state</strong> whenever you type, falling back to the initial value if empty.</li>
+<li>✅ The Web Component <strong>hydrates automatically</strong> when inserted into the page.</li>
+</ul>
+</section>
+
+<section>
+
+<h2>Verifying Your Installation</h2>
+<p>If everything is set up correctly, you should see:</p>
+<ul>
+<li>A text input field</li>
+<li>A greeting (Hello, World!)</li>
+<li>The greeting updates as you type</li>
+</ul>
+<component-demo>
+<div class="preview">
+<hello-world>
+<template shadowrootmode="open">
+<label>Your name<br>
+<input type="text">
+</label>
+<p>Hello, <span>World</span>!</p>
+</template>
+</hello-world>
+</div>
+</component-demo>
+
+<p>If it’s not working:</p>
+<ul>
+<li>Check the browser console for errors (missing imports, typos).</li>
+<li>Ensure your <code>&lt;script&gt;</code> tag is set to <code>type=&quot;module&quot;</code> when using ES modules.</li>
+<li>If using NPM, confirm UIElement is installed inside <code>node_modules/@zeix/ui-element</code>.</li>
+</ul>
+</section>
+
+<section>
+
+<h2>Next Steps</h2>
+<p>Now that UIElement is installed, explore the Core Concepts to learn about:</p>
+<ul>
+<li>✅ <strong>Signals &amp; Effects</strong> (state-driven DOM updates)</li>
+<li>✅ <strong>Component Lifecycle</strong> (building interactive UI components)</li>
+<li>✅ <strong>State Passing &amp; State Sharing</strong> (Communicating between components)</li>
+</ul>
+<p>Or jump straight into the <a href="detailed-walkthrough.html">Detailed Walkthrough</a> to get hands-on.</p>
+</section>
+    </main>
+    <footer class="content-grid">
+		<div class="content">
+			<h2 class="visually-hidden">Footer</h2>
+			<p>© 2025 Zeix AG</p>
+		</div>
+	</footer>
+</body>
+</html>

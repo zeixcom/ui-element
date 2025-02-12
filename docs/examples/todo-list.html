@@ -1,9 +1,11 @@
+
 <tab-list>
 	<menu>
 		<li><button type="button" aria-pressed="true">HTML</button></li>
-		<li><button type="button">CSS</button></li>
-		<li><button type="button">JavaScript</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
 	</menu>
+	
 	<accordion-panel open>
 		<details open aria-disabled="true">
 			<summary class="visually-hidden">
@@ -14,28 +16,29 @@
 					<span class="file">todo-list.html</span>
 					<span class="language">html</span>
 				</p>
-				<pre class="language-html"><code>&lt;todo-list filter="all"&gt;
-	&lt;ol&gt;&lt;/ol&gt;
-	&lt;template&gt;
-		&lt;li&gt;
-			&lt;input-checkbox class="todo"&gt;
-				&lt;label&gt;
-					&lt;input type="checkbox" class="visually-hidden" /&gt;
-					&lt;span&gt;&lt;/span&gt;
-				&lt;/label&gt;
-			&lt;/input-checkbox&gt;
-			&lt;input-button&gt;
-				&lt;button type="button"&gt;Delete&lt;/button&gt;
-			&lt;/input-button&gt;
-		&lt;/li&gt;
-	&lt;/template&gt;
-&lt;/todo-list&gt;</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">todo-list</span><span style="color:#A6E22E"> filter</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"all"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">ol</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">ol</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">template</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">input-checkbox</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"todo"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"checkbox"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">input-checkbox</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">input-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">>Delete&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">input-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">template</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">todo-list</span><span style="color:#F8F8F2">></span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
@@ -46,106 +49,121 @@
 					<span class="file">todo-list.css</span>
 					<span class="language">css</span>
 				</p>
-				<pre class="language-css"><code>todo-list {
-	display: block;
-
-	& ol {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-m);
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-
-	& li {
-		display: flex;
-		justify-content: space-between;
-		gap: var(--space-m);
-		margin: 0;
-		padding: 0;
-	}
-
-	&[filter="completed"] {
-		li:not(:has([checked])) {
-			display: none;
-		}
-	}
-
-	&[filter="active"] {
-		li:has([checked]) {
-			display: none;
-		}
-	}
-}</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">todo-list</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">block</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; ol {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		flex-direction</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">column</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		list-style</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">none</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">li</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		justify-content</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">space-between</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26;[</span><span style="color:#A6E22E">filter</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"completed"</span><span style="color:#F8F8F2">] </span><span style="color:#F92672">li</span><span style="color:#A6E22E">:not</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">:has</span><span style="color:#F8F8F2">([</span><span style="color:#A6E22E">checked</span><span style="color:#F8F8F2">])) {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">        display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">none</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">    &#x26;[</span><span style="color:#A6E22E">filter</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"active"</span><span style="color:#F8F8F2">] </span><span style="color:#F92672">li</span><span style="color:#A6E22E">:has</span><span style="color:#F8F8F2">([</span><span style="color:#A6E22E">checked</span><span style="color:#F8F8F2">]) {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">none</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
-				<div class="summary">JavaScript</div>
+				<div class="summary">TS</div>
 			</summary>
-			<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">todo-list.js</span>
-					<span class="language">js</span>
+					<span class="file">todo-list.ts</span>
+					<span class="language">ts</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, setAttribute } from '@zeix/ui-element'
-
-class TodoList extends UIElement {
-	connectedCallback() {
-		this.set('filter', 'all') // set initial filter
-		this.#updateList()
-
-		// Event listener and attribute on own element
-		this.self
-			.on('click', e => {
-				if (e.target.localName === 'button') this.removeItem(e.target)
-			})
-			.sync(setAttribute('filter'))
-
-		// Update count on each change
-		this.set('count', () => {
-			const tasks = this.get('tasks').map(el => el.signal('checked'))
-			const completed = tasks.filter(fn => fn()).length
-			const total = tasks.length
-			return {
-				active: total - completed,
-				completed,
-				total
-			}
-		})
-	}
-
-	addItem = task => {
-		const template = this.querySelector('template').content.cloneNode(true)
-		template.querySelector('span').textContent = task
-		this.querySelector('ol').appendChild(template)
-		this.#updateList()
-	}
-
-	removeItem = element => {
-		element.closest('li').remove()
-		this.#updateList()
-	}
-
-	clearCompleted = () => {
-		this.get('tasks')
-			.filter(el => el.get('checked'))
-			.forEach(el => el.parentElement.remove())
-		this.#updateList()
-	}
-
-	#updateList() {
-		this.set('tasks', Array.from(this.querySelectorAll('input-checkbox')))
-	}
-
-}
-TodoList.define('todo-list')</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { setAttribute, UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { InputCheckbox } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../input-checkbox/input-checkbox'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">TodoCountObject</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	active</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span></span>
+<span class="line"><span style="color:#F8F8F2">	completed</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span></span>
+<span class="line"><span style="color:#F8F8F2">	total</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">TodoList</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">		tasks: [],</span></span>
+<span class="line"><span style="color:#F8F8F2">		filter: </span><span style="color:#E6DB74">'all'</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">#updateList</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Event listener and attribute on own element</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.self</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> el </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span></span>
+<span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> (el.localName </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'button'</span><span style="color:#F8F8F2">) </span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">removeItem</span><span style="color:#F8F8F2">(el)</span></span>
+<span class="line"><span style="color:#F8F8F2">			})</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'filter'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Update count on each change</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> tasks </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tasks'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">InputCheckbox</span><span style="color:#F8F8F2">[])</span></span>
+<span class="line"><span style="color:#F8F8F2">				.</span><span style="color:#A6E22E">map</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.signals.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'checked'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> completed </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> tasks.</span><span style="color:#A6E22E">filter</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">fn</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> fn?.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()).length</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> tasks.length</span></span>
+<span class="line"><span style="color:#F92672">			return</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">				active: total </span><span style="color:#F92672">-</span><span style="color:#F8F8F2"> completed,</span></span>
+<span class="line"><span style="color:#F8F8F2">				completed,</span></span>
+<span class="line"><span style="color:#F8F8F2">				total</span></span>
+<span class="line"><span style="color:#F8F8F2">			} </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">TodoCountObject</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	addItem</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">task</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> ol </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ol'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> fragment </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'template'</span><span style="color:#F8F8F2">)?.content.</span><span style="color:#A6E22E">cloneNode</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">true</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">DocumentFragment</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> span </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> fragment.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (ol </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> fragment </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> span) {</span></span>
+<span class="line"><span style="color:#F8F8F2">			span.textContent </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> task</span></span>
+<span class="line"><span style="color:#F8F8F2">			ol.</span><span style="color:#A6E22E">appendChild</span><span style="color:#F8F8F2">(fragment)</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">#updateList</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	removeItem</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">element</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">		element.</span><span style="color:#A6E22E">closest</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'li'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">remove</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">#updateList</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	clearCompleted</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">		(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tasks'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">InputCheckbox</span><span style="color:#F8F8F2">[])</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">filter</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'checked'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">forEach</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.parentElement?.</span><span style="color:#A6E22E">remove</span><span style="color:#F8F8F2">())</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">#updateList</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	#</span><span style="color:#A6E22E">updateList</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tasks'</span><span style="color:#F8F8F2">, Array.</span><span style="color:#A6E22E">from</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelectorAll</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-checkbox'</span><span style="color:#F8F8F2">)))</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">TodoList.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'todo-list'</span><span style="color:#F8F8F2">)</span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

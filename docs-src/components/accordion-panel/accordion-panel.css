@@ -1,0 +1,45 @@
+accordion-panel {
+	display: block;
+
+	> details {
+
+		& summary {
+			cursor: pointer;
+			font-size: var(--font-size-m);
+			font-weight: var(--font-weight-bold);
+            margin: 0 0 var(--space-s);
+		}
+
+		::marker,
+		::-webkit-details-marker {
+			color: var(--color-text-soft);
+		}
+
+		.summary {
+			display: inline-block;
+			margin-left: var(--space-xs);
+		}
+
+		&[open] {
+			margin-bottom: var(--space-m);
+		}
+
+		&[aria-disabled="true"] {
+			
+			& summary {
+				pointer-events: none;
+				display: block;
+				cursor: text;
+			}
+
+			::marker,
+			::-webkit-details-marker {
+				display: none;
+			}
+
+			.summary {
+                margin-left: 0;
+            }
+		}
+	}
+}

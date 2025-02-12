@@ -1,9 +1,11 @@
+
 <tab-list>
 	<menu>
 		<li><button type="button" aria-pressed="true">HTML</button></li>
-		<li><button type="button">CSS</button></li>
-		<li><button type="button">JavaScript</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
 	</menu>
+	
 	<accordion-panel open>
 		<details open aria-disabled="true">
 			<summary class="visually-hidden">
@@ -14,20 +16,21 @@
 					<span class="file">tab-list.html</span>
 					<span class="language">html</span>
 				</p>
-				<pre class="language-html"><code>&lt;tab-list&gt;
-	&lt;menu&gt;
-		&lt;li&gt;&lt;button type="button" aria-pressed="true"&gt;Tab 1&lt;/button&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;button type="button"&gt;Tab 2&lt;/button&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;button type="button"&gt;Tab 3&lt;/button&gt;&lt;/li&gt;
-	&lt;/menu&gt;
-	&lt;!-- Accordion panels here --&gt;
-&lt;/tab-list&gt;</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">tab-list</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">menu</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">>&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> aria-pressed</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"true"</span><span style="color:#F8F8F2">>Tab 1&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">>&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">>Tab 2&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">>&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">>Tab 3&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">menu</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#88846F">	&#x3C;!-- Accordion panels here --></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">tab-list</span><span style="color:#F8F8F2">></span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
@@ -38,100 +41,100 @@
 					<span class="file">tab-list.css</span>
 					<span class="language">css</span>
 				</p>
-				<pre class="language-css"><code>tab-list {
-	display: block;
-	margin-bottom: var(--space-l);
-
-	> menu {
-		display: flex;
-		margin: 0 0 var(--space-s);
-		padding: 0;
-
-		> li {
-			display: inline-block;
-			margin: 0;
-			padding: 0;
-		}
-
-		& button {
-			border: 0;
-			border-top: 2px solid transparent;
-			background: transparent;
-			font-size: var(--font-size-s);
-			padding: var(--space-xs) var(--space-s);
-			color: var(--color-text);
-			background-color: var(--color-secondary);
-
-			&:hover {
-				background-color: var(--color-secondary-hover);
-			}
-
-			&[aria-pressed="true"] {
-				border-top: 2px solid var(--color-primary);
-				background-color: var(--color-secondary-active);
-			}
-		}
-	}
-}</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">tab-list</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">block</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	margin-bottom</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-l);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	> menu {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#AE81FF"> 0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		> li {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">inline-block</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26; </span><span style="color:#F92672">button</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			border-top</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">2</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> solid</span><span style="color:#66D9EF"> transparent</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">transparent</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			padding</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">			&#x26;:hover {</span></span>
+<span class="line"><span style="color:#F8F8F2">                background-color: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary-hover);</span></span>
+<span class="line"><span style="color:#F8F8F2">            }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">			&#x26;[</span><span style="color:#A6E22E">aria-pressed</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"true"</span><span style="color:#F8F8F2">] {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				border-top</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">2</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> solid</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--color-primary);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary-active);</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
-				<div class="summary">JavaScript</div>
+				<div class="summary">TS</div>
 			</summary>
-			<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">tab-list.js</span>
-					<span class="language">js</span>
+					<span class="file">tab-list.ts</span>
+					<span class="language">ts</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, setProperty, toggleAttribute } from '@zeix/ui-element'
-
-class TabList extends UIElement {
-	static observedAttributes = ['accordion']
-	static states = {
-		active: 0,
-		accordion: asBoolean
-	}
-	static consumedContexts = ['media-viewport']
-
-	connectedCallback() {
-		super.connectedCallback()
-
-		// Dynamically adjust accordion based on viewport size
-		setTimeout(() => {
-			if (this.get('media-viewport'))
-				this.set('accordion', () => ['xs', 'sm'].includes(this.get('media-viewport')))
-		}, 0)
-
-		// Reflect accordion attribute (may be used for styling)
-		this.self.sync(toggleAttribute('accordion'))
-
-		// Hide accordion tab navigation when in accordion mode
-		this.first('menu').sync(setProperty('ariaHidden', 'accordion'))
-
-		// Update active tab state and bind click handlers
-		this.all('menu button')
-			.on('click', (_target, index) => () => {
-				this.set('active', index)
-			})
-			.sync((host, target, index) => setProperty(
-				'ariaPressed',
-				() => this.get('active') === index
-			)(host, target))
-
-		// Pass open and collapsible states to accordion panels
-		this.all('accordion-panel').pass((_target, index) => ({
-			open: () => this.get('active') === index,
-			collapsible: 'accordion'
-		}))
-	}
-}
-TabList.define('tab-list')</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asBoolean, setProperty, toggleAttribute, UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "@zeix/ui-element"</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { Context } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "@zeix/ui-element/src/core/context"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">TabList</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> observedAttributes </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'accordion'</span><span style="color:#F8F8F2">]</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">		accordion: asBoolean,</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> consumedContexts </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'media-viewport'</span><span style="color:#F92672"> as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Context</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">>]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">		super</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">connectedCallback</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#AE81FF">false</span><span style="color:#F8F8F2">) </span><span style="color:#88846F">// initial active tab</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Dynamically adjust accordion based on viewport size</span></span>
+<span class="line"><span style="color:#A6E22E">		setTimeout</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'media-viewport'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'accordion'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'xs'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'sm'</span><span style="color:#F8F8F2">].</span><span style="color:#A6E22E">includes</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">String</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'media-viewport'</span><span style="color:#F8F8F2">))))</span></span>
+<span class="line"><span style="color:#F8F8F2">		}, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Reflect accordion attribute (may be used for styling)</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.self.</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">toggleAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'accordion'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Hide accordion tab navigation when in accordion mode</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'menu'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaHidden'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'accordion'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Update active tab state and bind click handlers</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'menu button'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">_target</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">, index))</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> setProperty</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">				'ariaPressed'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">				() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> index</span></span>
+<span class="line"><span style="color:#F8F8F2">			)(host, target))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Pass open and collapsible states to accordion panels</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'accordion-panel'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">pass</span><span style="color:#F8F8F2">({</span></span>
+<span class="line"><span style="color:#A6E22E">			open</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">_target</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> index,</span></span>
+<span class="line"><span style="color:#F8F8F2">			collapsible: </span><span style="color:#E6DB74">'accordion'</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">TabList.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tab-list'</span><span style="color:#F8F8F2">)</span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>

@@ -1,9 +1,11 @@
+
 <tab-list>
 	<menu>
 		<li><button type="button" aria-pressed="true">HTML</button></li>
-		<li><button type="button">CSS</button></li>
-		<li><button type="button">JavaScript</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
 	</menu>
+	
 	<accordion-panel open>
 		<details open aria-disabled="true">
 			<summary class="visually-hidden">
@@ -14,71 +16,72 @@
 					<span class="file">todo-app.html</span>
 					<span class="language">html</span>
 				</p>
-				<pre class="language-html"><code>&lt;&lt;todo-app&gt;
-	&lt;todo-form&gt;
-		&lt;form action="#"&gt;
-			&lt;input-field&gt;
-				&lt;label for="add-todo"&gt;What needs to be done?&lt;/label&gt;
-				&lt;div class="row"&gt;
-					&lt;div class="group auto"&gt;
-						&lt;input id="add-todo" type="text" value="" required&gt;
-					&lt;/div&gt;
-				&lt;/div&gt;
-			&lt;/input-field&gt;
-			&lt;input-button class="submit"&gt;
-				&lt;button type="submit" class="primary" disabled&gt;Add Todo&lt;/button&gt;
-			&lt;/input-button&gt;
-		&lt;/form&gt;
-	&lt;/todo-form&gt;
-	&lt;todo-list filter="all"&gt;
-		&lt;ol&gt;&lt;/ol&gt;
-		&lt;template&gt;
-			&lt;li&gt;
-				&lt;input-checkbox class="todo"&gt;
-					&lt;label&gt;
-						&lt;input type="checkbox" class="visually-hidden" /&gt;
-						&lt;span&gt;&lt;/span&gt;
-					&lt;/label&gt;
-				&lt;/input-checkbox&gt;
-				&lt;input-button&gt;
-					&lt;button type="button"&gt;Delete&lt;/button&gt;
-				&lt;/input-button&gt;
-			&lt;/li&gt;
-		&lt;/template&gt;
-	&lt;/todo-list&gt;
-	&lt;footer&gt;
-		&lt;todo-count&gt;
-			&lt;p class="all-done"&gt;Well done, all done!&lt;/p&gt;
-			&lt;p class="remaining"&gt;&lt;span&gt;&lt;/span&gt; tasks left&lt;/p&gt;
-		&lt;/todo-count&gt;
-		&lt;input-radiogroup value="all" class="split-button"&gt;
-			&lt;fieldset&gt;
-				&lt;legend class="visually-hidden"&gt;Filter&lt;/legend&gt;
-					&lt;label class="selected"&gt;
-						&lt;input type="radio" class="visually-hidden" name="filter" value="all" checked&gt;
-						&lt;span&gt;All&lt;/span&gt;
-					&lt;/label&gt;
-					&lt;label&gt;
-						&lt;input type="radio" class="visually-hidden" name="filter" value="active"&gt;
-						&lt;span&gt;Active&lt;/span&gt;
-					&lt;/label&gt;
-					&lt;label&gt;
-						&lt;input type="radio" class="visually-hidden" name="filter" value="completed"&gt;
-						&lt;span&gt;Completed&lt;/span&gt;
-					&lt;/label&gt;
-			&lt;/fieldset&gt;
-		&lt;/input-radiogroup&gt;
-		&lt;input-button class="clear-completed"&gt;
-			&lt;button type="button"&gt;Clear Completed&lt;/button&gt;
-		&lt;/input-button&gt;
-	&lt;/footer&gt;
-&lt;/todo-app&gt;</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F44747">&#x3C;</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">todo-app</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">todo-form</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">form</span><span style="color:#A6E22E"> action</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"#"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">input-field</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> for</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"add-todo"</span><span style="color:#F8F8F2">>What needs to be done?&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"row"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"group auto"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"add-todo"</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">""</span><span style="color:#A6E22E"> required</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">input-field</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">input-button</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"submit"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"submit"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"primary"</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">>Add Todo&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">input-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">form</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">todo-form</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">todo-list</span><span style="color:#A6E22E"> filter</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"all"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">ol</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">ol</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">template</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">input-checkbox</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"todo"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"checkbox"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">input-checkbox</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">input-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">>Delete&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">input-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">template</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">todo-list</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">footer</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">todo-count</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"all-done"</span><span style="color:#F8F8F2">>Well done, all done!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"remaining"</span><span style="color:#F8F8F2">>&#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">> tasks left&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">todo-count</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">input-radiogroup</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"all"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"split-button"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">fieldset</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">legend</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#F8F8F2">>Filter&#x3C;/</span><span style="color:#F92672">legend</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"selected"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"filter"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"all"</span><span style="color:#A6E22E"> checked</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>All&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"filter"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"active"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>Active&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"filter"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"completed"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>Completed&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">fieldset</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">input-radiogroup</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">input-button</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"clear-completed"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">>Clear Completed&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">input-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">footer</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">todo-app</span><span style="color:#F8F8F2">></span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
@@ -89,87 +92,74 @@
 					<span class="file">todo-app.css</span>
 					<span class="language">css</span>
 				</p>
-				<pre class="language-css"><code>todo-app {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-l);
-
-	& footer {
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
-		align-items: center;
-		gap: var(--space-m);
-		margin: 0;
-	
-		.clear-completed {
-			justify-self: end;
-		}
-	}
-}
-
-todo-count {
-	justify-self: start;
-	
-	& p {
-		font-size: var(--font-size-s);
-		margin: 0;
-	}
-}</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">todo-app</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	flex-direction</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">column</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-l);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; footer {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">grid</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		grid-template-columns</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">fr</span><span style="color:#AE81FF"> 1</span><span style="color:#F92672">fr</span><span style="color:#AE81FF"> 1</span><span style="color:#F92672">fr</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		align-items</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">center</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#F8F8F2">		.clear-completed {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			justify-self</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">end</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
 			</code-block>
 		</details>
 	</accordion-panel>
+
 	<accordion-panel>
 		<details aria-disabled="true">
 			<summary class="visually-hidden">
-				<div class="summary">JavaScript</div>
+				<div class="summary">TS</div>
 			</summary>
-			<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 				<p class="meta">
-					<span class="file">todo-app.js</span>
-					<span class="language">js</span>
+					<span class="file">todo-app.ts</span>
+					<span class="language">ts</span>
 				</p>
-				<pre class="language-js"><code>import { UIElement, setText, setProperty } from '@zeix/ui-element'
-
-class TodoApp extends UIElement {
-	connectedCallback() {
-		const [todoList, todoFilter] = ['todo-list', 'input-radiogroup']
-			.sync(selector => this.querySelector(selector))
-
-		// Event listener on own element
-		this.self.on('add-todo', e => todoList?.addItem(e.detail))
-		
-		// Coordinate todo-count
-		this.first('todo-count').pass({
-			active: () => todoList?.get('count').active
-		})
-
-		// Coordinate todo-list
-		this.first('todo-list').pass({
-			filter: () => todoFilter?.get('value')
-		})
-
-		// Coordinate .clear-completed button
-		this.first('.clear-completed')
-			.on('click', () => todoList?.clearCompleted())
-			.pass({ disabled: () => !todoList?.get('count').completed })
-	}
-}
-TodoApp.define('todo-app')
-
-class TodoCount extends UIElement {
-	connectedCallback() {
-		this.set('active', 0, false)
-		this.first('.count').sync(setText('active'))
-		this.first('.singular').sync(setProperty('ariaHidden', () => this.get('active') > 1))
-		this.first('.plural').sync(setProperty('ariaHidden', () => this.get('active') === 1))
-		this.first('.remaining').sync(setProperty('ariaHidden', () => !this.get('active')))
-		this.first('.all-done').sync(setProperty('ariaHidden', () => !!this.get('active')))
-	}
-}
-TodoCount.define('todo-count')</code></pre>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "@zeix/ui-element"</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { TodoCountObject, TodoList } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../todo-list/todo-list"</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { InputRadiogroup } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../input-radiogroup/input-radiogroup"</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { AddTodoEvent } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../todo-form/todo-form"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">TodoApp</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> todoList</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">TodoList</span><span style="color:#F92672"> |</span><span style="color:#66D9EF;font-style:italic"> null</span><span style="color:#F92672"> =</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'todo-list'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Event listener on own element</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.self.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'add-todo'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">			todoList?.</span><span style="color:#A6E22E">addItem</span><span style="color:#F8F8F2">((e </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">AddTodoEvent</span><span style="color:#F8F8F2">).detail)</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#F8F8F2">		</span></span>
+<span class="line"><span style="color:#88846F">		// Coordinate todo-count</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'todo-count'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">pass</span><span style="color:#F8F8F2">({</span></span>
+<span class="line"><span style="color:#A6E22E">			active</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (todoList?.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">TodoCountObject</span><span style="color:#F8F8F2">).active</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Coordinate todo-list</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'todo-list'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">pass</span><span style="color:#F8F8F2">({</span></span>
+<span class="line"><span style="color:#A6E22E">			filter</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputRadiogroup</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'input-radiogroup'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Coordinate .clear-completed button</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.clear-completed'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> todoList?.</span><span style="color:#A6E22E">clearCompleted</span><span style="color:#F8F8F2">())</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">pass</span><span style="color:#F8F8F2">({</span></span>
+<span class="line"><span style="color:#A6E22E">				disabled</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">(todoList?.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">TodoCountObject</span><span style="color:#F8F8F2">).completed</span></span>
+<span class="line"><span style="color:#F8F8F2">			})</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">TodoApp.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'todo-app'</span><span style="color:#F8F8F2">)</span></span></code></pre>
 				<input-button class="copy">
 					<button type="button" class="secondary small">Copy</button>
 				</input-button>
