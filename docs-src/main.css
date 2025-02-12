@@ -15,3 +15,6 @@
 @import './components/todo-form/todo-form.css';
 @import './components/todo-count/todo-count.css';
 @import './components/callout-box/callout-box.css';
+@import './components/product-catalog/product-catalog.css';
+@import './components/badge-button/badge-button.css';
+@import './components/spin-button/spin-button.css';

@@ -15,25 +15,140 @@ description: "Passing state, events, context"
 
 ## Passing State Down
 
-Let's consider a parent component called `TodoApp` that coordinates an inner component called `TodoList`. `TodoApp` needs to be able to add new tasks to the `TodoList` and modify how it is filtered.
+Let’s consider a **product catalog** where users can add items to a shopping cart. We have **three independent components** that work together:
 
-### Parent Component: TodoApp
+* `ProductCatalog` **(Parent)**:
+	- **Tracks all `SpinButton` components** in its subtree and derives the **total count** of items in the shopping cart.
+	- **Passes that total** to a `BadgeButton`, which displays the number of items in the cart.
+* `BadgeButton` **(Child)**:
+	- Displays a **cart badge** when the `'badge'` signal is set.
+	- **Does not track any state** – it simply renders whatever value is passed down.
+* `SpinButton` **(Child)**:
+	- Displays an **“Add to Cart”** button initially.
+	- When an item is added, it transforms into a **stepper** (increment/decrement buttons).
+
+Although `BadgeButton` **and** `SpinButton` are completely independent, they need to work together.
+So `ProductCatalog` **coordinates the data flow between them**.
+
+### Parent Component: ProductCatalog
+
+The **parent component (`ProductCatalog`) knows about its children**, meaning it can **observe and pass state** to them.
+
+Use the `.pass()` method to send values to child components. It takes an object where:
+
+* **Keys** = Signal names in the **child** (`BadgeButton`)
+* **Values** = Signal names in the parent (`ProductCatalog`) or functions returning computed values
 
 ```js
-class TodoApp extends UIElement {
-
-}
-TodoApp.define('todo-app');
+this.first('badge-button').pass({ badge: () => {
+	const total = this.get('total');
+	return typeof total === 'number' && total > 0 ? String(total) : '';
+}});
 ```
 
-### Child Component: TodoList
+* ✅ **Whenever the `total` signal updates, `<badge-button>` automatically updates.**
+* ✅ **No need for event listeners or manual updates!**
+
+### Child Component: BadgeButton
+
+The `BadgeButton` component **displays a badge when needed** – it does not track state itself.
+
+Whenever the `'badge'` **signal assigned by a parent component** updates, the badge text updates.
 
 ```js
-class TodoList extends UIElement {
-
+class BadgeButton extends UIElement {
+	connectedCallback() {
+		this.first('.badge').sync(setText('badge'));
+	}
 }
-TodoApp.define('todo-list');
 ```
+
+* ✅ The `setText('badge')` effect **keeps the badge in sync** with the `'badge'` signal.
+* ✅ If badge is an **empty string**, the badge is **hidden**.
+
+The `BadgeButton` **doesn’t care how the badge value is calculated** – just that it gets one!
+
+### Full Example
+
+Here’s how everything comes together:
+
+* Each `SpinButton` **tracks its own count**.
+* The `ProductCatalog` **sums all counts and passes the total to `BadgeButton`**.
+* The `BadgeButton` **displays the total** if it’s greater than zero.
+
+**No custom events are needed – state flows naturally!**
+
+<component-demo>
+<div class="preview">
+<product-catalog>
+<header>
+<p>Shop</p>
+<badge-button>
+<button type="button">
+<span class="label">🛒 Shopping Cart</span>
+<span class="badge"></span>
+</button>
+</badge-button>
+</header>
+<ul>
+<li>
+<p>Product 1</p>
+<spin-button count="0" zero-label="Add to Cart" increment-label="Increment">
+<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
+<p class="count" hidden>0</p>
+<button type="button" class="increment">Add to Cart</button>
+</spin-button>
+</li>
+<li>
+<p>Product 2</p>
+<spin-button count="0" zero-label="Add to Cart" increment-label="Increment">
+<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
+<p class="count" hidden>0</p>
+<button type="button" class="increment">Add to Cart</button>
+</spin-button>
+</li>
+<li>
+<p>Product 3</p>
+<spin-button count="0" zero-label="Add to Cart" increment-label="Increment">
+<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
+<p class="count" hidden>0</p>
+<button type="button" class="increment">Add to Cart</button>
+</spin-button>
+</li>
+</ul>
+</product-catalog>
+</div>
+<accordion-panel collapsible>
+<details>
+<summary>
+<div class="summary">ProductCatalog Source Code</div>
+</summary>
+<lazy-load src="./examples/product-catalog.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+<accordion-panel collapsible>
+<details>
+<summary>
+<div class="summary">BadgeButton Source Code</div>
+</summary>
+<lazy-load src="./examples/badge-button.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+<accordion-panel collapsible>
+<details>
+<summary>
+<div class="summary">SpinButton Source Code</div>
+</summary>
+<lazy-load src="./examples/spin-button.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+</component-demo>
 
 </section>
 
@@ -41,7 +156,37 @@ TodoApp.define('todo-list');
 
 ## Events Bubbling Up
 
+Passing state down works well when a **parent component can directly observe child state**, but sometimes a **child needs to notify its parent** about an action **without managing shared state itself**.
 
+Let’s consider a Todo App, where users can add tasks:
+
+* `TodoApp` **(Parent)**:
+	- Holds the list of todos as a state signal.
+	- Listens for an `'add-todo'` event from the child (`TodoForm`).
+	- Updates the state when a new todo is submitted.
+* `TodoForm` **(Child)**:
+	- Handles **user input** but does **not** store todos.
+	- Emits an `'add-todo'` event when the user submits the form.
+	- Lets the parent decide **what to do with the data**.
+
+### Why use events here?
+
+* The child **doesn’t need to know where the data goes** – it just **emits an event**.
+* The parent **decides what to do** with the new todo (e.g., adding it to a list).
+* This keeps `TodoForm` **reusable** – it could work in different apps without modification.
+
+### Parent Component: TodoApp
+
+```js
+
+```
+
+
+### Child Component: TodoForm
+
+```js
+
+```
 
 </section>
 
@@ -56,6 +201,14 @@ TodoApp.define('todo-list');
 <section>
 
 ## Consuming Context
+
+
+
+</section>
+
+<section>
+
+## Next Steps
 
 
 
