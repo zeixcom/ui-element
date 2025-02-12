@@ -194,7 +194,7 @@ Here's the example of the `<callout-box>` we're using in this documentation:
 
 Now that you know how to style components, explore:
 
-* [Data Flow](data-flow.html) – Learn about inter-component communication.
-* [Examples & Recipes](examples-recipes.html) – See styling techniques in action.
+* [Data Flow](data-flow.html) – Learn about communication between components.
+* [Patterns & Techniques](patterns-techniques.html) – Explore best practices and advanced topics.
 
 </section>

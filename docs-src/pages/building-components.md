@@ -67,16 +67,53 @@ Runs when the component is added to the page. This is where you:
 class MyComponent extends UIElement {
 	connectedCallback() {
 		this.first('.increment').on('click', () => { // Add click event listener
-			this.set('count', v => null != v ? ++v : 1)
+			this.set('count', v => null != v ? ++v : 1);
 		});
 		this.first('.count').sync(setText('count')); // Apply effect to update text
 	}
 }
 ```
 
+If your component initializes states from `static states` or provides or consumes context (`static providedContexts` / `static consumedContexts`), you need to call `super.connectedCallback()`.
+
+```js
+class HelloUser extends UIElement {
+	static consumedContexts = ['display-name']; // Signal provided by a parent component
+	static states = {
+		greeting: 'Hello', // Initial value of 'greeting' signal
+	}
+
+	connectedCallback() {
+		this.connectedCallback();
+		this.first('.greeting').sync(setText('greeting'));
+		this.first('.user').sync(setText('display-name'));
+	}
+}
+```
+
 ### Removed from the DOM (disconnectedCallback())
 
-Runs when the component is removed. Use this to clean up **event listeners or external subscriptions**.
+Runs when the component is removed. Event listeners bound with `.on()` are automatically removed by UIElement.
+
+If you added **event listeners** outside the scope of your component or **external subscriptions**, you need to manually clean up.
+
+```js
+class MyComponent extends UIElement {
+
+	connectedCallback() {
+		this.intersectionObserver = new IntersectionObserver(([entry]) => {
+			// Do something
+		}).observe(this)
+	}
+
+	disconnentedCallback() {
+		super.disconnectedCallback();
+		if (this.intersectionObserver) this.intersectionObserver.disconnect();
+	}
+}
+```
+
+Use this to clean up **event listeners or external subscriptions**.
 
 ### Observed Attributes (attributeChangedCallback())
 
@@ -289,11 +326,46 @@ Unlike some frameworks that **re-render entire components**, UIElement updates o
 
 <section>
 
+## Single Component Example
+
+Bringing all of the above together, you are now ready to build your own components like this slider with prev / next buttons and dot indicators, demonstrating single-component reactivity.
+
+<component-demo>
+<div class="preview">
+<my-slider>
+<div class="slides">
+<div class="slide active">First Slide</div>
+<div class="slide">Second Slide</div>
+<div class="slide">Third Slide</div>
+</div>
+<button type="button" class="prev" aria-label="Previous">‹</button>
+<button type="button" class="next" aria-label="Next">›</button>
+<div class="dots">
+<span class="active"></span>
+<span></span>
+<span></span>
+</div>
+</my-slider>
+</div>
+<accordion-panel collapsible>
+<details>
+<summary>MySlider Source Code</summary>
+<lazy-load src="./examples/my-slider.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+</component-demo>
+
+</section>
+
+<section>
+
 ## Next Steps
 
 Now that you understand the basics, explore:
 
-* [Detailed Walkthrough](detailed-walkthrough.html) – Hands-on guide to creating a UIElement component.
-* [Best Practices & Patterns](best-practices-patterns.html) – Learn about structuring components and passing state between components.
+* [Styling Components](styling-components.html) – Learn techniques to apply styles to components.
+* [Data Flow](data-flow.html) – Learn about passing state between components.
 
 </section>

@@ -395,10 +395,7 @@
 <span class="line"><span style="color:#F8F8F2">				}</span></span>
 <span class="line"><span style="color:#F92672">				:</span><span style="color:#F8F8F2"> defaultDescription</span></span>
 <span class="line"><span style="color:#F8F8F2">			)</span></span>
-<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-describedby'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'description'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">				?</span><span style="color:#F8F8F2"> description.id</span></span>
-<span class="line"><span style="color:#F92672">				:</span><span style="color:#AE81FF"> undefined</span></span>
-<span class="line"><span style="color:#F8F8F2">			)</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-describedby'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'description'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> description.id </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> undefined</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">			// Effects</span></span>
 <span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.description'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'description'</span><span style="color:#F8F8F2">))</span></span>
@@ -471,25 +468,23 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#A6E22E">	stepUp</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">stepIncrement</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F92672"> =</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.step) {</span></span>
-<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.isNumber)</span></span>
-<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">#triggerChange</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> nearestStep</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">				v </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> stepIncrement,</span></span>
-<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.min </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.max </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 100</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.step,</span></span>
-<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.isInteger</span></span>
-<span class="line"><span style="color:#F8F8F2">			))</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.isNumber) </span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">#triggerChange</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> nearestStep</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">			v </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> stepIncrement,</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.min </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.max </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 100</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.step,</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.isInteger</span></span>
+<span class="line"><span style="color:#F8F8F2">		))</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#A6E22E">	stepDown</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">stepDecrement</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F92672"> =</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.step) {</span></span>
-<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.isNumber)</span></span>
-<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">#triggerChange</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> nearestStep</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">				v </span><span style="color:#F92672">-</span><span style="color:#F8F8F2"> stepDecrement,</span></span>
-<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.min </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.max </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 100</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.step,</span></span>
-<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.isInteger</span></span>
-<span class="line"><span style="color:#F8F8F2">			))</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.isNumber) </span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">#triggerChange</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> nearestStep</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">			v </span><span style="color:#F92672">-</span><span style="color:#F8F8F2"> stepDecrement,</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.min </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.max </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 100</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.step,</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.isInteger</span></span>
+<span class="line"><span style="color:#F8F8F2">		))</span></span>
 <span class="line"><span style="color:#F8F8F2">    }</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">	// Trigger value-change event to commit the value change</span></span>
@@ -499,6 +494,7 @@
 <span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">typeof</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'function'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">			value </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input?.value </span><span style="color:#F92672">!==</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(value))</span></span>
+<span class="line"><span style="color:#88846F">			// this.self.emit('value-change', value) // New syntax since v0.10.0</span></span>
 <span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">dispatchEvent</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">new</span><span style="color:#A6E22E"> CustomEvent</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value-change'</span><span style="color:#F8F8F2">, {</span></span>
 <span class="line"><span style="color:#F8F8F2">				detail: value,</span></span>
 <span class="line"><span style="color:#F8F8F2">				bubbles: </span><span style="color:#AE81FF">true</span></span>

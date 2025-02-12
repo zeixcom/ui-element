@@ -70,7 +70,7 @@ The `BadgeButton` **doesn’t care how the badge value is calculated** – just 
 
 ### Full Example
 
-Here’s how everything comes together:
+Here's how everything comes together:
 
 * Each `SpinButton` **tracks its own count**.
 * The `ProductCatalog` **sums all counts and passes the total to `BadgeButton`**.
@@ -177,16 +177,167 @@ Let’s consider a Todo App, where users can add tasks:
 
 ### Parent Component: TodoApp
 
+The parent (`TodoApp`) **listens for events** and calls the `.addItem()` method on `TodoList` when a new todo is added:
+
 ```js
-
+this.self.on('add-todo', e => {
+	this.querySelector('todo-list').addItem(e.detail)
+})
 ```
-
+* ✅ **Whenever `TodoForm` emits an `'add-todo'` event**, a new task is appended to the todo list.
+* ✅ The **event carries data** (`e.detail`), so the parent knows what was submitted.
 
 ### Child Component: TodoForm
 
-```js
+The child (`TodoForm`) **collects user input** and emits an event when the form is submitted:
 
+```js
+const input = this.querySelector('input-field')
+this.first('form').on('submit', e => {
+	e.preventDefault()
+
+	// Wait for microtask to ensure the input field value is updated before dispatching the event
+	queueMicrotask(() => {
+		const value = input?.get('value')?.trim()
+		if (value) {
+			this.self.emit('add-todo', value)
+			input?.clear()
+		}
+	})
+})
 ```
+
+* ✅ The form does **NOT store the todo** – it just emits an event.
+* ✅ The parent (`TodoApp`) **decides what happens next**.
+* ✅ The **event includes data** (value), making it easy to handle.
+
+### Full Example
+
+Here's how everything comes together:
+
+* **User types a task** into input field in `TodoForm`.
+* **On submit, `TodoForm` emits `'add-todo'`** with the new task as event detail.
+* **`TodoApp` listens for `'add-todo'`** and updates the todo list.
+
+<component-demo>
+<div class="preview">
+<todo-app>
+<todo-form>
+<form action="#">
+<input-field>
+<label for="add-todo">What needs to be done?</label>
+<div class="row">
+<div class="group auto">
+<input id="add-todo" type="text" value="" required>
+</div>
+</div>
+</input-field>
+<input-button class="submit">
+<button type="submit" class="primary" disabled>Add Todo</button>
+</input-button>
+</form>
+</todo-form>
+<todo-list filter="all">
+<ol></ol>
+<template>
+<li>
+<input-checkbox class="todo">
+<label>
+<input type="checkbox" class="visually-hidden" />
+<span></span>
+</label>
+</input-checkbox>
+<input-button>
+<button type="button">Delete</button>
+</input-button>
+</li>
+</template>
+</todo-list>
+<footer>
+<todo-count>
+<p class="all-done">Well done, all done!</p>
+<p class="remaining"><span></span> tasks left</p>
+</todo-count>
+<input-radiogroup value="all" class="split-button">
+<fieldset>
+<legend class="visually-hidden">Filter</legend>
+<label class="selected">
+<input type="radio" class="visually-hidden" name="filter" value="all" checked>
+<span>All</span>
+</label>
+<label>
+<input type="radio" class="visually-hidden" name="filter" value="active">
+<span>Active</span>
+</label>
+<label>
+<input type="radio" class="visually-hidden" name="filter" value="completed">
+<span>Completed</span>
+</label>
+</fieldset>
+</input-radiogroup>
+<input-button class="clear-completed">
+<button type="button">Clear Completed</button>
+</input-button>
+</footer>
+</todo-app>
+</div>
+<accordion-panel collapsible>
+<details>
+<summary>TodoApp Source Code</summary>
+<lazy-load src="./examples/todo-app.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+<accordion-panel collapsible>
+<details>
+<summary>TodoForm Source Code</summary>
+<lazy-load src="./examples/todo-form.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+<accordion-panel collapsible>
+<details>
+<summary>TodoList Source Code</summary>
+<lazy-load src="./examples/todo-list.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+<accordion-panel collapsible>
+<details>
+<summary>InputField Source Code</summary>
+<lazy-load src="./examples/input-field.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+<accordion-panel collapsible>
+<details>
+<summary>InputButton Source Code</summary>
+<lazy-load src="./examples/input-button.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+<accordion-panel collapsible>
+<details>
+<summary>InputCheckbox Source Code</summary>
+<lazy-load src="./examples/input-checkbox.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+<accordion-panel collapsible>
+<details>
+<summary>InputRadiogroup Source Code</summary>
+<lazy-load src="./examples/input-radiogroup.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+</component-demo>
 
 </section>
 

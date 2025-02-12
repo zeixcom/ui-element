@@ -112,10 +112,7 @@ export class InputField extends UIElement {
 				}
 				: defaultDescription
 			)
-			this.set('aria-describedby', () => this.get('description')
-				? description.id
-				: undefined
-			)
+			this.set('aria-describedby', () => this.get('description') ? description.id : undefined)
 
 			// Effects
 			this.first('.description').sync(setText('description'))
@@ -188,25 +185,23 @@ export class InputField extends UIElement {
 	}
 
 	stepUp(stepIncrement: number = this.step) {
-		if (this.isNumber)
-			this.#triggerChange(v => nearestStep(
-				v + stepIncrement,
-				this.min ?? 0,
-				this.max ?? 100,
-				this.step,
-				this.isInteger
-			))
+		if (this.isNumber) this.#triggerChange(v => nearestStep(
+			v + stepIncrement,
+			this.min ?? 0,
+			this.max ?? 100,
+			this.step,
+			this.isInteger
+		))
 	}
 
 	stepDown(stepDecrement: number = this.step) {
-		if (this.isNumber)
-			this.#triggerChange(v => nearestStep(
-				v - stepDecrement,
-				this.min ?? 0,
-				this.max ?? 100,
-				this.step,
-				this.isInteger
-			))
+		if (this.isNumber) this.#triggerChange(v => nearestStep(
+			v - stepDecrement,
+			this.min ?? 0,
+			this.max ?? 100,
+			this.step,
+			this.isInteger
+		))
     }
 
 	// Trigger value-change event to commit the value change
@@ -216,6 +211,7 @@ export class InputField extends UIElement {
 		if (typeof value === 'function')
 			value = this.get('value')
 		if (this.input?.value !== String(value))
+			// this.self.emit('value-change', value) // New syntax since v0.10.0
 			this.dispatchEvent(new CustomEvent('value-change', {
 				detail: value,
 				bubbles: true

@@ -10,7 +10,7 @@
 </head>
 <body>
 	<header class="content-grid">
-		<h1 class="content">UIElement Docs <small>Version 0.9.4</small></h1>
+		<h1 class="content">UIElement Docs <small>Version 0.10.0</small></h1>
 		
 	<nav class="breakout">
 		<ol>
@@ -170,7 +170,7 @@
 </ul>
 <p>The <code>BadgeButton</code> <strong>doesn’t care how the badge value is calculated</strong> – just that it gets one!</p>
 <h3>Full Example</h3>
-<p>Here’s how everything comes together:</p>
+<p>Here&#39;s how everything comes together:</p>
 <ul>
 <li>Each <code>SpinButton</code> <strong>tracks its own count</strong>.</li>
 <li>The <code>ProductCatalog</code> <strong>sums all counts and passes the total to <code>BadgeButton</code></strong>.</li>
@@ -254,6 +254,206 @@
 <section>
 
 <h2>Events Bubbling Up</h2>
+<p>Passing state down works well when a <strong>parent component can directly observe child state</strong>, but sometimes a <strong>child needs to notify its parent</strong> about an action <strong>without managing shared state itself</strong>.</p>
+<p>Let’s consider a Todo App, where users can add tasks:</p>
+<ul>
+<li><code>TodoApp</code> <strong>(Parent)</strong>:<ul>
+<li>Holds the list of todos as a state signal.</li>
+<li>Listens for an <code>&#39;add-todo&#39;</code> event from the child (<code>TodoForm</code>).</li>
+<li>Updates the state when a new todo is submitted.</li>
+</ul>
+</li>
+<li><code>TodoForm</code> <strong>(Child)</strong>:<ul>
+<li>Handles <strong>user input</strong> but does <strong>not</strong> store todos.</li>
+<li>Emits an <code>&#39;add-todo&#39;</code> event when the user submits the form.</li>
+<li>Lets the parent decide <strong>what to do with the data</strong>.</li>
+</ul>
+</li>
+</ul>
+<h3>Why use events here?</h3>
+<ul>
+<li>The child <strong>doesn’t need to know where the data goes</strong> – it just <strong>emits an event</strong>.</li>
+<li>The parent <strong>decides what to do</strong> with the new todo (e.g., adding it to a list).</li>
+<li>This keeps <code>TodoForm</code> <strong>reusable</strong> – it could work in different apps without modification.</li>
+</ul>
+<h3>Parent Component: TodoApp</h3>
+<p>The parent (<code>TodoApp</code>) <strong>listens for events</strong> and calls the <code>.addItem()</code> method on <code>TodoList</code> when a new todo is added:</p>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.self.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'add-todo'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">	this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'todo-list'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">addItem</span><span style="color:#F8F8F2">(e.detail)</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	
+</code-block>
+<ul>
+<li>✅ <strong>Whenever <code>TodoForm</code> emits an <code>&#39;add-todo&#39;</code> event</strong>, a new task is appended to the todo list.</li>
+<li>✅ The <strong>event carries data</strong> (<code>e.detail</code>), so the parent knows what was submitted.</li>
+</ul>
+<h3>Child Component: TodoForm</h3>
+<p>The child (<code>TodoForm</code>) <strong>collects user input</strong> and emits an event when the form is submitted:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> input </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-field'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'submit'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	e.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">	// Wait for microtask to ensure the input field value is updated before dispatching the event</span></span>
+<span class="line"><span style="color:#A6E22E">	queueMicrotask</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> input?.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (value) {</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.self.</span><span style="color:#A6E22E">emit</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'add-todo'</span><span style="color:#F8F8F2">, value)</span></span>
+<span class="line"><span style="color:#F8F8F2">			input?.</span><span style="color:#A6E22E">clear</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	})</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<ul>
+<li>✅ The form does <strong>NOT store the todo</strong> – it just emits an event.</li>
+<li>✅ The parent (<code>TodoApp</code>) <strong>decides what happens next</strong>.</li>
+<li>✅ The <strong>event includes data</strong> (value), making it easy to handle.</li>
+</ul>
+<h3>Full Example</h3>
+<p>Here&#39;s how everything comes together:</p>
+<ul>
+<li><strong>User types a task</strong> into input field in <code>TodoForm</code>.</li>
+<li><strong>On submit, <code>TodoForm</code> emits <code>&#39;add-todo&#39;</code></strong> with the new task as event detail.</li>
+<li><strong><code>TodoApp</code> listens for <code>&#39;add-todo&#39;</code></strong> and updates the todo list.</li>
+</ul>
+<component-demo>
+<div class="preview">
+<todo-app>
+<todo-form>
+<form action="#">
+<input-field>
+<label for="add-todo">What needs to be done?</label>
+<div class="row">
+<div class="group auto">
+<input id="add-todo" type="text" value="" required>
+</div>
+</div>
+</input-field>
+<input-button class="submit">
+<button type="submit" class="primary" disabled>Add Todo</button>
+</input-button>
+</form>
+</todo-form>
+<todo-list filter="all">
+<ol></ol>
+<template>
+<li>
+<input-checkbox class="todo">
+<label>
+<input type="checkbox" class="visually-hidden" />
+<span></span>
+</label>
+</input-checkbox>
+<input-button>
+<button type="button">Delete</button>
+</input-button>
+</li>
+</template>
+</todo-list>
+<footer>
+<todo-count>
+<p class="all-done">Well done, all done!</p>
+<p class="remaining"><span></span> tasks left</p>
+</todo-count>
+<input-radiogroup value="all" class="split-button">
+<fieldset>
+<legend class="visually-hidden">Filter</legend>
+<label class="selected">
+<input type="radio" class="visually-hidden" name="filter" value="all" checked>
+<span>All</span>
+</label>
+<label>
+<input type="radio" class="visually-hidden" name="filter" value="active">
+<span>Active</span>
+</label>
+<label>
+<input type="radio" class="visually-hidden" name="filter" value="completed">
+<span>Completed</span>
+</label>
+</fieldset>
+</input-radiogroup>
+<input-button class="clear-completed">
+<button type="button">Clear Completed</button>
+</input-button>
+</footer>
+</todo-app>
+</div>
+<accordion-panel collapsible>
+<details>
+<summary>TodoApp Source Code</summary>
+<lazy-load src="./examples/todo-app.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+<accordion-panel collapsible>
+<details>
+<summary>TodoForm Source Code</summary>
+<lazy-load src="./examples/todo-form.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+<accordion-panel collapsible>
+<details>
+<summary>TodoList Source Code</summary>
+<lazy-load src="./examples/todo-list.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+<accordion-panel collapsible>
+<details>
+<summary>InputField Source Code</summary>
+<lazy-load src="./examples/input-field.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+<accordion-panel collapsible>
+<details>
+<summary>InputButton Source Code</summary>
+<lazy-load src="./examples/input-button.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+<accordion-panel collapsible>
+<details>
+<summary>InputCheckbox Source Code</summary>
+<lazy-load src="./examples/input-checkbox.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+<accordion-panel collapsible>
+<details>
+<summary>InputRadiogroup Source Code</summary>
+<lazy-load src="./examples/input-radiogroup.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+</component-demo>
+
 </section>
 
 <section>
@@ -264,6 +464,11 @@
 <section>
 
 <h2>Consuming Context</h2>
+</section>
+
+<section>
+
+<h2>Next Steps</h2>
 </section>
     </main>
     <footer class="content-grid">
