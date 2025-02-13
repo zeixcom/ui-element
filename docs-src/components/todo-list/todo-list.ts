@@ -14,6 +14,7 @@ export class TodoList extends UIElement {
 	}
 
 	connectedCallback() {
+		super.connectedCallback()
 		this.#updateList()
 
 		// Event listener and attribute on own element

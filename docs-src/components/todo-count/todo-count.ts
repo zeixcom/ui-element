@@ -6,11 +6,14 @@ export class TodoCount extends UIElement {
 	}
 
 	connectedCallback() {
+		super.connectedCallback()
 		this.first('.count').sync(setText('active'))
-		this.first('.singular').sync(setProperty('ariaHidden', () => this.get('active') as number > 1))
-		this.first('.plural').sync(setProperty('ariaHidden', () => this.get('active') === 1))
-		this.first('.remaining').sync(setProperty('ariaHidden', () => !this.get('active')))
-		this.first('.all-done').sync(setProperty('ariaHidden', () => !!this.get('active')))
+		const setAriaHidden = (fn: (n: number) => boolean) =>
+			setProperty('ariaHidden', () => fn(this.get('active') as number))
+		this.first('.singular').sync(setAriaHidden(n => n > 1))
+		this.first('.plural').sync(setAriaHidden(n => n === 1))
+		this.first('.remaining').sync(setAriaHidden(n => !n))
+		this.first('.all-done').sync(setAriaHidden(n => !!n))
 	}
 }
 TodoCount.define('todo-count')
