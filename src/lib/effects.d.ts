@@ -6,7 +6,7 @@ type ElementUpdater<E extends Element, T> = {
 };
 type StateKeyOrFunction<T> = string | ((v?: T) => T);
 /**
- * Auto-effect for setting properties of a target element according to a given state
+ * Effect for setting properties of a target element according to a given state
  *
  * @since 0.9.0
  * @param {StateKeyOrFunction<T>} s - state bound to the element property
