@@ -84,7 +84,7 @@ class HelloUser extends UIElement {
 	}
 
 	connectedCallback() {
-		this.connectedCallback();
+		super.connectedCallback();
 		this.first('.greeting').sync(setText('greeting'));
 		this.first('.user').sync(setText('display-name'));
 	}
@@ -326,7 +326,7 @@ Unlike some frameworks that **re-render entire components**, UIElement updates o
 
 <section>
 
-## Single Component Example
+## Single Component Example: MySlider
 
 Bringing all of the above together, you are now ready to build your own components like this slider with prev / next buttons and dot indicators, demonstrating single-component reactivity.
 
@@ -349,7 +349,7 @@ Bringing all of the above together, you are now ready to build your own componen
 </div>
 <accordion-panel collapsible>
 <details>
-<summary>MySlider Source Code</summary>
+<summary>Source Code</summary>
 <lazy-load src="./examples/my-slider.html">
 <p class="loading">Loading...</p>
 </lazy-load>

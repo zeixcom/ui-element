@@ -8,7 +8,7 @@ description: "Passing state, events, context"
 
 # 🔄 Data Flow
 
-<p class="lead"></p>
+<p class="lead"><strong>UIElement enables smooth data flow between components using signals, events, and context.</strong> State can be <strong>passed down</strong> to child components, events can <strong>bubble up</strong> to notify parents of changes, and context can propagate across the component tree to <strong>share global state</strong> efficiently. This page explores different patterns for structuring data flow, helping you create modular, loosely coupled components that work seamlessly together.</p>
 </section>
 
 <section>

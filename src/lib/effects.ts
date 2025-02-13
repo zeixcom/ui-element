@@ -18,7 +18,7 @@ type StateKeyOrFunction<T> = string | ((v?: T) => T)
 /* === Exported Functions === */
 
 /**
- * Auto-effect for setting properties of a target element according to a given state
+ * Effect for setting properties of a target element according to a given state
  * 
  * @since 0.9.0
  * @param {StateKeyOrFunction<T>} s - state bound to the element property

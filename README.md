@@ -16,7 +16,7 @@ To bind events on, pass states to, and execute effects on elements, UIElement of
 
 For example, `this.self.on('click', () => this.set('clicked', true))` binds an event handler for `'click'` on the custom element itself, setting its `'clicked'` state to `true`. With `this.all('sub-component').pass({ color: 'color' })` you pass the `'color'` state on `this` to every instance of `<sub-component>` in the DOM subtree.
 
-There are 7 pre-defined auto-effects that can be applied on elements with `this.[self|first(selector)|all(selector)].sync()`:
+There are 7 pre-defined effects that can be applied on elements with `this.[self|first(selector)|all(selector)].sync()`:
 
 - `setText(state)`: set text content of the target element to the value of state; expects a state of type string; will preserve comment nodes inside the element
 - `setProperty(key, state=key)`: set a property of the target element to the value of state; accepts a state of any type

@@ -192,7 +192,7 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
-<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">connectedCallback</span><span style="color:#F8F8F2">();</span></span>
+<span class="line"><span style="color:#FD971F">		super</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">connectedCallback</span><span style="color:#F8F8F2">();</span></span>
 <span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.greeting'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'greeting'</span><span style="color:#F8F8F2">));</span></span>
 <span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.user'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display-name'</span><span style="color:#F8F8F2">));</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
@@ -557,7 +557,7 @@
 
 <section>
 
-<h2>Single Component Example</h2>
+<h2>Single Component Example: MySlider</h2>
 <p>Bringing all of the above together, you are now ready to build your own components like this slider with prev / next buttons and dot indicators, demonstrating single-component reactivity.</p>
 <component-demo>
 <div class="preview">
@@ -578,7 +578,7 @@
 </div>
 <accordion-panel collapsible>
 <details>
-<summary>MySlider Source Code</summary>
+<summary>Source Code</summary>
 <lazy-load src="./examples/my-slider.html">
 <p class="loading">Loading...</p>
 </lazy-load>
