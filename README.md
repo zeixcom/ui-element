@@ -16,7 +16,7 @@ To bind events on, pass states to, and execute effects on elements, UIElement of
 
 For example, `this.self.on('click', () => this.set('clicked', true))` binds an event handler for `'click'` on the custom element itself, setting its `'clicked'` state to `true`. With `this.all('sub-component').pass({ color: 'color' })` you pass the `'color'` state on `this` to every instance of `<sub-component>` in the DOM subtree.
 
-There are 7 pre-defined auto-effects that can be applied on elements with `this.[self|first(selector)|all(selector)].sync()`:
+There are 7 pre-defined effects that can be applied on elements with `this.[self|first(selector)|all(selector)].sync()`:
 
 - `setText(state)`: set text content of the target element to the value of state; expects a state of type string; will preserve comment nodes inside the element
 - `setProperty(key, state=key)`: set a property of the target element to the value of state; accepts a state of any type
@@ -24,7 +24,6 @@ There are 7 pre-defined auto-effects that can be applied on elements with `this.
 - `toggleAttribute(name, state=name)`: toggles a boolean attribute on the element according to the value of state; expects a state of type boolean
 - `toggleClass(token, state=token)`: toggles a class on the element according to the value of state; expects a state of type boolean
 - `setStyle(prop, state=prop)`: set an inline style on the element to the value of state; expects a state of type string for the CSS property value
-- `emit(event, state=event)`: dispatch a custom event with the value of state as detail; accepts a state of any type
 
 You can define custom effects with `effect()`, either in the `connectedCallback()` or in a mapped function on `this.[self|first(selector)|all(selector)]`. `UIElement` will automatically trigger these effects and bundle the fine-grained DOM updates.
 

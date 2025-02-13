@@ -17,7 +17,7 @@ type UnknownContext = Context<unknown, unknown>;
 /**
  * A helper type which can extract a Context value type from a Context type
  */
-type ContextType<T extends UnknownContext> = T extends Context<infer _, infer V> ? V : never;
+type ContextType<T extends UnknownContext> = T extends Context<string, infer V> ? V : never;
 /**
  * A callback which is provided by a context requester and is called with the value satisfying the request.
  * This callback can be called multiple times by context providers as the requested value is changed.
@@ -29,7 +29,7 @@ declare global {
          * A 'context-request' event can be emitted by any element which desires
          * a context value to be injected by an external provider.
          */
-        'context-request': ContextRequestEvent<Context<unknown, unknown>>;
+        'context-request': ContextRequestEvent<Context<string, unknown>>;
     }
 }
 declare const CONTEXT_REQUEST = "context-request";

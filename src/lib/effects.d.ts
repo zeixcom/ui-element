@@ -1,18 +1,10 @@
 import type { UIElement } from '../ui-element';
 type ElementUpdater<E extends Element, T> = {
     read: (element: E) => T | null;
-    update: (element: E, value: T) => Promise<E | null>;
-    delete?: (element: E) => Promise<E | null>;
+    update: (element: E, value: T) => void;
+    delete?: (element: E) => void;
 };
-type StateKeyOrFunction<T> = PropertyKey | ((v?: T | null) => T);
-/**
- * Auto-Effect to emit a custom event when a state changes
- *
- * @since 0.8.3
- * @param {string} event - event name to dispatch
- * @param {StateKeyOrFunction<T>} s - state key or function
- */
-declare const emit: <E extends Element, T>(event: string, s?: StateKeyOrFunction<T>) => (host: UIElement, target: E) => void;
+type StateKeyOrFunction<T> = string | ((v?: T) => T);
 /**
  * Auto-effect for setting properties of a target element according to a given state
  *
@@ -47,10 +39,10 @@ declare const setText: <E extends Element>(s: StateKeyOrFunction<string>) => (ho
  * Set property of an element
  *
  * @since 0.8.0
- * @param {PropertyKey} key - name of property to be set
+ * @param {string} key - name of property to be set
  * @param {StateKeyOrFunction<unknown>} s - state bound to the property value
  */
-declare const setProperty: <E extends Element>(key: PropertyKey, s?: StateKeyOrFunction<unknown>) => (host: UIElement, target: E) => void;
+declare const setProperty: <E extends Element>(key: string, s?: StateKeyOrFunction<unknown>) => (host: UIElement, target: E) => void;
 /**
  * Set attribute of an element
  *
@@ -83,4 +75,4 @@ declare const toggleClass: <E extends Element>(token: string, s?: StateKeyOrFunc
  * @param {StateKeyOrFunction<string>} s - state bound to the style property value
  */
 declare const setStyle: <E extends (HTMLElement | SVGElement | MathMLElement)>(prop: string, s?: StateKeyOrFunction<string>) => (host: UIElement, target: E) => void;
-export { type ElementUpdater, emit, updateElement, createElement, removeElement, setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle };
+export { type ElementUpdater, updateElement, createElement, removeElement, setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle };

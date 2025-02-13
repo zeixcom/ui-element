@@ -1,15 +1,15 @@
-import type { UIElement } from '../ui-element';
+import type { StateInitializer, UIElement } from '../ui-element';
 /**
  * Parse according to static states
  *
  * @since 0.8.4
  * @param {UIElement} host - host UIElement
- * @param {string} name - attribute name
+ * @param {StateInitializer<T>} initializer - attribute parser or initial value
  * @param {string | undefined} value - attribute value
  * @param {string | undefined} [old=undefined] - old attribute value
- * @returns {unknown}
+ * @returns {T | string | undefined}
  */
-declare const parse: (host: UIElement, name: string, value: string | undefined, old?: string | undefined) => unknown;
+declare const parse: <T>(host: UIElement, initializer?: StateInitializer<T>, value?: string, old?: string) => T | string | undefined;
 /**
  * Parse a boolean attribute as an actual boolean value
  *

@@ -1,25 +1,31 @@
 import { UIElement } from "@zeix/ui-element"
-import type { InputField } from "../input-field/input-field"
+import { InputField } from "../input-field/input-field"
 
 export type AddTodoEvent = CustomEvent & { detail: string }
 
 export class TodoForm extends UIElement {
 	connectedCallback() {
-		const inputField: InputField | null = this.querySelector('input-field')
+		const input = this.querySelector<InputField>('input-field')
 
         this.first('form').on('submit', (e: Event) => {
 			e.preventDefault()
-			setTimeout(() => {
-				this.dispatchEvent(new CustomEvent('add-todo', {
-					bubbles: true,
-					detail: inputField?.get('value') ?? ''
-				}))
-				inputField?.clear()
-			}, 0)
+
+			// Wait for microtask to ensure the input field value is updated before dispatching the event
+			queueMicrotask(() => {
+				const value = input?.get<string>('value')?.trim()
+				if (value) {
+					// this.self.emit('add-todo', value) // New syntax since v0.10.0
+					this.dispatchEvent(new CustomEvent('add-todo', {
+						bubbles: true,
+						detail: input?.get('value') ?? ''
+					}))
+					input?.clear()
+				}
+			})
 		})
 	
 		this.first('input-button').pass({
-			disabled: () => inputField?.get('empty')
+			disabled: () => input?.get('empty')
 		})
     }
 }

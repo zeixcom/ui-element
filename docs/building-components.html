@@ -10,7 +10,7 @@
 </head>
 <body>
 	<header class="content-grid">
-		<h1 class="content">UIElement Docs <small>Version 0.9.4</small></h1>
+		<h1 class="content">UIElement Docs <small>Version 0.10.0</small></h1>
 		
 	<nav class="breakout">
 		<ol>
@@ -168,7 +168,7 @@
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">MyComponent</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
 <span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.increment'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> { </span><span style="color:#88846F">// Add click event listener</span></span>
-<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#AE81FF"> null</span><span style="color:#F92672"> !=</span><span style="color:#F8F8F2"> v </span><span style="color:#F92672">?</span><span style="color:#F92672"> ++</span><span style="color:#F8F8F2">v </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#AE81FF"> null</span><span style="color:#F92672"> !=</span><span style="color:#F8F8F2"> v </span><span style="color:#F92672">?</span><span style="color:#F92672"> ++</span><span style="color:#F8F8F2">v </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">);</span></span>
 <span class="line"><span style="color:#F8F8F2">		});</span></span>
 <span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">)); </span><span style="color:#88846F">// Apply effect to update text</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
@@ -179,8 +179,58 @@
 	</input-button>
 	
 </code-block>
+<p>If your component initializes states from <code>static states</code> or provides or consumes context (<code>static providedContexts</code> / <code>static consumedContexts</code>), you need to call <code>super.connectedCallback()</code>.</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HelloUser</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> consumedContexts </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'display-name'</span><span style="color:#F8F8F2">]; </span><span style="color:#88846F">// Signal provided by a parent component</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">		greeting: </span><span style="color:#E6DB74">'Hello'</span><span style="color:#F8F8F2">, </span><span style="color:#88846F">// Initial value of 'greeting' signal</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">		super</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">connectedCallback</span><span style="color:#F8F8F2">();</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.greeting'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'greeting'</span><span style="color:#F8F8F2">));</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.user'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display-name'</span><span style="color:#F8F8F2">));</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
 <h3>Removed from the DOM (disconnectedCallback())</h3>
-<p>Runs when the component is removed. Use this to clean up <strong>event listeners or external subscriptions</strong>.</p>
+<p>Runs when the component is removed. Event listeners bound with <code>.on()</code> are automatically removed by UIElement.</p>
+<p>If you added <strong>event listeners</strong> outside the scope of your component or <strong>external subscriptions</strong>, you need to manually clean up.</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">MyComponent</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.intersectionObserver </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> IntersectionObserver</span><span style="color:#F8F8F2">(([</span><span style="color:#FD971F;font-style:italic">entry</span><span style="color:#F8F8F2">]) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">			// Do something</span></span>
+<span class="line"><span style="color:#F8F8F2">		}).</span><span style="color:#A6E22E">observe</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	disconnentedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">		super</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">disconnectedCallback</span><span style="color:#F8F8F2">();</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.intersectionObserver) </span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.intersectionObserver.</span><span style="color:#A6E22E">disconnect</span><span style="color:#F8F8F2">();</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<p>Use this to clean up <strong>event listeners or external subscriptions</strong>.</p>
 <h3>Observed Attributes (attributeChangedCallback())</h3>
 <p>UIElement <strong>automatically converts attributes to reactive signals</strong>. Usually, you don’t need to override this method manually.</p>
 </section>
@@ -464,11 +514,15 @@
 	</input-button>
 	
 </code-block>
-<h3>When to Use a Function Instead of a Signal Key?</h3>
+<callout-box class="tip">
+
+<p><strong>When to use</strong></p>
 <ul>
 <li><strong>Use a signal key</strong> when the state is already <strong>stored as a signal</strong>.</li>
-<li><strong>Use a function</strong> when you <strong>derive the value on the fly</strong> that you need only in one place and you don&#39;t want to expose it as a signal on the element.</li>
+<li><strong>Use a function</strong> when you <strong>derive a value on the fly</strong> needed only in this one place and you don&#39;t want to expose it as a signal on the element.</li>
 </ul>
+</callout-box>
+
 <h3>Custom Effects</h3>
 <p>For complex DOM manipulations, <strong>define your own effect</strong> using <code>effect()</code>.</p>
 <p>Here&#39;s an example effect that attaches a Shadow DOM and updates its content:</p>
@@ -503,11 +557,44 @@
 
 <section>
 
+<h2>Single Component Example: MySlider</h2>
+<p>Bringing all of the above together, you are now ready to build your own components like this slider with prev / next buttons and dot indicators, demonstrating single-component reactivity.</p>
+<component-demo>
+<div class="preview">
+<my-slider>
+<div class="slides">
+<div class="slide active">First Slide</div>
+<div class="slide">Second Slide</div>
+<div class="slide">Third Slide</div>
+</div>
+<button type="button" class="prev" aria-label="Previous">‹</button>
+<button type="button" class="next" aria-label="Next">›</button>
+<div class="dots">
+<span class="active"></span>
+<span></span>
+<span></span>
+</div>
+</my-slider>
+</div>
+<accordion-panel collapsible>
+<details>
+<summary>Source Code</summary>
+<lazy-load src="./examples/my-slider.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+</component-demo>
+
+</section>
+
+<section>
+
 <h2>Next Steps</h2>
 <p>Now that you understand the basics, explore:</p>
 <ul>
-<li><a href="detailed-walkthrough.html">Detailed Walkthrough</a> – Hands-on guide to creating a UIElement component.</li>
-<li><a href="best-practices-patterns.html">Best Practices &amp; Patterns</a> – Learn about structuring components and passing state between components.</li>
+<li><a href="styling-components.html">Styling Components</a> – Learn techniques to apply styles to components.</li>
+<li><a href="data-flow.html">Data Flow</a> – Learn about passing state between components.</li>
 </ul>
 </section>
     </main>

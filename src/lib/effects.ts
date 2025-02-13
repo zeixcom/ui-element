@@ -9,33 +9,16 @@ import type { UIElement } from '../ui-element'
 
 type ElementUpdater<E extends Element, T> = {
     read: (element: E) => T | null,
-    update: (element: E, value: T) => Promise<E | null>,
-    delete?: (element: E) => Promise<E | null>,
+    update: (element: E, value: T) => void,
+    delete?: (element: E) => void,
 }
 
-type StateKeyOrFunction<T> = PropertyKey | ((v?: T | null) => T)
+type StateKeyOrFunction<T> = string | ((v?: T) => T)
 
 /* === Exported Functions === */
 
 /**
- * Auto-Effect to emit a custom event when a state changes
- * 
- * @since 0.8.3
- * @param {string} event - event name to dispatch
- * @param {StateKeyOrFunction<T>} s - state key or function
- */
-const emit = <E extends Element, T>(
-	event: string,
-	s: StateKeyOrFunction<T> = event
-) => (host: UIElement, target: E): void => effect(() => {
-		target.dispatchEvent(new CustomEvent(event, {
-			detail: host.get(s),
-			bubbles: true
-		}))
-	})
-
-/**
- * Auto-effect for setting properties of a target element according to a given state
+ * Effect for setting properties of a target element according to a given state
  * 
  * @since 0.9.0
  * @param {StateKeyOrFunction<T>} s - state bound to the element property
@@ -47,15 +30,15 @@ const updateElement = <E extends Element, T>(
 ) => (host: UIElement, target: E): void => {
 	const { read, update } = updater
 	const fallback = read(target)
-	if (!isFunction(s)) { // s is PropertyKey
-		const value = isString(s) && isString(fallback)
-			? parse(host, s, fallback)
+	if (isString(s)) {
+		const value = isString(fallback)
+			? parse(host, (host.constructor as typeof UIElement).states[s], fallback)
 			: fallback
 		host.set(s, value, false)
 	}
 	effect(() => {
 		const current = read(target)
-		const value = isFunction(s) ? s(current) : host.get<T>(s)
+		const value = isString(s) ? host.get<T>(s) : isFunction<T>(s) ? s(current) : undefined
 		if (!Object.is(value, current)) {
 
 			// A value of null triggers deletion
@@ -117,15 +100,15 @@ const setText = <E extends Element>(
  * Set property of an element
  * 
  * @since 0.8.0
- * @param {PropertyKey} key - name of property to be set
+ * @param {string} key - name of property to be set
  * @param {StateKeyOrFunction<unknown>} s - state bound to the property value
  */
 const setProperty = <E extends Element>(
-	key: PropertyKey,
+	key: string,
 	s: StateKeyOrFunction<unknown> = key
 ) => updateElement(s, {
-	read: (el: E) => (el as Record<PropertyKey, any>)[key],
-	update: (el: E, value: any) => (el as Record<PropertyKey, any>)[key] = value,
+	read: (el: E) => key in el ? (el as Record<string, unknown>)[key] : undefined,
+	update: (el: E, value: unknown) => (el as Record<string, unknown>)[key] = value,
 })
 
 /**
@@ -196,7 +179,6 @@ const setStyle = <E extends (HTMLElement | SVGElement | MathMLElement)>(
 
 export {
 	type ElementUpdater,
-	emit, updateElement,
-	createElement, removeElement,
+	updateElement, createElement, removeElement,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
 }

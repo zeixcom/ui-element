@@ -174,12 +174,13 @@ If it’s not working:
 
 ## Next Steps
 
-Now that UIElement is installed, explore the Core Concepts to learn about:
+Now that UIElement is installed, explore the core concepts for [Building Components](building-components.html):
 
-* ✅ **Signals & Effects** (state-driven DOM updates)
-* ✅ **Component Lifecycle** (building interactive UI components)
-* ✅ **State Passing & State Sharing** (Communicating between components)
+* ✅ **Component anatomy and lifecycle** (using Web Components)
+* ✅ **Accessing sub-elements** (select children)
+* ✅ **Signals & effects** (state-driven DOM updates)
+* ✅ **Event listeners** (react to user interaction)
 
-Or jump straight into the [Detailed Walkthrough](detailed-walkthrough.html) to get hands-on.
+Or jump straight to [Styling Components](styling-components.html) for CSS best practices.
 
 </section>

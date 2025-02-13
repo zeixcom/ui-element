@@ -166,7 +166,7 @@ input-field {
 	}
 
 	.decrement {
-		border-radius: var(--space-xs) 0 0 var(--space-xs); 
+		border-radius: var(--space-xs) 0 0 var(--space-xs);
 	}
 
 	.increment {

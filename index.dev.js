@@ -261,12 +261,21 @@ class UI {
     this.host = host;
     this.targets = targets;
   }
-  on(event, listener) {
-    this.targets.forEach((target, index) => target.addEventListener(event, fromFactory(listener, target, index)));
+  on(type, listeners) {
+    this.targets.forEach((target, index) => {
+      const listener = fromFactory(listeners, target, index);
+      target.addEventListener(type, listener);
+      this.host.listeners.push(() => target.removeEventListener(type, listener));
+    });
     return this;
   }
-  off(event, listener) {
-    this.targets.forEach((target, index) => target.removeEventListener(event, fromFactory(listener, target, index)));
+  emit(type, detail) {
+    this.targets.forEach((target) => {
+      target.dispatchEvent(new CustomEvent(type, {
+        detail,
+        bubbles: true
+      }));
+    });
     return this;
   }
   pass(states) {
@@ -300,11 +309,11 @@ var parseNumber = (parseFn, value) => {
   const parsed = parseFn(value);
   return Number.isFinite(parsed) ? parsed : undefined;
 };
-var parse = (host, name, value, old = undefined) => {
-  const parser = host.constructor.states[name];
-  return isFunction2(parser) && !!parser.length ? parser(value, host, old) : value;
+var parse = (host, initializer, value, old) => {
+  const isAttributeParser = (value2) => isFunction2(value2) && !!value2.length;
+  return (isAttributeParser(initializer) ? initializer(value, host, old) : value) ?? initializer;
 };
-var asBoolean = (value) => value != null;
+var asBoolean = (value) => value !== "false" && value != null;
 var asInteger = (value) => parseNumber(parseInt, value);
 var asNumber = (value) => parseNumber(parseFloat, value);
 var asString = (value) => value;
@@ -363,6 +372,9 @@ var useContext = (host) => {
 
 // src/ui-element.ts
 class UIElement extends HTMLElement {
+  get ctor() {
+    return this.constructor;
+  }
   static registry = customElements;
   static states = {};
   static observedAttributes;
@@ -378,6 +390,7 @@ class UIElement extends HTMLElement {
     }
   }
   signals = new Map;
+  listeners = [];
   self = new UI(this);
   root = this.shadowRoot || this;
   debug = false;
@@ -386,7 +399,7 @@ class UIElement extends HTMLElement {
       return;
     if (DEV_MODE && this.debug)
       log(`${valueString(old)} => ${valueString(value)}`, `Attribute "${name}" of ${elementName(this)} changed`);
-    this.set(name, parse(this, name, value, old));
+    this.set(name, parse(this, this.ctor.states[name], value, old));
   }
   connectedCallback() {
     if (DEV_MODE) {
@@ -394,13 +407,14 @@ class UIElement extends HTMLElement {
       if (this.debug)
         log(this, "Connected");
     }
-    Object.entries(this.constructor.states).forEach(([name, source]) => {
-      const value = isFunction2(source) ? parse(this, name, this.getAttribute(name) ?? undefined, undefined) : source;
+    Object.entries(this.ctor.states).forEach(([name, source]) => {
+      const value = isFunction2(source) ? parse(this, this.ctor.states[name], this.getAttribute(name) ?? undefined) : source;
       this.set(name, value, false);
     });
     useContext(this);
   }
   disconnectedCallback() {
+    this.listeners.forEach((off) => off());
     if (DEV_MODE && this.debug)
       log(this, "Disconnected");
   }
@@ -461,22 +475,16 @@ class UIElement extends HTMLElement {
   }
 }
 // src/lib/effects.ts
-var emit = (event, s = event) => (host, target) => effect(() => {
-  target.dispatchEvent(new CustomEvent(event, {
-    detail: host.get(s),
-    bubbles: true
-  }));
-});
 var updateElement = (s, updater) => (host, target) => {
   const { read, update: update2 } = updater;
   const fallback = read(target);
-  if (!isFunction2(s)) {
-    const value = isString(s) && isString(fallback) ? parse(host, s, fallback) : fallback;
+  if (isString(s)) {
+    const value = isString(fallback) ? parse(host, host.constructor.states[s], fallback) : fallback;
     host.set(s, value, false);
   }
   effect(() => {
     const current = read(target);
-    const value = isFunction2(s) ? s(current) : host.get(s);
+    const value = isString(s) ? host.get(s) : isFunction2(s) ? s(current) : undefined;
     if (!Object.is(value, current)) {
       if (value === null && updater.delete)
         updater.delete(target);
@@ -500,7 +508,7 @@ var setText = (s) => updateElement(s, {
   update: (el, value) => st(el, value)
 });
 var setProperty = (key, s = key) => updateElement(s, {
-  read: (el) => el[key],
+  read: (el) => (key in el) ? el[key] : undefined,
   update: (el, value) => el[key] = value
 });
 var setAttribute = (name, s = name) => updateElement(s, {
@@ -538,7 +546,6 @@ export {
   isState,
   isSignal,
   enqueue,
-  emit,
   effect,
   createElement,
   computed,
