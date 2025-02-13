@@ -99,7 +99,55 @@
 
 <section>
 
-<h2></h2>
+<h2>Function Composition</h2>
+<p>To reuse functionality across multiple components, just save a function somewhere else. Here is an example of an <code>IntersectionObserver</code> that sets a <code>visible</code> signal based on whether or not the component is (at least partially) visible on screen.</p>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> VISIBILITY_STATE </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'visible'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> const</span><span style="color:#A6E22E"> visibilityObserver</span><span style="color:#F92672"> =</span><span style="color:#FD971F;font-style:italic"> host</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">    host.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(VISIBILITY_STATE, </span><span style="color:#AE81FF">false</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> observer </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> IntersectionObserver</span><span style="color:#F8F8F2">(([</span><span style="color:#FD971F;font-style:italic">entry</span><span style="color:#F8F8F2">]) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">        host.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(VISIBILITY_STATE, entry.isIntersecting)</span></span>
+<span class="line"><span style="color:#F8F8F2">    }).</span><span style="color:#A6E22E">observe</span><span style="color:#F8F8F2">(host)</span></span>
+<span class="line"><span style="color:#F8F8F2">    host.listeners.</span><span style="color:#A6E22E">push</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> observer.</span><span style="color:#A6E22E">disconnect</span><span style="color:#F8F8F2">())</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	
+</code-block>
+<p>Then, in a component, you can use it like this:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { visibilityObserver } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/visibility-observer'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">MyAnimation</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#A6E22E">    connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#A6E22E">        visibilityObserver</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">        </span></span>
+<span class="line"><span style="color:#A6E22E">        effect</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">            if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'visible'</span><span style="color:#F8F8F2">)) {</span></span>
+<span class="line"><span style="color:#88846F">                // Start animation</span></span>
+<span class="line"><span style="color:#F8F8F2">            } </span><span style="color:#F92672">else</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">                // Stop animation</span></span>
+<span class="line"><span style="color:#F8F8F2">            }</span></span>
+<span class="line"><span style="color:#F8F8F2">        })</span></span>
+<span class="line"><span style="color:#F8F8F2">    }</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">Copy</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
 </section>
     </main>
     <footer class="content-grid">
