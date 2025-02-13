@@ -101,11 +101,7 @@
 <span class="line"><span style="color:#A6E22E">			queueMicrotask</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> input?.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> (value) {</span></span>
-<span class="line"><span style="color:#88846F">					// this.self.emit('add-todo', value) // New syntax since v0.10.0</span></span>
-<span class="line"><span style="color:#FD971F">					this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">dispatchEvent</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">new</span><span style="color:#A6E22E"> CustomEvent</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'add-todo'</span><span style="color:#F8F8F2">, {</span></span>
-<span class="line"><span style="color:#F8F8F2">						bubbles: </span><span style="color:#AE81FF">true</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">						detail: input?.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span></span>
-<span class="line"><span style="color:#F8F8F2">					}))</span></span>
+<span class="line"><span style="color:#FD971F">					this</span><span style="color:#F8F8F2">.self.</span><span style="color:#A6E22E">emit</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'add-todo'</span><span style="color:#F8F8F2">, value)</span></span>
 <span class="line"><span style="color:#F8F8F2">					input?.</span><span style="color:#A6E22E">clear</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">				}</span></span>
 <span class="line"><span style="color:#F8F8F2">			})</span></span>

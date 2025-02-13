@@ -14,11 +14,7 @@ export class TodoForm extends UIElement {
 			queueMicrotask(() => {
 				const value = input?.get<string>('value')?.trim()
 				if (value) {
-					// this.self.emit('add-todo', value) // New syntax since v0.10.0
-					this.dispatchEvent(new CustomEvent('add-todo', {
-						bubbles: true,
-						detail: input?.get('value') ?? ''
-					}))
+					this.self.emit('add-todo', value)
 					input?.clear()
 				}
 			})

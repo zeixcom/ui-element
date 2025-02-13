@@ -1,5 +1,4 @@
-import { UIElement } from "@zeix/ui-element"
-import { Context } from "@zeix/ui-element/src/core/context"
+import { UIElement, type Context } from "@zeix/ui-element"
 
 /* === Pure Functions === */
 

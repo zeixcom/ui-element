@@ -1,5 +1,4 @@
-import { asBoolean, setProperty, toggleAttribute, UIElement } from "@zeix/ui-element"
-import { Context } from "@zeix/ui-element/src/core/context"
+import { asBoolean, setProperty, toggleAttribute, UIElement, type Context } from "@zeix/ui-element"
 
 export class TabList extends UIElement {
 	static observedAttributes = ['accordion']

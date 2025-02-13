@@ -494,11 +494,7 @@
 <span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">typeof</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'function'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">			value </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input?.value </span><span style="color:#F92672">!==</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(value))</span></span>
-<span class="line"><span style="color:#88846F">			// this.self.emit('value-change', value) // New syntax since v0.10.0</span></span>
-<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">dispatchEvent</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">new</span><span style="color:#A6E22E"> CustomEvent</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value-change'</span><span style="color:#F8F8F2">, {</span></span>
-<span class="line"><span style="color:#F8F8F2">				detail: value,</span></span>
-<span class="line"><span style="color:#F8F8F2">				bubbles: </span><span style="color:#AE81FF">true</span></span>
-<span class="line"><span style="color:#F8F8F2">			}))</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.self.</span><span style="color:#A6E22E">emit</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value-change'</span><span style="color:#F8F8F2">, value)</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>

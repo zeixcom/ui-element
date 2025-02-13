@@ -211,11 +211,7 @@ export class InputField extends UIElement {
 		if (typeof value === 'function')
 			value = this.get('value')
 		if (this.input?.value !== String(value))
-			// this.self.emit('value-change', value) // New syntax since v0.10.0
-			this.dispatchEvent(new CustomEvent('value-change', {
-				detail: value,
-				bubbles: true
-			}))
+			this.self.emit('value-change', value)
 	}
 
 }
