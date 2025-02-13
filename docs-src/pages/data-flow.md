@@ -256,7 +256,12 @@ Here's how everything comes together:
 <footer>
 <todo-count>
 <p class="all-done">Well done, all done!</p>
-<p class="remaining"><span></span> tasks left</p>
+<p class="remaining">
+<span class="count"></span>
+<span class="singular">task</span>
+<span class="plural">tasks</span>
+remaining
+</p>
 </todo-count>
 <input-radiogroup value="all" class="split-button">
 <fieldset>
@@ -301,6 +306,14 @@ Here's how everything comes together:
 <details>
 <summary>TodoList Source Code</summary>
 <lazy-load src="./examples/todo-list.html">
+<p class="loading">Loading...</p>
+</lazy-load>
+</details>
+</accordion-panel>
+<accordion-panel collapsible>
+<details>
+<summary>TodoCount Source Code</summary>
+<lazy-load src="./examples/todo-count.html">
 <p class="loading">Loading...</p>
 </lazy-load>
 </details>

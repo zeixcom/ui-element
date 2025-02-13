@@ -1,12 +1,14 @@
-import { setProperty, toggleAttribute, UIElement } from "@zeix/ui-element"
+import { asBoolean, setProperty, toggleAttribute, UIElement } from "@zeix/ui-element"
 
 export class AccordionPanel extends UIElement {
+	static states = {
+		open: asBoolean,
+		collapsible: asBoolean
+	}
+
 	connectedCallback() {
-
-		// Set defaults from attributes
-		this.set('open', this.hasAttribute('open'), false)
-		this.set('collapsible', this.hasAttribute('collapsible'), false)
-
+		super.connectedCallback()
+		
 		// Handle open and collapsible state changes
 		this.self.sync(
 			toggleAttribute('open'),
