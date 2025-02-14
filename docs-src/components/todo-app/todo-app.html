@@ -1,40 +1,41 @@
-<<todo-app>
-	<todo-form>
-		<form action="#">
-			<input-field>
-				<label for="add-todo">What needs to be done?</label>
-				<div class="row">
-					<div class="group auto">
-						<input id="add-todo" type="text" value="" required>
-					</div>
+<todo-app>
+	<form action="#">
+		<input-field>
+			<label for="add-todo">What needs to be done?</label>
+			<div class="row">
+				<div class="group auto">
+					<input id="add-todo" type="text" value="" required>
 				</div>
-			</input-field>
-			<input-button class="submit">
-				<button type="submit" class="primary" disabled>Add Todo</button>
+			</div>
+		</input-field>
+		<input-button class="submit">
+			<button type="submit" class="primary" disabled>Add Todo</button>
+		</input-button>
+	</form>
+	<ol filter="all"></ol>
+	<template>
+		<li>
+			<input-checkbox class="todo">
+				<label>
+					<input type="checkbox" class="visually-hidden" />
+					<span></span>
+				</label>
+			</input-checkbox>
+			<input-button class="delete">
+				<button type="button">Delete</button>
 			</input-button>
-		</form>
-	</todo-form>
-	<todo-list filter="all">
-		<ol></ol>
-		<template>
-			<li>
-				<input-checkbox class="todo">
-					<label>
-						<input type="checkbox" class="visually-hidden" />
-						<span></span>
-					</label>
-				</input-checkbox>
-				<input-button>
-					<button type="button">Delete</button>
-				</input-button>
-			</li>
-		</template>
-	</todo-list>
+		</li>
+	</template>
 	<footer>
-		<todo-count>
+		<div class="todo-count">
 			<p class="all-done">Well done, all done!</p>
-			<p class="remaining"><span></span> tasks left</p>
-		</todo-count>
+			<p class="remaining">
+				<span class="count"></span>
+				<span class="singular">task</span>
+				<span class="plural">tasks</span>
+				remaining
+			</p>
+		</div>
 		<input-radiogroup value="all" class="split-button">
 			<fieldset>
 				<legend class="visually-hidden">Filter</legend>
