@@ -478,12 +478,14 @@ MediaContext.define('media-context');
 			  
 <!-- Live component preview wrapped in media-context -->
 <media-context>
-<themed-component>
-This component changes its background based on the theme!
-</themed-component>
+    <themed-component>
+        This component changes its background based on the system theme!
+        <input-button>
+            <button type="submit" class="primary">Toggle browser theme</button>
+        </input-button>  
+	</themed-component>
 </media-context>
 
-<!-- Source code with progressive disclosure -->
 <details>
 <summary>Source Code</summary>
 
@@ -496,9 +498,13 @@ This component changes its background based on the theme!
 
 ```html
 <media-context>
-	<themed-component>
-		This component changes its background based on the theme!
-	</themed-component>
+    <themed-component>
+        This component changes its background based on the system theme!
+        
+        <input-button>
+            <button type="submit" class="primary">Toggle browser theme</button>
+        </input-button>    
+    </themed-component>
 </media-context>
 ```
 
@@ -511,17 +517,35 @@ This component changes its background based on the theme!
 
 ```css
 themed-component {
-	display: block;
-	padding: 20px;
-	color: white;
-	transition: background-color 0.3s ease;
+	display: flex;
+	justify-content: space-between;
+    align-items: center;
+	padding: var(--space-s);
+	border-radius: var(--space-xs);
+	transition: all var(--transition-shorter) var(--easing-inout);
+	margin: var(--space-m) 0;
+	background-color: var(--background-color, var(--color-black));
+	color: var(--text-color, var(--color-white));
 
-	&.dark {
-		background-color: black;
+	button {
+		background-color: var(--button-color);
+		color: var(--text-color);
+		padding: 0.5rem 1rem;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
 	}
 
-	&.light {
-		background-color: lightgray;
+	&[media-theme="light"] {
+		--background-color: var(--color-white);
+		--text-color: var(--color-black);
+		--button-color: var(--color-gray-200);
+	}
+
+	&[media-theme="dark"] {
+		--background-color: var(--color-black); 
+		--text-color: var(--color-white);
+		--button-color: var(--color-gray-800);
 	}
 }
 ```
@@ -534,17 +558,42 @@ themed-component {
 ### JavaScript
 
 ```js
-import { UIElement, toggleClass } from '@zeix/ui-element';
+import { UIElement } from '@zeix/ui-element';
+import { Context } from '@zeix/ui-element/src/core/context';
 
-class ThemedComponent extends UIElement {
-	static consumedContexts = ['media-theme'];
+const MEDIA_THEME = 'media-theme' as Context<string, string>
+
+export class ThemedComponent extends UIElement {
+	static consumedContexts = [MEDIA_THEME];
 
 	connectedCallback() {
-		// Toggle the class based on 'media-theme' signal
-		this.self.sync(toggleClass('dark', () => this.get('media-theme')));
-		this.self.sync(toggleClass('light', () => !this.get('media-theme')));
+		super.connectedCallback();
+
+        const THEME_LIGHT = 'light'
+		const THEME_DARK = 'dark'
+
+        const colorScheme = matchMedia('(prefers-color-scheme: dark)')
+
+        this.set(MEDIA_THEME, colorScheme.matches ? THEME_DARK : THEME_LIGHT)
+        this.setAttribute('media-theme', this.get(MEDIA_THEME) ?? '');
+
+        colorScheme.addEventListener(
+			'change',
+			e => {
+				this.set(MEDIA_THEME, e.matches ? THEME_DARK : THEME_LIGHT);
+				this.setAttribute('media-theme', this.get(MEDIA_THEME) ?? '');
+			}
+		)
+		
+		this.first('button').on('click', () => {
+			const currentTheme = this.get(MEDIA_THEME);
+			const newTheme = currentTheme === THEME_LIGHT ? THEME_DARK : THEME_LIGHT;
+			this.set(MEDIA_THEME, newTheme);
+			this.setAttribute('media-theme', newTheme);
+		});
 	}
 }
+
 ThemedComponent.define('themed-component');
 ```
 

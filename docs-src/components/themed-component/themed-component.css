@@ -1,0 +1,33 @@
+themed-component {
+	display: flex;
+	justify-content: space-between;
+    align-items: center;
+	padding: var(--space-s);
+	border-radius: var(--space-xs);
+	transition: all var(--transition-shorter) var(--easing-inout);
+	margin: var(--space-m) 0;
+	background-color: var(--background-color, var(--color-black));
+	color: var(--text-color, var(--color-white));
+
+	button {
+		background-color: var(--button-color);
+		color: var(--text-color);
+		padding: 0.5rem 1rem;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+	}
+
+	&[media-theme="light"] {
+		--background-color: var(--color-white);
+		--text-color: var(--color-black);
+		--button-color: var(--color-gray-200);
+	}
+
+	&[media-theme="dark"] {
+		--background-color: var(--color-black); 
+		--text-color: var(--color-white);
+		--button-color: var(--color-gray-800);
+	}
+}
+
