@@ -1,9 +1,9 @@
 import { type Signal } from '@zeix/cause-effect';
 import { UIElement } from '../ui-element';
-type StateLike<T> = string | Signal<T> | ((v?: T) => T);
-type ValueOrFactory<T> = T | ((element: Element, index: number) => T);
-type StateLikeOrStateLikeFactory<T> = ValueOrFactory<StateLike<T>>;
-type EventListenerOrEventListenerFactory = ValueOrFactory<EventListenerOrEventListenerObject>;
+type StateLike<T extends {}> = string | Signal<T> | ((v?: T) => T);
+type ValueOrProvider<T> = T | ((element: Element, index: number) => T);
+type StateLikeOrStateLikeProvider<T extends {}> = ValueOrProvider<StateLike<T>>;
+type EventListenerOrEventListenerProvider = ValueOrProvider<EventListenerOrEventListenerObject>;
 /**
  * UI class for managing UI elements and their events, passed states and applied effects
  *
@@ -23,7 +23,7 @@ declare class UI<T extends Element> {
      * @param {EventListenerOrEventListenerFactory} listeners - event listener or factory function
      * @returns {UI<T>} - self
      */
-    on(type: string, listeners: EventListenerOrEventListenerFactory): UI<T>;
+    on(type: string, listeners: EventListenerOrEventListenerProvider): UI<T>;
     /**
      * Emit custom event to target element(s)
      *
@@ -40,7 +40,7 @@ declare class UI<T extends Element> {
      * @param {S extends Record<PropertyKey, StateLikeOrStateLikeFactory<unknown>>} states - state sources
      * @returns {UI<T>} - self
      */
-    pass<S extends Record<PropertyKey, StateLikeOrStateLikeFactory<unknown>>>(states: S): UI<T>;
+    pass<S extends keyof typeof this.host.signals>(states: S): UI<T>;
     /**
      * Sync state changes to target element(s) using provided functions
      *
@@ -50,4 +50,4 @@ declare class UI<T extends Element> {
      */
     sync(...fns: ((host: UIElement, target: T, index: number) => void)[]): UI<T>;
 }
-export { type StateLike, type StateLikeOrStateLikeFactory, type EventListenerOrEventListenerFactory, UI };
+export { type StateLike, type StateLikeOrStateLikeProvider, type EventListenerOrEventListenerProvider, UI };

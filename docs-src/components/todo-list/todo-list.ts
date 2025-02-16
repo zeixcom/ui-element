@@ -1,4 +1,4 @@
-import { setAttribute, UIElement } from '@zeix/ui-element'
+import { UIElement, setAttribute } from "../../../index"
 import type { InputCheckbox } from '../input-checkbox/input-checkbox'
 
 export type TodoCountObject = {
@@ -14,6 +14,7 @@ export class TodoList extends UIElement {
 	}
 
 	connectedCallback() {
+		super.connectedCallback()
 		this.#updateList()
 
 		// Event listener and attribute on own element
@@ -26,8 +27,8 @@ export class TodoList extends UIElement {
 
 		// Update count on each change
 		this.set('count', () => {
-			const tasks = (this.get('tasks') as InputCheckbox[])
-				.map(el => el.signals.get('checked'))
+			const tasks = this.get('tasks')
+				.map(el => el.signals.checked)
 			const completed = tasks.filter(fn => fn?.get()).length
 			const total = tasks.length
 			return {
@@ -55,7 +56,7 @@ export class TodoList extends UIElement {
 	}
 
 	clearCompleted = () => {
-		(this.get('tasks') as InputCheckbox[])
+		this.get('tasks')
 			.filter(el => el.get('checked'))
 			.forEach(el => el.parentElement?.remove())
 		this.#updateList()

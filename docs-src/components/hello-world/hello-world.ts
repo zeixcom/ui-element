@@ -1,4 +1,4 @@
-import { setText, UIElement } from "@zeix/ui-element"
+import { setText, UIElement } from "../../../index"
 
 export class HelloWorld extends UIElement {
 	connectedCallback() {

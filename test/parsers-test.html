@@ -33,19 +33,19 @@
 
 			describe('asInteger()', function () {
 
-				it('should be undefined for empty string', function () {
+				it('should be 0 for empty string', function () {
 					const result = asInteger('')
-					assert.isUndefined(result, 'Should return undefined for boolean attribute')
+					assert.equal(result, 0, 'Should return 0 for boolean attribute')
 				})
 
-				it('should be undefined for non-parsable string', function () {
+				it('should be 0 for non-parsable string', function () {
 					const result = asInteger('any')
-					assert.isUndefined(result, 'Should return undefined for non-parsable attribute')
+					assert.equal(result, 0, 'Should return 0 for non-parsable attribute')
 				})
 
-				it('should be undefined for undefined', function () {
+				it('should be 0 for undefined', function () {
 					const result = asInteger()
-					assert.isUndefined(result, 'Should return undefined for undefined attribute')
+					assert.equal(result, 0, 'Should return 0 for undefined attribute')
 				})
 
 				it('should be 42 for "42"', function () {
@@ -72,19 +72,19 @@
 
 			describe('asNumber()', function () {
 
-				it('should be undefined for empty string', function () {
+				it('should be 0 for empty string', function () {
 					const result = asNumber('')
-					assert.isUndefined(result, 'Should return undefined for boolean attribute')
+					assert.equal(result, 0, 'Should return 0 for boolean attribute')
 				})
 
-				it('should be undefined for non-parsable string', function () {
+				it('should be 0 for non-parsable string', function () {
 					const result = asNumber('any')
-					assert.isUndefined(result, 'Should return undefined for non-parsable attribute')
+					assert.equal(result, 0, 'Should return 0 for non-parsable attribute')
 				})
 
-				it('should be undefined for undefined', function () {
+				it('should be 0 for undefined', function () {
 					const result = asNumber()
-					assert.isUndefined(result, 'Should return undefined for undefined attribute')
+					assert.equal(result, 0, 'Should return 0 for undefined attribute')
 				})
 
 				it('should be 42 for "42"', function () {
@@ -111,14 +111,14 @@
 
 			describe('asString()', function () {
 
-				it('should be undefined for undefined', function () {
+				it('should be "" for undefined', function () {
 					const result = asString()
-					assert.isUndefined(result, 'Should return undefined for undefined attribute')
+					assert.equal(result, '', 'Should return "" for undefined attribute')
 				})
 
 				it('should be "" for boolean attribute', function () {
 					const result = asString('')
-					assert.equal(result, '', 'Should return empty string for boolean attribute')
+					assert.equal(result, '', 'Should return "" for boolean attribute')
 				})
 
 				it('should be "true" for boolean attribute', function () {
@@ -150,25 +150,25 @@
 
 			describe('asJSON()', function () {
 
-				it('should be undefined for undefined', function () {
+				it('should be {} for undefined', function () {
 					let result
 					try {
 						result = asJSON()
 					} catch (error) {
 						assert.fail(`Failed to parse JSON ${error.message}`)
 					} finally {
-						assert.isUndefined(result, 'Should return undefined for undefined attribute')
+						assert.deepEqual(result, {}, 'Should return {} for undefined attribute')
 					}
 				})
 
-				it('should be undefined for boolean attribute', function () {
+				it('should be {} for boolean attribute', function () {
 					const result = asJSON('')
-					assert.isUndefined(result, 'Should return undefined for boolean attribute')
+					assert.deepEqual(result, {}, 'Should return {} for boolean attribute')
 				})
 
-				it('should be null for "null"', function () {
+				it('should be {} for "null"', function () {
 					const result = asJSON('null')
-					assert.equal(result, null, 'Should return null for attribute with "null" value')
+					assert.deepEqual(result, {}, 'Should return {} for attribute with "null" value')
 				})
 
 				it('should be {} for "{}"', function () {

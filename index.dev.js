@@ -1,6 +1,7 @@
 // node_modules/@zeix/cause-effect/lib/util.ts
 var isFunction = (value) => typeof value === "function";
 var isAsyncFunction = (value) => isFunction(value) && /^async\s+/.test(value.toString());
+var isComputeFunction = (value) => isFunction(value) && value.length < 2;
 var isInstanceOf = (type) => (value) => value instanceof type;
 var isError = /* @__PURE__ */ isInstanceOf(Error);
 var isPromise = /* @__PURE__ */ isInstanceOf(Promise);
@@ -55,7 +56,7 @@ var active;
 var batching = false;
 var pending = [];
 var isSignal = (value) => isState(value) || isComputed(value);
-var toSignal = (value, memo = false) => isSignal(value) ? value : isFunction(value) ? computed(value, memo) : state(value);
+var toSignal = (value, memo = false) => isSignal(value) ? value : isComputeFunction(value) ? computed(value, memo) : state(value);
 var subscribe = (watchers) => {
   if (active && !watchers.includes(active))
     watchers.push(active);
@@ -90,21 +91,23 @@ class State {
   }
   set(value) {
     if (UNSET !== value) {
-      const newValue = isFunction(value) ? value(this.value) : value;
-      if (Object.is(this.value, newValue))
+      if (Object.is(this.value, value))
         return;
-      this.value = newValue;
+      this.value = value;
     }
     notify(this.watchers);
     if (UNSET === value)
       this.watchers = [];
+  }
+  update(fn) {
+    this.set(fn(this.value));
   }
   map(fn) {
     return computed(() => fn(this.get()));
   }
 }
 var state = (value) => new State(value);
-var isState = /* @__PURE__ */ isInstanceOf(State);
+var isState = (value) => value instanceof State;
 // node_modules/@zeix/cause-effect/lib/effect.ts
 var effect = (fn) => {
   const run = () => watch(() => {
@@ -251,8 +254,8 @@ var log = (value, msg, level = LOG_DEBUG) => {
 };
 
 // src/core/ui.ts
-var isFactoryFunction = (fn) => isFunction2(fn) && fn.length === 2;
-var fromFactory = (fn, element, index = 0) => isFactoryFunction(fn) ? fn(element, index) : fn;
+var isProviderFunction = (fn) => isFunction2(fn) && fn.length === 2;
+var fromProvider = (fn, element, index = 0) => isProviderFunction(fn) ? fn(element, index) : fn;
 
 class UI {
   host;
@@ -263,7 +266,7 @@ class UI {
   }
   on(type, listeners) {
     this.targets.forEach((target, index) => {
-      const listener = fromFactory(listeners, target, index);
+      const listener = fromProvider(listeners, target, index);
       target.addEventListener(type, listener);
       this.host.listeners.push(() => target.removeEventListener(type, listener));
     });
@@ -283,8 +286,8 @@ class UI {
       await UIElement.registry.whenDefined(target.localName);
       if (target instanceof UIElement) {
         Object.entries(states).forEach(([name, source]) => {
-          const result = fromFactory(source, target, index);
-          const value = isPropertyKey(result) ? this.host.signals.get(result) : toSignal(result, true);
+          const result = fromProvider(source, target, index);
+          const value = isPropertyKey(result) ? this.host.signals[result] : toSignal(result, true);
           if (value)
             target.set(name, value);
           else
@@ -301,37 +304,6 @@ class UI {
     return this;
   }
 }
-
-// src/core/parse.ts
-var parseNumber = (parseFn, value) => {
-  if (value == null)
-    return;
-  const parsed = parseFn(value);
-  return Number.isFinite(parsed) ? parsed : undefined;
-};
-var parse = (host, initializer, value, old) => {
-  const isAttributeParser = (value2) => isFunction2(value2) && !!value2.length;
-  return (isAttributeParser(initializer) ? initializer(value, host, old) : value) ?? initializer;
-};
-var asBoolean = (value) => value !== "false" && value != null;
-var asInteger = (value) => parseNumber(parseInt, value);
-var asNumber = (value) => parseNumber(parseFloat, value);
-var asString = (value) => value;
-var asEnum = (valid) => (value) => {
-  if (value == null)
-    return;
-  return valid.includes(value.toLowerCase()) ? value : undefined;
-};
-var asJSON = (value) => {
-  if (value == null)
-    return;
-  try {
-    return JSON.parse(value);
-  } catch (error) {
-    log(error, "Failed to parse JSON", LOG_ERROR);
-    return;
-  }
-};
 
 // src/core/context.ts
 var CONTEXT_REQUEST = "context-request";
@@ -353,9 +325,9 @@ class ContextRequestEvent extends Event {
 var useContext = (host) => {
   const proto = host.constructor;
   const consumed = proto.consumedContexts || [];
-  setTimeout(() => {
+  queueMicrotask(() => {
     for (const context of consumed)
-      host.dispatchEvent(new ContextRequestEvent(context, (value) => host.set(String(context), value)));
+      host.dispatchEvent(new ContextRequestEvent(context, (value) => host.set(String(context), value ?? UNSET)));
   });
   const provided = proto.providedContexts || [];
   if (!provided.length)
@@ -365,16 +337,20 @@ var useContext = (host) => {
     if (!provided.includes(context) || !isFunction2(callback))
       return;
     e.stopPropagation();
-    callback(host.signals.get(String(context)));
+    callback(host.signals[String(context)]);
   });
   return true;
 };
 
 // src/ui-element.ts
+var isAttributeParser = (value) => isFunction2(value) && !!value.length && !isComputed(value);
+var unwrap = (v) => isFunction2(v) ? unwrap(v()) : isSignal(v) ? unwrap(v.get()) : v;
+var parse = (host, key, value, old) => {
+  const parser = host.constructor.states[key];
+  return isAttributeParser(parser) ? parser(value, host, old) : value;
+};
+
 class UIElement extends HTMLElement {
-  get ctor() {
-    return this.constructor;
-  }
   static registry = customElements;
   static states = {};
   static observedAttributes;
@@ -389,7 +365,7 @@ class UIElement extends HTMLElement {
       log(error, `Failed to register custom element ${tag}`, LOG_ERROR);
     }
   }
-  signals = new Map;
+  signals = {};
   listeners = [];
   self = new UI(this);
   root = this.shadowRoot || this;
@@ -399,7 +375,8 @@ class UIElement extends HTMLElement {
       return;
     if (DEV_MODE && this.debug)
       log(`${valueString(old)} => ${valueString(value)}`, `Attribute "${name}" of ${elementName(this)} changed`);
-    this.set(name, parse(this, this.ctor.states[name], value, old));
+    const parsed = parse(this, name, value, old);
+    this.set(name, parsed ?? UNSET);
   }
   connectedCallback() {
     if (DEV_MODE) {
@@ -407,10 +384,10 @@ class UIElement extends HTMLElement {
       if (this.debug)
         log(this, "Connected");
     }
-    Object.entries(this.ctor.states).forEach(([name, source]) => {
-      const value = isFunction2(source) ? parse(this, this.ctor.states[name], this.getAttribute(name) ?? undefined) : source;
-      this.set(name, value, false);
-    });
+    for (const [key, value] of Object.entries(this.constructor.states)) {
+      const result = isAttributeParser(value) ? value(this.getAttribute(key) ?? undefined, this) : value;
+      this.set(key, result ?? UNSET);
+    }
     useContext(this);
   }
   disconnectedCallback() {
@@ -423,34 +400,36 @@ class UIElement extends HTMLElement {
       log(this, "Adopted");
   }
   has(key) {
-    return this.signals.has(key);
+    return key in this.signals;
   }
   get(key) {
-    const unwrap = (v) => !isDefinedObject(v) ? v : isFunction2(v) ? unwrap(v()) : isSignal(v) ? unwrap(v.get()) : v;
-    const value = unwrap(this.signals.get(key));
+    const value = unwrap(this.signals[key]);
     if (DEV_MODE && this.debug)
       log(value, `Get current value of state ${valueString(key)} in ${elementName(this)}`);
     return value;
   }
   set(key, value, update2 = true) {
     let op;
-    if (!this.signals.has(key)) {
+    if (!(key in this.signals)) {
       if (DEV_MODE && this.debug)
         op = "Create";
-      this.signals.set(key, toSignal(value, true));
+      this.signals[key] = toSignal(value, true);
     } else if (update2) {
-      const s = this.signals.get(key);
+      const s = this.signals[key];
       if (isSignal(value)) {
         if (DEV_MODE && this.debug)
           op = "Replace";
-        this.signals.set(key, value);
+        this.signals[key] = value;
         if (isState(s))
           s.set(UNSET);
       } else {
         if (isState(s)) {
           if (DEV_MODE && this.debug)
             op = "Update";
-          s.set(value);
+          if (isFunction2(value))
+            s.update(value);
+          else
+            s.set(value);
         } else {
           log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_ERROR);
           return;
@@ -464,7 +443,7 @@ class UIElement extends HTMLElement {
   delete(key) {
     if (DEV_MODE && this.debug)
       log(key, `Delete state ${valueString(key)} from ${elementName(this)}`);
-    return this.signals.delete(key);
+    return delete this.signals[key];
   }
   first(selector) {
     const element = this.root.querySelector(selector);
@@ -474,13 +453,42 @@ class UIElement extends HTMLElement {
     return new UI(this, Array.from(this.root.querySelectorAll(selector)));
   }
 }
+// src/lib/parsers.ts
+var parseNumber = (parseFn, value) => {
+  if (value == null)
+    return;
+  const parsed = parseFn(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+};
+var getFallback = (value) => Array.isArray(value) && value[0] ? value[0] : value;
+var asBoolean = (value) => value !== "false" && value != null;
+var asIntegerWithDefault = (fallback = 0) => (value) => parseNumber(parseInt, value) ?? fallback;
+var asInteger = asIntegerWithDefault();
+var asNumberWithDefault = (fallback = 0) => (value) => parseNumber(parseFloat, value) ?? fallback;
+var asNumber = asNumberWithDefault();
+var asStringWithDefault = (fallback = "") => (value) => value ?? fallback;
+var asString = asStringWithDefault();
+var asEnum = (valid) => (value) => value != null && valid.includes(value.toLowerCase()) ? value : getFallback(valid);
+var asJSONWithDefault = (fallback) => (value) => {
+  if (value == null)
+    return fallback;
+  let result;
+  try {
+    result = JSON.parse(value);
+  } catch (error) {
+    log(error, "Failed to parse JSON", LOG_ERROR);
+  }
+  return result ?? fallback;
+};
+var asJSON = asJSONWithDefault({});
 // src/lib/effects.ts
 var updateElement = (s, updater) => (host, target) => {
   const { read, update: update2 } = updater;
   const fallback = read(target);
   if (isString(s)) {
-    const value = isString(fallback) ? parse(host, host.constructor.states[s], fallback) : fallback;
-    host.set(s, value, false);
+    const value = isString(fallback) ? parse(host, s, fallback) : fallback;
+    if (value != null)
+      host.set(s, value, false);
   }
   effect(() => {
     const current = read(target);
@@ -550,9 +558,13 @@ export {
   createElement,
   computed,
   batch,
+  asStringWithDefault,
   asString,
+  asNumberWithDefault,
   asNumber,
+  asJSONWithDefault,
   asJSON,
+  asIntegerWithDefault,
   asInteger,
   asEnum,
   asBoolean,

@@ -1,27 +1,71 @@
-import {
-	type Computed, type Signal,
-	State, UNSET, isSignal, isState, toSignal
-} from "@zeix/cause-effect"
+import { type Computed, type Signal, UNSET, isComputed, isSignal, isState, toSignal } from "@zeix/cause-effect"
 
-import { isDefinedObject, isFunction } from "./core/util"
+import { isFunction } from "./core/util"
 import { DEV_MODE, elementName, log, LOG_ERROR, valueString } from "./core/log"
 import { UI } from "./core/ui"
-import { parse } from "./core/parse"
 import { type UnknownContext, useContext } from "./core/context"
 
 /* === Types === */
 
 export type AttributeParser<T> = (
 	value: string | undefined,
-	element: UIElement,
-	old: string | undefined
-) => T | undefined
+	element?: UIElement,
+	old?: string
+) => T
 
-export type StateInitializer<T> = T | AttributeParser<T>
+export type StateInitializer<T> = T | AttributeParser<T> | Computed<T>
 
-type InferStateType<S> = S extends AttributeParser<infer V> ? V : S
+// export type InferStateType<T> = T extends AttributeParser<infer V> ? V : T
+export type InferSignalType<T> =
+	T extends AttributeParser<infer V> ? V :
+	T extends Signal<infer V> ? V :
+	T
 
-type ExtractStateObject<T> = T extends Record<string, StateInitializer<unknown>> ? T : never
+/* === Internal Functions === */
+
+/**
+ * Check if a value is an attribute parser
+ * 
+ * @since 0.10.1
+ * @param {unknown} value - value to check
+ * @returns {boolean} - true if value is an attribute parser, false otherwise
+ */
+const isAttributeParser = <T>(value: unknown): value is AttributeParser<T> =>
+	isFunction(value) && !!value.length && !isComputed(value)
+
+/**
+ * Unwrap a signal or function to its value
+ * 
+ * @since 0.10.1
+ * @param {T | (() => T) | Signal<T>} v 
+ * @returns {T} - value of the signal or function
+ */
+const unwrap = <T extends {}>(v: T | (() => T) | Signal<T>): T =>
+	isFunction<T>(v) ? unwrap(v()) : isSignal<T>(v) ? unwrap(v.get()) : v
+
+/* === Exported Functions === */
+
+/**
+ * Parse according to static states
+ * 
+ * @since 0.8.4
+ * @param {UIElement} host - host UIElement
+ * @param {string} key - key for attribute parser or initial value from static states
+ * @param {string | undefined} value - attribute value
+ * @param {string | undefined} [old=undefined] - old attribute value
+ * @returns {T | undefined}
+ */
+export const parse = <T>(
+	host: UIElement,
+	key: string,
+	value: string | undefined,
+	old?: string
+): T | undefined => {
+	const parser = (host.constructor as typeof UIElement).states[key]
+	return isAttributeParser(parser)
+		? (parser as AttributeParser<T>)(value, host, old)
+		: value as T | undefined
+}
 
 /* === Exported Class === */
 
@@ -34,13 +78,8 @@ type ExtractStateObject<T> = T extends Record<string, StateInitializer<unknown>>
  * @type {UIElement}
  */
 export class UIElement extends HTMLElement {
-	// Correctly type `this.constructor` as a subclass of `UIElement`
-	private get ctor(): typeof UIElement {
-        return this.constructor as typeof UIElement;
-    }
-
 	static registry: CustomElementRegistry = customElements
-	static states: Record<string, StateInitializer<unknown>> = {}
+	static states: Record<string, StateInitializer<NonNullable<unknown>>> = {}
 	static observedAttributes: string[]
 	static consumedContexts: UnknownContext[]
 	static providedContexts: UnknownContext[]
@@ -62,18 +101,15 @@ export class UIElement extends HTMLElement {
 
 	/**
      * @since 0.9.0
-     * @property {Map<PropertyKey, Signal<InferStateType<typeof this.ctor.states[keyof typeof this.ctor.states]>>>} signals - map of state signals bound to the custom element
+     * @property {Record<string, Signal<unknown>>} signals - object of state signals bound to the custom element
      */
-	signals = new Map<
-		keyof ExtractStateObject<typeof this.ctor.states>,
-		Signal<InferStateType<ExtractStateObject<typeof this.ctor.states>[keyof ExtractStateObject<typeof this.ctor.states>]>>
-    >()
+	signals: Record<string, Signal<{}>> = {}
 
 	/**
 	 * @since 0.10.0
-	 * @property {Array<() => void>} listeners - array of functions to remove bound event listeners
+	 * @property {Array<() => void>} cleanup - array of functions to remove bound event listeners
 	 */
-	listeners: Array<() => void> = []
+	cleanup: Array<() => void> = []
 
 	/**
 	 * @since 0.9.0
@@ -108,12 +144,13 @@ export class UIElement extends HTMLElement {
 	attributeChangedCallback(
 		name: string,
 		old: string | undefined,
-		value: string | undefined): void
-	{
+		value: string | undefined
+	): void {
 		if (value === old) return
 		if (DEV_MODE && this.debug)
 			log(`${valueString(old)} => ${valueString(value)}`, `Attribute "${name}" of ${elementName(this)} changed`)
-		this.set(name, parse(this, this.ctor.states[name], value, old))
+		const parsed = parse(this, name, value, old)
+        this.set(name, parsed ?? UNSET)
 	}
 
 	/**
@@ -129,12 +166,12 @@ export class UIElement extends HTMLElement {
 			this.debug = this.hasAttribute('debug')
 			if (this.debug) log(this, 'Connected')
 		}
-		Object.entries(this.ctor.states).forEach(([name, source]) => {
-			const value = isFunction(source)
-				? parse(this, this.ctor.states[name], this.getAttribute(name) ?? undefined)
-				: source
-			this.set(name, value, false)
-		})
+		for (const [key, value] of Object.entries((this.constructor as typeof UIElement).states)) {
+			const result = isAttributeParser(value)
+				? value(this.getAttribute(key) ?? undefined, this)
+				: value
+			this.set(key, result ?? UNSET)
+		}
 		useContext(this)
 	}
 
@@ -142,7 +179,7 @@ export class UIElement extends HTMLElement {
 	 * Native callback function when the custom element is disconnected from the document
 	 */
 	disconnectedCallback(): void {
-		this.listeners.forEach(off => off())
+		this.cleanup.forEach(off => off())
 		if (DEV_MODE && this.debug)
 			log(this, 'Disconnected')
 	}
@@ -163,7 +200,7 @@ export class UIElement extends HTMLElement {
 	 * @returns {boolean} `true` if this element has state with the given key; `false` otherwise
 	 */
 	has(key: string): boolean {
-		return this.signals.has(key)
+		return key in this.signals
 	}
 
 	/**
@@ -171,15 +208,10 @@ export class UIElement extends HTMLElement {
 	 *
 	 * @since 0.2.0
 	 * @param {string} key - state to get value from
-	 * @returns {T | undefined} current value of state; undefined if state does not exist
+	 * @returns {T} current value of state; undefined if state does not exist
 	 */
-	get<T>(key: string): T | undefined {
-		const unwrap = (v: T | (() => T) | Signal<T> | undefined): T | (() => T) | Signal<T> | undefined =>
-			!isDefinedObject(v) ? v // shortcut for non-object values
-				: isFunction<T>(v) ? unwrap(v())
-				: isSignal(v) ? unwrap(v.get())
-				: v
-		const value = unwrap(this.signals.get(key) as Signal<T>) as T | undefined
+	get<K extends keyof typeof this.signals>(key: K): InferSignalType<typeof this.signals[K]> {
+		const value = unwrap<InferSignalType<typeof this.signals[K]>>(this.signals[key])
 		if (DEV_MODE && this.debug)
 			log(value, `Get current value of state ${valueString(key)} in ${elementName(this)}`)
 		return value
@@ -193,34 +225,37 @@ export class UIElement extends HTMLElement {
 	 * @param {T | ((old?: T) => T) | Signal<T>} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
 	 * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
 	 */
-	set<T>(
-		key: string,
-		value: T | Signal<T> | ((old?: T) => T),
+	set<K extends keyof typeof this.signals>(
+		key: K,
+		value: InferSignalType<typeof this.signals[K]>
+			| Signal<InferSignalType<typeof this.signals[K]>>
+			| ((old?: InferSignalType<typeof this.signals[K]>) =>
+				InferSignalType<typeof this.signals[K]>),
 		update: boolean = true
 	): void {
 		let op: string;
 
 		// State does not exist => create new state
-		if (!this.signals.has(key)) {
+		if (!(key in this.signals)) {
 			if (DEV_MODE && this.debug) op = 'Create'
-			this.signals.set(key, toSignal(value as State<T> | Computed<T> | T, true) as Signal<unknown>)
-
+			this.signals[key] = toSignal(value, true)
 
 		// State already exists => update existing state
 		} else if (update) {
-			const s = this.signals.get(key)
+			const s = this.signals[key]
 
 			// Value is a Signal => replace state with new signal
 			if (isSignal(value)) {
 				if (DEV_MODE && this.debug) op = 'Replace'
-				this.signals.set(key, value)
+				this.signals[key] = value
 				if (isState(s)) s.set(UNSET) // clear previous state so watchers re-subscribe to new signal
 
 			// Value is not a Signal => set existing state to new value
 			} else {
 				if (isState(s)) {
 					if (DEV_MODE && this.debug) op = 'Update'
-					s.set(value)
+					if (isFunction<InferSignalType<typeof this.signals[K]>>(value)) s.update(value)
+					else s.set(value)
 				} else {
 					log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_ERROR)
 					return
@@ -243,11 +278,9 @@ export class UIElement extends HTMLElement {
 	 * @returns {boolean} `true` if the state existed and was deleted; `false` if ignored
 	 */
 	delete(key: string): boolean {
-		if (DEV_MODE && this.debug) log(
-			key,
-			`Delete state ${valueString(key)} from ${elementName(this)}`
-		)
-		return this.signals.delete(key)
+		if (DEV_MODE && this.debug)
+			log(key, `Delete state ${valueString(key)} from ${elementName(this)}`)
+		return delete this.signals[key]
 	}
 
 	/**

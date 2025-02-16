@@ -1,4 +1,4 @@
-import { UIElement } from "@zeix/ui-element"
+import { UIElement } from "../../../index"
 import { InputField } from "../input-field/input-field"
 
 export type AddTodoEvent = CustomEvent & { detail: string }
@@ -12,7 +12,7 @@ export class TodoForm extends UIElement {
 
 			// Wait for microtask to ensure the input field value is updated before dispatching the event
 			queueMicrotask(() => {
-				const value = input?.get<string>('value')?.trim()
+				const value = input?.get('value').trim()
 				if (value) {
 					this.self.emit('add-todo', value)
 					input?.clear()

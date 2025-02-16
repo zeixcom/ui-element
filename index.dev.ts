@@ -14,10 +14,10 @@ export {
 
 export {
 	type AttributeParser, type StateInitializer,
-	UIElement
+	UIElement, parse
 } from './src/ui-element'
 export {
-	type StateLike, type StateLikeOrStateLikeFactory, type EventListenerOrEventListenerFactory,
+	type StateLike, type StateLikeOrStateLikeProvider, type EventListenerOrEventListenerProvider,
 	UI
 } from './src/core/ui'
 export {
@@ -28,8 +28,11 @@ export {
 	useContext
 } from './src/core/context'
 export {
-	parse, asBoolean, asInteger, asNumber, asString, asEnum, asJSON
-} from './src/core/parse'
+	asBoolean,
+	asIntegerWithDefault, asInteger, asNumberWithDefault, asNumber,
+	asStringWithDefault, asString, asEnum,
+	asJSONWithDefault, asJSON
+} from './src/lib/parsers'
 export {
 	type ElementUpdater,
 	updateElement, createElement, removeElement,

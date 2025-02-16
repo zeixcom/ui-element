@@ -1,4 +1,4 @@
-import { toggleClass, UIElement } from "@zeix/ui-element"
+import { toggleClass, UIElement } from "../../../index"
 
 export class MySlider extends UIElement {
 	static states = {

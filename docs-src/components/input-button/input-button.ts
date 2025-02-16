@@ -1,4 +1,4 @@
-import { asBoolean, setProperty, setText, UIElement } from "@zeix/ui-element"
+import { asBoolean, setProperty, setText, UIElement } from "../../../index"
 
 export class InputButton extends UIElement {
 	static observedAttributes = ['disabled']

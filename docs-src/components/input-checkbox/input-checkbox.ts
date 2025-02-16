@@ -1,4 +1,4 @@
-import { asBoolean, setProperty, toggleAttribute, UIElement } from "@zeix/ui-element"
+import { asBoolean, setProperty, toggleAttribute, UIElement } from "../../../index"
 
 export class InputCheckbox extends UIElement {
 	static observedAttributes = ['checked']

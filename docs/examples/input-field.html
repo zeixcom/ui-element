@@ -281,7 +281,7 @@
 					<span class="file">input-field.ts</span>
 					<span class="language">ts</span>
 				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { effect, setAttribute, setProperty, setText, toggleClass, UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "@zeix/ui-element"</span></span>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { effect, setAttribute, setProperty, setText, toggleClass, UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../../../index"</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">/* === Pure functions === */</span></span>
 <span class="line"></span>
@@ -319,14 +319,15 @@
 <span class="line"><span style="color:#A6E22E">		value</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">InputField</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
 <span class="line"><span style="color:#F8F8F2">			el.isNumber </span><span style="color:#F92672">?</span><span style="color:#A6E22E"> parseNumber</span><span style="color:#F8F8F2">(v, el.isInteger, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> v</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
-<span class="line"><span style="color:#F8F8F2">	isNumber</span><span style="color:#F92672">?:</span><span style="color:#66D9EF;font-style:italic"> boolean</span></span>
-<span class="line"><span style="color:#F8F8F2">	isInteger</span><span style="color:#F92672">?:</span><span style="color:#66D9EF;font-style:italic"> boolean</span></span>
+<span class="line"><span style="color:#F8F8F2">	isNumber </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> false</span></span>
+<span class="line"><span style="color:#F8F8F2">	isInteger </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> false</span></span>
 <span class="line"><span style="color:#F8F8F2">	input</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLInputElement</span><span style="color:#F92672"> |</span><span style="color:#66D9EF;font-style:italic"> null</span><span style="color:#F92672"> =</span><span style="color:#AE81FF"> null</span></span>
-<span class="line"><span style="color:#F8F8F2">	step</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F92672"> =</span><span style="color:#AE81FF"> 1</span></span>
+<span class="line"><span style="color:#F8F8F2">	step </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 1</span></span>
 <span class="line"><span style="color:#F8F8F2">	min</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F92672"> |</span><span style="color:#66D9EF;font-style:italic"> undefined</span></span>
 <span class="line"><span style="color:#F8F8F2">	max</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F92672"> |</span><span style="color:#66D9EF;font-style:italic"> undefined</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">		super</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">connectedCallback</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Set properties</span></span>
 <span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.input </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">)</span></span>
@@ -388,7 +389,7 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> defaultDescription </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> description.textContent</span></span>
 <span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'description'</span><span style="color:#F8F8F2">, remainingMessage</span></span>
 <span class="line"><span style="color:#F92672">				?</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> length </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">number</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'length'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> length </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'length'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F92672">					return</span><span style="color:#F8F8F2"> length </span><span style="color:#F92672">></span><span style="color:#AE81FF"> 0</span></span>
 <span class="line"><span style="color:#F92672">						?</span><span style="color:#F8F8F2"> remainingMessage.</span><span style="color:#A6E22E">replace</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'${x}'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">String</span><span style="color:#F8F8F2">(maxLength </span><span style="color:#F92672">-</span><span style="color:#F8F8F2"> length))</span></span>
 <span class="line"><span style="color:#F92672">						:</span><span style="color:#F8F8F2"> defaultDescription</span></span>

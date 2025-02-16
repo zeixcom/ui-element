@@ -1,3 +1,5 @@
+import { UNSET } from "@zeix/cause-effect"
+
 import type { UIElement } from "../ui-element"
 import { isFunction } from "./util"
 
@@ -88,24 +90,25 @@ class ContextRequestEvent<T extends UnknownContext> extends Event {
 const useContext = (host: UIElement): boolean => {
 	const proto = host.constructor as typeof UIElement
 
-	// context consumers
+	// Context consumers
 	const consumed = proto.consumedContexts || []
-	setTimeout(() => { // wait for all custom elements to be defined
+	queueMicrotask(() => { // Wait for all custom elements to be defined
 		for (const context of consumed)
 			host.dispatchEvent(new ContextRequestEvent(
 				context,
-				(value: unknown) => host.set(String(context), value)
+				(value: ContextType<typeof context>) =>
+					host.set(String(context), value ?? UNSET)
 			))
 	})
 
-	// context providers
+	// Context providers
 	const provided = proto.providedContexts || []
 	if (!provided.length) return false
 	host.addEventListener(CONTEXT_REQUEST, (e: ContextRequestEvent<UnknownContext>) => {
 		const { context, callback } = e
 		if (!provided.includes(context) || !isFunction(callback)) return
 		e.stopPropagation()
-		callback(host.signals.get(String(context)))
+		callback(host.signals[String(context)])
 	})
 
 	return true

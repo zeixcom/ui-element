@@ -1,4 +1,4 @@
-import { effect, setAttribute, setProperty, setText, toggleClass, UIElement } from "@zeix/ui-element"
+import { effect, setAttribute, setProperty, setText, toggleClass, UIElement } from "../../../index"
 
 /* === Pure functions === */
 
@@ -36,14 +36,15 @@ export class InputField extends UIElement {
 		value: (v: string, el: InputField) =>
 			el.isNumber ? parseNumber(v, el.isInteger, 0) : v
 	}
-	isNumber?: boolean
-	isInteger?: boolean
+	isNumber = false
+	isInteger = false
 	input: HTMLInputElement | null = null
-	step: number = 1
+	step = 1
 	min: number | undefined
 	max: number | undefined
 
 	connectedCallback() {
+		super.connectedCallback()
 
 		// Set properties
 		this.input = this.querySelector('input')
@@ -56,8 +57,14 @@ export class InputField extends UIElement {
 		}
 
 		// Set default states
-		this.set('value', this.isNumber ? this.input?.valueAsNumber : this.input?.value, false)
-		this.set('length', this.input?.value.length)
+		this.set(
+			'value',
+			this.isNumber
+				? (this.input?.valueAsNumber ?? 0)
+				: (this.input?.value ?? ''),
+			false
+		)
+		this.set('length', this.input?.value.length ?? 0)
 		
 		// Derived states
 		this.set('empty', () => !this.get('length'))
@@ -65,10 +72,14 @@ export class InputField extends UIElement {
 		// Handle input changes
 		this.first('input')
 			.on('change', () => {
-				this.#triggerChange(this.isNumber ? this.input?.valueAsNumber : this.input?.value)
+				this.#triggerChange(
+					this.isNumber
+						? (this.input?.valueAsNumber ?? 0)
+						: (this.input?.value ?? '')
+				)
 			})
 			.on('input', () => {
-				this.set('length', this.input?.value.length)
+				this.set('length', this.input?.value.length ?? 0)
 			})
 
 		// Handle arrow key events to increment / decrement value
@@ -102,15 +113,17 @@ export class InputField extends UIElement {
 			// Derived states
 			const maxLength = this.input?.maxLength
 			const remainingMessage = maxLength && description.dataset.remaining
-			const defaultDescription = description.textContent
-			this.set('description', remainingMessage
-				? () => {
-					const length = this.get<number>('length') ?? 0
-					return length > 0
-						? remainingMessage.replace('${x}', String(maxLength - length))
-						: defaultDescription
-				}
-				: defaultDescription
+			const defaultDescription = description.textContent ?? ''
+			this.set(
+				'description',
+				remainingMessage
+					? () => {
+						const length = this.get('length')
+						return length > 0
+							? remainingMessage.replace('${x}', String(maxLength - length))
+							: defaultDescription
+					}
+					: defaultDescription
 			)
 			this.set('aria-describedby', () => this.get('description') ? description.id : undefined)
 
@@ -205,9 +218,9 @@ export class InputField extends UIElement {
     }
 
 	// Trigger value-change event to commit the value change
-	#triggerChange = (value: string | number | ((v: any) => string | number) | undefined)  => {
+	#triggerChange = (value: string | number | ((v: any) => string | number))  => {
 		this.set('value', value)
-		this.set('error', this.input?.validationMessage)
+		this.set('error', this.input?.validationMessage ?? '')
 		if (typeof value === 'function')
 			value = this.get('value')
 		if (this.input?.value !== String(value))

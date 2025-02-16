@@ -1,4 +1,4 @@
-import { setProperty, setText, UIElement } from "@zeix/ui-element"
+import { setProperty, setText, UIElement } from "../../../index"
 
 export class TodoCount extends UIElement {
 	static states = {
@@ -7,7 +7,7 @@ export class TodoCount extends UIElement {
 
 	connectedCallback() {
 		this.first('.count').sync(setText('active'))
-		this.first('.singular').sync(setProperty('ariaHidden', () => this.get('active') as number > 1))
+		this.first('.singular').sync(setProperty('ariaHidden', () => this.get('active') > 1))
 		this.first('.plural').sync(setProperty('ariaHidden', () => this.get('active') === 1))
 		this.first('.remaining').sync(setProperty('ariaHidden', () => !this.get('active')))
 		this.first('.all-done').sync(setProperty('ariaHidden', () => !!this.get('active')))

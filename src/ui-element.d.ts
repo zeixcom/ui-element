@@ -1,8 +1,20 @@
-import { type Signal } from "@zeix/cause-effect";
+import { type Computed, type Signal } from "@zeix/cause-effect";
 import { UI } from "./core/ui";
 import { type UnknownContext } from "./core/context";
-export type AttributeParser<T> = (value: string | undefined, element: UIElement, old: string | undefined) => T | undefined;
-export type StateInitializer<T> = T | AttributeParser<T>;
+export type AttributeParser<T> = (value: string | undefined, element?: UIElement, old?: string) => T;
+export type StateInitializer<T> = T | AttributeParser<T> | Computed<T> | undefined;
+export type InferSignalType<T> = T extends Signal<infer V> ? V : T;
+/**
+ * Parse according to static states
+ *
+ * @since 0.8.4
+ * @param {UIElement} host - host UIElement
+ * @param {string} key - key for attribute parser or initial value from static states
+ * @param {string | undefined} value - attribute value
+ * @param {string | undefined} [old=undefined] - old attribute value
+ * @returns {T | undefined}
+ */
+export declare const parse: <T>(host: UIElement, key: string, value: string | undefined, old?: string) => T | undefined;
 /**
  * Base class for reactive custom elements
  *
@@ -12,9 +24,8 @@ export type StateInitializer<T> = T | AttributeParser<T>;
  * @type {UIElement}
  */
 export declare class UIElement extends HTMLElement {
-    private get ctor();
     static registry: CustomElementRegistry;
-    static states: Record<string, StateInitializer<unknown>>;
+    static states: Record<string, StateInitializer<NonNullable<unknown>>>;
     static observedAttributes: string[];
     static consumedContexts: UnknownContext[];
     static providedContexts: UnknownContext[];
@@ -27,9 +38,9 @@ export declare class UIElement extends HTMLElement {
     static define(tag: string): void;
     /**
      * @since 0.9.0
-     * @property {Map<PropertyKey, Signal<InferStateType<typeof this.ctor.states[keyof typeof this.ctor.states]>>>} signals - map of state signals bound to the custom element
+     * @property {Record<string, Signal<unknown>>} signals - object of state signals bound to the custom element
      */
-    signals: Map<string, Signal<unknown>>;
+    signals: Record<string, Signal<NonNullable<unknown>>>;
     /**
      * @since 0.10.0
      * @property {Array<() => void>} listeners - array of functions to remove bound event listeners
@@ -93,9 +104,9 @@ export declare class UIElement extends HTMLElement {
      *
      * @since 0.2.0
      * @param {string} key - state to get value from
-     * @returns {T | undefined} current value of state; undefined if state does not exist
+     * @returns {T} current value of state; undefined if state does not exist
      */
-    get<T>(key: string): T | undefined;
+    get<K extends keyof typeof this.signals>(key: K): InferSignalType<typeof this.signals[K]>;
     /**
      * Create a state or update its value and return its current value
      *
@@ -104,7 +115,7 @@ export declare class UIElement extends HTMLElement {
      * @param {T | ((old?: T) => T) | Signal<T>} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
      * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
      */
-    set<T>(key: string, value: T | Signal<T> | ((old?: T) => T), update?: boolean): void;
+    set<K extends keyof typeof this.signals>(key: K, value: InferSignalType<typeof this.signals[K]> | Signal<InferSignalType<typeof this.signals[K]>> | ((old?: InferSignalType<typeof this.signals[K]>) => InferSignalType<typeof this.signals[K]>), update?: boolean): void;
     /**
      * Delete a state, also removing all effects dependent on the state
      *

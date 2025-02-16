@@ -2,8 +2,7 @@ import { effect } from '@zeix/cause-effect'
 import { ce, ra, re, rs, sa, ss, st, ta, tc } from '@zeix/pulse'
 
 import { isFunction, isString } from '../core/util'
-import { parse } from '../core/parse'
-import type { UIElement } from '../ui-element'
+import { type UIElement, parse } from '../ui-element'
 
 /* === Types === */
 
@@ -32,13 +31,13 @@ const updateElement = <E extends Element, T>(
 	const fallback = read(target)
 	if (isString(s)) {
 		const value = isString(fallback)
-			? parse(host, (host.constructor as typeof UIElement).states[s], fallback)
+			? parse(host, s, fallback)
 			: fallback
-		host.set(s, value, false)
+		if (null != value) host.set(s, value, false)
 	}
 	effect(() => {
 		const current = read(target)
-		const value = isString(s) ? host.get<T>(s) : isFunction<T>(s) ? s(current) : undefined
+		const value = isString(s) ? host.get(s) : isFunction(s) ? s(current) : undefined
 		if (!Object.is(value, current)) {
 
 			// A value of null triggers deletion
@@ -48,7 +47,7 @@ const updateElement = <E extends Element, T>(
 			else if (null == value && fallback) update(target, fallback)
 
 			// Otherwise, update the value
-			else if (null != value) update(target, value)
+			else if (null != value) update(target, value as T)
 
 			// Do nothing if value is nullish and neither delete method or fallback value is provided
 		}

@@ -1,4 +1,4 @@
-import { setAttribute, toggleClass, UIElement } from "@zeix/ui-element"
+import { setAttribute, toggleClass, UIElement } from "../../../index"
 
 export class InputRadiogroup extends UIElement {
 	static observedAttributes = ['value']

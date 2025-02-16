@@ -1,4 +1,4 @@
-import { effect, enqueue, removeElement, setText, UIElement } from "@zeix/ui-element"
+import { effect, enqueue, removeElement, setText, UIElement } from "../../../index"
 
 export class LazyLoad extends UIElement {
 	static states = {

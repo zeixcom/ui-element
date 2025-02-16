@@ -1,4 +1,4 @@
-import { asInteger, setProperty, setText, toggleAttribute, UIElement } from "@zeix/ui-element";
+import { asInteger, setProperty, setText, toggleAttribute, UIElement } from "../../../index";
 
 export class SpinButton extends UIElement {
 	static observedAttributes = ['count'];
@@ -7,6 +7,8 @@ export class SpinButton extends UIElement {
 	}
 
 	connectedCallback(): void {
+		super.connectedCallback()
+		
 		const zeroLabel = this.getAttribute('zero-label') || 'Add to Cart'
 		const incrementLabel = this.getAttribute('increment-label') || 'Increment'
 		const max = this.getAttribute('max') ? parseInt(this.getAttribute('max')!) : 9
@@ -30,7 +32,7 @@ export class SpinButton extends UIElement {
 			.sync(
 				setText(() => this.get('isZero') ? zeroLabel : '+'),
 				setProperty('ariaLabel', () => this.get('isZero') ? zeroLabel : incrementLabel),
-				toggleAttribute('disabled', () => this.get('count') as number >= max)
+				toggleAttribute('disabled', () => this.get('count') >= max)
 			)
 
 	}

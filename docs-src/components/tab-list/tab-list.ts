@@ -1,15 +1,15 @@
-import { asBoolean, setProperty, toggleAttribute, UIElement, type Context } from "@zeix/ui-element"
+import { asBoolean, setProperty, toggleAttribute, UIElement, type Context } from "../../../index"
 
 export class TabList extends UIElement {
 	static observedAttributes = ['accordion']
 	static states = {
+		active: 0,
 		accordion: asBoolean,
 	}
 	static consumedContexts = ['media-viewport' as Context<string, string>]
 
 	connectedCallback() {
 		super.connectedCallback()
-		this.set('active', 0, false) // initial active tab
 
 		// Dynamically adjust accordion based on viewport size
 		setTimeout(() => {

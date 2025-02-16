@@ -1,4 +1,4 @@
-import type { UIElement } from '../ui-element';
+import { type UIElement } from '../ui-element';
 type ElementUpdater<E extends Element, T> = {
     read: (element: E) => T | null;
     update: (element: E, value: T) => void;
