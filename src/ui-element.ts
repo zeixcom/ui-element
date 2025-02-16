@@ -15,11 +15,7 @@ export type AttributeParser<T> = (
 
 export type StateInitializer<T> = T | AttributeParser<T> | Computed<T>
 
-// export type InferStateType<T> = T extends AttributeParser<infer V> ? V : T
-export type InferSignalType<T> =
-	T extends AttributeParser<infer V> ? V :
-	T extends Signal<infer V> ? V :
-	T
+export type InferSignalType<T> = T extends Signal<infer V> ? V : never
 
 /* === Internal Functions === */
 
@@ -101,7 +97,7 @@ export class UIElement extends HTMLElement {
 
 	/**
      * @since 0.9.0
-     * @property {Record<string, Signal<unknown>>} signals - object of state signals bound to the custom element
+     * @property {Record<string, Signal<{}>>} signals - object of state signals bound to the custom element
      */
 	signals: Record<string, Signal<{}>> = {}
 
@@ -147,9 +143,9 @@ export class UIElement extends HTMLElement {
 		value: string | undefined
 	): void {
 		if (value === old) return
-		if (DEV_MODE && this.debug)
-			log(`${valueString(old)} => ${valueString(value)}`, `Attribute "${name}" of ${elementName(this)} changed`)
 		const parsed = parse(this, name, value, old)
+		if (DEV_MODE && this.debug)
+			log(value, `Attribute "${name}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeof parsed}> ${valueString(parsed)}`)
         this.set(name, parsed ?? UNSET)
 	}
 
@@ -210,10 +206,11 @@ export class UIElement extends HTMLElement {
 	 * @param {string} key - state to get value from
 	 * @returns {T} current value of state; undefined if state does not exist
 	 */
-	get<K extends keyof typeof this.signals>(key: K): InferSignalType<typeof this.signals[K]> {
-		const value = unwrap<InferSignalType<typeof this.signals[K]>>(this.signals[key])
+	// get<K extends keyof typeof this.signals>(key: K): InferSignalType<typeof this.signals[K]> {
+	get<T extends {}>(key: string): T {
+		const value = unwrap(this.signals[key]) as T
 		if (DEV_MODE && this.debug)
-			log(value, `Get current value of state ${valueString(key)} in ${elementName(this)}`)
+			log(value, `Get current value of state <${typeof value}> ${valueString(key)} in ${elementName(this)}`)
 		return value
 	}
 
@@ -225,12 +222,9 @@ export class UIElement extends HTMLElement {
 	 * @param {T | ((old?: T) => T) | Signal<T>} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
 	 * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
 	 */
-	set<K extends keyof typeof this.signals>(
-		key: K,
-		value: InferSignalType<typeof this.signals[K]>
-			| Signal<InferSignalType<typeof this.signals[K]>>
-			| ((old?: InferSignalType<typeof this.signals[K]>) =>
-				InferSignalType<typeof this.signals[K]>),
+	set<T extends {}>(
+		key: string,
+		value: T | Signal<T> | ((old?: T) => T),
 		update: boolean = true
 	): void {
 		let op: string;
@@ -252,10 +246,10 @@ export class UIElement extends HTMLElement {
 
 			// Value is not a Signal => set existing state to new value
 			} else {
-				if (isState(s)) {
+				if (isState<T>(s)) {
 					if (DEV_MODE && this.debug) op = 'Update'
-					if (isFunction<InferSignalType<typeof this.signals[K]>>(value)) s.update(value)
-					else s.set(value)
+					if (isFunction<T>(value)) s.update(value)
+					else s.set(value as T)
 				} else {
 					log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_ERROR)
 					return
@@ -266,7 +260,7 @@ export class UIElement extends HTMLElement {
 		} else return
 
 		if (DEV_MODE && this.debug)
-			log(value, `${op!} state ${valueString(key)} in ${elementName(this)}`)
+			log(value, `${op!} state <${typeof value}> ${valueString(key)} in ${elementName(this)}`)
 
 	}
 

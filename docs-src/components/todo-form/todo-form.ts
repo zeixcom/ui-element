@@ -12,7 +12,7 @@ export class TodoForm extends UIElement {
 
 			// Wait for microtask to ensure the input field value is updated before dispatching the event
 			queueMicrotask(() => {
-				const value = input?.get('value').trim()
+				const value = input?.get<string>('value').trim()
 				if (value) {
 					this.self.emit('add-todo', value)
 					input?.clear()
@@ -21,7 +21,7 @@ export class TodoForm extends UIElement {
 		})
 	
 		this.first('input-button').pass({
-			disabled: () => input?.get('empty')
+			disabled: () => input?.get('empty') ?? true
 		})
     }
 }

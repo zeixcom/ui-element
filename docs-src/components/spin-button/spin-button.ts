@@ -32,7 +32,7 @@ export class SpinButton extends UIElement {
 			.sync(
 				setText(() => this.get('isZero') ? zeroLabel : '+'),
 				setProperty('ariaLabel', () => this.get('isZero') ? zeroLabel : incrementLabel),
-				toggleAttribute('disabled', () => this.get('count') >= max)
+				toggleAttribute('disabled', () => this.get<number>('count') >= max)
 			)
 
 	}

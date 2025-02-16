@@ -27,7 +27,7 @@ export class TodoList extends UIElement {
 
 		// Update count on each change
 		this.set('count', () => {
-			const tasks = this.get('tasks')
+			const tasks = this.get<InputCheckbox[]>('tasks')
 				.map(el => el.signals.checked)
 			const completed = tasks.filter(fn => fn?.get()).length
 			const total = tasks.length
@@ -56,7 +56,7 @@ export class TodoList extends UIElement {
 	}
 
 	clearCompleted = () => {
-		this.get('tasks')
+		this.get<InputCheckbox[]>('tasks')
 			.filter(el => el.get('checked'))
 			.forEach(el => el.parentElement?.remove())
 		this.#updateList()

@@ -2,8 +2,8 @@ import { type Computed, type Signal } from "@zeix/cause-effect";
 import { UI } from "./core/ui";
 import { type UnknownContext } from "./core/context";
 export type AttributeParser<T> = (value: string | undefined, element?: UIElement, old?: string) => T;
-export type StateInitializer<T> = T | AttributeParser<T> | Computed<T> | undefined;
-export type InferSignalType<T> = T extends Signal<infer V> ? V : T;
+export type StateInitializer<T> = T | AttributeParser<T> | Computed<T>;
+export type InferSignalType<T> = T extends Signal<infer V> ? V : never;
 /**
  * Parse according to static states
  *
@@ -38,14 +38,14 @@ export declare class UIElement extends HTMLElement {
     static define(tag: string): void;
     /**
      * @since 0.9.0
-     * @property {Record<string, Signal<unknown>>} signals - object of state signals bound to the custom element
+     * @property {Record<string, Signal<{}>>} signals - object of state signals bound to the custom element
      */
-    signals: Record<string, Signal<NonNullable<unknown>>>;
+    signals: Record<string, Signal<{}>>;
     /**
      * @since 0.10.0
-     * @property {Array<() => void>} listeners - array of functions to remove bound event listeners
+     * @property {Array<() => void>} cleanup - array of functions to remove bound event listeners
      */
-    listeners: Array<() => void>;
+    cleanup: Array<() => void>;
     /**
      * @since 0.9.0
      * @property {ElementInternals | undefined} internals - native internal properties of the custom element
@@ -106,7 +106,7 @@ export declare class UIElement extends HTMLElement {
      * @param {string} key - state to get value from
      * @returns {T} current value of state; undefined if state does not exist
      */
-    get<K extends keyof typeof this.signals>(key: K): InferSignalType<typeof this.signals[K]>;
+    get<T extends {}>(key: string): T;
     /**
      * Create a state or update its value and return its current value
      *
@@ -115,7 +115,7 @@ export declare class UIElement extends HTMLElement {
      * @param {T | ((old?: T) => T) | Signal<T>} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
      * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
      */
-    set<K extends keyof typeof this.signals>(key: K, value: InferSignalType<typeof this.signals[K]> | Signal<InferSignalType<typeof this.signals[K]>> | ((old?: InferSignalType<typeof this.signals[K]>) => InferSignalType<typeof this.signals[K]>), update?: boolean): void;
+    set<T extends {}>(key: string, value: T | Signal<T> | ((old?: T) => T), update?: boolean): void;
     /**
      * Delete a state, also removing all effects dependent on the state
      *

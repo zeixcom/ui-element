@@ -19,7 +19,7 @@ export class TodoApp extends UIElement {
 
 		// Coordinate todo-list
 		this.first('todo-list').pass({
-			filter: () => this.querySelector<InputRadiogroup>('input-radiogroup')?.get('value')
+			filter: () => this.querySelector<InputRadiogroup>('input-radiogroup')?.get('value') ?? 'all'
 		})
 
 		// Coordinate .clear-completed button

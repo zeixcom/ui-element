@@ -118,7 +118,7 @@ export class InputField extends UIElement {
 				'description',
 				remainingMessage
 					? () => {
-						const length = this.get('length')
+						const length = this.get<number>('length')
 						return length > 0
 							? remainingMessage.replace('${x}', String(maxLength - length))
 							: defaultDescription

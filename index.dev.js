@@ -232,10 +232,7 @@ var rs = (element, property) => enqueue(() => {
 // src/core/util.ts
 var isFunction2 = (value) => typeof value === "function";
 var isDefinedObject = (value) => !!value && typeof value === "object";
-var isNumber = (value) => typeof value === "number";
 var isString = (value) => typeof value === "string";
-var isSymbol = (value) => typeof value === "symbol";
-var isPropertyKey = (value) => isString(value) || isSymbol(value) || isNumber(value);
 
 // src/core/log.ts
 var DEV_MODE = true;
@@ -268,7 +265,7 @@ class UI {
     this.targets.forEach((target, index) => {
       const listener = fromProvider(listeners, target, index);
       target.addEventListener(type, listener);
-      this.host.listeners.push(() => target.removeEventListener(type, listener));
+      this.host.cleanup.push(() => target.removeEventListener(type, listener));
     });
     return this;
   }
@@ -287,7 +284,7 @@ class UI {
       if (target instanceof UIElement) {
         Object.entries(states).forEach(([name, source]) => {
           const result = fromProvider(source, target, index);
-          const value = isPropertyKey(result) ? this.host.signals[result] : toSignal(result, true);
+          const value = isString(result) ? this.host.signals[result] : toSignal(result, true);
           if (value)
             target.set(name, value);
           else
@@ -366,16 +363,16 @@ class UIElement extends HTMLElement {
     }
   }
   signals = {};
-  listeners = [];
+  cleanup = [];
   self = new UI(this);
   root = this.shadowRoot || this;
   debug = false;
   attributeChangedCallback(name, old, value) {
     if (value === old)
       return;
-    if (DEV_MODE && this.debug)
-      log(`${valueString(old)} => ${valueString(value)}`, `Attribute "${name}" of ${elementName(this)} changed`);
     const parsed = parse(this, name, value, old);
+    if (DEV_MODE && this.debug)
+      log(value, `Attribute "${name}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeof parsed}> ${valueString(parsed)}`);
     this.set(name, parsed ?? UNSET);
   }
   connectedCallback() {
@@ -391,7 +388,7 @@ class UIElement extends HTMLElement {
     useContext(this);
   }
   disconnectedCallback() {
-    this.listeners.forEach((off) => off());
+    this.cleanup.forEach((off) => off());
     if (DEV_MODE && this.debug)
       log(this, "Disconnected");
   }
@@ -405,7 +402,7 @@ class UIElement extends HTMLElement {
   get(key) {
     const value = unwrap(this.signals[key]);
     if (DEV_MODE && this.debug)
-      log(value, `Get current value of state ${valueString(key)} in ${elementName(this)}`);
+      log(value, `Get current value of state <${typeof value}> ${valueString(key)} in ${elementName(this)}`);
     return value;
   }
   set(key, value, update2 = true) {
@@ -438,7 +435,7 @@ class UIElement extends HTMLElement {
     } else
       return;
     if (DEV_MODE && this.debug)
-      log(value, `${op} state ${valueString(key)} in ${elementName(this)}`);
+      log(value, `${op} state <${typeof value}> ${valueString(key)} in ${elementName(this)}`);
   }
   delete(key) {
     if (DEV_MODE && this.debug)

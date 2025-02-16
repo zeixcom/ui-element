@@ -37,10 +37,10 @@ declare class UI<T extends Element> {
      * Pass states to target element(s) of type UIElement using provided sources
      *
      * @since 0.9.0
-     * @param {S extends Record<PropertyKey, StateLikeOrStateLikeFactory<unknown>>} states - state sources
+     * @param {Record<PropertyKey, StateLikeOrStateLikeProvider<{}>>} states - state sources
      * @returns {UI<T>} - self
      */
-    pass<S extends keyof typeof this.host.signals>(states: S): UI<T>;
+    pass(states: Record<PropertyKey, StateLikeOrStateLikeProvider<{}>>): UI<T>;
     /**
      * Sync state changes to target element(s) using provided functions
      *
