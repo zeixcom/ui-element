@@ -90,11 +90,9 @@ class State {
     return this.value;
   }
   set(value) {
-    if (UNSET !== value) {
-      if (Object.is(this.value, value))
-        return;
-      this.value = value;
-    }
+    if (Object.is(this.value, value))
+      return;
+    this.value = value;
     notify(this.watchers);
     if (UNSET === value)
       this.watchers = [];
@@ -491,12 +489,14 @@ var updateElement = (s, updater) => (host, target) => {
     const current = read(target);
     const value = isString(s) ? host.get(s) : isFunction2(s) ? s(current) : undefined;
     if (!Object.is(value, current)) {
-      if (value === null && updater.delete)
-        updater.delete(target);
-      else if (value == null && fallback)
-        update2(target, fallback);
-      else if (value != null)
+      if (value === UNSET || value == null) {
+        if (fallback)
+          update2(target, fallback);
+        else if (updater.delete)
+          updater.delete(target);
+      } else {
         update2(target, value);
+      }
     }
   });
 };

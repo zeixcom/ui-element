@@ -99,7 +99,7 @@
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">			// Wait for microtask to ensure the input field value is updated before dispatching the event</span></span>
 <span class="line"><span style="color:#A6E22E">			queueMicrotask</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> input?.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> input?.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> (value) {</span></span>
 <span class="line"><span style="color:#FD971F">					this</span><span style="color:#F8F8F2">.self.</span><span style="color:#A6E22E">emit</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'add-todo'</span><span style="color:#F8F8F2">, value)</span></span>
 <span class="line"><span style="color:#F8F8F2">					input?.</span><span style="color:#A6E22E">clear</span><span style="color:#F8F8F2">()</span></span>
@@ -108,7 +108,7 @@
 <span class="line"><span style="color:#F8F8F2">		})</span></span>
 <span class="line"><span style="color:#F8F8F2">	</span></span>
 <span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-button'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">pass</span><span style="color:#F8F8F2">({</span></span>
-<span class="line"><span style="color:#A6E22E">			disabled</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> input?.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'empty'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#A6E22E">			disabled</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> input?.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'empty'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> true</span></span>
 <span class="line"><span style="color:#F8F8F2">		})</span></span>
 <span class="line"><span style="color:#F8F8F2">    }</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>

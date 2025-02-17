@@ -56,7 +56,7 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
-    "@zeix/cause-effect": "^0.10.0",
+    "@zeix/cause-effect": "^0.10.1",
     "@zeix/pulse": "^0.9.3"
   }
 }

@@ -1,4 +1,4 @@
-import { effect } from '@zeix/cause-effect'
+import { effect, UNSET } from '@zeix/cause-effect'
 import { ce, ra, re, rs, sa, ss, st, ta, tc } from '@zeix/pulse'
 
 import { isFunction, isString } from '../core/util'
@@ -40,16 +40,16 @@ const updateElement = <E extends Element, T>(
 		const value = isString(s) ? host.get(s) : isFunction(s) ? s(current) : undefined
 		if (!Object.is(value, current)) {
 
-			// A value of null triggers deletion
-			if (null === value && updater.delete) updater.delete(target)
-			
-			// A value of undefined triggers reset to the default value
-			else if (null == value && fallback) update(target, fallback)
+			// A nullish value or UNSET triggers deletion (if available) or reset to the default value
+			if (value === UNSET || value == null) {
+				if (fallback) update(target, fallback)
+				else if (updater.delete) updater.delete(target)
+			    // else do nothing if neither delete method nor fallback value is provided
 
 			// Otherwise, update the value
-			else if (null != value) update(target, value as T)
-
-			// Do nothing if value is nullish and neither delete method or fallback value is provided
+			} else {
+				update(target, value as T)
+			}
 		}
 	})
 }
