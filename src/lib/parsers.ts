@@ -7,7 +7,7 @@ export type AttributeParserProvider<T> = (fallback: T | [T, ...T[]]) => Attribut
 
 /* === Internal Function === */
 
-const parseNumber = (parseFn: (v: string) => number, value?: string): number | undefined => {
+const parseNumber = (parseFn: (v: string) => number, value: string | null): number | undefined => {
 	if (value == null) return
 	const parsed = parseFn(value)
 	return Number.isFinite(parsed) ? parsed : undefined
@@ -25,7 +25,7 @@ const getFallback = <T extends {}>(value: T | [T, ...T[]]): T =>
  * @param {string} value - maybe string value
  * @returns {boolean}
  */
-const asBoolean = (value: string | undefined): boolean =>
+const asBoolean = (value: string | null): boolean =>
 	value !== 'false' && value != null
 
 /**
@@ -33,10 +33,10 @@ const asBoolean = (value: string | undefined): boolean =>
  * 
  * @since 0.10.1
  * @param {number} [fallback=0] - fallback value
- * @returns {(value: string | undefined) => number} - parser function
+ * @returns {(value: string | null) => number} - parser function
  */
 const asIntegerWithDefault = (fallback: number = 0) =>
-	(value: string | undefined): number =>
+	(value: string | null): number =>
 		parseNumber(parseInt, value) ?? fallback
 
 /**
@@ -53,10 +53,10 @@ const asInteger = asIntegerWithDefault()
  * 
  * @since 0.10.1
  * @param {number} [fallback=0] - fallback value
- * @returns {(value: string | undefined) => number} - parser function
+ * @returns {(value: string | null) => number} - parser function
  */
 const asNumberWithDefault = (fallback: number = 0) =>
-	(value: string | undefined): number =>
+	(value: string | null): number =>
 		parseNumber(parseFloat, value) ?? fallback
 
 /**
@@ -73,10 +73,10 @@ const asNumber = asNumberWithDefault()
  * 
  * @since 0.10.1
  * @param {string} [fallback=''] - fallback value
- * @returns {(value: string | undefined) => string} - parser function
+ * @returns {(value: string | null) => string} - parser function
  */
 const asStringWithDefault = (fallback: string = '') =>
-	(value: string | undefined): string =>
+	(value: string | null): string =>
 		value ?? fallback
 
 /**
@@ -93,10 +93,10 @@ const asString = asStringWithDefault()
  * 
  * @since 0.9.0
  * @param {string[]} valid - array of valid values
- * @returns {(value: string | undefined) => string} - parser function
+ * @returns {(value: string | null) => string} - parser function
  */
 const asEnum = (valid: [string, ...string[]]) =>
-	(value: string | undefined): string =>
+	(value: string | null): string =>
 		(value != null && valid.includes(value.toLowerCase()))
 			? value
 			: getFallback<string>(valid)
@@ -106,7 +106,7 @@ const asEnum = (valid: [string, ...string[]]) =>
  * 
  * @since 0.10.1
  * @param {T} fallback - fallback value
- * @returns {(value: string | undefined) => T} - parser function
+ * @returns {(value: string | null) => T} - parser function
  */
 const asJSONWithDefault = <T extends {}>(fallback: T) =>
 	(value?: string): T => {
@@ -124,7 +124,7 @@ const asJSONWithDefault = <T extends {}>(fallback: T) =>
  * Parse an attribute as a JSON serialized object
  * 
  * @since 0.7.2
- * @param {string | undefined} value - maybe string value
+ * @param {string | null} value - maybe string value
  * @returns {T}
  */
 const asJSON = asJSONWithDefault({})

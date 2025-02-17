@@ -3,9 +3,9 @@
  * @version 0.10.0
  * @author Esther Brunner
  */
-export { type Signal, type State, type Computed, UNSET, state, computed, effect, batch, isState, isSignal, toSignal } from '@zeix/cause-effect';
+export { type Signal, type State, type Computed, UNSET, state, computed, effect, batch, isState, isComputed, isSignal, toSignal } from '@zeix/cause-effect';
 export { type EnqueueDedupe, enqueue, animationFrame } from '@zeix/pulse';
-export { type AttributeParser, type StateInitializer, type InferSignalType, UIElement, parse } from './src/ui-element';
+export { type AttributeParser, type StateInitializer, UIElement, parse } from './src/ui-element';
 export { type StateLike, type StateLikeOrStateLikeProvider, type EventListenerOrEventListenerProvider, UI } from './src/core/ui';
 export { LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, log } from './src/core/log';
 export { type Context, type UnknownContext, useContext } from './src/core/context';

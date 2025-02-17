@@ -306,7 +306,7 @@ var CONTEXT_REQUEST = "context-request";
 class ContextRequestEvent extends Event {
   context;
   callback;
-  subscribe2;
+  subscribe;
   constructor(context, callback, subscribe2 = false) {
     super(CONTEXT_REQUEST, {
       bubbles: true,
@@ -368,7 +368,7 @@ class UIElement extends HTMLElement {
   attributeChangedCallback(name, old, value) {
     if (value === old)
       return;
-    const parsed = parse(this, name, value, old);
+    const parsed = parse(this, name, value ?? null, old);
     if (DEV_MODE && this.debug)
       log(value, `Attribute "${name}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeof parsed}> ${valueString(parsed)}`);
     this.set(name, parsed ?? UNSET);
@@ -379,8 +379,8 @@ class UIElement extends HTMLElement {
       if (this.debug)
         log(this, "Connected");
     }
-    for (const [key, value] of Object.entries(this.constructor.states)) {
-      const result = isAttributeParser(value) ? value(this.getAttribute(key) ?? undefined, this) : value;
+    for (const [key, initializer] of Object.entries(this.constructor.states)) {
+      const result = isAttributeParser(initializer) ? initializer(this.getAttribute(key), this) : initializer;
       this.set(key, result ?? UNSET);
     }
     useContext(this);
@@ -550,6 +550,7 @@ export {
   log,
   isState,
   isSignal,
+  isComputed,
   enqueue,
   effect,
   createElement,

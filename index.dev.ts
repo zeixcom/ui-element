@@ -5,7 +5,7 @@
  */
 export {
 	type Signal, type State, type Computed,
-	UNSET, state, computed, effect, batch, isState, isSignal, toSignal
+	UNSET, state, computed, effect, batch, isState, isComputed, isSignal, toSignal
 } from '@zeix/cause-effect'
 export {
 	type EnqueueDedupe,
@@ -13,7 +13,7 @@ export {
 } from '@zeix/pulse'
 
 export {
-	type AttributeParser, type StateInitializer, type InferSignalType,
+	type AttributeParser, type StateInitializer,
 	UIElement, parse
 } from './src/ui-element'
 export {

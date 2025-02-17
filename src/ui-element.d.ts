@@ -1,20 +1,73 @@
-import { type Computed, type Signal } from "@zeix/cause-effect";
+import { /* type State, */ type Computed, type Signal } from "@zeix/cause-effect";
 import { UI } from "./core/ui";
 import { type UnknownContext } from "./core/context";
-export type AttributeParser<T> = (value: string | undefined, element?: UIElement, old?: string) => T;
+export type AttributeParser<T> = (value: string | null, element?: UIElement, old?: string | null) => T;
 export type StateInitializer<T> = T | AttributeParser<T> | Computed<T>;
-export type InferSignalType<T> = T extends Signal<infer V> ? V : never;
 /**
  * Parse according to static states
  *
  * @since 0.8.4
  * @param {UIElement} host - host UIElement
  * @param {string} key - key for attribute parser or initial value from static states
- * @param {string | undefined} value - attribute value
- * @param {string | undefined} [old=undefined] - old attribute value
+ * @param {string | null} value - attribute value
+ * @param {string | null} [old=undefined] - old attribute value
  * @returns {T | undefined}
  */
-export declare const parse: <T>(host: UIElement, key: string, value: string | undefined, old?: string) => T | undefined;
+export declare const parse: <T>(host: UIElement, key: string, value: string | null, old?: string | null) => T | undefined;
+/**
+ * Define a component with its states and setup function (connectedCallback)
+ * /
+export function defineComponent<T extends ComponentStates>(
+    name: string,
+    states: T,
+    definition: ComponentDefinition<T>
+  ) {
+    class Component extends HTMLElement {
+        static get observedAttributes() {
+            return Object.keys(states).map(camelToKebab)
+        }
+
+        signals: InferStateTypes<T> = {} as InferStateTypes<T>
+        #cleanup: (() => void)[] = []
+    
+        connectedCallback() {
+            Object.entries(states).forEach(([key, initializer]) => {
+                const attributeName = camelToKebab(key)
+                let value: any;
+                if (isAttributeParser(initializer)) {
+                    value = initializer(this.getAttribute(attributeName), this)
+                } else {
+                    value = initializer
+                }
+                this.signals[key as keyof T].set(value)
+            })
+    
+            const cleanupFn = definition(this as any, this.signals)
+            if (typeof cleanupFn === 'function') {
+            this.#cleanup.push(cleanupFn)
+            }
+        }
+    
+        disconnectedCallback() {
+            this.#cleanup.forEach(fn => fn())
+            this.#cleanup = []
+        }
+    
+        attributeChangedCallback(name: string, old: string, value: string) {
+            const key = Object.keys(states).find(k => camelToKebab(k) === name)
+            if (key) {
+                const initializer = states[key]
+                if (isAttributeParser(initializer) && old !== value) {
+                    this.signals[key as keyof T].set(initializer(value, this, old))
+                } else {
+                    this.signals[key as keyof T].set(value as any)
+                }
+            }
+        }
+    }
+    customElements.define(name, Component)
+    return Component
+} */
 /**
  * Base class for reactive custom elements
  *
@@ -25,7 +78,7 @@ export declare const parse: <T>(host: UIElement, key: string, value: string | un
  */
 export declare class UIElement extends HTMLElement {
     static registry: CustomElementRegistry;
-    static states: Record<string, StateInitializer<NonNullable<unknown>>>;
+    static states: Record<string, StateInitializer<{}>>;
     static observedAttributes: string[];
     static consumedContexts: UnknownContext[];
     static providedContexts: UnknownContext[];
@@ -70,10 +123,10 @@ export declare class UIElement extends HTMLElement {
      *
      * @since 0.1.0
      * @param {string} name - name of the modified attribute
-     * @param {string | undefined} old - old value of the modified attribute
-     * @param {string | undefined} value - new value of the modified attribute
+     * @param {string | null} old - old value of the modified attribute
+     * @param {string | null} value - new value of the modified attribute
      */
-    attributeChangedCallback(name: string, old: string | undefined, value: string | undefined): void;
+    attributeChangedCallback(name: string, old: string | null, value: string | null): void;
     /**
      * Native callback function when the custom element is first connected to the document
      *
@@ -103,16 +156,16 @@ export declare class UIElement extends HTMLElement {
      * Get the current value of a state
      *
      * @since 0.2.0
-     * @param {string} key - state to get value from
-     * @returns {T} current value of state; undefined if state does not exist
+     * @param {K} key - state to get value from
+     * @returns {InferSignalType<typeof this.signals[K]>} current value of state; undefined if state does not exist
      */
     get<T extends {}>(key: string): T;
     /**
      * Create a state or update its value and return its current value
      *
      * @since 0.2.0
-     * @param {string} key - state to set value to
-     * @param {T | ((old?: T) => T) | Signal<T>} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
+     * @param {K} key - state to set value to
+     * @param {InferSignalType<typeof this.signals[K]> | Signal<InferSignalType<typeof this.signals[K]>> | ((old?: InferSignalType<typeof this.signals[K]>) => InferSignalType<typeof this.signals[K]>)} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
      * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
      */
     set<T extends {}>(key: string, value: T | Signal<T> | ((old?: T) => T), update?: boolean): void;
