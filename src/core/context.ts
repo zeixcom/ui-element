@@ -1,6 +1,6 @@
 import { UNSET } from "@zeix/cause-effect"
 
-import type { UIElement } from "../ui-element"
+import type { ComponentStates, UIElement } from "../ui-element"
 import { isFunction } from "./util"
 
 /** @see https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md */
@@ -87,7 +87,7 @@ class ContextRequestEvent<T extends UnknownContext> extends Event {
  * @param {UIElement} host - UIElement instance to initialize context for
  * @return {boolean} - true if context provider was initialized successfully, false otherwise
  */
-const useContext = (host: UIElement): boolean => {
+const useContext = <S extends ComponentStates>(host: UIElement<S>): boolean => {
 	const proto = host.constructor as typeof UIElement
 
 	// Context consumers

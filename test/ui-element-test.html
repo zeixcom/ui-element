@@ -159,7 +159,7 @@
 
 		class UpdatingComponent extends UIElement {
 			static observedAttributes = ['heading', 'count', 'step', 'value', 'selected']
-			static states = {
+			states = {
 				count: asInteger,
 				step: asNumber,
 				value: (value, el) => {
@@ -210,7 +210,7 @@
 
 		class MyCounter extends UIElement {
 			static observedAttributes = ['value']
-			static states = {
+			states = {
 				value: asInteger
 			}
 
@@ -267,7 +267,7 @@
 		InputCheckbox.define('input-checkbox')
 
 		class LazyLoad extends UIElement {
-			static states = {
+			states = {
 				content: '',
 				error: '',
 				loaded: false

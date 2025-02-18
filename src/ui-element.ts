@@ -1,33 +1,43 @@
-import { /* type State, */ type Computed, type Signal, UNSET, isComputed, isSignal, isState, toSignal } from "@zeix/cause-effect"
+import {
+	type State, type Computed, type Signal,
+	UNSET, isComputed, isSignal, isState, toSignal
+} from "@zeix/cause-effect"
 
-import { /* camelToKebab, */ isFunction } from "./core/util"
+import { isFunction } from "./core/util"
 import { DEV_MODE, elementName, log, LOG_ERROR, valueString } from "./core/log"
 import { UI } from "./core/ui"
 import { type UnknownContext, useContext } from "./core/context"
 
 /* === Types === */
 
+export interface BaseUIElement extends HTMLElement {
+	states: ComponentStates
+	has(key: string): boolean
+	get(key: string): unknown
+	set(key: string, value: unknown, update?: boolean): void
+}
+
 export type AttributeParser<T> = (
 	value: string | null,
-	element?: UIElement,
+	element?: BaseUIElement,
 	old?: string | null
 ) => T
 
 export type StateInitializer<T> = T | AttributeParser<T> | Computed<T>
 
-/* type ComponentStates = Record<string, StateInitializer<{}>>
+export type ComponentStates = Record<string, StateInitializer<{}>>
 
-type InferStateTypes<T extends ComponentStates> = {
-	[K in keyof T]:
-		T[K] extends AttributeParser<infer V extends {}> ? State<V> :
-    	T[K] extends Computed<infer V extends {}> ? Computed<V> :
-    	Signal<T[K]>
+export type InferSignalTypes<S extends ComponentStates> = {
+	[K in keyof S]:
+		S[K] extends AttributeParser<infer T extends {}> ? State<T> :
+		S[K] extends Computed<infer T> ? Computed<T> :
+		State<S[K]>
 }
 
-type ComponentDefinition<T extends ComponentStates> = (
-  host: HTMLElement & { signals: InferStateTypes<T> },
-  signals: InferStateTypes<T>
-) => void | (() => void) */
+export type InferReturnType<S, K extends keyof S> = 
+	S[K] extends AttributeParser<infer R extends {}> ? R :
+	S[K] extends Computed<infer R extends {}> ? R :
+	S[K]
 
 /* === Internal Functions === */
 
@@ -64,71 +74,16 @@ const unwrap = <T extends {}>(v: T | (() => T) | Signal<T>): T =>
  * @returns {T | undefined}
  */
 export const parse = <T>(
-	host: UIElement,
+	host: BaseUIElement,
 	key: string,
 	value: string | null,
 	old?: string | null
 ): T | undefined => {
-	const parser = (host.constructor as typeof UIElement).states[key]
-	return isAttributeParser(parser)
-		? (parser as AttributeParser<T>)(value, host, old)
+	const parser = host.states[key]
+	return isAttributeParser<T>(parser)
+		? parser(value, host, old)
 		: value as T | undefined
 }
-
-/**
- * Define a component with its states and setup function (connectedCallback)
- * /
-export function defineComponent<T extends ComponentStates>(
-	name: string,
-	states: T,
-	definition: ComponentDefinition<T>
-  ) {
-	class Component extends HTMLElement {
-		static get observedAttributes() {
-			return Object.keys(states).map(camelToKebab)
-		}
-
-		signals: InferStateTypes<T> = {} as InferStateTypes<T>
-		#cleanup: (() => void)[] = []
-	
-		connectedCallback() {
-			Object.entries(states).forEach(([key, initializer]) => {
-				const attributeName = camelToKebab(key)
-				let value: any;
-				if (isAttributeParser(initializer)) {
-					value = initializer(this.getAttribute(attributeName), this)
-				} else {
-					value = initializer
-				}
-				this.signals[key as keyof T].set(value)
-			})
-	
-			const cleanupFn = definition(this as any, this.signals)
-			if (typeof cleanupFn === 'function') {
-			this.#cleanup.push(cleanupFn)
-			}
-		}
-	
-		disconnectedCallback() {
-			this.#cleanup.forEach(fn => fn())
-			this.#cleanup = []
-		}
-	
-		attributeChangedCallback(name: string, old: string, value: string) {
-			const key = Object.keys(states).find(k => camelToKebab(k) === name)
-			if (key) {
-				const initializer = states[key]
-				if (isAttributeParser(initializer) && old !== value) {
-					this.signals[key as keyof T].set(initializer(value, this, old))
-				} else {
-					this.signals[key as keyof T].set(value as any)
-				}
-			}
-		}
-	}
-	customElements.define(name, Component)
-	return Component
-} */
 
 /* === Exported Class === */
 
@@ -137,12 +92,11 @@ export function defineComponent<T extends ComponentStates>(
  * 
  * @since 0.1.0
  * @class UIElement
- * @extends HTMLElement
+ * @extends HTMLElement<S>
  * @type {UIElement}
  */
-export class UIElement extends HTMLElement {
+export class UIElement<S extends ComponentStates> extends HTMLElement {
 	static registry: CustomElementRegistry = customElements
-	static states: Record<string, StateInitializer<{}>> = {}
 	static observedAttributes: string[]
 	static consumedContexts: UnknownContext[]
 	static providedContexts: UnknownContext[]
@@ -163,17 +117,23 @@ export class UIElement extends HTMLElement {
 	}
 
 	/**
+	 * @since 0.10.1
+	 * @property
+	 */
+	states: S = {} as S
+
+	/**
      * @since 0.9.0
      * @property {Record<string, Signal<{}>>} signals - object of state signals bound to the custom element
      */
-	signals: Record<string, Signal<{}>> = {}
+	signals: InferSignalTypes<S> = {} as InferSignalTypes<S>
 
 
 	/**
-	 * @since 0.10.0
-	 * @property {Array<() => void>} cleanup - array of functions to remove bound event listeners
+	 * @since 0.10.1
+	 * @property {(() => void)[]} cleanup - array of functions to remove bound event listeners and perform other cleanup operations
 	 */
-	cleanup: Array<() => void> = []
+	cleanup: (() => void)[] = []
 
 	/**
 	 * @since 0.9.0
@@ -185,7 +145,7 @@ export class UIElement extends HTMLElement {
 	 * @since 0.8.1
 	 * @property {UI<UIElement>} self - UI object for this element
 	 */
-	self: UI<UIElement> = new UI(this)
+	self: UI<S, UIElement<S>> = new UI<S, UIElement<S>>(this)
 
 	/**
 	 * @since 0.8.3
@@ -205,9 +165,13 @@ export class UIElement extends HTMLElement {
 	 * @param {string | null} old - old value of the modified attribute
 	 * @param {string | null} value - new value of the modified attribute
 	 */
-	attributeChangedCallback(name: string, old: string | null, value: string | null): void {
+	attributeChangedCallback(
+		name: string,
+		old: string | null,
+		value: string | null
+	): void {
 		if (value === old) return
-		const parsed = parse(this, name, value ?? null, old)
+		const parsed = parse(this, name, value, old)
 		if (DEV_MODE && this.debug)
 			log(value, `Attribute "${name}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeof parsed}> ${valueString(parsed)}`)
         this.set(name, parsed ?? UNSET)
@@ -226,10 +190,10 @@ export class UIElement extends HTMLElement {
 			this.debug = this.hasAttribute('debug')
 			if (this.debug) log(this, 'Connected')
 		}
-		for (const [key, initializer] of Object.entries((this.constructor as typeof UIElement).states)) {
-			const result = isAttributeParser(initializer)
-				? initializer(this.getAttribute(key), this)
-				: initializer
+		for (const [key, init] of Object.entries((this.states))) {
+			const result = isAttributeParser(init)
+				? init(this.getAttribute(key), this)
+				: init
 			this.set(key, result ?? UNSET)
 		}
 		useContext(this)
@@ -240,6 +204,7 @@ export class UIElement extends HTMLElement {
 	 */
 	disconnectedCallback(): void {
 		this.cleanup.forEach(off => off())
+		this.cleanup = []
 		if (DEV_MODE && this.debug)
 			log(this, 'Disconnected')
 	}
@@ -268,10 +233,10 @@ export class UIElement extends HTMLElement {
      *
      * @since 0.2.0
      * @param {K} key - state to get value from
-     * @returns {InferSignalType<typeof this.signals[K]>} current value of state; undefined if state does not exist
+     * @returns {InferReturnType<S, K>} current value of state; undefined if state does not exist
      */
-    get<T extends {}>(key: string): T {
-        const value = unwrap(this.signals[key]) as T
+    get<K extends keyof S>(key: K): InferReturnType<S, K> {
+        const value = unwrap(this.signals[key]) as InferReturnType<S, K>
 		if (DEV_MODE && this.debug)
 			log(value, `Get current value of state <${typeof value}> ${valueString(key)} in ${elementName(this)}`)
 		return value
@@ -285,9 +250,9 @@ export class UIElement extends HTMLElement {
      * @param {InferSignalType<typeof this.signals[K]> | Signal<InferSignalType<typeof this.signals[K]>> | ((old?: InferSignalType<typeof this.signals[K]>) => InferSignalType<typeof this.signals[K]>)} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
      * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
      */
-    set<T extends {}>(
-        key: string,
-        value: T | Signal<T> | ((old?: T) => T),
+    set<K extends keyof S>(
+        key: K,
+        value: InferReturnType<S, K> | Signal<InferReturnType<S, K>> | ((old: InferReturnType<S, K>) => InferReturnType<S, K>),
 		update: boolean = true
 	): void {
 		let op: string;
@@ -295,7 +260,7 @@ export class UIElement extends HTMLElement {
 		// State does not exist => create new state
 		if (!(key in this.signals)) {
 			if (DEV_MODE && this.debug) op = 'Create'
-			this.signals[key] = toSignal(value, true)
+			this.signals[key] = toSignal(value, true) as InferSignalTypes<S>[K]
 
 		// State already exists => update existing state
 		} else if (update) {
@@ -304,17 +269,21 @@ export class UIElement extends HTMLElement {
 			// Value is a Signal => replace state with new signal
 			if (isSignal(value)) {
 				if (DEV_MODE && this.debug) op = 'Replace'
-				this.signals[key] = value
+				this.signals[key] = value  as InferSignalTypes<S>[K]
 				if (isState(s)) s.set(UNSET) // clear previous state so watchers re-subscribe to new signal
 
 			// Value is not a Signal => set existing state to new value
 			} else {
-				if (isState(s)) {
+				if (isState<InferReturnType<S, K>>(s)) {
 					if (DEV_MODE && this.debug) op = 'Update'
-					if (isFunction<T>(value)) s.update(value)
-					else s.set(value)
-				} else {
+					if (isFunction<InferReturnType<S, K>>(value)) s.update(value)
+					else s.set(value as InferReturnType<S, K>)
+				} else if (isComputed<InferReturnType<S, K>>(s)) {
 					log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_ERROR)
+					return
+				} else {
+					// This case should not occur, but we handle it for completeness
+					log(value, `Unknown state type <${typeof value}> for ${valueString(key)} in ${elementName(this)}`, LOG_ERROR)
 					return
 				}
 			}
@@ -347,7 +316,7 @@ export class UIElement extends HTMLElement {
 	 * @param {string} selector - selector to match sub-element
 	 * @returns {UI<Element>[]} - array of zero or one UI objects of matching sub-element
 	 */
-	first(selector: string): UI<Element> {
+	first(selector: string): UI<S, Element> {
 		const element = this.root.querySelector(selector)
 		return new UI(this, element ? [element] : [])
 	}
@@ -358,7 +327,7 @@ export class UIElement extends HTMLElement {
 	 * @param {string} selector - selector to match sub-elements
 	 * @returns {UI<Element>} - array of UI object of matching sub-elements
 	 */
-	all(selector: string): UI<Element> {
+	all(selector: string): UI<S, Element> {
 		return new UI(this, Array.from(this.root.querySelectorAll(selector)))
 	}
 

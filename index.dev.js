@@ -306,7 +306,7 @@ var CONTEXT_REQUEST = "context-request";
 class ContextRequestEvent extends Event {
   context;
   callback;
-  subscribe;
+  subscribe2;
   constructor(context, callback, subscribe2 = false) {
     super(CONTEXT_REQUEST, {
       bubbles: true,
@@ -341,13 +341,12 @@ var useContext = (host) => {
 var isAttributeParser = (value) => isFunction2(value) && !!value.length && !isComputed(value);
 var unwrap = (v) => isFunction2(v) ? unwrap(v()) : isSignal(v) ? unwrap(v.get()) : v;
 var parse = (host, key, value, old) => {
-  const parser = host.constructor.states[key];
+  const parser = host.states[key];
   return isAttributeParser(parser) ? parser(value, host, old) : value;
 };
 
 class UIElement extends HTMLElement {
   static registry = customElements;
-  static states = {};
   static observedAttributes;
   static consumedContexts;
   static providedContexts;
@@ -360,6 +359,7 @@ class UIElement extends HTMLElement {
       log(error, `Failed to register custom element ${tag}`, LOG_ERROR);
     }
   }
+  states = {};
   signals = {};
   cleanup = [];
   self = new UI(this);
@@ -368,7 +368,7 @@ class UIElement extends HTMLElement {
   attributeChangedCallback(name, old, value) {
     if (value === old)
       return;
-    const parsed = parse(this, name, value ?? null, old);
+    const parsed = parse(this, name, value, old);
     if (DEV_MODE && this.debug)
       log(value, `Attribute "${name}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeof parsed}> ${valueString(parsed)}`);
     this.set(name, parsed ?? UNSET);
@@ -379,14 +379,15 @@ class UIElement extends HTMLElement {
       if (this.debug)
         log(this, "Connected");
     }
-    for (const [key, initializer] of Object.entries(this.constructor.states)) {
-      const result = isAttributeParser(initializer) ? initializer(this.getAttribute(key), this) : initializer;
+    for (const [key, init] of Object.entries(this.states)) {
+      const result = isAttributeParser(init) ? init(this.getAttribute(key), this) : init;
       this.set(key, result ?? UNSET);
     }
     useContext(this);
   }
   disconnectedCallback() {
     this.cleanup.forEach((off) => off());
+    this.cleanup = [];
     if (DEV_MODE && this.debug)
       log(this, "Disconnected");
   }
@@ -425,8 +426,11 @@ class UIElement extends HTMLElement {
             s.update(value);
           else
             s.set(value);
-        } else {
+        } else if (isComputed(s)) {
           log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_ERROR);
+          return;
+        } else {
+          log(value, `Unknown state type <${typeof value}> for ${valueString(key)} in ${elementName(this)}`, LOG_ERROR);
           return;
         }
       }

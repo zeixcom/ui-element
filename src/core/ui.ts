@@ -1,6 +1,6 @@
 import { type Signal, toSignal } from '@zeix/cause-effect'
 
-import { UIElement } from '../ui-element'
+import { UIElement, type ComponentStates } from '../ui-element'
 import { log, LOG_ERROR, valueString } from './log'
 import { isFunction, isString } from './util'
 
@@ -32,9 +32,9 @@ const fromProvider = /*#__PURE__*/ <T>(
  * @class UI
  * @type {UI}
  */
-class UI<T extends Element> {
+class UI<S extends ComponentStates, T extends Element> {
 	constructor(
-		public readonly host: UIElement,
+		public readonly host: UIElement<S>,
 		public readonly targets: T[] = [host as unknown as T]
 	) {}
 
@@ -46,7 +46,7 @@ class UI<T extends Element> {
 	 * @param {EventListenerOrEventListenerFactory} listeners - event listener or factory function
 	 * @returns {UI<T>} - self
 	 */
-	on(type: string, listeners: EventListenerOrEventListenerProvider): UI<T> {
+	on(type: string, listeners: EventListenerOrEventListenerProvider): UI<S, T> {
 		this.targets.forEach((target, index) => {
 			const listener = fromProvider(listeners, target, index)
 			target.addEventListener(type, listener)
@@ -63,7 +63,7 @@ class UI<T extends Element> {
 	 * @param {unknown} detail - event detail
 	 * @returns {UI<T>} - self
 	 */
-	emit(type: string, detail?: unknown): UI<T> {
+	emit(type: string, detail?: unknown): UI<S, T> {
 		this.targets.forEach(target => {
 			target.dispatchEvent(new CustomEvent(type, {
 				detail,
@@ -80,7 +80,7 @@ class UI<T extends Element> {
 	 * @param {Record<PropertyKey, StateLikeOrStateLikeProvider<{}>>} states - state sources
 	 * @returns {UI<T>} - self
 	 */
-	pass(states: Record<PropertyKey, StateLikeOrStateLikeProvider<{}>>): UI<T> {
+	pass(states: Record<PropertyKey, StateLikeOrStateLikeProvider<{}>>): UI<S, T> {
 		this.targets.forEach(async (target, index) => {
 			await UIElement.registry.whenDefined(target.localName)
 			if (target instanceof UIElement) {
@@ -106,8 +106,11 @@ class UI<T extends Element> {
 	 * @param {((host: UIElement, target: T, index: number) => void)[]} fns - state sync functions
 	 * @returns {UI<T>} - self
 	 */
-	sync(...fns: ((host: UIElement, target: T, index: number) => void)[]): UI<T> {
-		this.targets.forEach((target, index) => fns.forEach(fn => fn(this.host, target, index)))
+	sync(
+		...fns: ((host: UIElement<S>, target: T, index: number) => void)[]
+	): UI<S, T> {
+		this.targets.forEach((target, index) =>
+			fns.forEach(fn => fn(this.host, target, index)))
         return this
 	}
 

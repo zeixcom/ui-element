@@ -38,3 +38,7 @@ export {
 	updateElement, createElement, removeElement,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
 } from './src/lib/effects'
+export {
+	type ComponentSetup,
+	component
+} from './src/lib/component'

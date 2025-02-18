@@ -1,5 +1,5 @@
 import { type Signal } from '@zeix/cause-effect';
-import { UIElement } from '../ui-element';
+import { UIElement, type ComponentStates } from '../ui-element';
 type StateLike<T extends {}> = string | Signal<T> | ((v?: T) => T);
 type ValueOrProvider<T> = T | ((element: Element, index: number) => T);
 type StateLikeOrStateLikeProvider<T extends {}> = ValueOrProvider<StateLike<T>>;
@@ -11,10 +11,10 @@ type EventListenerOrEventListenerProvider = ValueOrProvider<EventListenerOrEvent
  * @class UI
  * @type {UI}
  */
-declare class UI<T extends Element> {
-    readonly host: UIElement;
+declare class UI<S extends ComponentStates, T extends Element> {
+    readonly host: UIElement<S>;
     readonly targets: T[];
-    constructor(host: UIElement, targets?: T[]);
+    constructor(host: UIElement<S>, targets?: T[]);
     /**
      * Add event listener to target element(s)
      *
@@ -23,7 +23,7 @@ declare class UI<T extends Element> {
      * @param {EventListenerOrEventListenerFactory} listeners - event listener or factory function
      * @returns {UI<T>} - self
      */
-    on(type: string, listeners: EventListenerOrEventListenerProvider): UI<T>;
+    on(type: string, listeners: EventListenerOrEventListenerProvider): UI<S, T>;
     /**
      * Emit custom event to target element(s)
      *
@@ -32,7 +32,7 @@ declare class UI<T extends Element> {
      * @param {unknown} detail - event detail
      * @returns {UI<T>} - self
      */
-    emit(type: string, detail?: unknown): UI<T>;
+    emit(type: string, detail?: unknown): UI<S, T>;
     /**
      * Pass states to target element(s) of type UIElement using provided sources
      *
@@ -40,7 +40,7 @@ declare class UI<T extends Element> {
      * @param {Record<PropertyKey, StateLikeOrStateLikeProvider<{}>>} states - state sources
      * @returns {UI<T>} - self
      */
-    pass(states: Record<PropertyKey, StateLikeOrStateLikeProvider<{}>>): UI<T>;
+    pass(states: Record<PropertyKey, StateLikeOrStateLikeProvider<{}>>): UI<S, T>;
     /**
      * Sync state changes to target element(s) using provided functions
      *
@@ -48,6 +48,6 @@ declare class UI<T extends Element> {
      * @param {((host: UIElement, target: T, index: number) => void)[]} fns - state sync functions
      * @returns {UI<T>} - self
      */
-    sync(...fns: ((host: UIElement, target: T, index: number) => void)[]): UI<T>;
+    sync(...fns: ((host: UIElement<S>, target: T, index: number) => void)[]): UI<S, T>;
 }
 export { type StateLike, type StateLikeOrStateLikeProvider, type EventListenerOrEventListenerProvider, UI };

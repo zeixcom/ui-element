@@ -2,7 +2,7 @@ import { effect, UNSET } from '@zeix/cause-effect'
 import { ce, ra, re, rs, sa, ss, st, ta, tc } from '@zeix/pulse'
 
 import { isFunction, isString } from '../core/util'
-import { type UIElement, parse } from '../ui-element'
+import { type BaseUIElement, parse } from '../ui-element'
 
 /* === Types === */
 
@@ -26,7 +26,7 @@ type StateKeyOrFunction<T> = string | ((v?: T) => T)
 const updateElement = <E extends Element, T>(
 	s: StateKeyOrFunction<T>,
 	updater: ElementUpdater<E, T>
-) => (host: UIElement, target: E): void => {
+) => (host: BaseUIElement, target: E): void => {
 	const { read, update } = updater
 	const fallback = read(target)
 	if (isString(s)) {
