@@ -66,21 +66,13 @@ export class MediaContext extends UIElement {
 		this.set(MEDIA_ORIENTATION, screenOrientation.matches ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT)
 
 		// event listeners
-		reducedMotion.addEventListener(
-			'change',
-			e => this.set(MEDIA_MOTION, e.matches)
-		)
-		colorScheme.addEventListener(
-			'change',
-			e => this.set(MEDIA_THEME, e.matches ? THEME_DARK : THEME_LIGHT)
-		)
+		reducedMotion.addEventListener('change', e => this.set(MEDIA_MOTION, e.matches))
+		colorScheme.addEventListener('change', e => this.set(MEDIA_THEME, e.matches ? THEME_DARK : THEME_LIGHT))
 		screenSmall.addEventListener('change', () => this.set(MEDIA_VIEWPORT, getViewport()))
 		screenMedium.addEventListener('change', () => this.set(MEDIA_VIEWPORT, getViewport()))
 		screenLarge.addEventListener('change', () => this.set(MEDIA_VIEWPORT, getViewport()))
 		screenXLarge.addEventListener('change', () => this.set(MEDIA_VIEWPORT, getViewport()))
-		screenOrientation.addEventListener('change', e => {
-			this.set(MEDIA_THEME, e.matches ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT)
-		})
+		screenOrientation.addEventListener('change', e => this.set(MEDIA_THEME, e.matches ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT))
 	}
 }
 MediaContext.define('media-context')

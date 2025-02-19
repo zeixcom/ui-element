@@ -335,123 +335,108 @@
 <li><strong><code>TodoApp</code> listens for <code>&#39;add-todo&#39;</code></strong> and updates the todo list.</li>
 </ul>
 <component-demo>
-<div class="preview">
-<todo-app>
-<todo-form>
-<form action="#">
-<input-field>
-<label for="add-todo">What needs to be done?</label>
-<div class="row">
-<div class="group auto">
-<input id="add-todo" type="text" value="" required>
-</div>
-</div>
-</input-field>
-<input-button class="submit">
-<button type="submit" class="primary" disabled>Add Todo</button>
-</input-button>
-</form>
-</todo-form>
-<todo-list filter="all">
-<ol></ol>
-<template>
-<li>
-<input-checkbox class="todo">
-<label>
-<input type="checkbox" class="visually-hidden" />
-<span></span>
-</label>
-</input-checkbox>
-<input-button>
-<button type="button">Delete</button>
-</input-button>
-</li>
-</template>
-</todo-list>
-<footer>
-<todo-count>
-<p class="all-done">Well done, all done!</p>
-<p class="remaining"><span></span> tasks left</p>
-</todo-count>
-<input-radiogroup value="all" class="split-button">
-<fieldset>
-<legend class="visually-hidden">Filter</legend>
-<label class="selected">
-<input type="radio" class="visually-hidden" name="filter" value="all" checked>
-<span>All</span>
-</label>
-<label>
-<input type="radio" class="visually-hidden" name="filter" value="active">
-<span>Active</span>
-</label>
-<label>
-<input type="radio" class="visually-hidden" name="filter" value="completed">
-<span>Completed</span>
-</label>
-</fieldset>
-</input-radiogroup>
-<input-button class="clear-completed">
-<button type="button">Clear Completed</button>
-</input-button>
-</footer>
-</todo-app>
-</div>
-<accordion-panel collapsible>
-<details>
-<summary>TodoApp Source Code</summary>
-<lazy-load src="./examples/todo-app.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-<accordion-panel collapsible>
-<details>
-<summary>TodoForm Source Code</summary>
-<lazy-load src="./examples/todo-form.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-<accordion-panel collapsible>
-<details>
-<summary>TodoList Source Code</summary>
-<lazy-load src="./examples/todo-list.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-<accordion-panel collapsible>
-<details>
-<summary>InputField Source Code</summary>
-<lazy-load src="./examples/input-field.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-<accordion-panel collapsible>
-<details>
-<summary>InputButton Source Code</summary>
-<lazy-load src="./examples/input-button.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-<accordion-panel collapsible>
-<details>
-<summary>InputCheckbox Source Code</summary>
-<lazy-load src="./examples/input-checkbox.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-<accordion-panel collapsible>
-<details>
-<summary>InputRadiogroup Source Code</summary>
-<lazy-load src="./examples/input-radiogroup.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
+	<div class="preview">
+		<todo-app>
+			<form action="#">
+				<input-field>
+					<label for="add-todo">What needs to be done?</label>
+					<div class="row">
+						<div class="group auto">
+							<input id="add-todo" type="text" value="" required>
+						</div>
+					</div>
+				</input-field>
+				<input-button class="submit">
+					<button type="submit" class="primary" disabled>Add Todo</button>
+				</input-button>
+			</form>
+			<ol filter="all"></ol>
+			<template>
+				<li>
+					<input-checkbox class="todo">
+						<label>
+							<input type="checkbox" class="visually-hidden" />
+							<span></span>
+						</label>
+					</input-checkbox>
+					<input-button class="delete">
+						<button type="button">Delete</button>
+					</input-button>
+				</li>
+			</template>
+			<footer>
+				<div class="todo-count">
+					<p class="all-done">Well done, all done!</p>
+					<p class="remaining">
+						<span class="count"></span>
+						<span class="singular">task</span>
+						<span class="plural">tasks</span>
+						remaining
+					</p>
+				</div>
+				<input-radiogroup value="all" class="split-button">
+					<fieldset>
+						<legend class="visually-hidden">Filter</legend>
+							<label class="selected">
+								<input type="radio" class="visually-hidden" name="filter" value="all" checked>
+								<span>All</span>
+							</label>
+							<label>
+								<input type="radio" class="visually-hidden" name="filter" value="active">
+								<span>Active</span>
+							</label>
+							<label>
+								<input type="radio" class="visually-hidden" name="filter" value="completed">
+								<span>Completed</span>
+							</label>
+					</fieldset>
+				</input-radiogroup>
+				<input-button class="clear-completed">
+					<button type="button">Clear Completed</button>
+				</input-button>
+			</footer>
+		</todo-app>
+	</div>
+	<accordion-panel collapsible>
+		<details>
+			<summary>TodoApp Source Code</summary>
+			<lazy-load src="./examples/todo-app.html">
+				<p class="loading">Loading...</p>
+			</lazy-load>
+		</details>
+	</accordion-panel>
+	<accordion-panel collapsible>
+		<details>
+			<summary>InputField Source Code</summary>
+			<lazy-load src="./examples/input-field.html">
+				<p class="loading">Loading...</p>
+			</lazy-load>
+		</details>
+	</accordion-panel>
+	<accordion-panel collapsible>
+		<details>
+			<summary>InputButton Source Code</summary>
+			<lazy-load src="./examples/input-button.html">
+				<p class="loading">Loading...</p>
+			</lazy-load>
+		</details>
+	</accordion-panel>
+	<accordion-panel collapsible>
+		<details>
+			<summary>InputCheckbox Source Code</summary>
+			<lazy-load src="./examples/input-checkbox.html">
+				<p class="loading">Loading...</p>
+			</lazy-load>
+		</details>
+	</accordion-panel>
+	<accordion-panel collapsible>
+		<details>
+			<summary>InputRadiogroup Source Code</summary>
+			<lazy-load src="./examples/input-radiogroup.html">
+				<p class="loading">Loading...</p>
+			</lazy-load>
+		</details>
+	</accordion-panel>
 </component-demo>
 
 </section>
