@@ -74,12 +74,12 @@ class MyComponent extends UIElement {
 }
 ```
 
-If your component initializes states from `static states` or provides or consumes context (`static providedContexts` / `static consumedContexts`), you need to call `super.connectedCallback()`.
+If your component initializes states from `states` or provides or consumes context (`static providedContexts` / `static consumedContexts`), you need to call `super.connectedCallback()`.
 
 ```js
 class HelloUser extends UIElement {
 	static consumedContexts = ['display-name']; // Signal provided by a parent component
-	static states = {
+	states = {
 		greeting: 'Hello', // Initial value of 'greeting' signal
 	}
 
@@ -169,7 +169,7 @@ static observedAttributes = ['count']; // Automatically becomes a signal
 ### Parsing Attribute Values
 
 ```js
-static states = {
+states = {
 	count: asInteger, // Convert '42' -> 42
 	date: v => new Date(v), // Custom parser: '2025-02-14' -> Date object
 };

@@ -218,7 +218,7 @@ import { UIElement, setText, setProperty, effect, enqueue } from '@zeix/ui-eleme
 
 class LazyLoad extends UIElement {
     static observedAttributes = ['src']
-    static states = {
+    states = {
         src: v => {
                 let url = ''
                 try {

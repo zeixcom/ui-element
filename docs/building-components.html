@@ -179,7 +179,7 @@
 	</input-button>
 	
 </code-block>
-<p>If your component initializes states from <code>static states</code> or provides or consumes context (<code>static providedContexts</code> / <code>static consumedContexts</code>), you need to call <code>super.connectedCallback()</code>.</p>
+<p>If your component initializes states from <code>states</code> or provides or consumes context (<code>static providedContexts</code> / <code>static consumedContexts</code>), you need to call <code>super.connectedCallback()</code>.</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -187,7 +187,7 @@
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HelloUser</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> consumedContexts </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'display-name'</span><span style="color:#F8F8F2">]; </span><span style="color:#88846F">// Signal provided by a parent component</span></span>
-<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">		greeting: </span><span style="color:#E6DB74">'Hello'</span><span style="color:#F8F8F2">, </span><span style="color:#88846F">// Initial value of 'greeting' signal</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"></span>
@@ -305,7 +305,7 @@
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">static states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">	count: asInteger, </span><span style="color:#88846F">// Convert '42' -> 42</span></span>
 <span class="line"><span style="color:#A6E22E">	date</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Date</span><span style="color:#F8F8F2">(v), </span><span style="color:#88846F">// Custom parser: '2025-02-14' -> Date object</span></span>
 <span class="line"><span style="color:#F8F8F2">};</span></span>

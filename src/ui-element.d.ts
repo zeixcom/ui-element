@@ -8,11 +8,11 @@ export type InferSignalTypes<S extends ComponentStates> = {
 };
 export type InferReturnType<S, K extends keyof S> = S[K] extends AttributeParser<infer R extends {}> ? R : S[K];
 /**
- * Parse according to static states
+ * Parse according to states
  *
  * @since 0.8.4
  * @param {UIElement} host - host UIElement
- * @param {string} key - key for attribute parser or initial value from static states
+ * @param {string} key - key for attribute parser or initial value from states
  * @param {string | null} value - attribute value
  * @param {string | null} [old=undefined] - old attribute value
  * @returns {T | undefined}

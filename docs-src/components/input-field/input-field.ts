@@ -1,9 +1,9 @@
-import { effect, setAttribute, setProperty, setText, toggleClass, UIElement, UNSET } from "../../../index"
+import { AttributeParser, effect, setAttribute, setProperty, setText, toggleClass, UIElement, UNSET } from "../../../index"
 
 /* === Types === */
 
 type InputFieldStates = {
-	value: string | number,
+	value: AttributeParser<string | number>,
     description: string,
     isInteger: boolean,
     min: number,
@@ -46,11 +46,11 @@ const nearestStep = (
 
 /* === Class definition === */
 
-export class InputField extends UIElement<InputFieldStates> {
+export class InputField extends UIElement {
 	static observedAttributes = ['value', 'description']
-	static states = {
-		value: (v: string, el: InputField) =>
-			el.isNumber ? parseNumber(v, el.isInteger, 0) : v
+	states: InputFieldStates = {
+		value: (v: string | null, el: InputField): string | number =>
+			el.isNumber ? parseNumber(v, el.isInteger, 0) : (v ?? '')
 	}
 	isNumber = false
 	isInteger = false

@@ -6,8 +6,8 @@ type LazyLoadStates = {
 	loaded: boolean
 }
 
-export class LazyLoad extends UIElement<LazyLoadStates> {
-	static states = {
+export class LazyLoad extends UIElement {
+	states: LazyLoadStates = {
 		content: '',
 		error: '',
 		loaded: false

@@ -10,9 +10,9 @@ type CodeBlockStates = {
 	collapsed: AttributeParser<boolean>,
 }
 
-export class CodeBlock extends UIElement<CodeBlockStates> {
+export class CodeBlock extends UIElement {
 	static observedAttributes = ['collapsed']
-	static states = {
+	states: CodeBlockStates = {
 		collapsed: asBoolean
 	}
 

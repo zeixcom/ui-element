@@ -8,7 +8,7 @@ type TabListStates = {
 
 export class TabList extends UIElement {
 	static observedAttributes = ['accordion']
-	static states: TabListStates = {
+	states: TabListStates = {
 		active: 0,
 		accordion: asBoolean,
 		'media-viewport': UNSET,
