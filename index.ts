@@ -13,7 +13,7 @@ export {
 } from '@zeix/pulse'
 
 export {
-	type AttributeParser, type StateInitializer,
+	type AttributeParser,
 	UIElement, parse
 } from './src/ui-element'
 export {

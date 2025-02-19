@@ -1,4 +1,20 @@
-import { effect, setAttribute, setProperty, setText, toggleClass, UIElement } from "../../../index"
+import { effect, setAttribute, setProperty, setText, toggleClass, UIElement, UNSET } from "../../../index"
+
+/* === Types === */
+
+type InputFieldStates = {
+	value: string | number,
+    description: string,
+    isInteger: boolean,
+    min: number,
+    max: number,
+	length: number,
+	empty: boolean,
+	error: string,
+	ariaInvalid: () => "true" | "false",
+	'aria-errormessage': string,
+	'aria-describedby': string,
+}
 
 /* === Pure functions === */
 
@@ -30,7 +46,7 @@ const nearestStep = (
 
 /* === Class definition === */
 
-export class InputField extends UIElement {
+export class InputField extends UIElement<InputFieldStates> {
 	static observedAttributes = ['value', 'description']
 	static states = {
 		value: (v: string, el: InputField) =>
@@ -99,7 +115,7 @@ export class InputField extends UIElement {
 
 		// Setup error message
 		this.set('ariaInvalid', () => String(Boolean(this.get('error'))))
-		this.set('aria-errormessage', () => this.get('error') ? this.querySelector('.error')?.id : undefined)
+		this.set('aria-errormessage', () => this.get('error') ? this.querySelector('.error')?.id : UNSET)
 		this.first('.error').sync(setText('error'))
 		this.first('input').sync(
 			setProperty('ariaInvalid'),
@@ -118,14 +134,14 @@ export class InputField extends UIElement {
 				'description',
 				remainingMessage
 					? () => {
-						const length = this.get<number>('length')
+						const length = this.get('length')
 						return length > 0
 							? remainingMessage.replace('${x}', String(maxLength - length))
 							: defaultDescription
 					}
 					: defaultDescription
 			)
-			this.set('aria-describedby', () => this.get('description') ? description.id : undefined)
+			this.set('aria-describedby', () => this.get('description') ? description.id : UNSET)
 
 			// Effects
 			this.first('.description').sync(setText('description'))

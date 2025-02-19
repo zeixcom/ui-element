@@ -1,9 +1,4 @@
-import type { AttributeParser } from '../ui-element'
 import { log, LOG_ERROR } from '../core/log'
-
-/* === Types === */
-
-export type AttributeParserProvider<T> = (fallback: T | [T, ...T[]]) => AttributeParser<T>
 
 /* === Internal Function === */
 
@@ -109,7 +104,7 @@ const asEnum = (valid: [string, ...string[]]) =>
  * @returns {(value: string | null) => T} - parser function
  */
 const asJSONWithDefault = <T extends {}>(fallback: T) =>
-	(value?: string): T => {
+	(value: string | null): T => {
 		if (value == null) return fallback
 		let result: T | undefined
 		try {

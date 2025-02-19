@@ -3,9 +3,9 @@ import { UIElement, type ComponentStates, type InferSignalTypes } from "../ui-el
 
 /* === Types === */
 
-export type ComponentSetup<S extends ComponentStates> = (
-	host: UIElement<S>,
-	signals: InferSignalTypes<S>
+export type ComponentSetup = (
+	host: UIElement,
+	signals: InferSignalTypes<ComponentStates>
 ) => void | (() => void)
 
 /* === Internal Functions === */
@@ -27,9 +27,9 @@ const camelToKebab = /*#__PURE__*/ (str: string): string =>
 export function component<S extends ComponentStates>(
 	name: string,
 	states: S,
-	setup: ComponentSetup<S>
-  ): typeof UIElement<S> {
-	class Component extends UIElement<S> {
+	setup: ComponentSetup
+  ): typeof UIElement {
+	class Component extends UIElement {
 		static get observedAttributes() {
 			return Object.keys(states).map(camelToKebab)
 		}

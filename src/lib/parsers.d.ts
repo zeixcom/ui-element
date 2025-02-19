@@ -1,5 +1,3 @@
-import type { AttributeParser } from '../ui-element';
-export type AttributeParserProvider<T> = (fallback: T | [T, ...T[]]) => AttributeParser<T>;
 /**
  * Parse a boolean attribute as an actual boolean value
  *
@@ -71,7 +69,7 @@ declare const asEnum: (valid: [string, ...string[]]) => (value: string | null) =
  * @param {T} fallback - fallback value
  * @returns {(value: string | null) => T} - parser function
  */
-declare const asJSONWithDefault: <T extends {}>(fallback: T) => (value?: string) => T;
+declare const asJSONWithDefault: <T extends {}>(fallback: T) => (value: string | null) => T;
 /**
  * Parse an attribute as a JSON serialized object
  *
@@ -79,5 +77,5 @@ declare const asJSONWithDefault: <T extends {}>(fallback: T) => (value?: string)
  * @param {string | null} value - maybe string value
  * @returns {T}
  */
-declare const asJSON: (value?: string) => {};
+declare const asJSON: (value: string | null) => {};
 export { asBoolean, asIntegerWithDefault, asInteger, asNumberWithDefault, asNumber, asStringWithDefault, asString, asEnum, asJSONWithDefault, asJSON };

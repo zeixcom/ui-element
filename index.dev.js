@@ -338,7 +338,7 @@ var useContext = (host) => {
 };
 
 // src/ui-element.ts
-var isAttributeParser = (value) => isFunction2(value) && !!value.length && !isComputed(value);
+var isAttributeParser = (value) => isFunction2(value) && !!value.length;
 var unwrap = (v) => isFunction2(v) ? unwrap(v()) : isSignal(v) ? unwrap(v.get()) : v;
 var parse = (host, key, value, old) => {
   const parser = host.states[key];
@@ -347,12 +347,14 @@ var parse = (host, key, value, old) => {
 
 class UIElement extends HTMLElement {
   static registry = customElements;
+  static tagName;
   static observedAttributes;
   static consumedContexts;
   static providedContexts;
   static define(tag) {
     try {
-      UIElement.registry.define(tag, this);
+      this.registry.define(tag, this);
+      this.tagName = tag;
       if (DEV_MODE)
         log(tag, "Registered custom element");
     } catch (error) {
@@ -426,11 +428,8 @@ class UIElement extends HTMLElement {
             s.update(value);
           else
             s.set(value);
-        } else if (isComputed(s)) {
-          log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_ERROR);
-          return;
         } else {
-          log(value, `Unknown state type <${typeof value}> for ${valueString(key)} in ${elementName(this)}`, LOG_ERROR);
+          log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_ERROR);
           return;
         }
       }
@@ -484,7 +483,7 @@ var asJSON = asJSONWithDefault({});
 var updateElement = (s, updater) => (host, target) => {
   const { read, update: update2 } = updater;
   const fallback = read(target);
-  if (isString(s)) {
+  if (isString(s) && !host.has(s)) {
     const value = isString(fallback) ? parse(host, s, fallback) : fallback;
     if (value != null)
       host.set(s, value, false);
@@ -517,7 +516,7 @@ var setText = (s) => updateElement(s, {
   update: (el, value) => st(el, value)
 });
 var setProperty = (key, s = key) => updateElement(s, {
-  read: (el) => (key in el) ? el[key] : undefined,
+  read: (el) => (key in el) ? el[key] : UNSET,
   update: (el, value) => el[key] = value
 });
 var setAttribute = (name, s = name) => updateElement(s, {

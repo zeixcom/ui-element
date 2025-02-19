@@ -1,5 +1,5 @@
 import { UIElement, type ComponentStates, type InferSignalTypes } from "../ui-element";
-export type ComponentSetup<S extends ComponentStates> = (host: UIElement<S>, signals: InferSignalTypes<S>) => void | (() => void);
+export type ComponentSetup = (host: UIElement, signals: InferSignalTypes<ComponentStates>) => void | (() => void);
 /**
  * Define a component with its states and setup function (connectedCallback)
  *
@@ -9,4 +9,4 @@ export type ComponentSetup<S extends ComponentStates> = (host: UIElement<S>, sig
  * @param {ComponentSetup<S>} setup - setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
  * @returns {typeof Component} - the custom element class
  */
-export declare function component<S extends ComponentStates>(name: string, states: S, setup: ComponentSetup<S>): typeof UIElement<S>;
+export declare function component<S extends ComponentStates>(name: string, states: S, setup: ComponentSetup): typeof UIElement;

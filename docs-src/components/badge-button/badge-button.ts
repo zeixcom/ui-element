@@ -1,8 +1,5 @@
-import { setText, UIElement } from "../../../index"
+import { component, setText } from "../../../index"
 
-export class BadgeButton extends UIElement {
-	connectedCallback() {
-		this.first('.badge').sync(setText('badge'))
-	}
-}
-BadgeButton.define('badge-button')
+export const BadgeButton = component('badge-button', {}, host => {
+	host.first('.badge').sync(setText('badge'))
+})

@@ -1,10 +1,17 @@
-import { asBoolean, setProperty, toggleAttribute, UIElement, type Context } from "../../../index"
+import { asBoolean, AttributeParser, setProperty, toggleAttribute, UIElement, UNSET, type Context } from "../../../index"
+
+type TabListStates = {
+	active: number,
+    accordion: AttributeParser<boolean>,
+	'media-viewport': string,
+}
 
 export class TabList extends UIElement {
 	static observedAttributes = ['accordion']
-	static states = {
+	static states: TabListStates = {
 		active: 0,
 		accordion: asBoolean,
+		'media-viewport': UNSET,
 	}
 	static consumedContexts = ['media-viewport' as Context<string, string>]
 
@@ -12,10 +19,12 @@ export class TabList extends UIElement {
 		super.connectedCallback()
 
 		// Dynamically adjust accordion based on viewport size
-		setTimeout(() => {
+		queueMicrotask(() => {
 			if (this.get('media-viewport'))
-				this.set('accordion', () => ['xs', 'sm'].includes(String(this.get('media-viewport'))))
-		}, 0)
+				this.set('accordion', () =>
+					['xs', 'sm'].includes(String(this.get('media-viewport')))
+				)
+		})
 
 		// Reflect accordion attribute (may be used for styling)
 		this.self.sync(toggleAttribute('accordion'))

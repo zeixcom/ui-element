@@ -1,6 +1,6 @@
 import { type Signal, toSignal } from '@zeix/cause-effect'
 
-import { UIElement, type ComponentStates } from '../ui-element'
+import { UIElement } from '../ui-element'
 import { log, LOG_ERROR, valueString } from './log'
 import { isFunction, isString } from './util'
 
@@ -32,10 +32,10 @@ const fromProvider = /*#__PURE__*/ <T>(
  * @class UI
  * @type {UI}
  */
-class UI<S extends ComponentStates, T extends Element> {
+class UI<E extends Element> {
 	constructor(
-		public readonly host: UIElement<S>,
-		public readonly targets: T[] = [host as unknown as T]
+		public readonly host: UIElement,
+		public readonly targets: E[] = [host as unknown as E]
 	) {}
 
 	/**
@@ -46,7 +46,7 @@ class UI<S extends ComponentStates, T extends Element> {
 	 * @param {EventListenerOrEventListenerFactory} listeners - event listener or factory function
 	 * @returns {UI<T>} - self
 	 */
-	on(type: string, listeners: EventListenerOrEventListenerProvider): UI<S, T> {
+	on(type: string, listeners: EventListenerOrEventListenerProvider): UI<E> {
 		this.targets.forEach((target, index) => {
 			const listener = fromProvider(listeners, target, index)
 			target.addEventListener(type, listener)
@@ -63,7 +63,7 @@ class UI<S extends ComponentStates, T extends Element> {
 	 * @param {unknown} detail - event detail
 	 * @returns {UI<T>} - self
 	 */
-	emit(type: string, detail?: unknown): UI<S, T> {
+	emit(type: string, detail?: unknown): UI<E> {
 		this.targets.forEach(target => {
 			target.dispatchEvent(new CustomEvent(type, {
 				detail,
@@ -80,7 +80,7 @@ class UI<S extends ComponentStates, T extends Element> {
 	 * @param {Record<PropertyKey, StateLikeOrStateLikeProvider<{}>>} states - state sources
 	 * @returns {UI<T>} - self
 	 */
-	pass(states: Record<PropertyKey, StateLikeOrStateLikeProvider<{}>>): UI<S, T> {
+	pass(states: Record<PropertyKey, StateLikeOrStateLikeProvider<{}>>): UI<E> {
 		this.targets.forEach(async (target, index) => {
 			await UIElement.registry.whenDefined(target.localName)
 			if (target instanceof UIElement) {
@@ -103,12 +103,12 @@ class UI<S extends ComponentStates, T extends Element> {
 	 * Sync state changes to target element(s) using provided functions
 	 * 
 	 * @since 0.9.0
-	 * @param {((host: UIElement, target: T, index: number) => void)[]} fns - state sync functions
+	 * @param {((host: UIElement<S>, target: T, index: number) => void)[]} fns - state sync functions
 	 * @returns {UI<T>} - self
 	 */
 	sync(
-		...fns: ((host: UIElement<S>, target: T, index: number) => void)[]
-	): UI<S, T> {
+		...fns: ((host: UIElement, target: E, index: number) => void)[]
+	): UI<E> {
 		this.targets.forEach((target, index) =>
 			fns.forEach(fn => fn(this.host, target, index)))
         return this

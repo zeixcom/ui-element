@@ -1,19 +1,12 @@
-import { type State, type Computed, type Signal } from "@zeix/cause-effect";
+import { type State, type Signal } from "@zeix/cause-effect";
 import { UI } from "./core/ui";
 import { type UnknownContext } from "./core/context";
-export interface BaseUIElement extends HTMLElement {
-    states: ComponentStates;
-    has(key: string): boolean;
-    get(key: string): unknown;
-    set(key: string, value: unknown, update?: boolean): void;
-}
-export type AttributeParser<T> = (value: string | null, element?: BaseUIElement, old?: string | null) => T;
-export type StateInitializer<T> = T | AttributeParser<T> | Computed<T>;
-export type ComponentStates = Record<string, StateInitializer<{}>>;
+export type AttributeParser<T> = (value: string | null, host: UIElement, old?: string | null) => T;
+export type ComponentStates = Record<string, {} | AttributeParser<{}>>;
 export type InferSignalTypes<S extends ComponentStates> = {
-    [K in keyof S]: S[K] extends AttributeParser<infer T extends {}> ? State<T> : S[K] extends Computed<infer T> ? Computed<T> : State<S[K]>;
+    [K in keyof S]: S[K] extends AttributeParser<infer T extends {}> ? State<T> : State<S[K]>;
 };
-export type InferReturnType<S, K extends keyof S> = S[K] extends AttributeParser<infer R extends {}> ? R : S[K] extends Computed<infer R extends {}> ? R : S[K];
+export type InferReturnType<S, K extends keyof S> = S[K] extends AttributeParser<infer R extends {}> ? R : S[K];
 /**
  * Parse according to static states
  *
@@ -24,17 +17,18 @@ export type InferReturnType<S, K extends keyof S> = S[K] extends AttributeParser
  * @param {string | null} [old=undefined] - old attribute value
  * @returns {T | undefined}
  */
-export declare const parse: <T>(host: BaseUIElement, key: string, value: string | null, old?: string | null) => T | undefined;
+export declare const parse: <T>(host: UIElement, key: string, value: string | null, old?: string | null) => T | undefined;
 /**
  * Base class for reactive custom elements
  *
  * @since 0.1.0
  * @class UIElement
- * @extends HTMLElement<S>
+ * @extends HTMLElement
  * @type {UIElement}
  */
-export declare class UIElement<S extends ComponentStates> extends HTMLElement {
+export declare class UIElement extends HTMLElement {
     static registry: CustomElementRegistry;
+    static tagName: string;
     static observedAttributes: string[];
     static consumedContexts: UnknownContext[];
     static providedContexts: UnknownContext[];
@@ -47,14 +41,14 @@ export declare class UIElement<S extends ComponentStates> extends HTMLElement {
     static define(tag: string): void;
     /**
      * @since 0.10.1
-     * @property
+     * @property {ComponentStates} states - object of state initializers for signals (initial values or attribute parsers)
      */
-    states: S;
+    states: ComponentStates;
     /**
      * @since 0.9.0
-     * @property {Record<string, Signal<{}>>} signals - object of state signals bound to the custom element
+     * @property {Record<string, Signal<{}>>} signals - object of publicly exposed signals bound to the custom element
      */
-    signals: InferSignalTypes<S>;
+    signals: InferSignalTypes<typeof this.states>;
     /**
      * @since 0.10.1
      * @property {(() => void)[]} cleanup - array of functions to remove bound event listeners and perform other cleanup operations
@@ -70,11 +64,11 @@ export declare class UIElement<S extends ComponentStates> extends HTMLElement {
      * @since 0.8.1
      * @property {UI<UIElement>} self - UI object for this element
      */
-    self: UI<S, UIElement<S>>;
+    self: UI<UIElement>;
     /**
      * @since 0.8.3
      */
-    root: Element | ShadowRoot;
+    root: ShadowRoot | UIElement;
     /**
      * @since 0.9.0
      */
@@ -120,16 +114,17 @@ export declare class UIElement<S extends ComponentStates> extends HTMLElement {
      * @param {K} key - state to get value from
      * @returns {InferReturnType<S, K>} current value of state; undefined if state does not exist
      */
-    get<K extends keyof S>(key: K): InferReturnType<S, K>;
+    get<K extends keyof typeof this.states>(key: K): InferReturnType<typeof this.states, K>;
     /**
      * Create a state or update its value and return its current value
      *
      * @since 0.2.0
      * @param {K} key - state to set value to
-     * @param {InferSignalType<typeof this.signals[K]> | Signal<InferSignalType<typeof this.signals[K]>> | ((old?: InferSignalType<typeof this.signals[K]>) => InferSignalType<typeof this.signals[K]>)} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
+     * @param {InferSignalType<typeof this.signals[K]> | Signal<InferSignalType<typeof this.signals[K]>> | ((old: InferSignalType<typeof this.signals[K]>) => InferSignalType<typeof this.signals[K]>)} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
      * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
      */
-    set<K extends keyof S>(key: K, value: InferReturnType<S, K> | Signal<InferReturnType<S, K>> | ((old: InferReturnType<S, K>) => InferReturnType<S, K>), update?: boolean): void;
+    set<K extends keyof typeof this.states>(key: K, value: InferReturnType<typeof this.states, K> | ((old: InferReturnType<typeof this.states, K>) => InferReturnType<typeof this.states, K>) | Signal<InferReturnType<typeof this.states, K>>, // already created signal
+    update?: boolean): void;
     /**
      * Delete a state, also removing all effects dependent on the state
      *
@@ -145,7 +140,7 @@ export declare class UIElement<S extends ComponentStates> extends HTMLElement {
      * @param {string} selector - selector to match sub-element
      * @returns {UI<Element>[]} - array of zero or one UI objects of matching sub-element
      */
-    first(selector: string): UI<S, Element>;
+    first(selector: string): UI<Element>;
     /**
      * Get array of all sub-elements matching a given selector within the custom element
      *
@@ -153,5 +148,5 @@ export declare class UIElement<S extends ComponentStates> extends HTMLElement {
      * @param {string} selector - selector to match sub-elements
      * @returns {UI<Element>} - array of UI object of matching sub-elements
      */
-    all(selector: string): UI<S, Element>;
+    all(selector: string): UI<Element>;
 }

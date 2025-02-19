@@ -1,26 +1,20 @@
-import { asBoolean, setProperty, toggleAttribute, UIElement } from "../../../index"
+import { asBoolean, component, setProperty, toggleAttribute } from "../../../index"
 
-export class AccordionPanel extends UIElement {
-	static states = {
-		open: asBoolean,
-		collapsible: asBoolean,
-	}
+export const AccordionPanel = component('accordion-panel', {
+	open: asBoolean,
+	collapsible: asBoolean
+}, (host, { open, collapsible }) => {
 
-	connectedCallback() {
-		super.connectedCallback()
+	// Handle open and collapsible state changes
+	host.self.sync(
+		toggleAttribute('open'),
+		toggleAttribute('collapsible'),
+		setProperty('ariaHidden', () => !open.get() && !collapsible.get())
+	)
 
-		// Handle open and collapsible state changes
-		this.self.sync(
-			toggleAttribute('open'),
-			toggleAttribute('collapsible'),
-			setProperty('ariaHidden', () => !this.get('open') && !this.get('collapsible'))
-		)
-
-		// Control inner details panel
-		this.first('details').sync(
-			setProperty('open'),
-			setProperty('ariaDisabled', () => !this.get('collapsible'))
-		)
-	}
-}
-AccordionPanel.define('accordion-panel')
+	// Control inner details panel
+	host.first('details').sync(
+		setProperty('open'),
+		setProperty('ariaDisabled', () => !collapsible.get())
+	)
+})

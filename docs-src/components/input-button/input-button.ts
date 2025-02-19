@@ -1,16 +1,10 @@
-import { asBoolean, setProperty, setText, UIElement } from "../../../index"
+import { asBoolean, component, setProperty, setText } from "../../../index"
 
-export class InputButton extends UIElement {
-	static observedAttributes = ['disabled']
-	static states = {
-		disabled: asBoolean
-	}
-
-	connectedCallback() {
-		this.first('button').sync(
-			setText('label'),
-			setProperty('disabled')
-		)
-	}
-}
-InputButton.define('input-button')
+export const InputButton = component('input-button', {
+	disabled: asBoolean
+}, host => {
+	host.first('button').sync(
+		setText('label'),
+		setProperty('disabled')
+	)
+})

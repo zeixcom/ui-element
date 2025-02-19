@@ -1,6 +1,12 @@
 import { effect, enqueue, removeElement, setText, UIElement } from "../../../index"
 
-export class LazyLoad extends UIElement {
+type LazyLoadStates = {
+	content: string,
+	error: string,
+	loaded: boolean
+}
+
+export class LazyLoad extends UIElement<LazyLoadStates> {
 	static states = {
 		content: '',
 		error: '',

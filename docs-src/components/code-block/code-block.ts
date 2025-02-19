@@ -1,4 +1,4 @@
-import { asBoolean, toggleAttribute, UIElement } from "../../../index"
+import { asBoolean, AttributeParser, toggleAttribute, UIElement } from "../../../index"
 // import Prism from 'prismjs'
 // import 'prismjs/components/prism-bash';
 // import 'prismjs/components/prism-json';
@@ -6,7 +6,11 @@ import { asBoolean, toggleAttribute, UIElement } from "../../../index"
 
 import type { InputButton } from '../input-button/input-button'
 
-export class CodeBlock extends UIElement {
+type CodeBlockStates = {
+	collapsed: AttributeParser<boolean>,
+}
+
+export class CodeBlock extends UIElement<CodeBlockStates> {
 	static observedAttributes = ['collapsed']
 	static states = {
 		collapsed: asBoolean
