@@ -1,6 +1,6 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.9.4
+ * @version 0.10.0
  * @author Esther Brunner
  */
 export {
@@ -13,7 +13,7 @@ export {
 } from '@zeix/pulse'
 
 export {
-	type AttributeParser, type ValueOrAttributeParser,
+	type AttributeParser, type StateInitializer,
 	UIElement
 } from './src/ui-element'
 export {
@@ -32,7 +32,6 @@ export {
 } from './src/core/parse'
 export {
 	type ElementUpdater,
-	emit, updateElement,
-	createElement, removeElement,
+	updateElement, createElement, removeElement,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
 } from './src/lib/effects'

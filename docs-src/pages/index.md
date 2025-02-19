@@ -90,6 +90,6 @@ Parity: <span class="parity"></span>
 
 ## Next Steps
 
-Continue to the [Installation & Setup](installation-setup.html) to get started, or dive into [Core Concepts](core-concepts.html) to learn more about signals and reactivity.
+Continue to [Getting Started](getting-started.html), or dive into [Building Components](building-components.html) to learn more about signals and reactivity.
 
 </section>

@@ -5,7 +5,7 @@ import type { AddTodoEvent } from "../todo-form/todo-form"
 
 export class TodoApp extends UIElement {
 	connectedCallback() {
-		const todoList: TodoList | null = this.querySelector('todo-list')
+		const todoList = this.querySelector<TodoList>('todo-list')
 
 		// Event listener on own element
 		this.self.on('add-todo', (e: Event) => {

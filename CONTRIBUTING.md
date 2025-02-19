@@ -76,14 +76,13 @@ bun install
 **Run tests in watch mode:**
 
 ```sh
-bun run watch
+bun run test:watch
 ```
 
 **Build the project:**
 
 ```sh
 bun run build
-bun run build:dev
 ```
 
 **Start a development server for docs:**
@@ -102,7 +101,7 @@ To maintain a high-quality codebase, please follow these guidelines:
 * Avoid unnecessary dependencies.
 * Use functional programming principles where applicable.
 * Prefer composition over inheritance.
-* Make sure to lint your code (`bun run lint`) and all tests pass (`bun run watch`).
+* Make sure to lint your code (`bun run lint`) and all tests pass (`bun run test:watch`).
 
 ## Commit Message Guidelines
 

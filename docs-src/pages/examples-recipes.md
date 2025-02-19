@@ -17,48 +17,14 @@ description: "Common use cases and demos"
 
 This collection of examples demonstrates a range of scenarios, from simple state updates in a single component to managing complex interactions across multiple components. Here's an overview of what you'll find:
 
-* **Basic Example**: `MySlider` - Learn how to create a slider component with prev/next buttons and a dot indicator, demonstrating single-component reactivity.
 * **Basic Composition**: `TabList` and `AccordionPanel` - See how a parent component can control the visibility of multiple child components, showcasing state sharing and communication between components.
 * **Syntax Highlighting**: - See how wrapping content in a `CodeBlock` component enables syntax highlighting on the client, demonstrating integration with third-party libraries.
 * **Fetching Data Example**: `LazyLoad` - Learn how to fetch content only when needed, handling asynchronous operations and updating state reactively as data is loaded.
 * **Form Validation Example**: `InputField` with Client-Side & Server-Side Validation - Validate input fields based on requirements passed from the server and dynamically check the validity of entries, such as checking the availability of usernames via server requests.
-* **Simple Application**: TodoMVC-like Example - Build an interactive to-do list app that uses multiple coordinated components, covering signals, event handling, and state management in a more complex structure.
 * **Context Example**: `MediaContext` - Discover how to share state globally across components using context, with practical use cases like adapting to media queries and responsive design.
 
 Whether you're getting started with a basic component or building a full-featured application, these examples will help you understand how to use `UIElement` effectively to build reactive Web Components.
 
-</section>
-
-<section>
-
-## MySlider Example
-
-<component-demo>
-<div class="preview">
-<my-slider>
-<div class="slides">
-<div class="slide active">Slide 1</div>
-<div class="slide">Slide 2</div>
-<div class="slide">Slide 3</div>
-</div>
-<button type="button" class="prev" aria-label="Previous">‹</button>
-<button type="button" class="next" aria-label="Next">›</button>
-<div class="dots">
-<span class="active"></span>
-<span></span>
-<span></span>
-</div>
-</my-slider>
-</div>
-<accordion-panel collapsible>
-<details>
-<summary>MySlider Source Code</summary>
-<lazy-load src="./examples/my-slider.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-</component-demo>
 </section>
 
 <section>
@@ -243,131 +209,6 @@ Content for Tab 3
 <details>
 <summary>InputField Source Code</summary>
 <lazy-load src="./examples/input-field.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-</component-demo>
-</section>
-			
-<section>
-
-## TodoApp Example
-
-<component-demo>
-<div class="preview">
-<todo-app>
-<todo-form>
-<form action="#">
-<input-field>
-<label for="add-todo">What needs to be done?</label>
-<div class="row">
-<div class="group auto">
-<input id="add-todo" type="text" value="" required>
-</div>
-</div>
-</input-field>
-<input-button class="submit">
-<button type="submit" class="primary" disabled>Add Todo</button>
-</input-button>
-</form>
-</todo-form>
-<todo-list filter="all">
-<ol></ol>
-<template>
-<li>
-<input-checkbox class="todo">
-<label>
-<input type="checkbox" class="visually-hidden" />
-<span></span>
-</label>
-</input-checkbox>
-<input-button>
-<button type="button">Delete</button>
-</input-button>
-</li>
-</template>
-</todo-list>
-<footer>
-<todo-count>
-<p class="all-done">Well done, all done!</p>
-<p class="remaining"><span></span> tasks left</p>
-</todo-count>
-<input-radiogroup value="all" class="split-button">
-<fieldset>
-<legend class="visually-hidden">Filter</legend>
-<label class="selected">
-<input type="radio" class="visually-hidden" name="filter" value="all" checked>
-<span>All</span>
-</label>
-<label>
-<input type="radio" class="visually-hidden" name="filter" value="active">
-<span>Active</span>
-</label>
-<label>
-<input type="radio" class="visually-hidden" name="filter" value="completed">
-<span>Completed</span>
-</label>
-</fieldset>
-</input-radiogroup>
-<input-button class="clear-completed">
-<button type="button">Clear Completed</button>
-</input-button>
-</footer>
-</todo-app>
-</div>
-<accordion-panel collapsible>
-<details>
-<summary>TodoApp Source Code</summary>
-<lazy-load src="./examples/todo-app.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-<accordion-panel collapsible>
-<details>
-<summary>TodoForm Source Code</summary>
-<lazy-load src="./examples/todo-form.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-<accordion-panel collapsible>
-<details>
-<summary>TodoList Source Code</summary>
-<lazy-load src="./examples/todo-list.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-<accordion-panel collapsible>
-<details>
-<summary>InputField Source Code</summary>
-<lazy-load src="./examples/input-field.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-<accordion-panel collapsible>
-<details>
-<summary>InputButton Source Code</summary>
-<lazy-load src="./examples/input-button.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-<accordion-panel collapsible>
-<details>
-<summary>InputCheckbox Source Code</summary>
-<lazy-load src="./examples/input-checkbox.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-<accordion-panel collapsible>
-<details>
-<summary>InputRadiogroup Source Code</summary>
-<lazy-load src="./examples/input-radiogroup.html">
 <p class="loading">Loading...</p>
 </lazy-load>
 </details>

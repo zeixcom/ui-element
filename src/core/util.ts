@@ -1,4 +1,4 @@
-const isFunction = /*#__PURE__*/ (value: unknown): value is (...args: any[]) => any =>
+const isFunction = /*#__PURE__*/ <T>(value: unknown): value is (...args: unknown[]) => T =>
     typeof value === 'function'
 
 const isDefinedObject = /*#__PURE__*/ (value: unknown): value is Record<string, unknown> =>

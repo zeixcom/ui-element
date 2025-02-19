@@ -24,7 +24,7 @@
 			padding: 0;
 
 			& button[aria-pressed="true"] {
-				color: red;
+				color: purple;
 			}
 		}
 
@@ -34,6 +34,10 @@
 			&[open] {
 				display: block;
 			}
+		}
+
+		lazy-load .error {
+			color: red;
 		}
 	</style>
 
@@ -104,11 +108,11 @@
 	</greeting-configurator>
 	<lazy-load src="/test/mock/lazy-load.html" id="lazy-success">
 		<p class="loading" role="status">Loading...</p>
-		<p class="error" role="alert" aria-live="polite"></p>
+		<p class="error" role="alert" aria-live="polite" hidden></p>
 	</lazy-load>
 	<lazy-load src="/test/mock/404.html" id="lazy-error">
 		<p class="loading" role="status">Loading...</p>
-		<p class="error" role="alert" aria-live="polite"></p>
+		<p class="error" role="alert" aria-live="polite" hidden></p>
 	</lazy-load>
 	<tab-list>
 		<menu>
@@ -265,41 +269,46 @@
 		class LazyLoad extends UIElement {
 			static states = {
 				content: '',
-				error: ''
+				error: '',
+				loaded: false
 			}
 
 			async connectedCallback() {
 				super.connectedCallback()
 
-				fetch(this.getAttribute('src')) // TODO ensure 'src' attribute is a valid URL from a trusted source
-					.then(async response => {
-						let content = ''
-						await wait(1500) // we wait a bit, otherwise Promise is already fulfilled when test runs
-						if (response.ok) content = await response.text()
-						else this.set('error', response.statusText)
-						this.set('content', content)
-					})
-					.catch(error => this.set('error', error))
-
-				const loadingEl = this.querySelector('.loading')
-				const errorEl = this.querySelector('.error')
-
-				effect(() => {
-					const error = this.get('error')
-					if (error) {
-						loadingEl.remove() // remove placeholder for pending state
-						errorEl.textContent = error // fill error message
+				const url = this.getAttribute('src') // ⚠️ Ensure 'src' is from a trusted source
+				if (url) {
+					try {
+						const response = await fetch(url)
+						this.set('loaded', true)
+						if (response.ok) {
+							const text = await response.text()
+							this.set('content', text)
+						} else {
+                            this.set('error', response.statusText)
+                        }
+					} catch (error) {
+						this.set('error', error.message)
 					}
-				})
+				} else {
+                    this.set('error', 'Missing required attribute: src')
+				}
 
+				// Hide loading element when 'loaded' becomes true
+				this.first('.loading').sync(toggleAttribute('hidden', 'loaded'))
+
+				// Set error text when 'error' is set
+				this.first('.error').sync(
+					toggleAttribute('hidden', () => !this.get('error')),
+					setText('error')
+				)
+
+				// Set innerHTML of Shadow Root when 'content' is set
 				effect(() => {
 					const content = this.get('content')
 					if (content) {
-						// console.log(content)
-						this.root = this.shadowRoot || this.attachShadow({ mode: 'open' }) // we use shadow DOM to enUIElementte styles
-						this.root.innerHTML = content // UNSAFE!, use only trusted sources in 'src' attribute
-						loadingEl.remove() // remove placeholder for pending state
-						errorEl.remove() // won't be needed anymore as request was successful
+						this.root = this.shadowRoot || this.attachShadow({ mode: 'open' })
+						this.root.innerHTML = content
 					}
 				})
 			}
@@ -711,20 +720,21 @@
 
 				it('should display lazy loaded content', async function () {
 					const lazyComponent = document.getElementById('lazy-success')
-					await wait(1000)
+					await wait(100)
 					const shadow = lazyComponent.shadowRoot
 					assert.instanceOf(shadow, DocumentFragment, 'Should have a shadow root')
-					// assert.equal(normalizeText(shadow.querySelector('p').textContent), 'Lazy loaded content', 'Should display lazy loaded content')
-					// assert.equal(lazyComponent.querySelector('.loading'), null, 'Should no longer have a loading status')
-					// assert.equal(lazyComponent.querySelector('.error'), null, 'Should no longer have an error container')
+					assert.equal(normalizeText(shadow.querySelector('p').textContent), 'Lazy loaded content', 'Should display lazy loaded content')
+					assert.equal(lazyComponent.querySelector('.error').hidden, true, 'Should hide error container')
+					assert.equal(lazyComponent.querySelector('.loading').hidden, true, 'Should hide loading status')
 				})
 
 				it('should display error message', async function () {
 					const lazyComponent = document.getElementById('lazy-error')
 					await wait(100)
 					assert.equal(normalizeText(lazyComponent.querySelector('.error').textContent), 'Not Found', 'Should display error message')
-					assert.equal(lazyComponent.querySelector('.loading'), null, 'Should no longer have a loading status')
+					assert.equal(lazyComponent.querySelector('.loading').hidden, true, 'Should hide loading status')
 					assert.equal(lazyComponent.shadowRoot, null, 'Should not have a shadow root')
+
 				})
 
 			})
