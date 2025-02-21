@@ -131,36 +131,42 @@
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'badge-button'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">pass</span><span style="color:#F8F8F2">({ </span><span style="color:#A6E22E">badge</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'total'</span><span style="color:#F8F8F2">);</span></span>
-<span class="line"><span style="color:#F92672">	return</span><span style="color:#F92672"> typeof</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'number'</span><span style="color:#F92672"> &#x26;&#x26;</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">></span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> ?</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(total) </span><span style="color:#F92672">:</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"><span style="color:#F8F8F2">}});</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-button'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">pass</span><span style="color:#F8F8F2">({</span></span>
+<span class="line"><span style="color:#A6E22E">	badge</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'total'</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#F92672">		return</span><span style="color:#F92672"> typeof</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'number'</span><span style="color:#F92672"> &#x26;&#x26;</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">></span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> ?</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(total) </span><span style="color:#F92672">:</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">});</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	
 </code-block>
 <ul>
-<li>✅ <strong>Whenever the <code>total</code> signal updates, <code>&lt;badge-button&gt;</code> automatically updates.</strong></li>
+<li>✅ <strong>Whenever the <code>total</code> signal updates, <code>&lt;input-button&gt;</code> automatically updates.</strong></li>
 <li>✅ <strong>No need for event listeners or manual updates!</strong></li>
 </ul>
 <h3>Child Component: BadgeButton</h3>
-<p>The <code>BadgeButton</code> component <strong>displays a badge when needed</strong> – it does not track state itself.</p>
+<p>The <code>InputButton</code> component <strong>displays a badge when needed</strong> – it does not track state itself.</p>
 <p>Whenever the <code>&#39;badge&#39;</code> <strong>signal assigned by a parent component</strong> updates, the badge text updates.</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">BadgeButton</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">InputButton</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
 <span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.badge'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'badge'</span><span style="color:#F8F8F2">));</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	
 </code-block>
@@ -182,36 +188,36 @@
 <product-catalog>
 <header>
 <p>Shop</p>
-<badge-button>
+<input-button>
 <button type="button">
 <span class="label">🛒 Shopping Cart</span>
 <span class="badge"></span>
 </button>
-</badge-button>
+</input-button>
 </header>
 <ul>
 <li>
 <p>Product 1</p>
-<spin-button count="0" zero-label="Add to Cart" increment-label="Increment">
+<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
 <button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
-<p class="count" hidden>0</p>
-<button type="button" class="increment">Add to Cart</button>
+<p class="value" hidden>0</p>
+<button type="button" class="increment primary">Add to Cart</button>
 </spin-button>
 </li>
 <li>
 <p>Product 2</p>
-<spin-button count="0" zero-label="Add to Cart" increment-label="Increment">
+<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
 <button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
-<p class="count" hidden>0</p>
-<button type="button" class="increment">Add to Cart</button>
+<p class="value" hidden>0</p>
+<button type="button" class="increment primary">Add to Cart</button>
 </spin-button>
 </li>
 <li>
 <p>Product 3</p>
-<spin-button count="0" zero-label="Add to Cart" increment-label="Increment">
+<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
 <button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
-<p class="count" hidden>0</p>
-<button type="button" class="increment">Add to Cart</button>
+<p class="value" hidden>0</p>
+<button type="button" class="increment primary">Add to Cart</button>
 </spin-button>
 </li>
 </ul>
@@ -230,9 +236,9 @@
 <accordion-panel collapsible>
 <details>
 <summary>
-<div class="summary">BadgeButton Source Code</div>
+<div class="summary">InputButton Source Code</div>
 </summary>
-<lazy-load src="./examples/badge-button.html">
+<lazy-load src="./examples/input-button.html">
 <p class="loading">Loading...</p>
 </lazy-load>
 </details>
@@ -288,7 +294,9 @@
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	
 </code-block>
@@ -318,7 +326,9 @@
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	<button type="button" class="overlay">Expand</button>
 </code-block>

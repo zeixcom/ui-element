@@ -72,7 +72,7 @@ Parity: <span class="parity"></span>
 </accordion-panel>
 </component-demo>
 
-* ✅ **Zero re-renders** – Only updates what changes.
+* ✅ **Zero renders** – Only updates what changes.
 * ✅ **No abstraction over the DOM** – Works with plain HTML.
 * ✅ **Fully self-contained** – Can be used anywhere, even inside CMS templates.
 
@@ -80,8 +80,8 @@ Parity: <span class="parity"></span>
 
 ## How UIElement Compares
 
-* **No Virtual DOM**: Unlike React or Vue, UIElement updates HTML directly, avoiding unnecessary renders.
-* **Minimal Overhead**: Since it builds on Web Components, it has minimal impact on performance and bundle size.
+* **No Virtual DOM**: Builds upon server-rendered HTML and does only atomic DOM updates, avoiding unnecessary renders.
+* **Minimal Overhead**: Since it adds only a thin layer over native Web Standards, it has minimal bundle size and high performance.
 * **Simple API**: Few, clear concepts (signals, effects, context) allow developers to quickly build interactive components.
 
 </section>

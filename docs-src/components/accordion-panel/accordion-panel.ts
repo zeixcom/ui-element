@@ -1,26 +1,32 @@
-import { asBoolean, setProperty, toggleAttribute, UIElement } from "@zeix/ui-element"
+import { asBoolean, setProperty, toggleAttribute, UIElement } from "../../../"
 
-export class AccordionPanel extends UIElement {
-	static states = {
-		open: asBoolean,
-		collapsible: asBoolean
-	}
+export class AccordionPanel extends UIElement<{
+	open: boolean,
+    collapsible: boolean,
+}> {
+	static readonly localName = 'accordion-panel'
+	static observedAttributes = ['open', 'collapsible']
+
+	states = {
+        open: asBoolean,
+        collapsible: asBoolean
+    }
 
 	connectedCallback() {
 		super.connectedCallback()
-		
+
 		// Handle open and collapsible state changes
 		this.self.sync(
 			toggleAttribute('open'),
 			toggleAttribute('collapsible'),
-			setProperty('ariaHidden', () => !this.get('open') && !this.get('collapsible'))
+			setProperty('hidden', () => !this.get('open') && !this.get('collapsible'))
 		)
 
 		// Control inner details panel
-		this.first('details').sync(
+		this.first<HTMLDetailsElement>('details').sync(
 			setProperty('open'),
-			setProperty('ariaDisabled', () => !this.get('collapsible'))
+			setProperty('ariaDisabled', () => String(!this.get('collapsible')))
 		)
 	}
 }
-AccordionPanel.define('accordion-panel')
+AccordionPanel.define()

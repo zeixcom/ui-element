@@ -1,9 +1,29 @@
-import { effect, setAttribute, setProperty, setText, toggleClass, UIElement } from "@zeix/ui-element"
+import { effect, setAttribute, setProperty, setText, toggleClass, UIElement, UNSET } from '../../../'
+
+/* === Type === */
+
+type InputFieldSignals = {
+	value: string | number,
+	length: number,
+	empty: boolean,
+	error: string,
+	ariaInvalid: "true" | "false",
+	'aria-errormessage': string,
+    description?: string,
+    isInteger?: boolean,
+    min?: number,
+    max?: number,
+	'aria-describedby'?: string,
+}
 
 /* === Pure functions === */
 
 // Check if value is a number
 const isNumber = (num: any) => typeof num === 'number'
+
+// Convert any value to a boolean string
+const toBooleanString = (value: any): "true" | "false" =>
+	!value || value === "false" ? "false" : "true"
 
 // Parse a value as a number with optional integer flag and fallback value
 const parseNumber = (v: any, int = false, fallback = 0): number => {
@@ -30,20 +50,30 @@ const nearestStep = (
 
 /* === Class definition === */
 
-export class InputField extends UIElement {
+export class InputField extends UIElement<InputFieldSignals> {
 	static observedAttributes = ['value', 'description']
-	static states = {
-		value: (v: string, el: InputField) =>
-			el.isNumber ? parseNumber(v, el.isInteger, 0) : v
+
+	states = {
+		value: (v: string | null, el: UIElement<InputFieldSignals>): string | number =>
+			(el as InputField).isNumber
+				? parseNumber(v, (el as InputField).isInteger, 0)
+				: (v ?? ''),
+		length: () => this.get('value').toString().length,
+		empty: () => this.get('length') === 0,
+		error: '',
+		ariaInvalid: () => toBooleanString(this.get('error')),
+		'aria-errormessage': () => this.get('error') ? this.querySelector('.error')?.id : UNSET
 	}
-	isNumber?: boolean
-	isInteger?: boolean
+
+	isNumber = false
+	isInteger = false
 	input: HTMLInputElement | null = null
-	step: number = 1
+	step = 1
 	min: number | undefined
 	max: number | undefined
 
 	connectedCallback() {
+		super.connectedCallback()
 
 		// Set properties
 		this.input = this.querySelector('input')
@@ -55,20 +85,14 @@ export class InputField extends UIElement {
 			this.max = parseNumber(this.input.max, this.isInteger, 0)
 		}
 
-		// Set default states
-		this.set('value', this.isNumber ? this.input?.valueAsNumber : this.input?.value, false)
-		this.set('length', this.input?.value.length)
-		
-		// Derived states
-		this.set('empty', () => !this.get('length'))
-
 		// Handle input changes
 		this.first('input')
 			.on('change', () => {
-				this.#triggerChange(this.isNumber ? this.input?.valueAsNumber : this.input?.value)
-			})
-			.on('input', () => {
-				this.set('length', this.input?.value.length)
+				this.#triggerChange(
+					this.isNumber
+						? (this.input?.valueAsNumber ?? 0)
+						: (this.input?.value ?? '')
+				)
 			})
 
 		// Handle arrow key events to increment / decrement value
@@ -87,8 +111,6 @@ export class InputField extends UIElement {
 		}
 
 		// Setup error message
-		this.set('ariaInvalid', () => String(Boolean(this.get('error'))))
-		this.set('aria-errormessage', () => this.get('error') ? this.querySelector('.error')?.id : undefined)
 		this.first('.error').sync(setText('error'))
 		this.first('input').sync(
 			setProperty('ariaInvalid'),
@@ -96,23 +118,28 @@ export class InputField extends UIElement {
 		)
 
 		// Setup description
-		const description = this.querySelector('.description') as HTMLElement | null
+		const description = this.querySelector<HTMLElement>('.description')
 		if (description) {
 			
 			// Derived states
 			const maxLength = this.input?.maxLength
 			const remainingMessage = maxLength && description.dataset.remaining
-			const defaultDescription = description.textContent
-			this.set('description', remainingMessage
-				? () => {
-					const length = this.get<number>('length') ?? 0
-					return length > 0
-						? remainingMessage.replace('${x}', String(maxLength - length))
-						: defaultDescription
-				}
-				: defaultDescription
+			const defaultDescription = description.textContent ?? ''
+			this.set(
+				'description',
+				remainingMessage
+					? () => {
+						const length = this.get('length')
+						return length > 0
+							? remainingMessage.replace('${x}', String(maxLength - length))
+							: defaultDescription
+					}
+					: defaultDescription
 			)
-			this.set('aria-describedby', () => this.get('description') ? description.id : undefined)
+			this.set(
+				'aria-describedby',
+				() => this.get('description') ? description.id : UNSET
+			)
 
 			// Effects
 			this.first('.description').sync(setText('description'))
@@ -121,21 +148,21 @@ export class InputField extends UIElement {
 
 		// Handle spin button clicks and update their disabled state
 		const spinButton = this.querySelector('.spinbutton') as HTMLElement | null
-		if (!this.isNumber || !spinButton) {
-			this.first('.decrement')
+		if (this.isNumber && spinButton) {
+			this.first<HTMLButtonElement>('.decrement')
 				.on('click', (e: Event) => {
 					this.stepDown((e as MouseEvent).shiftKey ? this.step * 10 : this.step)
 				}).sync(setProperty(
 					'disabled',
-					() => isNumber(this.min) && (this.get('value') ?? 0 - this.step < this.min)
+					() => isNumber(this.min) && (this.get('value') as number ?? 0) - this.step < this.min
 				))
-			this.first('.increment')
+			this.first<HTMLButtonElement>('.increment')
 				.on('click', (e: Event) => {
 					this.stepUp((e as MouseEvent).shiftKey ? this.step * 10 : this.step)
 				})
 				.sync(setProperty(
 					'disabled',
-					() => isNumber(this.max) && (this.get('value') ?? 0 + this.step > this.max)
+					() => isNumber(this.max) && (this.get('value') as number ?? 0) + this.step > this.max
 				))
 		}
 
@@ -145,7 +172,7 @@ export class InputField extends UIElement {
 				this.clear()
 				this.input?.focus()
 			})
-			.sync(toggleClass('hidden', 'empty'))
+			.sync(setProperty('hidden', 'empty'))
 
 		// Update value
 		effect(() => {
@@ -177,7 +204,6 @@ export class InputField extends UIElement {
 	// Clear the input field
 	clear() {
 		this.set('value', '')
-		this.set('length', 0)
 		if (this.input) {
 			this.input.value = ''
 			this.input.focus()
@@ -205,9 +231,9 @@ export class InputField extends UIElement {
     }
 
 	// Trigger value-change event to commit the value change
-	#triggerChange = (value: string | number | ((v: any) => string | number) | undefined)  => {
+	#triggerChange = (value: string | number | ((v: any) => string | number))  => {
 		this.set('value', value)
-		this.set('error', this.input?.validationMessage)
+		this.set('error', this.input?.validationMessage ?? '')
 		if (typeof value === 'function')
 			value = this.get('value')
 		if (this.input?.value !== String(value))

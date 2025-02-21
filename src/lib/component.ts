@@ -1,0 +1,50 @@
+import type { Signal } from "@zeix/cause-effect"
+
+import { isFunction } from "../core/util"
+import { UIElement, type ComponentSignals, type StateInitializer } from "../ui-element"
+
+/* === Types === */
+
+export type ComponentSetup<S extends ComponentSignals> = (
+	host: UIElement<S>,
+	signals: S
+) => void | (() => void)
+
+/* === Internal Functions === */
+
+const camelToKebab = /*#__PURE__*/ (str: string): string =>
+	str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
+
+/* === Exported Functions === */
+
+/**
+ * Define a component with its states and setup function (connectedCallback)
+ * 
+ * @since 0.10.1
+ * @param {string} name - name of the custom element
+ * @param {} states - states of the component
+ * @param {ComponentSetup<S>} setup - setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
+ * @returns {typeof Component} - the custom element class
+ */
+export const component = <S extends ComponentSignals>(
+	name: string,
+	states: {
+		[K in keyof S]: StateInitializer<S[K] extends Signal<infer T> ? T : never, S>
+	},
+	setup: ComponentSetup<S>
+  ): typeof UIElement => {
+	return (class extends UIElement {
+		static readonly localName = name
+		static get observedAttributes() {
+			return Object.keys(states).map(camelToKebab)
+		}
+
+		states = states
+
+		connectedCallback() {
+			super.connectedCallback()
+			const cleanup = setup(this as unknown as UIElement<S>, this.signals as S)
+			if (isFunction(cleanup)) this.cleanup.push(cleanup)
+		}
+	}).define()
+}

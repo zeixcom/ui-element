@@ -40,23 +40,25 @@ Use the `.pass()` method to send values to child components. It takes an object 
 * **Values** = Signal names in the parent (`ProductCatalog`) or functions returning computed values
 
 ```js
-this.first('badge-button').pass({ badge: () => {
-	const total = this.get('total');
-	return typeof total === 'number' && total > 0 ? String(total) : '';
-}});
+this.first('input-button').pass({
+	badge: () => {
+		const total = this.get('total');
+		return typeof total === 'number' && total > 0 ? String(total) : '';
+	}
+});
 ```
 
-* ✅ **Whenever the `total` signal updates, `<badge-button>` automatically updates.**
+* ✅ **Whenever the `total` signal updates, `<input-button>` automatically updates.**
 * ✅ **No need for event listeners or manual updates!**
 
 ### Child Component: BadgeButton
 
-The `BadgeButton` component **displays a badge when needed** – it does not track state itself.
+The `InputButton` component **displays a badge when needed** – it does not track state itself.
 
 Whenever the `'badge'` **signal assigned by a parent component** updates, the badge text updates.
 
 ```js
-class BadgeButton extends UIElement {
+class InputButton extends UIElement {
 	connectedCallback() {
 		this.first('.badge').sync(setText('badge'));
 	}
@@ -83,36 +85,36 @@ Here's how everything comes together:
 <product-catalog>
 <header>
 <p>Shop</p>
-<badge-button>
+<input-button>
 <button type="button">
 <span class="label">🛒 Shopping Cart</span>
 <span class="badge"></span>
 </button>
-</badge-button>
+</input-button>
 </header>
 <ul>
 <li>
 <p>Product 1</p>
-<spin-button count="0" zero-label="Add to Cart" increment-label="Increment">
+<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
 <button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
-<p class="count" hidden>0</p>
-<button type="button" class="increment">Add to Cart</button>
+<p class="value" hidden>0</p>
+<button type="button" class="increment primary">Add to Cart</button>
 </spin-button>
 </li>
 <li>
 <p>Product 2</p>
-<spin-button count="0" zero-label="Add to Cart" increment-label="Increment">
+<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
 <button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
-<p class="count" hidden>0</p>
-<button type="button" class="increment">Add to Cart</button>
+<p class="value" hidden>0</p>
+<button type="button" class="increment primary">Add to Cart</button>
 </spin-button>
 </li>
 <li>
 <p>Product 3</p>
-<spin-button count="0" zero-label="Add to Cart" increment-label="Increment">
+<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
 <button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
-<p class="count" hidden>0</p>
-<button type="button" class="increment">Add to Cart</button>
+<p class="value" hidden>0</p>
+<button type="button" class="increment primary">Add to Cart</button>
 </spin-button>
 </li>
 </ul>
@@ -131,9 +133,9 @@ Here's how everything comes together:
 <accordion-panel collapsible>
 <details>
 <summary>
-<div class="summary">BadgeButton Source Code</div>
+<div class="summary">InputButton Source Code</div>
 </summary>
-<lazy-load src="./examples/badge-button.html">
+<lazy-load src="./examples/input-button.html">
 <p class="loading">Loading...</p>
 </lazy-load>
 </details>

@@ -37,7 +37,9 @@ const generatePanel = async (name: string, type: string, label: string) => {
 				</p>
 				${highlighted}
 				<input-button class="copy">
-					<button type="button" class="secondary small">Copy</button>
+					<button type="button" class="secondary small">
+						<span class="label">Copy</span>
+					</button>
 				</input-button>
 			</code-block>
 		</details>
