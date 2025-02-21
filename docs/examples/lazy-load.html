@@ -20,7 +20,9 @@
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"error"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">lazy-load</span><span style="color:#F8F8F2">></span></span></code></pre>
 				<input-button class="copy">
-					<button type="button" class="secondary small">Copy</button>
+					<button type="button" class="secondary small">
+						<span class="label">Copy</span>
+					</button>
 				</input-button>
 			</code-block>
 		</details>
@@ -36,16 +38,16 @@
 					<span class="file">lazy-load.ts</span>
 					<span class="language">ts</span>
 				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { effect, enqueue, removeElement, setText, UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../../../index"</span></span>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { effect, enqueue, removeElement, setText, UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">LazyLoadStates</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">LazyLoad</span><span style="color:#F92672"> extends</span><span style="color:#A6E22E"> UIElement</span><span style="color:#F8F8F2">&#x3C;{</span></span>
 <span class="line"><span style="color:#F8F8F2">	content</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	error</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	loaded</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> boolean</span></span>
-<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">}> {</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F92672"> readonly</span><span style="color:#F8F8F2"> localName </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'lazy-load'</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">LazyLoad</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">	states</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">LazyLoadStates</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">		content: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		error: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		loaded: </span><span style="color:#AE81FF">false</span></span>
@@ -74,7 +76,8 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> content </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'content'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">as</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
 <span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (content) {</span></span>
 <span class="line"><span style="color:#A6E22E">				enqueue</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#88846F">					// this.root = this.shadowRoot || this.attachShadow({ mode: 'open' })</span></span>
+<span class="line"><span style="color:#88846F">					// Uncomment the following line to use shadow DOM</span></span>
+<span class="line"><span style="color:#88846F">					// if (this.shadowRoot) this.attachShadow({ mode: 'open' })</span></span>
 <span class="line"><span style="color:#FD971F">					this</span><span style="color:#F8F8F2">.root.innerHTML </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> content </span></span>
 <span class="line"><span style="color:#FD971F">					this</span><span style="color:#F8F8F2">.root.</span><span style="color:#A6E22E">querySelectorAll</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'script'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">forEach</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">script</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> newScript </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">createElement</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'script'</span><span style="color:#F8F8F2">)</span></span>
@@ -82,7 +85,7 @@
 <span class="line"><span style="color:#FD971F">						this</span><span style="color:#F8F8F2">.root.</span><span style="color:#A6E22E">appendChild</span><span style="color:#F8F8F2">(newScript)</span></span>
 <span class="line"><span style="color:#F8F8F2">						script.</span><span style="color:#A6E22E">remove</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">					})</span></span>
-<span class="line"><span style="color:#F8F8F2">				}, [</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.root </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Element</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'h'</span><span style="color:#F8F8F2">])</span></span>
+<span class="line"><span style="color:#F8F8F2">				}, [</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.root </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Element</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'ll'</span><span style="color:#F8F8F2">])</span></span>
 <span class="line"><span style="color:#F8F8F2">			}</span></span>
 <span class="line"><span style="color:#F8F8F2">		})</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
@@ -99,9 +102,11 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
-<span class="line"><span style="color:#F8F8F2">LazyLoad.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'lazy-load'</span><span style="color:#F8F8F2">)</span></span></code></pre>
+<span class="line"><span style="color:#F8F8F2">LazyLoad.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">()</span></span></code></pre>
 				<input-button class="copy">
-					<button type="button" class="secondary small">Copy</button>
+					<button type="button" class="secondary small">
+						<span class="label">Copy</span>
+					</button>
 				</input-button>
 			</code-block>
 		</details>

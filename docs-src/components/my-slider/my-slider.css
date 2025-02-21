@@ -53,11 +53,13 @@ my-slider {
 		font-size: var(--font-size-xxl);
 		color: var(--color-text);
 		opacity: var(--opacity-dimmed);
+		transition: opacity var(--transition-short) var(--easing-inout);
 
 		&:hover,
 		&:active,
 		&:focus {
             opacity: var(--opacity-solid);
+			background-color: rgba(0, 0, 0, 0.1);
         }
 
 		&.prev {

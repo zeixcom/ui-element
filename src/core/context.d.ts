@@ -1,4 +1,4 @@
-import { UIElement } from "../ui-element";
+import { UIElement, type ComponentSignals } from "../ui-element";
 /** @see https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md */
 /**
  * A context key.
@@ -65,5 +65,5 @@ declare class ContextRequestEvent<T extends UnknownContext> extends Event {
  * @param {UIElement} host - UIElement instance to initialize context for
  * @return {boolean} - true if context provider was initialized successfully, false otherwise
  */
-declare const useContext: (host: UIElement) => boolean;
+declare const useContext: <S extends ComponentSignals>(host: UIElement<S>) => boolean;
 export { type Context, type UnknownContext, CONTEXT_REQUEST, ContextRequestEvent, useContext };

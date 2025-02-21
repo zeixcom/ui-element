@@ -1,29 +1,42 @@
-import { asInteger, asIntegerWithDefault, component, computed, setProperty, setText, toggleAttribute } from "../../../index"
+import { asInteger, asIntegerWithDefault, setProperty, setText, toggleAttribute, UIElement } from '../../../'
 
-export const SpinButton = component('spin-button', {
-	count: asInteger,
-}, (host, { count }) => {
-	const isZero = computed(() => count.get() === 0)
-	const zeroLabel = host.getAttribute('zero-label') || 'Add to Cart'
-	const incrementLabel = host.getAttribute('increment-label') || 'Increment'
-	const max = asIntegerWithDefault(9)(host.getAttribute('max'))
+export class SpinButton extends UIElement<{
+	value: number,
+	zero: boolean,
+}> {
+	static localName ='spin-button'
+	static observedAttributes = ['value']
 
-	host.first('.count').sync(
-		setText(String(count)),
-		toggleAttribute('hidden', isZero)
-	)
+	states = {
+        value: asInteger,
+		zero: () => this.get('value') === 0
+    }
 
-	host.first('.decrement')
-		.on('click', () => { count.update(v => --v) })
-		.sync(toggleAttribute('hidden', isZero))
+	connectedCallback() {
+        super.connectedCallback()
 
-	host.first('.increment')
-		.on('click', () => { count.update(v => ++v) })
-		.sync(
-			setText(() => isZero.get() ? zeroLabel : '+'),
-			setProperty('ariaLabel', () => isZero.get() ? zeroLabel : incrementLabel),
-			toggleAttribute('disabled', () => count.get() >= max)
-		)
-})
+		const zeroLabel = this.getAttribute('zero-label') || 'Add to Cart'
+		const incrementLabel = this.getAttribute('increment-label') || 'Increment'
+		const max = asIntegerWithDefault(9)(this.getAttribute('max'))
 
-export type SpinButtonStates = typeof SpinButton
+		// Event handlers
+		const changeValue = (direction: number = 1) => () => {
+			this.set('value', v => v + direction)
+		}
+
+		// Effects
+		this.first('.value')
+			.sync(setText('value'), setProperty('hidden', 'zero'))
+		this.first('.decrement')
+			.on('click', changeValue(-1))
+			.sync(setProperty('hidden', 'zero'))
+		this.first('.increment')
+			.on('click', changeValue())
+			.sync(
+				setText(() => this.get('zero') ? zeroLabel : '+'),
+				setProperty('ariaLabel', () => this.get('zero') ? zeroLabel : incrementLabel),
+				toggleAttribute('disabled', () => this.get('value') >= max)
+			)
+    }
+}
+SpinButton.define()

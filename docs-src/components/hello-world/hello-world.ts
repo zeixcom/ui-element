@@ -1,10 +1,13 @@
-import { component, setText } from "../../../index"
+import { setText, UIElement, RESET } from "../../../"
 
-export const HelloWorld = component('hello-world', {
-	name: 'World'
-}, (host, { name }) => {
-	host.first('span').sync(setText(name))
-	host.first('input').on('input', (e: Event) => {
-		host.set('name', (e.target as HTMLInputElement)?.value)
-	})
-})
+export class HelloWorld extends UIElement<{ name?: string }> {
+	static localName = 'hello-world'
+
+	connectedCallback() {
+        this.first('span').sync(setText('name'))
+		this.first('input').on('input', (e: Event) => {
+			this.set('name', (e.target as HTMLInputElement)?.value || RESET)
+		})
+	}
+}
+HelloWorld.define()

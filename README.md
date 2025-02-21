@@ -160,13 +160,13 @@ class TabList extends UIElement {
             .on('click', (_el, index) => () => this.set('active', index))
             .sync((host, target, index) => setAttribute(
                 'aria-pressed',
-                () => host.get('active') === index ? 'true' : 'false')(host, target)
-            )
+                () => host.get('active') === index ? 'true' : 'false'
+			)(host, target))
 
         // Pass open attribute to tab-panel elements based on active tab index
-        this.all('tab-panel').pass({
-            open: (_el, index) => () => index === this.get('active')
-        })
+        this.all('tab-panel').pass((_el, index) => ({
+            open: () => index === this.get('active')
+        }))
     }
 }
 TabList.define('tab-list')
@@ -238,12 +238,12 @@ class LazyLoad extends UIElement {
 
         // Show / hide loading message
         this.first('.loading')
-            .sync(setProperty('ariaHidden', () => !!this.get('error')))
+            .sync(setProperty('hidden', () => !!this.get('error')))
 
         // Set and show / hide error message
         this.first('.error')
             .sync(setText('error'))
-            .sync(setProperty('ariaHidden', () => !this.get('error')))
+            .sync(setProperty('hidden', () => !this.get('error')))
 
         // Load content from provided URL
         effect(async () => {

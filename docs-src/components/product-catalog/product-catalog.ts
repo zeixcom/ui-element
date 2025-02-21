@@ -1,15 +1,20 @@
-import { component } from "../../../index"
-import { SpinButton } from "../spin-button/spin-button"
+import { UIElement } from "../../../"
+import type { SpinButton } from "../spin-button/spin-button"
 
-export const ProductCatalog = component('product-catalog', {}, host => {
+export class ProductCatalog extends UIElement {
+	static localName = 'product-catalog'
 
-	// Pass the total to the badge button for display
-	host.first('badge-button').pass({
-		badge: () => {
-			// Derive the total count of items in the shopping cart
-			const total = (host.all('spin-button').targets as typeof SpinButton[])
-				.reduce((sum, item) => sum + item.get('count'), 0)
-			return typeof total === 'number' && total > 0 ? String(total) : ''
-		}
-	})
-})
+	connectedCallback() {
+        
+		// Pass the total to the badge button for display
+		this.first('input-button').pass({
+			badge: () => {
+				// Derive the total count of items in the shopping cart
+				const total = this.all<SpinButton>('spin-button').targets
+					.reduce((sum, item) => sum + item.get('value'), 0)
+				return typeof total === 'number' && total > 0 ? String(total) : ''
+			}
+		})
+	}
+}
+ProductCatalog.define()

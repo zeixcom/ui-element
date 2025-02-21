@@ -1,13 +1,13 @@
-import { effect, enqueue, removeElement, setText, UIElement } from "../../../index"
+import { effect, enqueue, removeElement, setText, UIElement } from '../../../'
 
-type LazyLoadStates = {
+export class LazyLoad extends UIElement<{
 	content: string,
 	error: string,
 	loaded: boolean
-}
+}> {
+	static readonly localName = 'lazy-load'
 
-export class LazyLoad extends UIElement {
-	states: LazyLoadStates = {
+	states = {
 		content: '',
 		error: '',
 		loaded: false
@@ -36,7 +36,8 @@ export class LazyLoad extends UIElement {
 			const content = this.get('content') as string
 			if (content) {
 				enqueue(() => {
-					// this.root = this.shadowRoot || this.attachShadow({ mode: 'open' })
+					// Uncomment the following line to use shadow DOM
+					// if (this.shadowRoot) this.attachShadow({ mode: 'open' })
 					this.root.innerHTML = content 
 					this.root.querySelectorAll('script').forEach(script => {
 						const newScript = document.createElement('script')
@@ -44,7 +45,7 @@ export class LazyLoad extends UIElement {
 						this.root.appendChild(newScript)
 						script.remove()
 					})
-				}, [this.root as Element, 'h'])
+				}, [this.root as Element, 'll'])
 			}
 		})
 	}
@@ -61,4 +62,4 @@ export class LazyLoad extends UIElement {
 	}
 
 }
-LazyLoad.define('lazy-load')
+LazyLoad.define()

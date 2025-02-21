@@ -1,18 +1,27 @@
-import { component, asInteger, setText } from "../../../index"
+import { asInteger, setText, UIElement } from '../../../'
 
-component('my-counter', {
-	count: asInteger,
-}, (host, { count }) => {
+export class MyCounter extends UIElement<{ count: number }> {
+	static localName ='my-counter'
+	static observedAttributes = ['count']
 
-	// Event handlers
-	host.first('.increment').on('click', () => {
-		count.update(v => ++v)
-	})
-	host.first('.decrement').on('click', () => {
-		count.update(v => --v)
-	})
+	states = {
+        count: asInteger,
+    }
 
-	// Effects
-	host.first('.count').sync(setText(String(count)))
-	host.first('.parity').sync(setText(() => count.get() % 2 ? 'odd' : 'even'))
-})
+	connectedCallback() {
+        super.connectedCallback()
+
+		// Event handlers
+		this.first('.increment').on('click', () => {
+			this.set('count', v => ++v)
+		})
+		this.first('.decrement').on('click', () => {
+			this.set('count', v => --v)
+		})
+
+		// Effects
+		this.first('.count').sync(setText('count'))
+		this.first('.parity').sync(setText(() => this.get('count') % 2 ? 'odd' : 'even'))
+    }
+}
+MyCounter.define()

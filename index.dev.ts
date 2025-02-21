@@ -1,6 +1,6 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.10.0
+ * @version 0.10.1
  * @author Esther Brunner
  */
 export {
@@ -14,10 +14,10 @@ export {
 
 export {
 	type AttributeParser,
-	UIElement, parse
+	RESET, UIElement, parse
 } from './src/ui-element'
 export {
-	type StateLike, type StateLikeOrStateLikeProvider, type EventListenerOrEventListenerProvider,
+	type SignalLike, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
 	UI
 } from './src/core/ui'
 export {

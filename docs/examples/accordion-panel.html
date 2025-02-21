@@ -41,7 +41,9 @@
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">details</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">accordion-panel</span><span style="color:#F8F8F2">></span></span></code></pre>
 				<input-button class="copy">
-					<button type="button" class="secondary small">Copy</button>
+					<button type="button" class="secondary small">
+						<span class="label">Copy</span>
+					</button>
 				</input-button>
 			</code-block>
 		</details>
@@ -103,7 +105,9 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span></code></pre>
 				<input-button class="copy">
-					<button type="button" class="secondary small">Copy</button>
+					<button type="button" class="secondary small">
+						<span class="label">Copy</span>
+					</button>
 				</input-button>
 			</code-block>
 		</details>
@@ -119,28 +123,43 @@
 					<span class="file">accordion-panel.ts</span>
 					<span class="language">ts</span>
 				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asBoolean, component, setProperty, toggleAttribute } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../../../index"</span></span>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asBoolean, setProperty, toggleAttribute, UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../../../"</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> const</span><span style="color:#F8F8F2"> AccordionPanel </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'accordion-panel'</span><span style="color:#F8F8F2">, {</span></span>
-<span class="line"><span style="color:#F8F8F2">	open: asBoolean,</span></span>
-<span class="line"><span style="color:#F8F8F2">	collapsible: asBoolean</span></span>
-<span class="line"><span style="color:#F8F8F2">}, (</span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">open</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">collapsible</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">AccordionPanel</span><span style="color:#F92672"> extends</span><span style="color:#A6E22E"> UIElement</span><span style="color:#F8F8F2">&#x3C;{</span></span>
+<span class="line"><span style="color:#F8F8F2">	open</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> boolean</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">    collapsible</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> boolean</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">}> {</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F92672"> readonly</span><span style="color:#F8F8F2"> localName </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'accordion-panel'</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> observedAttributes </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'open'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'collapsible'</span><span style="color:#F8F8F2">]</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#88846F">	// Handle open and collapsible state changes</span></span>
-<span class="line"><span style="color:#F8F8F2">	host.self.</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#A6E22E">		toggleAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'open'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">		toggleAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'collapsible'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">		setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaHidden'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">open.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">collapsible.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">())</span></span>
-<span class="line"><span style="color:#F8F8F2">	)</span></span>
+<span class="line"><span style="color:#F8F8F2">	states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">        open: asBoolean,</span></span>
+<span class="line"><span style="color:#F8F8F2">        collapsible: asBoolean</span></span>
+<span class="line"><span style="color:#F8F8F2">    }</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#88846F">	// Control inner details panel</span></span>
-<span class="line"><span style="color:#F8F8F2">	host.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'details'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#A6E22E">		setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'open'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">		setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaDisabled'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">collapsible.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">())</span></span>
-<span class="line"><span style="color:#F8F8F2">	)</span></span>
-<span class="line"><span style="color:#F8F8F2">})</span></span></code></pre>
+<span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">		super</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">connectedCallback</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Handle open and collapsible state changes</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.self.</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#A6E22E">			toggleAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'open'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">			toggleAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'collapsible'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'open'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F92672"> !</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'collapsible'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#F8F8F2">		)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Control inner details panel</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLDetailsElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'details'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'open'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaDisabled'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">!</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'collapsible'</span><span style="color:#F8F8F2">)))</span></span>
+<span class="line"><span style="color:#F8F8F2">		)</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">AccordionPanel.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"></span></code></pre>
 				<input-button class="copy">
-					<button type="button" class="secondary small">Copy</button>
+					<button type="button" class="secondary small">
+						<span class="label">Copy</span>
+					</button>
 				</input-button>
 			</code-block>
 		</details>

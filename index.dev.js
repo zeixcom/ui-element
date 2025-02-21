@@ -249,9 +249,6 @@ var log = (value, msg, level = LOG_DEBUG) => {
 };
 
 // src/core/ui.ts
-var isProviderFunction = (fn) => isFunction2(fn) && fn.length === 2;
-var fromProvider = (fn, element, index = 0) => isProviderFunction(fn) ? fn(element, index) : fn;
-
 class UI {
   host;
   targets;
@@ -259,9 +256,17 @@ class UI {
     this.host = host;
     this.targets = targets;
   }
-  on(type, listeners) {
+  on(type, listenerOrProvider) {
     this.targets.forEach((target, index) => {
-      const listener = fromProvider(listeners, target, index);
+      let listener;
+      if (isFunction2(listenerOrProvider)) {
+        listener = listenerOrProvider.length === 2 ? listenerOrProvider(target, index) : listenerOrProvider;
+      } else if (isDefinedObject(listenerOrProvider) && isFunction2(listenerOrProvider.handleEvent)) {
+        listener = listenerOrProvider;
+      } else {
+        log(listenerOrProvider, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR);
+        return;
+      }
       target.addEventListener(type, listener);
       this.host.cleanup.push(() => target.removeEventListener(type, listener));
     });
@@ -276,17 +281,31 @@ class UI {
     });
     return this;
   }
-  pass(states) {
+  pass(passedSignalsOrProvider) {
     this.targets.forEach(async (target, index) => {
       await UIElement.registry.whenDefined(target.localName);
       if (target instanceof UIElement) {
-        Object.entries(states).forEach(([name, source]) => {
-          const result = fromProvider(source, target, index);
-          const value = isString(result) ? this.host.signals[result] : toSignal(result, true);
-          if (value)
-            target.set(name, value);
-          else
-            log(source, `Invalid source for state ${valueString(name)}`, LOG_ERROR);
+        let passedSignals;
+        if (isFunction2(passedSignalsOrProvider) && passedSignalsOrProvider.length === 2) {
+          passedSignals = passedSignalsOrProvider(target, index);
+        } else if (isDefinedObject(passedSignalsOrProvider)) {
+          passedSignals = passedSignalsOrProvider;
+        } else {
+          log(passedSignalsOrProvider, `Invalid passed signals provided`, LOG_ERROR);
+          return;
+        }
+        Object.entries(passedSignals).forEach(([key, source]) => {
+          if (isString(source)) {
+            if (source in this.host.signals) {
+              target.set(key, this.host.signals[source]);
+            } else {
+              log(source, `Invalid string key "${source}" for state ${valueString(key)}`, LOG_WARN);
+            }
+          } else if (isFunction2(source) || isSignal(source)) {
+            target.set(key, toSignal(source, true));
+          } else {
+            log(source, `Invalid source for state ${valueString(key)}`, LOG_WARN);
+          }
         });
       } else {
         log(target, `Target is not a UIElement`, LOG_ERROR);
@@ -322,7 +341,7 @@ var useContext = (host) => {
   const consumed = proto.consumedContexts || [];
   queueMicrotask(() => {
     for (const context of consumed)
-      host.dispatchEvent(new ContextRequestEvent(context, (value) => host.set(String(context), value ?? UNSET)));
+      host.dispatchEvent(new ContextRequestEvent(context, (value) => host.set(String(context), value ?? RESET)));
   });
   const provided = proto.providedContexts || [];
   if (!provided.length)
@@ -338,6 +357,7 @@ var useContext = (host) => {
 };
 
 // src/ui-element.ts
+var RESET = Symbol();
 var isAttributeParser = (value) => isFunction2(value) && !!value.length;
 var unwrap = (v) => isFunction2(v) ? unwrap(v()) : isSignal(v) ? unwrap(v.get()) : v;
 var parse = (host, key, value, old) => {
@@ -347,33 +367,35 @@ var parse = (host, key, value, old) => {
 
 class UIElement extends HTMLElement {
   static registry = customElements;
-  static tagName;
+  static localName;
   static observedAttributes;
   static consumedContexts;
   static providedContexts;
-  static define(tag) {
+  static define(name = this.localName) {
     try {
-      this.registry.define(tag, this);
-      this.tagName = tag;
+      this.registry.define(name, this);
       if (DEV_MODE)
-        log(tag, "Registered custom element");
+        log(name, "Registered custom element");
     } catch (error) {
-      log(error, `Failed to register custom element ${tag}`, LOG_ERROR);
+      log(error, `Failed to register custom element ${name}`, LOG_ERROR);
     }
+    return this;
   }
   states = {};
   signals = {};
   cleanup = [];
   self = new UI(this);
-  root = this.shadowRoot || this;
+  get root() {
+    return this.shadowRoot || this;
+  }
   debug = false;
   attributeChangedCallback(name, old, value) {
-    if (value === old)
+    if (value === old || isComputed(this.signals[name]))
       return;
     const parsed = parse(this, name, value, old);
     if (DEV_MODE && this.debug)
       log(value, `Attribute "${name}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeof parsed}> ${valueString(parsed)}`);
-    this.set(name, parsed ?? UNSET);
+    this.set(name, parsed ?? RESET);
   }
   connectedCallback() {
     if (DEV_MODE) {
@@ -383,7 +405,7 @@ class UIElement extends HTMLElement {
     }
     for (const [key, init] of Object.entries(this.states)) {
       const result = isAttributeParser(init) ? init(this.getAttribute(key), this) : init;
-      this.set(key, result ?? UNSET);
+      this.set(key, result ?? RESET);
     }
     useContext(this);
   }
@@ -408,12 +430,13 @@ class UIElement extends HTMLElement {
   }
   set(key, value, update2 = true) {
     let op;
+    const s = this.signals[key];
+    const old = s?.get();
     if (!(key in this.signals)) {
       if (DEV_MODE && this.debug)
         op = "Create";
       this.signals[key] = toSignal(value, true);
-    } else if (update2) {
-      const s = this.signals[key];
+    } else if (update2 || old === UNSET || old === RESET) {
       if (isSignal(value)) {
         if (DEV_MODE && this.debug)
           op = "Replace";
@@ -429,7 +452,7 @@ class UIElement extends HTMLElement {
           else
             s.set(value);
         } else {
-          log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_ERROR);
+          log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_WARN);
           return;
         }
       }
@@ -483,7 +506,7 @@ var asJSON = asJSONWithDefault({});
 var updateElement = (s, updater) => (host, target) => {
   const { read, update: update2 } = updater;
   const fallback = read(target);
-  if (isString(s) && !host.has(s)) {
+  if (isString(s)) {
     const value = isString(fallback) ? parse(host, s, fallback) : fallback;
     if (value != null)
       host.set(s, value, false);
@@ -492,11 +515,11 @@ var updateElement = (s, updater) => (host, target) => {
     const current = read(target);
     const value = isString(s) ? host.get(s) : isFunction2(s) ? s(current) : undefined;
     if (!Object.is(value, current)) {
-      if (value === UNSET || value == null) {
+      if ((value === null || value === UNSET) && updater.delete) {
+        updater.delete(target);
+      } else if (value == null || value === RESET) {
         if (fallback)
           update2(target, fallback);
-        else if (updater.delete)
-          updater.delete(target);
       } else {
         update2(target, value);
       }
@@ -517,7 +540,9 @@ var setText = (s) => updateElement(s, {
 });
 var setProperty = (key, s = key) => updateElement(s, {
   read: (el) => (key in el) ? el[key] : UNSET,
-  update: (el, value) => el[key] = value
+  update: (el, value) => {
+    el[key] = value;
+  }
 });
 var setAttribute = (name, s = name) => updateElement(s, {
   read: (el) => el.getAttribute(name),
@@ -573,6 +598,7 @@ export {
   UNSET,
   UIElement,
   UI,
+  RESET,
   LOG_WARN,
   LOG_INFO,
   LOG_ERROR,

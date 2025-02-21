@@ -1,10 +1,24 @@
-import { asNumber, component } from "../../..";
+import { asInteger, setProperty, UIElement } from "../../..";
 
-export const StarRating = component('star-rating', {
-	value: asNumber
-}, (host, { value }) => {
-	host.all('button').on('click', (_target, index) => () => {
-        value.set(index + 1)
-		host.self.emit('change-rating', index + 1)
-	})
-})
+export class StarRating extends UIElement<{ value: number }> {
+	static localName = 'star-rating'
+	static observedAttributes = ['value']
+
+	states = {
+        value: asInteger,
+    }
+
+	connectedCallback() {
+        super.connectedCallback()
+
+		this.all('button')
+			.sync((host, target, index) =>
+				setProperty('ariaPressed', () => String(this.get('value') > index)
+			)(host, target))
+			.on('click', (_target, index) => () => {
+				this.set('value', index + 1)
+				this.self.emit('change-rating', index + 1)
+			})
+    }
+}
+StarRating.define()

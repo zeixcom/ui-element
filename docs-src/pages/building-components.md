@@ -331,30 +331,55 @@ Unlike some frameworks that **re-render entire components**, UIElement updates o
 Bringing all of the above together, you are now ready to build your own components like this slider with prev / next buttons and dot indicators, demonstrating single-component reactivity.
 
 <component-demo>
-<div class="preview">
-<my-slider>
-<div class="slides">
-<div class="slide active">First Slide</div>
-<div class="slide">Second Slide</div>
-<div class="slide">Third Slide</div>
-</div>
-<button type="button" class="prev" aria-label="Previous">‹</button>
-<button type="button" class="next" aria-label="Next">›</button>
-<div class="dots">
-<span class="active"></span>
-<span></span>
-<span></span>
-</div>
-</my-slider>
-</div>
-<accordion-panel collapsible>
-<details>
-<summary>Source Code</summary>
-<lazy-load src="./examples/my-slider.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
+	<div class="preview">
+		<my-slider>
+			<h2 class="visually-hidden">Slides</h2>
+			<div class="slides">
+				<div class="slide active">
+					<h3>Slide 1</h3>
+					<hello-world>
+						<label>Your name<br>
+							<input type="text">
+						</label>
+						<p>Hello, <span>World</span>!</p>
+					</hello-world>
+				</div>
+				<div class="slide">
+					<h3>Slide 2</h3>
+					<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
+						<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
+						<p class="value" hidden>0</p>
+						<button type="button" class="increment primary">Add to Cart</button>
+					</spin-button>
+				</div>
+				<div class="slide">
+					<h3>Slide 3</h3>
+					<star-rating>
+						<button type="button">1</button>
+						<button type="button">2</button>
+						<button type="button">3</button>
+						<button type="button">4</button>
+						<button type="button">5</button>
+					</star-rating>
+				</div>
+			</div>
+			<button type="button" class="prev" aria-label="Previous">‹</button>
+			<button type="button" class="next" aria-label="Next">›</button>
+			<div class="dots">
+				<span class="active"></span>
+				<span></span>
+				<span></span>
+			</div>
+		</my-slider>
+	</div>
+	<accordion-panel collapsible>
+		<details>
+			<summary>Source Code</summary>
+			<lazy-load src="./examples/my-slider.html">
+				<p class="loading">Loading...</p>
+			</lazy-load>
+		</details>
+	</accordion-panel>
 </component-demo>
 
 </section>

@@ -307,7 +307,7 @@
 				effect(() => {
 					const content = this.get('content')
 					if (content) {
-						this.root = this.shadowRoot || this.attachShadow({ mode: 'open' })
+						if (!this.shadowRoot) this.attachShadow({ mode: 'open' })
 						this.root.innerHTML = content
 					}
 				})
@@ -330,13 +330,13 @@
 				    .on('click', (_el, index) => () => this.set('active', index))
 					.sync((host, target, index) => setAttribute(
 						'aria-pressed',
-						() => host.get('active') === index ? 'true' : 'false')(host, target)
-					)
+						() => host.get('active') === index ? 'true' : 'false'
+					)(host, target))
 
 				// Pass open attribute to tab-panel elements based on active tab index
-				this.all('tab-panel').pass({
-					open: (_el, index) => () => index === this.get('active')
-				})
+				this.all('tab-panel').pass((_el, index) => ({
+					open: () => index === this.get('active')
+				}))
 			}
 		}
 		TabList.define('tab-list')

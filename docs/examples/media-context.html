@@ -14,7 +14,14 @@
 					<span class="file">media-context.ts</span>
 					<span class="language">ts</span>
 				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { UIElement, </span><span style="color:#F92672">type</span><span style="color:#F8F8F2"> Context } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../../../index"</span></span>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { UIElement, </span><span style="color:#F92672">type</span><span style="color:#F8F8F2"> Context } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">/* === Provided Context Keys === */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> MEDIA_MOTION </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'media-motion'</span><span style="color:#F92672"> as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Context</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF;font-style:italic">boolean</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> MEDIA_THEME </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'media-theme'</span><span style="color:#F92672"> as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Context</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> MEDIA_VIEWPORT </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'media-viewport'</span><span style="color:#F92672"> as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Context</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> MEDIA_ORIENTATION </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'media-orientation'</span><span style="color:#F92672"> as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Context</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">/* === Pure Functions === */</span></span>
 <span class="line"></span>
@@ -26,16 +33,15 @@
 <span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> Number.</span><span style="color:#A6E22E">isFinite</span><span style="color:#F8F8F2">(v) </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> v </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> unit </span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> fallback</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#88846F">/* === Provided Context Keys === */</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> MEDIA_MOTION </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'media-motion'</span><span style="color:#F92672"> as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Context</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF;font-style:italic">boolean</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> MEDIA_THEME </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'media-theme'</span><span style="color:#F92672"> as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Context</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> MEDIA_VIEWPORT </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'media-viewport'</span><span style="color:#F92672"> as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Context</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> MEDIA_ORIENTATION </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'media-orientation'</span><span style="color:#F92672"> as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Context</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">></span></span>
-<span class="line"></span>
 <span class="line"><span style="color:#88846F">/* === Class Definition === */</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">MediaContext</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">MediaContext</span><span style="color:#F92672"> extends</span><span style="color:#A6E22E"> UIElement</span><span style="color:#F8F8F2">&#x3C;{</span></span>
+<span class="line"><span style="color:#E6DB74">	'media-motion'</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> boolean</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">    'media-theme'</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">    'media-viewport'</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">    'media-orientation'</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">}> {</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F92672"> readonly</span><span style="color:#F8F8F2"> localName </span><span style="color:#F92672">=</span><span style="color:#E6DB74">'media-context'</span></span>
 <span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> providedContexts </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [MEDIA_MOTION, MEDIA_THEME, MEDIA_VIEWPORT, MEDIA_ORIENTATION]</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
@@ -91,9 +97,11 @@
 <span class="line"><span style="color:#F8F8F2">		screenOrientation.</span><span style="color:#A6E22E">addEventListener</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(MEDIA_THEME, e.matches </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> ORIENTATION_LANDSCAPE </span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> ORIENTATION_PORTRAIT))</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
-<span class="line"><span style="color:#F8F8F2">MediaContext.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'media-context'</span><span style="color:#F8F8F2">)</span></span></code></pre>
+<span class="line"><span style="color:#F8F8F2">MediaContext.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">()</span></span></code></pre>
 				<input-button class="copy">
-					<button type="button" class="secondary small">Copy</button>
+					<button type="button" class="secondary small">
+						<span class="label">Copy</span>
+					</button>
 				</input-button>
 			</code-block>
 		</details>

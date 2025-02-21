@@ -1,9 +1,11 @@
 import { type Signal } from '@zeix/cause-effect';
-import { UIElement } from '../ui-element';
-type StateLike<T extends {}> = string | Signal<T> | ((v?: T) => T);
-type ValueOrProvider<T> = T | ((element: Element, index: number) => T);
-type StateLikeOrStateLikeProvider<T extends {}> = ValueOrProvider<StateLike<T>>;
-type EventListenerOrEventListenerProvider = ValueOrProvider<EventListenerOrEventListenerObject>;
+import { UIElement, type ComponentSignals } from '../ui-element';
+type EventListenerProvider = (<E extends Element>(element: E, index: number) => EventListenerOrEventListenerObject);
+type SignalLike<T> = PropertyKey | Signal<NonNullable<T>> | ((v?: T) => T);
+type PassedSignals<S extends ComponentSignals> = {
+    [K in keyof S]: SignalLike<S[K]>;
+};
+type PassedSignalsProvider<S extends ComponentSignals> = (<E extends Element>(element: E, index: number) => PassedSignals<S> | PassedSignalsProvider<S>);
 /**
  * UI class for managing UI elements and their events, passed states and applied effects
  *
@@ -11,43 +13,43 @@ type EventListenerOrEventListenerProvider = ValueOrProvider<EventListenerOrEvent
  * @class UI
  * @type {UI}
  */
-declare class UI<E extends Element> {
-    readonly host: UIElement;
+declare class UI<E extends Element, S extends ComponentSignals = {}> {
+    readonly host: UIElement<S>;
     readonly targets: E[];
-    constructor(host: UIElement, targets?: E[]);
+    constructor(host: UIElement<S>, targets?: E[]);
     /**
      * Add event listener to target element(s)
      *
      * @since 0.9.0
      * @param {string} type - event type
-     * @param {EventListenerOrEventListenerFactory} listeners - event listener or factory function
-     * @returns {UI<T>} - self
+     * @param {EventListenerOrEventListenerObject | EventListenerProvider} listenerOrProvider - event listener or provider function
+     * @returns {this} - self
      */
-    on(type: string, listeners: EventListenerOrEventListenerProvider): UI<E>;
+    on(type: string, listenerOrProvider: EventListenerOrEventListenerObject | EventListenerProvider): this;
     /**
      * Emit custom event to target element(s)
      *
      * @since 0.10.0
      * @param {string} type - event type
-     * @param {unknown} detail - event detail
-     * @returns {UI<T>} - self
+     * @param {T} detail - event detail
+     * @returns {this} - self
      */
-    emit(type: string, detail?: unknown): UI<E>;
+    emit<T>(type: string, detail?: T): this;
     /**
      * Pass states to target element(s) of type UIElement using provided sources
      *
      * @since 0.9.0
-     * @param {Record<PropertyKey, StateLikeOrStateLikeProvider<{}>>} states - state sources
-     * @returns {UI<T>} - self
+     * @param {PassedSignals<T> | PassedSignalsProvider<T>} passedSignalsOrProvider - object of signal sources or provider function
+     * @returns {this} - self
      */
-    pass(states: Record<PropertyKey, StateLikeOrStateLikeProvider<{}>>): UI<E>;
+    pass<T extends ComponentSignals>(passedSignalsOrProvider: PassedSignals<T> | PassedSignalsProvider<T>): this;
     /**
      * Sync state changes to target element(s) using provided functions
      *
      * @since 0.9.0
      * @param {((host: UIElement<S>, target: T, index: number) => void)[]} fns - state sync functions
-     * @returns {UI<T>} - self
+     * @returns {this} - self
      */
-    sync(...fns: ((host: UIElement, target: E, index: number) => void)[]): UI<E>;
+    sync(...fns: ((host: UIElement, target: E, index: number) => void)[]): this;
 }
-export { type StateLike, type StateLikeOrStateLikeProvider, type EventListenerOrEventListenerProvider, UI };
+export { type SignalLike, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider, UI };

@@ -1,8 +1,33 @@
 <my-slider>
+	<h2 class="visually-hidden">Slides</h2>
 	<div class="slides">
-		<div class="slide active">Slide 1</div>
-		<div class="slide">Slide 2</div>
-		<div class="slide">Slide 3</div>
+		<div class="slide active">
+			<h3>Slide 1</h3>
+			<hello-world>
+				<label>Your name<br>
+					<input type="text">
+				</label>
+				<p>Hello, <span>World</span>!</p>
+			</hello-world>
+		</div>
+		<div class="slide">
+			<h3>Slide 2</h3>
+			<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
+				<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
+				<p class="value" hidden>0</p>
+				<button type="button" class="increment primary">Add to Cart</button>
+			</spin-button>
+		</div>
+		<div class="slide">
+			<h3>Slide 3</h3>
+			<star-rating>
+				<button type="button">1</button>
+				<button type="button">2</button>
+				<button type="button">3</button>
+				<button type="button">4</button>
+				<button type="button">5</button>
+			</star-rating>
+		</div>
 	</div>
 	<button type="button" class="prev" aria-label="Previous">‹</button>
 	<button type="button" class="next" aria-label="Next">›</button>

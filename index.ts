@@ -14,10 +14,10 @@ export {
 
 export {
 	type AttributeParser,
-	UIElement, parse
+	RESET, UIElement, parse
 } from './src/ui-element'
 export {
-	type StateLike, type StateLikeOrStateLikeProvider, type EventListenerOrEventListenerProvider,
+	type SignalLike, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
 	UI
 } from './src/core/ui'
 export {
@@ -38,7 +38,7 @@ export {
 	updateElement, createElement, removeElement,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
 } from './src/lib/effects'
-export {
+/* export {
 	type ComponentSetup,
 	component
-} from './src/lib/component'
+} from './src/lib/component' */

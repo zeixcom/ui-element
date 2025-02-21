@@ -1,29 +1,31 @@
-import {
-	type State, type Signal,
-	UNSET, isSignal, isState, toSignal
-} from "@zeix/cause-effect"
+import { type Signal, UNSET, isSignal, isState, toSignal, isComputed } from "@zeix/cause-effect"
 
 import { isFunction } from "./core/util"
-import { DEV_MODE, elementName, log, LOG_ERROR, valueString } from "./core/log"
+import { DEV_MODE, elementName, log, LOG_ERROR, LOG_WARN, valueString } from "./core/log"
 import { UI } from "./core/ui"
 import { type UnknownContext, useContext } from "./core/context"
 
 /* === Types === */
 
-export type AttributeParser<T> = (
+export type AttributeParser<T, S extends ComponentSignals> = (
 	value: string | null,
-	host: UIElement,
+	host: UIElement<S>,
 	old?: string | null
 ) => T
 
-export type ComponentStates = Record<string, {} | AttributeParser<{}>>
+export type ComponentSignals = Record<string, {}>
 
-export type InferSignalTypes<S extends ComponentStates> = {
-	[K in keyof S]: S[K] extends AttributeParser<infer T extends {}> ? State<T> : State<S[K]>
+type Root<S extends ComponentSignals> = ShadowRoot | UIElement<S>
+
+export type InferSignalTypes<S extends ComponentSignals> = {
+	[K in keyof S]: Signal<S[K]>;
 }
 
-export type InferReturnType<S, K extends keyof S> = 
-	S[K] extends AttributeParser<infer R extends {}> ? R : S[K]
+export type StateInitializer<T, S extends ComponentSignals> = T | AttributeParser<T, S>
+
+/* === Constants === */
+
+export const RESET: any = Symbol() // explicitly marked as any so it can be used as signal value of any type
 
 /* === Internal Functions === */
 
@@ -34,7 +36,7 @@ export type InferReturnType<S, K extends keyof S> =
  * @param {unknown} value - value to check
  * @returns {boolean} - true if value is an attribute parser, false otherwise
  */
-const isAttributeParser = <T>(value: unknown): value is AttributeParser<T> =>
+const isAttributeParser = <T, S extends ComponentSignals>(value: unknown): value is AttributeParser<T, S> =>
 	isFunction(value) && !!value.length
 
 /**
@@ -59,14 +61,14 @@ const unwrap = <T extends {}>(v: T | (() => T) | Signal<T>): T =>
  * @param {string | null} [old=undefined] - old attribute value
  * @returns {T | undefined}
  */
-export const parse = <T>(
-	host: UIElement,
+export const parse = <T, S extends ComponentSignals = {}>(
+	host: UIElement<S>,
 	key: string,
 	value: string | null,
 	old?: string | null
 ): T | undefined => {
-	const parser = host.states[key]
-	return isAttributeParser<T>(parser)
+	const parser = host.states[key] as StateInitializer<T, S>
+	return isAttributeParser<T, S>(parser)
 		? parser(value, host, old)
 		: value as T | undefined
 }
@@ -81,9 +83,9 @@ export const parse = <T>(
  * @extends HTMLElement
  * @type {UIElement}
  */
-export class UIElement extends HTMLElement {
+export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	static registry: CustomElementRegistry = customElements
-	static tagName: string
+	static readonly localName: string
 	static observedAttributes: string[]
 	static consumedContexts: UnknownContext[]
 	static providedContexts: UnknownContext[]
@@ -92,29 +94,28 @@ export class UIElement extends HTMLElement {
 	 * Define a custom element in the custom element registry
 	 * 
 	 * @since 0.5.0
-	 * @param {string} tag - name of the custom element
 	 */
-	static define(tag: string): void {
+	static define(name: string = this.localName): typeof UIElement {
 		try {
-			this.registry.define(tag, this)
-			this.tagName = tag
-			if (DEV_MODE) log(tag, 'Registered custom element')
+			this.registry.define(name, this)
+			if (DEV_MODE) log(name, 'Registered custom element')
 		} catch (error) {
-			log(error, `Failed to register custom element ${tag}`, LOG_ERROR)
+			log(error, `Failed to register custom element ${name}`, LOG_ERROR)
 		}
+		return this
 	}
 
 	/**
 	 * @since 0.10.1
 	 * @property {ComponentStates} states - object of state initializers for signals (initial values or attribute parsers)
 	 */
-	states: ComponentStates = {}
+	states: { [K in keyof S]: StateInitializer<S[K], S> } = {} as { [K in keyof S]: StateInitializer<S[K], S> }
 
 	/**
      * @since 0.9.0
-     * @property {Record<string, Signal<{}>>} signals - object of publicly exposed signals bound to the custom element
+     * @property {S} signals - object of publicly exposed signals bound to the custom element
      */
-	signals: InferSignalTypes<typeof this.states> = {} as InferSignalTypes<typeof this.states>
+	signals: InferSignalTypes<S> = {} as InferSignalTypes<S>
 
 
 	/**
@@ -133,12 +134,14 @@ export class UIElement extends HTMLElement {
 	 * @since 0.8.1
 	 * @property {UI<UIElement>} self - UI object for this element
 	 */
-	self: UI<UIElement> = new UI<UIElement>(this)
+	self: UI<UIElement, S> = new UI<UIElement, S>(this)
 
 	/**
 	 * @since 0.8.3
 	 */
-	root: ShadowRoot | UIElement = this.shadowRoot || this
+	get root(): Root<S> {
+		return this.shadowRoot || this
+	}
 
 	/**
 	 * @since 0.9.0
@@ -158,11 +161,11 @@ export class UIElement extends HTMLElement {
 		old: string | null,
 		value: string | null
 	): void {
-		if (value === old) return
+		if (value === old || isComputed(this.signals[name])) return // unchanged or controlled
 		const parsed = parse(this, name, value, old)
 		if (DEV_MODE && this.debug)
 			log(value, `Attribute "${name}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeof parsed}> ${valueString(parsed)}`)
-        this.set(name, parsed ?? UNSET)
+        this.set(name, parsed ?? RESET)
 	}
 
 	/**
@@ -182,7 +185,7 @@ export class UIElement extends HTMLElement {
 			const result = isAttributeParser(init)
 				? init(this.getAttribute(key), this)
 				: init
-			this.set(key, result ?? UNSET)
+			this.set(key, result ?? RESET)
 		}
 		useContext(this)
 	}
@@ -221,10 +224,10 @@ export class UIElement extends HTMLElement {
      *
      * @since 0.2.0
      * @param {K} key - state to get value from
-     * @returns {InferReturnType<S, K>} current value of state; undefined if state does not exist
+     * @returns {S[K]} current value of state; undefined if state does not exist
      */
-    get<K extends keyof typeof this.states>(key: K): InferReturnType<typeof this.states, K> {
-        const value = unwrap(this.signals[key]) as InferReturnType<typeof this.states, K>
+    get<K extends keyof S>(key: K): S[K] {
+        const value = unwrap(this.signals[key]) as S[K]
 		if (DEV_MODE && this.debug)
 			log(value, `Get current value of state <${typeof value}> ${valueString(key)} in ${elementName(this)}`)
 		return value
@@ -235,42 +238,40 @@ export class UIElement extends HTMLElement {
      * 
      * @since 0.2.0
      * @param {K} key - state to set value to
-     * @param {InferSignalType<typeof this.signals[K]> | Signal<InferSignalType<typeof this.signals[K]>> | ((old: InferSignalType<typeof this.signals[K]>) => InferSignalType<typeof this.signals[K]>)} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
+     * @param {S[K] extends Signal<infer T> ? T | ((old: T) => T) | Signal<T> : never} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
      * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
      */
-    set<K extends keyof typeof this.states>(
+    set<K extends keyof S>(
         key: K,
-        value: InferReturnType<typeof this.states, K> // plain value
-			| ((old: InferReturnType<typeof this.states, K>) => InferReturnType<typeof this.states, K>) // updater function
-			| Signal<InferReturnType<typeof this.states, K>>, // already created signal
+        value: S[K] | ((old: S[K]) => S[K]) | Signal<S[K]>,
 		update: boolean = true
 	): void {
-		type T = InferReturnType<typeof this.states, K>
 		let op: string;
+		const s = this.signals[key]
+		const old = s?.get()
 
 		// State does not exist => create new state
 		if (!(key in this.signals)) {
 			if (DEV_MODE && this.debug) op = 'Create'
-			this.signals[key] = toSignal(value as {}, true) as typeof this.signals[K]
+			this.signals[key] = toSignal(value as {}, true) as Signal<S[K]>
 
 		// State already exists => update existing state
-		} else if (update) {
-			const s = this.signals[key]
+		} else if (update || old === UNSET || old === RESET) {
 
 			// Value is a Signal => replace state with new signal
 			if (isSignal(value)) {
 				if (DEV_MODE && this.debug) op = 'Replace'
-				this.signals[key] = value as typeof this.signals[K]
+				this.signals[key] = value as unknown as Signal<S[K]>
 				if (isState(s)) s.set(UNSET) // clear previous state so watchers re-subscribe to new signal
 
 			// Value is not a Signal => set existing state to new value
 			} else {
-				if (isState<T>(s)) {
+				if (isState<S[K]>(s)) {
 					if (DEV_MODE && this.debug) op = 'Update'
-					if (isFunction<T>(value)) s.update(value)
-					else s.set(value as T)
+					if (isFunction<S[K]>(value)) s.update(value)
+					else s.set(value as S[K])
 				} else {
-					log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_ERROR)
+					log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_WARN)
 					return
 				}
 			}
@@ -303,8 +304,8 @@ export class UIElement extends HTMLElement {
 	 * @param {string} selector - selector to match sub-element
 	 * @returns {UI<Element>[]} - array of zero or one UI objects of matching sub-element
 	 */
-	first(selector: string): UI<Element> {
-		const element = this.root.querySelector(selector)
+	first<E extends Element = HTMLElement>(selector: string): UI<E, S> {
+		const element = this.root.querySelector<E>(selector)
 		return new UI(this, element ? [element] : [])
 	}
 	/**
@@ -314,8 +315,8 @@ export class UIElement extends HTMLElement {
 	 * @param {string} selector - selector to match sub-elements
 	 * @returns {UI<Element>} - array of UI object of matching sub-elements
 	 */
-	all(selector: string): UI<Element> {
-		return new UI(this, Array.from(this.root.querySelectorAll(selector)))
+	all<E extends Element = HTMLElement>(selector: string): UI<E, S> {
+		return new UI(this, Array.from(this.root.querySelectorAll<E>(selector)))
 	}
 
 }

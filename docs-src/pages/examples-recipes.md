@@ -653,7 +653,7 @@ class TabList extends UIElement {
 
 		// Pass 'collapsible' state to tab-panels based on 'accordion' state
 		this.all('tab-panel').pass({
-		collapsible: 'accordion'
+			collapsible: 'accordion'
 		});
 
 		// Handle tab clicks in normal tabbed mode
