@@ -288,8 +288,11 @@ pre {
 	margin: 0 0 var(--space-l);
 }
 
-li {
-	margin: 0 0 var(--space-m);
+ol,
+ul {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-m);
 }
 
 p code,

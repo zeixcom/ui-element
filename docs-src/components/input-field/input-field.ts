@@ -1,4 +1,4 @@
-import { effect, setAttribute, setProperty, setText, toggleClass, UIElement, UNSET } from '../../../'
+import { effect, setAttribute, setProperty, setText, UIElement, UNSET } from '../../../'
 
 /* === Type === */
 
@@ -31,23 +31,6 @@ const parseNumber = (v: any, int = false, fallback = 0): number => {
 	return Number.isFinite(temp) ? temp : fallback
 }
 
-// Round a value to the nearest step
-const nearestStep = (
-	v: number,
-	min: number,
-    max: number,
-    step: number,
-	int: boolean = false
-) => {
-	const steps = Math.round((max - min) / step)
-	// Bring to 0-1 range
-	let zerone = Math.round((v - min) * steps / (max - min)) / steps
-	// Keep in range in case value is off limits
-	zerone = Math.min(Math.max(zerone, 0), 1)
-	const value = zerone * (max - min) + min
-	return int ? Math.round(value) : value
-}
-
 /* === Class definition === */
 
 export class InputField extends UIElement<InputFieldSignals> {
@@ -58,19 +41,20 @@ export class InputField extends UIElement<InputFieldSignals> {
 			(el as InputField).isNumber
 				? parseNumber(v, (el as InputField).isInteger, 0)
 				: (v ?? ''),
-		length: () => this.get('value').toString().length,
+		length: 0,
 		empty: () => this.get('length') === 0,
 		error: '',
 		ariaInvalid: () => toBooleanString(this.get('error')),
-		'aria-errormessage': () => this.get('error') ? this.querySelector('.error')?.id : UNSET
+		'aria-errormessage': () =>
+			this.get('error') ? this.querySelector('.error')?.id : UNSET,
 	}
 
 	isNumber = false
 	isInteger = false
 	input: HTMLInputElement | null = null
 	step = 1
-	min: number | undefined
-	max: number | undefined
+	min = 0
+	max = 100
 
 	connectedCallback() {
 		super.connectedCallback()
@@ -82,8 +66,9 @@ export class InputField extends UIElement<InputFieldSignals> {
 		if (this.input && this.isNumber) {
 			this.step = parseNumber(this.input.step, this.isInteger, 1)
 			this.min = parseNumber(this.input.min, this.isInteger, 0)
-			this.max = parseNumber(this.input.max, this.isInteger, 0)
+			this.max = parseNumber(this.input.max, this.isInteger, 100)
 		}
+		this.set('length', this.input?.value.length ?? 0)
 
 		// Handle input changes
 		this.first('input')
@@ -93,6 +78,9 @@ export class InputField extends UIElement<InputFieldSignals> {
 						? (this.input?.valueAsNumber ?? 0)
 						: (this.input?.value ?? '')
 				)
+			})
+			.on('input', () => {
+				this.set('length', () => this.input?.value.length ?? 0)
 			})
 
 		// Handle arrow key events to increment / decrement value
@@ -130,7 +118,7 @@ export class InputField extends UIElement<InputFieldSignals> {
 				remainingMessage
 					? () => {
 						const length = this.get('length')
-						return length > 0
+						return length
 							? remainingMessage.replace('${x}', String(maxLength - length))
 							: defaultDescription
 					}
@@ -174,7 +162,7 @@ export class InputField extends UIElement<InputFieldSignals> {
 			})
 			.sync(setProperty('hidden', 'empty'))
 
-		// Update value
+		// Validate and update value
 		effect(() => {
 			const value = this.get('value')
 			const validate = this.getAttribute('validate')
@@ -204,6 +192,7 @@ export class InputField extends UIElement<InputFieldSignals> {
 	// Clear the input field
 	clear() {
 		this.set('value', '')
+		this.set('length', 0)
 		if (this.input) {
 			this.input.value = ''
 			this.input.focus()
@@ -211,23 +200,13 @@ export class InputField extends UIElement<InputFieldSignals> {
 	}
 
 	stepUp(stepIncrement: number = this.step) {
-		if (this.isNumber) this.#triggerChange(v => nearestStep(
-			v + stepIncrement,
-			this.min ?? 0,
-			this.max ?? 100,
-			this.step,
-			this.isInteger
-		))
+		if (this.isNumber)
+			this.#triggerChange(v => this.#nearestStep(v + stepIncrement))
 	}
 
 	stepDown(stepDecrement: number = this.step) {
-		if (this.isNumber) this.#triggerChange(v => nearestStep(
-			v - stepDecrement,
-			this.min ?? 0,
-			this.max ?? 100,
-			this.step,
-			this.isInteger
-		))
+		if (this.isNumber)
+			this.#triggerChange(v => this.#nearestStep(v - stepDecrement))
     }
 
 	// Trigger value-change event to commit the value change
@@ -238,6 +217,17 @@ export class InputField extends UIElement<InputFieldSignals> {
 			value = this.get('value')
 		if (this.input?.value !== String(value))
 			this.self.emit('value-change', value)
+	}
+
+	// Round a value to the nearest step
+	#nearestStep = (v: number) => {
+		const steps = Math.round((this.max - this.min) / this.step)
+		// Bring to 0-1 range
+		let zerone = Math.round((v - this.min) * steps / (this.max - this.min)) / steps
+		// Keep in range in case value is off limits
+		zerone = Math.min(Math.max(zerone, 0), 1)
+		const value = zerone * (this.max - this.min) + this.min
+		return this.isInteger ? Math.round(value) : value
 	}
 
 }

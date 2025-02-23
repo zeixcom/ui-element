@@ -359,6 +359,7 @@ var useContext = (host) => {
 // src/ui-element.ts
 var RESET = Symbol();
 var isAttributeParser = (value) => isFunction2(value) && !!value.length;
+var isComputeFunction2 = (value) => isFunction2(value) && !value.length;
 var unwrap = (v) => isFunction2(v) ? unwrap(v()) : isSignal(v) ? unwrap(v.get()) : v;
 var parse = (host, key, value, old) => {
   const parser = host.states[key];
@@ -404,7 +405,7 @@ class UIElement extends HTMLElement {
         log(this, "Connected");
     }
     for (const [key, init] of Object.entries(this.states)) {
-      const result = isAttributeParser(init) ? init(this.getAttribute(key), this) : init;
+      const result = isAttributeParser(init) ? init(this.getAttribute(key), this) : isComputeFunction2(init) ? computed(init, true) : init;
       this.set(key, result ?? RESET);
     }
     useContext(this);
@@ -513,7 +514,7 @@ var updateElement = (s, updater) => (host, target) => {
   }
   effect(() => {
     const current = read(target);
-    const value = isString(s) ? host.get(s) : isFunction2(s) ? s(current) : undefined;
+    const value = isString(s) ? host.get(s) : isSignal(s) ? s.get() : isFunction2(s) ? s(current) : undefined;
     if (!Object.is(value, current)) {
       if ((value === null || value === UNSET) && updater.delete) {
         updater.delete(target);
@@ -562,6 +563,12 @@ var setStyle = (prop, s = prop) => updateElement(s, {
   update: (el, value) => ss(el, prop, value),
   delete: (el) => rs(el, prop)
 });
+var logMessage = (message, s = message, logLevel = LOG_DEBUG) => (host, target) => {
+  effect(() => {
+    const value = isString(s) ? host.get(s) : isSignal(s) ? s.get() : isFunction2(s) ? s() : undefined;
+    log(value, `${message} of ${elementName(host) + (target instanceof UIElement && host === target ? "" : `for ${elementName(target)}`)}`, logLevel);
+  });
+};
 export {
   useContext,
   updateElement,
@@ -575,6 +582,7 @@ export {
   setAttribute,
   removeElement,
   parse,
+  logMessage,
   log,
   isState,
   isSignal,

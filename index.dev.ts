@@ -36,5 +36,6 @@ export {
 export {
 	type ElementUpdater,
 	updateElement, createElement, removeElement,
-	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
+	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
+	logMessage
 } from './src/lib/effects'

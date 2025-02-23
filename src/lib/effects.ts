@@ -1,9 +1,10 @@
-import { effect, UNSET } from '@zeix/cause-effect'
+import { effect, isSignal, UNSET } from '@zeix/cause-effect'
 import { ce, ra, re, rs, sa, ss, st, ta, tc } from '@zeix/pulse'
 
 import { isFunction, isString } from '../core/util'
 import { parse, UIElement, RESET, type ComponentSignals } from '../ui-element'
 import type { SignalLike } from '../core/ui'
+import { elementName, log, LOG_DEBUG, type LogLevel } from '../core/log'
 
 /* === Types === */
 
@@ -40,7 +41,10 @@ const updateElement = <E extends Element, T extends {}, S extends ComponentSigna
     // Update the element's DOM state according to the signal value
 	effect(() => {
 		const current = read(target)
-		const value = isString(s) ? host.get(s) : isFunction(s) ? s(current) : undefined
+		const value = isString(s) ? host.get(s)
+			: isSignal(s) ? s.get()
+			: isFunction(s) ? s(current)
+			: undefined
 		if (!Object.is(value, current)) {
 
 			// A value of null or UNSET triggers deletion (if available)
@@ -178,12 +182,33 @@ const setStyle = <E extends (HTMLElement | SVGElement | MathMLElement)>(
 		delete: (el: E) => rs(el, prop) as Promise<E>
 	})
 
-
+/**
+ * Log a message to the console
+ * 
+ * @since 0.10.1
+ * @param {string} message - message to be logged
+ * @param {SignalLike<T>} s - observed signal
+ * @param {LogLevel} logLevel - log level to be used: LOG_DEBUG (default), LOG_INFO, LOG_WARN, LOG_ERROR
+ */
+const logMessage = <E extends Element, K extends keyof S, S extends ComponentSignals = {}>(
+	message: string,
+	s: SignalLike<S[K]> = message,
+	logLevel: LogLevel = LOG_DEBUG
+) => (host: UIElement<S>, target: E): void => {
+	effect(() => {
+		const value = isString(s) ? host.get(s)
+			: isSignal(s) ? s.get()
+			: isFunction(s) ? s()
+			: undefined
+		log(value, `${message} of ${elementName(host) + (target instanceof UIElement && host === target ? '' : `for ${elementName(target)}`)}`, logLevel)
+	})
+}
 
 /* === Exported Types === */
 
 export {
 	type ElementUpdater,
 	updateElement, createElement, removeElement,
-	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
+	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
+	logMessage
 }

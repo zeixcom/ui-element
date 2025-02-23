@@ -1,5 +1,6 @@
 import { UIElement, type ComponentSignals } from '../ui-element';
 import type { SignalLike } from '../core/ui';
+import { type LogLevel } from '../core/log';
 type ElementUpdater<E extends Element, T> = {
     read: (element: E) => T | null;
     update: (element: E, value: T) => void;
@@ -75,4 +76,13 @@ declare const toggleClass: <E extends Element>(token: string, s?: SignalLike<boo
  * @param {SignalLike<string>} s - state bound to the style property value
  */
 declare const setStyle: <E extends (HTMLElement | SVGElement | MathMLElement)>(prop: string, s?: SignalLike<string>) => (host: UIElement<{}>, target: E) => void;
-export { type ElementUpdater, updateElement, createElement, removeElement, setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle };
+/**
+ * Log a message to the console
+ *
+ * @since 0.10.1
+ * @param {string} message - message to be logged
+ * @param {SignalLike<T>} s - observed signal
+ * @param {LogLevel} logLevel - log level to be used: LOG_DEBUG (default), LOG_INFO, LOG_WARN, LOG_ERROR
+ */
+declare const logMessage: <E extends Element, K extends keyof S, S extends ComponentSignals = {}>(message: string, s?: SignalLike<S[K]>, logLevel?: LogLevel) => (host: UIElement<S>, target: E) => void;
+export { type ElementUpdater, updateElement, createElement, removeElement, setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle, logMessage };

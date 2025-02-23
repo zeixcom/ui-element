@@ -1,4 +1,4 @@
-import { type Signal, UNSET, isSignal, isState, toSignal, isComputed } from "@zeix/cause-effect"
+import { type Signal, UNSET, isSignal, isState, toSignal, isComputed, computed } from "@zeix/cause-effect"
 
 import { isFunction } from "./core/util"
 import { DEV_MODE, elementName, log, LOG_ERROR, LOG_WARN, valueString } from "./core/log"
@@ -38,6 +38,16 @@ export const RESET: any = Symbol() // explicitly marked as any so it can be used
  */
 const isAttributeParser = <T, S extends ComponentSignals>(value: unknown): value is AttributeParser<T, S> =>
 	isFunction(value) && !!value.length
+
+/**
+ * Check if a value is a compute function
+ *
+ * @since 0.10.1
+ * @param {unknown} value - value to check
+ * @returns {boolean} - true if value is a compute function, false otherwise
+ */
+const isComputeFunction = <T>(value: unknown): value is () => T | Promise<T> =>
+	isFunction(value) && !value.length
 
 /**
  * Unwrap a signal or function to its value
@@ -184,7 +194,9 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 		for (const [key, init] of Object.entries((this.states))) {
 			const result = isAttributeParser(init)
 				? init(this.getAttribute(key), this)
-				: init
+				: isComputeFunction<{}>(init)
+					? computed(init, true)
+					: init
 			this.set(key, result ?? RESET)
 		}
 		useContext(this)

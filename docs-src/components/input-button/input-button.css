@@ -1,4 +1,5 @@
 input-button {
+	position: relative;
 	display: inline-block;
 	flex: 0;
 
@@ -37,9 +38,9 @@ input-button {
 			color: var(--color-text-inverted);
 			background-color: var(--color-primary);
 			border-color: var(--color-primary-active);
-			opacity: var(--opacity-solid);
-
+			
 			&:not(:disabled) {
+				opacity: var(--opacity-solid);
 
 				&:hover {
 					background-color: var(--color-primary-hover);
@@ -55,9 +56,9 @@ input-button {
 			color: var(--color-text-inverted);
 			background-color: var(--color-error);
 			border-color: var(--color-error-active);
-			opacity: var(--opacity-solid);
-
+			
 			&:not(:disabled) {
+				opacity: var(--opacity-solid);
 				
 				&:hover {
 					background-color: var(--color-error-hover);
@@ -73,9 +74,9 @@ input-button {
 			color: var(--color-text-inverted);
 			background-color: var(--color-success);
 			border-color: var(--color-success-active);
-			opacity: var(--opacity-solid);
-
+			
 			&:not(:disabled) {
+				opacity: var(--opacity-solid);
 				
 				&:hover {
 					background-color: var(--color-success-hover);

@@ -66,7 +66,7 @@ const CONTEXT_REQUEST = 'context-request'
  * @property {boolean} [subscribe=false] - whether to subscribe to context changes
  */
 class ContextRequestEvent<T extends UnknownContext> extends Event {
-	public constructor(
+	constructor(
 		public readonly context: T,
 		public readonly callback: ContextCallback<ContextType<T>>,
 		public readonly subscribe: boolean = false

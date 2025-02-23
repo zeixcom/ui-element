@@ -49,11 +49,11 @@ Once registered, the component can be used like any native HTML element:
 
 ## Web Component Lifecycle in UIElement
 
-Every UIElement component follows a **lifecycle** from creation to removal. Here’s how the key lifecycle methods work:
+Every UIElement component follows a **lifecycle** from creation to removal. Here's how the key lifecycle methods work:
 
 ### Component Creation (constructor())
 
-Runs when the element is created **but before it’s attached to the DOM**. Avoid accessing attributes or child elements here.
+Runs when the element is created **but before it's attached to the DOM**. Avoid accessing attributes or child elements here.
 
 ### Mounted in the DOM (connectedCallback())
 

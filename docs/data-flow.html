@@ -100,7 +100,7 @@
 <section>
 
 <h2>Passing State Down</h2>
-<p>Let’s consider a <strong>product catalog</strong> where users can add items to a shopping cart. We have <strong>three independent components</strong> that work together:</p>
+<p>Let&#39;s consider a <strong>product catalog</strong> where users can add items to a shopping cart. We have <strong>three independent components</strong> that work together:</p>
 <ul>
 <li><code>ProductCatalog</code> <strong>(Parent)</strong>:<ul>
 <li><strong>Tracks all <code>SpinButton</code> components</strong> in its subtree and derives the <strong>total count</strong> of items in the shopping cart.</li>
@@ -180,7 +180,7 @@
 <ul>
 <li>Each <code>SpinButton</code> <strong>tracks its own count</strong>.</li>
 <li>The <code>ProductCatalog</code> <strong>sums all counts and passes the total to <code>BadgeButton</code></strong>.</li>
-<li>The <code>BadgeButton</code> <strong>displays the total</strong> if it’s greater than zero.</li>
+<li>The <code>BadgeButton</code> <strong>displays the total</strong> if it&#39;s greater than zero.</li>
 </ul>
 <p><strong>No custom events are needed – state flows naturally!</strong></p>
 <component-demo>
@@ -261,7 +261,7 @@
 
 <h2>Events Bubbling Up</h2>
 <p>Passing state down works well when a <strong>parent component can directly observe child state</strong>, but sometimes a <strong>child needs to notify its parent</strong> about an action <strong>without managing shared state itself</strong>.</p>
-<p>Let’s consider a Todo App, where users can add tasks:</p>
+<p>Let&#39;s consider a Todo App, where users can add tasks:</p>
 <ul>
 <li><code>TodoApp</code> <strong>(Parent)</strong>:<ul>
 <li>Holds the list of todos as a state signal.</li>

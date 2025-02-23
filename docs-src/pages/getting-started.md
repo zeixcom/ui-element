@@ -89,7 +89,7 @@ import { UIElement } from '@zeix/ui-element'
 
 ## Creating Your First Component
 
-Now, let’s create an interactive Web Component to verify your setup.
+Now, let's create an interactive Web Component to verify your setup.
 
 **What This Component Does**
 
@@ -162,7 +162,7 @@ If everything is set up correctly, you should see:
 </div>
 </component-demo>
 
-If it’s not working:
+If it's not working:
 
 * Check the browser console for errors (missing imports, typos).
 * Ensure your `<script>` tag is set to `type="module"` when using ES modules.

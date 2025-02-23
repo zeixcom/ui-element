@@ -15,7 +15,7 @@ description: "Passing state, events, context"
 
 ## Passing State Down
 
-Let’s consider a **product catalog** where users can add items to a shopping cart. We have **three independent components** that work together:
+Let's consider a **product catalog** where users can add items to a shopping cart. We have **three independent components** that work together:
 
 * `ProductCatalog` **(Parent)**:
 	- **Tracks all `SpinButton` components** in its subtree and derives the **total count** of items in the shopping cart.
@@ -76,7 +76,7 @@ Here's how everything comes together:
 
 * Each `SpinButton` **tracks its own count**.
 * The `ProductCatalog` **sums all counts and passes the total to `BadgeButton`**.
-* The `BadgeButton` **displays the total** if it’s greater than zero.
+* The `BadgeButton` **displays the total** if it's greater than zero.
 
 **No custom events are needed – state flows naturally!**
 
@@ -160,7 +160,7 @@ Here's how everything comes together:
 
 Passing state down works well when a **parent component can directly observe child state**, but sometimes a **child needs to notify its parent** about an action **without managing shared state itself**.
 
-Let’s consider a Todo App, where users can add tasks:
+Let's consider a Todo App, where users can add tasks:
 
 * `TodoApp` **(Parent)**:
 	- Holds the list of todos as a state signal.

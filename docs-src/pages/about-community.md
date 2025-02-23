@@ -76,7 +76,7 @@ View all releases and associated notes on [Github Releases](https://github.com/z
 
 ## Getting Involved
 
-UIElement is **an open-source project**, and contributions are always welcome! Whether you’re **reporting bugs, improving documentation, or suggesting features**, here’s how you can help:
+UIElement is **an open-source project**, and contributions are always welcome! Whether you’re **reporting bugs, improving documentation, or suggesting features**, here's how you can help:
 
 * ✅ [Open an Issue](https://github.com/zeixcom/ui-element/issues) – Report bugs or suggest features.
 * ✅ [Submit a Pull Request](https://github.com/zeixcom/ui-element/blob/main/CONTRIBUTING.md) – Help improve UIElement by fixing issues or adding new features.
