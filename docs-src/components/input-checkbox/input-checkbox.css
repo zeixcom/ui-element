@@ -12,6 +12,7 @@ input-checkbox {
 
 	& label {
 		font-size: var(--font-size-s);
+		border-radius: var(--space-xs);
 	}
 
 	&.todo label {

@@ -660,9 +660,12 @@ class TabList extends UIElement {
 		this.all('.tab-button').on('click', () => this.set('activeIndex', index))
 
 		// Set active tab-panel based on 'activeIndex'
-		this.all('tab-panel').sync((host, target, index) =>
-		this.self.sync(toggleClass('active', () => index === this.get('activeIndex'))(host, target))
-		);
+		this.all('tab-panel').sync((host, target, index) => {
+			toggleClass(
+				'active',
+				() => index === this.get('activeIndex')
+			)(host, target)
+		});
 	}
 }
 TabList.define('tab-list');

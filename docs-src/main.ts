@@ -13,4 +13,6 @@ import './components/media-context/media-context.ts'
 import './components/todo-app/todo-app.ts'
 import './components/product-catalog/product-catalog.ts'
 import './components/spin-button/spin-button.ts'
+import './components/rating-stars/rating-stars.ts'
+import './components/rating-feedback/rating-feedback.ts'
 // Import more custom elements here...

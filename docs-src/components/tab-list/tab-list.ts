@@ -34,10 +34,12 @@ export class TabList extends UIElement<{
 		// Update active tab state and bind click handlers
 		this.all('menu button')
 			.on('click', (_target, index) => () => this.set('active', index))
-			.sync((host, target, index) => setProperty(
-				'ariaPressed',
-				() => String(this.get('active') === index)
-			)(host, target))
+			.sync((host, target, index) => {
+				setProperty(
+					'ariaPressed',
+					() => String(this.get('active') === index)
+				)(host, target)
+			})
 
 		// Pass open and collapsible states to accordion panels
 		this.all('accordion-panel').pass((_target, index) => ({

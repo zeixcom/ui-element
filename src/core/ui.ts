@@ -21,7 +21,7 @@ type PassedSignalsProvider<S extends ComponentSignals> = (<E extends Element>(el
  * @class UI
  * @type {UI}
  */
-class UI<E extends Element, S extends ComponentSignals = {}> {
+class UI<E extends Element = HTMLElement, S extends ComponentSignals = {}> {
 	constructor(
 		public readonly host: UIElement<S>,
 		public readonly targets: E[] = [host as unknown as E]
@@ -125,7 +125,7 @@ class UI<E extends Element, S extends ComponentSignals = {}> {
 	 * Sync state changes to target element(s) using provided functions
 	 * 
 	 * @since 0.9.0
-	 * @param {((host: UIElement<S>, target: T, index: number) => void)[]} fns - state sync functions
+	 * @param {((host: UIElement<S>, target: E, index: number) => void)[]} fns - state sync functions
 	 * @returns {this} - self
 	 */
 	sync(

@@ -1,6 +1,6 @@
 # UIElement
 
-Version 0.10.0
+Version 0.10.1
 
 **UIElement** - transform reusable markup, styles and behavior into powerful, reactive, and maintainable Web Components.
 
@@ -158,10 +158,12 @@ class TabList extends UIElement {
         // Handle click events on menu buttons and update active tab index
         this.all('menu button')
             .on('click', (_el, index) => () => this.set('active', index))
-            .sync((host, target, index) => setAttribute(
-                'aria-pressed',
-                () => host.get('active') === index ? 'true' : 'false'
-			)(host, target))
+            .sync((host, target, index) => {
+				setAttribute(
+					'aria-pressed',
+					() => host.get('active') === index ? 'true' : 'false'
+				)(host, target)
+			})
 
         // Pass open attribute to tab-panel elements based on active tab index
         this.all('tab-panel').pass((_el, index) => ({

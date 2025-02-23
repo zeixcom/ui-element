@@ -1,0 +1,248 @@
+
+<tab-list>
+	<menu>
+		<li><button type="button" aria-pressed="true">HTML</button></li>
+		<li><button type="button" aria-pressed="false">CSS</button></li>
+		<li><button type="button" aria-pressed="false">TypeScript</button></li>
+	</menu>
+	
+	<accordion-panel open>
+		<details open aria-disabled="true">
+			<summary class="visually-hidden">
+				<div class="summary">HTML</div>
+			</summary>
+			<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+				<p class="meta">
+					<span class="file">rating-feedback.html</span>
+					<span class="language">html</span>
+				</p>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">rating-feedback</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">form</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">rating-stars</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">fieldset</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">legend</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#F8F8F2">>Rate&#x3C;/</span><span style="color:#F92672">legend</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"1"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>☆&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"2"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>☆&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>☆&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"4"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>☆&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"5"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>☆&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">fieldset</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">rating-stars</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"feedback"</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">header</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> button</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"hide"</span><span style="color:#A6E22E"> aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Hide"</span><span style="color:#F8F8F2">>×&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">>We're sorry to hear that! Your feedback is important, and we'd love to improve. Let us know how we can do better.&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">>Thank you for your honesty. We appreciate your feedback and will work on making things better.&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">>Thanks for your rating! If there's anything we can improve, we'd love to hear your thoughts.&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">>We're glad you had a good experience! If there's anything that could make it even better, let us know.&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">>Thank you for your support! We're thrilled you had a great experience. Your feedback keeps us motivated!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">header</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">fieldset</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> for</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating-feedback"</span><span style="color:#F8F8F2">>Describe your experience (optional)&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">textarea</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating-feedback"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">textarea</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">input-button</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"submit"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"primary"</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">>Submit&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">input-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">fieldset</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">form</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">rating-feedback</span><span style="color:#F8F8F2">></span></span></code></pre>
+				<input-button class="copy">
+					<button type="button" class="secondary small">
+						<span class="label">Copy</span>
+					</button>
+				</input-button>
+			</code-block>
+		</details>
+	</accordion-panel>
+
+	<accordion-panel>
+		<details aria-disabled="true">
+			<summary class="visually-hidden">
+				<div class="summary">CSS</div>
+			</summary>
+			<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+				<p class="meta">
+					<span class="file">rating-feedback.css</span>
+					<span class="language">css</span>
+				</p>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">rating-feedback</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	position</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">relative</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">inline-flex</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	flex-direction</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">column</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">80</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	text-align</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">left</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	header</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		flex-direction</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">row-reverse</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin-block</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-l);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	.hide</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		position</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">relative</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">block</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		box-sizing</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">border-box</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		top</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		right</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		border-radius</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">transparent</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		height</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--input-height);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-l);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;:hover,</span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;:focus {</span></span>
+<span class="line"><span style="color:#F44747">			background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">rgba</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#AE81FF">0.05</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;</span><span style="color:#A6E22E">:active</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">rgba</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#AE81FF">0.1</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">	p</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">	form</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		flex-direction</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">column</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">	fieldset</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	.feedback</span><span style="color:#F92672"> label</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">block</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin-bottom</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xxs);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">	textarea</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		resize</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">vertical</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">        width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">100</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">inline-block</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		box-sizing</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">border-box</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-input);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> solid</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--color-border);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xxs);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">        line-height</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--line-height-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin-bottom</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span></code></pre>
+				<input-button class="copy">
+					<button type="button" class="secondary small">
+						<span class="label">Copy</span>
+					</button>
+				</input-button>
+			</code-block>
+		</details>
+	</accordion-panel>
+
+	<accordion-panel>
+		<details aria-disabled="true">
+			<summary class="visually-hidden">
+				<div class="summary">TS</div>
+			</summary>
+			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+				<p class="meta">
+					<span class="file">rating-feedback.ts</span>
+					<span class="language">ts</span>
+				</p>
+				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { setProperty, UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../../../"</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { InputButton } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../input-button/input-button"</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { RatingStars } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../rating-stars/rating-stars"</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">RatingFeedback</span><span style="color:#F92672"> extends</span><span style="color:#A6E22E"> UIElement</span><span style="color:#F8F8F2">&#x3C;{</span></span>
+<span class="line"><span style="color:#F8F8F2">	empty</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> boolean</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	submitted</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> boolean</span></span>
+<span class="line"><span style="color:#F8F8F2">}> {</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> localName </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'rating-feedback'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">		empty: </span><span style="color:#AE81FF">true</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">        submitted: </span><span style="color:#AE81FF">false</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">		super</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">connectedCallback</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> stars </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">RatingStars</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'rating-stars'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Event listeners for rating changes and form submission</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.self</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change-rating'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> rating </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (e </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">CustomEvent</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">number</span><span style="color:#F8F8F2">>).detail</span></span>
+<span class="line"><span style="color:#F8F8F2">				console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">`Rating changed to </span><span style="color:#F92672">${</span><span style="color:#F8F8F2">rating</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">			})</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'submit'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">				e.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'submitted'</span><span style="color:#F8F8F2">, </span><span style="color:#AE81FF">true</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">				console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Feedback submitted'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">			})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Event listener for hide button</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.hide'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> feedback </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'.feedback'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (feedback) feedback.hidden </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> true</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Event listener for texteare</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'textarea'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">				'empty'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">				(e.target </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLTextAreaElement</span><span style="color:#F8F8F2">)?.value.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#F8F8F2">			)</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Effects on rating changes</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.feedback'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'hidden'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">			() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'submitted'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">||</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">(stars?.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">		))</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.feedback p'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">>(</span></span>
+<span class="line"><span style="color:#E6DB74">				'hidden'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">				() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> stars?.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">!==</span><span style="color:#F8F8F2"> index </span><span style="color:#F92672">+</span><span style="color:#AE81FF"> 1</span></span>
+<span class="line"><span style="color:#F8F8F2">            )(host, target)</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Effect on empty state</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputButton</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'input-button'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">pass</span><span style="color:#F8F8F2">({</span></span>
+<span class="line"><span style="color:#F8F8F2">			disabled: </span><span style="color:#E6DB74">'empty'</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">RatingFeedback.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">()</span></span></code></pre>
+				<input-button class="copy">
+					<button type="button" class="secondary small">
+						<span class="label">Copy</span>
+					</button>
+				</input-button>
+			</code-block>
+		</details>
+	</accordion-panel>
+</tab-list>

@@ -15,7 +15,8 @@ input-radiogroup {
 	}
 
 	& label {
-		
+		border-radius: var(--space-xs);
+
 		&:focus-within {
 			box-shadow: 0 0 var(--space-xxs) 2px var(--color-selection);
 		}

@@ -48,7 +48,7 @@ A copy of the license can be found in the [LICENSE](https://github.com/zeixcom/u
 
 ## Version History
 
-### Current Version: 0.10.0
+### Current Version: 0.10.1
 
 <callout-box class="danger">
 

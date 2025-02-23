@@ -1,0 +1,33 @@
+rating-stars {
+	display: inline-block;
+	
+	& fieldset {
+		display: flex;
+		border: none;
+        margin: 0;
+        padding: 0;
+		justify-content: center;
+	}
+
+	& label {
+		display: block;
+		cursor: pointer;
+		width: var(--input-height);
+		height: var(--input-height);
+		color: var(--color-primary);
+		font-size: var(--font-size-l);
+		border-radius: var(--space-xs);
+		text-align: center;
+
+		&:hover,
+		&:focus-within {
+			color: var(--color-primary-hover);
+			background-color: rgba(0, 0, 0, 0.05);
+		}
+
+		&:active {
+			color: var(--color-primary-active);
+			background-color: rgba(0, 0, 0, 0.1);
+		}
+	}
+}

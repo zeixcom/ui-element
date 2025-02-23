@@ -14,3 +14,6 @@
 @import './components/callout-box/callout-box.css';
 @import './components/product-catalog/product-catalog.css';
 @import './components/spin-button/spin-button.css';
+@import './components/rating-stars/rating-stars.css';
+@import './components/rating-feedback/rating-feedback.css';
+/* Import more custom elements here... */

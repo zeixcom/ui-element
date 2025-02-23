@@ -15,10 +15,12 @@ export class InputRadiogroup extends UIElement<{ value: string }> {
 		this.all('input').on('change', (e: Event) => {
 			this.set('value', (e.target as HTMLInputElement)?.value)
 		})
-		this.all('label').sync((host, target) => toggleClass(
-			'selected',
-			() => this.get('value') === target.querySelector('input')?.value
-		)(host, target))
+		this.all('label').sync((host, target) => {
+			toggleClass(
+				'selected',
+				() => this.get('value') === target.querySelector('input')?.value
+			)(host, target)
+		})
     }
 }
 InputRadiogroup.define()

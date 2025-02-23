@@ -354,13 +354,52 @@ Bringing all of the above together, you are now ready to build your own componen
 				</div>
 				<div class="slide">
 					<h3>Slide 3</h3>
-					<star-rating>
-						<button type="button">1</button>
-						<button type="button">2</button>
-						<button type="button">3</button>
-						<button type="button">4</button>
-						<button type="button">5</button>
-					</star-rating>
+					<rating-feedback>
+						<form>
+							<rating-stars>
+								<fieldset>
+									<legend class="visually-hidden">Rate</legend>
+									<label>
+										<input type="radio" class="visually-hidden" name="rating" value="1">
+										<span class="label">☆</span>
+									</label>
+									<label>
+										<input type="radio" class="visually-hidden" name="rating" value="2">
+										<span class="label">☆</span>
+									</label>
+									<label>
+										<input type="radio" class="visually-hidden" name="rating" value="3">
+										<span class="label">☆</span>
+									</label>
+									<label>
+										<input type="radio" class="visually-hidden" name="rating" value="4">
+										<span class="label">☆</span>
+									</label>
+									<label>
+										<input type="radio" class="visually-hidden" name="rating" value="5">
+										<span class="label">☆</span>
+									</label>
+								</fieldset>
+							</rating-stars>
+							<div class="feedback" hidden>
+								<header>
+									<button button="button" class="hide" aria-label="Hide">×</button>
+									<p hidden>We're sorry to hear that! Your feedback is important, and we'd love to improve. Let us know how we can do better.</p>
+									<p hidden>Thank you for your honesty. We appreciate your feedback and will work on making things better.</p>
+									<p hidden>Thanks for your rating! If there's anything we can improve, we'd love to hear your thoughts.</p>
+									<p hidden>We're glad you had a good experience! If there's anything that could make it even better, let us know.</p>
+									<p hidden>Thank you for your support! We're thrilled you had a great experience. Your feedback keeps us motivated!</p>
+								</header>
+								<fieldset>
+									<label for="rating-feedback">Describe your experience (optional)</label>
+									<textarea id="rating-feedback"></textarea>
+									<input-button disabled>
+										<button type="submit" class="primary" disabled>Submit</button>
+									</input-button>
+								</fieldset>
+							</div>
+						</form>
+					</rating-feedback>
 				</div>
 			</div>
 			<button type="button" class="prev" aria-label="Previous">‹</button>
