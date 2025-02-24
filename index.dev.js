@@ -430,6 +430,10 @@ class UIElement extends HTMLElement {
     return value;
   }
   set(key, value, update2 = true) {
+    if (value == null) {
+      log(value, `Attempt to set state ${valueString(key)} to null or undefined in ${elementName(this)}`, LOG_ERROR);
+      return;
+    }
     let op;
     const s = this.signals[key];
     const old = s?.get();
@@ -563,12 +567,6 @@ var setStyle = (prop, s = prop) => updateElement(s, {
   update: (el, value) => ss(el, prop, value),
   delete: (el) => rs(el, prop)
 });
-var logMessage = (message, s = message, logLevel = LOG_DEBUG) => (host, target) => {
-  effect(() => {
-    const value = isString(s) ? host.get(s) : isSignal(s) ? s.get() : isFunction2(s) ? s() : undefined;
-    log(value, `${message} of ${elementName(host) + (target instanceof UIElement && host === target ? "" : `for ${elementName(target)}`)}`, logLevel);
-  });
-};
 export {
   useContext,
   updateElement,
@@ -582,7 +580,6 @@ export {
   setAttribute,
   removeElement,
   parse,
-  logMessage,
   log,
   isState,
   isSignal,

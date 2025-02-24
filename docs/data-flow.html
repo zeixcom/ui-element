@@ -103,11 +103,11 @@
 <p>Let&#39;s consider a <strong>product catalog</strong> where users can add items to a shopping cart. We have <strong>three independent components</strong> that work together:</p>
 <ul>
 <li><code>ProductCatalog</code> <strong>(Parent)</strong>:<ul>
-<li><strong>Tracks all <code>SpinButton</code> components</strong> in its subtree and derives the <strong>total count</strong> of items in the shopping cart.</li>
-<li><strong>Passes that total</strong> to a <code>BadgeButton</code>, which displays the number of items in the cart.</li>
+<li><strong>Tracks all <code>SpinButton</code> components</strong> in its subtree and calculates the <strong>total count</strong> of items in the shopping cart.</li>
+<li><strong>Passes that total</strong> to a <code>InputButton</code>, which displays the number of items in the cart.</li>
 </ul>
 </li>
-<li><code>BadgeButton</code> <strong>(Child)</strong>:<ul>
+<li><code>InputButton</code> <strong>(Child)</strong>:<ul>
 <li>Displays a <strong>cart badge</strong> when the <code>&#39;badge&#39;</code> signal is set.</li>
 <li><strong>Does not track any state</strong> – it simply renders whatever value is passed down.</li>
 </ul>
@@ -118,12 +118,12 @@
 </ul>
 </li>
 </ul>
-<p>Although <code>BadgeButton</code> <strong>and</strong> <code>SpinButton</code> are completely independent, they need to work together.<br>So <code>ProductCatalog</code> <strong>coordinates the data flow between them</strong>.</p>
+<p>Although <code>InputButton</code> <strong>and</strong> <code>SpinButton</code> are completely independent, they need to work together.<br>So <code>ProductCatalog</code> <strong>coordinates the data flow between them</strong>.</p>
 <h3>Parent Component: ProductCatalog</h3>
 <p>The <strong>parent component (<code>ProductCatalog</code>) knows about its children</strong>, meaning it can <strong>observe and pass state</strong> to them.</p>
 <p>Use the <code>.pass()</code> method to send values to child components. It takes an object where:</p>
 <ul>
-<li><strong>Keys</strong> = Signal names in the <strong>child</strong> (<code>BadgeButton</code>)</li>
+<li><strong>Keys</strong> = Signal names in the <strong>child</strong> (<code>InputButton</code>)</li>
 <li><strong>Values</strong> = Signal names in the parent (<code>ProductCatalog</code>) or functions returning computed values</li>
 </ul>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -132,10 +132,10 @@
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-button'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">pass</span><span style="color:#F8F8F2">({</span></span>
-<span class="line"><span style="color:#A6E22E">	badge</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'total'</span><span style="color:#F8F8F2">);</span></span>
-<span class="line"><span style="color:#F92672">		return</span><span style="color:#F92672"> typeof</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'number'</span><span style="color:#F92672"> &#x26;&#x26;</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">></span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> ?</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(total) </span><span style="color:#F92672">:</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#A6E22E">	badge</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> asPositiveIntegerString</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'spin-button'</span><span style="color:#F8F8F2">).targets</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">reduce</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F;font-style:italic">sum</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">item</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> sum </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> item.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">), </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">	)</span></span>
 <span class="line"><span style="color:#F8F8F2">});</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
@@ -146,10 +146,10 @@
 	
 </code-block>
 <ul>
-<li>✅ <strong>Whenever the <code>total</code> signal updates, <code>&lt;input-button&gt;</code> automatically updates.</strong></li>
+<li>✅ <strong>Whenever one of the <code>value</code> signals of a <code>&lt;spin-button&gt;</code> updates, the total in the badge of <code>&lt;input-button&gt;</code> automatically updates.</strong></li>
 <li>✅ <strong>No need for event listeners or manual updates!</strong></li>
 </ul>
-<h3>Child Component: BadgeButton</h3>
+<h3>Child Component: InputButton</h3>
 <p>The <code>InputButton</code> component <strong>displays a badge when needed</strong> – it does not track state itself.</p>
 <p>Whenever the <code>&#39;badge&#39;</code> <strong>signal assigned by a parent component</strong> updates, the badge text updates.</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -174,85 +174,85 @@
 <li>✅ The <code>setText(&#39;badge&#39;)</code> effect <strong>keeps the badge in sync</strong> with the <code>&#39;badge&#39;</code> signal.</li>
 <li>✅ If badge is an <strong>empty string</strong>, the badge is <strong>hidden</strong>.</li>
 </ul>
-<p>The <code>BadgeButton</code> <strong>doesn’t care how the badge value is calculated</strong> – just that it gets one!</p>
+<p>The <code>InputButton</code> <strong>doesn&#39;t care how the badge value is calculated</strong> – just that it gets one!</p>
 <h3>Full Example</h3>
 <p>Here&#39;s how everything comes together:</p>
 <ul>
 <li>Each <code>SpinButton</code> <strong>tracks its own count</strong>.</li>
-<li>The <code>ProductCatalog</code> <strong>sums all counts and passes the total to <code>BadgeButton</code></strong>.</li>
-<li>The <code>BadgeButton</code> <strong>displays the total</strong> if it&#39;s greater than zero.</li>
+<li>The <code>ProductCatalog</code> <strong>sums all counts and passes the total to <code>InputButton</code></strong>.</li>
+<li>The <code>InputButton</code> <strong>displays the total</strong> if it&#39;s greater than zero.</li>
 </ul>
 <p><strong>No custom events are needed – state flows naturally!</strong></p>
 <component-demo>
-<div class="preview">
-<product-catalog>
-<header>
-<p>Shop</p>
-<input-button>
-<button type="button">
-<span class="label">🛒 Shopping Cart</span>
-<span class="badge"></span>
-</button>
-</input-button>
-</header>
-<ul>
-<li>
-<p>Product 1</p>
-<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
-<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
-<p class="value" hidden>0</p>
-<button type="button" class="increment primary">Add to Cart</button>
-</spin-button>
-</li>
-<li>
-<p>Product 2</p>
-<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
-<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
-<p class="value" hidden>0</p>
-<button type="button" class="increment primary">Add to Cart</button>
-</spin-button>
-</li>
-<li>
-<p>Product 3</p>
-<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
-<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
-<p class="value" hidden>0</p>
-<button type="button" class="increment primary">Add to Cart</button>
-</spin-button>
-</li>
-</ul>
-</product-catalog>
-</div>
-<accordion-panel collapsible>
-<details>
-<summary>
-<div class="summary">ProductCatalog Source Code</div>
-</summary>
-<lazy-load src="./examples/product-catalog.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-<accordion-panel collapsible>
-<details>
-<summary>
-<div class="summary">InputButton Source Code</div>
-</summary>
-<lazy-load src="./examples/input-button.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
-<accordion-panel collapsible>
-<details>
-<summary>
-<div class="summary">SpinButton Source Code</div>
-</summary>
-<lazy-load src="./examples/spin-button.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
+	<div class="preview">
+		<product-catalog>
+			<header>
+				<p>Shop</p>
+				<input-button>
+					<button type="button">
+						<span class="label">🛒 Shopping Cart</span>
+						<span class="badge"></span>
+					</button>
+				</input-button>
+			</header>
+			<ul>
+				<li>
+					<p>Product 1</p>
+					<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
+						<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
+						<p class="value" hidden>0</p>
+						<button type="button" class="increment">Add to Cart</button>
+					</spin-button>
+				</li>
+				<li>
+					<p>Product 2</p>
+					<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
+						<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
+						<p class="value" hidden>0</p>
+						<button type="button" class="increment">Add to Cart</button>
+					</spin-button>
+				</li>
+				<li>
+					<p>Product 3</p>
+					<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
+						<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
+						<p class="value" hidden>0</p>
+						<button type="button" class="increment">Add to Cart</button>
+					</spin-button>
+				</li>
+			</ul>
+		</product-catalog>
+	</div>
+	<accordion-panel collapsible>
+		<details>
+		<summary>
+			<div class="summary">ProductCatalog Source Code</div>
+		</summary>
+		<lazy-load src="./examples/product-catalog.html">
+			<p class="loading">Loading...</p>
+		</lazy-load>
+		</details>
+	</accordion-panel>
+	<accordion-panel collapsible>
+		<details>
+		<summary>
+			<div class="summary">InputButton Source Code</div>
+		</summary>
+		<lazy-load src="./examples/input-button.html">
+			<p class="loading">Loading...</p>
+		</lazy-load>
+		</details>
+	</accordion-panel>
+	<accordion-panel collapsible>
+		<details>
+		<summary>
+			<div class="summary">SpinButton Source Code</div>
+		</summary>
+		<lazy-load src="./examples/spin-button.html">
+			<p class="loading">Loading...</p>
+		</lazy-load>
+		</details>
+	</accordion-panel>
 </component-demo>
 
 </section>

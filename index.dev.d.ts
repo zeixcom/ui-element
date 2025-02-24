@@ -10,4 +10,4 @@ export { type SignalLike, type PassedSignals, type PassedSignalsProvider, type E
 export { LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, log } from './src/core/log';
 export { type Context, type UnknownContext, useContext } from './src/core/context';
 export { asBoolean, asIntegerWithDefault, asInteger, asNumberWithDefault, asNumber, asStringWithDefault, asString, asEnum, asJSONWithDefault, asJSON } from './src/lib/parsers';
-export { type ElementUpdater, updateElement, createElement, removeElement, setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle, logMessage } from './src/lib/effects';
+export { type ElementUpdater, updateElement, createElement, removeElement, setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle, } from './src/lib/effects';

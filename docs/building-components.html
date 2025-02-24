@@ -135,6 +135,29 @@
 	</input-button>
 	
 </code-block>
+<callout-box class="tip">
+
+<p><strong>Alternative</strong>: If you prefer you can also declare the custom element tag within the component and call <code>.define()</code> without arguments.</p>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">MyComponent</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> localName </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'my-component'</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#88846F">	/* component definition */</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">MyComponent.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
+</callout-box>
+
 <h3>Using the Custom Element in HTML</h3>
 <p>Once registered, the component can be used like any native HTML element:</p>
 <code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -195,14 +218,18 @@
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HelloUser</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> consumedContexts </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'display-name'</span><span style="color:#F8F8F2">]; </span><span style="color:#88846F">// Signal provided by a parent component</span></span>
+<span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">	states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">		greeting: </span><span style="color:#E6DB74">'Hello'</span><span style="color:#F8F8F2">, </span><span style="color:#88846F">// Initial value of 'greeting' signal</span></span>
+<span class="line"><span style="color:#A6E22E">		upper</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display-name'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">toUpperCase</span><span style="color:#F8F8F2">(), </span><span style="color:#88846F">// Compute function for transformation on 'display-name' signal</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
-<span class="line"><span style="color:#FD971F">		super</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">connectedCallback</span><span style="color:#F8F8F2">();</span></span>
+<span class="line"><span style="color:#FD971F">		super</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">connectedCallback</span><span style="color:#F8F8F2">(); </span><span style="color:#88846F">// Initializes state signals from values, attributes, context or creates computed signals from functions </span></span>
+<span class="line"></span>
 <span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.greeting'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'greeting'</span><span style="color:#F8F8F2">));</span></span>
 <span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.user'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display-name'</span><span style="color:#F8F8F2">));</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.profile h2'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'upper'</span><span style="color:#F8F8F2">));</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
@@ -226,11 +253,11 @@
 <span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
 <span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.intersectionObserver </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> IntersectionObserver</span><span style="color:#F8F8F2">(([</span><span style="color:#FD971F;font-style:italic">entry</span><span style="color:#F8F8F2">]) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#88846F">			// Do something</span></span>
-<span class="line"><span style="color:#F8F8F2">		}).</span><span style="color:#A6E22E">observe</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">		}).</span><span style="color:#A6E22E">observe</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">);</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#A6E22E">	disconnentedCallback</span><span style="color:#F8F8F2">() {</span></span>
-<span class="line"><span style="color:#FD971F">		super</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">disconnectedCallback</span><span style="color:#F8F8F2">();</span></span>
+<span class="line"><span style="color:#FD971F">		super</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">disconnectedCallback</span><span style="color:#F8F8F2">(); </span><span style="color:#88846F">// Automatically removes event listeners bound with `.on()`</span></span>
 <span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.intersectionObserver) </span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.intersectionObserver.</span><span style="color:#A6E22E">disconnect</span><span style="color:#F8F8F2">();</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
@@ -283,6 +310,17 @@
 	</input-button>
 	
 </code-block>
+<h3>Characteristics and Special Values</h3>
+<p>Signals in UIElement are of a <strong>fixed type</strong> and <strong>non-nullable</strong>. This allows to <strong>simplify the logic</strong> as you will never have to check the type or perform null-checks.</p>
+<ul>
+<li>If you use <strong>TypeScript</strong> (recommended), <strong>you will be warned</strong> that <code>null</code> or <code>undefined</code> cannot be assigned to a signal or if you try to assign a value of a wrong type.</li>
+<li>If you use vanilla <strong>JavaScript</strong> without a build step, setting a signal to <code>null</code> or <code>undefined</code> <strong>will log an error to the console and abort</strong>. However, strict type checking is not enforced at runtime.</li>
+</ul>
+<p>Because of the <strong>non-nullable nature of signals</strong> in UIElement, we need two special values that can be assigned to any signal type:</p>
+<ul>
+<li><strong><code>RESET</code></strong>: Will <strong>reset to the server-rendered version</strong> that was there before UIElement took control. This is what you want to do most of the times when a signal lacks a specific value.</li>
+<li><strong><code>UNSET</code></strong>: Will <strong>delete the signal</strong>, <strong>unsubscribe its watchers</strong> and also <strong>delete related attributes or style properties</strong> in effects. Use this with special care!</li>
+</ul>
 <h3>Why Signals with a Map Interface?</h3>
 <p>UIElement <strong>uses signals</strong> instead of standard properties or attributes because it <strong>ensures reactivity, loose coupling, and avoids common pitfalls with the DOM API</strong>.</p>
 <ul>
@@ -335,6 +373,17 @@
 	</input-button>
 	
 </code-block>
+<callout-box class="caution">
+
+<p><strong>Careful</strong>: Attributes <strong>may not be present</strong> on the element or <strong>parsing to the desired type may fail</strong>. To ensure <strong>non-nullability</strong> of signals, UIElement falls back to neutral defaults:</p>
+<ul>
+<li><code>&#39;&#39;</code> (empty string) for <code>string</code></li>
+<li><code>0</code> for <code>number</code></li>
+<li><code>{}</code> (empty object) for objects of any kind</li>
+</ul>
+<p>Pre-defined parsers (see next section) come with a variant <code>*WithDefault()</code> that allow you to set custom fallback values for attribute parsers.</p>
+</callout-box>
+
 <h3>Pre-defined Parsers in UIElement</h3>
 <table>
 <thead>
@@ -348,15 +397,15 @@
 <td>Converts <code>&quot;true&quot;</code> / <code>&quot;false&quot;</code> to a <strong>boolean</strong> (<code>true</code> / <code>false</code>). Also treats empty attributes (<code>checked</code>) as <code>true</code>.</td>
 </tr>
 <tr>
-<td><code>asInteger</code></td>
+<td><code>asInteger</code>, <code>asIntegerWithDefault(1)</code></td>
 <td>Converts a numeric string (e.g., <code>&quot;42&quot;</code>) to an <strong>integer</strong> (<code>42</code>).</td>
 </tr>
 <tr>
-<td><code>asNumber</code></td>
+<td><code>asNumber</code>, <code>asNumberWithDefault(0.1)</code></td>
 <td>Converts a numeric string (e.g., <code>&quot;3.14&quot;</code>) to a <strong>floating-point number</strong> (<code>3.14</code>).</td>
 </tr>
 <tr>
-<td><code>asString</code></td>
+<td><code>asString</code>, <code>asStringwithDefault(&#39;foo&#39;)</code></td>
 <td>Returns the attribute value as a <strong>string</strong> (unchanged).</td>
 </tr>
 <tr>
@@ -364,8 +413,8 @@
 <td>Ensures the string matches <strong>one of the allowed values</strong>. Example: <code>asEnum([&#39;small&#39;, &#39;medium&#39;, &#39;large&#39;])</code>. If the value is not in the list, it defaults to the first option.</td>
 </tr>
 <tr>
-<td><code>asJSON</code></td>
-<td>Parses a JSON string (e.g., <code>&#39;[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]&#39;</code>) into an <strong>array</strong> or <strong>object</strong>. If invalid, returns <code>null</code>.</td>
+<td><code>asJSON</code>, <code>asJSONWithDefault({ theme: &#39;dark&#39; })</code></td>
+<td>Parses a JSON string (e.g., <code>&#39;[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]&#39;</code>) into an <strong>array</strong> or <strong>object</strong>. If invalid, returns <code>{}</code>.</td>
 </tr>
 </tbody></table>
 </section>
@@ -483,7 +532,7 @@
 </tr>
 <tr>
 <td><code>setProperty()</code></td>
-<td>Updates a given <strong>property</strong> with any signal value.</td>
+<td>Updates a given <strong>property</strong> with any signal value.*</td>
 </tr>
 <tr>
 <td><code>setAttribute()</code></td>
@@ -510,6 +559,11 @@
 <td>Removes an element if the <code>boolean</code> signal value is <code>true</code>.</td>
 </tr>
 </tbody></table>
+<callout-box class="tip">
+
+<p><strong>Tip</strong>: TypeScript will check whether a value of a given type is assignable to a certain element type. You might have to specify a type hint for the queried element type. Prefer <code>setProperty()</code> over <code>setAttribute()</code> for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.</p>
+</callout-box>
+
 <h3>Simplifying Effect Notation</h3>
 <p>For effects that take two arguments, <strong>the second argument can be omitted</strong> if the signal key matches the targeted property name, attribute, class, or style property.</p>
 <p>When signal key matches property name:</p>

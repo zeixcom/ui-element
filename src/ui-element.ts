@@ -258,6 +258,13 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
         value: S[K] | ((old: S[K]) => S[K]) | Signal<S[K]>,
 		update: boolean = true
 	): void {
+
+		// Error and early return if value is null or undefined
+		if (null == value) {
+			log(value, `Attempt to set state ${valueString(key)} to null or undefined in ${elementName(this)}`, LOG_ERROR)
+            return
+		}
+
 		let op: string;
 		const s = this.signals[key]
 		const old = s?.get()

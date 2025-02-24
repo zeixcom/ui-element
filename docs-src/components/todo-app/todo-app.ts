@@ -1,4 +1,4 @@
-import { UIElement, logMessage, setAttribute, setProperty, setText } from "../../.."
+import { UIElement, setAttribute, setProperty, setText } from "../../.."
 import type { InputCheckbox } from "../input-checkbox/input-checkbox"
 
 export class TodoApp extends UIElement<{

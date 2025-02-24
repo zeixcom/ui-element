@@ -50,26 +50,26 @@ Unlike traditional frameworks that rely on a virtual DOM or dirty-checking, UIEl
 ### Example: Counter Component
 
 <component-demo>
-<div class="preview">
-<my-counter count="42">
-<p>
-Count: <span class="count"></span><br>
-Parity: <span class="parity"></span>
-</p>
-<button type="button" class="decrement">−</button>
-<button type="button" class="increment">+</button>
-</my-counter>
-</div>
-<accordion-panel collapsible>
-<details>
-<summary>
-<div class="summary">Source Code</div>
-</summary>
-<lazy-load src="./examples/my-counter.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
+	<div class="preview">
+		<my-counter count="42">
+			<p>
+				Count: <span class="count"></span><br>
+				Parity: <span class="parity"></span>
+			</p>
+			<button type="button" class="decrement">−</button>
+			<button type="button" class="increment">+</button>
+		</my-counter>
+	</div>
+	<accordion-panel collapsible>
+		<details>
+			<summary>
+				<div class="summary">Source Code</div>
+			</summary>
+			<lazy-load src="./examples/my-counter.html">
+				<p class="loading">Loading...</p>
+			</lazy-load>
+		</details>
+	</accordion-panel>
 </component-demo>
 
 * ✅ **Zero renders** – Only updates what changes.

@@ -169,21 +169,21 @@ Just because UIElement is a JavaScript library doesn't mean you have to use Java
 Here's the example of the `<callout-box>` we're using in this documentation:
 
 <component-demo>
-<div class="preview">
-<callout-box>This is an informational message.</callout-box>
-<callout-box class="tip">Remember to hydrate while coding!</callout-box>
-<callout-box class="caution">Be careful with this operation.</callout-box>
-<callout-box class="danger">This action is irreversible!</callout-box>
-<callout-box class="note">This is just a side note.</callout-box>
-</div>
-<accordion-panel collapsible>
-<details>
-<summary>Source Code</summary>
-<lazy-load src="./examples/callout-box.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
+	<div class="preview">
+		<callout-box>This is an informational message.</callout-box>
+		<callout-box class="tip">Remember to hydrate while coding!</callout-box>
+		<callout-box class="caution">Be careful with this operation.</callout-box>
+		<callout-box class="danger">This action is irreversible!</callout-box>
+		<callout-box class="note">This is just a side note.</callout-box>
+	</div>
+	<accordion-panel collapsible>
+		<details>
+			<summary>Source Code</summary>
+			<lazy-load src="./examples/callout-box.html">
+				<p class="loading">Loading...</p>
+			</lazy-load>
+		</details>
+	</accordion-panel>
 </component-demo>
 
 </section>
