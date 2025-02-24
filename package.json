@@ -12,7 +12,7 @@
     "build:docs-css": "lightningcss --minify --bundle --targets \">= 0.25%\" docs-src/main.css -o ./docs/assets/main.css",
     "build:docs-html": "bun ./docs-src/server/generate-pages.ts & bun ./docs-src/server/generate-fragments.ts",
     "build:docs": "bun run build:docs-js & bun run build:docs-css & bun run build:docs-html",
-    "serve:docs": "bun run build:docs & bun ./docs-src/server/serve-docs.ts",
+    "serve:docs": "BUN_ENV=development bun run --hot ./docs-src/server/serve-docs.ts",
     "lint": "bunx eslint src/",
     "test": "bun run test:setup && bun run test:ci",
     "test:setup": "playwright install-deps",
