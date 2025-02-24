@@ -30,7 +30,7 @@
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
 		import {
-			UIElement, effect, animationFrame,
+			UIElement, effect, animationFrame, RESET,
 			asBoolean, asInteger, asNumber,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
 		} from '../index.js'
@@ -58,7 +58,7 @@
 
 		class UpdateAttribute extends UIElement {
 			static observedAttributes = ['required']
-			static states = {
+			states = {
                 required: asBoolean
             }
 
@@ -84,14 +84,17 @@
 
 		class UpdateClass extends UIElement {
 			static observedAttributes = ['active']
-			static states = {
+			states = {
                 active: asInteger
             }
 
 			connectedCallback() {
-                this.all('li').sync((host, target, index) =>
-					toggleClass('selected', () => this.get('active') === index)(host, target)
-				)
+                this.all('li').sync((host, target, index) => {
+					toggleClass(
+						'selected',
+						() => this.get('active') === index
+					)(host, target)
+				})
             }
 		}
 		UpdateClass.define('update-class')
@@ -119,7 +122,7 @@
 					await animationFrame()
 					textContent = normalizeText(paragraph.textContent)
 					assert.equal(textContent, 'New Text', 'Should update text content from text signal')
-					component.set('text', undefined)
+					component.set('text', RESET)
 					await animationFrame()
 					textContent = normalizeText(paragraph.textContent)
 					assert.equal(textContent, 'Text from Server', 'Should revert text content to server-rendered version')
@@ -137,7 +140,7 @@
 					component.set('value', 'New Value')
 					await animationFrame()
 					assert.equal(input.value, 'New Value', 'Should update value from text signal')
-					component.set('value', undefined)
+					component.set('value', RESET)
 					await animationFrame()
 					assert.equal(input.value, 'Value from Server', 'Should revert value to server-rendered version')
 				})
@@ -163,7 +166,7 @@
 					component.toggleAttribute('required')
 					await animationFrame()
 					assert.equal(input.hasAttribute('aria-errormessage'), false, 'Should not have aria-errormessage if field is not required')
-					component.set('required', undefined)
+					component.set('required', RESET)
 					await animationFrame()
 					assert.equal(input.required, true, 'Should revert required attribute to server-rendered version')
 				})
@@ -182,7 +185,7 @@
                     await animationFrame()
                     assert.equal(items[1].classList.contains('selected'), true, 'Second item should have selected class from active signal')
                     assert.equal(items[0].classList.contains('selected'), false, 'First item should not have selected class removed')
-                    component.set('active', undefined)
+                    component.set('active', RESET)
                     await animationFrame()
                     assert.equal(items[1].classList.contains('selected'), false, 'Second item should have selected class removed')
 					// restore can't work because the selected class for each item is derived on the fly and not stored in a signal
@@ -201,7 +204,7 @@
                     component.set('color', 'green')
                     await animationFrame()
                     assert.equal(paragraph.style.color,'green', 'Should update color from color signal')
-                    component.set('color', undefined)
+                    component.set('color', RESET)
                     await animationFrame()
                     assert.equal(paragraph.style.color, 'blue', 'Should revert color to server-rendered version')
 				})

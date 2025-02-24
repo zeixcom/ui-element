@@ -1,27 +1,16 @@
-import { type Signal, toSignal } from '@zeix/cause-effect'
+import { isSignal, type Signal, toSignal } from '@zeix/cause-effect'
 
-import { UIElement } from '../ui-element'
-import { log, LOG_ERROR, valueString } from './log'
-import { isFunction, isPropertyKey } from './util'
+import { UIElement, type ComponentSignals } from '../ui-element'
+import { elementName, log, LOG_ERROR, LOG_WARN, valueString } from './log'
+import { isDefinedObject, isFunction, isString } from './util'
 
 /* === Types === */
 
-type StateLike<T> = string | Signal<T> | ((v?: T) => T)
-type ValueOrFactory<T> = T | ((element: Element, index: number) => T)
-type StateLikeOrStateLikeFactory<T> = ValueOrFactory<StateLike<T>>
-type EventListenerOrEventListenerFactory = ValueOrFactory<EventListenerOrEventListenerObject>
+type EventListenerProvider = (<E extends Element>(element: E, index: number) => EventListenerOrEventListenerObject)
 
-/* === Internal Functions === */
-
-const isFactoryFunction = /*#__PURE__*/ <T>(fn: ValueOrFactory<T>): fn is ((element: Element, index: number) => T) =>
-	isFunction(fn) && fn.length === 2
-
-const fromFactory = /*#__PURE__*/ <T>(
-	fn: ValueOrFactory<T>,
-	element: Element,
-	index: number = 0,
-): T =>
-	isFactoryFunction(fn) ? fn(element, index) : fn
+type SignalLike<T> = PropertyKey | Signal<NonNullable<T>> | ((v?: T) => T)
+type PassedSignals<S extends ComponentSignals> = { [K in keyof S]: SignalLike<S[K]> }
+type PassedSignalsProvider<S extends ComponentSignals> = (<E extends Element>(element: E, index: number) => PassedSignals<S> | PassedSignalsProvider<S>)
 
 /* === Exported Class === */
 
@@ -32,10 +21,10 @@ const fromFactory = /*#__PURE__*/ <T>(
  * @class UI
  * @type {UI}
  */
-class UI<T extends Element> {
+class UI<E extends Element = HTMLElement, S extends ComponentSignals = {}> {
 	constructor(
-		public readonly host: UIElement,
-		public readonly targets: T[] = [host as unknown as T]
+		public readonly host: UIElement<S>,
+		public readonly targets: E[] = [host as unknown as E]
 	) {}
 
 	/**
@@ -43,14 +32,27 @@ class UI<T extends Element> {
 	 * 
 	 * @since 0.9.0
 	 * @param {string} type - event type
-	 * @param {EventListenerOrEventListenerFactory} listeners - event listener or factory function
-	 * @returns {UI<T>} - self
+	 * @param {EventListenerOrEventListenerObject | EventListenerProvider} listenerOrProvider - event listener or provider function
+	 * @returns {this} - self
 	 */
-	on(type: string, listeners: EventListenerOrEventListenerFactory): UI<T> {
+	on(
+		type: string,
+		listenerOrProvider: EventListenerOrEventListenerObject | EventListenerProvider
+	): this {
 		this.targets.forEach((target, index) => {
-			const listener = fromFactory(listeners, target, index)
+			let listener: EventListenerOrEventListenerObject
+			if (isFunction(listenerOrProvider)) {
+				listener = (listenerOrProvider.length === 2)
+					? (listenerOrProvider as EventListenerProvider)(target, index)
+					: listenerOrProvider
+			} else if (isDefinedObject(listenerOrProvider) && isFunction(listenerOrProvider.handleEvent)) {
+				listener = listenerOrProvider as EventListenerObject
+			} else {
+				log(listenerOrProvider, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR)
+			    return
+			}
 			target.addEventListener(type, listener)
-			this.host.listeners.push(() => target.removeEventListener(type, listener))
+			this.host.cleanup.push(() => target.removeEventListener(type, listener))
 		})
         return this
 	}
@@ -60,10 +62,10 @@ class UI<T extends Element> {
 	 * 
 	 * @since 0.10.0
 	 * @param {string} type - event type
-	 * @param {unknown} detail - event detail
-	 * @returns {UI<T>} - self
+	 * @param {T} detail - event detail
+	 * @returns {this} - self
 	 */
-	emit(type: string, detail?: unknown): UI<T> {
+	emit<T>(type: string, detail?: T): this {
 		this.targets.forEach(target => {
 			target.dispatchEvent(new CustomEvent(type, {
 				detail,
@@ -77,20 +79,40 @@ class UI<T extends Element> {
 	 * Pass states to target element(s) of type UIElement using provided sources
 	 * 
 	 * @since 0.9.0
-	 * @param {S extends Record<PropertyKey, StateLikeOrStateLikeFactory<unknown>>} states - state sources
-	 * @returns {UI<T>} - self
+ 	 * @param {PassedSignals<T> | PassedSignalsProvider<T>} passedSignalsOrProvider - object of signal sources or provider function
+	 * @returns {this} - self
 	 */
-	pass<S extends Record<PropertyKey, StateLikeOrStateLikeFactory<unknown>>>(states: S): UI<T> {
+	pass<T extends ComponentSignals>(
+		passedSignalsOrProvider: PassedSignals<T> | PassedSignalsProvider<T>
+	): this {
 		this.targets.forEach(async (target, index) => {
 			await UIElement.registry.whenDefined(target.localName)
 			if (target instanceof UIElement) {
-				Object.entries(states).forEach(([name, source]) => {
-					const result = fromFactory(source, target, index)
-					const value = isPropertyKey(result)
-						? this.host.signals.get(result)
-						: toSignal(result, true)
-					if (value) target.set(name, value)
-				    else log(source, `Invalid source for state ${valueString(name)}`, LOG_ERROR)
+
+				// Get passed signals from provider function or object
+				let passedSignals: PassedSignals<T>
+				if (isFunction(passedSignalsOrProvider) && passedSignalsOrProvider.length === 2) {
+					passedSignals = passedSignalsOrProvider(target, index) as PassedSignals<T>
+                } else if (isDefinedObject(passedSignalsOrProvider)) {
+					passedSignals = passedSignalsOrProvider as PassedSignals<T>
+				} else {
+                    log(passedSignalsOrProvider, `Invalid passed signals provided`, LOG_ERROR)
+                    return
+                }
+
+				// Set states from passed signals or provider function or object to target UIElement instance
+				Object.entries(passedSignals).forEach(([key, source]) => {
+					if (isString(source)) {
+						if (source in this.host.signals) {
+							target.set(key, this.host.signals[source as keyof S])
+						} else {
+							log(source, `Invalid string key "${source}" for state ${valueString(key)}`, LOG_WARN)
+						}
+					} else if (isFunction(source) || isSignal(source)) {
+						target.set(key, toSignal(source, true))
+					} else {
+						log(source, `Invalid source for state ${valueString(key)}`, LOG_WARN)
+					}
 				})
             } else {
                 log(target, `Target is not a UIElement`, LOG_ERROR)
@@ -103,17 +125,20 @@ class UI<T extends Element> {
 	 * Sync state changes to target element(s) using provided functions
 	 * 
 	 * @since 0.9.0
-	 * @param {((host: UIElement, target: T, index: number) => void)[]} fns - state sync functions
-	 * @returns {UI<T>} - self
+	 * @param {((host: UIElement<S>, target: E, index: number) => void)[]} fns - state sync functions
+	 * @returns {this} - self
 	 */
-	sync(...fns: ((host: UIElement, target: T, index: number) => void)[]): UI<T> {
-		this.targets.forEach((target, index) => fns.forEach(fn => fn(this.host, target, index)))
+	sync(
+		...fns: ((host: UIElement, target: E, index: number) => void)[]
+	): this {
+		this.targets.forEach((target, index) =>
+			fns.forEach(fn => fn(this.host, target, index)))
         return this
 	}
 
 }
 
 export {
-	type StateLike, type StateLikeOrStateLikeFactory, type EventListenerOrEventListenerFactory,
+	type SignalLike, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
 	UI
 }

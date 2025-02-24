@@ -14,6 +14,19 @@ input-radiogroup {
 		font-size: var(--font-size-s);
 	}
 
+	& label {
+		border-radius: var(--space-xs);
+
+		&:focus-within {
+			box-shadow: 0 0 var(--space-xxs) 2px var(--color-selection);
+		}
+	
+		& input:focus {
+			outline: none;
+			box-shadow: none;
+		}
+	}
+
 	&.split-button {
 
 		& fieldset {
@@ -27,6 +40,7 @@ input-radiogroup {
 			height: var(--input-height);
 			min-width: var(--input-height);
 			border: 1px solid var(--color-border);
+			border-radius: 0;
 			border-left-width: 0;
 			background-color: var(--color-secondary);
 			color: var(--color-text);

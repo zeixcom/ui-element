@@ -97,7 +97,7 @@ bun run serve:docs
 
 To maintain a high-quality codebase, please follow these guidelines:
 
-* Follow the project’s existing coding style.
+* Follow the project's existing coding style.
 * Avoid unnecessary dependencies.
 * Use functional programming principles where applicable.
 * Prefer composition over inheritance.

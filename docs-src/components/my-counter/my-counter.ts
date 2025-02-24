@@ -1,20 +1,27 @@
-import { asInteger, setText, UIElement } from "@zeix/ui-element"
+import { asInteger, setText, UIElement } from '../../../'
 
-export class MyCounter extends UIElement {
+export class MyCounter extends UIElement<{ count: number }> {
+	static localName ='my-counter'
 	static observedAttributes = ['count']
-	static states = {
-		count: asInteger
-	}
+
+	states = {
+        count: asInteger,
+    }
 
 	connectedCallback() {
-		this.set('parity', () => (this.get<number>('count') ?? 0) % 2 ? 'odd' : 'even')
-		const setCount = (direction: number, fallback: number = 0) => () => {
-			this.set('count', (v?: number) => (null != v ? v + direction : fallback))
-		}
-		this.first('.increment').on('click', setCount(1, 1))
-		this.first('.decrement').on('click', setCount(-1))
+        super.connectedCallback()
+
+		// Event handlers
+		this.first('.increment').on('click', () => {
+			this.set('count', v => ++v)
+		})
+		this.first('.decrement').on('click', () => {
+			this.set('count', v => --v)
+		})
+
+		// Effects
 		this.first('.count').sync(setText('count'))
-		this.first('.parity').sync(setText('parity'))
-	}
+		this.first('.parity').sync(setText(() => this.get('count') % 2 ? 'odd' : 'even'))
+    }
 }
-MyCounter.define('my-counter')
+MyCounter.define()

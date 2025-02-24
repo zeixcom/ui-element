@@ -10,7 +10,7 @@
 </head>
 <body>
 	<header class="content-grid">
-		<h1 class="content">UIElement Docs <small>Version 0.10.0</small></h1>
+		<h1 class="content">UIElement Docs <small>Version 0.10.1</small></h1>
 		
 	<nav class="breakout">
 		<ol>
@@ -111,7 +111,9 @@
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> src</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	
 </code-block>
@@ -128,7 +130,9 @@
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	
 </code-block>
@@ -153,7 +157,9 @@
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> src</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"/path/to/your/hosted/ui-element.js"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	
 </code-block>
@@ -177,7 +183,9 @@
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">npm</span><span style="color:#E6DB74"> install</span><span style="color:#E6DB74"> @zeix/ui-element</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	
 </code-block>
@@ -190,7 +198,9 @@
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	
 </code-block>
@@ -203,7 +213,7 @@
 <section>
 
 <h2>Creating Your First Component</h2>
-<p>Now, let’s create an interactive Web Component to verify your setup.</p>
+<p>Now, let&#39;s create an interactive Web Component to verify your setup.</p>
 <p><strong>What This Component Does</strong></p>
 <ul>
 <li>Displays <strong>“Hello, World!”</strong> by default.</li>
@@ -224,7 +234,9 @@
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	
 </code-block>
@@ -236,30 +248,36 @@
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"module"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F92672">	import</span><span style="color:#F8F8F2"> { UIElement, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'</span></span>
+<span class="line"><span style="color:#F92672">	import</span><span style="color:#F8F8F2"> { UIElement, setText, RESET } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HelloWorld</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">		static</span><span style="color:#F8F8F2"> localName </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'hello-world'</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"></span>
 <span class="line"><span style="color:#A6E22E">		connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">			// Update content dynamically based on the 'name' signal</span></span>
-<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">));</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">			// Handle user input to change the 'name'</span></span>
-<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">, e.target.value </span><span style="color:#F92672">||</span><span style="color:#AE81FF"> undefined</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">, e.target.value </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> RESET)</span></span>
+<span class="line"><span style="color:#F8F8F2">			});</span></span>
 <span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
-<span class="line"><span style="color:#F8F8F2">	HelloWorld.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#F8F8F2">	HelloWorld.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">();</span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	<button type="button" class="overlay">Expand</button>
 </code-block>
 <p><strong>What Happens Here?</strong></p>
 <ul>
 <li>✅ The <code>setText(&#39;name&#39;)</code> effect <strong>syncs the state</strong> with the <code>&lt;span&gt;</code>.</li>
-<li>✅ The <code>.on(&#39;input&#39;)</code> event <strong>updates the state</strong> whenever you type, falling back to the initial value if empty.</li>
+<li>✅ The <code>.on(&#39;input&#39;)</code> event <strong>updates the state</strong> whenever you type, falling back to the initial value if empty with (constant <code>RESET</code>).</li>
 <li>✅ The Web Component <strong>hydrates automatically</strong> when inserted into the page.</li>
 </ul>
 </section>
@@ -274,19 +292,19 @@
 <li>The greeting updates as you type</li>
 </ul>
 <component-demo>
-<div class="preview">
-<hello-world>
-<template shadowrootmode="open">
-<label>Your name<br>
-<input type="text">
-</label>
-<p>Hello, <span>World</span>!</p>
-</template>
-</hello-world>
-</div>
+	<div class="preview">
+		<hello-world>
+			<template shadowrootmode="open">
+				<label>Your name<br>
+					<input type="text">
+				</label>
+				<p>Hello, <span>World</span>!</p>
+			</template>
+		</hello-world>
+	</div>
 </component-demo>
 
-<p>If it’s not working:</p>
+<p>If it&#39;s not working:</p>
 <ul>
 <li>Check the browser console for errors (missing imports, typos).</li>
 <li>Ensure your <code>&lt;script&gt;</code> tag is set to <code>type=&quot;module&quot;</code> when using ES modules.</li>

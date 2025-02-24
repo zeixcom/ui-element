@@ -1,11 +1,11 @@
 /**
  * @name UIElement
- * @version 0.10.0
+ * @version 0.10.1
  * @author Esther Brunner
  */
 export {
 	type Signal, type State, type Computed,
-	UNSET, state, computed, effect, batch, isState, isSignal, toSignal
+	UNSET, state, computed, effect, batch, isState, isComputed, isSignal, toSignal
 } from '@zeix/cause-effect'
 export {
 	type EnqueueDedupe,
@@ -13,11 +13,11 @@ export {
 } from '@zeix/pulse'
 
 export {
-	type AttributeParser, type StateInitializer,
-	UIElement
+	type AttributeParser,
+	RESET, UIElement, parse
 } from './src/ui-element'
 export {
-	type StateLike, type StateLikeOrStateLikeFactory, type EventListenerOrEventListenerFactory,
+	type SignalLike, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
 	UI
 } from './src/core/ui'
 export {
@@ -28,10 +28,17 @@ export {
 	useContext
 } from './src/core/context'
 export {
-	parse, asBoolean, asInteger, asNumber, asString, asEnum, asJSON
-} from './src/core/parse'
+	asBoolean,
+	asIntegerWithDefault, asInteger, asNumberWithDefault, asNumber,
+	asStringWithDefault, asString, asEnum,
+	asJSONWithDefault, asJSON
+} from './src/lib/parsers'
 export {
 	type ElementUpdater,
 	updateElement, createElement, removeElement,
-	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
+	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
 } from './src/lib/effects'
+/* export {
+	type ComponentSetup,
+	component
+} from './src/lib/component' */

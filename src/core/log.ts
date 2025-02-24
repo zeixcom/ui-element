@@ -73,4 +73,8 @@ const log = <T>(value: T, msg: string, level: LogLevel = LOG_DEBUG): T => {
 	return value
 }
 
-export { log, elementName, valueString, DEV_MODE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR }
+export {
+	type LogLevel,
+	log, elementName, valueString,
+	DEV_MODE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR
+}

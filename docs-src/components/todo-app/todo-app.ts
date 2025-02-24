@@ -1,35 +1,43 @@
-import { setAttribute, setProperty, setText, UIElement } from "@zeix/ui-element"
-import type { InputRadiogroup } from "../input-radiogroup/input-radiogroup"
-import type { InputField } from "../input-field/input-field"
+import { UIElement, setAttribute, setProperty, setText } from "../../.."
 import type { InputCheckbox } from "../input-checkbox/input-checkbox"
 
-export class TodoApp extends UIElement {
+export class TodoApp extends UIElement<{
+	tasks: InputCheckbox[],
+	total: number,
+	completed: number,
+	active: number,
+	filter: string,
+}> {
+	static localName = 'todo-app'
+
+	states = {
+		tasks: [],
+		total: () => this.get('tasks').length,
+        completed: () => this.get('tasks').filter(el => el.get('checked')).length,
+        active: () => {
+			const tasks = this.get('tasks')
+			return tasks.length - tasks.filter(el => el.get('checked')).length
+		},
+        filter: () => (this.querySelector('input-radiogroup')?.get('value')?? 'all'),
+	}
+
 	connectedCallback() {
-		const input = this.querySelector<InputField>('input-field')
+		super.connectedCallback()
 
-		// State signal 'tasks': State<InputCheckbox[]>
-		this.#updateTasks()
+		// Set tasks state from the DOM
+		const updateTasks = () => {
+			this.set('tasks', this.all<InputCheckbox>('input-checkbox').targets)
+		}
+		updateTasks()
 
-		// Derived signals
-		this.set('total', () =>
-			this.get<InputCheckbox[]>('tasks')!.length
-		)
-		this.set('completed', () =>
-			this.get<InputCheckbox[]>('tasks')!.filter(el => el.get('checked')).length
-        )
-		this.set('active', () =>
-			this.get<number>('total')! - this.get<number>('completed')!
-		)
-		this.set('filter', () =>
-            this.querySelector<InputRadiogroup>('input-radiogroup')?.get<string>('value') ?? 'all'
-        )
-		
+		// Coordinate new todo form
+		const input = this.querySelector('input-field')
 		this.first('form').on('submit', (e: Event) => {
 			e.preventDefault()
 
 			// Wait for microtask to ensure the input field value is updated
 			queueMicrotask(() => {
-				const value = input?.get<string>('value')?.trim()
+				const value = input?.get('value').toString().trim()
 				if (value) {
 					const ol = this.querySelector('ol')
 					const fragment = this.querySelector('template')
@@ -39,7 +47,7 @@ export class TodoApp extends UIElement {
 						span.textContent = value
 						ol.appendChild(fragment)
 					}
-					this.#updateTasks()
+					updateTasks()
 					input?.clear()
 				}
 			})
@@ -47,44 +55,38 @@ export class TodoApp extends UIElement {
 
 		// Coordinate .submit button
 		this.first('.submit').pass({
-			disabled: () => input?.get('empty')
+			disabled: () => input?.get('empty') ?? true
 		})
 
 		// Event handler and effect on ol element
 		this.first('ol')
+			.sync(setAttribute('filter', 'filter'))
 			.on('click', (e: Event) => {
 				const el = e.target as HTMLElement
 				if (el.localName === 'button') {
 					el.closest('li')?.remove()
-					this.#updateTasks()
+					updateTasks()
 				}
 			})
-			.sync(setAttribute('filter'))
-		
+
 		// Effects on .todo-count elements
 		this.first('.count').sync(setText('active'))
-		const setAriaHidden = (fn: (n: number) => boolean) =>
-			setProperty('ariaHidden', () => fn(this.get<number>('active')!))
-		this.first('.singular').sync(setAriaHidden(n => n > 1))
-		this.first('.plural').sync(setAriaHidden(n => n === 1))
-		this.first('.remaining').sync(setAriaHidden(n => !n))
-		this.first('.all-done').sync(setAriaHidden(n => !!n))
+		this.first('.singular').sync(setProperty('hidden', () => (this.get('active') ?? 0) > 1))
+		this.first('.plural').sync(setProperty('hidden', () => this.get('active') === 1))
+		this.first('.remaining').sync(setProperty('hidden', () => !this.get('active')))
+		this.first('.all-done').sync(setProperty('hidden', () => !!this.get('active')))
 
 		// Coordinate .clear-completed button
 		this.first('.clear-completed')
 			.on('click', () => {
-				this.get<InputCheckbox[]>('tasks')!
+				this.get('tasks')
 					.filter(el => el.get('checked'))
 					.forEach(el => el.parentElement?.remove())
-				this.#updateTasks()
+				updateTasks()
 			})
 			.pass({
-				disabled: () => !(this.get('completed'))
+				disabled: () => !this.get('completed')
 			})
 	}
-
-	#updateTasks() {
-		this.set('tasks', Array.from(this.querySelectorAll('input-checkbox')))
-	}
 }
-TodoApp.define('todo-app')
+TodoApp.define()

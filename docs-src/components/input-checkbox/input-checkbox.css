@@ -1,5 +1,15 @@
 input-checkbox {
 	flex-grow: 1;
+	border-radius: var(--space-xs);
+
+	&:focus-within {
+		box-shadow: 0 0 var(--space-xxs) 2px var(--color-selection);
+	}
+
+	& input:focus {
+		outline: none;
+		box-shadow: none;
+	}
 
 	& label {
 		font-size: var(--font-size-s);

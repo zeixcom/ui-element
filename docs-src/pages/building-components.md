@@ -35,6 +35,20 @@ Every UIElement component must be registered with a valid custom tag name (two o
 MyComponent.define('my-component');
 ```
 
+<callout-box class="tip">
+
+**Alternative**: If you prefer you can also declare the custom element tag within the component and call `.define()` without arguments.
+
+```js
+class MyComponent extends UIElement {
+	static localName = 'my-component';
+	/* component definition */
+}
+MyComponent.define()
+```
+
+</callout-box>
+
 ### Using the Custom Element in HTML
 
 Once registered, the component can be used like any native HTML element:
@@ -49,11 +63,11 @@ Once registered, the component can be used like any native HTML element:
 
 ## Web Component Lifecycle in UIElement
 
-Every UIElement component follows a **lifecycle** from creation to removal. Here’s how the key lifecycle methods work:
+Every UIElement component follows a **lifecycle** from creation to removal. Here's how the key lifecycle methods work:
 
 ### Component Creation (constructor())
 
-Runs when the element is created **but before it’s attached to the DOM**. Avoid accessing attributes or child elements here.
+Runs when the element is created **but before it's attached to the DOM**. Avoid accessing attributes or child elements here.
 
 ### Mounted in the DOM (connectedCallback())
 
@@ -74,19 +88,23 @@ class MyComponent extends UIElement {
 }
 ```
 
-If your component initializes states from `static states` or provides or consumes context (`static providedContexts` / `static consumedContexts`), you need to call `super.connectedCallback()`.
+If your component initializes states from `states` or provides or consumes context (`static providedContexts` / `static consumedContexts`), you need to call `super.connectedCallback()`.
 
 ```js
 class HelloUser extends UIElement {
 	static consumedContexts = ['display-name']; // Signal provided by a parent component
-	static states = {
+
+	states = {
 		greeting: 'Hello', // Initial value of 'greeting' signal
+		upper: () => this.get('display-name').toUpperCase(), // Compute function for transformation on 'display-name' signal
 	}
 
 	connectedCallback() {
-		super.connectedCallback();
+		super.connectedCallback(); // Initializes state signals from values, attributes, context or creates computed signals from functions 
+
 		this.first('.greeting').sync(setText('greeting'));
 		this.first('.user').sync(setText('display-name'));
+		this.first('.profile h2').sync(setText('upper'));
 	}
 }
 ```
@@ -103,11 +121,11 @@ class MyComponent extends UIElement {
 	connectedCallback() {
 		this.intersectionObserver = new IntersectionObserver(([entry]) => {
 			// Do something
-		}).observe(this)
+		}).observe(this);
 	}
 
 	disconnentedCallback() {
-		super.disconnectedCallback();
+		super.disconnectedCallback(); // Automatically removes event listeners bound with `.on()`
 		if (this.intersectionObserver) this.intersectionObserver.disconnect();
 	}
 }
@@ -141,6 +159,18 @@ if (this.has('count')) { /* Do something */ }
 this.delete('count'); // Removes the signal and its dependencies
 ```
 
+### Characteristics and Special Values
+
+Signals in UIElement are of a **fixed type** and **non-nullable**. This allows to **simplify the logic** as you will never have to check the type or perform null-checks.
+
+* If you use **TypeScript** (recommended), **you will be warned** that `null` or `undefined` cannot be assigned to a signal or if you try to assign a value of a wrong type.
+* If you use vanilla **JavaScript** without a build step, setting a signal to `null` or `undefined` **will log an error to the console and abort**. However, strict type checking is not enforced at runtime.
+
+Because of the **non-nullable nature of signals** in UIElement, we need two special values that can be assigned to any signal type:
+
+* **`RESET`**: Will **reset to the server-rendered version** that was there before UIElement took control. This is what you want to do most of the times when a signal lacks a specific value.
+* **`UNSET`**: Will **delete the signal**, **unsubscribe its watchers** and also **delete related attributes or style properties** in effects. Use this with special care!
+
 ### Why Signals with a Map Interface?
 
 UIElement **uses signals** instead of standard properties or attributes because it **ensures reactivity, loose coupling, and avoids common pitfalls with the DOM API**.
@@ -169,22 +199,34 @@ static observedAttributes = ['count']; // Automatically becomes a signal
 ### Parsing Attribute Values
 
 ```js
-static states = {
+states = {
 	count: asInteger, // Convert '42' -> 42
 	date: v => new Date(v), // Custom parser: '2025-02-14' -> Date object
 };
 ```
+
+<callout-box class="caution">
+
+**Careful**: Attributes **may not be present** on the element or **parsing to the desired type may fail**. To ensure **non-nullability** of signals, UIElement falls back to neutral defaults:
+
+* `''` (empty string) for `string`
+* `0` for `number`
+* `{}` (empty object) for objects of any kind
+
+Pre-defined parsers (see next section) come with a variant `*WithDefault()` that allow you to set custom fallback values for attribute parsers.
+
+</callout-box>
 
 ### Pre-defined Parsers in UIElement
 
 | Function     | Description |
 | ------------ | ----------- |
 | `asBoolean`  | Converts `"true"` / `"false"` to a **boolean** (`true` / `false`). Also treats empty attributes (`checked`) as `true`. |
-| `asInteger`  | Converts a numeric string (e.g., `"42"`) to an **integer** (`42`). |
-| `asNumber`   | Converts a numeric string (e.g., `"3.14"`) to a **floating-point number** (`3.14`). |
-| `asString`   | Returns the attribute value as a **string** (unchanged). |
+| `asInteger`, `asIntegerWithDefault(1)` | Converts a numeric string (e.g., `"42"`) to an **integer** (`42`). |
+| `asNumber`, `asNumberWithDefault(0.1)` | Converts a numeric string (e.g., `"3.14"`) to a **floating-point number** (`3.14`). |
+| `asString`, `asStringwithDefault('foo')` | Returns the attribute value as a **string** (unchanged). |
 | `asEnum([...])` | Ensures the string matches **one of the allowed values**. Example: `asEnum(['small', 'medium', 'large'])`. If the value is not in the list, it defaults to the first option. |
-| `asJSON`     | Parses a JSON string (e.g., `'["a", "b", "c"]'`) into an **array** or **object**. If invalid, returns `null`. |
+| `asJSON`, `asJSONWithDefault({ theme: 'dark' })` | Parses a JSON string (e.g., `'["a", "b", "c"]'`) into an **array** or **object**. If invalid, returns `{}`. |
 
 </section>
 
@@ -258,13 +300,19 @@ this.first('.count').sync(
 | Function            | Description |
 | ------------------- | ----------- |
 | `setText()`         | Updates **text content** with a `string` signal value (while preserving comment nodes). |
-| `setProperty()`     | Updates a given **property** with any signal value. |
+| `setProperty()`     | Updates a given **property** with any signal value.* |
 | `setAttribute()`    | Updates a given **attribute** with a `string` signal value. |
 | `toggleAttribute()` | Toggles a given **boolean attribute** with a `boolean` signal value. |
 | `toggleClass()`     | Toggles a given **CSS class** with a `boolean` signal value. |
 | `setStyle()`        | Updates a given **CSS property** with a `string` signal value. |
 | `createElement()`   | Inserts a **new element** with a given tag name with a `Record<string, string>` signal value for attributes. |
 | `removeElement()`   | Removes an element if the `boolean` signal value is `true`. |
+
+<callout-box class="tip">
+
+**Tip**: TypeScript will check whether a value of a given type is assignable to a certain element type. You might have to specify a type hint for the queried element type. Prefer `setProperty()` over `setAttribute()` for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.
+
+</callout-box>
 
 ### Simplifying Effect Notation
 
@@ -331,30 +379,94 @@ Unlike some frameworks that **re-render entire components**, UIElement updates o
 Bringing all of the above together, you are now ready to build your own components like this slider with prev / next buttons and dot indicators, demonstrating single-component reactivity.
 
 <component-demo>
-<div class="preview">
-<my-slider>
-<div class="slides">
-<div class="slide active">First Slide</div>
-<div class="slide">Second Slide</div>
-<div class="slide">Third Slide</div>
-</div>
-<button type="button" class="prev" aria-label="Previous">‹</button>
-<button type="button" class="next" aria-label="Next">›</button>
-<div class="dots">
-<span class="active"></span>
-<span></span>
-<span></span>
-</div>
-</my-slider>
-</div>
-<accordion-panel collapsible>
-<details>
-<summary>Source Code</summary>
-<lazy-load src="./examples/my-slider.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
+	<div class="preview">
+		<my-slider>
+			<h2 class="visually-hidden">Slides</h2>
+			<div class="slides">
+				<div class="slide active">
+					<h3>Slide 1</h3>
+					<hello-world>
+						<label>Your name<br>
+							<input type="text">
+						</label>
+						<p>Hello, <span>World</span>!</p>
+					</hello-world>
+				</div>
+				<div class="slide">
+					<h3>Slide 2</h3>
+					<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
+						<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
+						<p class="value" hidden>0</p>
+						<button type="button" class="increment primary">Add to Cart</button>
+					</spin-button>
+				</div>
+				<div class="slide">
+					<h3>Slide 3</h3>
+					<rating-feedback>
+						<form>
+							<rating-stars>
+								<fieldset>
+									<legend class="visually-hidden">Rate</legend>
+									<label>
+										<input type="radio" class="visually-hidden" name="rating" value="1">
+										<span class="label">☆</span>
+									</label>
+									<label>
+										<input type="radio" class="visually-hidden" name="rating" value="2">
+										<span class="label">☆</span>
+									</label>
+									<label>
+										<input type="radio" class="visually-hidden" name="rating" value="3">
+										<span class="label">☆</span>
+									</label>
+									<label>
+										<input type="radio" class="visually-hidden" name="rating" value="4">
+										<span class="label">☆</span>
+									</label>
+									<label>
+										<input type="radio" class="visually-hidden" name="rating" value="5">
+										<span class="label">☆</span>
+									</label>
+								</fieldset>
+							</rating-stars>
+							<div class="feedback" hidden>
+								<header>
+									<button button="button" class="hide" aria-label="Hide">×</button>
+									<p hidden>We're sorry to hear that! Your feedback is important, and we'd love to improve. Let us know how we can do better.</p>
+									<p hidden>Thank you for your honesty. We appreciate your feedback and will work on making things better.</p>
+									<p hidden>Thanks for your rating! If there's anything we can improve, we'd love to hear your thoughts.</p>
+									<p hidden>We're glad you had a good experience! If there's anything that could make it even better, let us know.</p>
+									<p hidden>Thank you for your support! We're thrilled you had a great experience. Your feedback keeps us motivated!</p>
+								</header>
+								<fieldset>
+									<label for="rating-feedback">Describe your experience (optional)</label>
+									<textarea id="rating-feedback"></textarea>
+									<input-button disabled>
+										<button type="submit" class="primary" disabled>Submit</button>
+									</input-button>
+								</fieldset>
+							</div>
+						</form>
+					</rating-feedback>
+				</div>
+			</div>
+			<button type="button" class="prev" aria-label="Previous">‹</button>
+			<button type="button" class="next" aria-label="Next">›</button>
+			<div class="dots">
+				<span class="active"></span>
+				<span></span>
+				<span></span>
+			</div>
+		</my-slider>
+	</div>
+	<accordion-panel collapsible>
+		<details>
+			<summary>Source Code</summary>
+			<lazy-load src="./examples/my-slider.html">
+				<p class="loading">Loading...</p>
+			</lazy-load>
+		</details>
+	</accordion-panel>
 </component-demo>
 
 </section>

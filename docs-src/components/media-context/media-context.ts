@@ -1,4 +1,11 @@
-import { UIElement, type Context } from "@zeix/ui-element"
+import { UIElement, type Context } from '../../../'
+
+/* === Provided Context Keys === */
+
+const MEDIA_MOTION = 'media-motion'
+const MEDIA_THEME = 'media-theme'
+const MEDIA_VIEWPORT = 'media-viewport'
+const MEDIA_ORIENTATION = 'media-orientation'
 
 /* === Pure Functions === */
 
@@ -10,17 +17,21 @@ const parseBreakpoint = (value: string | null, fallback: string) => {
 	return Number.isFinite(v) ? v + unit : fallback
 }
 
-/* === Provided Context Keys === */
-
-const MEDIA_MOTION = 'media-motion' as Context<string, boolean>
-const MEDIA_THEME = 'media-theme' as Context<string, string>
-const MEDIA_VIEWPORT = 'media-viewport' as Context<string, string>
-const MEDIA_ORIENTATION = 'media-orientation' as Context<string, string>
-
 /* === Class Definition === */
 
-export class MediaContext extends UIElement {
-	static providedContexts = [MEDIA_MOTION, MEDIA_THEME, MEDIA_VIEWPORT, MEDIA_ORIENTATION]
+export class MediaContext extends UIElement<{
+	'media-motion': boolean,
+    'media-theme': string,
+    'media-viewport': string,
+    'media-orientation': string,
+}> {
+	static readonly localName ='media-context'
+	static providedContexts = [
+		MEDIA_MOTION as Context<string, boolean>,
+		MEDIA_THEME as Context<string, string>,
+		MEDIA_VIEWPORT as Context<string, string>,
+		MEDIA_ORIENTATION as Context<string, string>,
+	]
 
 	connectedCallback() {
 		super.connectedCallback()
@@ -75,4 +86,4 @@ export class MediaContext extends UIElement {
 		screenOrientation.addEventListener('change', e => this.set(MEDIA_THEME, e.matches ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT))
 	}
 }
-MediaContext.define('media-context')
+MediaContext.define()

@@ -30,4 +30,4 @@ declare const valueString: (value: unknown) => string;
  * @returns {T} - value passed through
  */
 declare const log: <T>(value: T, msg: string, level?: LogLevel) => T;
-export { log, elementName, valueString, DEV_MODE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR };
+export { type LogLevel, log, elementName, valueString, DEV_MODE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR };

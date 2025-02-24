@@ -1,19 +1,23 @@
-import { UIElement } from "@zeix/ui-element"
-import { type SpinButton } from "../spin-button/spin-button"
+import { UIElement } from "../../../"
+import type { SpinButton } from "../spin-button/spin-button"
 
-class ProductCatalog extends UIElement {
+const asPositiveIntegerString = (value: unknown): string =>
+	typeof value ==='number' && Number.isInteger(value) && value > 0
+		? String(value)
+		: ''
+
+export class ProductCatalog extends UIElement {
+	static localName = 'product-catalog'
+
 	connectedCallback() {
-
-		// Derive the total count of items in the shopping cart
-		this.set('total', () =>
-			Array.from(this.querySelectorAll('spin-button') as NodeListOf<SpinButton>)
-				.reduce((sum, item) => sum + (item.get<number>('count') ?? 0), 0))
-
+        
 		// Pass the total to the badge button for display
-		this.first('badge-button').pass({ badge: () => {
-			const total = this.get('total')
-			return typeof total === 'number' && total > 0 ? String(total) : ''
-		}})
+		this.first('input-button').pass({
+			badge: () => asPositiveIntegerString(
+				this.all<SpinButton>('spin-button').targets
+					.reduce((sum, item) => sum + item.get('value'), 0)
+			)
+		})
 	}
 }
-ProductCatalog.define('product-catalog')
+ProductCatalog.define()

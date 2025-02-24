@@ -653,16 +653,19 @@ class TabList extends UIElement {
 
 		// Pass 'collapsible' state to tab-panels based on 'accordion' state
 		this.all('tab-panel').pass({
-		collapsible: 'accordion'
+			collapsible: 'accordion'
 		});
 
 		// Handle tab clicks in normal tabbed mode
 		this.all('.tab-button').on('click', () => this.set('activeIndex', index))
 
 		// Set active tab-panel based on 'activeIndex'
-		this.all('tab-panel').sync((host, target, index) =>
-		this.self.sync(toggleClass('active', () => index === this.get('activeIndex'))(host, target))
-		);
+		this.all('tab-panel').sync((host, target, index) => {
+			toggleClass(
+				'active',
+				() => index === this.get('activeIndex')
+			)(host, target)
+		});
 	}
 }
 TabList.define('tab-list');

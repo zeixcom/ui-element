@@ -1,4 +1,4 @@
-import type { UIElement } from "../ui-element"
+import { UIElement, RESET, type ComponentSignals } from "../ui-element"
 import { isFunction } from "./util"
 
 /** @see https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md */
@@ -66,7 +66,7 @@ const CONTEXT_REQUEST = 'context-request'
  * @property {boolean} [subscribe=false] - whether to subscribe to context changes
  */
 class ContextRequestEvent<T extends UnknownContext> extends Event {
-	public constructor(
+	constructor(
 		public readonly context: T,
 		public readonly callback: ContextCallback<ContextType<T>>,
 		public readonly subscribe: boolean = false
@@ -85,27 +85,28 @@ class ContextRequestEvent<T extends UnknownContext> extends Event {
  * @param {UIElement} host - UIElement instance to initialize context for
  * @return {boolean} - true if context provider was initialized successfully, false otherwise
  */
-const useContext = (host: UIElement): boolean => {
+const useContext = <S extends ComponentSignals>(host: UIElement<S>): boolean => {
 	const proto = host.constructor as typeof UIElement
 
-	// context consumers
+	// Context consumers
 	const consumed = proto.consumedContexts || []
-	setTimeout(() => { // wait for all custom elements to be defined
+	queueMicrotask(() => { // Wait for all custom elements to be defined
 		for (const context of consumed)
 			host.dispatchEvent(new ContextRequestEvent(
 				context,
-				(value: unknown) => host.set(String(context), value)
+				(value: ContextType<typeof context>) =>
+					host.set(String(context), value ?? RESET)
 			))
 	})
 
-	// context providers
+	// Context providers
 	const provided = proto.providedContexts || []
 	if (!provided.length) return false
 	host.addEventListener(CONTEXT_REQUEST, (e: ContextRequestEvent<UnknownContext>) => {
 		const { context, callback } = e
 		if (!provided.includes(context) || !isFunction(callback)) return
 		e.stopPropagation()
-		callback(host.signals.get(String(context)))
+		callback(host.signals[String(context)])
 	})
 
 	return true

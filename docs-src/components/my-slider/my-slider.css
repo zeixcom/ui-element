@@ -45,27 +45,34 @@ my-slider {
 	
 	> button {
 		position: absolute;
-		top: 0;
-		height: 100%;
+		top: 2%;
+		height: 96%;
 		border: 0;
+		border-radius: var(--space-xs);
 		background: transparent;
 		padding: var(--space-m);
 		font-size: var(--font-size-xxl);
 		color: var(--color-text);
 		opacity: var(--opacity-dimmed);
+		transition: opacity var(--transition-short) var(--easing-inout);
 
 		&:hover,
 		&:active,
 		&:focus {
             opacity: var(--opacity-solid);
+			background-color: rgba(0, 0, 0, 0.05);
         }
 
+		&:active {
+			background-color: rgba(0, 0, 0, 0.1);
+		}
+
 		&.prev {
-			left: 0;
+			left: 1%;
 		}
 
 		&.next {
-            right: 0;
+            right: 1%;
         }
 	}
 }

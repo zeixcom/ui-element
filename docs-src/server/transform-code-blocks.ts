@@ -35,7 +35,9 @@ export const transformCodeBlocks = async (markdown: string): Promise<{ processed
 	</p>
 	${highlighted}
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	${collapsed ? `<button type="button" class="overlay">Expand</button>` : ''}
 </code-block>

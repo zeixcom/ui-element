@@ -89,7 +89,7 @@ import { UIElement } from '@zeix/ui-element'
 
 ## Creating Your First Component
 
-Now, let’s create an interactive Web Component to verify your setup.
+Now, let's create an interactive Web Component to verify your setup.
 
 **What This Component Does**
 
@@ -115,26 +115,30 @@ Save the following inside a `<script type="module">` tag or an external JavaScri
 
 ```html
 <script type="module">
-	import { UIElement, setText } from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
+	import { UIElement, setText, RESET } from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
 
 	class HelloWorld extends UIElement {
+		static localName = 'hello-world';
+
 		connectedCallback() {
 
 			// Update content dynamically based on the 'name' signal
-			this.first('span').sync(setText('name'))
+			this.first('span').sync(setText('name'));
 
 			// Handle user input to change the 'name'
-			this.first('input').on('input', e => this.set('name', e.target.value || undefined))
+			this.first('input').on('input', e => {
+				this.set('name', e.target.value || RESET)
+			});
 		}
 	}
-	HelloWorld.define('hello-world');
+	HelloWorld.define();
 </script>
 ```
 
 **What Happens Here?**
 
 * ✅ The `setText('name')` effect **syncs the state** with the `<span>`.
-* ✅ The `.on('input')` event **updates the state** whenever you type, falling back to the initial value if empty.
+* ✅ The `.on('input')` event **updates the state** whenever you type, falling back to the initial value if empty with (constant `RESET`).
 * ✅ The Web Component **hydrates automatically** when inserted into the page.
 
 </section>
@@ -150,19 +154,19 @@ If everything is set up correctly, you should see:
 * The greeting updates as you type
 
 <component-demo>
-<div class="preview">
-<hello-world>
-<template shadowrootmode="open">
-<label>Your name<br>
-<input type="text">
-</label>
-<p>Hello, <span>World</span>!</p>
-</template>
-</hello-world>
-</div>
+	<div class="preview">
+		<hello-world>
+			<template shadowrootmode="open">
+				<label>Your name<br>
+					<input type="text">
+				</label>
+				<p>Hello, <span>World</span>!</p>
+			</template>
+		</hello-world>
+	</div>
 </component-demo>
 
-If it’s not working:
+If it's not working:
 
 * Check the browser console for errors (missing imports, typos).
 * Ensure your `<script>` tag is set to `type="module"` when using ES modules.

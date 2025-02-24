@@ -1,6 +1,6 @@
 # UIElement
 
-Version 0.10.0
+Version 0.10.1
 
 **UIElement** - transform reusable markup, styles and behavior into powerful, reactive, and maintainable Web Components.
 
@@ -158,15 +158,17 @@ class TabList extends UIElement {
         // Handle click events on menu buttons and update active tab index
         this.all('menu button')
             .on('click', (_el, index) => () => this.set('active', index))
-            .sync((host, target, index) => setAttribute(
-                'aria-pressed',
-                () => host.get('active') === index ? 'true' : 'false')(host, target)
-            )
+            .sync((host, target, index) => {
+				setAttribute(
+					'aria-pressed',
+					() => host.get('active') === index ? 'true' : 'false'
+				)(host, target)
+			})
 
         // Pass open attribute to tab-panel elements based on active tab index
-        this.all('tab-panel').pass({
-            open: (_el, index) => () => index === this.get('active')
-        })
+        this.all('tab-panel').pass((_el, index) => ({
+            open: () => index === this.get('active')
+        }))
     }
 }
 TabList.define('tab-list')
@@ -218,7 +220,7 @@ import { UIElement, setText, setProperty, effect, enqueue } from '@zeix/ui-eleme
 
 class LazyLoad extends UIElement {
     static observedAttributes = ['src']
-    static states = {
+    states = {
         src: v => {
                 let url = ''
                 try {
@@ -238,12 +240,12 @@ class LazyLoad extends UIElement {
 
         // Show / hide loading message
         this.first('.loading')
-            .sync(setProperty('ariaHidden', () => !!this.get('error')))
+            .sync(setProperty('hidden', () => !!this.get('error')))
 
         // Set and show / hide error message
         this.first('.error')
             .sync(setText('error'))
-            .sync(setProperty('ariaHidden', () => !this.get('error')))
+            .sync(setProperty('hidden', () => !this.get('error')))
 
         // Load content from provided URL
         effect(async () => {

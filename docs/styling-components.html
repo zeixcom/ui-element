@@ -10,7 +10,7 @@
 </head>
 <body>
 	<header class="content-grid">
-		<h1 class="content">UIElement Docs <small>Version 0.10.0</small></h1>
+		<h1 class="content">UIElement Docs <small>Version 0.10.1</small></h1>
 		
 	<nav class="breakout">
 		<ol>
@@ -129,7 +129,9 @@
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	
 </code-block>
@@ -169,7 +171,9 @@
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">my-component</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	<button type="button" class="overlay">Expand</button>
 </code-block>
@@ -199,7 +203,9 @@
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	
 </code-block>
@@ -219,7 +225,9 @@
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	
 </code-block>
@@ -260,7 +268,9 @@
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
-		<button type="button" class="secondary small">Copy</button>
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
 	</input-button>
 	<button type="button" class="overlay">Expand</button>
 </code-block>
@@ -272,21 +282,21 @@
 <p>Just because UIElement is a JavaScript library doesn&#39;t mean you have to use JavaScript in every component. It&#39;s perfectly fine to use custom elements just for styling purposes.</p>
 <p>Here&#39;s the example of the <code>&lt;callout-box&gt;</code> we&#39;re using in this documentation:</p>
 <component-demo>
-<div class="preview">
-<callout-box>This is an informational message.</callout-box>
-<callout-box class="tip">Remember to hydrate while coding!</callout-box>
-<callout-box class="caution">Be careful with this operation.</callout-box>
-<callout-box class="danger">This action is irreversible!</callout-box>
-<callout-box class="note">This is just a side note.</callout-box>
-</div>
-<accordion-panel collapsible>
-<details>
-<summary>Source Code</summary>
-<lazy-load src="./examples/callout-box.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
+	<div class="preview">
+		<callout-box>This is an informational message.</callout-box>
+		<callout-box class="tip">Remember to hydrate while coding!</callout-box>
+		<callout-box class="caution">Be careful with this operation.</callout-box>
+		<callout-box class="danger">This action is irreversible!</callout-box>
+		<callout-box class="note">This is just a side note.</callout-box>
+	</div>
+	<accordion-panel collapsible>
+		<details>
+			<summary>Source Code</summary>
+			<lazy-load src="./examples/callout-box.html">
+				<p class="loading">Loading...</p>
+			</lazy-load>
+		</details>
+	</accordion-panel>
 </component-demo>
 
 </section>

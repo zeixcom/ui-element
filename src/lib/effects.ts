@@ -1,9 +1,10 @@
-import { effect } from '@zeix/cause-effect'
+import { effect, isSignal, UNSET } from '@zeix/cause-effect'
 import { ce, ra, re, rs, sa, ss, st, ta, tc } from '@zeix/pulse'
 
 import { isFunction, isString } from '../core/util'
-import { parse } from '../core/parse'
-import type { UIElement } from '../ui-element'
+import { parse, UIElement, RESET, type ComponentSignals } from '../ui-element'
+import type { SignalLike } from '../core/ui'
+import { elementName, log, LOG_DEBUG, type LogLevel } from '../core/log'
 
 /* === Types === */
 
@@ -13,44 +14,52 @@ type ElementUpdater<E extends Element, T> = {
     delete?: (element: E) => void,
 }
 
-type StateKeyOrFunction<T> = string | ((v?: T) => T)
-
 /* === Exported Functions === */
 
 /**
  * Effect for setting properties of a target element according to a given state
  * 
  * @since 0.9.0
- * @param {StateKeyOrFunction<T>} s - state bound to the element property
+ * @param {SignalLike<T>} s - state bound to the element property
  * @param {ElementUpdater} updater - updater object containing key, read, update, and delete methods
  */
-const updateElement = <E extends Element, T>(
-	s: StateKeyOrFunction<T>,
+const updateElement = <E extends Element, T extends {}, S extends ComponentSignals = {}>(
+	s: SignalLike<T>,
 	updater: ElementUpdater<E, T>
-) => (host: UIElement, target: E): void => {
+) => (host: UIElement<S>, target: E): void => {
 	const { read, update } = updater
 	const fallback = read(target)
+
+	// If not yet set, set signal value to value read from DOM
 	if (isString(s)) {
 		const value = isString(fallback)
-			? parse(host, (host.constructor as typeof UIElement).states[s], fallback)
+			? parse(host, s, fallback)
 			: fallback
-		host.set(s, value, false)
+		if (null != value) host.set(s, value as S[string], false)
 	}
+
+    // Update the element's DOM state according to the signal value
 	effect(() => {
 		const current = read(target)
-		const value = isString(s) ? host.get<T>(s) : isFunction<T>(s) ? s(current) : undefined
+		const value = isString(s) ? host.get(s)
+			: isSignal(s) ? s.get()
+			: isFunction(s) ? s(current)
+			: undefined
 		if (!Object.is(value, current)) {
 
-			// A value of null triggers deletion
-			if (null === value && updater.delete) updater.delete(target)
-			
-			// A value of undefined triggers reset to the default value
-			else if (null == value && fallback) update(target, fallback)
+			// A value of null or UNSET triggers deletion (if available)
+			if ((value === null || value === UNSET) && updater.delete) {
+				updater.delete(target)
+
+			// Undefined or RESET triggers reset to the fallback value (if available)
+			} else if (value == null || value === RESET) {
+				if (fallback) update(target, fallback)
+				// else do nothing if neither delete method nor fallback value is provided 
 
 			// Otherwise, update the value
-			else if (null != value) update(target, value)
-
-			// Do nothing if value is nullish and neither delete method or fallback value is provided
+			} else {
+				update(target, value as T)
+			}
 		}
 	})
 }
@@ -60,11 +69,11 @@ const updateElement = <E extends Element, T>(
  * 
  * @since 0.9.0
  * @param {string} tag - tag name of the element to create
- * @param {StateKeyOrFunction<Record<string, string>>} s - state bound to the element's attributes
+ * @param {SignalLike<Record<string, string>>} s - state bound to the element's attributes
  */
 const createElement = (
     tag: string,
-    s: StateKeyOrFunction<Record<string, string>>
+    s: SignalLike<Record<string, string>>
 ) => updateElement(s, {
 	read: () => null,
 	update: (el: Element, value) => ce(el, tag, value),
@@ -74,10 +83,10 @@ const createElement = (
  * Remove an element from the DOM
  * 
  * @since 0.9.0
- * @param {StateKeyOrFunction<string>} s - state bound to the element removal
+ * @param {SignalLike<string>} s - state bound to the element removal
  */
 const removeElement = <E extends Element>(
-	s: StateKeyOrFunction<boolean>
+	s: SignalLike<boolean>
 ) => updateElement(s, {
 	read: (el: E) => null != el,
     update: (el: E, value: boolean) => value ? re(el) : Promise.resolve(null)
@@ -87,10 +96,10 @@ const removeElement = <E extends Element>(
  * Set text content of an element
  * 
  * @since 0.8.0
- * @param {StateKeyOrFunction<string>} s - state bound to the text content
+ * @param {SignalLike<string>} s - state bound to the text content
  */
 const setText = <E extends Element>(
-	s: StateKeyOrFunction<string>
+	s: SignalLike<string>
 ) => updateElement(s, {
 	read: (el: E) => el.textContent,
 	update: (el: E, value) => st(el, value)
@@ -101,14 +110,14 @@ const setText = <E extends Element>(
  * 
  * @since 0.8.0
  * @param {string} key - name of property to be set
- * @param {StateKeyOrFunction<unknown>} s - state bound to the property value
+ * @param {SignalLike<E[K]>} s - state bound to the property value
  */
-const setProperty = <E extends Element>(
-	key: string,
-	s: StateKeyOrFunction<unknown> = key
+const setProperty = <E extends Element, K extends keyof E>(
+	key: K,
+	s: SignalLike<E[K]> = key
 ) => updateElement(s, {
-	read: (el: E) => key in el ? (el as Record<string, unknown>)[key] : undefined,
-	update: (el: E, value: unknown) => (el as Record<string, unknown>)[key] = value,
+	read: (el: E) => key in el ? el[key] : UNSET,
+	update: (el: E, value: E[K]) => { el[key] = value }
 })
 
 /**
@@ -116,11 +125,11 @@ const setProperty = <E extends Element>(
  * 
  * @since 0.8.0
  * @param {string} name - name of attribute to be set
- * @param {StateKeyOrFunction<string>} s - state bound to the attribute value
+ * @param {SignalLike<string>} s - state bound to the attribute value
  */
 const setAttribute = <E extends Element>(
 	name: string,
-	s: StateKeyOrFunction<string> = name
+	s: SignalLike<string> = name
 ) => updateElement(s, {
 	read: (el: E) => el.getAttribute(name),
 	update: (el: E, value: string) => sa(el, name, value),
@@ -132,11 +141,11 @@ const setAttribute = <E extends Element>(
  * 
  * @since 0.8.0
  * @param {string} name - name of attribute to be toggled
- * @param {StateKeyOrFunction<boolean>} s - state bound to the attribute existence
+ * @param {SignalLike<boolean>} s - state bound to the attribute existence
  */
 const toggleAttribute = <E extends Element>(
 	name: string,
-	s: StateKeyOrFunction<boolean> = name
+	s: SignalLike<boolean> = name
 ) => updateElement(s, {
 	read: (el: E) => el.hasAttribute(name),
 	update: (el: E, value: boolean) => ta(el, name, value)
@@ -147,11 +156,11 @@ const toggleAttribute = <E extends Element>(
  * 
  * @since 0.8.0
  * @param {string} token - class token to be toggled
- * @param {StateKeyOrFunction<boolean>} s - state bound to the class existence
+ * @param {SignalLike<boolean>} s - state bound to the class existence
  */
 const toggleClass = <E extends Element>(
 	token: string,
-	s: StateKeyOrFunction<boolean> = token
+	s: SignalLike<boolean> = token
 ) => updateElement(s, {
 	read: (el: E) => el.classList.contains(token),
 	update: (el: E, value: boolean) => tc(el, token, value)
@@ -162,23 +171,44 @@ const toggleClass = <E extends Element>(
  * 
  * @since 0.8.0
  * @param {string} prop - name of style property to be set
- * @param {StateKeyOrFunction<string>} s - state bound to the style property value
+ * @param {SignalLike<string>} s - state bound to the style property value
  */
 const setStyle = <E extends (HTMLElement | SVGElement | MathMLElement)>(
 	prop: string,
-	s: StateKeyOrFunction<string> = prop
+	s: SignalLike<string> = prop
 ) => updateElement(s, {
 		read: (el: E) => el.style.getPropertyValue(prop),
 		update: (el: E, value: string) => ss(el, prop, value) as Promise<E>,
 		delete: (el: E) => rs(el, prop) as Promise<E>
 	})
 
-
+/**
+ * Log a message to the console
+ * 
+ * @since 0.10.1
+ * @param {string} message - message to be logged
+ * @param {SignalLike<T>} s - observed signal
+ * @param {LogLevel} logLevel - log level to be used: LOG_DEBUG (default), LOG_INFO, LOG_WARN, LOG_ERROR
+ */
+const logMessage = <E extends Element, K extends keyof S, S extends ComponentSignals = {}>(
+	message: string,
+	s: SignalLike<S[K]> = message,
+	logLevel: LogLevel = LOG_DEBUG
+) => (host: UIElement<S>, target: E): void => {
+	effect(() => {
+		const value = isString(s) ? host.get(s)
+			: isSignal(s) ? s.get()
+			: isFunction(s) ? s()
+			: undefined
+		log(value, `${message} of ${elementName(host) + (target instanceof UIElement && host === target ? '' : `for ${elementName(target)}`)}`, logLevel)
+	})
+}
 
 /* === Exported Types === */
 
 export {
 	type ElementUpdater,
 	updateElement, createElement, removeElement,
-	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
+	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
+	logMessage
 }

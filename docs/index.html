@@ -10,7 +10,7 @@
 </head>
 <body>
 	<header class="content-grid">
-		<h1 class="content">UIElement Docs <small>Version 0.10.0</small></h1>
+		<h1 class="content">UIElement Docs <small>Version 0.10.1</small></h1>
 		
 	<nav class="breakout">
 		<ol>
@@ -129,30 +129,30 @@
 <p>Unlike traditional frameworks that rely on a virtual DOM or dirty-checking, UIElement synchronizes automic pieces of state (signals) directly with the DOM, making fine-grained updates <strong>fast and efficient</strong>.</p>
 <h3>Example: Counter Component</h3>
 <component-demo>
-<div class="preview">
-<my-counter count="42">
-<p>
-Count: <span class="count"></span><br>
-Parity: <span class="parity"></span>
-</p>
-<button type="button" class="decrement">−</button>
-<button type="button" class="increment">+</button>
-</my-counter>
-</div>
-<accordion-panel collapsible>
-<details>
-<summary>
-<div class="summary">Source Code</div>
-</summary>
-<lazy-load src="./examples/my-counter.html">
-<p class="loading">Loading...</p>
-</lazy-load>
-</details>
-</accordion-panel>
+	<div class="preview">
+		<my-counter count="42">
+			<p>
+				Count: <span class="count"></span><br>
+				Parity: <span class="parity"></span>
+			</p>
+			<button type="button" class="decrement">−</button>
+			<button type="button" class="increment">+</button>
+		</my-counter>
+	</div>
+	<accordion-panel collapsible>
+		<details>
+			<summary>
+				<div class="summary">Source Code</div>
+			</summary>
+			<lazy-load src="./examples/my-counter.html">
+				<p class="loading">Loading...</p>
+			</lazy-load>
+		</details>
+	</accordion-panel>
 </component-demo>
 
 <ul>
-<li>✅ <strong>Zero re-renders</strong> – Only updates what changes.</li>
+<li>✅ <strong>Zero renders</strong> – Only updates what changes.</li>
 <li>✅ <strong>No abstraction over the DOM</strong> – Works with plain HTML.</li>
 <li>✅ <strong>Fully self-contained</strong> – Can be used anywhere, even inside CMS templates.</li>
 </ul>
@@ -160,8 +160,8 @@ Parity: <span class="parity"></span>
 
 <h2>How UIElement Compares</h2>
 <ul>
-<li><strong>No Virtual DOM</strong>: Unlike React or Vue, UIElement updates HTML directly, avoiding unnecessary renders.</li>
-<li><strong>Minimal Overhead</strong>: Since it builds on Web Components, it has minimal impact on performance and bundle size.</li>
+<li><strong>No Virtual DOM</strong>: Builds upon server-rendered HTML and does only atomic DOM updates, avoiding unnecessary renders.</li>
+<li><strong>Minimal Overhead</strong>: Since it adds only a thin layer over native Web Standards, it has minimal bundle size and high performance.</li>
 <li><strong>Simple API</strong>: Few, clear concepts (signals, effects, context) allow developers to quickly build interactive components.</li>
 </ul>
 </section>

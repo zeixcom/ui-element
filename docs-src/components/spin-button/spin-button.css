@@ -1,13 +1,15 @@
 spin-button {
-	display: flex;
-	width: 7rem;
+	display: inline-flex;
+    max-width: 7rem;
 
-	.count {
+	.value {
 		box-sizing: border-box;
 		margin: 0;
 		border-top: 1px solid var(--color-border);
 		border-bottom: 1px solid var(--color-border);
 		height: var(--input-height);
+		min-width: 2rem;
+		max-width: 3rem;
 		text-align: center;
 		font-size: var(--font-size-s);
 		padding: 0 var(--space-s);

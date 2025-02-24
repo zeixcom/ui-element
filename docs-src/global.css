@@ -154,6 +154,15 @@ html {
 	scroll-padding-top: var(--space-xl);
 	scroll-behavior: smooth;
 }
+
+input,
+textarea,
+button,
+select,
+option,
+optgroup {
+	font-family: var(--font-family-sans);
+}
   
 body {
 	padding: 0;
@@ -231,9 +240,12 @@ dl {
 main {
 	display: grid;
 	grid-template-columns:
-		[fullwidth-start] minmax(var(--space-l), 1fr) [breakout-start] minmax(0, var(--breakout-size)) [content-start]
-		min(var(--content-max-width), calc(100% - 2 * var(--space-l)))
-		[content-end] minmax(0, var(--breakout-size)) [breakout-end] minmax(var(--space-l), 1fr) [fullwidth-end];
+		[fullwidth-start] minmax(var(--space-l), 1fr)
+		[breakout-start] minmax(0, var(--breakout-size))
+		[content-start] min(var(--content-max-width), calc(100% - 2 * var(--space-l)))
+		[content-end] minmax(0, var(--breakout-size))
+		[breakout-end] minmax(var(--space-l), 1fr)
+		[fullwidth-end];
 
 	> .content,
 	> section {
@@ -288,8 +300,11 @@ pre {
 	margin: 0 0 var(--space-l);
 }
 
-li {
-	margin: 0 0 var(--space-m);
+ol,
+ul {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-m);
 }
 
 p code,

@@ -1,18 +1,22 @@
-import { asBoolean, setProperty, toggleAttribute, UIElement } from "@zeix/ui-element"
+import { UIElement, asBoolean, setProperty, toggleAttribute } from "../../../"
 
-export class InputCheckbox extends UIElement {
+export class InputCheckbox extends UIElement<{ checked: boolean }> {
+	static localName = 'input-checkbox'
 	static observedAttributes = ['checked']
-	static states = {
+
+	states = {
 		checked: asBoolean
 	}
 
 	connectedCallback() {
-		this.first('input')
-			.on('change', (e: Event) => {
-				this.set('checked', Boolean((e.target as HTMLInputElement)?.checked))
-			})
+		super.connectedCallback()
+
+		this.first<HTMLInputElement>('input')
 			.sync(setProperty('checked'))
+			.on('change', (e: Event) => {
+				this.set('checked', (e.target as HTMLInputElement)?.checked)
+			})
 		this.self.sync(toggleAttribute('checked'))
 	}
 }
-InputCheckbox.define('input-checkbox')
+InputCheckbox.define()

@@ -1,4 +1,4 @@
-import { asBoolean, toggleAttribute, UIElement } from "@zeix/ui-element"
+import { asBoolean, toggleAttribute, UIElement } from '../../../'
 // import Prism from 'prismjs'
 // import 'prismjs/components/prism-bash';
 // import 'prismjs/components/prism-json';
@@ -6,9 +6,11 @@ import { asBoolean, toggleAttribute, UIElement } from "@zeix/ui-element"
 
 import type { InputButton } from '../input-button/input-button'
 
-export class CodeBlock extends UIElement {
+export class CodeBlock extends UIElement<{ collapsed: boolean }> {
+	static readonly localName = 'code-block'
 	static observedAttributes = ['collapsed']
-	static states = {
+
+	states = {
 		collapsed: asBoolean
 	}
 
@@ -39,7 +41,7 @@ export class CodeBlock extends UIElement {
 			// Copy to clipboard
 			this.first('.copy').on('click', async (e: Event) => {
 				const copyButton = e.currentTarget as InputButton
-				const label = copyButton.textContent
+				const label = copyButton.textContent ?? ''
 				let status = 'success'
 				try {
 					await navigator.clipboard.writeText(content.textContent ?? '')
@@ -48,7 +50,7 @@ export class CodeBlock extends UIElement {
 					status = 'error'
 				}
 				copyButton.set('disabled', true)
-				copyButton.set('label', this.getAttribute(`copy-${status}`))
+				copyButton.set('label', this.getAttribute(`copy-${status}`) ?? label)
 				setTimeout(() => {
 					copyButton.set('disabled', false)
 					copyButton.set('label', label)
@@ -61,4 +63,4 @@ export class CodeBlock extends UIElement {
 		}
 	}
 }
-CodeBlock.define('code-block')
+CodeBlock.define()
