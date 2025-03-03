@@ -1,10 +1,9 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.10.1
+ * @version 0.10.2
  * @author Esther Brunner
  */
-export { type Signal, type State, type Computed, UNSET, state, computed, effect, batch, isState, isComputed, isSignal, toSignal } from '@zeix/cause-effect';
-export { type EnqueueDedupe, enqueue, animationFrame } from '@zeix/pulse';
+export { type Signal, type State, type Computed, type EnqueueDedupe, UNSET, state, computed, effect, batch, enqueue, isState, isComputed, isSignal, toSignal } from '@zeix/cause-effect';
 export { type AttributeParser, RESET, UIElement, parse } from './src/ui-element';
 export { type SignalLike, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider, UI } from './src/core/ui';
 export { LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, log } from './src/core/log';

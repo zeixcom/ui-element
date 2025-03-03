@@ -195,7 +195,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 			const result = isAttributeParser(init)
 				? init(this.getAttribute(key), this)
 				: isComputeFunction<{}>(init)
-					? computed(init, true)
+					? computed(init)
 					: init
 			this.set(key, result ?? RESET)
 		}
@@ -272,7 +272,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 		// State does not exist => create new state
 		if (!(key in this.signals)) {
 			if (DEV_MODE && this.debug) op = 'Create'
-			this.signals[key] = toSignal(value as {}, true) as Signal<S[K]>
+			this.signals[key] = toSignal(value as {}) as Signal<S[K]>
 
 		// State already exists => update existing state
 		} else if (update || old === UNSET || old === RESET) {

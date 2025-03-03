@@ -30,12 +30,13 @@
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
 		import {
-			UIElement, effect, animationFrame, RESET,
+			UIElement, effect, RESET, UNSET,
 			asBoolean, asInteger, asNumber,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
 		} from '../index.js'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+		const animationFrame = async () => new Promise(requestAnimationFrame)
 		const normalizeText = text => text.replace(/\s+/g, ' ').trim()
 
 		class UpdateText extends UIElement {
@@ -59,18 +60,16 @@
 		class UpdateAttribute extends UIElement {
 			static observedAttributes = ['required']
 			states = {
-                required: asBoolean
+                required: asBoolean,
+				ariaInvalid: 'false',
+				'aria-errormessage': () =>
+					this.get('required') && this.get('ariaInvalid') !== 'false'
+						? this.querySelector('p').id
+						: RESET
             }
 
 			connectedCallback() {
 				super.connectedCallback()
-				this.set('ariaInvalid', 'false') // should not be true before the user interacted
-				this.set(
-					'aria-errormessage',
-					() => this.get('required') && this.get('ariaInvalid') !== 'false'
-						? this.querySelector('p').id
-						: null
-				)
                 this.first('input')
 				    .on('change', e => this.set('ariaInvalid', String(!e.target.checkValidity())))
 					.sync(

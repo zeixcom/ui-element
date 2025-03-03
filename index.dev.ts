@@ -1,16 +1,12 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.10.1
+ * @version 0.10.2
  * @author Esther Brunner
  */
 export {
-	type Signal, type State, type Computed,
-	UNSET, state, computed, effect, batch, isState, isComputed, isSignal, toSignal
+	type Signal, type State, type Computed, type EnqueueDedupe,
+	UNSET, state, computed, effect, batch, enqueue, isState, isComputed, isSignal, toSignal
 } from '@zeix/cause-effect'
-export {
-	type EnqueueDedupe,
-	enqueue, animationFrame
-} from '@zeix/pulse'
 
 export {
 	type AttributeParser,

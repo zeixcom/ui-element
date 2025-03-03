@@ -1,5 +1,4 @@
 import { effect, isSignal, UNSET } from '@zeix/cause-effect'
-import { ce, ra, re, rs, sa, ss, st, ta, tc } from '@zeix/pulse'
 
 import { isFunction, isString } from '../core/util'
 import { parse, UIElement, RESET, type ComponentSignals } from '../ui-element'
@@ -12,6 +11,33 @@ type ElementUpdater<E extends Element, T> = {
     read: (element: E) => T | null,
     update: (element: E, value: T) => void,
     delete?: (element: E) => void,
+}
+
+/* === Private Functions === */
+
+const isSafeURL = /*#__PURE__*/ (value: string): boolean => {
+	if (/^(mailto|tel):/i.test(value)) return true
+	if (value.includes('://')) {
+		try {
+			const url = new URL(value, window.location.origin)
+			return ['http:', 'https:', 'ftp:'].includes(url.protocol)
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		} catch (error) {
+			return false
+		}
+	}
+	return true
+}
+
+const safeSetAttribute = /*#__PURE__*/ (
+	element: Element,
+	attr: string,
+	value: string
+): void => {
+	if (/^on/i.test(attr)) throw new Error(`Unsafe attribute: ${attr}`)
+	value = String(value).trim()
+	if (!isSafeURL(value)) throw new Error(`Unsafe URL for ${attr}: ${value}`)
+	element.setAttribute(attr, value)
 }
 
 /* === Exported Functions === */
@@ -48,7 +74,10 @@ const updateElement = <E extends Element, T extends {}, S extends ComponentSigna
 		if (!Object.is(value, current)) {
 
 			// A value of null or UNSET triggers deletion (if available)
-			if ((value === null || value === UNSET) && updater.delete) {
+			if (
+				(value === null || value === UNSET || (value === RESET && fallback === null))
+				&& updater.delete
+			) {
 				updater.delete(target)
 
 			// Undefined or RESET triggers reset to the fallback value (if available)
@@ -73,10 +102,18 @@ const updateElement = <E extends Element, T extends {}, S extends ComponentSigna
  */
 const createElement = (
     tag: string,
-    s: SignalLike<Record<string, string>>
+    s: SignalLike<Record<string, string>>,
+	text?: string,
 ) => updateElement(s, {
 	read: () => null,
-	update: (el: Element, value) => ce(el, tag, value),
+	update: (el: Element, attributes) => {
+		const child = document.createElement(tag);
+		for (const [key, value] of Object.entries(attributes))
+			safeSetAttribute(child, key, value);
+		if (text)
+			child.textContent = text;
+		el.append(child);
+	},
 })
 
 /**
@@ -89,7 +126,9 @@ const removeElement = <E extends Element>(
 	s: SignalLike<boolean>
 ) => updateElement(s, {
 	read: (el: E) => null != el,
-    update: (el: E, value: boolean) => value ? re(el) : Promise.resolve(null)
+    update: (el: E, really) => {
+		if (really) el.remove()
+	}
 })
 
 /**
@@ -102,7 +141,12 @@ const setText = <E extends Element>(
 	s: SignalLike<string>
 ) => updateElement(s, {
 	read: (el: E) => el.textContent,
-	update: (el: E, value) => st(el, value)
+	update: (el: E, value) => {
+		Array.from(el.childNodes)
+			.filter(node => node.nodeType !== Node.COMMENT_NODE)
+			.forEach(node => node.remove())
+		el.append(document.createTextNode(value))
+	}
 })
 
 /**
@@ -117,7 +161,9 @@ const setProperty = <E extends Element, K extends keyof E>(
 	s: SignalLike<E[K]> = key
 ) => updateElement(s, {
 	read: (el: E) => key in el ? el[key] : UNSET,
-	update: (el: E, value: E[K]) => { el[key] = value }
+	update: (el: E, value: E[K]) => {
+		el[key] = value
+	}
 })
 
 /**
@@ -132,8 +178,12 @@ const setAttribute = <E extends Element>(
 	s: SignalLike<string> = name
 ) => updateElement(s, {
 	read: (el: E) => el.getAttribute(name),
-	update: (el: E, value: string) => sa(el, name, value),
-	delete: (el: E) => ra(el, name)
+	update: (el: E, value: string) => {
+		safeSetAttribute(el, name, value)
+	},
+	delete: (el: E) => {
+		el.removeAttribute(name)
+	}
 })
 
 /**
@@ -148,7 +198,9 @@ const toggleAttribute = <E extends Element>(
 	s: SignalLike<boolean> = name
 ) => updateElement(s, {
 	read: (el: E) => el.hasAttribute(name),
-	update: (el: E, value: boolean) => ta(el, name, value)
+	update: (el: E, value: boolean) => {
+		el.toggleAttribute(name, value)
+	}
 })
 
 /**
@@ -163,7 +215,9 @@ const toggleClass = <E extends Element>(
 	s: SignalLike<boolean> = token
 ) => updateElement(s, {
 	read: (el: E) => el.classList.contains(token),
-	update: (el: E, value: boolean) => tc(el, token, value)
+	update: (el: E, value: boolean) => {
+		el.classList.toggle(token, value)
+	}
 })
 
 /**
@@ -178,8 +232,12 @@ const setStyle = <E extends (HTMLElement | SVGElement | MathMLElement)>(
 	s: SignalLike<string> = prop
 ) => updateElement(s, {
 		read: (el: E) => el.style.getPropertyValue(prop),
-		update: (el: E, value: string) => ss(el, prop, value) as Promise<E>,
-		delete: (el: E) => rs(el, prop) as Promise<E>
+		update: (el: E, value: string) => {
+			el.style.setProperty(prop, value)
+		},
+		delete: (el: E) => {
+			el.style.removeProperty(prop)
+		}
 	})
 
 /**

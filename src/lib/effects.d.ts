@@ -21,7 +21,7 @@ declare const updateElement: <E extends Element, T extends {}, S extends Compone
  * @param {string} tag - tag name of the element to create
  * @param {SignalLike<Record<string, string>>} s - state bound to the element's attributes
  */
-declare const createElement: (tag: string, s: SignalLike<Record<string, string>>) => (host: UIElement<{}>, target: Element) => void;
+declare const createElement: (tag: string, s: SignalLike<Record<string, string>>, text?: string) => (host: UIElement<{}>, target: Element) => void;
 /**
  * Remove an element from the DOM
  *
