@@ -21,6 +21,7 @@ UIElement is an **open-source project**, actively developed by [Zeix AG](https:/
 
 * **Zeix AG**: [@zeixcom](https://github.com/zeixcom) – Maintainers and primary developers
 * **Esther Brunner**: [@estherbrunner](https://github.com/estherbrunner) – Lead developer
+* **Fabian Haefliger**: [@fabianhaef](https://github.com/fabianhaef) – Core team
 
 ### Sponsors
 

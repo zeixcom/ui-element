@@ -93,7 +93,7 @@
 	}
 }
   
-@media screen and (min-width: 75em) and (max-width: 125em) {
+/* @media screen and (min-width: 75em) and (max-width: 125em) {
 	:root {
 		--font-size-xs: clamp(0.8125rem, 0.0694vw + 0.7604rem, 0.8438rem);
 		--font-size-s: clamp(1rem, 0.2778vw + 0.7917rem, 1.125rem);
@@ -103,7 +103,7 @@
 		--font-size-xxl: clamp(2.5rem, 2.7778vw + 0.4167rem, 3.75rem);
 		--font-size-xxxl: clamp(3.125rem, 4.1667vw, 5rem);
 	}
-}
+} */
   
 @media (prefers-color-scheme: dark) {
 	:root {
