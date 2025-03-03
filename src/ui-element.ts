@@ -15,7 +15,7 @@ export type AttributeParser<T, S extends ComponentSignals> = (
 
 export type ComponentSignals = Record<string, {}>
 
-type Root<S extends ComponentSignals> = ShadowRoot | UIElement<S>
+export type Root<S extends ComponentSignals> = ShadowRoot | UIElement<S>
 
 export type InferSignalTypes<S extends ComponentSignals> = {
 	[K in keyof S]: Signal<S[K]>;
@@ -135,8 +135,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	cleanup: (() => void)[] = []
 
 	/**
-	 * @since 0.9.0
-	 * @property {ElementInternals | undefined} internals - native internal properties of the custom element
+	 * @ property {ElementInternals | undefined} internals - native internal properties of the custom element
 	 * /
 	internals: ElementInternals | undefined
 
