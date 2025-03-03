@@ -3,7 +3,7 @@ import { UI } from "./core/ui";
 import { type UnknownContext } from "./core/context";
 export type AttributeParser<T, S extends ComponentSignals> = (value: string | null, host: UIElement<S>, old?: string | null) => T;
 export type ComponentSignals = Record<string, {}>;
-type Root<S extends ComponentSignals> = ShadowRoot | UIElement<S>;
+export type Root<S extends ComponentSignals> = ShadowRoot | UIElement<S>;
 export type InferSignalTypes<S extends ComponentSignals> = {
     [K in keyof S]: Signal<S[K]>;
 };
@@ -58,8 +58,7 @@ export declare class UIElement<S extends ComponentSignals = {}> extends HTMLElem
      */
     cleanup: (() => void)[];
     /**
-     * @since 0.9.0
-     * @property {ElementInternals | undefined} internals - native internal properties of the custom element
+     * @ property {ElementInternals | undefined} internals - native internal properties of the custom element
      * /
     internals: ElementInternals | undefined
 
@@ -152,4 +151,3 @@ export declare class UIElement<S extends ComponentSignals = {}> extends HTMLElem
      */
     all<E extends Element = HTMLElement>(selector: string): UI<E, S>;
 }
-export {};
