@@ -24,8 +24,6 @@ npm install @zeix/ui-element
 bun add @zeix/ui-element
 ```
 
-For the functional core of your application we recommend [FlowSure](https://github.com/zeixcom/flow-sure) to create a robust and expressive data flow, supporting error handling and async processing with `Result` monads.
-
 ## Documentation
 
 The full documentation is still work in progress. The following chapters are already reasonably complete:

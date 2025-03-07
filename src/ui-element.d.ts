@@ -1,13 +1,11 @@
-import { type Signal } from "@zeix/cause-effect";
+import { type Signal, type ComputedCallbacks } from "@zeix/cause-effect";
 import { UI } from "./core/ui";
 import { type UnknownContext } from "./core/context";
 export type AttributeParser<T, S extends ComponentSignals> = (value: string | null, host: UIElement<S>, old?: string | null) => T;
+export type StateUpdater<T> = (v: T) => T;
 export type ComponentSignals = Record<string, {}>;
-type Root<S extends ComponentSignals> = ShadowRoot | UIElement<S>;
-export type InferSignalTypes<S extends ComponentSignals> = {
-    [K in keyof S]: Signal<S[K]>;
-};
-export type StateInitializer<T, S extends ComponentSignals> = T | AttributeParser<T, S>;
+export type Root<S extends ComponentSignals> = ShadowRoot | UIElement<S>;
+export type StateInitializer<T, S extends ComponentSignals> = T | AttributeParser<T, S> | ComputedCallbacks<NonNullable<T>, []>;
 export declare const RESET: any;
 /**
  * Parse according to states
@@ -51,7 +49,9 @@ export declare class UIElement<S extends ComponentSignals = {}> extends HTMLElem
      * @since 0.9.0
      * @property {S} signals - object of publicly exposed signals bound to the custom element
      */
-    signals: InferSignalTypes<S>;
+    signals: {
+        [K in keyof S]: Signal<S[K]>;
+    };
     /**
      * @since 0.10.1
      * @property {(() => void)[]} cleanup - array of functions to remove bound event listeners and perform other cleanup operations
@@ -123,10 +123,10 @@ export declare class UIElement<S extends ComponentSignals = {}> extends HTMLElem
      *
      * @since 0.2.0
      * @param {K} key - state to set value to
-     * @param {S[K] extends Signal<infer T> ? T | ((old: T) => T) | Signal<T> : never} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
+     * @param {S[K] | ComputedCallbacks<S[K], []> | Signal<S[K]> | StateUpdater<S[K]>} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
      * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
      */
-    set<K extends keyof S>(key: K, value: S[K] | ((old: S[K]) => S[K]) | Signal<S[K]>, update?: boolean): void;
+    set<K extends keyof S>(key: K, value: S[K] | ComputedCallbacks<S[K], []> | Signal<S[K]> | StateUpdater<S[K]>, update?: boolean): void;
     /**
      * Delete a state, also removing all effects dependent on the state
      *
@@ -152,4 +152,3 @@ export declare class UIElement<S extends ComponentSignals = {}> extends HTMLElem
      */
     all<E extends Element = HTMLElement>(selector: string): UI<E, S>;
 }
-export {};

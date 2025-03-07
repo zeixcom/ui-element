@@ -1,9 +1,8 @@
-import { type Signal } from '@zeix/cause-effect';
+import { type MaybeSignal } from '@zeix/cause-effect';
 import { UIElement, type ComponentSignals } from '../ui-element';
 type EventListenerProvider = (<E extends Element>(element: E, index: number) => EventListenerOrEventListenerObject);
-type SignalLike<T> = PropertyKey | Signal<NonNullable<T>> | ((v?: T) => T);
 type PassedSignals<S extends ComponentSignals> = {
-    [K in keyof S]: SignalLike<S[K]>;
+    [K in keyof S]: MaybeSignal<S[K]>;
 };
 type PassedSignalsProvider<S extends ComponentSignals> = (<E extends Element>(element: E, index: number) => PassedSignals<S> | PassedSignalsProvider<S>);
 /**
@@ -52,4 +51,4 @@ declare class UI<E extends Element = HTMLElement, S extends ComponentSignals = {
      */
     sync(...fns: ((host: UIElement, target: E, index: number) => void)[]): this;
 }
-export { type SignalLike, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider, UI };
+export { type PassedSignals, type PassedSignalsProvider, type EventListenerProvider, UI };

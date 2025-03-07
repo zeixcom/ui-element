@@ -1,7 +1,8 @@
-import { UIElement, type ComponentSignals } from '../ui-element';
-import type { SignalLike } from '../core/ui';
-import { type LogLevel } from '../core/log';
+import { type Signal } from '@zeix/cause-effect';
+import { type ComponentSignals, UIElement } from '../ui-element';
+type SignalLike<T> = PropertyKey | Signal<NonNullable<T>> | (() => T);
 type ElementUpdater<E extends Element, T> = {
+    op: string;
     read: (element: E) => T | null;
     update: (element: E, value: T) => void;
     delete?: (element: E) => void;
@@ -13,7 +14,7 @@ type ElementUpdater<E extends Element, T> = {
  * @param {SignalLike<T>} s - state bound to the element property
  * @param {ElementUpdater} updater - updater object containing key, read, update, and delete methods
  */
-declare const updateElement: <E extends Element, T extends {}, S extends ComponentSignals = {}>(s: SignalLike<T>, updater: ElementUpdater<E, T>) => (host: UIElement<S>, target: E) => void;
+declare const updateElement: <E extends Element, T extends {}, S extends ComponentSignals = {}, K extends keyof S = never>(s: K | SignalLike<T>, updater: ElementUpdater<E, T>) => (host: UIElement<S>, target: E) => void;
 /**
  * Create an element with a given tag name and optionally set its attributes
  *
@@ -36,6 +37,14 @@ declare const removeElement: <E extends Element>(s: SignalLike<boolean>) => (hos
  * @param {SignalLike<string>} s - state bound to the text content
  */
 declare const setText: <E extends Element>(s: SignalLike<string>) => (host: UIElement<{}>, target: E) => void;
+/**
+ * Set inner HTML of an element
+ *
+ * @since 0.10.2
+ * @param {SignalLike<string>} s - state bound to the inner HTML
+ * @param {boolean} [allowScripts=false] - whether to allow executable script tags in the HTML content, defaults to false
+ */
+declare const dangerouslySetInnerHTML: <E extends Element>(s: SignalLike<string>, allowScripts?: boolean) => (host: UIElement<{}>, target: E) => void;
 /**
  * Set property of an element
  *
@@ -76,13 +85,4 @@ declare const toggleClass: <E extends Element>(token: string, s?: SignalLike<boo
  * @param {SignalLike<string>} s - state bound to the style property value
  */
 declare const setStyle: <E extends (HTMLElement | SVGElement | MathMLElement)>(prop: string, s?: SignalLike<string>) => (host: UIElement<{}>, target: E) => void;
-/**
- * Log a message to the console
- *
- * @since 0.10.1
- * @param {string} message - message to be logged
- * @param {SignalLike<T>} s - observed signal
- * @param {LogLevel} logLevel - log level to be used: LOG_DEBUG (default), LOG_INFO, LOG_WARN, LOG_ERROR
- */
-declare const logMessage: <E extends Element, K extends keyof S, S extends ComponentSignals = {}>(message: string, s?: SignalLike<S[K]>, logLevel?: LogLevel) => (host: UIElement<S>, target: E) => void;
-export { type ElementUpdater, updateElement, createElement, removeElement, setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle, logMessage };
+export { type SignalLike, type ElementUpdater, updateElement, createElement, removeElement, setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle, dangerouslySetInnerHTML };
