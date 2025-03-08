@@ -19,8 +19,8 @@ export class RatingStars extends UIElement<{ value: number }> {
 			})
 			.sync(setAttribute('checked', (_, index) => String(this.get('value') === index + 1)))
 		
-		this.all('label')
-			.sync(setText((_, index) => index < this.get('value')? '★' : '☆'))
+		this.all('.label')
+			.sync(setText((_, index) => index < this.get('value') ? '★' : '☆'))
     }
 }
 RatingStars.define()
