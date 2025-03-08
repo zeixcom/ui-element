@@ -1,10 +1,10 @@
 # UIElement
 
-Version 0.10.1
+Version 0.10.2
 
 **UIElement** - transform reusable markup, styles and behavior into powerful, reactive, and maintainable Web Components.
 
-`UIElement` is a base class for Web Components with reactive states and UI effects. UIElement is tiny, around 3kB gzipped JS code, of which unused functions can be tree-shaken by build tools. It uses [Cause & Effect](https://github.com/zeixcom/cause-effect) internally for state management with signals and [Pulse](https://github.com/zeixcom/pulse) for scheduled DOM updates.
+`UIElement` is a base class for Web Components with reactive states and UI effects. UIElement is tiny, around 3kB gzipped JS code, of which unused functions can be tree-shaken by build tools. It uses [Cause & Effect](https://github.com/zeixcom/cause-effect) internally for state management with signals and for scheduled DOM updates.
 
 ## Key Features
 
@@ -23,8 +23,6 @@ npm install @zeix/ui-element
 # or with bun
 bun add @zeix/ui-element
 ```
-
-For the functional core of your application we recommend [FlowSure](https://github.com/zeixcom/flow-sure) to create a robust and expressive data flow, supporting error handling and async processing with `Result` monads.
 
 ## Documentation
 
@@ -121,22 +119,22 @@ An example demonstrating how to pass states from one component to another. Serve
 ```html
 <tab-list>
     <menu>
-        <li><button type="button">Tab 1</button></li>
+        <li><button type="button" aria-pressed="true">Tab 1</button></li>
         <li><button type="button">Tab 2</button></li>
         <li><button type="button">Tab 3</button></li>
     </menu>
-    <tab-panel open>
-        <h2>Tab 1</h2>
+    <details open>
+        <summary>Tab 1</summary>
         <p>Content of tab panel 1</p>
-    </tab-panel>
-    <tab-panel>
-        <h2>Tab 2</h2>
+    </details>
+    <details>
+        <summary>Tab 2</summary>
         <p>Content of tab panel 2</p>
-    </tab-panel>
-    <tab-panel>
-        <h2>Tab 3</h2>
+    </details>
+    <details>
+        <summary>Tab 3</summary>
         <p>Content of tab panel 3</p>
-    </tab-panel>
+    </details>
 </tab-list>
 ```
 
@@ -157,7 +155,9 @@ class TabList extends UIElement {
 
         // Handle click events on menu buttons and update active tab index
         this.all('menu button')
-            .on('click', (_el, index) => () => this.set('active', index))
+            .on('click', (_el, index) => () => {
+				this.set('active', index)
+			})
             .sync((host, target, index) => {
 				setAttribute(
 					'aria-pressed',

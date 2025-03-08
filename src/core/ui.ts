@@ -1,4 +1,4 @@
-import { isSignal, type Signal, toSignal } from '@zeix/cause-effect'
+import { type MaybeSignal, toSignal } from '@zeix/cause-effect'
 
 import { UIElement, type ComponentSignals } from '../ui-element'
 import { elementName, log, LOG_ERROR, LOG_WARN, valueString } from './log'
@@ -8,8 +8,7 @@ import { isDefinedObject, isFunction, isString } from './util'
 
 type EventListenerProvider = (<E extends Element>(element: E, index: number) => EventListenerOrEventListenerObject)
 
-type SignalLike<T> = PropertyKey | Signal<NonNullable<T>> | ((v?: T) => T)
-type PassedSignals<S extends ComponentSignals> = { [K in keyof S]: SignalLike<S[K]> }
+type PassedSignals<S extends ComponentSignals> = { [K in keyof S]: MaybeSignal<S[K]> }
 type PassedSignalsProvider<S extends ComponentSignals> = (<E extends Element>(element: E, index: number) => PassedSignals<S> | PassedSignalsProvider<S>)
 
 /* === Exported Class === */
@@ -21,7 +20,7 @@ type PassedSignalsProvider<S extends ComponentSignals> = (<E extends Element>(el
  * @class UI
  * @type {UI}
  */
-class UI<E extends Element = HTMLElement, S extends ComponentSignals = {}> {
+class UI<E extends Element, S extends ComponentSignals> {
 	constructor(
 		public readonly host: UIElement<S>,
 		public readonly targets: E[] = [host as unknown as E]
@@ -108,10 +107,12 @@ class UI<E extends Element = HTMLElement, S extends ComponentSignals = {}> {
 						} else {
 							log(source, `Invalid string key "${source}" for state ${valueString(key)}`, LOG_WARN)
 						}
-					} else if (isFunction(source) || isSignal(source)) {
-						target.set(key, toSignal(source, true))
 					} else {
-						log(source, `Invalid source for state ${valueString(key)}`, LOG_WARN)
+						try {
+							target.set(key, toSignal(source))
+						} catch (error) {
+                            log(error, `Invalid source for state ${valueString(key)}`, LOG_WARN)
+                        }
 					}
 				})
             } else {
@@ -129,7 +130,7 @@ class UI<E extends Element = HTMLElement, S extends ComponentSignals = {}> {
 	 * @returns {this} - self
 	 */
 	sync(
-		...fns: ((host: UIElement, target: E, index: number) => void)[]
+		...fns: ((host: UIElement<S>, target: E, index: number) => void)[]
 	): this {
 		this.targets.forEach((target, index) =>
 			fns.forEach(fn => fn(this.host, target, index)))
@@ -139,6 +140,6 @@ class UI<E extends Element = HTMLElement, S extends ComponentSignals = {}> {
 }
 
 export {
-	type SignalLike, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
+	type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
 	UI
 }

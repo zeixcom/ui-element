@@ -138,12 +138,13 @@
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
 		import {
-			UIElement, batch, effect, animationFrame,
+			UIElement, batch, effect,
 			asBoolean, asInteger, asNumber,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
 		} from '../index.js'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+		const animationFrame = async () => new Promise(requestAnimationFrame)
 		const normalizeText = text => text.replace(/\s+/g, ' ').trim()
 
 		class VoidComponent extends UIElement {}

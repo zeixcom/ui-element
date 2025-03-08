@@ -1,56 +1,65 @@
 
 <tab-list>
 	<menu>
-		<li><button type="button" aria-pressed="true">HTML</button></li>
+		<li><button type="button" aria-pressed="false">HTML</button></li>
 		<li><button type="button" aria-pressed="false">CSS</button></li>
-		<li><button type="button" aria-pressed="false">TypeScript</button></li>
+		<li><button type="button" aria-pressed="true">TypeScript</button></li>
 	</menu>
 	
-	<accordion-panel open>
-		<details open aria-disabled="true">
-			<summary class="visually-hidden">
-				<div class="summary">HTML</div>
-			</summary>
-			<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-				<p class="meta">
-					<span class="file">tab-list.html</span>
-					<span class="language">html</span>
-				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">tab-list</span><span style="color:#F8F8F2">></span></span>
+<details>
+	<summary>
+		<div class="summary">HTML</div>
+	</summary>
+	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">tab-list.html</span>
+			<span class="language">html</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">tab-list</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">menu</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">>&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> aria-pressed</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"true"</span><span style="color:#F8F8F2">>Tab 1&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">>&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">>Tab 2&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">>&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">>Tab 3&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">menu</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#88846F">	&#x3C;!-- Accordion panels here --></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">details</span><span style="color:#A6E22E"> open</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">summary</span><span style="color:#F8F8F2">>Tab 1&#x3C;/</span><span style="color:#F92672">summary</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		Tab 1 content</span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">details</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">details</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">summary</span><span style="color:#F8F8F2">>Tab 2&#x3C;/</span><span style="color:#F92672">summary</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		Tab 2 content</span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">details</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">details</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">summary</span><span style="color:#F8F8F2">>Tab 3&#x3C;/</span><span style="color:#F92672">summary</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		Tab 3 content</span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">details</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">tab-list</span><span style="color:#F8F8F2">></span></span></code></pre>
-				<input-button class="copy">
-					<button type="button" class="secondary small">
-						<span class="label">Copy</span>
-					</button>
-				</input-button>
-			</code-block>
-		</details>
-	</accordion-panel>
+		<input-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</input-button>
+	</code-block>
+</details>
 
-	<accordion-panel>
-		<details aria-disabled="true">
-			<summary class="visually-hidden">
-				<div class="summary">CSS</div>
-			</summary>
-			<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-				<p class="meta">
-					<span class="file">tab-list.css</span>
-					<span class="language">css</span>
-				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">tab-list</span><span style="color:#F8F8F2"> {</span></span>
+<details>
+	<summary>
+		<div class="summary">CSS</div>
+	</summary>
+	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">tab-list.css</span>
+			<span class="language">css</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">tab-list</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">block</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	margin-bottom</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-l);</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">	> menu {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#AE81FF"> 0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">    	border-bottom</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> solid</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--color-gray-50);</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">    	margin-bottom</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">		> li {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">			display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">inline-block</span><span style="color:#F8F8F2">;</span></span>
@@ -61,52 +70,101 @@
 <span class="line"><span style="color:#F8F8F2">		&#x26; </span><span style="color:#F92672">button</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">			border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">			border-top</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">2</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> solid</span><span style="color:#66D9EF"> transparent</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">transparent</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">      		border-bottom-width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">      		font-family</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-family-sans);</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">			font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-s);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			padding</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">      		font-weight</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-weight-bold);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			padding</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text-soft);</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">			background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">      		cursor</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">pointer</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">      		transition</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">all</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--transition-short) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--easing-inout);</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F8F8F2">			&#x26;:hover {</span></span>
-<span class="line"><span style="color:#F8F8F2">                background-color: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary-hover);</span></span>
-<span class="line"><span style="color:#F8F8F2">            }</span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x26;:hover,</span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x26;:focus {</span></span>
+<span class="line"><span style="color:#66D9EF">				color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary-hover);</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"><span style="color:#F8F8F2">      </span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x26;</span><span style="color:#A6E22E">:active</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary-active);</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">			&#x26;[</span><span style="color:#A6E22E">aria-pressed</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"true"</span><span style="color:#F8F8F2">] {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				border-top</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">2</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> solid</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--color-primary);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary-active);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">        		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-primary-active);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				border-top</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">3</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> solid</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--color-primary);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-background);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">        		margin-bottom</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">-1</span><span style="color:#F92672">px</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#F8F8F2">			}</span></span>
 <span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#F92672">	></span><span style="color:#F92672"> details</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		font-family</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">sans-serif</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-background);</span></span>
+<span class="line"><span style="color:#F8F8F2">		</span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26; summary {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			cursor</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">pointer</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			font-weight</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-weight-bold);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#AE81FF"> 0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">		::marker</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">		::-webkit-details-marker</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text-soft);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;[</span><span style="color:#A6E22E">open</span><span style="color:#F8F8F2">] {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			padding-block</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-m);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">  	}</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26;[</span><span style="color:#A6E22E">accordion</span><span style="color:#F8F8F2">] {</span></span>
+<span class="line"><span style="color:#F8F8F2">		</span></span>
+<span class="line"><span style="color:#F8F8F2">		> menu {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">none</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">		</span></span>
+<span class="line"><span style="color:#F92672">		details</span><span style="color:#F8F8F2">[</span><span style="color:#A6E22E">open</span><span style="color:#F8F8F2">] {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			padding-top</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">	</span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26;</span><span style="color:#A6E22E">:not</span><span style="color:#F8F8F2">([</span><span style="color:#A6E22E">accordion</span><span style="color:#F8F8F2">]) </span><span style="color:#F92672">></span><span style="color:#F92672"> details</span><span style="color:#F92672"> summary</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">none</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span></code></pre>
-				<input-button class="copy">
-					<button type="button" class="secondary small">
-						<span class="label">Copy</span>
-					</button>
-				</input-button>
-			</code-block>
-		</details>
-	</accordion-panel>
+		<input-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</input-button>
+	</code-block>
+</details>
 
-	<accordion-panel>
-		<details aria-disabled="true">
-			<summary class="visually-hidden">
-				<div class="summary">TS</div>
-			</summary>
-			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-				<p class="meta">
-					<span class="file">tab-list.ts</span>
-					<span class="language">ts</span>
-				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asBoolean, setProperty, toggleAttribute, UIElement, </span><span style="color:#F92672">type</span><span style="color:#F8F8F2"> Context } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
+<details open>
+	<summary>
+		<div class="summary">TS</div>
+	</summary>
+	<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">tab-list.ts</span>
+			<span class="language">ts</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> EventListenerProvider, </span><span style="color:#F92672">type</span><span style="color:#F8F8F2"> SignalValueProvider, </span></span>
+<span class="line"><span style="color:#F8F8F2">	asBoolean, setProperty, toggleAttribute, UIElement</span></span>
+<span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">TabList</span><span style="color:#F92672"> extends</span><span style="color:#A6E22E"> UIElement</span><span style="color:#F8F8F2">&#x3C;{</span></span>
 <span class="line"><span style="color:#F8F8F2">	active</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">    accordion</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> boolean</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#E6DB74">	'media-viewport'</span><span style="color:#F92672">?:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">}> {</span></span>
 <span class="line"><span style="color:#F92672">	static</span><span style="color:#F92672"> readonly</span><span style="color:#F8F8F2"> localName </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'tab-list'</span></span>
 <span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> observedAttributes </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'accordion'</span><span style="color:#F8F8F2">]</span></span>
-<span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> consumedContexts </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'media-viewport'</span><span style="color:#F92672"> as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Context</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">>]</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">	states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">		active: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
@@ -116,44 +174,42 @@
 <span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
 <span class="line"><span style="color:#FD971F">		super</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">connectedCallback</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#88846F">		// Dynamically adjust accordion based on viewport size</span></span>
-<span class="line"><span style="color:#A6E22E">		queueMicrotask</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'media-viewport'</span><span style="color:#F8F8F2">))</span></span>
-<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'accordion'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span></span>
-<span class="line"><span style="color:#F8F8F2">					[</span><span style="color:#E6DB74">'xs'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'sm'</span><span style="color:#F8F8F2">].</span><span style="color:#A6E22E">includes</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">String</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'media-viewport'</span><span style="color:#F8F8F2">)))</span></span>
-<span class="line"><span style="color:#F8F8F2">				)</span></span>
-<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#88846F">		// Set inital active tab by querying details[open]</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#A6E22E"> getInitialActive</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> { </span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> panels </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> Array.</span><span style="color:#A6E22E">from</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelectorAll</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'details'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#F92672">			for</span><span style="color:#F8F8F2"> (</span><span style="color:#66D9EF;font-style:italic">let</span><span style="color:#F8F8F2"> i </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">; i </span><span style="color:#F92672">&#x3C;</span><span style="color:#F8F8F2"> panels.length; i</span><span style="color:#F92672">++</span><span style="color:#F8F8F2">) {</span></span>
+<span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> (panels[i].</span><span style="color:#A6E22E">hasAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'open'</span><span style="color:#F8F8F2">)) </span><span style="color:#F92672">return</span><span style="color:#F8F8F2"> i</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"><span style="color:#F92672">			return</span><span style="color:#AE81FF"> 0</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">getInitialActive</span><span style="color:#F8F8F2">())</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Reflect accordion attribute (may be used for styling)</span></span>
 <span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.self.</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">toggleAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'accordion'</span><span style="color:#F8F8F2">))</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#88846F">		// Hide accordion tab navigation when in accordion mode</span></span>
-<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'menu'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'accordion'</span><span style="color:#F8F8F2">))</span></span>
-<span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Update active tab state and bind click handlers</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#A6E22E"> setActiveIndex</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">EventListenerProvider</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">, index)</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#A6E22E"> getPressedByIndex</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">SignalValueProvider</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">> </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#A6E22E">			String</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> index)</span></span>
 <span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'menu button'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">_target</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">, index))</span></span>
-<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">					'ariaPressed'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">					() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> index)</span></span>
-<span class="line"><span style="color:#F8F8F2">				)(host, target)</span></span>
-<span class="line"><span style="color:#F8F8F2">			})</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, setActiveIndex)</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaPressed'</span><span style="color:#F8F8F2">, getPressedByIndex))</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#88846F">		// Pass open and collapsible states to accordion panels</span></span>
-<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'accordion-panel'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">pass</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F;font-style:italic">_target</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> ({</span></span>
-<span class="line"><span style="color:#A6E22E">			open</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> index,</span></span>
-<span class="line"><span style="color:#F8F8F2">			collapsible: </span><span style="color:#E6DB74">'accordion'</span></span>
-<span class="line"><span style="color:#F8F8F2">		}))</span></span>
+<span class="line"><span style="color:#88846F">		// Update open details panel</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#A6E22E"> getOpenByIndex</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">SignalValueProvider</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">boolean</span><span style="color:#F8F8F2">> </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#F92672">			!!</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> index)</span></span>
+<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">all</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLDetailsElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'details'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'open'</span><span style="color:#F8F8F2">, getOpenByIndex))</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"><span style="color:#F8F8F2">TabList.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">()</span></span></code></pre>
-				<input-button class="copy">
-					<button type="button" class="secondary small">
-						<span class="label">Copy</span>
-					</button>
-				</input-button>
-			</code-block>
-		</details>
-	</accordion-panel>
+		<input-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</input-button>
+	</code-block>
+</details>
 </tab-list>

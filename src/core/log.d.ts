@@ -21,6 +21,14 @@ declare const elementName: (el: Element) => string;
  */
 declare const valueString: (value: unknown) => string;
 /**
+ * Return a detailed type of a JavaScript variable
+ *
+ * @since 0.10.2
+ * @param {unknown} value
+ * @returns {string}
+ */
+declare const typeString: (value: unknown) => string;
+/**
  * Log a message to the console with the specified level
  *
  * @since 0.7.0
@@ -30,4 +38,4 @@ declare const valueString: (value: unknown) => string;
  * @returns {T} - value passed through
  */
 declare const log: <T>(value: T, msg: string, level?: LogLevel) => T;
-export { type LogLevel, log, elementName, valueString, DEV_MODE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR };
+export { type LogLevel, log, elementName, valueString, typeString, DEV_MODE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR };

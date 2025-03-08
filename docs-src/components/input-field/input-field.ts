@@ -9,11 +9,11 @@ type InputFieldSignals = {
 	error: string,
 	ariaInvalid: "true" | "false",
 	'aria-errormessage': string,
-    description?: string,
+    /* description?: string,
     isInteger?: boolean,
     min?: number,
     max?: number,
-	'aria-describedby'?: string,
+	'aria-describedby'?: string, */
 }
 
 /* === Pure functions === */
@@ -80,7 +80,7 @@ export class InputField extends UIElement<InputFieldSignals> {
 				)
 			})
 			.on('input', () => {
-				this.set('length', () => this.input?.value.length ?? 0)
+				this.set('length', this.input?.value.length ?? 0)
 			})
 
 		// Handle arrow key events to increment / decrement value

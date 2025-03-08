@@ -38,23 +38,14 @@ export class RatingFeedback extends UIElement<{
 
 		// Event listener for texteare
 		this.first('textarea').on('input', (e: Event) => {
-			this.set(
-				'empty',
-				(e.target as HTMLTextAreaElement)?.value.trim() === ''
-			)
+			this.set('empty', (e.target as HTMLTextAreaElement)?.value.trim() === '')
 		})
 
 		// Effects on rating changes
-		this.first('.feedback').sync(setProperty(
-			'hidden',
-			() => this.get('submitted') || !(stars?.get('value') ?? 0)
-		))
-		this.all('.feedback p').sync((host, target, index) => {
-			setProperty<HTMLElement, 'hidden'>(
-				'hidden',
-				() => stars?.get('value') !== index + 1
-            )(host, target)
-		})
+		this.first('.feedback')
+			.sync(setProperty('hidden', () => this.get('submitted') || !(stars?.get('value') ?? 0)))
+		this.all('.feedback p')
+			.sync(setProperty('hidden', (_, index) => stars?.get('value') !== index + 1))
 
 		// Effect on empty state
 		this.first<InputButton>('input-button').pass({

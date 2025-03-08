@@ -1,17 +1,49 @@
-import { effect, isSignal, UNSET } from '@zeix/cause-effect'
-import { ce, ra, re, rs, sa, ss, st, ta, tc } from '@zeix/pulse'
+import { type Signal, effect, enqueue, isComputed, isSignal, UNSET } from '@zeix/cause-effect'
 
 import { isFunction, isString } from '../core/util'
-import { parse, UIElement, RESET, type ComponentSignals } from '../ui-element'
-import type { SignalLike } from '../core/ui'
-import { elementName, log, LOG_DEBUG, type LogLevel } from '../core/log'
+import { type ComponentSignals, parse, UIElement, RESET } from '../ui-element'
+import { elementName, log, LOG_ERROR } from '../core/log'
 
 /* === Types === */
 
+type SignalValueProvider<T> = <E extends Element>(target: E, index: number) => T
+
+type SignalLike<T> = PropertyKey
+	| Signal<NonNullable<T>>
+	| SignalValueProvider<T>
+
 type ElementUpdater<E extends Element, T> = {
+	op: string,
     read: (element: E) => T | null,
     update: (element: E, value: T) => void,
     delete?: (element: E) => void,
+}
+
+/* === Private Functions === */
+
+const isSafeURL = /*#__PURE__*/ (value: string): boolean => {
+	if (/^(mailto|tel):/i.test(value)) return true
+	if (value.includes('://')) {
+		try {
+			const url = new URL(value, window.location.origin)
+			return ['http:', 'https:', 'ftp:'].includes(url.protocol)
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		} catch (error) {
+			return false
+		}
+	}
+	return true
+}
+
+const safeSetAttribute = /*#__PURE__*/ (
+	element: Element,
+	attr: string,
+	value: string
+): void => {
+	if (/^on/i.test(attr)) throw new Error(`Unsafe attribute: ${attr}`)
+	value = String(value).trim()
+	if (!isSafeURL(value)) throw new Error(`Unsafe URL for ${attr}: ${value}`)
+	element.setAttribute(attr, value)
 }
 
 /* === Exported Functions === */
@@ -23,44 +55,71 @@ type ElementUpdater<E extends Element, T> = {
  * @param {SignalLike<T>} s - state bound to the element property
  * @param {ElementUpdater} updater - updater object containing key, read, update, and delete methods
  */
-const updateElement = <E extends Element, T extends {}, S extends ComponentSignals = {}>(
-	s: SignalLike<T>,
-	updater: ElementUpdater<E, T>
-) => (host: UIElement<S>, target: E): void => {
-	const { read, update } = updater
+const updateElement = <
+	E extends Element,
+	T extends {},
+	S extends ComponentSignals = {},
+	K extends keyof S = never
+>(
+	s: K | SignalLike<T>,
+	updater: ElementUpdater<E, S[K] | T>
+) => (host: UIElement<S>, target: E, index: number): void => {
+	const { op, read, update } = updater
 	const fallback = read(target)
 
 	// If not yet set, set signal value to value read from DOM
-	if (isString(s)) {
+	if (isString(s) && !isComputed(host.signals[s as K])) {
 		const value = isString(fallback)
 			? parse(host, s, fallback)
 			: fallback
-		if (null != value) host.set(s, value as S[string], false)
+		if (null != value) host.set(s as K, value as S[K], false)
 	}
 
     // Update the element's DOM state according to the signal value
 	effect(() => {
-		const current = read(target)
-		const value = isString(s) ? host.get(s)
-			: isSignal(s) ? s.get()
-			: isFunction(s) ? s(current)
-			: undefined
-		if (!Object.is(value, current)) {
-
-			// A value of null or UNSET triggers deletion (if available)
-			if ((value === null || value === UNSET) && updater.delete) {
-				updater.delete(target)
-
-			// Undefined or RESET triggers reset to the fallback value (if available)
-			} else if (value == null || value === RESET) {
-				if (fallback) update(target, fallback)
-				// else do nothing if neither delete method nor fallback value is provided 
-
-			// Otherwise, update the value
-			} else {
-				update(target, value as T)
+			let value = RESET
+			try {
+				value = isString(s) ? host.get(s)
+					: isSignal(s) ? s.get()
+					: isFunction(s) ? s(target, index)
+					: RESET
+			} catch (error) {
+				log(error, `Failed to update element ${elementName(target)} in ${elementName(host)}:`, LOG_ERROR)
+			} finally {
+				if (value === RESET) value = fallback as T
+				if (value === UNSET) value = null
 			}
-		}
+			const current = read(target)
+			if (!Object.is(value, current)) {
+
+				// A value of null or UNSET triggers deletion (if available)
+				if (
+					(value === null || (value == null && fallback === null))
+					&& updater.delete
+				) {
+					enqueue(() => {
+						updater.delete!(target)
+						return true
+					}, [target, op])
+
+				// Otherwise every nullish value triggers reset to the fallback value (if available)
+				} else if (value == null) {
+					if (fallback) {
+						enqueue(() => {
+							update(target, fallback)
+							return true
+						}, [target, op])
+					}
+					// else do nothing if neither delete method nor fallback value is provided 
+
+				// Otherwise, update the value
+				} else {
+					enqueue(() => {
+						update(target, value)
+						return true
+					}, [target, op])
+				}
+			}
 	})
 }
 
@@ -71,12 +130,21 @@ const updateElement = <E extends Element, T extends {}, S extends ComponentSigna
  * @param {string} tag - tag name of the element to create
  * @param {SignalLike<Record<string, string>>} s - state bound to the element's attributes
  */
-const createElement = (
+const createElement = <E extends Element>(
     tag: string,
-    s: SignalLike<Record<string, string>>
+    s: SignalLike<Record<string, string>>,
+	text?: string,
 ) => updateElement(s, {
+	op: 'create',
 	read: () => null,
-	update: (el: Element, value) => ce(el, tag, value),
+	update: (el: E, attributes) => {
+		const child = document.createElement(tag);
+		for (const [key, value] of Object.entries(attributes))
+			safeSetAttribute(child, key, value);
+		if (text)
+			child.textContent = text;
+		el.append(child);
+	},
 })
 
 /**
@@ -88,8 +156,11 @@ const createElement = (
 const removeElement = <E extends Element>(
 	s: SignalLike<boolean>
 ) => updateElement(s, {
-	read: (el: E) => null != el,
-    update: (el: E, value: boolean) => value ? re(el) : Promise.resolve(null)
+	op: 'remove',
+	read: (el: E) => !!el,
+    update: (el: E, really) => {
+		if (really) el.remove()
+	}
 })
 
 /**
@@ -101,8 +172,39 @@ const removeElement = <E extends Element>(
 const setText = <E extends Element>(
 	s: SignalLike<string>
 ) => updateElement(s, {
+	op: 'text',
 	read: (el: E) => el.textContent,
-	update: (el: E, value) => st(el, value)
+	update: (el: E, value) => {
+		Array.from(el.childNodes)
+			.filter(node => node.nodeType !== Node.COMMENT_NODE)
+			.forEach(node => node.remove())
+		el.append(document.createTextNode(value))
+	}
+})
+
+/**
+ * Set inner HTML of an element
+ * 
+ * @since 0.10.2
+ * @param {SignalLike<string>} s - state bound to the inner HTML
+ * @param {boolean} [allowScripts=false] - whether to allow executable script tags in the HTML content, defaults to false
+ */
+const dangerouslySetInnerHTML = <E extends Element>(
+    s: SignalLike<string>,
+	allowScripts: boolean = false,
+) => updateElement(s, {
+	op: 'html',
+    read: (el: E) => el.innerHTML,
+    update: (el: E, html) => {
+        el.innerHTML = html
+		if (!allowScripts) return
+		el.querySelectorAll('script').forEach(script => {
+			const newScript = document.createElement('script')
+			newScript.appendChild(document.createTextNode(script.textContent ?? ''))
+			el.appendChild(newScript)
+			script.remove()
+		})
+    }
 })
 
 /**
@@ -116,8 +218,11 @@ const setProperty = <E extends Element, K extends keyof E>(
 	key: K,
 	s: SignalLike<E[K]> = key
 ) => updateElement(s, {
+	op: 'prop',
 	read: (el: E) => key in el ? el[key] : UNSET,
-	update: (el: E, value: E[K]) => { el[key] = value }
+	update: (el: E, value: E[K]) => {
+		el[key] = value
+	}
 })
 
 /**
@@ -131,9 +236,14 @@ const setAttribute = <E extends Element>(
 	name: string,
 	s: SignalLike<string> = name
 ) => updateElement(s, {
+	op: 'attr',
 	read: (el: E) => el.getAttribute(name),
-	update: (el: E, value: string) => sa(el, name, value),
-	delete: (el: E) => ra(el, name)
+	update: (el: E, value: string) => {
+		safeSetAttribute(el, name, value)
+	},
+	delete: (el: E) => {
+		el.removeAttribute(name)
+	}
 })
 
 /**
@@ -147,8 +257,11 @@ const toggleAttribute = <E extends Element>(
 	name: string,
 	s: SignalLike<boolean> = name
 ) => updateElement(s, {
+	op: 'attr',
 	read: (el: E) => el.hasAttribute(name),
-	update: (el: E, value: boolean) => ta(el, name, value)
+	update: (el: E, value: boolean) => {
+		el.toggleAttribute(name, value)
+	}
 })
 
 /**
@@ -162,8 +275,11 @@ const toggleClass = <E extends Element>(
 	token: string,
 	s: SignalLike<boolean> = token
 ) => updateElement(s, {
+	op: 'class',
 	read: (el: E) => el.classList.contains(token),
-	update: (el: E, value: boolean) => tc(el, token, value)
+	update: (el: E, value: boolean) => {
+		el.classList.toggle(token, value)
+	}
 })
 
 /**
@@ -177,38 +293,21 @@ const setStyle = <E extends (HTMLElement | SVGElement | MathMLElement)>(
 	prop: string,
 	s: SignalLike<string> = prop
 ) => updateElement(s, {
-		read: (el: E) => el.style.getPropertyValue(prop),
-		update: (el: E, value: string) => ss(el, prop, value) as Promise<E>,
-		delete: (el: E) => rs(el, prop) as Promise<E>
-	})
-
-/**
- * Log a message to the console
- * 
- * @since 0.10.1
- * @param {string} message - message to be logged
- * @param {SignalLike<T>} s - observed signal
- * @param {LogLevel} logLevel - log level to be used: LOG_DEBUG (default), LOG_INFO, LOG_WARN, LOG_ERROR
- */
-const logMessage = <E extends Element, K extends keyof S, S extends ComponentSignals = {}>(
-	message: string,
-	s: SignalLike<S[K]> = message,
-	logLevel: LogLevel = LOG_DEBUG
-) => (host: UIElement<S>, target: E): void => {
-	effect(() => {
-		const value = isString(s) ? host.get(s)
-			: isSignal(s) ? s.get()
-			: isFunction(s) ? s()
-			: undefined
-		log(value, `${message} of ${elementName(host) + (target instanceof UIElement && host === target ? '' : `for ${elementName(target)}`)}`, logLevel)
-	})
-}
+	op: 'style',
+	read: (el: E) => el.style.getPropertyValue(prop),
+	update: (el: E, value: string) => {
+		el.style.setProperty(prop, value)
+	},
+	delete: (el: E) => {
+		el.style.removeProperty(prop)
+	}
+})
 
 /* === Exported Types === */
 
 export {
-	type ElementUpdater,
+	type SignalValueProvider, type SignalLike, type ElementUpdater,
 	updateElement, createElement, removeElement,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
-	logMessage
+	dangerouslySetInnerHTML
 }

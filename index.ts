@@ -1,23 +1,24 @@
 /**
  * @name UIElement
- * @version 0.10.1
+ * @version 0.10.2
  * @author Esther Brunner
  */
-export {
-	type Signal, type State, type Computed,
-	UNSET, state, computed, effect, batch, isState, isComputed, isSignal, toSignal
-} from '@zeix/cause-effect'
-export {
-	type EnqueueDedupe,
-	enqueue, animationFrame
-} from '@zeix/pulse'
 
+// From Cause & Effect
+export {
+	type Signal, type MaybeSignal, type State, type Computed,
+	type ComputedCallbacks, type EffectCallbacks, type EnqueueDedupe,
+	UNSET, state, computed, effect, batch, watch, enqueue,
+	isState, isComputed, isSignal, toSignal
+} from '@zeix/cause-effect'
+
+// Core
 export {
 	type AttributeParser,
 	RESET, UIElement, parse
 } from './src/ui-element'
 export {
-	type SignalLike, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
+	type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
 	UI
 } from './src/core/ui'
 export {
@@ -27,6 +28,8 @@ export {
 	type Context, type UnknownContext,
 	useContext
 } from './src/core/context'
+
+// Lib
 export {
 	asBoolean,
 	asIntegerWithDefault, asInteger, asNumberWithDefault, asNumber,
@@ -34,9 +37,10 @@ export {
 	asJSONWithDefault, asJSON
 } from './src/lib/parsers'
 export {
-	type ElementUpdater,
+	type SignalValueProvider, type SignalLike, type ElementUpdater,
 	updateElement, createElement, removeElement,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
+	dangerouslySetInnerHTML
 } from './src/lib/effects'
 /* export {
 	type ComponentSetup,

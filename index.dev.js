@@ -1,232 +1,247 @@
 // node_modules/@zeix/cause-effect/lib/util.ts
 var isFunction = (value) => typeof value === "function";
-var isAsyncFunction = (value) => isFunction(value) && /^async\s+/.test(value.toString());
-var isComputeFunction = (value) => isFunction(value) && value.length < 2;
+var isObjectOfType = (value, type) => Object.prototype.toString.call(value) === `[object ${type}]`;
 var isInstanceOf = (type) => (value) => value instanceof type;
 var isError = /* @__PURE__ */ isInstanceOf(Error);
 var isPromise = /* @__PURE__ */ isInstanceOf(Promise);
+var toError = (value) => isError(value) ? value : new Error(String(value));
 
-// node_modules/@zeix/cause-effect/lib/computed.ts
-var TYPE_COMPUTED = "Computed";
-var computed = (fn, memo) => {
-  memo = memo ?? isAsyncFunction(fn);
-  const watchers = [];
-  let value;
-  let error = null;
-  let stale = true;
-  const mark = () => {
-    stale = true;
-    if (memo)
-      notify(watchers);
-  };
-  const c = {
-    [Symbol.toStringTag]: TYPE_COMPUTED,
-    get: () => {
-      if (memo)
-        subscribe(watchers);
-      if (!memo || stale)
-        watch(() => {
-          const handleOk = (v) => {
-            value = v;
-            stale = false;
-            error = null;
-          };
-          const handleErr = (e) => {
-            error = isError(e) ? e : new Error(`Computed function failed: ${e}`);
-          };
-          try {
-            const res = fn(value);
-            isPromise(res) ? res.then(handleOk).catch(handleErr) : handleOk(res);
-          } catch (e) {
-            handleErr(e);
-          }
-        }, mark);
-      if (isError(error))
-        throw error;
-      return value;
-    },
-    map: (fn2) => computed(() => fn2(c.get()))
-  };
-  return c;
-};
-var isComputed = (value) => !!value && typeof value === "object" && value[Symbol.toStringTag] === TYPE_COMPUTED;
-
-// node_modules/@zeix/cause-effect/lib/signal.ts
+// node_modules/@zeix/cause-effect/lib/scheduler.ts
 var active;
-var batching = false;
-var pending = [];
-var isSignal = (value) => isState(value) || isComputed(value);
-var toSignal = (value, memo = false) => isSignal(value) ? value : isComputeFunction(value) ? computed(value, memo) : state(value);
-var subscribe = (watchers) => {
-  if (active && !watchers.includes(active))
-    watchers.push(active);
-};
-var notify = (watchers) => watchers.forEach((n) => batching ? pending.push(n) : n());
-var watch = (run, mark) => {
-  const prev = active;
-  active = mark;
-  run();
-  active = prev;
-};
-var batch = (run) => {
-  batching = true;
-  run();
-  batching = false;
-  pending.forEach((n) => n());
-  pending.length = 0;
-};
-
-// node_modules/@zeix/cause-effect/lib/state.ts
-var UNSET = Symbol();
-
-class State {
-  value;
-  watchers = [];
-  constructor(value) {
-    this.value = value;
-  }
-  get() {
-    subscribe(this.watchers);
-    return this.value;
-  }
-  set(value) {
-    if (Object.is(this.value, value))
-      return;
-    this.value = value;
-    notify(this.watchers);
-    if (UNSET === value)
-      this.watchers = [];
-  }
-  update(fn) {
-    this.set(fn(this.value));
-  }
-  map(fn) {
-    return computed(() => fn(this.get()));
-  }
-}
-var state = (value) => new State(value);
-var isState = (value) => value instanceof State;
-// node_modules/@zeix/cause-effect/lib/effect.ts
-var effect = (fn) => {
-  const run = () => watch(() => {
-    try {
-      fn();
-    } catch (error) {
-      console.error(error);
-    }
-  }, run);
-  run();
-};
-// node_modules/@zeix/pulse/lib/pulse.ts
-if (!("requestAnimationFrame" in globalThis))
-  globalThis.requestAnimationFrame = (callback) => setTimeout(callback, 16);
-var dedupeMap = new Map;
-var queue = [];
+var pending = new Set;
+var batchDepth = 0;
+var updateMap = new Map;
 var requestId;
-var flush = () => {
-  requestId = null;
-  queue.forEach((fn) => fn());
-  queue = [];
-  dedupeMap.clear();
+var updateDOM = () => {
+  requestId = undefined;
+  const updates = Array.from(updateMap.values());
+  updateMap.clear();
+  for (const fn of updates) {
+    fn();
+  }
 };
 var requestTick = () => {
   if (requestId)
     cancelAnimationFrame(requestId);
-  requestId = requestAnimationFrame(flush);
+  requestId = requestAnimationFrame(updateDOM);
 };
-queueMicrotask(flush);
-var enqueue = (callback, dedupe) => new Promise((resolve, reject) => {
+queueMicrotask(updateDOM);
+var subscribe = (watchers) => {
+  if (active && !watchers.includes(active)) {
+    watchers.push(active);
+  }
+};
+var notify = (watchers) => {
+  for (const mark of watchers) {
+    if (batchDepth)
+      pending.add(mark);
+    else
+      mark();
+  }
+};
+var flush = () => {
+  while (pending.size) {
+    const watchers = Array.from(pending);
+    pending.clear();
+    for (const mark of watchers) {
+      mark();
+    }
+  }
+};
+var batch = (fn) => {
+  batchDepth++;
+  try {
+    fn();
+  } finally {
+    flush();
+    batchDepth--;
+  }
+};
+var watch = (run, mark) => {
+  const prev = active;
+  active = mark;
+  try {
+    run();
+  } finally {
+    active = prev;
+  }
+};
+var enqueue = (fn, dedupe) => new Promise((resolve, reject) => {
   const wrappedCallback = () => {
     try {
-      resolve(callback());
+      resolve(fn());
     } catch (error) {
       reject(error);
     }
   };
   if (dedupe) {
-    const [el, op] = dedupe;
-    if (!dedupeMap.has(el))
-      dedupeMap.set(el, new Map);
-    const elementMap = dedupeMap.get(el);
-    if (elementMap.has(op)) {
-      const idx = queue.indexOf(callback);
-      if (idx > -1)
-        queue.splice(idx, 1);
-    }
-    elementMap.set(op, wrappedCallback);
+    updateMap.set(dedupe, wrappedCallback);
   }
-  queue.push(wrappedCallback);
   requestTick();
 });
-var animationFrame = async () => new Promise(requestAnimationFrame);
-// node_modules/@zeix/pulse/lib/util.ts
-var isComment = (node) => node.nodeType === Node.COMMENT_NODE;
-var isSafeAttribute = (attr) => !/^on/i.test(attr);
-var isSafeURL = (value) => {
-  if (/^(mailto|tel):/i.test(value))
-    return true;
-  if (value.includes("://")) {
+
+// node_modules/@zeix/cause-effect/lib/effect.ts
+function effect(cb, ...maybeSignals) {
+  let running = false;
+  const run = () => watch(() => {
+    if (running)
+      throw new Error("Circular dependency in effect detected");
+    running = true;
+    const result = resolve(maybeSignals, cb);
+    if (isError(result))
+      console.error("Unhandled error in effect:", result);
+    running = false;
+  }, run);
+  run();
+}
+
+// node_modules/@zeix/cause-effect/lib/computed.ts
+var TYPE_COMPUTED = "Computed";
+var isEquivalentError = (error1, error2) => {
+  if (!error2)
+    return false;
+  return error1.name === error2.name && error1.message === error2.message;
+};
+var computed = (cb, ...maybeSignals) => {
+  const watchers = [];
+  let value = UNSET;
+  let error;
+  let dirty = true;
+  let unchanged = false;
+  let computing = false;
+  const ok = (v) => {
+    if (!Object.is(v, value)) {
+      value = v;
+      dirty = false;
+      error = undefined;
+      unchanged = false;
+    }
+  };
+  const nil = () => {
+    unchanged = UNSET === value;
+    value = UNSET;
+    error = undefined;
+  };
+  const err = (e) => {
+    const newError = toError(e);
+    unchanged = isEquivalentError(newError, error);
+    value = UNSET;
+    error = newError;
+  };
+  const mark = () => {
+    dirty = true;
+    if (!unchanged)
+      notify(watchers);
+  };
+  const compute = () => watch(() => {
+    if (computing)
+      throw new Error("Circular dependency in computed detected");
+    unchanged = true;
+    computing = true;
+    const result = resolve(maybeSignals, cb);
+    if (isPromise(result)) {
+      nil();
+      result.then((v) => {
+        ok(v);
+        notify(watchers);
+      }).catch(err);
+    } else if (result == null || UNSET === result)
+      nil();
+    else if (isError(result))
+      err(result);
+    else
+      ok(result);
+    computing = false;
+  }, mark);
+  const c = {
+    [Symbol.toStringTag]: TYPE_COMPUTED,
+    get: () => {
+      subscribe(watchers);
+      flush();
+      if (dirty)
+        compute();
+      if (error)
+        throw error;
+      return value;
+    },
+    map: (cb2) => computed(cb2, c),
+    match: (cb2) => {
+      effect(cb2, c);
+      return c;
+    }
+  };
+  return c;
+};
+var isComputed = (value) => isObjectOfType(value, TYPE_COMPUTED);
+
+// node_modules/@zeix/cause-effect/lib/state.ts
+var TYPE_STATE = "State";
+var state = (initialValue) => {
+  const watchers = [];
+  let value = initialValue;
+  const s = {
+    [Symbol.toStringTag]: TYPE_STATE,
+    get: () => {
+      subscribe(watchers);
+      return value;
+    },
+    set: (v) => {
+      if (Object.is(value, v))
+        return;
+      value = v;
+      notify(watchers);
+      if (UNSET === value)
+        watchers.length = 0;
+    },
+    update: (fn) => {
+      s.set(fn(value));
+    },
+    map: (cb) => computed(cb, s),
+    match: (cb) => {
+      effect(cb, s);
+      return s;
+    }
+  };
+  return s;
+};
+var isState = (value) => isObjectOfType(value, TYPE_STATE);
+
+// node_modules/@zeix/cause-effect/lib/signal.ts
+var UNSET = Symbol();
+var isSignal = (value) => isState(value) || isComputed(value);
+var isComputedCallbacks = (value) => isFunction(value) && !value.length || typeof value === "object" && value !== null && ("ok" in value) && isFunction(value.ok);
+var toSignal = (value) => isSignal(value) ? value : isComputedCallbacks(value) ? computed(value) : state(value);
+var resolve = (maybeSignals, cb) => {
+  const { ok, nil, err } = isFunction(cb) ? { ok: cb } : cb;
+  const values = [];
+  const errors = [];
+  let hasUnset = false;
+  for (let i = 0;i < maybeSignals.length; i++) {
+    const s = maybeSignals[i];
     try {
-      const url = new URL(value, window.location.origin);
-      return !["http:", "https:", "ftp:"].includes(url.protocol);
-    } catch (error) {
-      return true;
+      const value = s.get();
+      if (value === UNSET)
+        hasUnset = true;
+      values[i] = value;
+    } catch (e) {
+      errors.push(toError(e));
     }
   }
-  return true;
+  let result = undefined;
+  try {
+    if (hasUnset && nil)
+      result = nil();
+    else if (errors.length)
+      result = err ? err(...errors) : errors[0];
+    else if (!hasUnset)
+      result = ok(...values);
+  } catch (e) {
+    result = toError(e);
+    if (err)
+      result = err(result);
+  }
+  return result;
 };
-var safeSetAttribute = (element, attr, value) => {
-  if (!isSafeAttribute(attr))
-    throw new Error(`Unsafe attribute: ${attr}`);
-  value = String(value).trim();
-  if (!isSafeURL(value))
-    throw new Error(`Unsafe URL for ${attr}: ${value}`);
-  element.setAttribute(attr, value);
-};
-
-// node_modules/@zeix/pulse/lib/update.ts
-var ce = (parent, tag, attributes = {}, text) => enqueue(() => {
-  const child = document.createElement(tag);
-  for (const [key, value] of Object.entries(attributes))
-    safeSetAttribute(child, key, value);
-  if (text)
-    child.textContent = text;
-  parent.append(child);
-  return child;
-}, [parent, "e"]);
-var re = (element) => enqueue(() => {
-  element.remove();
-  return null;
-}, [element, "r"]);
-var st = (element, text) => enqueue(() => {
-  Array.from(element.childNodes).filter((node) => !isComment(node)).forEach((node) => node.remove());
-  element.append(document.createTextNode(text));
-  return element;
-}, [element, "t"]);
-var sa = (element, attribute, value) => enqueue(() => {
-  safeSetAttribute(element, attribute, value);
-  return element;
-}, [element, `a:${attribute}`]);
-var ra = (element, attribute) => enqueue(() => {
-  element.removeAttribute(attribute);
-  return element;
-}, [element, `a:${attribute}`]);
-var ta = (element, attribute, value) => enqueue(() => {
-  element.toggleAttribute(attribute, value);
-  return element;
-}, [element, `a:${attribute}`]);
-var tc = (element, token, value) => enqueue(() => {
-  element.classList.toggle(token, value);
-  return element;
-}, [element, `c:${token}`]);
-var ss = (element, property, value) => enqueue(() => {
-  element.style.setProperty(property, value);
-  return element;
-}, [element, `s:${property}`]);
-var rs = (element, property) => enqueue(() => {
-  element.style.removeProperty(property);
-  return element;
-}, [element, `s:${property}`]);
 // src/core/util.ts
 var isFunction2 = (value) => typeof value === "function";
 var isDefinedObject = (value) => !!value && typeof value === "object";
@@ -242,6 +257,18 @@ var idString = (id) => id ? `#${id}` : "";
 var classString = (classList) => classList.length ? `.${Array.from(classList).join(".")}` : "";
 var elementName = (el) => `<${el.localName}${idString(el.id)}${classString(el.classList)}>`;
 var valueString = (value) => isString(value) ? `"${value}"` : isDefinedObject(value) ? JSON.stringify(value) : String(value);
+var typeString = (value) => {
+  if (value === null)
+    return "null";
+  if (typeof value !== "object")
+    return typeof value;
+  if (Array.isArray(value))
+    return "Array";
+  if (Symbol.toStringTag in Object(value)) {
+    return value[Symbol.toStringTag];
+  }
+  return value.constructor?.name || "Object";
+};
 var log = (value, msg, level = LOG_DEBUG) => {
   if (DEV_MODE || [LOG_ERROR, LOG_WARN].includes(level))
     console[level](msg, value);
@@ -301,10 +328,12 @@ class UI {
             } else {
               log(source, `Invalid string key "${source}" for state ${valueString(key)}`, LOG_WARN);
             }
-          } else if (isFunction2(source) || isSignal(source)) {
-            target.set(key, toSignal(source, true));
           } else {
-            log(source, `Invalid source for state ${valueString(key)}`, LOG_WARN);
+            try {
+              target.set(key, toSignal(source));
+            } catch (error) {
+              log(error, `Invalid source for state ${valueString(key)}`, LOG_WARN);
+            }
           }
         });
       } else {
@@ -359,11 +388,11 @@ var useContext = (host) => {
 // src/ui-element.ts
 var RESET = Symbol();
 var isAttributeParser = (value) => isFunction2(value) && !!value.length;
-var isComputeFunction2 = (value) => isFunction2(value) && !value.length;
+var isStateUpdater = (value) => isFunction2(value) && !!value.length;
 var unwrap = (v) => isFunction2(v) ? unwrap(v()) : isSignal(v) ? unwrap(v.get()) : v;
 var parse = (host, key, value, old) => {
   const parser = host.states[key];
-  return isAttributeParser(parser) ? parser(value, host, old) : value;
+  return isAttributeParser(parser) ? parser(value, host, old) : value ?? undefined;
 };
 
 class UIElement extends HTMLElement {
@@ -395,7 +424,7 @@ class UIElement extends HTMLElement {
       return;
     const parsed = parse(this, name, value, old);
     if (DEV_MODE && this.debug)
-      log(value, `Attribute "${name}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeof parsed}> ${valueString(parsed)}`);
+      log(value, `Attribute "${name}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`);
     this.set(name, parsed ?? RESET);
   }
   connectedCallback() {
@@ -405,7 +434,7 @@ class UIElement extends HTMLElement {
         log(this, "Connected");
     }
     for (const [key, init] of Object.entries(this.states)) {
-      const result = isAttributeParser(init) ? init(this.getAttribute(key), this) : isComputeFunction2(init) ? computed(init, true) : init;
+      const result = isAttributeParser(init) ? init(this.getAttribute(key), this) : isComputedCallbacks(init) ? computed(init) : init;
       this.set(key, result ?? RESET);
     }
     useContext(this);
@@ -426,10 +455,10 @@ class UIElement extends HTMLElement {
   get(key) {
     const value = unwrap(this.signals[key]);
     if (DEV_MODE && this.debug)
-      log(value, `Get current value of state <${typeof value}> ${valueString(key)} in ${elementName(this)}`);
+      log(value, `Get current value of signal <${typeString(value)}> ${valueString(key)} in ${elementName(this)}`);
     return value;
   }
-  set(key, value, update2 = true) {
+  set(key, value, update = true) {
     if (value == null) {
       log(value, `Attempt to set state ${valueString(key)} to null or undefined in ${elementName(this)}`, LOG_ERROR);
       return;
@@ -438,10 +467,18 @@ class UIElement extends HTMLElement {
     const s = this.signals[key];
     const old = s?.get();
     if (!(key in this.signals)) {
+      if (isStateUpdater(value)) {
+        log(value, `Cannot use updater function to create a computed signal in ${elementName(this)}`, LOG_ERROR);
+        return;
+      }
       if (DEV_MODE && this.debug)
         op = "Create";
-      this.signals[key] = toSignal(value, true);
-    } else if (update2 || old === UNSET || old === RESET) {
+      this.signals[key] = toSignal(value);
+    } else if (update || old === UNSET || old === RESET) {
+      if (isComputedCallbacks(value)) {
+        log(value, `Cannot use computed callbacks to update signal ${valueString(key)} in ${elementName(this)}`, LOG_ERROR);
+        return;
+      }
       if (isSignal(value)) {
         if (DEV_MODE && this.debug)
           op = "Replace";
@@ -452,23 +489,23 @@ class UIElement extends HTMLElement {
         if (isState(s)) {
           if (DEV_MODE && this.debug)
             op = "Update";
-          if (isFunction2(value))
+          if (isStateUpdater(value))
             s.update(value);
           else
             s.set(value);
         } else {
-          log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_WARN);
+          log(value, `Computed signal ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_WARN);
           return;
         }
       }
     } else
       return;
     if (DEV_MODE && this.debug)
-      log(value, `${op} state <${typeof value}> ${valueString(key)} in ${elementName(this)}`);
+      log(value, `${op} signal <${typeString(value)}> ${valueString(key)} in ${elementName(this)}`);
   }
   delete(key) {
     if (DEV_MODE && this.debug)
-      log(key, `Delete state ${valueString(key)} from ${elementName(this)}`);
+      log(key, `Delete signal ${valueString(key)} from ${elementName(this)}`);
     return delete this.signals[key];
   }
   first(selector) {
@@ -508,66 +545,156 @@ var asJSONWithDefault = (fallback) => (value) => {
 };
 var asJSON = asJSONWithDefault({});
 // src/lib/effects.ts
-var updateElement = (s, updater) => (host, target) => {
-  const { read, update: update2 } = updater;
+var isSafeURL = (value) => {
+  if (/^(mailto|tel):/i.test(value))
+    return true;
+  if (value.includes("://")) {
+    try {
+      const url = new URL(value, window.location.origin);
+      return ["http:", "https:", "ftp:"].includes(url.protocol);
+    } catch (error) {
+      return false;
+    }
+  }
+  return true;
+};
+var safeSetAttribute = (element, attr, value) => {
+  if (/^on/i.test(attr))
+    throw new Error(`Unsafe attribute: ${attr}`);
+  value = String(value).trim();
+  if (!isSafeURL(value))
+    throw new Error(`Unsafe URL for ${attr}: ${value}`);
+  element.setAttribute(attr, value);
+};
+var updateElement = (s, updater) => (host, target, index) => {
+  const { op, read, update } = updater;
   const fallback = read(target);
-  if (isString(s)) {
+  if (isString(s) && !isComputed(host.signals[s])) {
     const value = isString(fallback) ? parse(host, s, fallback) : fallback;
     if (value != null)
       host.set(s, value, false);
   }
   effect(() => {
+    let value = RESET;
+    try {
+      value = isString(s) ? host.get(s) : isSignal(s) ? s.get() : isFunction2(s) ? s(target, index) : RESET;
+    } catch (error) {
+      log(error, `Failed to update element ${elementName(target)} in ${elementName(host)}:`, LOG_ERROR);
+    } finally {
+      if (value === RESET)
+        value = fallback;
+      if (value === UNSET)
+        value = null;
+    }
     const current = read(target);
-    const value = isString(s) ? host.get(s) : isSignal(s) ? s.get() : isFunction2(s) ? s(current) : undefined;
     if (!Object.is(value, current)) {
-      if ((value === null || value === UNSET) && updater.delete) {
-        updater.delete(target);
-      } else if (value == null || value === RESET) {
-        if (fallback)
-          update2(target, fallback);
+      if ((value === null || value == null && fallback === null) && updater.delete) {
+        enqueue(() => {
+          updater.delete(target);
+          return true;
+        }, [target, op]);
+      } else if (value == null) {
+        if (fallback) {
+          enqueue(() => {
+            update(target, fallback);
+            return true;
+          }, [target, op]);
+        }
       } else {
-        update2(target, value);
+        enqueue(() => {
+          update(target, value);
+          return true;
+        }, [target, op]);
       }
     }
   });
 };
-var createElement = (tag, s) => updateElement(s, {
+var createElement = (tag, s, text) => updateElement(s, {
+  op: "create",
   read: () => null,
-  update: (el, value) => ce(el, tag, value)
+  update: (el, attributes) => {
+    const child = document.createElement(tag);
+    for (const [key, value] of Object.entries(attributes))
+      safeSetAttribute(child, key, value);
+    if (text)
+      child.textContent = text;
+    el.append(child);
+  }
 });
 var removeElement = (s) => updateElement(s, {
-  read: (el) => el != null,
-  update: (el, value) => value ? re(el) : Promise.resolve(null)
+  op: "remove",
+  read: (el) => !!el,
+  update: (el, really) => {
+    if (really)
+      el.remove();
+  }
 });
 var setText = (s) => updateElement(s, {
+  op: "text",
   read: (el) => el.textContent,
-  update: (el, value) => st(el, value)
+  update: (el, value) => {
+    Array.from(el.childNodes).filter((node) => node.nodeType !== Node.COMMENT_NODE).forEach((node) => node.remove());
+    el.append(document.createTextNode(value));
+  }
+});
+var dangerouslySetInnerHTML = (s, allowScripts = false) => updateElement(s, {
+  op: "html",
+  read: (el) => el.innerHTML,
+  update: (el, html) => {
+    el.innerHTML = html;
+    if (!allowScripts)
+      return;
+    el.querySelectorAll("script").forEach((script) => {
+      const newScript = document.createElement("script");
+      newScript.appendChild(document.createTextNode(script.textContent ?? ""));
+      el.appendChild(newScript);
+      script.remove();
+    });
+  }
 });
 var setProperty = (key, s = key) => updateElement(s, {
+  op: "prop",
   read: (el) => (key in el) ? el[key] : UNSET,
   update: (el, value) => {
     el[key] = value;
   }
 });
 var setAttribute = (name, s = name) => updateElement(s, {
+  op: "attr",
   read: (el) => el.getAttribute(name),
-  update: (el, value) => sa(el, name, value),
-  delete: (el) => ra(el, name)
+  update: (el, value) => {
+    safeSetAttribute(el, name, value);
+  },
+  delete: (el) => {
+    el.removeAttribute(name);
+  }
 });
 var toggleAttribute = (name, s = name) => updateElement(s, {
+  op: "attr",
   read: (el) => el.hasAttribute(name),
-  update: (el, value) => ta(el, name, value)
+  update: (el, value) => {
+    el.toggleAttribute(name, value);
+  }
 });
 var toggleClass = (token, s = token) => updateElement(s, {
+  op: "class",
   read: (el) => el.classList.contains(token),
-  update: (el, value) => tc(el, token, value)
+  update: (el, value) => {
+    el.classList.toggle(token, value);
+  }
 });
 var setStyle = (prop, s = prop) => updateElement(s, {
+  op: "style",
   read: (el) => el.style.getPropertyValue(prop),
-  update: (el, value) => ss(el, prop, value),
-  delete: (el) => rs(el, prop)
+  update: (el, value) => {
+    el.style.setProperty(prop, value);
+  },
+  delete: (el) => {
+    el.style.removeProperty(prop);
+  }
 });
 export {
+  watch,
   useContext,
   updateElement,
   toggleClass,
@@ -586,6 +713,7 @@ export {
   isComputed,
   enqueue,
   effect,
+  dangerouslySetInnerHTML,
   createElement,
   computed,
   batch,
@@ -599,7 +727,6 @@ export {
   asInteger,
   asEnum,
   asBoolean,
-  animationFrame,
   UNSET,
   UIElement,
   UI,

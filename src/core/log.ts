@@ -58,6 +58,28 @@ const valueString = (value: unknown): string =>
 		: isDefinedObject(value) ? JSON.stringify(value)
 		: String(value)
 
+
+/**
+ * Return a detailed type of a JavaScript variable
+ * 
+ * @since 0.10.2
+ * @param {unknown} value
+ * @returns {string}
+ */
+const typeString = (value: unknown): string => {
+    if (value === null) return 'null'
+    if (typeof value !== 'object') return typeof value
+	if (Array.isArray(value)) return 'Array'
+
+    // Check for Symbol.toStringTag
+    if (Symbol.toStringTag in Object(value)) {
+        return (value as any)[Symbol.toStringTag]
+    }
+
+    // For other objects, return the constructor name if available
+    return value.constructor?.name || 'Object'
+}
+
 /**
  * Log a message to the console with the specified level
  * 
@@ -75,6 +97,6 @@ const log = <T>(value: T, msg: string, level: LogLevel = LOG_DEBUG): T => {
 
 export {
 	type LogLevel,
-	log, elementName, valueString,
+	log, elementName, valueString, typeString,
 	DEV_MODE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR
 }
