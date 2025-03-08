@@ -20,7 +20,7 @@ type PassedSignalsProvider<S extends ComponentSignals> = (<E extends Element>(el
  * @class UI
  * @type {UI}
  */
-class UI<E extends Element = HTMLElement, S extends ComponentSignals = {}> {
+class UI<E extends Element, S extends ComponentSignals> {
 	constructor(
 		public readonly host: UIElement<S>,
 		public readonly targets: E[] = [host as unknown as E]
@@ -130,7 +130,7 @@ class UI<E extends Element = HTMLElement, S extends ComponentSignals = {}> {
 	 * @returns {this} - self
 	 */
 	sync(
-		...fns: ((host: UIElement, target: E, index: number) => void)[]
+		...fns: ((host: UIElement<S>, target: E, index: number) => void)[]
 	): this {
 		this.targets.forEach((target, index) =>
 			fns.forEach(fn => fn(this.host, target, index)))

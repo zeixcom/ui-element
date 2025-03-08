@@ -37,7 +37,7 @@ export {
 	asJSONWithDefault, asJSON
 } from './src/lib/parsers'
 export {
-	type SignalLike, type ElementUpdater,
+	type SignalValueProvider, type SignalLike, type ElementUpdater,
 	updateElement, createElement, removeElement,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
 	dangerouslySetInnerHTML

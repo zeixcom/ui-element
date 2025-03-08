@@ -12,21 +12,15 @@ export class RatingStars extends UIElement<{ value: number }> {
         super.connectedCallback()
 
 		this.all('input')
-			.sync((host, target, index) => {
-				const label = target.nextElementSibling
-				if (label) setText(
-					() => index < this.get('value') ? '★' : '☆'
-				)(host, label)
-				setAttribute(
-					'checked',
-					() => String(this.get('value') === index + 1)
-				)(host, target)
-			})
-			.on('change', (_target, index) => (e: Event) => {
+			.on('change', (_, index) => (e: Event) => {
 				e.stopPropagation()
 				this.set('value', index + 1)
 				this.self.emit('change-rating', index + 1)
 			})
+			.sync(setAttribute('checked', (_, index) => String(this.get('value') === index + 1)))
+		
+		this.all('label')
+			.sync(setText((_, index) => index < this.get('value')? '★' : '☆'))
     }
 }
 RatingStars.define()

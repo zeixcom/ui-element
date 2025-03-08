@@ -566,7 +566,7 @@ var safeSetAttribute = (element, attr, value) => {
     throw new Error(`Unsafe URL for ${attr}: ${value}`);
   element.setAttribute(attr, value);
 };
-var updateElement = (s, updater) => (host, target) => {
+var updateElement = (s, updater) => (host, target, index) => {
   const { op, read, update } = updater;
   const fallback = read(target);
   if (isString(s) && !isComputed(host.signals[s])) {
@@ -577,7 +577,7 @@ var updateElement = (s, updater) => (host, target) => {
   effect(() => {
     let value = RESET;
     try {
-      value = isString(s) ? host.get(s) : isSignal(s) ? s.get() : isFunction2(s) ? s() : RESET;
+      value = isString(s) ? host.get(s) : isSignal(s) ? s.get() : isFunction2(s) ? s(target, index) : RESET;
     } catch (error) {
       log(error, `Failed to update element ${elementName(target)} in ${elementName(host)}:`, LOG_ERROR);
     } finally {

@@ -1,9 +1,11 @@
 import { type Signal, type ComputedCallbacks } from "@zeix/cause-effect";
 import { UI } from "./core/ui";
 import { type UnknownContext } from "./core/context";
+export type ComponentSignals = {
+    [key: string]: {};
+};
 export type AttributeParser<T, S extends ComponentSignals> = (value: string | null, host: UIElement<S>, old?: string | null) => T;
 export type StateUpdater<T> = (v: T) => T;
-export type ComponentSignals = Record<string, {}>;
 export type Root<S extends ComponentSignals> = ShadowRoot | UIElement<S>;
 export type StateInitializer<T, S extends ComponentSignals> = T | AttributeParser<T, S> | ComputedCallbacks<NonNullable<T>, []>;
 export declare const RESET: any;
@@ -117,7 +119,7 @@ export declare class UIElement<S extends ComponentSignals = {}> extends HTMLElem
      * @param {K} key - state to get value from
      * @returns {S[K]} current value of state; undefined if state does not exist
      */
-    get<K extends keyof S>(key: K): S[K];
+    get<K extends keyof S | string>(key: K): S[K];
     /**
      * Create a state or update its value and return its current value
      *
@@ -126,7 +128,7 @@ export declare class UIElement<S extends ComponentSignals = {}> extends HTMLElem
      * @param {S[K] | ComputedCallbacks<S[K], []> | Signal<S[K]> | StateUpdater<S[K]>} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
      * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
      */
-    set<K extends keyof S>(key: K, value: S[K] | ComputedCallbacks<S[K], []> | Signal<S[K]> | StateUpdater<S[K]>, update?: boolean): void;
+    set<K extends keyof S | string>(key: K, value: S[K] | ComputedCallbacks<S[K], []> | Signal<S[K]> | StateUpdater<S[K]>, update?: boolean): void;
     /**
      * Delete a state, also removing all effects dependent on the state
      *

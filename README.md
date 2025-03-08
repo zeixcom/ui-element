@@ -119,22 +119,22 @@ An example demonstrating how to pass states from one component to another. Serve
 ```html
 <tab-list>
     <menu>
-        <li><button type="button">Tab 1</button></li>
+        <li><button type="button" aria-pressed="true">Tab 1</button></li>
         <li><button type="button">Tab 2</button></li>
         <li><button type="button">Tab 3</button></li>
     </menu>
-    <tab-panel open>
-        <h2>Tab 1</h2>
+    <details open>
+        <summary>Tab 1</summary>
         <p>Content of tab panel 1</p>
-    </tab-panel>
-    <tab-panel>
-        <h2>Tab 2</h2>
+    </details>
+    <details>
+        <summary>Tab 2</summary>
         <p>Content of tab panel 2</p>
-    </tab-panel>
-    <tab-panel>
-        <h2>Tab 3</h2>
+    </details>
+    <details>
+        <summary>Tab 3</summary>
         <p>Content of tab panel 3</p>
-    </tab-panel>
+    </details>
 </tab-list>
 ```
 
@@ -155,7 +155,9 @@ class TabList extends UIElement {
 
         // Handle click events on menu buttons and update active tab index
         this.all('menu button')
-            .on('click', (_el, index) => () => this.set('active', index))
+            .on('click', (_el, index) => () => {
+				this.set('active', index)
+			})
             .sync((host, target, index) => {
 				setAttribute(
 					'aria-pressed',

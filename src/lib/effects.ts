@@ -6,7 +6,11 @@ import { elementName, log, LOG_ERROR } from '../core/log'
 
 /* === Types === */
 
-type SignalLike<T> = PropertyKey | Signal<NonNullable<T>> | (() => T)
+type SignalValueProvider<T> = <E extends Element>(target: E, index: number) => T
+
+type SignalLike<T> = PropertyKey
+	| Signal<NonNullable<T>>
+	| SignalValueProvider<T>
 
 type ElementUpdater<E extends Element, T> = {
 	op: string,
@@ -58,26 +62,26 @@ const updateElement = <
 	K extends keyof S = never
 >(
 	s: K | SignalLike<T>,
-	updater: ElementUpdater<E, T>
-) => (host: UIElement<S>, target: E): void => {
+	updater: ElementUpdater<E, S[K] | T>
+) => (host: UIElement<S>, target: E, index: number): void => {
 	const { op, read, update } = updater
 	const fallback = read(target)
 
 	// If not yet set, set signal value to value read from DOM
-	if (isString(s) && !isComputed(host.signals[s as keyof S])) {
+	if (isString(s) && !isComputed(host.signals[s as K])) {
 		const value = isString(fallback)
 			? parse(host, s, fallback)
 			: fallback
-		if (null != value) host.set(s as keyof S, value as S[K], false)
+		if (null != value) host.set(s as K, value as S[K], false)
 	}
 
     // Update the element's DOM state according to the signal value
 	effect(() => {
-			let value: T | null = RESET
+			let value = RESET
 			try {
 				value = isString(s) ? host.get(s)
 					: isSignal(s) ? s.get()
-					: isFunction(s) ? s()
+					: isFunction(s) ? s(target, index)
 					: RESET
 			} catch (error) {
 				log(error, `Failed to update element ${elementName(target)} in ${elementName(host)}:`, LOG_ERROR)
@@ -126,14 +130,14 @@ const updateElement = <
  * @param {string} tag - tag name of the element to create
  * @param {SignalLike<Record<string, string>>} s - state bound to the element's attributes
  */
-const createElement = (
+const createElement = <E extends Element>(
     tag: string,
     s: SignalLike<Record<string, string>>,
 	text?: string,
 ) => updateElement(s, {
 	op: 'create',
 	read: () => null,
-	update: (el: Element, attributes) => {
+	update: (el: E, attributes) => {
 		const child = document.createElement(tag);
 		for (const [key, value] of Object.entries(attributes))
 			safeSetAttribute(child, key, value);
@@ -302,7 +306,7 @@ const setStyle = <E extends (HTMLElement | SVGElement | MathMLElement)>(
 /* === Exported Types === */
 
 export {
-	type SignalLike, type ElementUpdater,
+	type SignalValueProvider, type SignalLike, type ElementUpdater,
 	updateElement, createElement, removeElement,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
 	dangerouslySetInnerHTML

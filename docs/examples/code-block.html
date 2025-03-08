@@ -1,22 +1,21 @@
 
 <tab-list>
 	<menu>
-		<li><button type="button" aria-pressed="true">HTML</button></li>
+		<li><button type="button" aria-pressed="false">HTML</button></li>
 		<li><button type="button" aria-pressed="false">CSS</button></li>
-		<li><button type="button" aria-pressed="false">TypeScript</button></li>
+		<li><button type="button" aria-pressed="true">TypeScript</button></li>
 	</menu>
 	
-	<accordion-panel open>
-		<details open aria-disabled="true">
-			<summary class="visually-hidden">
-				<div class="summary">HTML</div>
-			</summary>
-			<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-				<p class="meta">
-					<span class="file">code-block.html</span>
-					<span class="language">html</span>
-				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">code-block</span><span style="color:#A6E22E"> collapsed</span><span style="color:#A6E22E"> language</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"html"</span><span style="color:#A6E22E"> copy-success</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Copied!"</span><span style="color:#A6E22E"> copy-error</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Error trying to copy to clipboard!"</span><span style="color:#F8F8F2">></span></span>
+<details>
+	<summary>
+		<div class="summary">HTML</div>
+	</summary>
+	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">code-block.html</span>
+			<span class="language">html</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">code-block</span><span style="color:#A6E22E"> collapsed</span><span style="color:#A6E22E"> language</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"html"</span><span style="color:#A6E22E"> copy-success</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Copied!"</span><span style="color:#A6E22E"> copy-error</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Error trying to copy to clipboard!"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"meta"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"file"</span><span style="color:#F8F8F2">>code-block.html&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"language"</span><span style="color:#F8F8F2">>html&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
@@ -41,26 +40,24 @@
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">input-button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"overlay"</span><span style="color:#F8F8F2">>Expand&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">code-block</span><span style="color:#F8F8F2">></span></span></code></pre>
-				<input-button class="copy">
-					<button type="button" class="secondary small">
-						<span class="label">Copy</span>
-					</button>
-				</input-button>
-			</code-block>
-		</details>
-	</accordion-panel>
+		<input-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</input-button>
+	</code-block>
+</details>
 
-	<accordion-panel>
-		<details aria-disabled="true">
-			<summary class="visually-hidden">
-				<div class="summary">CSS</div>
-			</summary>
-			<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-				<p class="meta">
-					<span class="file">code-block.css</span>
-					<span class="language">css</span>
-				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">code-block</span><span style="color:#F8F8F2"> {</span></span>
+<details>
+	<summary>
+		<div class="summary">CSS</div>
+	</summary>
+	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">code-block.css</span>
+			<span class="language">css</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">code-block</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	position</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">relative</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">block</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#AE81FF"> 0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-l);</span></span>
@@ -148,26 +145,24 @@
 <span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span></code></pre>
-				<input-button class="copy">
-					<button type="button" class="secondary small">
-						<span class="label">Copy</span>
-					</button>
-				</input-button>
-			</code-block>
-		</details>
-	</accordion-panel>
+		<input-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</input-button>
+	</code-block>
+</details>
 
-	<accordion-panel>
-		<details aria-disabled="true">
-			<summary class="visually-hidden">
-				<div class="summary">TS</div>
-			</summary>
-			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-				<p class="meta">
-					<span class="file">code-block.ts</span>
-					<span class="language">ts</span>
-				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asBoolean, toggleAttribute, UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
+<details open>
+	<summary>
+		<div class="summary">TS</div>
+	</summary>
+	<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">code-block.ts</span>
+			<span class="language">ts</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asBoolean, toggleAttribute, UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
 <span class="line"><span style="color:#88846F">// import Prism from 'prismjs'</span></span>
 <span class="line"><span style="color:#88846F">// import 'prismjs/components/prism-bash';</span></span>
 <span class="line"><span style="color:#88846F">// import 'prismjs/components/prism-json';</span></span>
@@ -233,12 +228,11 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"><span style="color:#F8F8F2">CodeBlock.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">()</span></span></code></pre>
-				<input-button class="copy">
-					<button type="button" class="secondary small">
-						<span class="label">Copy</span>
-					</button>
-				</input-button>
-			</code-block>
-		</details>
-	</accordion-panel>
+		<input-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</input-button>
+	</code-block>
+</details>
 </tab-list>

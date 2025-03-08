@@ -10,6 +10,8 @@ import { type UnknownContext, useContext } from "./core/context"
 
 /* === Types === */
 
+export type ComponentSignals = { [key: string]: {} }
+
 export type AttributeParser<T, S extends ComponentSignals> = (
 	value: string | null,
 	host: UIElement<S>,
@@ -17,8 +19,6 @@ export type AttributeParser<T, S extends ComponentSignals> = (
 ) => T
 
 export type StateUpdater<T> = (v: T) => T
-
-export type ComponentSignals = Record<string, {}>
 
 export type Root<S extends ComponentSignals> = ShadowRoot | UIElement<S>
 
@@ -128,7 +128,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
      * @since 0.9.0
      * @property {S} signals - object of publicly exposed signals bound to the custom element
      */
-	signals: { [K in keyof S]: Signal<S[K]> } = {} as { [K in keyof S]: Signal<S[K]> }
+	signals: {[K in keyof S]: Signal<S[K]> } = {} as { [K in keyof S]: Signal<S[K]> }
 
 
 	/**
@@ -241,7 +241,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
      * @param {K} key - state to get value from
      * @returns {S[K]} current value of state; undefined if state does not exist
      */
-    get<K extends keyof S>(key: K): S[K] {
+    get<K extends keyof S | string>(key: K): S[K] {
         const value = unwrap(this.signals[key])
 		if (DEV_MODE && this.debug)
 			log(value, `Get current value of signal <${typeString(value)}> ${valueString(key)} in ${elementName(this)}`)
@@ -256,7 +256,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
      * @param {S[K] | ComputedCallbacks<S[K], []> | Signal<S[K]> | StateUpdater<S[K]>} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
      * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
      */
-    set<K extends keyof S>(
+    set<K extends keyof S | string>(
         key: K,
         value: S[K] | ComputedCallbacks<S[K], []> | Signal<S[K]> | StateUpdater<S[K]>,
 		update: boolean = true

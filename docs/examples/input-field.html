@@ -1,22 +1,21 @@
 
 <tab-list>
 	<menu>
-		<li><button type="button" aria-pressed="true">HTML</button></li>
+		<li><button type="button" aria-pressed="false">HTML</button></li>
 		<li><button type="button" aria-pressed="false">CSS</button></li>
-		<li><button type="button" aria-pressed="false">TypeScript</button></li>
+		<li><button type="button" aria-pressed="true">TypeScript</button></li>
 	</menu>
 	
-	<accordion-panel open>
-		<details open aria-disabled="true">
-			<summary class="visually-hidden">
-				<div class="summary">HTML</div>
-			</summary>
-			<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-				<p class="meta">
-					<span class="file">input-field.html</span>
-					<span class="language">html</span>
-				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">input-field</span><span style="color:#F8F8F2">></span></span>
+<details>
+	<summary>
+		<div class="summary">HTML</div>
+	</summary>
+	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">input-field.html</span>
+			<span class="language">html</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">input-field</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> for</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"name-input"</span><span style="color:#F8F8F2">>Name&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"row"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"group auto"</span><span style="color:#F8F8F2">></span></span>
@@ -51,26 +50,24 @@
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"error"</span><span style="color:#A6E22E"> aria-live</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"assertive"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"username-error"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"description"</span><span style="color:#A6E22E"> aria-live</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"polite"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"username-description"</span><span style="color:#A6E22E"> data-remaining</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"${x} characters remaining"</span><span style="color:#F8F8F2">>Max. 20 characters&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">input-field</span><span style="color:#F8F8F2">></span></span></code></pre>
-				<input-button class="copy">
-					<button type="button" class="secondary small">
-						<span class="label">Copy</span>
-					</button>
-				</input-button>
-			</code-block>
-		</details>
-	</accordion-panel>
+		<input-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</input-button>
+	</code-block>
+</details>
 
-	<accordion-panel>
-		<details aria-disabled="true">
-			<summary class="visually-hidden">
-				<div class="summary">CSS</div>
-			</summary>
-			<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-				<p class="meta">
-					<span class="file">input-field.css</span>
-					<span class="language">css</span>
-				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">input-field</span><span style="color:#F8F8F2"> {</span></span>
+<details>
+	<summary>
+		<div class="summary">CSS</div>
+	</summary>
+	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">input-field.css</span>
+			<span class="language">css</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">input-field</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">100</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">	&#x26;[value="0"] input {</span></span>
@@ -266,26 +263,24 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-				<input-button class="copy">
-					<button type="button" class="secondary small">
-						<span class="label">Copy</span>
-					</button>
-				</input-button>
-			</code-block>
-		</details>
-	</accordion-panel>
+		<input-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</input-button>
+	</code-block>
+</details>
 
-	<accordion-panel>
-		<details aria-disabled="true">
-			<summary class="visually-hidden">
-				<div class="summary">TS</div>
-			</summary>
-			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-				<p class="meta">
-					<span class="file">input-field.ts</span>
-					<span class="language">ts</span>
-				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { effect, setAttribute, setProperty, setText, UIElement, UNSET } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
+<details open>
+	<summary>
+		<div class="summary">TS</div>
+	</summary>
+	<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">input-field.ts</span>
+			<span class="language">ts</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { effect, setAttribute, setProperty, setText, UIElement, UNSET } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">/* === Type === */</span></span>
 <span class="line"></span>
@@ -296,11 +291,11 @@
 <span class="line"><span style="color:#F8F8F2">	error</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	ariaInvalid</span><span style="color:#F92672">:</span><span style="color:#E6DB74"> "true"</span><span style="color:#F92672"> |</span><span style="color:#E6DB74"> "false"</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#E6DB74">	'aria-errormessage'</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">    description</span><span style="color:#F92672">?:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">    isInteger</span><span style="color:#F92672">?:</span><span style="color:#66D9EF;font-style:italic"> boolean</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">    min</span><span style="color:#F92672">?:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">    max</span><span style="color:#F92672">?:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#E6DB74">	'aria-describedby'</span><span style="color:#F92672">?:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#88846F">    /* description?: string,</span></span>
+<span class="line"><span style="color:#88846F">    isInteger?: boolean,</span></span>
+<span class="line"><span style="color:#88846F">    min?: number,</span></span>
+<span class="line"><span style="color:#88846F">    max?: number,</span></span>
+<span class="line"><span style="color:#88846F">	'aria-describedby'?: string, */</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">/* === Pure functions === */</span></span>
@@ -367,7 +362,7 @@
 <span class="line"><span style="color:#F8F8F2">				)</span></span>
 <span class="line"><span style="color:#F8F8F2">			})</span></span>
 <span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'length'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.input?.value.length </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'length'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.input?.value.length </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">			})</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Handle arrow key events to increment / decrement value</span></span>
@@ -519,12 +514,11 @@
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"><span style="color:#F8F8F2">InputField.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-field'</span><span style="color:#F8F8F2">)</span></span></code></pre>
-				<input-button class="copy">
-					<button type="button" class="secondary small">
-						<span class="label">Copy</span>
-					</button>
-				</input-button>
-			</code-block>
-		</details>
-	</accordion-panel>
+		<input-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</input-button>
+	</code-block>
+</details>
 </tab-list>

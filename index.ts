@@ -18,8 +18,7 @@ export {
 	RESET, UIElement, parse
 } from './src/ui-element'
 export {
-	type PassedSignals, type PassedSignalsProvider,
-	type EventListenerProvider,
+	type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
 	UI
 } from './src/core/ui'
 export {
@@ -38,7 +37,7 @@ export {
 	asJSONWithDefault, asJSON
 } from './src/lib/parsers'
 export {
-	type SignalLike, type ElementUpdater,
+	type SignalValueProvider, type SignalLike, type ElementUpdater,
 	updateElement, createElement, removeElement,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
 	dangerouslySetInnerHTML

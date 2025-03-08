@@ -88,12 +88,10 @@
             }
 
 			connectedCallback() {
-                this.all('li').sync((host, target, index) => {
-					toggleClass(
-						'selected',
-						() => this.get('active') === index
-					)(host, target)
-				})
+				const getActiveByIndex = (target, index) =>
+					this.get('active') === index
+                this.all('li')
+					.sync(toggleClass('selected', getActiveByIndex))
             }
 		}
 		UpdateClass.define('update-class')
