@@ -14,7 +14,7 @@ export {
 
 // Core
 export {
-	type AttributeParser, type ComponentSignals, type InferSignalTypes, type StateInitializer, type Root,
+	type AttributeParser, type ComponentSignals, type StateInitializer, type Root,
 	RESET, UIElement, parse
 } from './src/ui-element'
 export {

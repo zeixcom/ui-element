@@ -1,5 +1,6 @@
 import { setProperty, UIElement } from "../../../";
-import { InputButton } from "../input-button/input-button";
+import { type InputButton } from "../input-button/input-button";
+import { type RatingStars } from "../rating-stars/rating-stars";
 
 export class RatingFeedback extends UIElement<{
 	rating: number,
@@ -40,6 +41,7 @@ export class RatingFeedback extends UIElement<{
 		})
 
 		// Effects on rating changes
+		const stars = this.querySelector<RatingStars>('rating-stars')
 		this.first('.feedback')
 			.sync(setProperty('hidden', () => this.get('submitted') || !(stars?.get('value') ?? 0)))
 		this.all('.feedback p')
