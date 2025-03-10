@@ -11,7 +11,8 @@
     "build:docs-js": "bun build docs-src/main.ts --outdir ./docs/assets/ --minify --define process.env.DEV_MODE=false",
     "build:docs-css": "lightningcss --minify --bundle --targets \">= 0.25%\" docs-src/main.css -o ./docs/assets/main.css",
     "build:docs-html": "bun ./docs-src/server/generate-pages.ts & bun ./docs-src/server/generate-fragments.ts",
-    "build:docs": "bun run build:docs-js & bun run build:docs-css & bun run build:docs-html",
+	"build:docs-api": "typedoc --out ./docs/api/ index.ts --darkHighlightTheme monokai",
+    "build:docs": "bun run build:docs-js & bun run build:docs-css & bun run build:docs-html & bun run build:docs-api",
     "serve:docs": "BUN_ENV=development bun run --hot ./docs-src/server/serve-docs.ts",
     "lint": "bunx eslint src/",
     "test": "bun run test:setup && bun run test:ci",
@@ -50,6 +51,7 @@
     "playwright": "^1.50.1",
     "prismjs": "^1.29.0",
     "shiki": "^2.3.2",
+    "typedoc": "^0.27.9",
     "typescript-eslint": "^8.24.0"
   },
   "peerDependencies": {

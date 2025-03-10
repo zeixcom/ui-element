@@ -15,7 +15,7 @@ export type AttributeParser<T, S extends ComponentSignals> = (
 
 export type ComponentSignals = Record<string, {}>
 
-type Root<S extends ComponentSignals> = ShadowRoot | UIElement<S>
+export type Root<S extends ComponentSignals> = ShadowRoot | UIElement<S>
 
 export type InferSignalTypes<S extends ComponentSignals> = {
 	[K in keyof S]: Signal<S[K]>;
@@ -135,8 +135,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	cleanup: (() => void)[] = []
 
 	/**
-	 * @since 0.9.0
-	 * @property {ElementInternals | undefined} internals - native internal properties of the custom element
+	 * @ property {ElementInternals | undefined} internals - native internal properties of the custom element
 	 * /
 	internals: ElementInternals | undefined
 
@@ -195,7 +194,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 			const result = isAttributeParser(init)
 				? init(this.getAttribute(key), this)
 				: isComputeFunction<{}>(init)
-					? computed(init, true)
+					? computed(init)
 					: init
 			this.set(key, result ?? RESET)
 		}
@@ -272,7 +271,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 		// State does not exist => create new state
 		if (!(key in this.signals)) {
 			if (DEV_MODE && this.debug) op = 'Create'
-			this.signals[key] = toSignal(value as {}, true) as Signal<S[K]>
+			this.signals[key] = toSignal(value as {}) as Signal<S[K]>
 
 		// State already exists => update existing state
 		} else if (update || old === UNSET || old === RESET) {
