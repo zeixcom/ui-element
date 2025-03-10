@@ -18,8 +18,7 @@ export {
 	RESET, UIElement, parse
 } from './src/ui-element'
 export {
-	type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
-	UI
+	type UI, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
 } from './src/core/ui'
 export {
 	type LogLevel,

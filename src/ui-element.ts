@@ -5,7 +5,7 @@ import {
 
 import { isFunction } from "./core/util"
 import { DEV_MODE, elementName, log, LOG_ERROR, LOG_WARN, typeString, valueString } from "./core/log"
-import { UI } from "./core/ui"
+import { type UI, ui } from "./core/ui"
 import { type UnknownContext, useContext } from "./core/context"
 
 /* === Types === */
@@ -146,7 +146,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	 * @since 0.8.1
 	 * @property {UI<UIElement>} self - UI object for this element
 	 */
-	self: UI<UIElement, S> = new UI<UIElement, S>(this)
+	self: UI<UIElement, S> = ui<UIElement, S>(this)
 
 	/**
 	 * @since 0.8.3
@@ -336,7 +336,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	first<E extends Element = HTMLElement>(selector: string): UI<E, S> {
 		let element = this.root.querySelector<E>(selector)
 		if (this.shadowRoot && !element) element = this.querySelector(selector)
-		return new UI(this, element ? [element] : [])
+		return ui(this, element ? [element] : [])
 	}
 	/**
 	 * Get array of all sub-elements matching a given selector within the custom element
@@ -348,7 +348,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	all<E extends Element = HTMLElement>(selector: string): UI<E, S> {
 		let elements = this.root.querySelectorAll<E>(selector)
 		if (this.shadowRoot && !elements.length) elements = this.querySelectorAll(selector)
-		return new UI(this, Array.from(elements))
+		return ui(this, Array.from(elements))
 	}
 
 }

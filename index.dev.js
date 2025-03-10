@@ -276,77 +276,76 @@ var log = (value, msg, level = LOG_DEBUG) => {
 };
 
 // src/core/ui.ts
-class UI {
-  host;
-  targets;
-  constructor(host, targets = [host]) {
-    this.host = host;
-    this.targets = targets;
-  }
-  on(type, listenerOrProvider) {
-    this.targets.forEach((target, index) => {
-      let listener;
-      if (isFunction2(listenerOrProvider)) {
-        listener = listenerOrProvider.length === 2 ? listenerOrProvider(target, index) : listenerOrProvider;
-      } else if (isDefinedObject(listenerOrProvider) && isFunction2(listenerOrProvider.handleEvent)) {
-        listener = listenerOrProvider;
-      } else {
-        log(listenerOrProvider, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR);
-        return;
-      }
-      target.addEventListener(type, listener);
-      this.host.cleanup.push(() => target.removeEventListener(type, listener));
-    });
-    return this;
-  }
-  emit(type, detail) {
-    this.targets.forEach((target) => {
-      target.dispatchEvent(new CustomEvent(type, {
-        detail,
-        bubbles: true
-      }));
-    });
-    return this;
-  }
-  pass(passedSignalsOrProvider) {
-    this.targets.forEach(async (target, index) => {
-      await UIElement.registry.whenDefined(target.localName);
-      if (target instanceof UIElement) {
-        let passedSignals;
-        if (isFunction2(passedSignalsOrProvider) && passedSignalsOrProvider.length === 2) {
-          passedSignals = passedSignalsOrProvider(target, index);
-        } else if (isDefinedObject(passedSignalsOrProvider)) {
-          passedSignals = passedSignalsOrProvider;
+var ui = (host, targets = [host]) => {
+  const u = {
+    host,
+    targets,
+    on: (type, listenerOrProvider) => {
+      targets.forEach((target, index) => {
+        let listener;
+        if (isFunction2(listenerOrProvider)) {
+          listener = listenerOrProvider.length === 2 ? listenerOrProvider(target, index) : listenerOrProvider;
+        } else if (isDefinedObject(listenerOrProvider) && isFunction2(listenerOrProvider.handleEvent)) {
+          listener = listenerOrProvider;
         } else {
-          log(passedSignalsOrProvider, `Invalid passed signals provided`, LOG_ERROR);
+          log(listenerOrProvider, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR);
           return;
         }
-        Object.entries(passedSignals).forEach(([key, source]) => {
-          if (isString(source)) {
-            if (source in this.host.signals) {
-              target.set(key, this.host.signals[source]);
-            } else {
-              log(source, `Invalid string key "${source}" for state ${valueString(key)}`, LOG_WARN);
-            }
+        target.addEventListener(type, listener);
+        host.cleanup.push(() => target.removeEventListener(type, listener));
+      });
+      return u;
+    },
+    emit: (type, detail) => {
+      targets.forEach((target) => {
+        target.dispatchEvent(new CustomEvent(type, {
+          detail,
+          bubbles: true
+        }));
+      });
+      return u;
+    },
+    pass: (passedSignalsOrProvider) => {
+      targets.forEach(async (target, index) => {
+        await UIElement.registry.whenDefined(target.localName);
+        if (target instanceof UIElement) {
+          let passedSignals;
+          if (isFunction2(passedSignalsOrProvider) && passedSignalsOrProvider.length === 2) {
+            passedSignals = passedSignalsOrProvider(target, index);
+          } else if (isDefinedObject(passedSignalsOrProvider)) {
+            passedSignals = passedSignalsOrProvider;
           } else {
-            try {
-              target.set(key, toSignal(source));
-            } catch (error) {
-              log(error, `Invalid source for state ${valueString(key)}`, LOG_WARN);
-            }
+            log(passedSignalsOrProvider, `Invalid passed signals provided`, LOG_ERROR);
+            return;
           }
-        });
-      } else {
-        log(target, `Target is not a UIElement`, LOG_ERROR);
-      }
-    });
-    return this;
-  }
-  sync(...fns) {
-    this.targets.forEach((target, index) => fns.forEach((fn) => fn(this.host, target, index)));
-    return this;
-  }
-}
+          Object.entries(passedSignals).forEach(([key, source]) => {
+            if (isString(source)) {
+              if (source in host.signals) {
+                target.set(key, host.signals[source]);
+              } else {
+                log(source, `Invalid string key "${source}" for state ${valueString(key)}`, LOG_WARN);
+              }
+            } else {
+              try {
+                target.set(key, toSignal(source));
+              } catch (error) {
+                log(error, `Invalid source for state ${valueString(key)}`, LOG_WARN);
+              }
+            }
+          });
+        } else {
+          log(target, `Target is not a UIElement`, LOG_ERROR);
+        }
+      });
+      return u;
+    },
+    sync: (...fns) => {
+      targets.forEach((target, index) => fns.forEach((fn) => fn(host, target, index)));
+      return u;
+    }
+  };
+  return u;
+};
 
 // src/core/context.ts
 var CONTEXT_REQUEST = "context-request";
@@ -414,7 +413,7 @@ class UIElement extends HTMLElement {
   states = {};
   signals = {};
   cleanup = [];
-  self = new UI(this);
+  self = ui(this);
   get root() {
     return this.shadowRoot || this;
   }
@@ -512,13 +511,13 @@ class UIElement extends HTMLElement {
     let element = this.root.querySelector(selector);
     if (this.shadowRoot && !element)
       element = this.querySelector(selector);
-    return new UI(this, element ? [element] : []);
+    return ui(this, element ? [element] : []);
   }
   all(selector) {
     let elements = this.root.querySelectorAll(selector);
     if (this.shadowRoot && !elements.length)
       elements = this.querySelectorAll(selector);
-    return new UI(this, Array.from(elements));
+    return ui(this, Array.from(elements));
   }
 }
 // src/lib/parsers.ts
@@ -742,7 +741,6 @@ export {
   asBoolean,
   UNSET,
   UIElement,
-  UI,
   RESET,
   LOG_WARN,
   LOG_INFO,

@@ -1,5 +1,5 @@
 import { type Signal, type ComputedCallbacks } from "@zeix/cause-effect";
-import { UI } from "./core/ui";
+import { type UI } from "./core/ui";
 import { type UnknownContext } from "./core/context";
 export type ComponentSignals = {
     [key: string]: {};
