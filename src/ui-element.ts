@@ -335,7 +335,8 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	 * @returns {UI<Element>[]} - array of zero or one UI objects of matching sub-element
 	 */
 	first<E extends Element = HTMLElement>(selector: string): UI<E, S> {
-		const element = this.root.querySelector<E>(selector)
+		let element = this.root.querySelector<E>(selector)
+		if (this.shadowRoot && !element) element = this.querySelector(selector)
 		return new UI(this, element ? [element] : [])
 	}
 	/**
@@ -346,7 +347,9 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	 * @returns {UI<Element>} - array of UI object of matching sub-elements
 	 */
 	all<E extends Element = HTMLElement>(selector: string): UI<E, S> {
-		return new UI(this, Array.from(this.root.querySelectorAll<E>(selector)))
+		let elements = this.root.querySelectorAll<E>(selector)
+		if (this.shadowRoot && !elements.length) elements = this.querySelectorAll(selector)
+		return new UI(this, Array.from(elements))
 	}
 
 }

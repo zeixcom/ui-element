@@ -187,21 +187,29 @@ const setText = <E extends Element>(
  * 
  * @since 0.10.2
  * @param {SignalLike<string>} s - state bound to the inner HTML
- * @param {boolean} [allowScripts=false] - whether to allow executable script tags in the HTML content, defaults to false
+ * @param {'open' | 'closed'} [attachShadow] - whether to attach a shadow root to the element, expects mode 'open' or 'closed'
+ * @param {boolean} [allowScripts] - whether to allow executable script tags in the HTML content, defaults to false
  */
 const dangerouslySetInnerHTML = <E extends Element>(
     s: SignalLike<string>,
-	allowScripts: boolean = false,
+	attachShadow?: 'open' | 'closed',
+	allowScripts?: boolean,
 ) => updateElement(s, {
 	op: 'html',
-    read: (el: E) => el.innerHTML,
+    read: (el: E) => (el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? '',
     update: (el: E, html) => {
-        el.innerHTML = html
+		if (!html) {
+			if (el.shadowRoot) el.shadowRoot.innerHTML = '<slot></slot>'
+			return
+		}
+		if (attachShadow && !el.shadowRoot) el.attachShadow({ mode: attachShadow })
+		const target = el.shadowRoot || el
+        target.innerHTML = html
 		if (!allowScripts) return
-		el.querySelectorAll('script').forEach(script => {
+		target.querySelectorAll('script').forEach(script => {
 			const newScript = document.createElement('script')
 			newScript.appendChild(document.createTextNode(script.textContent ?? ''))
-			el.appendChild(newScript)
+			target.appendChild(newScript)
 			script.remove()
 		})
     }

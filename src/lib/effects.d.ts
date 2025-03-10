@@ -43,9 +43,10 @@ declare const setText: <E extends Element>(s: SignalLike<string>) => (host: UIEl
  *
  * @since 0.10.2
  * @param {SignalLike<string>} s - state bound to the inner HTML
- * @param {boolean} [allowScripts=false] - whether to allow executable script tags in the HTML content, defaults to false
+ * @param {'open' | 'closed'} [attachShadow] - whether to attach a shadow root to the element, expects mode 'open' or 'closed'
+ * @param {boolean} [allowScripts] - whether to allow executable script tags in the HTML content, defaults to false
  */
-declare const dangerouslySetInnerHTML: <E extends Element>(s: SignalLike<string>, allowScripts?: boolean) => (host: UIElement<{}>, target: E, index: number) => void;
+declare const dangerouslySetInnerHTML: <E extends Element>(s: SignalLike<string>, attachShadow?: "open" | "closed", allowScripts?: boolean) => (host: UIElement<{}>, target: E, index: number) => void;
 /**
  * Set property of an element
  *

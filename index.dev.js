@@ -509,11 +509,16 @@ class UIElement extends HTMLElement {
     return delete this.signals[key];
   }
   first(selector) {
-    const element = this.root.querySelector(selector);
+    let element = this.root.querySelector(selector);
+    if (this.shadowRoot && !element)
+      element = this.querySelector(selector);
     return new UI(this, element ? [element] : []);
   }
   all(selector) {
-    return new UI(this, Array.from(this.root.querySelectorAll(selector)));
+    let elements = this.root.querySelectorAll(selector);
+    if (this.shadowRoot && !elements.length)
+      elements = this.querySelectorAll(selector);
+    return new UI(this, Array.from(elements));
   }
 }
 // src/lib/parsers.ts
@@ -637,17 +642,25 @@ var setText = (s) => updateElement(s, {
     el.append(document.createTextNode(value));
   }
 });
-var dangerouslySetInnerHTML = (s, allowScripts = false) => updateElement(s, {
+var dangerouslySetInnerHTML = (s, attachShadow, allowScripts) => updateElement(s, {
   op: "html",
-  read: (el) => el.innerHTML,
+  read: (el) => (el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? "",
   update: (el, html) => {
-    el.innerHTML = html;
+    if (!html) {
+      if (el.shadowRoot)
+        el.shadowRoot.innerHTML = "<slot></slot>";
+      return;
+    }
+    if (attachShadow && !el.shadowRoot)
+      el.attachShadow({ mode: attachShadow });
+    const target = el.shadowRoot || el;
+    target.innerHTML = html;
     if (!allowScripts)
       return;
-    el.querySelectorAll("script").forEach((script) => {
+    target.querySelectorAll("script").forEach((script) => {
       const newScript = document.createElement("script");
       newScript.appendChild(document.createTextNode(script.textContent ?? ""));
-      el.appendChild(newScript);
+      target.appendChild(newScript);
       script.remove();
     });
   }
