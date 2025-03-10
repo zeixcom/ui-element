@@ -1,14 +1,15 @@
 import { setProperty, UIElement } from "../../../";
 import { InputButton } from "../input-button/input-button";
-import { RatingStars } from "../rating-stars/rating-stars";
 
 export class RatingFeedback extends UIElement<{
+	rating: number,
 	empty: boolean,
 	submitted: boolean
 }> {
 	static localName = 'rating-feedback'
 
 	states = {
+		rating: 0,
 		empty: true,
         submitted: false,
     }
@@ -16,13 +17,10 @@ export class RatingFeedback extends UIElement<{
 	connectedCallback() {
 		super.connectedCallback()
 
-		const stars = this.querySelector<RatingStars>('rating-stars')
-
 		// Event listeners for rating changes and form submission
 		this.self
 			.on('change-rating', (e: Event) => {
-				const rating = (e as CustomEvent<number>).detail
-				console.log(`Rating changed to ${rating}`)
+				this.set('rating', (e as CustomEvent<number>).detail)
 			})
 			.on('submit', (e: Event) => {
 				e.preventDefault()

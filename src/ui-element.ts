@@ -138,8 +138,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	cleanup: (() => void)[] = []
 
 	/**
-	 * @since 0.9.0
-	 * @property {ElementInternals | undefined} internals - native internal properties of the custom element
+	 * @ property {ElementInternals | undefined} internals - native internal properties of the custom element
 	 * /
 	internals: ElementInternals | undefined
 

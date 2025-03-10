@@ -14,7 +14,7 @@ export {
 
 // Core
 export {
-	type AttributeParser,
+	type AttributeParser, type ComponentSignals, type InferSignalTypes, type StateInitializer, type Root,
 	RESET, UIElement, parse
 } from './src/ui-element'
 export {
@@ -22,6 +22,7 @@ export {
 	UI
 } from './src/core/ui'
 export {
+	type LogLevel,
 	LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, log
 } from './src/core/log'
 export {
