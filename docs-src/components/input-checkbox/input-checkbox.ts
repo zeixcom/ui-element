@@ -4,7 +4,7 @@ export class InputCheckbox extends UIElement<{ checked: boolean }> {
 	static localName = 'input-checkbox'
 	static observedAttributes = ['checked']
 
-	states = {
+	init = {
 		checked: asBoolean
 	}
 

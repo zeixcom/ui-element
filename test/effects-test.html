@@ -59,7 +59,7 @@
 
 		class UpdateAttribute extends UIElement {
 			static observedAttributes = ['required']
-			states = {
+			init = {
                 required: asBoolean,
 				ariaInvalid: 'false',
 				'aria-errormessage': () =>
@@ -83,7 +83,7 @@
 
 		class UpdateClass extends UIElement {
 			static observedAttributes = ['active']
-			states = {
+			init = {
                 active: asInteger()
             }
 

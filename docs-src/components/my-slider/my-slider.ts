@@ -1,9 +1,9 @@
-import { type SignalValueProvider, toggleClass, UIElement } from "../../../"
+import { type SignalValueProvider, UIElement, toggleClass } from "../../../"
 
 export class MySlider extends UIElement<{ active: number }> {
 	static localName ='my-slider'
 
-	states = {
+	init = {
         active: 0,
     }
 

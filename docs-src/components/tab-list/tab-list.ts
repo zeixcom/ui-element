@@ -7,7 +7,7 @@ export class TabList extends UIElement<{
 	static readonly localName = 'tab-list'
 	static observedAttributes = ['accordion']
 
-	states = {
+	init = {
 		active: 0,
 		accordion: asBoolean,
 	}

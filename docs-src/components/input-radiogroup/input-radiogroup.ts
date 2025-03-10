@@ -7,7 +7,7 @@ export class InputRadiogroup extends UIElement<{ value: string }> {
 	static localName = 'input-radiogroup'
 	static observedAttributes = ['value']
 
-	states = {
+	init = {
         value: asString()
     }
 

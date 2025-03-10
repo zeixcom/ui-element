@@ -189,7 +189,7 @@
 
 		class UpdatingComponent extends UIElement {
 			static observedAttributes = ['heading', 'count', 'step', 'value', 'selected']
-			states = {
+			init = {
 				count: asInteger(),
 				step: asNumber(),
 				value: (value, el) => {
@@ -240,7 +240,7 @@
 
 		class MyCounter extends UIElement {
 			static observedAttributes = ['value']
-			states = {
+			init = {
 				value: asInteger()
 			}
 
@@ -300,7 +300,7 @@
 			// Remove the following line if you don't want to listen to changes in 'src' attribute
 			static observedAttributes = ['src']
 
-			states = {
+			init = {
 				src: v => { // Custom attribute parser
 					if (!v) {
 						this.set('error', 'No URL provided in src attribute')
@@ -349,7 +349,7 @@
 			static localName = 'tab-list'
 			static observedAttributes = ['accordion']
 
-			states = {
+			init = {
 				active: 0,
 				accordion: asBoolean,
 			}

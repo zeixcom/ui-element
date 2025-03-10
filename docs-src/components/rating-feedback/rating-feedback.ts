@@ -9,7 +9,7 @@ export class RatingFeedback extends UIElement<{
 }> {
 	static localName = 'rating-feedback'
 
-	states = {
+	init = {
 		rating: 0,
 		empty: true,
         submitted: false,

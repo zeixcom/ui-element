@@ -35,7 +35,7 @@ type UI<E extends Element, S extends ComponentSignals> = {
 /**
  * Create a new UI object for managing UI elements and their events, passed states and applied effects
  * 
- * @since 0.10.2
+ * @since 0.11.0
  * @param {UIElement<S>} host
  * @param {E} targets
  * @returns {UI<E, S>} - new UI object

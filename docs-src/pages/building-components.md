@@ -94,7 +94,7 @@ If your component initializes states from `states` or provides or consumes conte
 class HelloUser extends UIElement {
 	static consumedContexts = ['display-name']; // Signal provided by a parent component
 
-	states = {
+	init = {
 		greeting: 'Hello', // Initial value of 'greeting' signal
 		upper: () => this.get('display-name').toUpperCase(), // Compute function for transformation on 'display-name' signal
 	}
@@ -199,7 +199,7 @@ static observedAttributes = ['count']; // Automatically becomes a signal
 ### Parsing Attribute Values
 
 ```js
-states = {
+init = {
 	count: asInteger(), // Convert '42' -> 42
 	date: v => new Date(v), // Custom parser: '2025-02-14' -> Date object
 };

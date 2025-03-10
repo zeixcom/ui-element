@@ -26,7 +26,7 @@ const asBoolean = (value: string | null): boolean =>
 /**
  * Parse an attribute as as number forced to integer with a fallback
  * 
- * @since 0.10.2
+ * @since 0.11.0
  * @param {number} [fallback=0] - fallback value
  * @returns {(value: string | null) => number} - parser function
  */
@@ -37,7 +37,7 @@ const asInteger = (fallback: number = 0) =>
 /**
  * Parse an attribute as as number with a fallback
  * 
- * @since 0.10.2
+ * @since 0.11.0
  * @param {number} [fallback=0] - fallback value
  * @returns {(value: string | null) => number} - parser function
  */
@@ -48,7 +48,7 @@ const asNumber = (fallback: number = 0) =>
 /**
  * Parse an attribute as a string with a fallback
  * 
- * @since 0.10.2
+ * @since 0.11.0
  * @param {string} [fallback=''] - fallback value
  * @returns {(value: string | null) => string} - parser function
  */
@@ -72,7 +72,7 @@ const asEnum = (valid: [string, ...string[]]) =>
 /**
  * Parse an attribute as a JSON serialized object with a fallback
  * 
- * @since 0.10.2
+ * @since 0.11.0
  * @param {T} fallback - fallback value
  * @returns {(value: string | null) => T} - parser function
  */

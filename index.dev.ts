@@ -1,6 +1,6 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.10.2
+ * @version 0.11.0
  * @author Esther Brunner
  */
 
@@ -14,7 +14,7 @@ export {
 
 // Core
 export {
-	type AttributeParser, type ComponentSignals, type StateInitializer, type Root,
+	type AttributeParser, type ComponentSignals, type SignalInitializer, type Root, type StateUpdater,
 	RESET, UIElement, parse
 } from './src/ui-element'
 export {

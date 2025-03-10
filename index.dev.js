@@ -390,7 +390,7 @@ var isAttributeParser = (value) => isFunction2(value) && !!value.length;
 var isStateUpdater = (value) => isFunction2(value) && !!value.length;
 var unwrap = (v) => isFunction2(v) ? unwrap(v()) : isSignal(v) ? unwrap(v.get()) : v;
 var parse = (host, key, value, old) => {
-  const parser = host.states[key];
+  const parser = host.init[key];
   return isAttributeParser(parser) ? parser(value, host, old) : value ?? undefined;
 };
 
@@ -410,7 +410,7 @@ class UIElement extends HTMLElement {
     }
     return this;
   }
-  states = {};
+  init = {};
   signals = {};
   cleanup = [];
   self = ui(this);
@@ -432,7 +432,7 @@ class UIElement extends HTMLElement {
       if (this.debug)
         log(this, "Connected");
     }
-    for (const [key, init] of Object.entries(this.states)) {
+    for (const [key, init] of Object.entries(this.init)) {
       const result = isAttributeParser(init) ? init(this.getAttribute(key), this) : isComputedCallbacks(init) ? computed(init) : init;
       this.set(key, result ?? RESET);
     }

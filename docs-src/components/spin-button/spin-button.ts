@@ -1,4 +1,4 @@
-import { asInteger, setProperty, setText, toggleAttribute, UIElement } from '../../../'
+import { UIElement, asInteger, setProperty, setText, toggleAttribute } from '../../../'
 
 export class SpinButton extends UIElement<{
 	value: number,
@@ -7,7 +7,7 @@ export class SpinButton extends UIElement<{
 	static localName ='spin-button'
 	static observedAttributes = ['value']
 
-	states = {
+	init = {
         value: asInteger(),
 		zero: () => this.get('value') === 0
     }

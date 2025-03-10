@@ -4,7 +4,7 @@ export class MyCounter extends UIElement<{ count: number }> {
 	static localName ='my-counter'
 	static observedAttributes = ['count']
 
-	states = {
+	init = {
         count: asInteger(),
     }
 

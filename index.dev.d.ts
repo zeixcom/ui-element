@@ -1,10 +1,10 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.10.2
+ * @version 0.11.0
  * @author Esther Brunner
  */
 export { type Signal, type MaybeSignal, type State, type Computed, type ComputedCallbacks, type EffectCallbacks, type EnqueueDedupe, UNSET, state, computed, effect, batch, watch, enqueue, isState, isComputed, isSignal, toSignal } from '@zeix/cause-effect';
-export { type AttributeParser, type ComponentSignals, type StateInitializer, type Root, RESET, UIElement, parse } from './src/ui-element';
+export { type AttributeParser, type ComponentSignals, type SignalInitializer, type Root, type StateUpdater, RESET, UIElement, parse } from './src/ui-element';
 export { type UI, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider, } from './src/core/ui';
 export { type LogLevel, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, log } from './src/core/log';
 export { type Context, type UnknownContext, useContext } from './src/core/context';

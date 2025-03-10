@@ -62,7 +62,7 @@ const valueString = (value: unknown): string =>
 /**
  * Return a detailed type of a JavaScript variable
  * 
- * @since 0.10.2
+ * @since 0.11.0
  * @param {unknown} value
  * @returns {string}
  */

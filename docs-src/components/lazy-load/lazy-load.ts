@@ -7,7 +7,7 @@ export class LazyLoad extends UIElement<{
 }> {
 	static localName = 'lazy-load'
 
-	states = {
+	init = {
 		src: (v: string | null) => { // Custom attribute parser
 			if (!v) {
 				this.set('error', 'No URL provided in src attribute')

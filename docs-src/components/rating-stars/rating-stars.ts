@@ -1,10 +1,10 @@
-import { asInteger, setAttribute, setText, UIElement } from "../../..";
+import { UIElement, asInteger, setAttribute, setText } from '../../..'
 
 export class RatingStars extends UIElement<{ value: number }> {
 	static localName = 'rating-stars'
 	static observedAttributes = ['value']
 
-	states = {
+	init = {
         value: asInteger(),
     }
 

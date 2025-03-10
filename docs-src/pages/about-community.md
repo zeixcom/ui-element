@@ -49,13 +49,13 @@ A copy of the license can be found in the [LICENSE](https://github.com/zeixcom/u
 
 ## Version History
 
-### Current Version: 0.10.2
+### Current Version: 0.11.0
 
-<callout-box class="danger">
+<callout-box class="warning">
 
-**Pre-release**
+**Release candidate**
 
-This version is a **pre-release** of UIElement, meaning **breaking changes** may still occur before version 1.0. Please check the [release notes](https://github.com/zeixcom/ui-element/releases) before updating.
+This version is a stable **pre-release** of UIElement, meaning **breaking changes** may still occur before the official release of version 1.0. Please check the [release notes](https://github.com/zeixcom/ui-element/releases) before updating.
 
 </callout-box>
 

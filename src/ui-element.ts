@@ -22,7 +22,7 @@ export type StateUpdater<T> = (v: T) => T
 
 export type Root<S extends ComponentSignals> = ShadowRoot | UIElement<S>
 
-export type StateInitializer<T, S extends ComponentSignals> = T
+export type SignalInitializer<T, S extends ComponentSignals> = T
 	| AttributeParser<T, S>
 	| ComputedCallbacks<NonNullable<T>, []>
 
@@ -45,7 +45,7 @@ const isAttributeParser = <T, S extends ComponentSignals>(value: unknown): value
 /**
  * Check if a value is a state updater
  * 
- * @since 0.10.2
+ * @since 0.11.0
  * @param {unknown} value - value to check
  * @returns {boolean} - true if value is a state updater, false otherwise
  */
@@ -80,7 +80,7 @@ export const parse = <T, S extends ComponentSignals>(
 	value: string | null,
 	old?: string | null
 ): T | undefined => {
-	const parser = host.states[key] as StateInitializer<T, S>
+	const parser = host.init[key] as SignalInitializer<T, S>
 	return isAttributeParser<T, S>(parser)
 		? parser(value, host, old)
 		: value as T ?? undefined
@@ -119,10 +119,10 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	}
 
 	/**
-	 * @since 0.10.1
-	 * @property {ComponentStates} states - object of state initializers for signals (initial values or attribute parsers)
+	 * @since 0.11.0
+	 * @property {{ [K in keyof S]: SignalInitializer<S[K], S> }} init - object of signal initializers (initial values, attribute parsers or computed callbacks)
 	 */
-	states: { [K in keyof S]: StateInitializer<S[K], S> } = {} as { [K in keyof S]: StateInitializer<S[K], S> }
+	init: { [K in keyof S]: SignalInitializer<S[K], S> } = {} as { [K in keyof S]: SignalInitializer<S[K], S> }
 
 	/**
      * @since 0.9.0
@@ -193,7 +193,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 			this.debug = this.hasAttribute('debug')
 			if (this.debug) log(this, 'Connected')
 		}
-		for (const [key, init] of Object.entries((this.states))) {
+		for (const [key, init] of Object.entries((this.init))) {
 			const result = isAttributeParser(init)
 				? init(this.getAttribute(key), this)
 				: isComputedCallbacks<{}>(init)

@@ -1,6 +1,6 @@
 # UIElement
 
-Version 0.10.2
+Version 0.11.0
 
 **UIElement** - transform reusable markup, styles and behavior into powerful, reactive, and maintainable Web Components.
 
@@ -147,7 +147,7 @@ class TabList extends UIElement {
 	static localName = 'tab-list'
 	static observedAttributes = ['accordion']
 
-	states = {
+	init = {
 		active: 0,
 		accordion: asBoolean,
 	}
@@ -260,7 +260,7 @@ class LazyLoad extends UIElement {
 	// Remove the following line if you don't want to listen to changes in 'src' attribute
 	static observedAttributes = ['src']
 
-	states = {
+	init = {
 		src: v => { // Custom attribute parser
 			if (!v) {
 				this.set('error', 'No URL provided in src attribute')

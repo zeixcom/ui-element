@@ -1,7 +1,5 @@
-import type { Signal } from "@zeix/cause-effect"
-
 import { isFunction } from "../core/util"
-import { UIElement, type ComponentSignals, type StateInitializer } from "../ui-element"
+import { UIElement, type ComponentSignals, type SignalInitializer } from "../ui-element"
 
 /* === Types === */
 
@@ -22,24 +20,22 @@ const camelToKebab = /*#__PURE__*/ (str: string): string =>
  * 
  * @since 0.10.1
  * @param {string} name - name of the custom element
- * @param {} states - states of the component
+ * @param {{ [K in keyof S]: SignalInitializer<S[K], S> }} init - states of the component
  * @param {ComponentSetup<S>} setup - setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
  * @returns {typeof Component} - the custom element class
  */
 export const component = <S extends ComponentSignals>(
 	name: string,
-	states: {
-		[K in keyof S]: StateInitializer<S[K] extends Signal<infer T> ? T : never, S>
-	},
+	init: { [K in keyof S]: SignalInitializer<S[K], S> },
 	setup: ComponentSetup<S>
   ): typeof UIElement => {
 	return (class extends UIElement {
 		static readonly localName = name
 		static get observedAttributes() {
-			return Object.keys(states).map(camelToKebab)
+			return Object.keys(init).map(camelToKebab)
 		}
 
-		states = states
+		init = init
 
 		connectedCallback() {
 			super.connectedCallback()

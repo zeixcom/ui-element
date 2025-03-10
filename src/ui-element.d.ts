@@ -7,7 +7,7 @@ export type ComponentSignals = {
 export type AttributeParser<T, S extends ComponentSignals> = (value: string | null, host: UIElement<S>, old?: string | null) => T;
 export type StateUpdater<T> = (v: T) => T;
 export type Root<S extends ComponentSignals> = ShadowRoot | UIElement<S>;
-export type StateInitializer<T, S extends ComponentSignals> = T | AttributeParser<T, S> | ComputedCallbacks<NonNullable<T>, []>;
+export type SignalInitializer<T, S extends ComponentSignals> = T | AttributeParser<T, S> | ComputedCallbacks<NonNullable<T>, []>;
 export declare const RESET: any;
 /**
  * Parse according to states
@@ -41,11 +41,11 @@ export declare class UIElement<S extends ComponentSignals = {}> extends HTMLElem
      */
     static define(name?: string): typeof UIElement;
     /**
-     * @since 0.10.1
-     * @property {ComponentStates} states - object of state initializers for signals (initial values or attribute parsers)
+     * @since 0.11.0
+     * @property {{ [K in keyof S]: SignalInitializer<S[K], S> }} init - object of signal initializers (initial values, attribute parsers or computed callbacks)
      */
-    states: {
-        [K in keyof S]: StateInitializer<S[K], S>;
+    init: {
+        [K in keyof S]: SignalInitializer<S[K], S>;
     };
     /**
      * @since 0.9.0
