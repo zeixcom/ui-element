@@ -1,14 +1,15 @@
 import { setProperty, UIElement } from "../../../";
 import { InputButton } from "../input-button/input-button";
-import { RatingStars } from "../rating-stars/rating-stars";
 
 export class RatingFeedback extends UIElement<{
+	rating: number,
 	empty: boolean,
 	submitted: boolean
 }> {
 	static localName = 'rating-feedback'
 
 	states = {
+		rating: 0,
 		empty: true,
         submitted: false,
     }
@@ -16,13 +17,10 @@ export class RatingFeedback extends UIElement<{
 	connectedCallback() {
 		super.connectedCallback()
 
-		const stars = this.querySelector<RatingStars>('rating-stars')
-
 		// Event listeners for rating changes and form submission
 		this.self
 			.on('change-rating', (e: Event) => {
-				const rating = (e as CustomEvent<number>).detail
-				console.log(`Rating changed to ${rating}`)
+				this.set('rating', (e as CustomEvent<number>).detail)
 			})
 			.on('submit', (e: Event) => {
 				e.preventDefault()
@@ -47,12 +45,12 @@ export class RatingFeedback extends UIElement<{
 		// Effects on rating changes
 		this.first('.feedback').sync(setProperty(
 			'hidden',
-			() => this.get('submitted') || !(stars?.get('value') ?? 0)
+			() => this.get('submitted') || !(this.get('rating') ?? 0)
 		))
 		this.all('.feedback p').sync((host, target, index) => {
 			setProperty<HTMLElement, 'hidden'>(
 				'hidden',
-				() => stars?.get('value') !== index + 1
+				() => this.get('rating') !== index + 1
             )(host, target)
 		})
 
