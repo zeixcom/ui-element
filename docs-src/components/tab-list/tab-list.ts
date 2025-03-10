@@ -1,7 +1,4 @@
-import {
-	type EventListenerProvider, type SignalValueProvider, 
-	asBoolean, setProperty, toggleAttribute, UIElement
-} from '../../../'
+import { UIElement, asBoolean, setAttribute, setProperty, toggleAttribute, toggleClass } from '../../../'
 
 export class TabList extends UIElement<{
 	active: number,
@@ -32,20 +29,32 @@ export class TabList extends UIElement<{
 		this.self.sync(toggleAttribute('accordion'))
 
 		// Update active tab state and bind click handlers
-		const setActiveIndex: EventListenerProvider = (_, index) => () => {
-			this.set('active', index)
-		}
-		const getPressedByIndex: SignalValueProvider<string> = (_, index) =>
-			String(this.get('active') === index)
 		this.all('menu button')
-			.on('click', setActiveIndex)
-			.sync(setProperty('ariaPressed', getPressedByIndex))
+			.on('click', (_, index) => () => {
+				this.set('active', index)
+			})
+			.sync(setProperty(
+				'ariaPressed',
+				(_, index) => String(this.get('active') === index)
+			))
 
-		// Update open details panel
-		const getOpenByIndex: SignalValueProvider<boolean> = (_, index) =>
-			!!(this.get('active') === index)
-		this.all<HTMLDetailsElement>('details')
-			.sync(setProperty('open', getOpenByIndex))
+		// Update details panels open, hidden and disabled states
+		this.all<HTMLDetailsElement>('details').sync(
+			setProperty(
+				'open',
+				(_, index) => !!(this.get('active') === index)
+			),
+			setAttribute(
+				'aria-disabled',
+				() => String(!this.get('accordion'))
+			)
+		)
+
+		// Update summary visibility
+		this.all('summary').sync(toggleClass(
+			'visually-hidden',
+			() => !this.get('accordion')
+		))
 	}
 }
 TabList.define()

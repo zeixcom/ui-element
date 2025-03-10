@@ -1,47 +1,50 @@
-import { removeElement, setText, dangerouslySetInnerHTML, UIElement, UNSET } from '../../../'
+import { UIElement, setProperty, setText, dangerouslySetInnerHTML } from '../../../'
 
 export class LazyLoad extends UIElement<{
-	content: string,
-	error: string,
-	loaded: boolean
+    src: string,
+    content: string,
+    error: string,
 }> {
-	static readonly localName = 'lazy-load'
+	static localName = 'lazy-load'
 
 	states = {
-		content: async () => {
-			let msg = ''
-			const url = this.getAttribute('src')
-			if (url) {
-				try {
-					const response = await fetch(url)
-					if (response.ok) return response.text()
-					msg = `HTTP error! ${response.statusText}`
-				} catch (error) {
-					msg = `Network error! ${error.message}`
-				}
-			} else {
-				msg = 'No URL provided'
+		src: (v: string | null) => { // Custom attribute parser
+			if (!v) {
+				this.set('error', 'No URL provided in src attribute')
+				return ''
 			}
-			this.set('error', msg)
+			const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
+			if (url.origin === location.origin) // Sanity check for cross-origin URLs
+				return url.toString()
+			this.set('error', 'Invalid URL origin')
 			return ''
 		},
-		error: UNSET,
-		loaded: () => !!(this.get('content') || this.get('error')),
+		content: async () => { // Async Computed callback
+			const url = this.get('src')
+			if (!url) return ''
+			try {
+				const response = await fetch(this.get('src'))
+				this.querySelector('.loading')?.remove()
+				if (response.ok) return response.text()
+				else this.set('error', response.statusText)
+			} catch (error) {
+				this.set('error', error.message)
+			}
+			return ''
+		},
+		error: '',
 	}
 
 	connectedCallback() {
 		super.connectedCallback()
 
-		// Uncomment the following line to use shadow DOM
-		// if (this.shadowRoot) this.attachShadow({ mode: 'open' })
+		// Effect to set error message
+		this.first('.error').sync(
+			setProperty('hidden', () => !this.get('error')),
+			setText('error'),
+		)
 
-		// Remove loading element when 'loaded' becomes true
-		this.first('.loading').sync(removeElement('loaded'))
-
-		// Set error text when 'error' is set
-		this.first('.error').sync(setText('error'))
-
-		// Update the shadow DOM or innerHTML when content changes
+		// Effect to set innerHTML to result of Computed 'content'
 		this.self.sync(dangerouslySetInnerHTML('content'))
 	}
 }

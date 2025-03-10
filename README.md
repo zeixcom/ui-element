@@ -144,63 +144,99 @@ UIElement components:
 import { UIElement, setAttribute, toggleAttribute } from '@zeix/ui-element'
 
 class TabList extends UIElement {
-    connectedCallback() {
+	static localName = 'tab-list'
+	static observedAttributes = ['accordion']
 
-        // Set inital active tab by querying tab-panel[open]
-        let openPanelIndex = 0;
-        this.querySelectorAll('tab-panel').forEach((el, index) => {
-            if (el.hasAttribute('open')) openPanelIndex = index
-        })
-        this.set('active', openPanelIndex)
+	states = {
+		active: 0,
+		accordion: asBoolean,
+	}
 
-        // Handle click events on menu buttons and update active tab index
-        this.all('menu button')
-            .on('click', (_el, index) => () => {
+	connectedCallback() {
+		super.connectedCallback()
+
+		// Set inital active tab by querying details[open]
+		const getInitialActive = () => { 
+			const panels = Array.from(this.querySelectorAll('details'))
+			for (let i = 0; i < panels.length; i++) {
+				if (panels[i].hasAttribute('open')) return i
+			}
+			return 0
+		}
+		this.set('active', getInitialActive())
+
+		// Reflect accordion attribute (may be used for styling)
+		this.self.sync(toggleAttribute('accordion'))
+
+		// Update active tab state and bind click handlers
+		this.all('menu button')
+			.on('click', (_, index) => () => {
 				this.set('active', index)
 			})
-            .sync((host, target, index) => {
-				setAttribute(
-					'aria-pressed',
-					() => host.get('active') === index ? 'true' : 'false'
-				)(host, target)
-			})
+			.sync(setProperty(
+				'ariaPressed',
+				(_, index) => String(this.get('active') === index)
+			))
 
-        // Pass open attribute to tab-panel elements based on active tab index
-        this.all('tab-panel').pass((_el, index) => ({
-            open: () => index === this.get('active')
-        }))
-    }
-}
-TabList.define('tab-list')
+		// Update details panels open, hidden and disabled states
+		this.all('details').sync(
+			setProperty(
+				'open',
+				(_, index) => !!(this.get('active') === index)
+			),
+			setAttribute(
+				'aria-disabled',
+				() => String(!this.get('accordion'))
+			)
+		)
 
-class TabPanel extends UIElement {
-    connectedCallback() {
-        this.self.sync(toggleAttribute('open'))
-    }
+		// Update summary visibility
+		this.all('summary').sync(toggleClass(
+			'visually-hidden',
+			() => !this.get('accordion')
+		))
+	}
 }
-TabPanel.define('tab-panel')
+TabList.define()
 ```
 
 Example styles:
 
 ```css
-tab-list menu {
-    list-style: none;
-    display: flex;
-    gap: 0.2rem;
-    padding: 0;
+tab-list {
 
-    & button[aria-pressed="true"] {
-        color: red;
-    }
-}
+	> menu {
+		list-style: none;
+		display: flex;
+		gap: 0.2rem;
+		padding: 0;
 
-tab-panel {
-    display: none;
+		& button[aria-pressed="true"] {
+			color: purple;
+		}
+	}
 
-    &[open] {
-        display: block;
-    }
+	> details {
+
+		&:not([open]) {
+			display: none;
+		}
+
+		&[aria-disabled] {
+			pointer-events: none;
+		}
+	}
+
+	&[accordion] {
+
+		> menu {
+			display: none;
+		}
+
+		> details:not([open]) {
+			display: block;
+		}
+	}
 }
 ```
 
@@ -210,70 +246,61 @@ A more complex component demonstrating async fetch from the server:
 
 ```html
 <lazy-load src="/lazy-load/snippet.html">
-    <div class="loading">Loading...</div>
-    <div class="error"></div>
+    <div class="loading" role="status">Loading...</div>
+    <div class="error" role="alert" aria-live="polite"></div>
 </lazy-load>
 ```
 
 ```js
-import { UIElement, setText, setProperty, effect, enqueue } from '@zeix/ui-element'
+import { UIElement, setProperty, setText, dangerouslySetInnerHTML } from '@zeix/ui-element'
 
 class LazyLoad extends UIElement {
-    static observedAttributes = ['src']
-    states = {
-        src: v => {
-                let url = ''
-                try {
-                    url = new URL(v, location.href) // ensure 'src' attribute is a valid URL
-                    if (url.origin !== location.origin) // sanity check for cross-origin URLs
-                        throw new TypeError('Invalid URL origin')
-                } catch (error) {
-                    console.error(error, url)
-                    url = ''
-                }
-                return url.toString()
-            },
-        error: ''
-    }
+	static localName = 'lazy-load'
 
-    connectedCallback() {
+	// Remove the following line if you don't want to listen to changes in 'src' attribute
+	static observedAttributes = ['src']
 
-        // Show / hide loading message
-        this.first('.loading')
-            .sync(setProperty('hidden', () => !!this.get('error')))
+	states = {
+		src: v => { // Custom attribute parser
+			if (!v) {
+				this.set('error', 'No URL provided in src attribute')
+				return ''
+			}
+			const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
+			if (url.origin === location.origin) // Sanity check for cross-origin URLs
+				return url.toString()
+			this.set('error', 'Invalid URL origin')
+			return ''
+		},
+		content: async () => { // Async Computed callback
+			const url = this.get('src')
+			if (!url) return ''
+			try {
+				const response = await fetch(this.get('src'))
+				this.querySelector('.loading')?.remove()
+				if (response.ok) return response.text()
+				else this.set('error', response.statusText)
+			} catch (error) {
+				this.set('error', error.message)
+			}
+			return ''
+		},
+		error: '',
+	}
 
-        // Set and show / hide error message
-        this.first('.error')
-            .sync(setText('error'))
-            .sync(setProperty('hidden', () => !this.get('error')))
+	connectedCallback() {
+		super.connectedCallback()
 
-        // Load content from provided URL
-        effect(async () => {
-            const src = this.get('src')
-            if (!src) return // silently fail if no valid URL is provided
-            try {
-                const response = await fetch(src)
-                if (response.ok) {
-                    const content = await response.text()
-                    enqueue(() => {
-                        // UNSAFE!, use only trusted sources in 'src' attribute
-                        this.root.innerHTML = content
-                        this.root.querySelectorAll('script').forEach(script => {
-                            const newScript = document.createElement('script')
-                            newScript.appendChild(document.createTextNode(script.textContent))
-                            this.root.appendChild(newScript)
-                            script.remove()
-                        })
-                    }, [this.root, 'h'])
-                    this.set('error', '')
-                } else {
-                    this.set('error', response.status + ':'+ response.statusText)
-                }
-            } catch (error) {
-                this.set('error', error)
-            }
-        })
-    }
+		// Effect to set error message
+		this.first('.error').sync(
+			setProperty('hidden', () => !this.get('error')),
+			setText('error'),
+		)
+
+		// Effect to set content in shadow root
+		// Remove the second argument (for shadowrootmode) if you prefer light DOM
+		this.self.sync(dangerouslySetInnerHTML('content', 'open'))
+	}
 }
-LazyLoad.define('lazy-load')
+LazyLoad.define()
 ```
