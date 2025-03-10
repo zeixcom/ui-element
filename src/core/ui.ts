@@ -109,7 +109,7 @@ class UI<E extends Element = HTMLElement, S extends ComponentSignals = {}> {
 							log(source, `Invalid string key "${source}" for state ${valueString(key)}`, LOG_WARN)
 						}
 					} else if (isFunction(source) || isSignal(source)) {
-						target.set(key, toSignal(source, true))
+						target.set(key, toSignal(source))
 					} else {
 						log(source, `Invalid source for state ${valueString(key)}`, LOG_WARN)
 					}
