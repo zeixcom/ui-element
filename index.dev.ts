@@ -31,10 +31,7 @@ export {
 
 // Lib
 export {
-	asBoolean,
-	asIntegerWithDefault, asInteger, asNumberWithDefault, asNumber,
-	asStringWithDefault, asString, asEnum,
-	asJSONWithDefault, asJSON
+	asBoolean, asInteger, asNumber, asString, asEnum, asJSON
 } from './src/lib/parsers'
 export {
 	type SignalValueProvider, type SignalLike, type ElementUpdater,

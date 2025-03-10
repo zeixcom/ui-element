@@ -1,4 +1,4 @@
-import { asInteger, asIntegerWithDefault, setProperty, setText, toggleAttribute, UIElement } from '../../../'
+import { asInteger, setProperty, setText, toggleAttribute, UIElement } from '../../../'
 
 export class SpinButton extends UIElement<{
 	value: number,
@@ -8,7 +8,7 @@ export class SpinButton extends UIElement<{
 	static observedAttributes = ['value']
 
 	states = {
-        value: asInteger,
+        value: asInteger(),
 		zero: () => this.get('value') === 0
     }
 
@@ -17,7 +17,7 @@ export class SpinButton extends UIElement<{
 
 		const zeroLabel = this.getAttribute('zero-label') || 'Add to Cart'
 		const incrementLabel = this.getAttribute('increment-label') || 'Increment'
-		const max = asIntegerWithDefault(9)(this.getAttribute('max'))
+		const max = asInteger(9)(this.getAttribute('max'))
 
 		// Event handlers
 		const changeValue = (direction: number = 1) => () => {

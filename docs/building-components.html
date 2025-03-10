@@ -362,7 +362,7 @@
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">	count: asInteger, </span><span style="color:#88846F">// Convert '42' -> 42</span></span>
+<span class="line"><span style="color:#F8F8F2">	count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(), </span><span style="color:#88846F">// Convert '42' -> 42</span></span>
 <span class="line"><span style="color:#A6E22E">	date</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Date</span><span style="color:#F8F8F2">(v), </span><span style="color:#88846F">// Custom parser: '2025-02-14' -> Date object</span></span>
 <span class="line"><span style="color:#F8F8F2">};</span></span>
 <span class="line"></span></code></pre>
@@ -381,7 +381,6 @@
 <li><code>0</code> for <code>number</code></li>
 <li><code>{}</code> (empty object) for objects of any kind</li>
 </ul>
-<p>Pre-defined parsers (see next section) come with a variant <code>*WithDefault()</code> that allow you to set custom fallback values for attribute parsers.</p>
 </callout-box>
 
 <h3>Pre-defined Parsers in UIElement</h3>
@@ -397,15 +396,15 @@
 <td>Converts <code>&quot;true&quot;</code> / <code>&quot;false&quot;</code> to a <strong>boolean</strong> (<code>true</code> / <code>false</code>). Also treats empty attributes (<code>checked</code>) as <code>true</code>.</td>
 </tr>
 <tr>
-<td><code>asInteger</code>, <code>asIntegerWithDefault(1)</code></td>
+<td><code>asInteger()</code></td>
 <td>Converts a numeric string (e.g., <code>&quot;42&quot;</code>) to an <strong>integer</strong> (<code>42</code>).</td>
 </tr>
 <tr>
-<td><code>asNumber</code>, <code>asNumberWithDefault(0.1)</code></td>
+<td><code>asNumber()</code></td>
 <td>Converts a numeric string (e.g., <code>&quot;3.14&quot;</code>) to a <strong>floating-point number</strong> (<code>3.14</code>).</td>
 </tr>
 <tr>
-<td><code>asString</code>, <code>asStringwithDefault(&#39;foo&#39;)</code></td>
+<td><code>asString()</code></td>
 <td>Returns the attribute value as a <strong>string</strong> (unchanged).</td>
 </tr>
 <tr>
@@ -413,10 +412,13 @@
 <td>Ensures the string matches <strong>one of the allowed values</strong>. Example: <code>asEnum([&#39;small&#39;, &#39;medium&#39;, &#39;large&#39;])</code>. If the value is not in the list, it defaults to the first option.</td>
 </tr>
 <tr>
-<td><code>asJSON</code>, <code>asJSONWithDefault({ theme: &#39;dark&#39; })</code></td>
-<td>Parses a JSON string (e.g., <code>&#39;[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]&#39;</code>) into an <strong>array</strong> or <strong>object</strong>. If invalid, returns <code>{}</code>.</td>
+<td><code>asJSON({...})</code></td>
+<td>Parses a JSON string (e.g., <code>&#39;[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]&#39;</code>) into an <strong>array</strong> or <strong>object</strong>. If invalid, returns the fallback object.</td>
 </tr>
 </tbody></table>
+<p>The pre-defined parsers <code>asInteger()</code>, <code>asNumber()</code> and <code>asString()</code> allow to set a custom fallback value as parameter.</p>
+<p>The <code>asEnum()</code> parser requires an array of valid values, while the first will be the fallback value for invalid results.</p>
+<p>The <code>asJSON()</code> parser requires a fallback object as parameter as <code>{}</code> probably won&#39;t match the type you&#39;re expecting.</p>
 </section>
 
 <section>

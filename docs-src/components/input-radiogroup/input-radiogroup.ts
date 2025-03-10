@@ -8,7 +8,7 @@ export class InputRadiogroup extends UIElement<{ value: string }> {
 	static observedAttributes = ['value']
 
 	states = {
-        value: asString
+        value: asString()
     }
 
 	connectedCallback() {

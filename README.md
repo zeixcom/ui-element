@@ -60,7 +60,7 @@ class ShowAppreciation extends UIElement {
 
     connectedCallback() {
         // Initialize count state
-        this.set(this.#count, asInteger(this.querySelector('.count').textContent) ?? 0)
+        this.set(this.#count, asInteger(0)(this.querySelector('.count').textContent))
 
         // Bind click event to increment count
         this.first('button').on('click', () => this.set(this.#count, v => ++v))

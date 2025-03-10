@@ -529,14 +529,11 @@ var parseNumber = (parseFn, value) => {
 };
 var getFallback = (value) => Array.isArray(value) && value[0] ? value[0] : value;
 var asBoolean = (value) => value !== "false" && value != null;
-var asIntegerWithDefault = (fallback = 0) => (value) => parseNumber(parseInt, value) ?? fallback;
-var asInteger = asIntegerWithDefault();
-var asNumberWithDefault = (fallback = 0) => (value) => parseNumber(parseFloat, value) ?? fallback;
-var asNumber = asNumberWithDefault();
-var asStringWithDefault = (fallback = "") => (value) => value ?? fallback;
-var asString = asStringWithDefault();
+var asInteger = (fallback = 0) => (value) => parseNumber(parseInt, value) ?? fallback;
+var asNumber = (fallback = 0) => (value) => parseNumber(parseFloat, value) ?? fallback;
+var asString = (fallback = "") => (value) => value ?? fallback;
 var asEnum = (valid) => (value) => value != null && valid.includes(value.toLowerCase()) ? value : getFallback(valid);
-var asJSONWithDefault = (fallback) => (value) => {
+var asJSON = (fallback) => (value) => {
   if (value == null)
     return fallback;
   let result;
@@ -547,7 +544,6 @@ var asJSONWithDefault = (fallback) => (value) => {
   }
   return result ?? fallback;
 };
-var asJSON = asJSONWithDefault({});
 // src/lib/effects.ts
 var isSafeURL = (value) => {
   if (/^(mailto|tel):/i.test(value))
@@ -729,13 +725,9 @@ export {
   createElement,
   computed,
   batch,
-  asStringWithDefault,
   asString,
-  asNumberWithDefault,
   asNumber,
-  asJSONWithDefault,
   asJSON,
-  asIntegerWithDefault,
   asInteger,
   asEnum,
   asBoolean,

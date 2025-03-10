@@ -190,8 +190,8 @@
 		class UpdatingComponent extends UIElement {
 			static observedAttributes = ['heading', 'count', 'step', 'value', 'selected']
 			states = {
-				count: asInteger,
-				step: asNumber,
+				count: asInteger(),
+				step: asNumber(),
 				value: (value, el) => {
 					if (value == null) return
 					const parsed = Number.isInteger(el.get('step'))
@@ -241,7 +241,7 @@
 		class MyCounter extends UIElement {
 			static observedAttributes = ['value']
 			states = {
-				value: asInteger
+				value: asInteger()
 			}
 
 			connectedCallback() {

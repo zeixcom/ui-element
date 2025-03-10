@@ -200,7 +200,7 @@ static observedAttributes = ['count']; // Automatically becomes a signal
 
 ```js
 states = {
-	count: asInteger, // Convert '42' -> 42
+	count: asInteger(), // Convert '42' -> 42
 	date: v => new Date(v), // Custom parser: '2025-02-14' -> Date object
 };
 ```
@@ -213,8 +213,6 @@ states = {
 * `0` for `number`
 * `{}` (empty object) for objects of any kind
 
-Pre-defined parsers (see next section) come with a variant `*WithDefault()` that allow you to set custom fallback values for attribute parsers.
-
 </callout-box>
 
 ### Pre-defined Parsers in UIElement
@@ -222,11 +220,17 @@ Pre-defined parsers (see next section) come with a variant `*WithDefault()` that
 | Function     | Description |
 | ------------ | ----------- |
 | `asBoolean`  | Converts `"true"` / `"false"` to a **boolean** (`true` / `false`). Also treats empty attributes (`checked`) as `true`. |
-| `asInteger`, `asIntegerWithDefault(1)` | Converts a numeric string (e.g., `"42"`) to an **integer** (`42`). |
-| `asNumber`, `asNumberWithDefault(0.1)` | Converts a numeric string (e.g., `"3.14"`) to a **floating-point number** (`3.14`). |
-| `asString`, `asStringwithDefault('foo')` | Returns the attribute value as a **string** (unchanged). |
+| `asInteger()` | Converts a numeric string (e.g., `"42"`) to an **integer** (`42`). |
+| `asNumber()` | Converts a numeric string (e.g., `"3.14"`) to a **floating-point number** (`3.14`). |
+| `asString()` | Returns the attribute value as a **string** (unchanged). |
 | `asEnum([...])` | Ensures the string matches **one of the allowed values**. Example: `asEnum(['small', 'medium', 'large'])`. If the value is not in the list, it defaults to the first option. |
-| `asJSON`, `asJSONWithDefault({ theme: 'dark' })` | Parses a JSON string (e.g., `'["a", "b", "c"]'`) into an **array** or **object**. If invalid, returns `{}`. |
+| `asJSON({...})` | Parses a JSON string (e.g., `'["a", "b", "c"]'`) into an **array** or **object**. If invalid, returns the fallback object. |
+
+The pre-defined parsers `asInteger()`, `asNumber()` and `asString()` allow to set a custom fallback value as parameter.
+
+The `asEnum()` parser requires an array of valid values, while the first will be the fallback value for invalid results.
+
+The `asJSON()` parser requires a fallback object as parameter as `{}` probably won't match the type you're expecting.
 
 </section>
 

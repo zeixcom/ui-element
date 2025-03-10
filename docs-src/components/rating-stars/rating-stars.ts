@@ -5,7 +5,7 @@ export class RatingStars extends UIElement<{ value: number }> {
 	static observedAttributes = ['value']
 
 	states = {
-        value: asInteger,
+        value: asInteger(),
     }
 
 	connectedCallback() {

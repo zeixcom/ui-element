@@ -19,7 +19,7 @@ export declare const RESET: any;
  * @param {string | null} [old=undefined] - old attribute value
  * @returns {T | undefined}
  */
-export declare const parse: <T, S extends ComponentSignals = {}>(host: UIElement<S>, key: string, value: string | null, old?: string | null) => T | undefined;
+export declare const parse: <T, S extends ComponentSignals>(host: UIElement<S>, key: string, value: string | null, old?: string | null) => T | undefined;
 /**
  * Base class for reactive custom elements
  *

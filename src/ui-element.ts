@@ -74,7 +74,7 @@ const unwrap = <T extends {}>(v: T | (() => T) | Signal<T>): T =>
  * @param {string | null} [old=undefined] - old attribute value
  * @returns {T | undefined}
  */
-export const parse = <T, S extends ComponentSignals = {}>(
+export const parse = <T, S extends ComponentSignals>(
 	host: UIElement<S>,
 	key: string,
 	value: string | null,

@@ -5,7 +5,7 @@ export class MyCounter extends UIElement<{ count: number }> {
 	static observedAttributes = ['count']
 
 	states = {
-        count: asInteger,
+        count: asInteger(),
     }
 
 	connectedCallback() {
