@@ -7,6 +7,15 @@
 <body>
 
 	<style>
+		.visually-hidden {
+			position: absolute;
+			left: -10000px;
+			top: auto;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+		}
+
 		my-counter {
 			display: flex;
 			flex-direction: row;
@@ -17,22 +26,39 @@
 			}
 		}
 
-		tab-list menu {
-			list-style: none;
-			display: flex;
-			gap: 0.2rem;
-			padding: 0;
+		tab-list {
 
-			& button[aria-pressed="true"] {
-				color: purple;
+			> menu {
+				list-style: none;
+				display: flex;
+				gap: 0.2rem;
+				padding: 0;
+
+				& button[aria-pressed="true"] {
+					color: purple;
+				}
 			}
-		}
 
-		tab-panel {
-			display: none;
+			> details {
 
-			&[open] {
-				display: block;
+				&:not([open]) {
+					display: none;
+				}
+
+				&[aria-disabled] {
+					pointer-events: none;
+				}
+			}
+
+			&[accordion] {
+
+				> menu {
+					display: none;
+				}
+
+				> details:not([open]) {
+					display: block;
+				}
 			}
 		}
 
@@ -120,32 +146,35 @@
 			<li><button type="button">Tab 2</button></li>
 			<li><button type="button">Tab 3</button></li>
 		</menu>
-		<tab-panel open>
-			<h2>Tab 1</h2>
+		<details open>
+			<summary>Tab 1</summary>
 			<p>Content of tab panel 1</p>
-		</tab-panel>
-		<tab-panel>
-			<h2>Tab 2</h2>
+		</details>
+		<details>
+			<summary>Tab 2</summary>
 			<p>Content of tab panel 2</p>
-		</tab-panel>
-		<tab-panel>
-			<h2>Tab 3</h2>
+		</details>
+		<details>
+			<summary>Tab 3</summary>
 			<p>Content of tab panel 3</p>
-		</tab-panel>
+		</details>
 	</tab-list>
 
 	<script type="module">
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
 		import {
-			UIElement, batch, effect,
+			UIElement, batch, effect, enqueue,
 			asBoolean, asInteger, asNumber,
-			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
-		} from '../index.js'
+			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
+			removeElement, dangerouslySetInnerHTML
+		} from '../'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 		const animationFrame = async () => new Promise(requestAnimationFrame)
 		const normalizeText = text => text.replace(/\s+/g, ' ').trim()
+
+		const LOADING_DELAY = 1500 // Adjust this if tests for LazyLoad fail; needs to be high enough so initial loading message can be observed before it gets removed when async connectedCallback() finishes
 
 		class VoidComponent extends UIElement {}
 		VoidComponent.define('void-component')
@@ -227,7 +256,6 @@
 
 		class GreetingConfigurator extends UIElement {
 			connectedCallback() {
-				super.connectedCallback()
 				const firstName = this.querySelector('.first')
 				this.first('hello-world').pass({
 					name: () => this.querySelector('input-checkbox').get('checked')
@@ -242,7 +270,6 @@
 			static observedAttributes = ['greeting']
 
 			connectedCallback() {
-				super.connectedCallback()
 				this.first('.greeting').sync(setText('greeting'))
 				this.first('.name').sync(setText('name'))
 			}
@@ -268,88 +295,111 @@
 		InputCheckbox.define('input-checkbox')
 
 		class LazyLoad extends UIElement {
+			static localName = 'lazy-load'
+
+			// Remove the following line if you don't want to listen to changes in 'src' attribute
+			static observedAttributes = ['src']
+
 			states = {
-				content: '',
-				error: '',
-				loaded: false
-			}
-
-			async connectedCallback() {
-				super.connectedCallback()
-
-				const url = this.getAttribute('src') // ⚠️ Ensure 'src' is from a trusted source
-				if (url) {
+				src: v => { // Custom attribute parser
+					if (!v) {
+						this.set('error', 'No URL provided in src attribute')
+						return ''
+					}
+					const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
+					if (url.origin === location.origin) // Sanity check for cross-origin URLs
+						return url.toString()
+					this.set('error', 'Invalid URL origin')
+					return ''
+				},
+				content: async () => { // Async Computed callback
+					const url = this.get('src')
+					if (!url) return ''
 					try {
-						const response = await fetch(url)
-						this.set('loaded', true)
-						if (response.ok) {
-							const text = await response.text()
-							this.set('content', text)
-						} else {
-                            this.set('error', response.statusText)
-                        }
+						const response = await fetch(this.get('src'))
+						await wait(LOADING_DELAY)
+						this.querySelector('.loading')?.remove()
+						if (response.ok) return response.text()
+						else this.set('error', response.statusText)
 					} catch (error) {
 						this.set('error', error.message)
 					}
-				} else {
-                    this.set('error', 'Missing required attribute: src')
-				}
+					return ''
+				},
+				error: '',
+			}
 
-				// Hide loading element when 'loaded' becomes true
-				this.first('.loading').sync(toggleAttribute('hidden', 'loaded'))
+			connectedCallback() {
+				super.connectedCallback()
 
-				// Set error text when 'error' is set
+				// Effect to set error message
 				this.first('.error').sync(
-					toggleAttribute('hidden', () => !this.get('error')),
-					setText('error')
+					setProperty('hidden', () => !this.get('error')),
+					setText('error'),
 				)
 
-				// Set innerHTML of Shadow Root when 'content' is set
-				effect(() => {
-					const content = this.get('content')
-					if (content) {
-						if (!this.shadowRoot) this.attachShadow({ mode: 'open' })
-						this.root.innerHTML = content
-					}
-				})
+				// Effect to set content in shadow root
+				// Remove the second argument (for shadowrootmode) if you prefer light DOM
+				this.self.sync(dangerouslySetInnerHTML('content', 'open'))
 			}
 		}
-		LazyLoad.define('lazy-load')
+		LazyLoad.define()
 
 		class TabList extends UIElement {
+			static localName = 'tab-list'
+			static observedAttributes = ['accordion']
+
+			states = {
+				active: 0,
+				accordion: asBoolean,
+			}
+
 			connectedCallback() {
+				super.connectedCallback()
 
-				// Set inital active tab by querying tab-panel[open]
-				let openPanelIndex = 0;
-				this.querySelectorAll('tab-panel').forEach((el, index) => {
-					if (el.hasAttribute('open')) openPanelIndex = index
-				})
-				this.set('active', openPanelIndex)
+				// Set inital active tab by querying details[open]
+				const getInitialActive = () => { 
+					const panels = Array.from(this.querySelectorAll('details'))
+					for (let i = 0; i < panels.length; i++) {
+						if (panels[i].hasAttribute('open')) return i
+					}
+					return 0
+				}
+				this.set('active', getInitialActive())
 
-				// Handle click events on menu buttons and update active tab index
+				// Reflect accordion attribute (may be used for styling)
+				this.self.sync(toggleAttribute('accordion'))
+
+				// Update active tab state and bind click handlers
 				this.all('menu button')
-				    .on('click', (_el, index) => () => this.set('active', index))
-					.sync((host, target, index) => {
-						setAttribute(
-							'aria-pressed',
-							() => host.get('active') === index ? 'true' : 'false'
-						)(host, target)
+					.on('click', (_, index) => () => {
+						this.set('active', index)
 					})
+					.sync(setProperty(
+						'ariaPressed',
+						(_, index) => String(this.get('active') === index)
+					))
 
-				// Pass open attribute to tab-panel elements based on active tab index
-				this.all('tab-panel').pass((_el, index) => ({
-					open: () => index === this.get('active')
-				}))
+				// Update details panels open, hidden and disabled states
+				this.all('details').sync(
+					setProperty(
+						'open',
+						(_, index) => !!(this.get('active') === index)
+					),
+					setAttribute(
+						'aria-disabled',
+						() => String(!this.get('accordion'))
+					)
+				)
+
+				// Update summary visibility
+				this.all('summary').sync(toggleClass(
+					'visually-hidden',
+					() => !this.get('accordion')
+				))
 			}
 		}
-		TabList.define('tab-list')
-
-		class TabPanel extends UIElement {
-			connectedCallback() {
-				this.self.sync(toggleAttribute('open'))
-            }
-		}
-		TabPanel.define('tab-panel')
+		TabList.define()
 
 		runTests(() => {
 
@@ -723,21 +773,19 @@
 
 				it('should display lazy loaded content', async function () {
 					const lazyComponent = document.getElementById('lazy-success')
-					await wait(100)
+					await wait(LOADING_DELAY)
 					const shadow = lazyComponent.shadowRoot
 					assert.instanceOf(shadow, DocumentFragment, 'Should have a shadow root')
 					assert.equal(normalizeText(shadow.querySelector('p').textContent), 'Lazy loaded content', 'Should display lazy loaded content')
 					assert.equal(lazyComponent.querySelector('.error').hidden, true, 'Should hide error container')
-					assert.equal(lazyComponent.querySelector('.loading').hidden, true, 'Should hide loading status')
+					assert.equal(lazyComponent.querySelector('.loading') === null, true, 'Should remove loading status')
 				})
 
 				it('should display error message', async function () {
 					const lazyComponent = document.getElementById('lazy-error')
-					await wait(100)
+					await wait(LOADING_DELAY)
 					assert.equal(normalizeText(lazyComponent.querySelector('.error').textContent), 'Not Found', 'Should display error message')
-					assert.equal(lazyComponent.querySelector('.loading').hidden, true, 'Should hide loading status')
-					assert.equal(lazyComponent.shadowRoot, null, 'Should not have a shadow root')
-
+					assert.equal(lazyComponent.querySelector('.loading') === null, true, 'Should remove loading status')
 				})
 
 			})
@@ -764,11 +812,11 @@
 					const tabList = document.querySelector('tab-list')
                     const buttons = tabList.querySelectorAll('button')
                     await animationFrame()
-                    assert.equal(tabList.querySelectorAll('tab-panel')[1].hasAttribute('open'), true, 'Should mark the second tab-panel as open')
+                    assert.equal(tabList.querySelectorAll('details')[1].hasAttribute('open'), true, 'Should mark the second details as open')
                     buttons[0].click()
                     await animationFrame()
-                    assert.equal(tabList.querySelectorAll('tab-panel')[0].hasAttribute('open'), true, 'Should mark the second tab-panel as not open')
-                    assert.equal(tabList.querySelectorAll('tab-panel')[0].hasAttribute('open'), true, 'Should mark the first tab-panel as open')
+                    assert.equal(tabList.querySelectorAll('details')[0].hasAttribute('open'), true, 'Should mark the second details as not open')
+                    assert.equal(tabList.querySelectorAll('details')[0].hasAttribute('open'), true, 'Should mark the first details as open')
 				})
 
 			})
