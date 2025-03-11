@@ -265,6 +265,9 @@ class LazyLoad extends UIElement {
 			if (!v) {
 				this.set('error', 'No URL provided in src attribute')
 				return ''
+			} else if ((this.parentElement || this.getRootNode().host)?.closest(`${this.localName}[src="${v}"]`)) {
+				this.set('error', 'Recursive loading detected')
+				return ''
 			}
 			const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
 			if (url.origin === location.origin) // Sanity check for cross-origin URLs

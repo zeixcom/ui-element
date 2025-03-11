@@ -194,12 +194,14 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 			if (this.debug) log(this, 'Connected')
 		}
 		for (const [key, init] of Object.entries((this.init))) {
+			// Only handle keys that are not part of the observedAttributes array to prevent double initialization
+			if ((this.constructor as typeof UIElement).observedAttributes.includes(key)) continue
 			const result = isAttributeParser(init)
 				? init(this.getAttribute(key), this)
 				: isComputedCallbacks<{}>(init)
 					? computed(init)
 					: init
-			this.set(key, result ?? RESET)
+			this.set(key, result ?? RESET, false)
 		}
 		useContext(this)
 	}

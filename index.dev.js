@@ -433,8 +433,10 @@ class UIElement extends HTMLElement {
         log(this, "Connected");
     }
     for (const [key, init] of Object.entries(this.init)) {
+      if (this.constructor.observedAttributes.includes(key))
+        continue;
       const result = isAttributeParser(init) ? init(this.getAttribute(key), this) : isComputedCallbacks(init) ? computed(init) : init;
-      this.set(key, result ?? RESET);
+      this.set(key, result ?? RESET, false);
     }
     useContext(this);
   }

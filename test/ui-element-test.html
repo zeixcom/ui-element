@@ -140,6 +140,10 @@
 		<p class="loading" role="status">Loading...</p>
 		<p class="error" role="alert" aria-live="polite" hidden></p>
 	</lazy-load>
+	<lazy-load src="/test/mock/recursion.html" id="lazy-recursion">
+		<p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite" hidden></p>
+	</lazy-load>
 	<tab-list>
 		<menu>
 			<li><button type="button">Tab 1</button></li>
@@ -220,7 +224,6 @@
 			static observedAttributes = ['heading']
 
 			connectedCallback() {
-				super.connectedCallback()
 				this.first('child-component').pass({
 					heading: 'heading',
 					text: () => this.get('heading').toUpperCase()
@@ -231,7 +234,6 @@
 
 		class ChildComponent extends UIElement {
 			connectedCallback() {
-				super.connectedCallback()
 				this.first('h1').sync(setText('heading'))
 				this.first('p').sync(setText('text'))
 			}
@@ -304,6 +306,9 @@
 				src: v => { // Custom attribute parser
 					if (!v) {
 						this.set('error', 'No URL provided in src attribute')
+						return ''
+					} else if ((this.parentElement || this.getRootNode().host)?.closest(`${this.localName}[src="${v}"]`)) {
+						this.set('error', 'Recursive loading detected')
 						return ''
 					}
 					const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
@@ -786,6 +791,17 @@
 					await wait(LOADING_DELAY)
 					assert.equal(normalizeText(lazyComponent.querySelector('.error').textContent), 'Not Found', 'Should display error message')
 					assert.equal(lazyComponent.querySelector('.loading') === null, true, 'Should remove loading status')
+				})
+
+				it('should prevent recursive loading', async function () {
+					const lazyComponent = document.getElementById('lazy-recursion')
+					await wait(LOADING_DELAY)
+					const shadow = lazyComponent.shadowRoot
+					assert.instanceOf(shadow, DocumentFragment, 'Should have a shadow root')
+					const lazySubComponent = shadow.querySelector('lazy-load')
+					const errorElement = lazySubComponent.querySelector('.error')
+					assert.isFalse(errorElement.hidden, 'Error message should be visible')
+					assert.equal(errorElement.textContent, 'Recursive loading detected', 'Should display recursion error message')
 				})
 
 			})
