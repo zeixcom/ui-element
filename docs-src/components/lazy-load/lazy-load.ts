@@ -1,65 +1,54 @@
-import { effect, enqueue, removeElement, setText, UIElement } from '../../../'
+import { UIElement, setProperty, setText, dangerouslySetInnerHTML } from '../../../'
 
 export class LazyLoad extends UIElement<{
-	content: string,
-	error: string,
-	loaded: boolean
+    src: string,
+    content: string,
+    error: string,
 }> {
-	static readonly localName = 'lazy-load'
+	static localName = 'lazy-load'
 
-	states = {
-		content: '',
+	init = {
+		src: (v: string | null) => { // Custom attribute parser
+			if (!v) {
+				this.set('error', 'No URL provided in src attribute')
+				return ''
+			} else if ((this.parentElement || (this.getRootNode() as ShadowRoot).host)?.closest(`${this.localName}[src="${v}"]`)) {
+				this.set('error', 'Recursive loading detected')
+				return ''
+			}
+			const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
+			if (url.origin === location.origin) // Sanity check for cross-origin URLs
+				return url.toString()
+			this.set('error', 'Invalid URL origin')
+			return ''
+		},
+		content: async () => { // Async Computed callback
+			const url = this.get('src')
+			if (!url) return ''
+			try {
+				const response = await fetch(this.get('src'))
+				this.querySelector('.loading')?.remove()
+				if (response.ok) return response.text()
+				else this.set('error', response.statusText)
+			} catch (error) {
+				this.set('error', error.message)
+			}
+			return ''
+		},
 		error: '',
-		loaded: false
 	}
 
 	connectedCallback() {
 		super.connectedCallback()
 
-		const url = this.getAttribute('src')
-		if (url) { // Do sanity checks on the user-provided URL here
-			this.loadContent(url).then(([error, content]) => {
-				this.set('content', content)
-				this.set('error', error)
-				this.set('loaded', true)
-			})
-		}
+		// Effect to set error message
+		this.first('.error').sync(
+			setProperty('hidden', () => !this.get('error')),
+			setText('error'),
+		)
 
-		// Remove loading element when 'loaded' becomes true
-		this.first('.loading').sync(removeElement('loaded'))
-
-		// Set error text when 'error' is set
-		this.first('.error').sync(setText('error'))
-
-		// Update the shadow DOM or innerHTML when content changes
-		effect(() => {
-			const content = this.get('content') as string
-			if (content) {
-				enqueue(() => {
-					// Uncomment the following line to use shadow DOM
-					// if (this.shadowRoot) this.attachShadow({ mode: 'open' })
-					this.root.innerHTML = content 
-					this.root.querySelectorAll('script').forEach(script => {
-						const newScript = document.createElement('script')
-						newScript.appendChild(document.createTextNode(script.textContent ?? ''))
-						this.root.appendChild(newScript)
-						script.remove()
-					})
-				}, [this.root as Element, 'll'])
-			}
-		})
+		// Effect to set innerHTML to result of Computed 'content'
+		this.self.sync(dangerouslySetInnerHTML('content'))
 	}
-
-	async loadContent(url: string): Promise<[string, string]> {
-		try {
-			const response = await fetch(url)
-			if (!response.ok) return [response.statusText, '']
-			const text = await response.text()
-			return ['', text]
-		} catch (error) {
-			return [error.message, '']
-		}
-	}
-
 }
 LazyLoad.define()

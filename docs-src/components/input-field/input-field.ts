@@ -9,11 +9,11 @@ type InputFieldSignals = {
 	error: string,
 	ariaInvalid: "true" | "false",
 	'aria-errormessage': string,
-    description?: string,
+    /* description?: string,
     isInteger?: boolean,
     min?: number,
     max?: number,
-	'aria-describedby'?: string,
+	'aria-describedby'?: string, */
 }
 
 /* === Pure functions === */
@@ -36,7 +36,7 @@ const parseNumber = (v: any, int = false, fallback = 0): number => {
 export class InputField extends UIElement<InputFieldSignals> {
 	static observedAttributes = ['value', 'description']
 
-	states = {
+	init = {
 		value: (v: string | null, el: UIElement<InputFieldSignals>): string | number =>
 			(el as InputField).isNumber
 				? parseNumber(v, (el as InputField).isInteger, 0)
@@ -80,7 +80,7 @@ export class InputField extends UIElement<InputFieldSignals> {
 				)
 			})
 			.on('input', () => {
-				this.set('length', () => this.input?.value.length ?? 0)
+				this.set('length', this.input?.value.length ?? 0)
 			})
 
 		// Handle arrow key events to increment / decrement value

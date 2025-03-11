@@ -18,32 +18,30 @@ const generatePanel = async (name: string, type: string, label: string) => {
 	const filePath = join(COMPONENTS_DIR, name, `${name}.${type}`);
 	if (!(await fileExists(filePath))) return '';
 
-	const open = type === 'html'? ' open' : '';
+	const open = type === 'ts' ? ' open' : '';
 	const content = await readFile(filePath, 'utf8');
 
 	// Apply syntax highlighting
 	const highlighted = await highlightedCode(content, type);
 
 	return `
-	<accordion-panel${open}>
-		<details${open} aria-disabled="true">
-			<summary class="visually-hidden">
-				<div class="summary">${label}</div>
-			</summary>
-			<code-block language="${type}" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-				<p class="meta">
-					<span class="file">${name}.${type}</span>
-					<span class="language">${type}</span>
-				</p>
-				${highlighted}
-				<input-button class="copy">
-					<button type="button" class="secondary small">
-						<span class="label">Copy</span>
-					</button>
-				</input-button>
-			</code-block>
-		</details>
-	</accordion-panel>`;
+<details${open}>
+	<summary>
+		<div class="summary">${label}</div>
+	</summary>
+	<code-block language="${type}" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">${name}.${type}</span>
+			<span class="language">${type}</span>
+		</p>
+		${highlighted}
+		<input-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</input-button>
+	</code-block>
+</details>`;
 };
 
 // Function to process each component
@@ -58,7 +56,7 @@ const processComponent = async (name: string) => {
 	const panels = await Promise.all(panelTypes.map(({ type }) => generatePanel(name, type, type.toUpperCase())));
 	const validPanels = panels.filter(Boolean);
 	const validLabels = panelTypes
-		.map(({ label }, i) => panels[i] ? label : null)
+		.map((panel, i) => panels[i] ? panel : null)
 		.filter(Boolean); // Keep labels in sync with validPanels
 
 	if (validPanels.length === 0) return; // Skip if no valid content
@@ -66,11 +64,10 @@ const processComponent = async (name: string) => {
 	const fragment = `
 <tab-list>
 	<menu>
-		${validLabels.map((label, i) => `<li><button type="button" aria-pressed="${i === 0}">${label}</button></li>`).join('\n\t\t')}
+		${validLabels.map(panel => `<li><button type="button" aria-pressed="${panel!.type === 'ts'}">${panel!.label}</button></li>`).join('\n\t\t')}
 	</menu>
 	${validPanels.join('\n')}
-</tab-list>
-`;
+</tab-list>`;
 
 	await writeFile(join(FRAGMENTS_DIR, `${name}.html`), fragment, 'utf8');
 	console.log(`✅ Generated: ${name}.html`);

@@ -1,9 +1,9 @@
-import { toggleClass, UIElement } from "../../../"
+import { type SignalValueProvider, UIElement, toggleClass } from "../../../"
 
 export class MySlider extends UIElement<{ active: number }> {
 	static localName ='my-slider'
 
-	states = {
+	init = {
         active: 0,
     }
 
@@ -19,13 +19,10 @@ export class MySlider extends UIElement<{ active: number }> {
 		this.first('.next').on('click', setNextSlide(1))
 
 		// Effects for updating slides and dots
-		const toggleActiveClass = (
-			host: UIElement,
-			target: Element,
-			index: number
-		) => toggleClass('active', () => this.get('active') === index)(host, target)
-		this.all('.slide').sync(toggleActiveClass)
-		this.all('.dots span').sync(toggleActiveClass)
+		const getActiveByIndex: SignalValueProvider<boolean> = (_, index) =>
+			this.get('active') === index
+		this.all('.slide').sync(toggleClass('active', getActiveByIndex))
+		this.all('.dots span').sync(toggleClass('active', getActiveByIndex))
 	}
 }
 MySlider.define()

@@ -1,6 +1,6 @@
 import { setText, UIElement, RESET } from "../../../"
 
-export class HelloWorld extends UIElement<{ name?: string }> {
+export class HelloWorld extends UIElement {
 	static localName = 'hello-world'
 
 	connectedCallback() {

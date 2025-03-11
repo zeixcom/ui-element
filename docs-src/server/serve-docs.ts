@@ -86,6 +86,7 @@ const server = Bun.serve({
 				return new Response(content, {
 					headers: { "Content-Type": "text/html; charset=UTF-8" },
 				});
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			} catch (error) {
 				console.warn(`⚠️ Not found: ${path}`);
 				return new Response("Fallback response");
@@ -110,6 +111,7 @@ const server = Bun.serve({
 			return new Response(await Bun.file(`./docs${path}`).bytes(), {
 				headers: { "Content-Type": type(path) },
 			});
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		} catch (error) {
 			console.warn(`⚠️ Not found: ${path}`);
 			return new Response("Fallback response");

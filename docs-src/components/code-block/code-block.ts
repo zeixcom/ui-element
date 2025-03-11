@@ -10,7 +10,7 @@ export class CodeBlock extends UIElement<{ collapsed: boolean }> {
 	static readonly localName = 'code-block'
 	static observedAttributes = ['collapsed']
 
-	states = {
+	init = {
 		collapsed: asBoolean
 	}
 

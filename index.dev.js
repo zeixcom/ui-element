@@ -20,6 +20,11 @@ var updateDOM = () => {
     fn();
   }
 };
+var requestTick = () => {
+  if (requestId)
+    cancelAnimationFrame(requestId);
+  requestId = requestAnimationFrame(updateDOM);
+};
 queueMicrotask(updateDOM);
 var subscribe = (watchers) => {
   if (active && !watchers.includes(active)) {
@@ -61,6 +66,19 @@ var watch = (run, mark) => {
     active = prev;
   }
 };
+var enqueue = (fn, dedupe) => new Promise((resolve, reject) => {
+  const wrappedCallback = () => {
+    try {
+      resolve(fn());
+    } catch (error) {
+      reject(error);
+    }
+  };
+  if (dedupe) {
+    updateMap.set(dedupe, wrappedCallback);
+  }
+  requestTick();
+});
 
 // node_modules/@zeix/cause-effect/lib/effect.ts
 function effect(cb, ...maybeSignals) {
@@ -224,116 +242,6 @@ var resolve = (maybeSignals, cb) => {
   }
   return result;
 };
-// node_modules/@zeix/pulse/lib/pulse.ts
-if (!("requestAnimationFrame" in globalThis))
-  globalThis.requestAnimationFrame = (callback) => setTimeout(callback, 16);
-var dedupeMap = new Map;
-var queue = [];
-var requestId2;
-var flush2 = () => {
-  requestId2 = null;
-  queue.forEach((fn) => fn());
-  queue = [];
-  dedupeMap.clear();
-};
-var requestTick = () => {
-  if (requestId2)
-    cancelAnimationFrame(requestId2);
-  requestId2 = requestAnimationFrame(flush2);
-};
-queueMicrotask(flush2);
-var enqueue2 = (callback, dedupe) => new Promise((resolve2, reject) => {
-  const wrappedCallback = () => {
-    try {
-      resolve2(callback());
-    } catch (error) {
-      reject(error);
-    }
-  };
-  if (dedupe) {
-    const [el, op] = dedupe;
-    if (!dedupeMap.has(el))
-      dedupeMap.set(el, new Map);
-    const elementMap = dedupeMap.get(el);
-    if (elementMap.has(op)) {
-      const idx = queue.indexOf(callback);
-      if (idx > -1)
-        queue.splice(idx, 1);
-    }
-    elementMap.set(op, wrappedCallback);
-  }
-  queue.push(wrappedCallback);
-  requestTick();
-});
-var animationFrame = async () => new Promise(requestAnimationFrame);
-// node_modules/@zeix/pulse/lib/util.ts
-var isComment = (node) => node.nodeType === Node.COMMENT_NODE;
-var isSafeAttribute = (attr) => !/^on/i.test(attr);
-var isSafeURL = (value) => {
-  if (/^(mailto|tel):/i.test(value))
-    return true;
-  if (value.includes("://")) {
-    try {
-      const url = new URL(value, window.location.origin);
-      return !["http:", "https:", "ftp:"].includes(url.protocol);
-    } catch (error) {
-      return true;
-    }
-  }
-  return true;
-};
-var safeSetAttribute = (element, attr, value) => {
-  if (!isSafeAttribute(attr))
-    throw new Error(`Unsafe attribute: ${attr}`);
-  value = String(value).trim();
-  if (!isSafeURL(value))
-    throw new Error(`Unsafe URL for ${attr}: ${value}`);
-  element.setAttribute(attr, value);
-};
-
-// node_modules/@zeix/pulse/lib/update.ts
-var ce = (parent, tag, attributes = {}, text) => enqueue2(() => {
-  const child = document.createElement(tag);
-  for (const [key, value] of Object.entries(attributes))
-    safeSetAttribute(child, key, value);
-  if (text)
-    child.textContent = text;
-  parent.append(child);
-  return child;
-}, [parent, "e"]);
-var re = (element) => enqueue2(() => {
-  element.remove();
-  return null;
-}, [element, "r"]);
-var st = (element, text) => enqueue2(() => {
-  Array.from(element.childNodes).filter((node) => !isComment(node)).forEach((node) => node.remove());
-  element.append(document.createTextNode(text));
-  return element;
-}, [element, "t"]);
-var sa = (element, attribute, value) => enqueue2(() => {
-  safeSetAttribute(element, attribute, value);
-  return element;
-}, [element, `a:${attribute}`]);
-var ra = (element, attribute) => enqueue2(() => {
-  element.removeAttribute(attribute);
-  return element;
-}, [element, `a:${attribute}`]);
-var ta = (element, attribute, value) => enqueue2(() => {
-  element.toggleAttribute(attribute, value);
-  return element;
-}, [element, `a:${attribute}`]);
-var tc = (element, token, value) => enqueue2(() => {
-  element.classList.toggle(token, value);
-  return element;
-}, [element, `c:${token}`]);
-var ss = (element, property, value) => enqueue2(() => {
-  element.style.setProperty(property, value);
-  return element;
-}, [element, `s:${property}`]);
-var rs = (element, property) => enqueue2(() => {
-  element.style.removeProperty(property);
-  return element;
-}, [element, `s:${property}`]);
 // src/core/util.ts
 var isFunction2 = (value) => typeof value === "function";
 var isDefinedObject = (value) => !!value && typeof value === "object";
@@ -349,6 +257,18 @@ var idString = (id) => id ? `#${id}` : "";
 var classString = (classList) => classList.length ? `.${Array.from(classList).join(".")}` : "";
 var elementName = (el) => `<${el.localName}${idString(el.id)}${classString(el.classList)}>`;
 var valueString = (value) => isString(value) ? `"${value}"` : isDefinedObject(value) ? JSON.stringify(value) : String(value);
+var typeString = (value) => {
+  if (value === null)
+    return "null";
+  if (typeof value !== "object")
+    return typeof value;
+  if (Array.isArray(value))
+    return "Array";
+  if (Symbol.toStringTag in Object(value)) {
+    return value[Symbol.toStringTag];
+  }
+  return value.constructor?.name || "Object";
+};
 var log = (value, msg, level = LOG_DEBUG) => {
   if (DEV_MODE || [LOG_ERROR, LOG_WARN].includes(level))
     console[level](msg, value);
@@ -356,75 +276,76 @@ var log = (value, msg, level = LOG_DEBUG) => {
 };
 
 // src/core/ui.ts
-class UI {
-  host;
-  targets;
-  constructor(host, targets = [host]) {
-    this.host = host;
-    this.targets = targets;
-  }
-  on(type, listenerOrProvider) {
-    this.targets.forEach((target, index) => {
-      let listener;
-      if (isFunction2(listenerOrProvider)) {
-        listener = listenerOrProvider.length === 2 ? listenerOrProvider(target, index) : listenerOrProvider;
-      } else if (isDefinedObject(listenerOrProvider) && isFunction2(listenerOrProvider.handleEvent)) {
-        listener = listenerOrProvider;
-      } else {
-        log(listenerOrProvider, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR);
-        return;
-      }
-      target.addEventListener(type, listener);
-      this.host.cleanup.push(() => target.removeEventListener(type, listener));
-    });
-    return this;
-  }
-  emit(type, detail) {
-    this.targets.forEach((target) => {
-      target.dispatchEvent(new CustomEvent(type, {
-        detail,
-        bubbles: true
-      }));
-    });
-    return this;
-  }
-  pass(passedSignalsOrProvider) {
-    this.targets.forEach(async (target, index) => {
-      await UIElement.registry.whenDefined(target.localName);
-      if (target instanceof UIElement) {
-        let passedSignals;
-        if (isFunction2(passedSignalsOrProvider) && passedSignalsOrProvider.length === 2) {
-          passedSignals = passedSignalsOrProvider(target, index);
-        } else if (isDefinedObject(passedSignalsOrProvider)) {
-          passedSignals = passedSignalsOrProvider;
+var ui = (host, targets = [host]) => {
+  const u = {
+    host,
+    targets,
+    on: (type, listenerOrProvider) => {
+      targets.forEach((target, index) => {
+        let listener;
+        if (isFunction2(listenerOrProvider)) {
+          listener = listenerOrProvider.length === 2 ? listenerOrProvider(target, index) : listenerOrProvider;
+        } else if (isDefinedObject(listenerOrProvider) && isFunction2(listenerOrProvider.handleEvent)) {
+          listener = listenerOrProvider;
         } else {
-          log(passedSignalsOrProvider, `Invalid passed signals provided`, LOG_ERROR);
+          log(listenerOrProvider, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR);
           return;
         }
-        Object.entries(passedSignals).forEach(([key, source]) => {
-          if (isString(source)) {
-            if (source in this.host.signals) {
-              target.set(key, this.host.signals[source]);
-            } else {
-              log(source, `Invalid string key "${source}" for state ${valueString(key)}`, LOG_WARN);
-            }
-          } else if (isFunction2(source) || isSignal(source)) {
-            target.set(key, toSignal(source));
+        target.addEventListener(type, listener);
+        host.cleanup.push(() => target.removeEventListener(type, listener));
+      });
+      return u;
+    },
+    emit: (type, detail) => {
+      targets.forEach((target) => {
+        target.dispatchEvent(new CustomEvent(type, {
+          detail,
+          bubbles: true
+        }));
+      });
+      return u;
+    },
+    pass: (passedSignalsOrProvider) => {
+      targets.forEach(async (target, index) => {
+        await UIElement.registry.whenDefined(target.localName);
+        if (target instanceof UIElement) {
+          let passedSignals;
+          if (isFunction2(passedSignalsOrProvider) && passedSignalsOrProvider.length === 2) {
+            passedSignals = passedSignalsOrProvider(target, index);
+          } else if (isDefinedObject(passedSignalsOrProvider)) {
+            passedSignals = passedSignalsOrProvider;
           } else {
-            log(source, `Invalid source for state ${valueString(key)}`, LOG_WARN);
+            log(passedSignalsOrProvider, `Invalid passed signals provided`, LOG_ERROR);
+            return;
           }
-        });
-      } else {
-        log(target, `Target is not a UIElement`, LOG_ERROR);
-      }
-    });
-    return this;
-  }
-  sync(...fns) {
-    this.targets.forEach((target, index) => fns.forEach((fn) => fn(this.host, target, index)));
-    return this;
-  }
-}
+          Object.entries(passedSignals).forEach(([key, source]) => {
+            if (isString(source)) {
+              if (source in host.signals) {
+                target.set(key, host.signals[source]);
+              } else {
+                log(source, `Invalid string key "${source}" for state ${valueString(key)}`, LOG_WARN);
+              }
+            } else {
+              try {
+                target.set(key, toSignal(source));
+              } catch (error) {
+                log(error, `Invalid source for state ${valueString(key)}`, LOG_WARN);
+              }
+            }
+          });
+        } else {
+          log(target, `Target is not a UIElement`, LOG_ERROR);
+        }
+      });
+      return u;
+    },
+    sync: (...fns) => {
+      targets.forEach((target, index) => fns.forEach((fn) => fn(host, target, index)));
+      return u;
+    }
+  };
+  return u;
+};
 
 // src/core/context.ts
 var CONTEXT_REQUEST = "context-request";
@@ -466,11 +387,11 @@ var useContext = (host) => {
 // src/ui-element.ts
 var RESET = Symbol();
 var isAttributeParser = (value) => isFunction2(value) && !!value.length;
-var isComputeFunction = (value) => isFunction2(value) && !value.length;
+var isStateUpdater = (value) => isFunction2(value) && !!value.length;
 var unwrap = (v) => isFunction2(v) ? unwrap(v()) : isSignal(v) ? unwrap(v.get()) : v;
 var parse = (host, key, value, old) => {
-  const parser = host.states[key];
-  return isAttributeParser(parser) ? parser(value, host, old) : value;
+  const parser = host.init[key];
+  return isAttributeParser(parser) ? parser(value, host, old) : value ?? undefined;
 };
 
 class UIElement extends HTMLElement {
@@ -489,10 +410,10 @@ class UIElement extends HTMLElement {
     }
     return this;
   }
-  states = {};
+  init = {};
   signals = {};
   cleanup = [];
-  self = new UI(this);
+  self = ui(this);
   get root() {
     return this.shadowRoot || this;
   }
@@ -502,7 +423,7 @@ class UIElement extends HTMLElement {
       return;
     const parsed = parse(this, name, value, old);
     if (DEV_MODE && this.debug)
-      log(value, `Attribute "${name}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeof parsed}> ${valueString(parsed)}`);
+      log(value, `Attribute "${name}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`);
     this.set(name, parsed ?? RESET);
   }
   connectedCallback() {
@@ -511,9 +432,11 @@ class UIElement extends HTMLElement {
       if (this.debug)
         log(this, "Connected");
     }
-    for (const [key, init] of Object.entries(this.states)) {
-      const result = isAttributeParser(init) ? init(this.getAttribute(key), this) : isComputeFunction(init) ? computed(init) : init;
-      this.set(key, result ?? RESET);
+    for (const [key, init] of Object.entries(this.init)) {
+      if (this.constructor.observedAttributes.includes(key))
+        continue;
+      const result = isAttributeParser(init) ? init(this.getAttribute(key), this) : isComputedCallbacks(init) ? computed(init) : init;
+      this.set(key, result ?? RESET, false);
     }
     useContext(this);
   }
@@ -533,10 +456,10 @@ class UIElement extends HTMLElement {
   get(key) {
     const value = unwrap(this.signals[key]);
     if (DEV_MODE && this.debug)
-      log(value, `Get current value of state <${typeof value}> ${valueString(key)} in ${elementName(this)}`);
+      log(value, `Get current value of signal <${typeString(value)}> ${valueString(key)} in ${elementName(this)}`);
     return value;
   }
-  set(key, value, update2 = true) {
+  set(key, value, update = true) {
     if (value == null) {
       log(value, `Attempt to set state ${valueString(key)} to null or undefined in ${elementName(this)}`, LOG_ERROR);
       return;
@@ -545,10 +468,18 @@ class UIElement extends HTMLElement {
     const s = this.signals[key];
     const old = s?.get();
     if (!(key in this.signals)) {
+      if (isStateUpdater(value)) {
+        log(value, `Cannot use updater function to create a computed signal in ${elementName(this)}`, LOG_ERROR);
+        return;
+      }
       if (DEV_MODE && this.debug)
         op = "Create";
       this.signals[key] = toSignal(value);
-    } else if (update2 || old === UNSET || old === RESET) {
+    } else if (update || old === UNSET || old === RESET) {
+      if (isComputedCallbacks(value)) {
+        log(value, `Cannot use computed callbacks to update signal ${valueString(key)} in ${elementName(this)}`, LOG_ERROR);
+        return;
+      }
       if (isSignal(value)) {
         if (DEV_MODE && this.debug)
           op = "Replace";
@@ -559,31 +490,36 @@ class UIElement extends HTMLElement {
         if (isState(s)) {
           if (DEV_MODE && this.debug)
             op = "Update";
-          if (isFunction2(value))
+          if (isStateUpdater(value))
             s.update(value);
           else
             s.set(value);
         } else {
-          log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_WARN);
+          log(value, `Computed signal ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_WARN);
           return;
         }
       }
     } else
       return;
     if (DEV_MODE && this.debug)
-      log(value, `${op} state <${typeof value}> ${valueString(key)} in ${elementName(this)}`);
+      log(value, `${op} signal <${typeString(value)}> ${valueString(key)} in ${elementName(this)}`);
   }
   delete(key) {
     if (DEV_MODE && this.debug)
-      log(key, `Delete state ${valueString(key)} from ${elementName(this)}`);
+      log(key, `Delete signal ${valueString(key)} from ${elementName(this)}`);
     return delete this.signals[key];
   }
   first(selector) {
-    const element = this.root.querySelector(selector);
-    return new UI(this, element ? [element] : []);
+    let element = this.root.querySelector(selector);
+    if (this.shadowRoot && !element)
+      element = this.querySelector(selector);
+    return ui(this, element ? [element] : []);
   }
   all(selector) {
-    return new UI(this, Array.from(this.root.querySelectorAll(selector)));
+    let elements = this.root.querySelectorAll(selector);
+    if (this.shadowRoot && !elements.length)
+      elements = this.querySelectorAll(selector);
+    return ui(this, Array.from(elements));
   }
 }
 // src/lib/parsers.ts
@@ -595,14 +531,11 @@ var parseNumber = (parseFn, value) => {
 };
 var getFallback = (value) => Array.isArray(value) && value[0] ? value[0] : value;
 var asBoolean = (value) => value !== "false" && value != null;
-var asIntegerWithDefault = (fallback = 0) => (value) => parseNumber(parseInt, value) ?? fallback;
-var asInteger = asIntegerWithDefault();
-var asNumberWithDefault = (fallback = 0) => (value) => parseNumber(parseFloat, value) ?? fallback;
-var asNumber = asNumberWithDefault();
-var asStringWithDefault = (fallback = "") => (value) => value ?? fallback;
-var asString = asStringWithDefault();
+var asInteger = (fallback = 0) => (value) => parseNumber(parseInt, value) ?? fallback;
+var asNumber = (fallback = 0) => (value) => parseNumber(parseFloat, value) ?? fallback;
+var asString = (fallback = "") => (value) => value ?? fallback;
 var asEnum = (valid) => (value) => value != null && valid.includes(value.toLowerCase()) ? value : getFallback(valid);
-var asJSONWithDefault = (fallback) => (value) => {
+var asJSON = (fallback) => (value) => {
   if (value == null)
     return fallback;
   let result;
@@ -613,68 +546,165 @@ var asJSONWithDefault = (fallback) => (value) => {
   }
   return result ?? fallback;
 };
-var asJSON = asJSONWithDefault({});
 // src/lib/effects.ts
-var updateElement = (s, updater) => (host, target) => {
-  const { read, update: update2 } = updater;
+var isSafeURL = (value) => {
+  if (/^(mailto|tel):/i.test(value))
+    return true;
+  if (value.includes("://")) {
+    try {
+      const url = new URL(value, window.location.origin);
+      return ["http:", "https:", "ftp:"].includes(url.protocol);
+    } catch (error) {
+      return false;
+    }
+  }
+  return true;
+};
+var safeSetAttribute = (element, attr, value) => {
+  if (/^on/i.test(attr))
+    throw new Error(`Unsafe attribute: ${attr}`);
+  value = String(value).trim();
+  if (!isSafeURL(value))
+    throw new Error(`Unsafe URL for ${attr}: ${value}`);
+  element.setAttribute(attr, value);
+};
+var updateElement = (s, updater) => (host, target, index) => {
+  const { op, read, update } = updater;
   const fallback = read(target);
-  if (isString(s)) {
+  if (isString(s) && !isComputed(host.signals[s])) {
     const value = isString(fallback) ? parse(host, s, fallback) : fallback;
     if (value != null)
       host.set(s, value, false);
   }
   effect(() => {
+    let value = RESET;
+    try {
+      value = isString(s) ? host.get(s) : isSignal(s) ? s.get() : isFunction2(s) ? s(target, index) : RESET;
+    } catch (error) {
+      log(error, `Failed to update element ${elementName(target)} in ${elementName(host)}:`, LOG_ERROR);
+    } finally {
+      if (value === RESET)
+        value = fallback;
+      if (value === UNSET)
+        value = null;
+    }
     const current = read(target);
-    const value = isString(s) ? host.get(s) : isSignal(s) ? s.get() : isFunction2(s) ? s(current) : undefined;
     if (!Object.is(value, current)) {
-      if ((value === null || value === UNSET) && updater.delete) {
-        updater.delete(target);
-      } else if (value == null || value === RESET) {
-        if (fallback)
-          update2(target, fallback);
+      if ((value === null || value == null && fallback === null) && updater.delete) {
+        enqueue(() => {
+          updater.delete(target);
+          return true;
+        }, [target, op]);
+      } else if (value == null) {
+        if (fallback) {
+          enqueue(() => {
+            update(target, fallback);
+            return true;
+          }, [target, op]);
+        }
       } else {
-        update2(target, value);
+        enqueue(() => {
+          update(target, value);
+          return true;
+        }, [target, op]);
       }
     }
   });
 };
-var createElement = (tag, s) => updateElement(s, {
+var createElement = (tag, s, text) => updateElement(s, {
+  op: "create",
   read: () => null,
-  update: (el, value) => ce(el, tag, value)
+  update: (el, attributes) => {
+    const child = document.createElement(tag);
+    for (const [key, value] of Object.entries(attributes))
+      safeSetAttribute(child, key, value);
+    if (text)
+      child.textContent = text;
+    el.append(child);
+  }
 });
 var removeElement = (s) => updateElement(s, {
-  read: (el) => el != null,
-  update: (el, value) => value ? re(el) : Promise.resolve(null)
+  op: "remove",
+  read: (el) => !!el,
+  update: (el, really) => {
+    if (really)
+      el.remove();
+  }
 });
 var setText = (s) => updateElement(s, {
+  op: "text",
   read: (el) => el.textContent,
-  update: (el, value) => st(el, value)
+  update: (el, value) => {
+    Array.from(el.childNodes).filter((node) => node.nodeType !== Node.COMMENT_NODE).forEach((node) => node.remove());
+    el.append(document.createTextNode(value));
+  }
+});
+var dangerouslySetInnerHTML = (s, attachShadow, allowScripts) => updateElement(s, {
+  op: "html",
+  read: (el) => (el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? "",
+  update: (el, html) => {
+    if (!html) {
+      if (el.shadowRoot)
+        el.shadowRoot.innerHTML = "<slot></slot>";
+      return;
+    }
+    if (attachShadow && !el.shadowRoot)
+      el.attachShadow({ mode: attachShadow });
+    const target = el.shadowRoot || el;
+    target.innerHTML = html;
+    if (!allowScripts)
+      return;
+    target.querySelectorAll("script").forEach((script) => {
+      const newScript = document.createElement("script");
+      newScript.appendChild(document.createTextNode(script.textContent ?? ""));
+      target.appendChild(newScript);
+      script.remove();
+    });
+  }
 });
 var setProperty = (key, s = key) => updateElement(s, {
+  op: "prop",
   read: (el) => (key in el) ? el[key] : UNSET,
   update: (el, value) => {
     el[key] = value;
   }
 });
 var setAttribute = (name, s = name) => updateElement(s, {
+  op: "attr",
   read: (el) => el.getAttribute(name),
-  update: (el, value) => sa(el, name, value),
-  delete: (el) => ra(el, name)
+  update: (el, value) => {
+    safeSetAttribute(el, name, value);
+  },
+  delete: (el) => {
+    el.removeAttribute(name);
+  }
 });
 var toggleAttribute = (name, s = name) => updateElement(s, {
+  op: "attr",
   read: (el) => el.hasAttribute(name),
-  update: (el, value) => ta(el, name, value)
+  update: (el, value) => {
+    el.toggleAttribute(name, value);
+  }
 });
 var toggleClass = (token, s = token) => updateElement(s, {
+  op: "class",
   read: (el) => el.classList.contains(token),
-  update: (el, value) => tc(el, token, value)
+  update: (el, value) => {
+    el.classList.toggle(token, value);
+  }
 });
 var setStyle = (prop, s = prop) => updateElement(s, {
+  op: "style",
   read: (el) => el.style.getPropertyValue(prop),
-  update: (el, value) => ss(el, prop, value),
-  delete: (el) => rs(el, prop)
+  update: (el, value) => {
+    el.style.setProperty(prop, value);
+  },
+  delete: (el) => {
+    el.style.removeProperty(prop);
+  }
 });
 export {
+  watch,
   useContext,
   updateElement,
   toggleClass,
@@ -691,25 +721,20 @@ export {
   isState,
   isSignal,
   isComputed,
-  enqueue2 as enqueue,
+  enqueue,
   effect,
+  dangerouslySetInnerHTML,
   createElement,
   computed,
   batch,
-  asStringWithDefault,
   asString,
-  asNumberWithDefault,
   asNumber,
-  asJSONWithDefault,
   asJSON,
-  asIntegerWithDefault,
   asInteger,
   asEnum,
   asBoolean,
-  animationFrame,
   UNSET,
   UIElement,
-  UI,
   RESET,
   LOG_WARN,
   LOG_INFO,

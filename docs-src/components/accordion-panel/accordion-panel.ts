@@ -7,7 +7,7 @@ export class AccordionPanel extends UIElement<{
 	static readonly localName = 'accordion-panel'
 	static observedAttributes = ['open', 'collapsible']
 
-	states = {
+	init = {
         open: asBoolean,
         collapsible: asBoolean
     }

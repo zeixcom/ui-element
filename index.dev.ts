@@ -1,24 +1,24 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.10.1
+ * @version 0.11.0
  * @author Esther Brunner
  */
-export {
-	type Signal, type State, type Computed,
-	UNSET, state, computed, effect, batch, isState, isComputed, isSignal, toSignal
-} from '@zeix/cause-effect'
-export {
-	type EnqueueDedupe,
-	enqueue, animationFrame
-} from '@zeix/pulse'
 
+// From Cause & Effect
 export {
-	type AttributeParser, type ComponentSignals, type InferSignalTypes, type StateInitializer, type Root,
+	type Signal, type MaybeSignal, type State, type Computed,
+	type ComputedCallbacks, type EffectCallbacks, type EnqueueDedupe,
+	UNSET, state, computed, effect, batch, watch, enqueue,
+	isState, isComputed, isSignal, toSignal
+} from '@zeix/cause-effect'
+
+// Core
+export {
+	type AttributeParser, type ComponentSignals, type SignalInitializer, type Root, type StateUpdater,
 	RESET, UIElement, parse
 } from './src/ui-element'
 export {
-	type SignalLike, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
-	UI
+	type UI, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
 } from './src/core/ui'
 export {
 	type LogLevel,
@@ -28,14 +28,14 @@ export {
 	type Context, type UnknownContext,
 	useContext
 } from './src/core/context'
+
+// Lib
 export {
-	asBoolean,
-	asIntegerWithDefault, asInteger, asNumberWithDefault, asNumber,
-	asStringWithDefault, asString, asEnum,
-	asJSONWithDefault, asJSON
+	asBoolean, asInteger, asNumber, asString, asEnum, asJSON
 } from './src/lib/parsers'
 export {
-	type ElementUpdater,
+	type SignalValueProvider, type SignalLike, type ElementUpdater,
 	updateElement, createElement, removeElement,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
+	dangerouslySetInnerHTML
 } from './src/lib/effects'
