@@ -463,14 +463,13 @@ Bringing all of the above together, you are now ready to build your own componen
 			</div>
 		</my-slider>
 	</div>
-	<accordion-panel collapsible>
-		<details>
-			<summary>Source Code</summary>
-			<lazy-load src="./examples/my-slider.html">
-				<p class="loading">Loading...</p>
-			</lazy-load>
-		</details>
-	</accordion-panel>
+	<details>
+		<summary>Source Code</summary>
+		<lazy-load src="./examples/my-slider.html">
+			<p class="loading" role="status">Loading...</p>
+			<p class="error" role="alert" aria-live="polite" hidden></p>
+		</lazy-load>
+	</details>
 </component-demo>
 
 </section>

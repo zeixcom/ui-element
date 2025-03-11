@@ -60,16 +60,13 @@ Unlike traditional frameworks that rely on a virtual DOM or dirty-checking, UIEl
 			<button type="button" class="increment">+</button>
 		</my-counter>
 	</div>
-	<accordion-panel collapsible>
-		<details>
-			<summary>
-				<div class="summary">Source Code</div>
-			</summary>
-			<lazy-load src="./examples/my-counter.html">
-				<p class="loading">Loading...</p>
-			</lazy-load>
-		</details>
-	</accordion-panel>
+	<details>
+		<summary>Source Code</summary>
+		<lazy-load src="./examples/my-counter.html">
+			<p class="loading" role="status">Loading...</p>
+			<p class="error" role="alert" aria-live="polite" hidden></p>
+		</lazy-load>
+	</details>
 </component-demo>
 
 * ✅ **Zero renders** – Only updates what changes.

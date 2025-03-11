@@ -176,14 +176,13 @@ Here's the example of the `<callout-box>` we're using in this documentation:
 		<callout-box class="danger">This action is irreversible!</callout-box>
 		<callout-box class="note">This is just a side note.</callout-box>
 	</div>
-	<accordion-panel collapsible>
-		<details>
-			<summary>Source Code</summary>
-			<lazy-load src="./examples/callout-box.html">
-				<p class="loading">Loading...</p>
-			</lazy-load>
-		</details>
-	</accordion-panel>
+	<details>
+		<summary>Source Code</summary>
+		<lazy-load src="./examples/callout-box.html">
+			<p class="loading" role="status">Loading...</p>
+			<p class="error" role="alert" aria-live="polite" hidden></p>
+		</lazy-load>
+	</details>
 </component-demo>
 
 </section>

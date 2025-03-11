@@ -51,7 +51,7 @@ A copy of the license can be found in the [LICENSE](https://github.com/zeixcom/u
 
 ### Current Version: 0.11.0
 
-<callout-box class="warning">
+<callout-box class="caution">
 
 **Release candidate**
 
