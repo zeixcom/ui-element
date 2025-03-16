@@ -34,10 +34,10 @@ export {
 	asBoolean, asInteger, asNumber, asString, asEnum, asJSON
 } from './src/lib/parsers'
 export {
-	type SignalValueProvider, type SignalLike, type ElementUpdater,
-	updateElement, createElement, removeElement,
+	type ValueProvider, type SignalLike, type ElementUpdater, type NodeInserter,
+	updateElement, insertNode,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
-	dangerouslySetInnerHTML
+	dangerouslySetInnerHTML, insertTemplate, createElement, removeElement
 } from './src/lib/effects'
 /* export {
 	type ComponentSetup,

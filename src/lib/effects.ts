@@ -1,25 +1,52 @@
-import { type Signal, effect, enqueue, isComputed, isSignal, UNSET } from '@zeix/cause-effect'
+import { type Signal, effect, enqueue, isComputed, isSignal, isState, UNSET } from '@zeix/cause-effect'
 
 import { isFunction, isString } from '../core/util'
 import { type ComponentSignals, parse, UIElement, RESET } from '../ui-element'
-import { elementName, log, LOG_ERROR } from '../core/log'
+import { elementName, log, LOG_ERROR, valueString } from '../core/log'
 
 /* === Types === */
 
-type SignalValueProvider<T> = <E extends Element>(target: E, index: number) => T
+type ValueProvider<T> = <E extends Element>(target: E, index: number) =>
+	T
 
 type SignalLike<T> = PropertyKey
 	| Signal<NonNullable<T>>
-	| SignalValueProvider<T>
+	| ValueProvider<T>
 
 type ElementUpdater<E extends Element, T> = {
 	op: string,
     read: (element: E) => T | null,
-    update: (element: E, value: T) => void,
-    delete?: (element: E) => void,
+    update: (element: E, value: T) => string,
+    delete?: (element: E) => string,
 }
 
-/* === Private Functions === */
+type NodeInserter<S extends ComponentSignals> = {
+	type: string,
+	where: InsertPosition,
+	create: (host: UIElement<S>) => Node | DocumentFragment | undefined,
+}
+
+/* === Internal === */
+
+const ops: Record<string, string> = {
+	a: 'attribute ',
+    c: 'class ',
+    h: 'inner HTML',
+    p: 'property ',
+	r: 'remove element',
+	s: 'style property ',
+	t: 'text content',
+}
+
+const resolveSignalLike = <T, S extends ComponentSignals, E extends Element>(
+	s: SignalLike<T>,
+	host: UIElement<S>,
+	target: E,
+	index: number
+): T => isString(s) ? host.get(s)
+	: isSignal(s) ? s.get()
+	: isFunction(s) ? s(target, index)
+	: RESET
 
 const isSafeURL = /*#__PURE__*/ (value: string): boolean => {
 	if (/^(mailto|tel):/i.test(value)) return true
@@ -49,7 +76,7 @@ const safeSetAttribute = /*#__PURE__*/ (
 /* === Exported Functions === */
 
 /**
- * Effect for setting properties of a target element according to a given state
+ * Effect for setting properties of a target element according to a given SignalLike
  * 
  * @since 0.9.0
  * @param {SignalLike<T>} s - state bound to the element property
@@ -77,91 +104,90 @@ const updateElement = <
 
     // Update the element's DOM state according to the signal value
 	effect(() => {
-			let value = RESET
-			try {
-				value = isString(s) ? host.get(s)
-					: isSignal(s) ? s.get()
-					: isFunction(s) ? s(target, index)
-					: RESET
-			} catch (error) {
-				log(error, `Failed to update element ${elementName(target)} in ${elementName(host)}:`, LOG_ERROR)
-			} finally {
-				if (value === RESET) value = fallback as T
-				if (value === UNSET) value = null
-			}
+		let value = RESET
+		try {
+			value = resolveSignalLike(s, host, target, index)
+		} catch (error) {
+			log(error, `Failed to update element ${elementName(target)} in ${elementName(host)}:`, LOG_ERROR)
+			return
+		}
+		if (value === RESET) value = fallback as T
+		if (value === UNSET) value = updater.delete ? null : fallback
+
+		// Nil path => delete the attribute or style property of the element
+		if (updater.delete && value === null) {
+			let name: string = ''
+			enqueue(() => {
+                name = updater.delete!(target)
+                return true
+            }, [target, op]).then(() => {
+				log(target, `Deleted ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
+			}).catch(() => {
+				log(target, `Failed to delete ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR)
+			})
+
+		// Ok path => update the element
+		} else if (value != null) {
 			const current = read(target)
-			if (!Object.is(value, current)) {
-
-				// A value of null or UNSET triggers deletion (if available)
-				if (
-					(value === null || (value == null && fallback === null))
-					&& updater.delete
-				) {
-					enqueue(() => {
-						updater.delete!(target)
-						return true
-					}, [target, op])
-
-				// Otherwise every nullish value triggers reset to the fallback value (if available)
-				} else if (value == null) {
-					if (fallback) {
-						enqueue(() => {
-							update(target, fallback)
-							return true
-						}, [target, op])
-					}
-					// else do nothing if neither delete method nor fallback value is provided 
-
-				// Otherwise, update the value
-				} else {
-					enqueue(() => {
-						update(target, value)
-						return true
-					}, [target, op])
-				}
-			}
+			if (Object.is(value, current)) return
+			let name: string = ''
+			enqueue(() => {
+				name = update(target, value)
+				return true
+			}, [target, op]).then(() => {
+				log(target, `Updated ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
+			}).catch((error) => {
+				log(error, `Failed to update ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR)
+			})
+		}
 	})
 }
 
 /**
- * Create an element with a given tag name and optionally set its attributes
- * 
- * @since 0.9.0
- * @param {string} tag - tag name of the element to create
- * @param {SignalLike<Record<string, string>>} s - state bound to the element's attributes
+ * Effect to insert a node relative to an element according to a given SignalLike
  */
-const createElement = <E extends Element>(
-    tag: string,
-    s: SignalLike<Record<string, string>>,
-	text?: string,
-) => updateElement(s, {
-	op: 'create',
-	read: () => null,
-	update: (el: E, attributes) => {
-		const child = document.createElement(tag);
-		for (const [key, value] of Object.entries(attributes))
-			safeSetAttribute(child, key, value);
-		if (text)
-			child.textContent = text;
-		el.append(child);
-	},
-})
-
-/**
- * Remove an element from the DOM
- * 
- * @since 0.9.0
- * @param {SignalLike<string>} s - state bound to the element removal
- */
-const removeElement = <E extends Element>(
-	s: SignalLike<boolean>
-) => updateElement(s, {
-	op: 'remove',
-	read: (el: E) => !!el,
-    update: (el: E, really) => {
-		if (really) el.remove()
+const insertNode = <
+	E extends Element,
+	S extends ComponentSignals = {},
+	K extends keyof S = never
+>(
+	s: K | SignalLike<boolean>,
+    inserter: NodeInserter<S>
+) => (host: UIElement<S>, target: E, index: number): void => {
+	const { type, where, create } = inserter
+	const node = create(host)
+	if (!node) return
+	const methods: Record<InsertPosition, keyof Element> = {
+		beforebegin: 'before',
+		afterbegin: 'prepend',
+        beforeend: 'append',
+        afterend: 'after'
 	}
-})
+	if (!isFunction(target[methods[where]])) {
+		log(`Invalid insertPosition ${valueString(where)} for ${elementName(host)}:`, LOG_ERROR)
+        return
+    }
+
+	effect(() => {
+		let really = false
+		try {
+			really = resolveSignalLike(s, host, target, index)
+		} catch (error) {
+			log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR)
+			return
+		}
+		if (!really) return
+        enqueue(() => {
+			(target[methods[where]] as (...nodes: Node[]) => void)(node)
+		}, [target, 'i']).then(() => {
+			const maybeSignal = isString(s) ? host.signals[s] : s
+			if (isState<boolean>(maybeSignal)) maybeSignal.set(false)
+			log(target, `Inserted ${type} into ${elementName(host)}`)
+		}).catch((error) => {
+			log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR)
+		})
+	})
+}
 
 /**
  * Set text content of an element
@@ -172,13 +198,117 @@ const removeElement = <E extends Element>(
 const setText = <E extends Element>(
 	s: SignalLike<string>
 ) => updateElement(s, {
-	op: 'text',
+	op: 't',
 	read: (el: E) => el.textContent,
-	update: (el: E, value) => {
+	update: (el: E, value: string) => {
 		Array.from(el.childNodes)
 			.filter(node => node.nodeType !== Node.COMMENT_NODE)
 			.forEach(node => node.remove())
 		el.append(document.createTextNode(value))
+		return ''
+	}
+})
+
+/**
+ * Set property of an element
+ * 
+ * @since 0.8.0
+ * @param {string} key - name of property to be set
+ * @param {SignalLike<E[K]>} s - state bound to the property value
+ */
+const setProperty = <E extends Element, K extends keyof E>(
+	key: K,
+	s: SignalLike<E[K]> = key
+) => updateElement(s, {
+	op: 'p',
+	read: (el: E) => key in el ? el[key] : UNSET,
+	update: (el: E, value: E[K]) => {
+		el[key] = value
+		return String(key)
+	}
+})
+
+/**
+ * Set attribute of an element
+ * 
+ * @since 0.8.0
+ * @param {string} name - name of attribute to be set
+ * @param {SignalLike<string>} s - state bound to the attribute value
+ */
+const setAttribute = <E extends Element>(
+	name: string,
+	s: SignalLike<string> = name
+) => updateElement(s, {
+	op: 'a',
+	read: (el: E) => el.getAttribute(name),
+	update: (el: E, value: string) => {
+		safeSetAttribute(el, name, value)
+		return name
+	},
+	delete: (el: E) => {
+		el.removeAttribute(name)
+		return name
+	}
+})
+
+/**
+ * Toggle a boolan attribute of an element
+ * 
+ * @since 0.8.0
+ * @param {string} name - name of attribute to be toggled
+ * @param {SignalLike<boolean>} s - state bound to the attribute existence
+ */
+const toggleAttribute = <E extends Element>(
+	name: string,
+	s: SignalLike<boolean> = name
+) => updateElement(s, {
+	op: 'a',
+	read: (el: E) => el.hasAttribute(name),
+	update: (el: E, value: boolean) => {
+		el.toggleAttribute(name, value)
+		return name
+	}
+})
+
+/**
+ * Toggle a classList token of an element
+ * 
+ * @since 0.8.0
+ * @param {string} token - class token to be toggled
+ * @param {SignalLike<boolean>} s - state bound to the class existence
+ */
+const toggleClass = <E extends Element>(
+	token: string,
+	s: SignalLike<boolean> = token
+) => updateElement(s, {
+	op: 'c',
+	read: (el: E) => el.classList.contains(token),
+	update: (el: E, value: boolean) => {
+		el.classList.toggle(token, value)
+		return token
+	}
+})
+
+/**
+ * Set a style property of an element
+ * 
+ * @since 0.8.0
+ * @param {string} prop - name of style property to be set
+ * @param {SignalLike<string>} s - state bound to the style property value
+ */
+const setStyle = <E extends (HTMLElement | SVGElement | MathMLElement)>(
+	prop: string,
+	s: SignalLike<string> = prop
+) => updateElement(s, {
+	op: 's',
+	read: (el: E) => el.style.getPropertyValue(prop),
+	update: (el: E, value: string) => {
+		el.style.setProperty(prop, value)
+		return prop
+	},
+	delete: (el: E) => {
+		el.style.removeProperty(prop)
+		return prop
 	}
 })
 
@@ -195,127 +325,105 @@ const dangerouslySetInnerHTML = <E extends Element>(
 	attachShadow?: 'open' | 'closed',
 	allowScripts?: boolean,
 ) => updateElement(s, {
-	op: 'html',
+	op: 'h',
     read: (el: E) => (el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? '',
-    update: (el: E, html) => {
+    update: (el: E, html: string) => {
 		if (!html) {
 			if (el.shadowRoot) el.shadowRoot.innerHTML = '<slot></slot>'
-			return
+			return ''
 		}
 		if (attachShadow && !el.shadowRoot) el.attachShadow({ mode: attachShadow })
 		const target = el.shadowRoot || el
         target.innerHTML = html
-		if (!allowScripts) return
+		if (!allowScripts) return ''
 		target.querySelectorAll('script').forEach(script => {
 			const newScript = document.createElement('script')
 			newScript.appendChild(document.createTextNode(script.textContent ?? ''))
 			target.appendChild(newScript)
 			script.remove()
 		})
+		return ' with scripts'
     }
 })
 
 /**
- * Set property of an element
+ * Insert template content next to or inside an element
  * 
- * @since 0.8.0
- * @param {string} key - name of property to be set
- * @param {SignalLike<E[K]>} s - state bound to the property value
+ * @since 0.11.0
+ * @param {HTMLTemplateElement} template - template element to clone or import from
+ * @param {SignalLike<boolean>} s - insert if SignalLike evalutes to true, otherwise ignore
+ * @param {InsertPosition} where - position to insert the template relative to the target element ('beforebegin', 'afterbegin', 'beforeend', 'afterend')
  */
-const setProperty = <E extends Element, K extends keyof E>(
-	key: K,
-	s: SignalLike<E[K]> = key
-) => updateElement(s, {
-	op: 'prop',
-	read: (el: E) => key in el ? el[key] : UNSET,
-	update: (el: E, value: E[K]) => {
-		el[key] = value
+const insertTemplate = <S extends ComponentSignals>(
+	template: HTMLTemplateElement,
+	s: SignalLike<boolean>,
+	where: InsertPosition = 'beforeend'
+) => insertNode(s, {
+	type: 'template content',
+	where,
+	create: (host: UIElement<S>) => {
+		if (!(template instanceof HTMLTemplateElement)) {
+			log(`Invalid template to insert into ${elementName(host)}:`, LOG_ERROR)
+			return
+		}
+		const clone = host.shadowRoot
+			? document.importNode(template.content, true)
+			: template.content.cloneNode(true)
+		return clone
 	}
 })
 
 /**
- * Set attribute of an element
+ * Create an element with a given tag name and optionally set its attributes
  * 
- * @since 0.8.0
- * @param {string} name - name of attribute to be set
- * @param {SignalLike<string>} s - state bound to the attribute value
+ * @since 0.11.0
+ * @param {string} tag - tag name of the element to create
+ * @param {SignalLike<boolean>} s - insert if SignalLike evalutes to true, otherwise ignore
+ * @param {InsertPosition} [where] - position to insert the template relative to the target element ('beforebegin', 'afterbegin', 'beforeend', 'afterend')
+ * @param {Record<string, string>} [attributes] - attributes to set on the element
+ * @param {string} [text] - text content to set on the element
  */
-const setAttribute = <E extends Element>(
-	name: string,
-	s: SignalLike<string> = name
-) => updateElement(s, {
-	op: 'attr',
-	read: (el: E) => el.getAttribute(name),
-	update: (el: E, value: string) => {
-		safeSetAttribute(el, name, value)
-	},
-	delete: (el: E) => {
-		el.removeAttribute(name)
-	}
+const createElement = (
+    tag: string,
+    s: SignalLike<boolean>,
+	where: InsertPosition = 'beforeend',
+	attributes: Record<string, string> = {},
+	text?: string,
+) => insertNode(s, {
+	type: 'new element',
+	where,
+	create: () => {
+        const child = document.createElement(tag)
+        for (const [key, value] of Object.entries(attributes))
+			safeSetAttribute(child, key, value)
+		if (text)
+			child.textContent = text
+        return child
+    }
 })
 
 /**
- * Toggle a boolan attribute of an element
+ * Remove an element from the DOM
  * 
- * @since 0.8.0
- * @param {string} name - name of attribute to be toggled
- * @param {SignalLike<boolean>} s - state bound to the attribute existence
+ * @since 0.9.0
+ * @param {SignalLike<string>} s - state bound to the element removal
  */
-const toggleAttribute = <E extends Element>(
-	name: string,
-	s: SignalLike<boolean> = name
+const removeElement = <E extends Element>(
+	s: SignalLike<boolean>
 ) => updateElement(s, {
-	op: 'attr',
-	read: (el: E) => el.hasAttribute(name),
-	update: (el: E, value: boolean) => {
-		el.toggleAttribute(name, value)
-	}
-})
-
-/**
- * Toggle a classList token of an element
- * 
- * @since 0.8.0
- * @param {string} token - class token to be toggled
- * @param {SignalLike<boolean>} s - state bound to the class existence
- */
-const toggleClass = <E extends Element>(
-	token: string,
-	s: SignalLike<boolean> = token
-) => updateElement(s, {
-	op: 'class',
-	read: (el: E) => el.classList.contains(token),
-	update: (el: E, value: boolean) => {
-		el.classList.toggle(token, value)
-	}
-})
-
-/**
- * Set a style property of an element
- * 
- * @since 0.8.0
- * @param {string} prop - name of style property to be set
- * @param {SignalLike<string>} s - state bound to the style property value
- */
-const setStyle = <E extends (HTMLElement | SVGElement | MathMLElement)>(
-	prop: string,
-	s: SignalLike<string> = prop
-) => updateElement(s, {
-	op: 'style',
-	read: (el: E) => el.style.getPropertyValue(prop),
-	update: (el: E, value: string) => {
-		el.style.setProperty(prop, value)
-	},
-	delete: (el: E) => {
-		el.style.removeProperty(prop)
+	op: 'remove',
+	read: (el: E) => !!el,
+    update: (el: E, really: boolean) => {
+		if (really) el.remove()
+		return ''
 	}
 })
 
 /* === Exported Types === */
 
 export {
-	type SignalValueProvider, type SignalLike, type ElementUpdater,
-	updateElement, createElement, removeElement,
+	type ValueProvider, type SignalLike, type ElementUpdater, type NodeInserter,
+	updateElement, insertNode,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
-	dangerouslySetInnerHTML
+	insertTemplate, createElement, removeElement, dangerouslySetInnerHTML
 }

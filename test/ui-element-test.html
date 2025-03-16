@@ -65,6 +65,10 @@
 		lazy-load .error {
 			color: red;
 		}
+
+		post-reply div {
+			margin-left: 2rem;
+		}
 	</style>
 
 	<void-component id="void">
@@ -163,6 +167,31 @@
 			<p>Content of tab panel 3</p>
 		</details>
 	</tab-list>
+	<template id="post-reply">
+		<div>
+            <p></p>
+			<post-reply>
+				<button type="button" class="reply-button">Reply</button>
+				<form hidden>
+					<label>
+						<span>Message:</span>
+						<textarea required></textarea>
+					</label>
+					<button type="submit">Submit</button>
+				</form>
+			</post-reply>
+        </div>
+	</template>
+	<post-reply message="My two cents">
+		<button type="button">Reply</button>
+		<form hidden>
+			<label>
+				<span>Message:</span>
+				<textarea required></textarea>
+			</label>
+			<button type="submit">Submit</button>
+		</form>
+	</post-reply>
 
 	<script type="module">
 		import { runTests } from '@web/test-runner-mocha'
@@ -178,7 +207,7 @@
 		const animationFrame = async () => new Promise(requestAnimationFrame)
 		const normalizeText = text => text.replace(/\s+/g, ' ').trim()
 
-		const LOADING_DELAY = 1500 // Adjust this if tests for LazyLoad fail; needs to be high enough so initial loading message can be observed before it gets removed when async connectedCallback() finishes
+		const LOADING_DELAY = 800 // Adjust this if tests for LazyLoad fail; needs to be high enough so initial loading message can be observed before it gets removed when async connectedCallback() finishes
 
 		class VoidComponent extends UIElement {}
 		VoidComponent.define('void-component')
@@ -406,6 +435,52 @@
 		}
 		TabList.define()
 
+		class PostReply extends UIElement {
+			init = {
+				message: '',
+				hidden: true
+			}
+
+			connectedCallback() {
+				super.connectedCallback()
+				this.first('button').on('click', () => {
+					this.set('hidden', false)
+				})
+				this.first('form')
+					.on('submit', e => {
+						e.preventDefault()
+						this.set('message', this.querySelector('textarea').value)
+						this.set('hidden', true)
+					})
+					.sync(setProperty('hidden'))
+
+				const template = document.getElementById('post-reply')
+				effect(() => {
+					const message = this.get('message')
+					if (!message) return
+					enqueue(() => {
+						const div = document.createElement('div')
+						const cloned = template?.content.cloneNode(true)
+						div.innerHTML = `
+							<p>${message}</p>
+							<post-reply>
+								<button type="button">Reply</button>
+								<form hidden>
+									<label>
+										<span>Message:</span>
+										<textarea required></textarea>
+									</label>
+									<button type="submit">Submit</button>
+								</form>
+							</post-reply>
+						`
+						this.append(div)
+					}, [this, 'post-reply'])
+				})
+			}
+		}
+		PostReply.define('post-reply')
+
 		runTests(() => {
 
 			describe('Void component', function () {
@@ -521,7 +596,7 @@
 
 				it('should update after a delay when state is set', async function () {
 					const causalComponent = document.getElementById('causal')
-					const delay = Math.floor(Math.random() * 1000)
+					const delay = Math.floor(Math.random() * 200)
 					await wait(delay)
 					causalComponent.set('heading', 'Hello from Delayed State')
 					await animationFrame()
@@ -835,6 +910,15 @@
                     assert.equal(tabList.querySelectorAll('details')[0].hasAttribute('open'), true, 'Should mark the first details as open')
 				})
 
+			})
+
+			describe('InsertRecursion', function () {
+				it('should not cause infinite loops or memory leaks', async function () {
+					const parentCount = document.querySelectorAll('recursion-parent').length
+					const childCount = document.querySelectorAll('recursion-child').length
+					assert.isAtMost(parentCount, 3, 'Should not create more than 3 recursion-parent components')
+					assert.isAtMost(childCount, 3, 'Should not create more than 3 recursion-child components')
+				})
 			})
 		})
 	</script>

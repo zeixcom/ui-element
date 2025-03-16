@@ -33,7 +33,7 @@
 			UIElement, effect, RESET, UNSET,
 			asBoolean, asInteger, asNumber,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
-		} from '../index.js'
+		} from '../'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 		const animationFrame = async () => new Promise(requestAnimationFrame)
@@ -61,21 +61,25 @@
 			static observedAttributes = ['required']
 			init = {
                 required: asBoolean,
-				ariaInvalid: 'false',
-				'aria-errormessage': () =>
-					this.get('required') && this.get('ariaInvalid') !== 'false'
-						? this.querySelector('p').id
-						: RESET
+				ariaInvalid: 'false'
             }
 
 			connectedCallback() {
 				super.connectedCallback()
                 this.first('input')
-				    .on('change', e => this.set('ariaInvalid', String(!e.target.checkValidity())))
+				    .on('change', e => {
+						this.set('ariaInvalid', String(!e.target.checkValidity()))
+					})
 					.sync(
 						toggleAttribute('required'),
 						setProperty('ariaInvalid'),
-						setAttribute('aria-errormessage')
+						setAttribute(
+							'aria-errormessage',
+							() => this.get('required')
+								&& this.get('ariaInvalid') !== 'false'
+								? this.querySelector('p').id
+								: RESET
+						)
 					)
             }
 		}
@@ -88,10 +92,11 @@
             }
 
 			connectedCallback() {
-				const getActiveByIndex = (target, index) =>
-					this.get('active') === index
                 this.all('li')
-					.sync(toggleClass('selected', getActiveByIndex))
+					.sync(toggleClass(
+						'selected',
+						(_, index) => this.get('active') === index
+					))
             }
 		}
 		UpdateClass.define('update-class')

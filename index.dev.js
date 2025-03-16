@@ -433,7 +433,7 @@ class UIElement extends HTMLElement {
         log(this, "Connected");
     }
     for (const [key, init] of Object.entries(this.init)) {
-      if (this.constructor.observedAttributes.includes(key))
+      if (this.constructor.observedAttributes?.includes(key))
         continue;
       const result = isAttributeParser(init) ? init(this.getAttribute(key), this) : isComputedCallbacks(init) ? computed(init) : init;
       this.set(key, result ?? RESET, false);
@@ -456,12 +456,12 @@ class UIElement extends HTMLElement {
   get(key) {
     const value = unwrap(this.signals[key]);
     if (DEV_MODE && this.debug)
-      log(value, `Get current value of signal <${typeString(value)}> ${valueString(key)} in ${elementName(this)}`);
+      log(value, `Get current value of Signal ${valueString(key)} in ${elementName(this)}`);
     return value;
   }
   set(key, value, update = true) {
     if (value == null) {
-      log(value, `Attempt to set state ${valueString(key)} to null or undefined in ${elementName(this)}`, LOG_ERROR);
+      log(value, `Attempt to set State ${valueString(key)} to null or undefined in ${elementName(this)}`, LOG_ERROR);
       return;
     }
     let op;
@@ -469,15 +469,15 @@ class UIElement extends HTMLElement {
     const old = s?.get();
     if (!(key in this.signals)) {
       if (isStateUpdater(value)) {
-        log(value, `Cannot use updater function to create a computed signal in ${elementName(this)}`, LOG_ERROR);
+        log(value, `Cannot use updater function to create a Computed in ${elementName(this)}`, LOG_ERROR);
         return;
       }
       if (DEV_MODE && this.debug)
-        op = "Create";
+        op = "Create Signal of type";
       this.signals[key] = toSignal(value);
     } else if (update || old === UNSET || old === RESET) {
       if (isComputedCallbacks(value)) {
-        log(value, `Cannot use computed callbacks to update signal ${valueString(key)} in ${elementName(this)}`, LOG_ERROR);
+        log(value, `Cannot use computed callbacks to update Signal ${valueString(key)} in ${elementName(this)}`, LOG_ERROR);
         return;
       }
       if (isSignal(value)) {
@@ -489,24 +489,24 @@ class UIElement extends HTMLElement {
       } else {
         if (isState(s)) {
           if (DEV_MODE && this.debug)
-            op = "Update";
+            op = "Update State of type";
           if (isStateUpdater(value))
             s.update(value);
           else
             s.set(value);
         } else {
-          log(value, `Computed signal ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_WARN);
+          log(value, `Computed ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_WARN);
           return;
         }
       }
     } else
       return;
     if (DEV_MODE && this.debug)
-      log(value, `${op} signal <${typeString(value)}> ${valueString(key)} in ${elementName(this)}`);
+      log(value, `${op} ${typeString(value)} ${valueString(key)} in ${elementName(this)}`);
   }
   delete(key) {
     if (DEV_MODE && this.debug)
-      log(key, `Delete signal ${valueString(key)} from ${elementName(this)}`);
+      log(key, `Delete Signal ${valueString(key)} from ${elementName(this)}`);
     return delete this.signals[key];
   }
   first(selector) {
@@ -547,6 +547,16 @@ var asJSON = (fallback) => (value) => {
   return result ?? fallback;
 };
 // src/lib/effects.ts
+var ops = {
+  a: "attribute ",
+  c: "class ",
+  h: "inner HTML",
+  p: "property ",
+  r: "remove element",
+  s: "style property ",
+  t: "text content"
+};
+var resolveSignalLike = (s, host, target, index) => isString(s) ? host.get(s) : isSignal(s) ? s.get() : isFunction2(s) ? s(target, index) : RESET;
 var isSafeURL = (value) => {
   if (/^(mailto|tel):/i.test(value))
     return true;
@@ -579,48 +589,181 @@ var updateElement = (s, updater) => (host, target, index) => {
   effect(() => {
     let value = RESET;
     try {
-      value = isString(s) ? host.get(s) : isSignal(s) ? s.get() : isFunction2(s) ? s(target, index) : RESET;
+      value = resolveSignalLike(s, host, target, index);
     } catch (error) {
       log(error, `Failed to update element ${elementName(target)} in ${elementName(host)}:`, LOG_ERROR);
-    } finally {
-      if (value === RESET)
-        value = fallback;
-      if (value === UNSET)
-        value = null;
+      return;
     }
-    const current = read(target);
-    if (!Object.is(value, current)) {
-      if ((value === null || value == null && fallback === null) && updater.delete) {
-        enqueue(() => {
-          updater.delete(target);
-          return true;
-        }, [target, op]);
-      } else if (value == null) {
-        if (fallback) {
-          enqueue(() => {
-            update(target, fallback);
-            return true;
-          }, [target, op]);
-        }
-      } else {
-        enqueue(() => {
-          update(target, value);
-          return true;
-        }, [target, op]);
-      }
+    if (value === RESET)
+      value = fallback;
+    if (value === UNSET)
+      value = updater.delete ? null : fallback;
+    if (updater.delete && value === null) {
+      let name = "";
+      enqueue(() => {
+        name = updater.delete(target);
+        return true;
+      }, [target, op]).then(() => {
+        log(target, `Deleted ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`);
+      }).catch(() => {
+        log(target, `Failed to delete ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
+      });
+    } else if (value != null) {
+      const current = read(target);
+      if (Object.is(value, current))
+        return;
+      let name = "";
+      enqueue(() => {
+        name = update(target, value);
+        return true;
+      }, [target, op]).then(() => {
+        log(target, `Updated ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`);
+      }).catch((error) => {
+        log(error, `Failed to update ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
+      });
     }
   });
 };
-var createElement = (tag, s, text) => updateElement(s, {
-  op: "create",
-  read: () => null,
-  update: (el, attributes) => {
+var insertNode = (s, inserter) => (host, target, index) => {
+  const { type, where, create } = inserter;
+  const node = create(host);
+  if (!node)
+    return;
+  const methods = {
+    beforebegin: "before",
+    afterbegin: "prepend",
+    beforeend: "append",
+    afterend: "after"
+  };
+  if (!isFunction2(target[methods[where]])) {
+    log(`Invalid insertPosition ${valueString(where)} for ${elementName(host)}:`, LOG_ERROR);
+    return;
+  }
+  effect(() => {
+    let really = false;
+    try {
+      really = resolveSignalLike(s, host, target, index);
+    } catch (error) {
+      log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR);
+      return;
+    }
+    if (!really)
+      return;
+    enqueue(() => {
+      target[methods[where]](node);
+    }, [target, "i"]).then(() => {
+      const maybeSignal = isString(s) ? host.signals[s] : s;
+      if (isState(maybeSignal))
+        maybeSignal.set(false);
+      log(target, `Inserted ${type} into ${elementName(host)}`);
+    }).catch((error) => {
+      log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR);
+    });
+  });
+};
+var setText = (s) => updateElement(s, {
+  op: "t",
+  read: (el) => el.textContent,
+  update: (el, value) => {
+    Array.from(el.childNodes).filter((node) => node.nodeType !== Node.COMMENT_NODE).forEach((node) => node.remove());
+    el.append(document.createTextNode(value));
+    return "";
+  }
+});
+var setProperty = (key, s = key) => updateElement(s, {
+  op: "p",
+  read: (el) => (key in el) ? el[key] : UNSET,
+  update: (el, value) => {
+    el[key] = value;
+    return String(key);
+  }
+});
+var setAttribute = (name, s = name) => updateElement(s, {
+  op: "a",
+  read: (el) => el.getAttribute(name),
+  update: (el, value) => {
+    safeSetAttribute(el, name, value);
+    return name;
+  },
+  delete: (el) => {
+    el.removeAttribute(name);
+    return name;
+  }
+});
+var toggleAttribute = (name, s = name) => updateElement(s, {
+  op: "a",
+  read: (el) => el.hasAttribute(name),
+  update: (el, value) => {
+    el.toggleAttribute(name, value);
+    return name;
+  }
+});
+var toggleClass = (token, s = token) => updateElement(s, {
+  op: "c",
+  read: (el) => el.classList.contains(token),
+  update: (el, value) => {
+    el.classList.toggle(token, value);
+    return token;
+  }
+});
+var setStyle = (prop, s = prop) => updateElement(s, {
+  op: "s",
+  read: (el) => el.style.getPropertyValue(prop),
+  update: (el, value) => {
+    el.style.setProperty(prop, value);
+    return prop;
+  },
+  delete: (el) => {
+    el.style.removeProperty(prop);
+    return prop;
+  }
+});
+var dangerouslySetInnerHTML = (s, attachShadow, allowScripts) => updateElement(s, {
+  op: "h",
+  read: (el) => (el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? "",
+  update: (el, html) => {
+    if (!html) {
+      if (el.shadowRoot)
+        el.shadowRoot.innerHTML = "<slot></slot>";
+      return "";
+    }
+    if (attachShadow && !el.shadowRoot)
+      el.attachShadow({ mode: attachShadow });
+    const target = el.shadowRoot || el;
+    target.innerHTML = html;
+    if (!allowScripts)
+      return "";
+    target.querySelectorAll("script").forEach((script) => {
+      const newScript = document.createElement("script");
+      newScript.appendChild(document.createTextNode(script.textContent ?? ""));
+      target.appendChild(newScript);
+      script.remove();
+    });
+    return " with scripts";
+  }
+});
+var insertTemplate = (template, s, where = "beforeend") => insertNode(s, {
+  type: "template content",
+  where,
+  create: (host) => {
+    if (!(template instanceof HTMLTemplateElement)) {
+      log(`Invalid template to insert into ${elementName(host)}:`, LOG_ERROR);
+      return;
+    }
+    const clone = host.shadowRoot ? document.importNode(template.content, true) : template.content.cloneNode(true);
+    return clone;
+  }
+});
+var createElement = (tag, s, where = "beforeend", attributes = {}, text) => insertNode(s, {
+  type: "new element",
+  where,
+  create: () => {
     const child = document.createElement(tag);
     for (const [key, value] of Object.entries(attributes))
       safeSetAttribute(child, key, value);
     if (text)
       child.textContent = text;
-    el.append(child);
+    return child;
   }
 });
 var removeElement = (s) => updateElement(s, {
@@ -629,78 +772,7 @@ var removeElement = (s) => updateElement(s, {
   update: (el, really) => {
     if (really)
       el.remove();
-  }
-});
-var setText = (s) => updateElement(s, {
-  op: "text",
-  read: (el) => el.textContent,
-  update: (el, value) => {
-    Array.from(el.childNodes).filter((node) => node.nodeType !== Node.COMMENT_NODE).forEach((node) => node.remove());
-    el.append(document.createTextNode(value));
-  }
-});
-var dangerouslySetInnerHTML = (s, attachShadow, allowScripts) => updateElement(s, {
-  op: "html",
-  read: (el) => (el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? "",
-  update: (el, html) => {
-    if (!html) {
-      if (el.shadowRoot)
-        el.shadowRoot.innerHTML = "<slot></slot>";
-      return;
-    }
-    if (attachShadow && !el.shadowRoot)
-      el.attachShadow({ mode: attachShadow });
-    const target = el.shadowRoot || el;
-    target.innerHTML = html;
-    if (!allowScripts)
-      return;
-    target.querySelectorAll("script").forEach((script) => {
-      const newScript = document.createElement("script");
-      newScript.appendChild(document.createTextNode(script.textContent ?? ""));
-      target.appendChild(newScript);
-      script.remove();
-    });
-  }
-});
-var setProperty = (key, s = key) => updateElement(s, {
-  op: "prop",
-  read: (el) => (key in el) ? el[key] : UNSET,
-  update: (el, value) => {
-    el[key] = value;
-  }
-});
-var setAttribute = (name, s = name) => updateElement(s, {
-  op: "attr",
-  read: (el) => el.getAttribute(name),
-  update: (el, value) => {
-    safeSetAttribute(el, name, value);
-  },
-  delete: (el) => {
-    el.removeAttribute(name);
-  }
-});
-var toggleAttribute = (name, s = name) => updateElement(s, {
-  op: "attr",
-  read: (el) => el.hasAttribute(name),
-  update: (el, value) => {
-    el.toggleAttribute(name, value);
-  }
-});
-var toggleClass = (token, s = token) => updateElement(s, {
-  op: "class",
-  read: (el) => el.classList.contains(token),
-  update: (el, value) => {
-    el.classList.toggle(token, value);
-  }
-});
-var setStyle = (prop, s = prop) => updateElement(s, {
-  op: "style",
-  read: (el) => el.style.getPropertyValue(prop),
-  update: (el, value) => {
-    el.style.setProperty(prop, value);
-  },
-  delete: (el) => {
-    el.style.removeProperty(prop);
+    return "";
   }
 });
 export {
@@ -721,6 +793,8 @@ export {
   isState,
   isSignal,
   isComputed,
+  insertTemplate,
+  insertNode,
   enqueue,
   effect,
   dangerouslySetInnerHTML,

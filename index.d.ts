@@ -9,4 +9,4 @@ export { type UI, type PassedSignals, type PassedSignalsProvider, type EventList
 export { type LogLevel, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, log } from './src/core/log';
 export { type Context, type UnknownContext, useContext } from './src/core/context';
 export { asBoolean, asInteger, asNumber, asString, asEnum, asJSON } from './src/lib/parsers';
-export { type SignalValueProvider, type SignalLike, type ElementUpdater, updateElement, createElement, removeElement, setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle, dangerouslySetInnerHTML } from './src/lib/effects';
+export { type ValueProvider, type SignalLike, type ElementUpdater, type NodeInserter, updateElement, insertNode, setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle, dangerouslySetInnerHTML, insertTemplate, createElement, removeElement } from './src/lib/effects';

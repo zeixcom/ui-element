@@ -195,7 +195,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 		}
 		for (const [key, init] of Object.entries((this.init))) {
 			// Only handle keys that are not part of the observedAttributes array to prevent double initialization
-			if ((this.constructor as typeof UIElement).observedAttributes.includes(key)) continue
+			if ((this.constructor as typeof UIElement).observedAttributes?.includes(key)) continue
 			const result = isAttributeParser(init)
 				? init(this.getAttribute(key), this)
 				: isComputedCallbacks<{}>(init)
@@ -245,7 +245,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
     get<K extends keyof S | string>(key: K): S[K] {
         const value = unwrap(this.signals[key])
 		if (DEV_MODE && this.debug)
-			log(value, `Get current value of signal <${typeString(value)}> ${valueString(key)} in ${elementName(this)}`)
+			log(value, `Get current value of Signal ${valueString(key)} in ${elementName(this)}`)
 		return value
 	}
 
@@ -265,7 +265,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 
 		// Error and early return if value is null or undefined
 		if (null == value) {
-			log(value, `Attempt to set state ${valueString(key)} to null or undefined in ${elementName(this)}`, LOG_ERROR)
+			log(value, `Attempt to set State ${valueString(key)} to null or undefined in ${elementName(this)}`, LOG_ERROR)
             return
 		}
 
@@ -276,16 +276,16 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 		// State does not exist => create new state
 		if (!(key in this.signals)) {
 			if (isStateUpdater<S[K]>(value)) {
-				log(value, `Cannot use updater function to create a computed signal in ${elementName(this)}`, LOG_ERROR)
+				log(value, `Cannot use updater function to create a Computed in ${elementName(this)}`, LOG_ERROR)
 				return
 			}
-			if (DEV_MODE && this.debug) op = 'Create'
+			if (DEV_MODE && this.debug) op = 'Create Signal of type'
 			this.signals[key] = toSignal(value)
 
 		// State already exists => update existing state
 		} else if (update || old === UNSET || old === RESET) {
 			if (isComputedCallbacks<S[K]>(value)) {
-				log(value, `Cannot use computed callbacks to update signal ${valueString(key)} in ${elementName(this)}`, LOG_ERROR)
+				log(value, `Cannot use computed callbacks to update Signal ${valueString(key)} in ${elementName(this)}`, LOG_ERROR)
                 return
 			}
 
@@ -298,11 +298,11 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 			// Value is not a Signal => set existing state to new value
 			} else {
 				if (isState<S[K]>(s)) {
-					if (DEV_MODE && this.debug) op = 'Update'
+					if (DEV_MODE && this.debug) op = 'Update State of type'
 					if (isStateUpdater<S[K]>(value)) s.update(value)
 					else s.set(value)
 				} else {
-					log(value, `Computed signal ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_WARN)
+					log(value, `Computed ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_WARN)
 					return
 				}
 			}
@@ -311,7 +311,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 		} else return
 
 		if (DEV_MODE && this.debug)
-			log(value, `${op!} signal <${typeString(value)}> ${valueString(key)} in ${elementName(this)}`)
+			log(value, `${op!} ${typeString(value)} ${valueString(key)} in ${elementName(this)}`)
 
 	}
 
@@ -324,7 +324,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	 */
 	delete(key: string): boolean {
 		if (DEV_MODE && this.debug)
-			log(key, `Delete signal ${valueString(key)} from ${elementName(this)}`)
+			log(key, `Delete Signal ${valueString(key)} from ${elementName(this)}`)
 		return delete this.signals[key]
 	}
 
