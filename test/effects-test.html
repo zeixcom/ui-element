@@ -25,6 +25,9 @@
 	<update-style color="red">
         <p style="color: blue">Text from Server</p>
     </update-style>
+	<dangerous-inner-html id="dangerous"></dangerous-inner-html>
+	<shadow-dangerous-inner-html id="shadow-dangerous"></shadow-dangerous-inner-html>
+	<dangerous-with-scripts></dangerous-with-scripts>
 
 	<script type="module">
 		import { runTests } from '@web/test-runner-mocha'
@@ -32,7 +35,8 @@
 		import {
 			UIElement, effect, RESET, UNSET,
 			asBoolean, asInteger, asNumber,
-			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
+			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
+			dangerouslySetInnerHTML,
 		} from '../'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -110,9 +114,46 @@
 		}
 		UpdateStyle.define('update-style')
 
+		class DangerousInnerHTMLComponent extends UIElement {
+			init = {
+				content: '<p>Initial content</p>'
+			}
+		
+			connectedCallback() {
+				super.connectedCallback()
+				this.self.sync(dangerouslySetInnerHTML('content'))
+			}
+		}
+		DangerousInnerHTMLComponent.define('dangerous-inner-html')
+		
+		class ShadowDangerousInnerHTMLComponent extends UIElement {
+			init = {
+				content: '<p>Initial shadow content</p>'
+			}
+
+			connectedCallback() {
+				super.connectedCallback()
+				this.self.sync(dangerouslySetInnerHTML('content', 'open'))
+			}
+		}
+		ShadowDangerousInnerHTMLComponent.define('shadow-dangerous-inner-html')
+
+		// Test with allowScripts set to true
+		const DangerousWithScripts = class extends UIElement {
+			init = {
+				content: '<p id="test-p-shadow">Original</p>'
+			}
+
+			connectedCallback() {
+				super.connectedCallback()
+				this.self.sync(dangerouslySetInnerHTML('content', 'open', true))
+			}
+		}
+		DangerousWithScripts.define('dangerous-with-scripts');
+
 		runTests(() => {
 
-			describe('UpdateText component', function () {
+			describe('setText', function () {
 
 				it('should prove setText() working correctly', async function () {
 					const component = document.querySelector('update-text')
@@ -132,7 +173,7 @@
 
 			})
 
-			describe('UpdateProperty component', function () {
+			describe('setProperty', function () {
 
 				it('should prove setProperty() working correctly', async function () {
 					const component = document.querySelector('update-property')
@@ -149,7 +190,7 @@
 
 			})
 
-			describe('UpdateAttribute component', function () {
+			describe('setAttribute and toggleAttribute', function () {
 
 				it('should prove setAttribute() and toggleAttribute() working correctly', async function () {
 					const component = document.querySelector('update-attribute')
@@ -175,7 +216,7 @@
 
 			})
 
-			describe('UpdateClass component', function () {
+			describe('toggleClass', function () {
 
 				it('should prove toggleClass() working correctly', async function () {
 					const component = document.querySelector('update-class')
@@ -196,7 +237,7 @@
 
 			})
 
-			describe('UpdateStyle component', function () {
+			describe('setStyle', function () {
 
 				it('should prove setStyle() working correctly', async function () {
 					const component = document.querySelector('update-style')
@@ -211,6 +252,56 @@
                     assert.equal(paragraph.style.color, 'blue', 'Should revert color to server-rendered version')
 				})
 
+			})
+
+			describe('dangerouslySetInnerHTML', () => {
+				let dangerous, shadowDangerous
+			
+				before(() => {
+					dangerous = document.getElementById('dangerous')
+					shadowDangerous = document.getElementById('shadow-dangerous')
+				})
+			
+				it('should set inner HTML for non-shadow component', async () => {
+					assert.equal(dangerous.innerHTML, '<p>Initial content</p>')
+					
+					dangerous.set('content', '<div>Updated content</div>')
+					await animationFrame()
+					assert.equal(dangerous.innerHTML, '<div>Updated content</div>')
+				})
+			
+				it('should set inner HTML for shadow component', async () => {
+					assert.equal(shadowDangerous.shadowRoot.innerHTML, '<p>Initial shadow content</p>')
+					
+					shadowDangerous.set('content', '<div>Updated shadow content</div>')
+					await animationFrame()
+					assert.equal(shadowDangerous.shadowRoot.innerHTML, '<div>Updated shadow content</div>')
+				})
+			
+				it('should ignore empty content', async () => {
+					dangerous.set('content', '')
+					await animationFrame()
+					assert.equal(dangerous.innerHTML, '<div>Updated content</div>')
+			
+					shadowDangerous.set('content', '')
+					await animationFrame()
+					assert.equal(shadowDangerous.shadowRoot.innerHTML, '<div>Updated shadow content</div>')
+				})
+			
+				it('should not execute scripts by default, but allow execution when specified', async () => {
+					const scriptContent = 'ipt>document.getElementById("test-p").textContent = "Modified";</scr'
+					const shadowScriptContent = 'ipt>document.querySelector("dangerous-with-scripts").shadowRoot.getElementById("test-p-shadow").textContent = "Modified";</scr'
+					
+					// Test default behavior (scripts not executed)
+					dangerous.set('content', `<p id="test-p">Original</p><scr${scriptContent}ipt>`)
+					await animationFrame()
+					assert.equal(dangerous.querySelector('#test-p').textContent, 'Original', 'Script should not modify content by default')
+
+					const dangerousWithScripts = document.querySelector('dangerous-with-scripts')
+					dangerousWithScripts.set('content', `<p id="test-p-shadow">Original</p><scr${shadowScriptContent}ipt>`)
+					await animationFrame()
+					assert.equal(dangerousWithScripts.shadowRoot.querySelector('#test-p-shadow').textContent, 'Modified', 'Script should modify content when allowScripts is true')
+				})
 			})
 
 		})
