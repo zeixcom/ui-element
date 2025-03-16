@@ -28,6 +28,9 @@
 	<dangerous-inner-html id="dangerous"></dangerous-inner-html>
 	<shadow-dangerous-inner-html id="shadow-dangerous"></shadow-dangerous-inner-html>
 	<dangerous-with-scripts></dangerous-with-scripts>
+	<create-element>
+		<ul></ul>
+	</create-element>
 
 	<script type="module">
 		import { runTests } from '@web/test-runner-mocha'
@@ -36,7 +39,7 @@
 			UIElement, effect, RESET, UNSET,
 			asBoolean, asInteger, asNumber,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
-			dangerouslySetInnerHTML,
+			dangerouslySetInnerHTML, createElement, removeElement
 		} from '../'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -138,8 +141,7 @@
 		}
 		ShadowDangerousInnerHTMLComponent.define('shadow-dangerous-inner-html')
 
-		// Test with allowScripts set to true
-		const DangerousWithScripts = class extends UIElement {
+		class DangerousWithScripts extends UIElement {
 			init = {
 				content: '<p id="test-p-shadow">Original</p>'
 			}
@@ -149,7 +151,27 @@
 				this.self.sync(dangerouslySetInnerHTML('content', 'open', true))
 			}
 		}
-		DangerousWithScripts.define('dangerous-with-scripts');
+		DangerousWithScripts.define('dangerous-with-scripts')
+
+		class CreateElement extends UIElement {
+			init = {
+				before: false,
+				prepend: false,
+				append: false,
+				after: false
+			}
+
+			connectedCallback() {
+				super.connectedCallback()
+                this.first('ul').sync(
+					createElement('p', 'before', 'beforebegin', {}, 'Before'),
+					createElement('li', 'prepend', 'afterbegin', { value: 'foo' }, 'Prepend'),
+					createElement('li', 'append'),
+					createElement('p', 'after', 'afterend', { value: 'bar' })
+				)
+            }
+		}
+		CreateElement.define('create-element')
 
 		runTests(() => {
 
@@ -303,6 +325,72 @@
 					assert.equal(dangerousWithScripts.shadowRoot.querySelector('#test-p-shadow').textContent, 'Modified', 'Script should modify content when allowScripts is true')
 				})
 			})
+
+			describe('createElement', function () {
+				let createElementComponent;
+			
+				before(() => {
+					createElementComponent = document.querySelector('create-element');
+				});
+			
+				it('should insert a paragraph before the UL', async function () {
+					createElementComponent.set('before', true);
+					await animationFrame();
+					const insertedParagraph = createElementComponent.querySelector('p:first-child');
+					assert.isNotNull(insertedParagraph, 'Paragraph should be inserted before the UL');
+					assert.equal(insertedParagraph.textContent, 'Before', 'Paragraph should have correct text content');
+					assert.equal(createElementComponent.get('before'), false, 'Before signal should be reset to false');
+				});
+			
+				it('should insert a LI at the beginning of the UL', async function () {
+					createElementComponent.set('prepend', true);
+					await animationFrame();
+					const insertedLi = createElementComponent.querySelector('ul li:first-child');
+					assert.isNotNull(insertedLi, 'LI should be inserted at the beginning of the UL');
+					assert.equal(insertedLi.textContent, 'Prepend', 'LI should have correct text content');
+					assert.equal(insertedLi.getAttribute('value'), 'foo', 'LI should have correct attribute');
+					assert.equal(createElementComponent.get('prepend'), false, 'Prepend signal should be reset to false');
+				});
+			
+				it('should insert a LI at the end of the UL', async function () {
+					createElementComponent.set('append', true);
+					await animationFrame();
+					const insertedLi = createElementComponent.querySelector('ul li:last-child');
+					assert.isNotNull(insertedLi, 'LI should be inserted at the end of the UL');
+					assert.equal(insertedLi.textContent, '', 'LI should have empty text content');
+					assert.equal(createElementComponent.get('append'), false, 'Append signal should be reset to false');
+				});
+			
+				it('should insert a paragraph after the UL', async function () {
+					createElementComponent.set('after', true);
+					await animationFrame();
+					const insertedParagraph = createElementComponent.querySelector('ul + p');
+					assert.isNotNull(insertedParagraph, 'Paragraph should be inserted after the UL');
+					assert.equal(insertedParagraph.textContent, '', 'Paragraph should have empty text content');
+					assert.equal(insertedParagraph.getAttribute('value'), 'bar', 'Paragraph should have correct attribute');
+					assert.equal(createElementComponent.get('after'), false, 'After signal should be reset to false');
+				});
+			
+				it('should allow re-triggering effects', async function () {
+					// Re-trigger the 'before' effect
+					createElementComponent.set('before', true);
+					await animationFrame();
+					const beforeParagraph2 = createElementComponent.querySelector('p:first-child + p');
+					assert.isNotNull(beforeParagraph2, 'LI should be inserted at the beginning of the UL');
+			
+					// Re-trigger the 'prepend' effect
+					createElementComponent.set('prepend', true);
+					await animationFrame();
+					const prependLis = createElementComponent.querySelectorAll('li[value="foo"]');
+					assert.equal(prependLis.length, 2, 'Should insert another LI at the beginning of the UL');
+			
+					// Verify that all signals are reset to false
+					assert.equal(createElementComponent.get('before'), false, 'Before signal should be reset to false');
+					assert.equal(createElementComponent.get('prepend'), false, 'Prepend signal should be reset to false');
+					assert.equal(createElementComponent.get('append'), false, 'Append signal should be reset to false');
+					assert.equal(createElementComponent.get('after'), false, 'After signal should be reset to false');
+				});
+			});
 
 		})
 	</script>

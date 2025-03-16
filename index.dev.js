@@ -626,9 +626,6 @@ var updateElement = (s, updater) => (host, target, index) => {
 };
 var insertNode = (s, inserter) => (host, target, index) => {
   const { type, where, create } = inserter;
-  const node = create(host);
-  if (!node)
-    return;
   const methods = {
     beforebegin: "before",
     afterbegin: "prepend",
@@ -650,6 +647,9 @@ var insertNode = (s, inserter) => (host, target, index) => {
     if (!really)
       return;
     enqueue(() => {
+      const node = create(host);
+      if (!node)
+        return;
       target[methods[where]](node);
     }, [target, "i"]).then(() => {
       const maybeSignal = isString(s) ? host.signals[s] : s;

@@ -155,8 +155,8 @@ const insertNode = <
     inserter: NodeInserter<S>
 ) => (host: UIElement<S>, target: E, index: number): void => {
 	const { type, where, create } = inserter
-	const node = create(host)
-	if (!node) return
+	// const node = create(host)
+	// if (!node) return
 	const methods: Record<InsertPosition, keyof Element> = {
 		beforebegin: 'before',
 		afterbegin: 'prepend',
@@ -178,6 +178,8 @@ const insertNode = <
 		}
 		if (!really) return
         enqueue(() => {
+			const node = create(host)
+			if (!node) return
 			(target[methods[where]] as (...nodes: Node[]) => void)(node)
 		}, [target, 'i']).then(() => {
 			const maybeSignal = isString(s) ? host.signals[s] : s
