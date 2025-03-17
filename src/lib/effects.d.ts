@@ -11,7 +11,7 @@ type ElementUpdater<E extends Element, T> = {
 type NodeInserter<S extends ComponentSignals> = {
     type: string;
     where: InsertPosition;
-    create: (host: UIElement<S>) => Node | DocumentFragment | undefined;
+    create: (host: UIElement<S>) => Node | undefined;
 };
 /**
  * Effect for setting properties of a target element according to a given SignalLike
