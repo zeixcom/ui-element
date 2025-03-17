@@ -1,11 +1,16 @@
-import { type Signal, UNSET, isSignal, isState, toSignal, isComputed, computed } from "@zeix/cause-effect"
+import {
+	type Signal, type ComputedCallbacks,
+	UNSET, isSignal, isComputedCallbacks, toSignal, isState, isComputed, computed
+} from "@zeix/cause-effect"
 
 import { isFunction } from "./core/util"
-import { DEV_MODE, elementName, log, LOG_ERROR, LOG_WARN, valueString } from "./core/log"
-import { UI } from "./core/ui"
+import { DEV_MODE, elementName, log, LOG_ERROR, LOG_WARN, typeString, valueString } from "./core/log"
+import { type UI, ui } from "./core/ui"
 import { type UnknownContext, useContext } from "./core/context"
 
 /* === Types === */
+
+export type ComponentSignals = { [key: string]: {} }
 
 export type AttributeParser<T, S extends ComponentSignals> = (
 	value: string | null,
@@ -13,15 +18,13 @@ export type AttributeParser<T, S extends ComponentSignals> = (
 	old?: string | null
 ) => T
 
-export type ComponentSignals = Record<string, {}>
+export type StateUpdater<T> = (v: T) => T
 
 export type Root<S extends ComponentSignals> = ShadowRoot | UIElement<S>
 
-export type InferSignalTypes<S extends ComponentSignals> = {
-	[K in keyof S]: Signal<S[K]>;
-}
-
-export type StateInitializer<T, S extends ComponentSignals> = T | AttributeParser<T, S>
+export type SignalInitializer<T, S extends ComponentSignals> = T
+	| AttributeParser<T, S>
+	| ComputedCallbacks<NonNullable<T>, []>
 
 /* === Constants === */
 
@@ -40,14 +43,14 @@ const isAttributeParser = <T, S extends ComponentSignals>(value: unknown): value
 	isFunction(value) && !!value.length
 
 /**
- * Check if a value is a compute function
- *
- * @since 0.10.1
+ * Check if a value is a state updater
+ * 
+ * @since 0.11.0
  * @param {unknown} value - value to check
- * @returns {boolean} - true if value is a compute function, false otherwise
+ * @returns {boolean} - true if value is a state updater, false otherwise
  */
-const isComputeFunction = <T>(value: unknown): value is () => T | Promise<T> =>
-	isFunction(value) && !value.length
+const isStateUpdater = <T>(value: unknown): value is StateUpdater<T> =>
+	isFunction(value) && !!value.length
 
 /**
  * Unwrap a signal or function to its value
@@ -71,16 +74,16 @@ const unwrap = <T extends {}>(v: T | (() => T) | Signal<T>): T =>
  * @param {string | null} [old=undefined] - old attribute value
  * @returns {T | undefined}
  */
-export const parse = <T, S extends ComponentSignals = {}>(
+export const parse = <T, S extends ComponentSignals>(
 	host: UIElement<S>,
 	key: string,
 	value: string | null,
 	old?: string | null
 ): T | undefined => {
-	const parser = host.states[key] as StateInitializer<T, S>
+	const parser = host.init[key] as SignalInitializer<T, S>
 	return isAttributeParser<T, S>(parser)
 		? parser(value, host, old)
-		: value as T | undefined
+		: value as T ?? undefined
 }
 
 /* === Exported Class === */
@@ -116,16 +119,16 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	}
 
 	/**
-	 * @since 0.10.1
-	 * @property {ComponentStates} states - object of state initializers for signals (initial values or attribute parsers)
+	 * @since 0.11.0
+	 * @property {{ [K in keyof S]: SignalInitializer<S[K], S> }} init - object of signal initializers (initial values, attribute parsers or computed callbacks)
 	 */
-	states: { [K in keyof S]: StateInitializer<S[K], S> } = {} as { [K in keyof S]: StateInitializer<S[K], S> }
+	init: { [K in keyof S]: SignalInitializer<S[K], S> } = {} as { [K in keyof S]: SignalInitializer<S[K], S> }
 
 	/**
      * @since 0.9.0
      * @property {S} signals - object of publicly exposed signals bound to the custom element
      */
-	signals: InferSignalTypes<S> = {} as InferSignalTypes<S>
+	signals: {[K in keyof S]: Signal<S[K]> } = {} as { [K in keyof S]: Signal<S[K]> }
 
 
 	/**
@@ -143,7 +146,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	 * @since 0.8.1
 	 * @property {UI<UIElement>} self - UI object for this element
 	 */
-	self: UI<UIElement, S> = new UI<UIElement, S>(this)
+	self: UI<UIElement, S> = ui<UIElement, S>(this)
 
 	/**
 	 * @since 0.8.3
@@ -173,7 +176,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 		if (value === old || isComputed(this.signals[name])) return // unchanged or controlled
 		const parsed = parse(this, name, value, old)
 		if (DEV_MODE && this.debug)
-			log(value, `Attribute "${name}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeof parsed}> ${valueString(parsed)}`)
+			log(value, `Attribute "${name}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`)
         this.set(name, parsed ?? RESET)
 	}
 
@@ -190,13 +193,15 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 			this.debug = this.hasAttribute('debug')
 			if (this.debug) log(this, 'Connected')
 		}
-		for (const [key, init] of Object.entries((this.states))) {
+		for (const [key, init] of Object.entries((this.init))) {
+			// Only handle keys that are not part of the observedAttributes array to prevent double initialization
+			if ((this.constructor as typeof UIElement).observedAttributes?.includes(key)) continue
 			const result = isAttributeParser(init)
 				? init(this.getAttribute(key), this)
-				: isComputeFunction<{}>(init)
+				: isComputedCallbacks<{}>(init)
 					? computed(init)
 					: init
-			this.set(key, result ?? RESET)
+			this.set(key, result ?? RESET, false)
 		}
 		useContext(this)
 	}
@@ -237,10 +242,10 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
      * @param {K} key - state to get value from
      * @returns {S[K]} current value of state; undefined if state does not exist
      */
-    get<K extends keyof S>(key: K): S[K] {
-        const value = unwrap(this.signals[key]) as S[K]
+    get<K extends keyof S | string>(key: K): S[K] {
+        const value = unwrap(this.signals[key])
 		if (DEV_MODE && this.debug)
-			log(value, `Get current value of state <${typeof value}> ${valueString(key)} in ${elementName(this)}`)
+			log(value, `Get current value of Signal ${valueString(key)} in ${elementName(this)}`)
 		return value
 	}
 
@@ -249,18 +254,18 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
      * 
      * @since 0.2.0
      * @param {K} key - state to set value to
-     * @param {S[K] extends Signal<infer T> ? T | ((old: T) => T) | Signal<T> : never} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
+     * @param {S[K] | ComputedCallbacks<S[K], []> | Signal<S[K]> | StateUpdater<S[K]>} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
      * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
      */
-    set<K extends keyof S>(
+    set<K extends keyof S | string>(
         key: K,
-        value: S[K] | ((old: S[K]) => S[K]) | Signal<S[K]>,
+        value: S[K] | ComputedCallbacks<S[K], []> | Signal<S[K]> | StateUpdater<S[K]>,
 		update: boolean = true
 	): void {
 
 		// Error and early return if value is null or undefined
 		if (null == value) {
-			log(value, `Attempt to set state ${valueString(key)} to null or undefined in ${elementName(this)}`, LOG_ERROR)
+			log(value, `Attempt to set State ${valueString(key)} to null or undefined in ${elementName(this)}`, LOG_ERROR)
             return
 		}
 
@@ -270,26 +275,33 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 
 		// State does not exist => create new state
 		if (!(key in this.signals)) {
-			if (DEV_MODE && this.debug) op = 'Create'
-			this.signals[key] = toSignal(value as {}) as Signal<S[K]>
+			if (isStateUpdater<S[K]>(value)) {
+				log(value, `Cannot use updater function to create a Computed in ${elementName(this)}`, LOG_ERROR)
+				return
+			}
+			if (DEV_MODE && this.debug) op = 'Create Signal of type'
+			this.signals[key] = toSignal(value)
 
 		// State already exists => update existing state
 		} else if (update || old === UNSET || old === RESET) {
+			if (isComputedCallbacks<S[K]>(value)) {
+				log(value, `Cannot use computed callbacks to update Signal ${valueString(key)} in ${elementName(this)}`, LOG_ERROR)
+                return
+			}
 
 			// Value is a Signal => replace state with new signal
 			if (isSignal(value)) {
 				if (DEV_MODE && this.debug) op = 'Replace'
-				this.signals[key] = value as unknown as Signal<S[K]>
+				this.signals[key] = value
 				if (isState(s)) s.set(UNSET) // clear previous state so watchers re-subscribe to new signal
 
 			// Value is not a Signal => set existing state to new value
 			} else {
 				if (isState<S[K]>(s)) {
-					if (DEV_MODE && this.debug) op = 'Update'
-					if (isFunction<S[K]>(value)) s.update(value)
-					else s.set(value as S[K])
+					if (DEV_MODE && this.debug) op = 'Update State of type'
+					s.set(isStateUpdater<S[K]>(value) ? value(old) : value)
 				} else {
-					log(value, `Computed state ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_WARN)
+					log(value, `Computed ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_WARN)
 					return
 				}
 			}
@@ -298,7 +310,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 		} else return
 
 		if (DEV_MODE && this.debug)
-			log(value, `${op!} state <${typeof value}> ${valueString(key)} in ${elementName(this)}`)
+			log(value, `${op!} ${typeString(value)} ${valueString(key)} in ${elementName(this)}`)
 
 	}
 
@@ -311,7 +323,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	 */
 	delete(key: string): boolean {
 		if (DEV_MODE && this.debug)
-			log(key, `Delete state ${valueString(key)} from ${elementName(this)}`)
+			log(key, `Delete Signal ${valueString(key)} from ${elementName(this)}`)
 		return delete this.signals[key]
 	}
 
@@ -323,8 +335,9 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	 * @returns {UI<Element>[]} - array of zero or one UI objects of matching sub-element
 	 */
 	first<E extends Element = HTMLElement>(selector: string): UI<E, S> {
-		const element = this.root.querySelector<E>(selector)
-		return new UI(this, element ? [element] : [])
+		let element = this.root.querySelector<E>(selector)
+		if (this.shadowRoot && !element) element = this.querySelector(selector)
+		return ui(this, element ? [element] : [])
 	}
 	/**
 	 * Get array of all sub-elements matching a given selector within the custom element
@@ -334,7 +347,9 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	 * @returns {UI<Element>} - array of UI object of matching sub-elements
 	 */
 	all<E extends Element = HTMLElement>(selector: string): UI<E, S> {
-		return new UI(this, Array.from(this.root.querySelectorAll<E>(selector)))
+		let elements = this.root.querySelectorAll<E>(selector)
+		if (this.shadowRoot && !elements.length) elements = this.querySelectorAll(selector)
+		return ui(this, Array.from(elements))
 	}
 
 }

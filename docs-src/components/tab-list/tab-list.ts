@@ -1,15 +1,13 @@
-import { asBoolean, setProperty, toggleAttribute, UIElement, type Context } from '../../../'
+import { UIElement, asBoolean, setAttribute, setProperty, toggleAttribute, toggleClass } from '../../../'
 
 export class TabList extends UIElement<{
 	active: number,
     accordion: boolean,
-	'media-viewport'?: string,
 }> {
 	static readonly localName = 'tab-list'
 	static observedAttributes = ['accordion']
-	static consumedContexts = ['media-viewport' as Context<string, string>]
 
-	states = {
+	init = {
 		active: 0,
 		accordion: asBoolean,
 	}
@@ -17,35 +15,46 @@ export class TabList extends UIElement<{
 	connectedCallback() {
 		super.connectedCallback()
 
-		// Dynamically adjust accordion based on viewport size
-		queueMicrotask(() => {
-			if (this.get('media-viewport'))
-				this.set('accordion', () =>
-					['xs', 'sm'].includes(String(this.get('media-viewport')))
-				)
-		})
+		// Set inital active tab by querying details[open]
+		const getInitialActive = () => { 
+			const panels = Array.from(this.querySelectorAll('details'))
+			for (let i = 0; i < panels.length; i++) {
+				if (panels[i].hasAttribute('open')) return i
+			}
+			return 0
+		}
+		this.set('active', getInitialActive())
 
 		// Reflect accordion attribute (may be used for styling)
 		this.self.sync(toggleAttribute('accordion'))
 
-		// Hide accordion tab navigation when in accordion mode
-		this.first('menu').sync(setProperty('hidden', 'accordion'))
-
 		// Update active tab state and bind click handlers
 		this.all('menu button')
-			.on('click', (_target, index) => () => this.set('active', index))
-			.sync((host, target, index) => {
-				setProperty(
-					'ariaPressed',
-					() => String(this.get('active') === index)
-				)(host, target)
+			.on('click', (_, index) => () => {
+				this.set('active', index)
 			})
+			.sync(setProperty(
+				'ariaPressed',
+				(_, index) => String(this.get('active') === index)
+			))
 
-		// Pass open and collapsible states to accordion panels
-		this.all('accordion-panel').pass((_target, index) => ({
-			open: () => this.get('active') === index,
-			collapsible: 'accordion'
-		}))
+		// Update details panels open, hidden and disabled states
+		this.all<HTMLDetailsElement>('details').sync(
+			setProperty(
+				'open',
+				(_, index) => !!(this.get('active') === index)
+			),
+			setAttribute(
+				'aria-disabled',
+				() => String(!this.get('accordion'))
+			)
+		)
+
+		// Update summary visibility
+		this.all('summary').sync(toggleClass(
+			'visually-hidden',
+			() => !this.get('accordion')
+		))
 	}
 }
 TabList.define()

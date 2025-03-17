@@ -1,5 +1,6 @@
 import { setProperty, UIElement } from "../../../";
-import { InputButton } from "../input-button/input-button";
+import { type InputButton } from "../input-button/input-button";
+import { type RatingStars } from "../rating-stars/rating-stars";
 
 export class RatingFeedback extends UIElement<{
 	rating: number,
@@ -8,7 +9,7 @@ export class RatingFeedback extends UIElement<{
 }> {
 	static localName = 'rating-feedback'
 
-	states = {
+	init = {
 		rating: 0,
 		empty: true,
         submitted: false,
@@ -36,23 +37,15 @@ export class RatingFeedback extends UIElement<{
 
 		// Event listener for texteare
 		this.first('textarea').on('input', (e: Event) => {
-			this.set(
-				'empty',
-				(e.target as HTMLTextAreaElement)?.value.trim() === ''
-			)
+			this.set('empty', (e.target as HTMLTextAreaElement)?.value.trim() === '')
 		})
 
 		// Effects on rating changes
-		this.first('.feedback').sync(setProperty(
-			'hidden',
-			() => this.get('submitted') || !(this.get('rating') ?? 0)
-		))
-		this.all('.feedback p').sync((host, target, index) => {
-			setProperty<HTMLElement, 'hidden'>(
-				'hidden',
-				() => this.get('rating') !== index + 1
-            )(host, target)
-		})
+		const stars = this.querySelector<RatingStars>('rating-stars')
+		this.first('.feedback')
+			.sync(setProperty('hidden', () => this.get('submitted') || !(stars?.get('value') ?? 0)))
+		this.all('.feedback p')
+			.sync(setProperty('hidden', (_, index) => stars?.get('value') !== index + 1))
 
 		// Effect on empty state
 		this.first<InputButton>('input-button').pass({

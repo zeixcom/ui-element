@@ -26,62 +26,35 @@ const asBoolean = (value: string | null): boolean =>
 /**
  * Parse an attribute as as number forced to integer with a fallback
  * 
- * @since 0.10.1
+ * @since 0.11.0
  * @param {number} [fallback=0] - fallback value
  * @returns {(value: string | null) => number} - parser function
  */
-const asIntegerWithDefault = (fallback: number = 0) =>
+const asInteger = (fallback: number = 0) =>
 	(value: string | null): number =>
 		parseNumber(parseInt, value) ?? fallback
 
 /**
- * Parse an attribute as a number forced to integer
- * 
- * @since 0.7.0
- * @param {string} value - maybe string value
- * @returns {number}
- */
-const asInteger = asIntegerWithDefault()
-
-/**
  * Parse an attribute as as number with a fallback
  * 
- * @since 0.10.1
+ * @since 0.11.0
  * @param {number} [fallback=0] - fallback value
  * @returns {(value: string | null) => number} - parser function
  */
-const asNumberWithDefault = (fallback: number = 0) =>
+const asNumber = (fallback: number = 0) =>
 	(value: string | null): number =>
 		parseNumber(parseFloat, value) ?? fallback
 
 /**
- * Parse an attribute as a number
- * 
- * @since 0.7.0
- * @param {string} value - maybe string value
- * @returns {number}
- */
-const asNumber = asNumberWithDefault()
-
-/**
  * Parse an attribute as a string with a fallback
  * 
- * @since 0.10.1
+ * @since 0.11.0
  * @param {string} [fallback=''] - fallback value
  * @returns {(value: string | null) => string} - parser function
  */
-const asStringWithDefault = (fallback: string = '') =>
+const asString = (fallback: string = '') =>
 	(value: string | null): string =>
 		value ?? fallback
-
-/**
- * Parse an attribute as a string
- * 
- * @since 0.7.0
- * @param {string} value - maybe string value
- * @returns {string}
- */
-const asString = asStringWithDefault()
 
 /**
  * Parse an attribute as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option
@@ -99,11 +72,11 @@ const asEnum = (valid: [string, ...string[]]) =>
 /**
  * Parse an attribute as a JSON serialized object with a fallback
  * 
- * @since 0.10.1
+ * @since 0.11.0
  * @param {T} fallback - fallback value
  * @returns {(value: string | null) => T} - parser function
  */
-const asJSONWithDefault = <T extends {}>(fallback: T) =>
+const asJSON = <T extends {}>(fallback: T) =>
 	(value: string | null): T => {
 		if (value == null) return fallback
 		let result: T | undefined
@@ -115,18 +88,4 @@ const asJSONWithDefault = <T extends {}>(fallback: T) =>
 		return result ?? fallback
 	}
 
-/**
- * Parse an attribute as a JSON serialized object
- * 
- * @since 0.7.2
- * @param {string | null} value - maybe string value
- * @returns {T}
- */
-const asJSON = asJSONWithDefault({})
-
-export {
-	asBoolean,
-	asIntegerWithDefault, asInteger, asNumberWithDefault, asNumber,
-	asStringWithDefault, asString, asEnum,
-	asJSONWithDefault, asJSON
-}
+export { asBoolean, asInteger, asNumber, asString, asEnum, asJSON }

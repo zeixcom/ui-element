@@ -25,17 +25,52 @@
 	<update-style color="red">
         <p style="color: blue">Text from Server</p>
     </update-style>
+	<dangerous-inner-html id="dangerous"></dangerous-inner-html>
+	<shadow-dangerous-inner-html id="shadow-dangerous"></shadow-dangerous-inner-html>
+	<dangerous-with-scripts></dangerous-with-scripts>
+	<create-element>
+		<ul></ul>
+	</create-element>
+	<remove-element>
+		<ul>
+			<li data-value="1">Item 1</li>
+            <li data-value="2">Item 2</li>
+            <li data-value="3">Item 3</li>
+		</ul>
+	</remove-element>
+	<insert-template id="insert-light">
+		<template class="li">
+            <li></li>
+        </template>
+		<template class="p">
+			<p></p>
+		</template>
+        <ul></ul>
+	</insert-template>
+	<insert-template id="insert-shadow">
+		<template class="li">
+            <li></li>
+        </template>
+		<template class="p">
+			<p></p>
+		</template>
+		<template shadowrootmode="open">
+			<ul></ul>
+		</template>
+	</insert-template>
 
 	<script type="module">
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
 		import {
-			UIElement, effect, animationFrame, RESET,
+			UIElement, effect, RESET, UNSET,
 			asBoolean, asInteger, asNumber,
-			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle
-		} from '../index.js'
+			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
+			dangerouslySetInnerHTML, createElement, removeElement, insertTemplate
+		} from '../'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+		const animationFrame = async () => new Promise(requestAnimationFrame)
 		const normalizeText = text => text.replace(/\s+/g, ' ').trim()
 
 		class UpdateText extends UIElement {
@@ -58,25 +93,27 @@
 
 		class UpdateAttribute extends UIElement {
 			static observedAttributes = ['required']
-			states = {
-                required: asBoolean
+			init = {
+                required: asBoolean,
+				ariaInvalid: 'false'
             }
 
 			connectedCallback() {
 				super.connectedCallback()
-				this.set('ariaInvalid', 'false') // should not be true before the user interacted
-				this.set(
-					'aria-errormessage',
-					() => this.get('required') && this.get('ariaInvalid') !== 'false'
-						? this.querySelector('p').id
-						: null
-				)
                 this.first('input')
-				    .on('change', e => this.set('ariaInvalid', String(!e.target.checkValidity())))
+				    .on('change', e => {
+						this.set('ariaInvalid', String(!e.target.checkValidity()))
+					})
 					.sync(
 						toggleAttribute('required'),
 						setProperty('ariaInvalid'),
-						setAttribute('aria-errormessage')
+						setAttribute(
+							'aria-errormessage',
+							() => this.get('required')
+								&& this.get('ariaInvalid') !== 'false'
+								? this.querySelector('p').id
+								: RESET
+						)
 					)
             }
 		}
@@ -84,17 +121,16 @@
 
 		class UpdateClass extends UIElement {
 			static observedAttributes = ['active']
-			states = {
-                active: asInteger
+			init = {
+                active: asInteger()
             }
 
 			connectedCallback() {
-                this.all('li').sync((host, target, index) => {
-					toggleClass(
+                this.all('li')
+					.sync(toggleClass(
 						'selected',
-						() => this.get('active') === index
-					)(host, target)
-				})
+						(_, index) => this.get('active') === index
+					))
             }
 		}
 		UpdateClass.define('update-class')
@@ -108,9 +144,101 @@
 		}
 		UpdateStyle.define('update-style')
 
+		class DangerousInnerHTMLComponent extends UIElement {
+			init = {
+				content: '<p>Initial content</p>'
+			}
+		
+			connectedCallback() {
+				super.connectedCallback()
+				this.self.sync(dangerouslySetInnerHTML('content'))
+			}
+		}
+		DangerousInnerHTMLComponent.define('dangerous-inner-html')
+		
+		class ShadowDangerousInnerHTMLComponent extends UIElement {
+			init = {
+				content: '<p>Initial shadow content</p>'
+			}
+
+			connectedCallback() {
+				super.connectedCallback()
+				this.self.sync(dangerouslySetInnerHTML('content', 'open'))
+			}
+		}
+		ShadowDangerousInnerHTMLComponent.define('shadow-dangerous-inner-html')
+
+		class DangerousWithScripts extends UIElement {
+			init = {
+				content: '<p id="test-p-shadow">Original</p>'
+			}
+
+			connectedCallback() {
+				super.connectedCallback()
+				this.self.sync(dangerouslySetInnerHTML('content', 'open', true))
+			}
+		}
+		DangerousWithScripts.define('dangerous-with-scripts')
+
+		class CreateElement extends UIElement {
+			init = {
+				before: false,
+				prepend: false,
+				append: false,
+				after: false
+			}
+
+			connectedCallback() {
+				super.connectedCallback()
+                this.first('ul').sync(
+					createElement('p', 'before', 'beforebegin', {}, 'Before'),
+					createElement('li', 'prepend', 'afterbegin', { value: 'foo' }, 'Prepend'),
+					createElement('li', 'append'),
+					createElement('p', 'after', 'afterend', { value: 'bar' })
+				)
+            }
+		}
+		CreateElement.define('create-element')
+
+		class RemoveElement extends UIElement {
+			init = {
+                items: [1, 2, 3]
+            }
+
+			connectedCallback() {
+				super.connectedCallback()
+                this.all('li').sync(
+                    removeElement((_, index) => !this.get('items').includes(index + 1)),
+                )
+			}
+		}
+		RemoveElement.define('remove-element')
+
+		class InsertTemplate extends UIElement {
+			init = {
+				before: false,
+				prepend: false,
+				append: false,
+				after: false
+			}
+
+			connectedCallback() {
+				super.connectedCallback()
+				const pTemplate = this.querySelector('.p')
+				const liTemplate = this.querySelector('.li')
+                this.first('ul').sync(
+					insertTemplate(pTemplate, 'before', 'beforebegin'),
+					insertTemplate(liTemplate, 'prepend', 'afterbegin'),
+					insertTemplate(liTemplate, 'append'),
+					insertTemplate(pTemplate, 'after', 'afterend')
+				)
+            }
+		}
+		InsertTemplate.define('insert-template')
+
 		runTests(() => {
 
-			describe('UpdateText component', function () {
+			describe('setText', function () {
 
 				it('should prove setText() working correctly', async function () {
 					const component = document.querySelector('update-text')
@@ -130,7 +258,7 @@
 
 			})
 
-			describe('UpdateProperty component', function () {
+			describe('setProperty', function () {
 
 				it('should prove setProperty() working correctly', async function () {
 					const component = document.querySelector('update-property')
@@ -147,7 +275,7 @@
 
 			})
 
-			describe('UpdateAttribute component', function () {
+			describe('setAttribute and toggleAttribute', function () {
 
 				it('should prove setAttribute() and toggleAttribute() working correctly', async function () {
 					const component = document.querySelector('update-attribute')
@@ -173,7 +301,7 @@
 
 			})
 
-			describe('UpdateClass component', function () {
+			describe('toggleClass', function () {
 
 				it('should prove toggleClass() working correctly', async function () {
 					const component = document.querySelector('update-class')
@@ -194,7 +322,7 @@
 
 			})
 
-			describe('UpdateStyle component', function () {
+			describe('setStyle', function () {
 
 				it('should prove setStyle() working correctly', async function () {
 					const component = document.querySelector('update-style')
@@ -210,6 +338,192 @@
 				})
 
 			})
+
+			describe('dangerouslySetInnerHTML', () => {
+				let dangerous, shadowDangerous
+			
+				before(() => {
+					dangerous = document.getElementById('dangerous')
+					shadowDangerous = document.getElementById('shadow-dangerous')
+				})
+			
+				it('should set inner HTML for non-shadow component', async () => {
+					assert.equal(dangerous.innerHTML, '<p>Initial content</p>')
+					
+					dangerous.set('content', '<div>Updated content</div>')
+					await animationFrame()
+					assert.equal(dangerous.innerHTML, '<div>Updated content</div>')
+				})
+			
+				it('should set inner HTML for shadow component', async () => {
+					assert.equal(shadowDangerous.shadowRoot.innerHTML, '<p>Initial shadow content</p>')
+					
+					shadowDangerous.set('content', '<div>Updated shadow content</div>')
+					await animationFrame()
+					assert.equal(shadowDangerous.shadowRoot.innerHTML, '<div>Updated shadow content</div>')
+				})
+			
+				it('should ignore empty content', async () => {
+					dangerous.set('content', '')
+					await animationFrame()
+					assert.equal(dangerous.innerHTML, '<div>Updated content</div>')
+			
+					shadowDangerous.set('content', '')
+					await animationFrame()
+					assert.equal(shadowDangerous.shadowRoot.innerHTML, '<div>Updated shadow content</div>')
+				})
+			
+				it('should not execute scripts by default, but allow execution when specified', async () => {
+					const scriptContent = 'ipt>document.getElementById("test-p").textContent = "Modified";</scr'
+					const shadowScriptContent = 'ipt>document.querySelector("dangerous-with-scripts").shadowRoot.getElementById("test-p-shadow").textContent = "Modified";</scr'
+					
+					// Test default behavior (scripts not executed)
+					dangerous.set('content', `<p id="test-p">Original</p><scr${scriptContent}ipt>`)
+					await animationFrame()
+					assert.equal(dangerous.querySelector('#test-p').textContent, 'Original', 'Script should not modify content by default')
+
+					const dangerousWithScripts = document.querySelector('dangerous-with-scripts')
+					dangerousWithScripts.set('content', `<p id="test-p-shadow">Original</p><scr${shadowScriptContent}ipt>`)
+					await animationFrame()
+					assert.equal(dangerousWithScripts.shadowRoot.querySelector('#test-p-shadow').textContent, 'Modified', 'Script should modify content when allowScripts is true')
+				})
+			})
+
+			describe('createElement', function () {
+				let createElementComponent;
+			
+				before(() => {
+					createElementComponent = document.querySelector('create-element');
+				});
+			
+				it('should insert a paragraph before the UL', async function () {
+					createElementComponent.set('before', true);
+					await animationFrame();
+					const insertedParagraph = createElementComponent.querySelector('p:first-child');
+					assert.isNotNull(insertedParagraph, 'Paragraph should be inserted before the UL');
+					assert.equal(insertedParagraph.textContent, 'Before', 'Paragraph should have correct text content');
+					assert.equal(createElementComponent.get('before'), false, 'Before signal should be reset to false');
+				});
+			
+				it('should insert a LI at the beginning of the UL', async function () {
+					createElementComponent.set('prepend', true);
+					await animationFrame();
+					const insertedLi = createElementComponent.querySelector('ul li:first-child');
+					assert.isNotNull(insertedLi, 'LI should be inserted at the beginning of the UL');
+					assert.equal(insertedLi.textContent, 'Prepend', 'LI should have correct text content');
+					assert.equal(insertedLi.getAttribute('value'), 'foo', 'LI should have correct attribute');
+					assert.equal(createElementComponent.get('prepend'), false, 'Prepend signal should be reset to false');
+				});
+			
+				it('should insert a LI at the end of the UL', async function () {
+					createElementComponent.set('append', true);
+					await animationFrame();
+					const insertedLi = createElementComponent.querySelector('ul li:last-child');
+					assert.isNotNull(insertedLi, 'LI should be inserted at the end of the UL');
+					assert.equal(insertedLi.textContent, '', 'LI should have empty text content');
+					assert.equal(createElementComponent.get('append'), false, 'Append signal should be reset to false');
+				});
+			
+				it('should insert a paragraph after the UL', async function () {
+					createElementComponent.set('after', true);
+					await animationFrame();
+					const insertedParagraph = createElementComponent.querySelector('ul + p');
+					assert.isNotNull(insertedParagraph, 'Paragraph should be inserted after the UL');
+					assert.equal(insertedParagraph.textContent, '', 'Paragraph should have empty text content');
+					assert.equal(insertedParagraph.getAttribute('value'), 'bar', 'Paragraph should have correct attribute');
+					assert.equal(createElementComponent.get('after'), false, 'After signal should be reset to false');
+				});
+			
+				it('should allow re-triggering effects', async function () {
+					// Re-trigger the 'before' effect
+					createElementComponent.set('before', true);
+					await animationFrame();
+					const beforeParagraph2 = createElementComponent.querySelector('p:first-child + p');
+					assert.isNotNull(beforeParagraph2, 'LI should be inserted at the beginning of the UL');
+			
+					// Re-trigger the 'prepend' effect
+					createElementComponent.set('prepend', true);
+					await animationFrame();
+					const prependLis = createElementComponent.querySelectorAll('li[value="foo"]');
+					assert.equal(prependLis.length, 2, 'Should insert another LI at the beginning of the UL');
+			
+					// Verify that all signals are reset to false
+					assert.equal(createElementComponent.get('before'), false, 'Before signal should be reset to false');
+					assert.equal(createElementComponent.get('prepend'), false, 'Prepend signal should be reset to false');
+					assert.equal(createElementComponent.get('append'), false, 'Append signal should be reset to false');
+					assert.equal(createElementComponent.get('after'), false, 'After signal should be reset to false');
+				});
+			});
+
+			describe('removeElement', function () {
+				let removeElementComponent;
+			
+				before(() => {
+					removeElementComponent = document.querySelector('remove-element');
+				});
+			
+				it('should remove an item using immutable update (toSpliced)', async function () {
+					removeElementComponent.set('items', v => v.toSpliced(1, 1));
+					await animationFrame();
+					const items = removeElementComponent.querySelectorAll('li');
+					assert.equal(items.length, 2, 'Should have 2 items after removal');
+					assert.equal(items[0].textContent, 'Item 1', 'First item should remain');
+					assert.equal(items[1].textContent, 'Item 3', 'Third item should now be second');
+				});
+			
+				/** Mutable updates don't work
+				 * @TODO log a warning 
+				it('should remove an item using mutable update (splice)', async function () {
+					removeElementComponent.set('items', v => v.splice(0, 1));
+					await animationFrame();
+			
+					const items = removeElementComponent.querySelectorAll('li');
+					assert.equal(items.length, 1, 'Should have 1 item after removal');
+					assert.equal(items[0].textContent, 'Item 3', 'Third item should remain last');
+				}); */
+			
+				it('should handle removing all items', async function () {
+					removeElementComponent.set('items', []);
+					await animationFrame();
+					const items = removeElementComponent.querySelectorAll('li');
+					assert.equal(items.length, 0, 'Should remove all items');
+				});
+			});
+
+			describe('insertTemplate', function () {
+				const testInsertTemplate = async (id) => {
+					const component = document.getElementById(id);
+					const root = id === 'insert-shadow' ? component.shadowRoot : component;
+					const ul = root.querySelector('ul');
+			
+					await animationFrame();
+					assert.equal(ul.children.length, 0, 'Initially, ul should be empty');
+			
+					component.set('before', true);
+					await animationFrame();
+					assert.equal(ul.previousElementSibling.tagName, 'P', 'Should insert p element before ul');
+			
+					component.set('prepend', true);
+					await animationFrame();
+					assert.equal(ul.firstElementChild.tagName, 'LI', 'Should prepend li element to ul');
+			
+					component.set('append', true);
+					await animationFrame();
+					assert.equal(ul.lastElementChild.tagName, 'LI', 'Should append li element to ul');
+			
+					component.set('after', true);
+					await animationFrame();
+					assert.equal(ul.nextElementSibling.tagName, 'P', 'Should insert p element after ul');
+				};
+			
+				it('should prove insertTemplate() working correctly in light DOM', async function () {
+					await testInsertTemplate('insert-light');
+				});
+			
+				it('should prove insertTemplate() working correctly in Shadow DOM', async function () {
+					await testInsertTemplate('insert-shadow');
+				});
+			});
 
 		})
 	</script>

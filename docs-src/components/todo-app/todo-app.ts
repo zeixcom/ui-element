@@ -1,5 +1,7 @@
 import { UIElement, setAttribute, setProperty, setText } from "../../.."
 import type { InputCheckbox } from "../input-checkbox/input-checkbox"
+import type { InputField } from "../input-field/input-field"
+import type { InputRadiogroup } from "../input-radiogroup/input-radiogroup"
 
 export class TodoApp extends UIElement<{
 	tasks: InputCheckbox[],
@@ -10,7 +12,7 @@ export class TodoApp extends UIElement<{
 }> {
 	static localName = 'todo-app'
 
-	states = {
+	init = {
 		tasks: [],
 		total: () => this.get('tasks').length,
         completed: () => this.get('tasks').filter(el => el.get('checked')).length,
@@ -18,7 +20,7 @@ export class TodoApp extends UIElement<{
 			const tasks = this.get('tasks')
 			return tasks.length - tasks.filter(el => el.get('checked')).length
 		},
-        filter: () => (this.querySelector('input-radiogroup')?.get('value')?? 'all'),
+        filter: () => (this.querySelector<InputRadiogroup>('input-radiogroup')?.get('value')?? 'all'),
 	}
 
 	connectedCallback() {
@@ -31,7 +33,7 @@ export class TodoApp extends UIElement<{
 		updateTasks()
 
 		// Coordinate new todo form
-		const input = this.querySelector('input-field')
+		const input = this.querySelector<InputField>('input-field')
 		this.first('form').on('submit', (e: Event) => {
 			e.preventDefault()
 

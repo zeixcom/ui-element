@@ -1,22 +1,21 @@
 
 <tab-list>
 	<menu>
-		<li><button type="button" aria-pressed="true">HTML</button></li>
+		<li><button type="button" aria-pressed="false">HTML</button></li>
 		<li><button type="button" aria-pressed="false">CSS</button></li>
-		<li><button type="button" aria-pressed="false">TypeScript</button></li>
+		<li><button type="button" aria-pressed="true">TypeScript</button></li>
 	</menu>
 	
-	<accordion-panel open>
-		<details open aria-disabled="true">
-			<summary class="visually-hidden">
-				<div class="summary">HTML</div>
-			</summary>
-			<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-				<p class="meta">
-					<span class="file">todo-app.html</span>
-					<span class="language">html</span>
-				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">todo-app</span><span style="color:#F8F8F2">></span></span>
+<details>
+	<summary>
+		<div class="summary">HTML</div>
+	</summary>
+	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">todo-app.html</span>
+			<span class="language">html</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">todo-app</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">form</span><span style="color:#A6E22E"> action</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"#"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">input-field</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> for</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"add-todo"</span><span style="color:#F8F8F2">>What needs to be done?&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
@@ -76,26 +75,24 @@
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">input-button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">footer</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">todo-app</span><span style="color:#F8F8F2">></span></span></code></pre>
-				<input-button class="copy">
-					<button type="button" class="secondary small">
-						<span class="label">Copy</span>
-					</button>
-				</input-button>
-			</code-block>
-		</details>
-	</accordion-panel>
+		<input-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</input-button>
+	</code-block>
+</details>
 
-	<accordion-panel>
-		<details aria-disabled="true">
-			<summary class="visually-hidden">
-				<div class="summary">CSS</div>
-			</summary>
-			<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-				<p class="meta">
-					<span class="file">todo-app.css</span>
-					<span class="language">css</span>
-				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">todo-app</span><span style="color:#F8F8F2"> {</span></span>
+<details>
+	<summary>
+		<div class="summary">CSS</div>
+	</summary>
+	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">todo-app.css</span>
+			<span class="language">css</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">todo-app</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	flex-direction</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">column</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-l);</span></span>
@@ -162,27 +159,27 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">		align-items</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex-end</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span></code></pre>
-				<input-button class="copy">
-					<button type="button" class="secondary small">
-						<span class="label">Copy</span>
-					</button>
-				</input-button>
-			</code-block>
-		</details>
-	</accordion-panel>
+		<input-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</input-button>
+	</code-block>
+</details>
 
-	<accordion-panel>
-		<details aria-disabled="true">
-			<summary class="visually-hidden">
-				<div class="summary">TS</div>
-			</summary>
-			<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-				<p class="meta">
-					<span class="file">todo-app.ts</span>
-					<span class="language">ts</span>
-				</p>
-				<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { UIElement, setAttribute, setProperty, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../../.."</span></span>
+<details open>
+	<summary>
+		<div class="summary">TS</div>
+	</summary>
+	<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">todo-app.ts</span>
+			<span class="language">ts</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { UIElement, setAttribute, setProperty, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../../.."</span></span>
 <span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { InputCheckbox } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../input-checkbox/input-checkbox"</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { InputField } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../input-field/input-field"</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { InputRadiogroup } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../input-radiogroup/input-radiogroup"</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">TodoApp</span><span style="color:#F92672"> extends</span><span style="color:#A6E22E"> UIElement</span><span style="color:#F8F8F2">&#x3C;{</span></span>
 <span class="line"><span style="color:#F8F8F2">	tasks</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">InputCheckbox</span><span style="color:#F8F8F2">[],</span></span>
@@ -193,7 +190,7 @@
 <span class="line"><span style="color:#F8F8F2">}> {</span></span>
 <span class="line"><span style="color:#F92672">	static</span><span style="color:#F8F8F2"> localName </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'todo-app'</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F8F8F2">	states </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	init </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">		tasks: [],</span></span>
 <span class="line"><span style="color:#A6E22E">		total</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tasks'</span><span style="color:#F8F8F2">).length,</span></span>
 <span class="line"><span style="color:#A6E22E">        completed</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tasks'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">filter</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'checked'</span><span style="color:#F8F8F2">)).length,</span></span>
@@ -201,7 +198,7 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> tasks </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tasks'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F92672">			return</span><span style="color:#F8F8F2"> tasks.length </span><span style="color:#F92672">-</span><span style="color:#F8F8F2"> tasks.</span><span style="color:#A6E22E">filter</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'checked'</span><span style="color:#F8F8F2">)).length</span></span>
 <span class="line"><span style="color:#F8F8F2">		},</span></span>
-<span class="line"><span style="color:#A6E22E">        filter</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-radiogroup'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">)</span><span style="color:#F92672">??</span><span style="color:#E6DB74"> 'all'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">        filter</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputRadiogroup</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'input-radiogroup'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">)</span><span style="color:#F92672">??</span><span style="color:#E6DB74"> 'all'</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
@@ -214,7 +211,7 @@
 <span class="line"><span style="color:#A6E22E">		updateTasks</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Coordinate new todo form</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> input </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-field'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> input </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputField</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'input-field'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'submit'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">			e.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"></span>
@@ -273,12 +270,11 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"><span style="color:#F8F8F2">TodoApp.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">()</span></span></code></pre>
-				<input-button class="copy">
-					<button type="button" class="secondary small">
-						<span class="label">Copy</span>
-					</button>
-				</input-button>
-			</code-block>
-		</details>
-	</accordion-panel>
+		<input-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</input-button>
+	</code-block>
+</details>
 </tab-list>

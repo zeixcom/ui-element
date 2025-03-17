@@ -1,6 +1,6 @@
 {
   "name": "@zeix/ui-element",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "description": "UIElement - minimal reactive framework based on Web Components",
   "main": "index.js",
   "types": "index.d.ts",
@@ -34,31 +34,29 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "@eslint/js": "^9.20.0",
+    "@eslint/js": "^9.21.0",
     "@esm-bundle/chai": "^4.3.4-fix.0",
-    "@types/bun": "^1.2.2",
+    "@types/bun": "^1.2.4",
     "@types/eslint__js": "^8.42.3",
-    "@types/node": "^22.13.4",
+    "@types/node": "^22.13.9",
     "@web/test-runner": "^0.19.0",
     "@web/test-runner-playwright": "^0.11.0",
-    "@zeix/ui-element": "^0.10.1",
     "dotenv": "^16.4.7",
-    "eslint": "^9.20.1",
+    "eslint": "^9.21.0",
     "globals": "^15.15.0",
     "gray-matter": "^4.0.3",
-    "lightningcss-cli": "^1.29.1",
+    "lightningcss-cli": "^1.29.2",
     "marked": "^15.0.7",
-    "playwright": "^1.50.1",
+    "playwright": "^1.51.0",
     "prismjs": "^1.29.0",
-    "shiki": "^2.3.2",
+    "shiki": "^2.5.0",
     "typedoc": "^0.27.9",
-    "typescript-eslint": "^8.24.0"
+    "typescript-eslint": "^8.26.0"
   },
   "peerDependencies": {
-    "typescript": "^5.6.2"
+    "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@zeix/cause-effect": "^0.10.1",
-    "@zeix/pulse": "^0.9.3"
+    "@zeix/cause-effect": "^0.12.4"
   }
 }

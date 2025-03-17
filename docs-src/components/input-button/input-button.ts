@@ -1,14 +1,10 @@
-import { asBoolean, setProperty, setText, UIElement } from "../../../"
+import { UIElement, asBoolean, setProperty, setText } from "../../../"
 
-export class InputButton extends UIElement<{
-    disabled: boolean,
-	label?: string,
-    badge?: string,
-}> {
+export class InputButton extends UIElement<{ disabled: boolean }> {
 	static localName = 'input-button'
 	static observedAttributes = ['disabled']
 
-	states = {
+	init = {
         disabled: asBoolean,
     }
 

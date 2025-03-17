@@ -39,9 +39,9 @@
 	--color-primary: #325df1;
 	--color-primary-hover: #2144ca;
 	--color-primary-active: #18338f;
-	--color-secondary: var(--color-gray-30);
-	--color-secondary-hover: var(--color-gray-40);
-	--color-secondary-active: var(--color-gray-50);
+	--color-secondary: var(--color-gray-20);
+	--color-secondary-hover: var(--color-gray-30);
+	--color-secondary-active: var(--color-gray-40);
 	--color-selection: #1ea9ea;
 	--color-error: #c83c15;
 	--color-error-hover: #a32a07;
