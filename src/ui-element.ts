@@ -299,8 +299,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 			} else {
 				if (isState<S[K]>(s)) {
 					if (DEV_MODE && this.debug) op = 'Update State of type'
-					if (isStateUpdater<S[K]>(value)) s.update(value)
-					else s.set(value)
+					s.set(isStateUpdater<S[K]>(value) ? value(old) : value)
 				} else {
 					log(value, `Computed ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_WARN)
 					return

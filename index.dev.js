@@ -490,10 +490,7 @@ class UIElement extends HTMLElement {
         if (isState(s)) {
           if (DEV_MODE && this.debug)
             op = "Update State of type";
-          if (isStateUpdater(value))
-            s.update(value);
-          else
-            s.set(value);
+          s.set(isStateUpdater(value) ? value(old) : value);
         } else {
           log(value, `Computed ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_WARN);
           return;
@@ -552,7 +549,6 @@ var ops = {
   c: "class ",
   h: "inner HTML",
   p: "property ",
-  r: "remove element",
   s: "style property ",
   t: "text content"
 };
@@ -586,12 +582,13 @@ var updateElement = (s, updater) => (host, target, index) => {
     if (value != null)
       host.set(s, value, false);
   }
+  const err = (error, verb, prop = "element") => log(error, `Failed to ${verb} ${prop} ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
   effect(() => {
     let value = RESET;
     try {
       value = resolveSignalLike(s, host, target, index);
     } catch (error) {
-      log(error, `Failed to update element ${elementName(target)} in ${elementName(host)}:`, LOG_ERROR);
+      err(error, "update");
       return;
     }
     if (value === RESET)
@@ -605,8 +602,8 @@ var updateElement = (s, updater) => (host, target, index) => {
         return true;
       }, [target, op]).then(() => {
         log(target, `Deleted ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`);
-      }).catch(() => {
-        log(target, `Failed to delete ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
+      }).catch((error) => {
+        err(error, "delete", `${ops[op] + name} of`);
       });
     } else if (value != null) {
       const current = read(target);
@@ -619,13 +616,12 @@ var updateElement = (s, updater) => (host, target, index) => {
       }, [target, op]).then(() => {
         log(target, `Updated ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`);
       }).catch((error) => {
-        log(error, `Failed to update ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
+        err(error, "update", `${ops[op] + name} of`);
       });
     }
   });
 };
-var insertNode = (s, inserter) => (host, target, index) => {
-  const { type, where, create } = inserter;
+var insertNode = (s, { type, where, create }) => (host, target, index) => {
   const methods = {
     beforebegin: "before",
     afterbegin: "prepend",
@@ -636,12 +632,13 @@ var insertNode = (s, inserter) => (host, target, index) => {
     log(`Invalid insertPosition ${valueString(where)} for ${elementName(host)}:`, LOG_ERROR);
     return;
   }
+  const err = (error) => log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR);
   effect(() => {
     let really = false;
     try {
       really = resolveSignalLike(s, host, target, index);
     } catch (error) {
-      log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR);
+      err(error);
       return;
     }
     if (!really)
@@ -657,7 +654,7 @@ var insertNode = (s, inserter) => (host, target, index) => {
         maybeSignal.set(false);
       log(target, `Inserted ${type} into ${elementName(host)}`);
     }).catch((error) => {
-      log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR);
+      err(error);
     });
   });
 };
@@ -766,15 +763,28 @@ var createElement = (tag, s, where = "beforeend", attributes = {}, text) => inse
     return child;
   }
 });
-var removeElement = (s) => updateElement(s, {
-  op: "remove",
-  read: (el) => !!el,
-  update: (el, really) => {
-    if (really)
-      el.remove();
-    return "";
-  }
-});
+var removeElement = (s) => (host, target, index) => {
+  const err = (error) => log(error, `Failed to delete ${elementName(target)} from ${elementName(host)}:`, LOG_ERROR);
+  effect(() => {
+    let really = false;
+    try {
+      really = resolveSignalLike(s, host, target, index);
+    } catch (error) {
+      err(error);
+      return;
+    }
+    if (!really)
+      return;
+    enqueue(() => {
+      target.remove();
+      return true;
+    }, [target, "r"]).then(() => {
+      log(target, `Deleted ${elementName(target)} into ${elementName(host)}`);
+    }).catch((error) => {
+      err(error);
+    });
+  });
+};
 export {
   watch,
   useContext,

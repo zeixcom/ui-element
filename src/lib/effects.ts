@@ -33,7 +33,6 @@ const ops: Record<string, string> = {
     c: 'class ',
     h: 'inner HTML',
     p: 'property ',
-	r: 'remove element',
 	s: 'style property ',
 	t: 'text content',
 }
@@ -102,13 +101,16 @@ const updateElement = <
 		if (null != value) host.set(s as K, value as S[K], false)
 	}
 
+	const err = (error: unknown, verb: string, prop: string = 'element') =>
+		log(error, `Failed to ${verb} ${prop} ${elementName(target)} in ${elementName(host)}`, LOG_ERROR)
+
     // Update the element's DOM state according to the signal value
 	effect(() => {
 		let value = RESET
 		try {
 			value = resolveSignalLike(s, host, target, index)
 		} catch (error) {
-			log(error, `Failed to update element ${elementName(target)} in ${elementName(host)}:`, LOG_ERROR)
+			err(error, 'update')
 			return
 		}
 		if (value === RESET) value = fallback as T
@@ -122,8 +124,8 @@ const updateElement = <
                 return true
             }, [target, op]).then(() => {
 				log(target, `Deleted ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
-			}).catch(() => {
-				log(target, `Failed to delete ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR)
+			}).catch((error) => {
+				err(error, 'delete', `${ops[op] + name} of`)
 			})
 
 		// Ok path => update the element
@@ -137,7 +139,7 @@ const updateElement = <
 			}, [target, op]).then(() => {
 				log(target, `Updated ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
 			}).catch((error) => {
-				log(error, `Failed to update ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR)
+				err(error, 'update', `${ops[op] + name} of`)
 			})
 		}
 	})
@@ -152,11 +154,8 @@ const insertNode = <
 	K extends keyof S = never
 >(
 	s: K | SignalLike<boolean>,
-    inserter: NodeInserter<S>
+    { type, where, create }: NodeInserter<S>
 ) => (host: UIElement<S>, target: E, index: number): void => {
-	const { type, where, create } = inserter
-	// const node = create(host)
-	// if (!node) return
 	const methods: Record<InsertPosition, keyof Element> = {
 		beforebegin: 'before',
 		afterbegin: 'prepend',
@@ -167,13 +166,15 @@ const insertNode = <
 		log(`Invalid insertPosition ${valueString(where)} for ${elementName(host)}:`, LOG_ERROR)
         return
     }
+	const err = (error: unknown) =>
+		log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR)
 
 	effect(() => {
 		let really = false
 		try {
 			really = resolveSignalLike(s, host, target, index)
 		} catch (error) {
-			log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR)
+			err(error)
 			return
 		}
 		if (!really) return
@@ -186,7 +187,7 @@ const insertNode = <
 			if (isState<boolean>(maybeSignal)) maybeSignal.set(false)
 			log(target, `Inserted ${type} into ${elementName(host)}`)
 		}).catch((error) => {
-			log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR)
+			err(error)
 		})
 	})
 }
@@ -410,16 +411,30 @@ const createElement = (
  * @since 0.9.0
  * @param {SignalLike<string>} s - state bound to the element removal
  */
-const removeElement = <E extends Element>(
+const removeElement = <E extends Element, S extends ComponentSignals>(
 	s: SignalLike<boolean>
-) => updateElement(s, {
-	op: 'remove',
-	read: (el: E) => !!el,
-    update: (el: E, really: boolean) => {
-		if (really) el.remove()
-		return ''
-	}
-})
+) => (host: UIElement<S>, target: E, index: number): void => {
+	const err = (error: unknown) =>
+		log(error, `Failed to delete ${elementName(target)} from ${elementName(host)}:`, LOG_ERROR)
+	effect(() => {
+		let really = false
+		try {
+			really = resolveSignalLike(s, host, target, index)
+		} catch (error) {
+			err(error)
+			return
+		}
+		if (!really) return
+        enqueue(() => {
+			target.remove()
+			return true
+		}, [target, 'r']).then(() => {
+			log(target, `Deleted ${elementName(target)} into ${elementName(host)}`)
+		}).catch((error) => {
+			err(error)
+		})
+	})
+}
 
 /* === Exported Types === */
 

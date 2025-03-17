@@ -24,7 +24,7 @@ declare const updateElement: <E extends Element, T extends {}, S extends Compone
 /**
  * Effect to insert a node relative to an element according to a given SignalLike
  */
-declare const insertNode: <E extends Element, S extends ComponentSignals = {}, K extends keyof S = never>(s: K | SignalLike<boolean>, inserter: NodeInserter<S>) => (host: UIElement<S>, target: E, index: number) => void;
+declare const insertNode: <E extends Element, S extends ComponentSignals = {}, K extends keyof S = never>(s: K | SignalLike<boolean>, { type, where, create }: NodeInserter<S>) => (host: UIElement<S>, target: E, index: number) => void;
 /**
  * Set text content of an element
  *
@@ -107,5 +107,5 @@ declare const createElement: (tag: string, s: SignalLike<boolean>, where?: Inser
  * @since 0.9.0
  * @param {SignalLike<string>} s - state bound to the element removal
  */
-declare const removeElement: <E extends Element>(s: SignalLike<boolean>) => (host: UIElement<{}>, target: E, index: number) => void;
+declare const removeElement: <E extends Element, S extends ComponentSignals>(s: SignalLike<boolean>) => (host: UIElement<S>, target: E, index: number) => void;
 export { type ValueProvider, type SignalLike, type ElementUpdater, type NodeInserter, updateElement, insertNode, setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle, insertTemplate, createElement, removeElement, dangerouslySetInnerHTML };
