@@ -1,11 +1,11 @@
 import {
-	type Signal, type ComputedCallbacks,
-	UNSET, isSignal, isComputedCallbacks, toSignal, isState, isComputed, computed
+	type Signal, type ComputedCallback,
+	UNSET, isSignal, isComputedCallback, toSignal, isState, isComputed, computed
 } from "@zeix/cause-effect"
 
 import { isFunction } from "./core/util"
 import { DEV_MODE, elementName, log, LOG_ERROR, LOG_WARN, typeString, valueString } from "./core/log"
-import { type UI, ui } from "./core/ui"
+// import { type UI, ui } from "./core/ui"
 import { type UnknownContext, useContext } from "./core/context"
 
 /* === Types === */
@@ -24,7 +24,7 @@ export type Root<S extends ComponentSignals> = ShadowRoot | UIElement<S>
 
 export type SignalInitializer<T, S extends ComponentSignals> = T
 	| AttributeParser<T, S>
-	| ComputedCallbacks<NonNullable<T>, []>
+	| ComputedCallback<NonNullable<T>>
 
 /* === Constants === */
 
@@ -146,7 +146,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	 * @since 0.8.1
 	 * @property {UI<UIElement>} self - UI object for this element
 	 */
-	self: UI<UIElement, S> = ui<UIElement, S>(this)
+	// self: UI<UIElement, S> = ui<UIElement, S>(this)
 
 	/**
 	 * @since 0.8.3
@@ -198,7 +198,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 			if ((this.constructor as typeof UIElement).observedAttributes?.includes(key)) continue
 			const result = isAttributeParser(init)
 				? init(this.getAttribute(key), this)
-				: isComputedCallbacks<{}>(init)
+				: isComputedCallback<{}>(init)
 					? computed(init)
 					: init
 			this.set(key, result ?? RESET, false)
@@ -254,12 +254,12 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
      * 
      * @since 0.2.0
      * @param {K} key - state to set value to
-     * @param {S[K] | ComputedCallbacks<S[K], []> | Signal<S[K]> | StateUpdater<S[K]>} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
+     * @param {S[K] | ComputedCallback<S[K]> | Signal<S[K]> | StateUpdater<S[K]>} value - initial or new value; may be a function (gets old value as parameter) to be evaluated when value is retrieved
      * @param {boolean} [update=true] - if `true` (default), the state is updated; if `false`, do nothing if state already exists
      */
     set<K extends keyof S | string>(
         key: K,
-        value: S[K] | ComputedCallbacks<S[K], []> | Signal<S[K]> | StateUpdater<S[K]>,
+        value: S[K] | ComputedCallback<S[K]> | Signal<S[K]> | StateUpdater<S[K]>,
 		update: boolean = true
 	): void {
 
@@ -280,11 +280,11 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 				return
 			}
 			if (DEV_MODE && this.debug) op = 'Create Signal of type'
-			this.signals[key] = toSignal(value)
+			this.signals[key] = toSignal<S[K]>(value)
 
 		// State already exists => update existing state
 		} else if (update || old === UNSET || old === RESET) {
-			if (isComputedCallbacks<S[K]>(value)) {
+			if (isComputedCallback<S[K]>(value)) {
 				log(value, `Cannot use computed callbacks to update Signal ${valueString(key)} in ${elementName(this)}`, LOG_ERROR)
                 return
 			}
@@ -333,23 +333,24 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 	 * @since 0.8.1
 	 * @param {string} selector - selector to match sub-element
 	 * @returns {UI<Element>[]} - array of zero or one UI objects of matching sub-element
-	 */
+	 * /
 	first<E extends Element = HTMLElement>(selector: string): UI<E, S> {
 		let element = this.root.querySelector<E>(selector)
 		if (this.shadowRoot && !element) element = this.querySelector(selector)
 		return ui(this, element ? [element] : [])
-	}
+	} */
+
 	/**
 	 * Get array of all sub-elements matching a given selector within the custom element
 	 * 
 	 * @since 0.8.1
 	 * @param {string} selector - selector to match sub-elements
 	 * @returns {UI<Element>} - array of UI object of matching sub-elements
-	 */
+	 * /
 	all<E extends Element = HTMLElement>(selector: string): UI<E, S> {
 		let elements = this.root.querySelectorAll<E>(selector)
 		if (this.shadowRoot && !elements.length) elements = this.querySelectorAll(selector)
 		return ui(this, Array.from(elements))
-	}
+	} */
 
 }

@@ -17,10 +17,11 @@ const getFallback = <T extends {}>(value: T | [T, ...T[]]): T =>
  * Parse a boolean attribute as an actual boolean value
  * 
  * @since 0.7.0
+ * @param {C} _ - host element
  * @param {string} value - maybe string value
  * @returns {boolean}
  */
-const asBoolean = (value: string | null): boolean =>
+const asBoolean = <C extends HTMLElement>(_: C, value: string | null): boolean =>
 	value !== 'false' && value != null
 
 /**
@@ -28,10 +29,10 @@ const asBoolean = (value: string | null): boolean =>
  * 
  * @since 0.11.0
  * @param {number} [fallback=0] - fallback value
- * @returns {(value: string | null) => number} - parser function
+ * @returns {(host: C, value: string | null) => number} - parser function
  */
 const asInteger = (fallback: number = 0) =>
-	(value: string | null): number =>
+	<C extends HTMLElement>(_: C, value: string | null): number =>
 		parseNumber(parseInt, value) ?? fallback
 
 /**
@@ -39,10 +40,10 @@ const asInteger = (fallback: number = 0) =>
  * 
  * @since 0.11.0
  * @param {number} [fallback=0] - fallback value
- * @returns {(value: string | null) => number} - parser function
+ * @returns {(host: C, value: string | null) => number} - parser function
  */
 const asNumber = (fallback: number = 0) =>
-	(value: string | null): number =>
+	<C extends HTMLElement>(_: C, value: string | null): number =>
 		parseNumber(parseFloat, value) ?? fallback
 
 /**
@@ -50,10 +51,10 @@ const asNumber = (fallback: number = 0) =>
  * 
  * @since 0.11.0
  * @param {string} [fallback=''] - fallback value
- * @returns {(value: string | null) => string} - parser function
+ * @returns {(host: C, value: string | null) => string} - parser function
  */
 const asString = (fallback: string = '') =>
-	(value: string | null): string =>
+	<C extends HTMLElement>(_: C, value: string | null): string =>
 		value ?? fallback
 
 /**
@@ -61,10 +62,10 @@ const asString = (fallback: string = '') =>
  * 
  * @since 0.9.0
  * @param {string[]} valid - array of valid values
- * @returns {(value: string | null) => string} - parser function
+ * @returns {(host: C, value: string | null) => string} - parser function
  */
 const asEnum = (valid: [string, ...string[]]) =>
-	(value: string | null): string =>
+	<C extends HTMLElement>(_: C, value: string | null): string =>
 		(value != null && valid.includes(value.toLowerCase()))
 			? value
 			: getFallback<string>(valid)
@@ -74,10 +75,10 @@ const asEnum = (valid: [string, ...string[]]) =>
  * 
  * @since 0.11.0
  * @param {T} fallback - fallback value
- * @returns {(value: string | null) => T} - parser function
+ * @returns {(host: C, value: string | null) => T} - parser function
  */
 const asJSON = <T extends {}>(fallback: T) =>
-	(value: string | null): T => {
+	<C extends HTMLElement>(_: C, value: string | null): T => {
 		if (value == null) return fallback
 		let result: T | undefined
 		try {

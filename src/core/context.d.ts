@@ -1,3 +1,5 @@
+import type { Signal } from "@zeix/cause-effect";
+import type { ComponentProps } from "../component";
 import { UIElement, type ComponentSignals } from "../ui-element";
 /** @see https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md */
 /**
@@ -66,4 +68,6 @@ declare class ContextRequestEvent<T extends UnknownContext> extends Event {
  * @return {boolean} - true if context provider was initialized successfully, false otherwise
  */
 declare const useContext: <S extends ComponentSignals>(host: UIElement<S>) => boolean;
-export { type Context, type UnknownContext, CONTEXT_REQUEST, ContextRequestEvent, useContext };
+declare const provide: <P extends ComponentProps>(signals: Partial<{ [K in keyof P]: Signal<P[K]>; }>) => <P_1 extends ComponentProps>(host: HTMLElement & P_1, target?: Element, index?: number) => () => void;
+declare const consume: <T extends {}, C extends HTMLElement>(context: Context<string, Signal<T>>) => (host: C) => undefined;
+export { type Context, type UnknownContext, CONTEXT_REQUEST, ContextRequestEvent, useContext, provide, consume };

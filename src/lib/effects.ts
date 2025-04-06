@@ -1,17 +1,14 @@
-import { type Signal, effect, enqueue, isComputed, isSignal, isState, UNSET } from '@zeix/cause-effect'
+import { type Signal, effect, enqueue, isSignal, isState, UNSET } from '@zeix/cause-effect'
 
 import { isFunction, isString } from '../core/util'
-import { type ComponentSignals, parse, UIElement, RESET } from '../ui-element'
+import { type ComponentProps, RESET } from '../component'
 import { elementName, log, LOG_ERROR, valueString } from '../core/log'
 
 /* === Types === */
 
-type ValueProvider<T> = <E extends Element>(target: E, index: number) =>
-	T
-
 type SignalLike<T> = PropertyKey
 	| Signal<NonNullable<T>>
-	| ValueProvider<T>
+	| (<E extends Element>(target: E, index: number) => T)
 
 type ElementUpdater<E extends Element, T> = {
 	op: string,
@@ -20,10 +17,10 @@ type ElementUpdater<E extends Element, T> = {
     delete?: (element: E) => string,
 }
 
-type NodeInserter<S extends ComponentSignals> = {
+type NodeInserter<P extends ComponentProps> = {
 	type: string,
 	where: InsertPosition,
-	create: (host: UIElement<S>) => Node | undefined,
+	create: (host: HTMLElement & P) => Node | undefined,
 }
 
 /* === Internal === */
@@ -37,14 +34,14 @@ const ops: Record<string, string> = {
 	t: 'text content',
 }
 
-const resolveSignalLike = <T, S extends ComponentSignals, E extends Element>(
+const resolveSignalLike = <T, P extends ComponentProps, E extends Element>(
 	s: SignalLike<T>,
-	host: UIElement<S>,
+	host: HTMLElement & P,
 	target: E,
 	index: number
-): T => isString(s) ? host.get(s)
+): T => isString(s) ? host[s as keyof P] as T
 	: isSignal(s) ? s.get()
-	: isFunction(s) ? s(target, index)
+	: isFunction<T>(s) ? s(target, index)
 	: RESET
 
 const isSafeURL = /*#__PURE__*/ (value: string): boolean => {
@@ -84,22 +81,18 @@ const safeSetAttribute = /*#__PURE__*/ (
 const updateElement = <
 	E extends Element,
 	T extends {},
-	S extends ComponentSignals = {},
-	K extends keyof S = never
+	P extends ComponentProps = {},
+	K extends keyof P = never
 >(
 	s: K | SignalLike<T>,
-	updater: ElementUpdater<E, S[K] | T>
-) => (host: UIElement<S>, target: E, index: number): void => {
+	updater: ElementUpdater<E, P[K] | T>
+) => (host: HTMLElement & P, target: E, index: number): void => {
 	const { op, read, update } = updater
 	const fallback = read(target)
 
 	// If not yet set, set signal value to value read from DOM
-	if (isString(s) && !isComputed(host.signals[s as K])) {
-		const value = isString(fallback)
-			? parse(host, s, fallback)
-			: fallback
-		if (null != value) host.set(s as K, value as S[K], false)
-	}
+	if (isString(s) && isString(fallback) && host[s as K] === RESET)
+		host.setAttribute(s, fallback)
 
 	const err = (error: unknown, verb: string, prop: string = 'element') =>
 		log(error, `Failed to ${verb} ${prop} ${elementName(target)} in ${elementName(host)}`, LOG_ERROR)
@@ -150,12 +143,12 @@ const updateElement = <
  */
 const insertNode = <
 	E extends Element,
-	S extends ComponentSignals = {},
-	K extends keyof S = never
+	P extends ComponentProps = {},
+	K extends keyof P = never
 >(
 	s: K | SignalLike<boolean>,
-    { type, where, create }: NodeInserter<S>
-) => (host: UIElement<S>, target: E, index: number): void => {
+    { type, where, create }: NodeInserter<P>
+) => (host: HTMLElement & P, target: E, index: number): void => {
 	const methods: Record<InsertPosition, keyof Element> = {
 		beforebegin: 'before',
 		afterbegin: 'prepend',
@@ -183,8 +176,7 @@ const insertNode = <
 			if (!node) return
 			(target[methods[where]] as (...nodes: Node[]) => void)(node)
 		}, [target, 'i']).then(() => {
-			const maybeSignal = isString(s) ? host.signals[s] : s
-			if (isState<boolean>(maybeSignal)) maybeSignal.set(false)
+			if (isState<boolean>(s)) s.set(false)
 			log(target, `Inserted ${type} into ${elementName(host)}`)
 		}).catch((error) => {
 			err(error)
@@ -357,14 +349,14 @@ const dangerouslySetInnerHTML = <E extends Element>(
  * @param {SignalLike<boolean>} s - insert if SignalLike evalutes to true, otherwise ignore
  * @param {InsertPosition} where - position to insert the template relative to the target element ('beforebegin', 'afterbegin', 'beforeend', 'afterend')
  */
-const insertTemplate = <S extends ComponentSignals>(
+const insertTemplate = <P extends ComponentProps>(
 	template: HTMLTemplateElement,
 	s: SignalLike<boolean>,
 	where: InsertPosition = 'beforeend'
 ) => insertNode(s, {
 	type: 'template content',
 	where,
-	create: (host: UIElement<S>) => {
+	create: (host: HTMLElement & P) => {
 		if (!(template instanceof HTMLTemplateElement)) {
 			log(`Invalid template to insert into ${elementName(host)}:`, LOG_ERROR)
 			return
@@ -411,9 +403,9 @@ const createElement = (
  * @since 0.9.0
  * @param {SignalLike<string>} s - state bound to the element removal
  */
-const removeElement = <E extends Element, S extends ComponentSignals>(
+const removeElement = <E extends Element, P extends ComponentProps>(
 	s: SignalLike<boolean>
-) => (host: UIElement<S>, target: E, index: number): void => {
+) => (host: HTMLElement & P, target: E, index: number): void => {
 	const err = (error: unknown) =>
 		log(error, `Failed to delete ${elementName(target)} from ${elementName(host)}:`, LOG_ERROR)
 	effect(() => {
@@ -439,7 +431,7 @@ const removeElement = <E extends Element, S extends ComponentSignals>(
 /* === Exported Types === */
 
 export {
-	type ValueProvider, type SignalLike, type ElementUpdater, type NodeInserter,
+	type SignalLike, type ElementUpdater, type NodeInserter,
 	updateElement, insertNode,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
 	insertTemplate, createElement, removeElement, dangerouslySetInnerHTML

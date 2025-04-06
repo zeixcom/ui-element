@@ -1,4 +1,7 @@
+import type { Signal } from "@zeix/cause-effect"
+import type { ComponentProps } from "../component"
 import { UIElement, RESET, type ComponentSignals } from "../ui-element"
+import { on } from "./ui"
 import { isFunction } from "./util"
 
 /** @see https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md */
@@ -112,7 +115,27 @@ const useContext = <S extends ComponentSignals>(host: UIElement<S>): boolean => 
 	return true
 }
 
+const provide = <P extends ComponentProps>(
+	signals: Partial<{ [K in keyof P]: Signal<P[K]> }>
+) => on(CONTEXT_REQUEST, (e: Event) => {
+	const { context, callback } = e as ContextRequestEvent<Context<unknown, P[keyof P]>>
+	const key: keyof P = String(context)
+	if (Object.keys(signals).includes(key) && isFunction(callback)) {
+		e.stopPropagation()
+		callback(signals[key])
+	}
+})
+const consume = <T extends {}, C extends HTMLElement>(
+	context: Context<string, Signal<T>>
+) => (host: C) => {
+	let consumed
+	host.dispatchEvent(new ContextRequestEvent(context, (value: Signal<T>) => {
+		consumed = value
+	}))
+	return consumed
+}
+
 export {
 	type Context, type UnknownContext,
-	CONTEXT_REQUEST, ContextRequestEvent, useContext
+	CONTEXT_REQUEST, ContextRequestEvent, useContext, provide, consume
 }

@@ -1,11 +1,18 @@
 // node_modules/@zeix/cause-effect/lib/util.ts
 var isFunction = (value) => typeof value === "function";
+var isAsyncFunction = (value) => isFunction(value) && value.constructor.name === "AsyncFunction";
 var isObjectOfType = (value, type) => Object.prototype.toString.call(value) === `[object ${type}]`;
-var isInstanceOf = (type) => (value) => value instanceof type;
-var isError = /* @__PURE__ */ isInstanceOf(Error);
-var isPromise = /* @__PURE__ */ isInstanceOf(Promise);
-var toError = (value) => isError(value) ? value : new Error(String(value));
+var isError = (value) => value instanceof Error;
+var isAbortError = (value) => value instanceof DOMException && value.name === "AbortError";
+var isPromise = (value) => value instanceof Promise;
+var toError = (reason) => isError(reason) ? reason : Error(String(reason));
 
+class CircularDependencyError extends Error {
+  constructor(where) {
+    super(`Circular dependency in ${where} detected`);
+    return this;
+  }
+}
 // node_modules/@zeix/cause-effect/lib/scheduler.ts
 var active;
 var pending = new Set;
@@ -27,8 +34,12 @@ var requestTick = () => {
 };
 queueMicrotask(updateDOM);
 var subscribe = (watchers) => {
-  if (active && !watchers.includes(active)) {
-    watchers.push(active);
+  if (active && !watchers.has(active)) {
+    const watcher = active;
+    watchers.add(watcher);
+    active.cleanups.add(() => {
+      watchers.delete(watcher);
+    });
   }
 };
 var notify = (watchers) => {
@@ -81,18 +92,35 @@ var enqueue = (fn, dedupe) => new Promise((resolve, reject) => {
 });
 
 // node_modules/@zeix/cause-effect/lib/effect.ts
-function effect(cb, ...maybeSignals) {
+function effect(matcher) {
+  const {
+    signals,
+    ok,
+    err = console.error,
+    nil = () => {
+    }
+  } = isFunction(matcher) ? { signals: [], ok: matcher } : matcher;
   let running = false;
   const run = () => watch(() => {
     if (running)
-      throw new Error("Circular dependency in effect detected");
+      throw new CircularDependencyError("effect");
     running = true;
-    const result = resolve(maybeSignals, cb);
-    if (isError(result))
-      console.error("Unhandled error in effect:", result);
+    let cleanup = undefined;
+    try {
+      cleanup = match({ signals, ok, err, nil });
+    } catch (e) {
+      err(toError(e));
+    }
+    if (isFunction(cleanup))
+      run.cleanups.add(cleanup);
     running = false;
   }, run);
+  run.cleanups = new Set;
   run();
+  return () => {
+    run.cleanups.forEach((fn) => fn());
+    run.cleanups.clear();
+  };
 }
 
 // node_modules/@zeix/cause-effect/lib/computed.ts
@@ -102,53 +130,100 @@ var isEquivalentError = (error1, error2) => {
     return false;
   return error1.name === error2.name && error1.message === error2.message;
 };
-var computed = (cb, ...maybeSignals) => {
-  const watchers = [];
+var computed = (matcher) => {
+  const watchers = new Set;
+  const m = isFunction(matcher) ? undefined : {
+    nil: () => UNSET,
+    err: (...errors) => {
+      if (errors.length > 1)
+        throw new AggregateError(errors);
+      else
+        throw errors[0];
+    },
+    ...matcher
+  };
+  const fn = m ? m.ok : matcher;
   let value = UNSET;
   let error;
   let dirty = true;
-  let unchanged = false;
+  let changed = false;
   let computing = false;
+  let controller;
   const ok = (v) => {
     if (!Object.is(v, value)) {
       value = v;
       dirty = false;
       error = undefined;
-      unchanged = false;
+      changed = true;
     }
   };
   const nil = () => {
-    unchanged = UNSET === value;
+    changed = UNSET !== value;
     value = UNSET;
     error = undefined;
   };
   const err = (e) => {
     const newError = toError(e);
-    unchanged = isEquivalentError(newError, error);
+    changed = !isEquivalentError(newError, error);
     value = UNSET;
     error = newError;
   };
-  const mark = () => {
-    dirty = true;
-    if (!unchanged)
+  const resolve = (v) => {
+    computing = false;
+    controller = undefined;
+    ok(v);
+    if (changed)
       notify(watchers);
   };
+  const reject = (e) => {
+    computing = false;
+    controller = undefined;
+    err(e);
+    if (changed)
+      notify(watchers);
+  };
+  const abort = () => {
+    computing = false;
+    controller = undefined;
+    compute();
+  };
+  const mark = () => {
+    dirty = true;
+    controller?.abort("Aborted because source signal changed");
+    if (watchers.size) {
+      if (changed)
+        notify(watchers);
+    } else {
+      mark.cleanups.forEach((fn2) => fn2());
+      mark.cleanups.clear();
+    }
+  };
+  mark.cleanups = new Set;
   const compute = () => watch(() => {
     if (computing)
-      throw new Error("Circular dependency in computed detected");
-    unchanged = true;
+      throw new CircularDependencyError("computed");
+    changed = false;
+    if (isAsyncFunction(fn)) {
+      if (controller)
+        return value;
+      controller = new AbortController;
+      if (m)
+        m.abort = m.abort instanceof AbortSignal ? AbortSignal.any([m.abort, controller.signal]) : controller.signal;
+      controller.signal.addEventListener("abort", abort, { once: true });
+    }
+    let result;
     computing = true;
-    const result = resolve(maybeSignals, cb);
-    if (isPromise(result)) {
+    try {
+      result = m && m.signals.length ? match(m) : fn(controller?.signal);
+    } catch (e) {
+      isAbortError(e) ? nil() : err(e);
+      computing = false;
+      return;
+    }
+    if (isPromise(result))
+      result.then(resolve, reject);
+    else if (result == null || UNSET === result)
       nil();
-      result.then((v) => {
-        ok(v);
-        notify(watchers);
-      }).catch(err);
-    } else if (result == null || UNSET === result)
-      nil();
-    else if (isError(result))
-      err(result);
     else
       ok(result);
     computing = false;
@@ -164,11 +239,14 @@ var computed = (cb, ...maybeSignals) => {
         throw error;
       return value;
     },
-    map: (cb2) => computed(cb2, c),
-    match: (cb2) => {
-      effect(cb2, c);
-      return c;
-    }
+    map: (fn2) => computed({
+      signals: [c],
+      ok: fn2
+    }),
+    tap: (matcher2) => effect({
+      signals: [c],
+      ...isFunction(matcher2) ? { ok: matcher2 } : matcher2
+    })
   };
   return c;
 };
@@ -177,7 +255,7 @@ var isComputed = (value) => isObjectOfType(value, TYPE_COMPUTED);
 // node_modules/@zeix/cause-effect/lib/state.ts
 var TYPE_STATE = "State";
 var state = (initialValue) => {
-  const watchers = [];
+  const watchers = new Set;
   let value = initialValue;
   const s = {
     [Symbol.toStringTag]: TYPE_STATE,
@@ -191,16 +269,19 @@ var state = (initialValue) => {
       value = v;
       notify(watchers);
       if (UNSET === value)
-        watchers.length = 0;
+        watchers.clear();
     },
     update: (fn) => {
       s.set(fn(value));
     },
-    map: (cb) => computed(cb, s),
-    match: (cb) => {
-      effect(cb, s);
-      return s;
-    }
+    map: (fn) => computed({
+      signals: [s],
+      ok: fn
+    }),
+    tap: (matcher) => effect({
+      signals: [s],
+      ...isFunction(matcher) ? { ok: matcher } : matcher
+    })
   };
   return s;
 };
@@ -209,38 +290,32 @@ var isState = (value) => isObjectOfType(value, TYPE_STATE);
 // node_modules/@zeix/cause-effect/lib/signal.ts
 var UNSET = Symbol();
 var isSignal = (value) => isState(value) || isComputed(value);
-var isComputedCallbacks = (value) => isFunction(value) && !value.length || typeof value === "object" && value !== null && ("ok" in value) && isFunction(value.ok);
-var toSignal = (value) => isSignal(value) ? value : isComputedCallbacks(value) ? computed(value) : state(value);
-var resolve = (maybeSignals, cb) => {
-  const { ok, nil, err } = isFunction(cb) ? { ok: cb } : cb;
-  const values = [];
+var isComputedCallback = (value) => isFunction(value) && value.length < 2;
+var toSignal = (value) => isSignal(value) ? value : isComputedCallback(value) ? computed(value) : state(value);
+var match = (matcher) => {
+  const { signals, abort, ok, err, nil } = matcher;
   const errors = [];
-  let hasUnset = false;
-  for (let i = 0;i < maybeSignals.length; i++) {
-    const s = maybeSignals[i];
+  let suspense = false;
+  const values = signals.map((signal) => {
     try {
-      const value = s.get();
+      const value = signal.get();
       if (value === UNSET)
-        hasUnset = true;
-      values[i] = value;
+        suspense = true;
+      return value;
     } catch (e) {
+      if (isAbortError(e))
+        throw e;
       errors.push(toError(e));
     }
-  }
-  let result = undefined;
+  });
   try {
-    if (hasUnset && nil)
-      result = nil();
-    else if (errors.length)
-      result = err ? err(...errors) : errors[0];
-    else if (!hasUnset)
-      result = ok(...values);
+    return suspense ? nil(abort) : errors.length ? err(...errors) : ok(...values);
   } catch (e) {
-    result = toError(e);
-    if (err)
-      result = err(result);
+    if (isAbortError(e))
+      throw e;
+    const error = toError(e);
+    return err(error);
   }
-  return result;
 };
 // src/core/util.ts
 var isFunction2 = (value) => typeof value === "function";
@@ -257,95 +332,97 @@ var idString = (id) => id ? `#${id}` : "";
 var classString = (classList) => classList.length ? `.${Array.from(classList).join(".")}` : "";
 var elementName = (el) => `<${el.localName}${idString(el.id)}${classString(el.classList)}>`;
 var valueString = (value) => isString(value) ? `"${value}"` : isDefinedObject(value) ? JSON.stringify(value) : String(value);
-var typeString = (value) => {
-  if (value === null)
-    return "null";
-  if (typeof value !== "object")
-    return typeof value;
-  if (Array.isArray(value))
-    return "Array";
-  if (Symbol.toStringTag in Object(value)) {
-    return value[Symbol.toStringTag];
-  }
-  return value.constructor?.name || "Object";
-};
 var log = (value, msg, level = LOG_DEBUG) => {
   if (DEV_MODE || [LOG_ERROR, LOG_WARN].includes(level))
     console[level](msg, value);
   return value;
 };
 
-// src/core/ui.ts
-var ui = (host, targets = [host]) => {
-  const u = {
-    host,
-    targets,
-    on: (type, listenerOrProvider) => {
-      targets.forEach((target, index) => {
-        let listener;
-        if (isFunction2(listenerOrProvider)) {
-          listener = listenerOrProvider.length === 2 ? listenerOrProvider(target, index) : listenerOrProvider;
-        } else if (isDefinedObject(listenerOrProvider) && isFunction2(listenerOrProvider.handleEvent)) {
-          listener = listenerOrProvider;
-        } else {
-          log(listenerOrProvider, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR);
-          return;
-        }
-        target.addEventListener(type, listener);
-        host.cleanup.push(() => target.removeEventListener(type, listener));
-      });
-      return u;
-    },
-    emit: (type, detail) => {
-      targets.forEach((target) => {
-        target.dispatchEvent(new CustomEvent(type, {
-          detail,
-          bubbles: true
-        }));
-      });
-      return u;
-    },
-    pass: (passedSignalsOrProvider) => {
-      targets.forEach(async (target, index) => {
-        await UIElement.registry.whenDefined(target.localName);
-        if (target instanceof UIElement) {
-          let passedSignals;
-          if (isFunction2(passedSignalsOrProvider) && passedSignalsOrProvider.length === 2) {
-            passedSignals = passedSignalsOrProvider(target, index);
-          } else if (isDefinedObject(passedSignalsOrProvider)) {
-            passedSignals = passedSignalsOrProvider;
-          } else {
-            log(passedSignalsOrProvider, `Invalid passed signals provided`, LOG_ERROR);
-            return;
-          }
-          Object.entries(passedSignals).forEach(([key, source]) => {
-            if (isString(source)) {
-              if (source in host.signals) {
-                target.set(key, host.signals[source]);
-              } else {
-                log(source, `Invalid string key "${source}" for state ${valueString(key)}`, LOG_WARN);
-              }
-            } else {
-              try {
-                target.set(key, toSignal(source));
-              } catch (error) {
-                log(error, `Invalid source for state ${valueString(key)}`, LOG_WARN);
-              }
-            }
-          });
-        } else {
-          log(target, `Target is not a UIElement`, LOG_ERROR);
-        }
-      });
-      return u;
-    },
-    sync: (...fns) => {
-      targets.forEach((target, index) => fns.forEach((fn) => fn(host, target, index)));
-      return u;
-    }
-  };
-  return u;
+// src/component.ts
+var RESET = Symbol();
+var HTML_ELEMENT_PROPS = new Set(Object.getOwnPropertyNames(HTMLElement.prototype));
+var RESERVED_WORDS = new Set([
+  "constructor",
+  "prototype",
+  "__proto__",
+  "toString",
+  "valueOf",
+  "hasOwnProperty",
+  "isPrototypeOf",
+  "propertyIsEnumerable",
+  "toLocaleString"
+]);
+var run = (fns, ...args) => fns.flatMap((fn) => isFunction2(fn) ? fn(...args).filter(isFunction2) : []);
+var isAttributeParser = (value) => isFunction2(value) && value.length >= 2;
+var validatePropertyName = (prop) => !(HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop));
+var first = (selector, ...fns) => (host) => {
+  const target = (host.shadowRoot || host).querySelector(selector);
+  return target ? run(fns, host, target) : [];
 };
+var all = (selector, ...fns) => (host) => Array.from((host.shadowRoot || host).querySelectorAll(selector)).flatMap((target, index) => run(fns, host, target, index));
+var component = (name, init = {}, fx) => {
+
+  class CustomElement extends HTMLElement {
+    #signals = {};
+    #cleanup = [];
+    static observedAttributes = Object.entries(init)?.filter(([, ini]) => isAttributeParser(ini)).map(([prop]) => prop) ?? [];
+    constructor() {
+      super();
+      for (const [prop, ini] of Object.entries(init)) {
+        if (ini == null)
+          continue;
+        if (!validatePropertyName(prop)) {
+          log(prop, `Property name in <${name}> conflicts with HTMLElement properties or JavaScript reserved words.`, LOG_ERROR);
+          continue;
+        }
+        const signal = isAttributeParser(ini) ? state(RESET) : isFunction2(ini) ? toSignal(ini(this, this.#signals)) : state(ini);
+        Object.defineProperty(this, prop, signal);
+        this.#signals[prop] = signal;
+      }
+    }
+    connectedCallback() {
+      const host = this;
+      this.#cleanup = run(fx(host, this.#signals), host);
+    }
+    disconnectedCallback() {
+      for (const off of this.#cleanup)
+        off();
+      this.#cleanup.length = 0;
+    }
+    attributeChangedCallback(attr, old, value) {
+      if (value === old || isComputed(this.#signals[attr]))
+        return;
+      const fn = init[attr];
+      if (!isAttributeParser(fn))
+        return;
+      const host = this;
+      host[attr] = fn(host, value, old) ?? RESET;
+    }
+  }
+  customElements.define(name, CustomElement);
+  return CustomElement;
+};
+// src/core/ui.ts
+var isProvider = (value) => isFunction2(value) && value.length >= 1;
+var on = (type, handler) => (host, target = host, index = 0) => {
+  const listener = isProvider(handler) ? handler(target, index) : handler;
+  target.addEventListener(type, listener);
+  return () => target.removeEventListener(type, listener);
+};
+var emit = (type, detail) => (host, target = host, index = 0) => {
+  target.dispatchEvent(new CustomEvent(type, {
+    detail: isProvider(detail) ? detail(target, index) : detail,
+    bubbles: true
+  }));
+};
+var pass = (signals) => (_, target, index = 0) => {
+  const sources = isProvider(signals) ? signals(target, index) : signals;
+  Object.entries(sources).forEach(([prop, source]) => {
+    Object.defineProperty(target, prop, toSignal(source));
+  });
+};
+// src/ui-element.ts
+var RESET2 = Symbol();
 
 // src/core/context.ts
 var CONTEXT_REQUEST = "context-request";
@@ -353,7 +430,7 @@ var CONTEXT_REQUEST = "context-request";
 class ContextRequestEvent extends Event {
   context;
   callback;
-  subscribe;
+  subscribe2;
   constructor(context, callback, subscribe2 = false) {
     super(CONTEXT_REQUEST, {
       bubbles: true,
@@ -369,7 +446,7 @@ var useContext = (host) => {
   const consumed = proto.consumedContexts || [];
   queueMicrotask(() => {
     for (const context of consumed)
-      host.dispatchEvent(new ContextRequestEvent(context, (value) => host.set(String(context), value ?? RESET)));
+      host.dispatchEvent(new ContextRequestEvent(context, (value) => host.set(String(context), value ?? RESET2)));
   });
   const provided = proto.providedContexts || [];
   if (!provided.length)
@@ -383,142 +460,6 @@ var useContext = (host) => {
   });
   return true;
 };
-
-// src/ui-element.ts
-var RESET = Symbol();
-var isAttributeParser = (value) => isFunction2(value) && !!value.length;
-var isStateUpdater = (value) => isFunction2(value) && !!value.length;
-var unwrap = (v) => isFunction2(v) ? unwrap(v()) : isSignal(v) ? unwrap(v.get()) : v;
-var parse = (host, key, value, old) => {
-  const parser = host.init[key];
-  return isAttributeParser(parser) ? parser(value, host, old) : value ?? undefined;
-};
-
-class UIElement extends HTMLElement {
-  static registry = customElements;
-  static localName;
-  static observedAttributes;
-  static consumedContexts;
-  static providedContexts;
-  static define(name = this.localName) {
-    try {
-      this.registry.define(name, this);
-      if (DEV_MODE)
-        log(name, "Registered custom element");
-    } catch (error) {
-      log(error, `Failed to register custom element ${name}`, LOG_ERROR);
-    }
-    return this;
-  }
-  init = {};
-  signals = {};
-  cleanup = [];
-  self = ui(this);
-  get root() {
-    return this.shadowRoot || this;
-  }
-  debug = false;
-  attributeChangedCallback(name, old, value) {
-    if (value === old || isComputed(this.signals[name]))
-      return;
-    const parsed = parse(this, name, value, old);
-    if (DEV_MODE && this.debug)
-      log(value, `Attribute "${name}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`);
-    this.set(name, parsed ?? RESET);
-  }
-  connectedCallback() {
-    if (DEV_MODE) {
-      this.debug = this.hasAttribute("debug");
-      if (this.debug)
-        log(this, "Connected");
-    }
-    for (const [key, init] of Object.entries(this.init)) {
-      if (this.constructor.observedAttributes?.includes(key))
-        continue;
-      const result = isAttributeParser(init) ? init(this.getAttribute(key), this) : isComputedCallbacks(init) ? computed(init) : init;
-      this.set(key, result ?? RESET, false);
-    }
-    useContext(this);
-  }
-  disconnectedCallback() {
-    this.cleanup.forEach((off) => off());
-    this.cleanup = [];
-    if (DEV_MODE && this.debug)
-      log(this, "Disconnected");
-  }
-  adoptedCallback() {
-    if (DEV_MODE && this.debug)
-      log(this, "Adopted");
-  }
-  has(key) {
-    return key in this.signals;
-  }
-  get(key) {
-    const value = unwrap(this.signals[key]);
-    if (DEV_MODE && this.debug)
-      log(value, `Get current value of Signal ${valueString(key)} in ${elementName(this)}`);
-    return value;
-  }
-  set(key, value, update = true) {
-    if (value == null) {
-      log(value, `Attempt to set State ${valueString(key)} to null or undefined in ${elementName(this)}`, LOG_ERROR);
-      return;
-    }
-    let op;
-    const s = this.signals[key];
-    const old = s?.get();
-    if (!(key in this.signals)) {
-      if (isStateUpdater(value)) {
-        log(value, `Cannot use updater function to create a Computed in ${elementName(this)}`, LOG_ERROR);
-        return;
-      }
-      if (DEV_MODE && this.debug)
-        op = "Create Signal of type";
-      this.signals[key] = toSignal(value);
-    } else if (update || old === UNSET || old === RESET) {
-      if (isComputedCallbacks(value)) {
-        log(value, `Cannot use computed callbacks to update Signal ${valueString(key)} in ${elementName(this)}`, LOG_ERROR);
-        return;
-      }
-      if (isSignal(value)) {
-        if (DEV_MODE && this.debug)
-          op = "Replace";
-        this.signals[key] = value;
-        if (isState(s))
-          s.set(UNSET);
-      } else {
-        if (isState(s)) {
-          if (DEV_MODE && this.debug)
-            op = "Update State of type";
-          s.set(isStateUpdater(value) ? value(old) : value);
-        } else {
-          log(value, `Computed ${valueString(key)} in ${elementName(this)} cannot be set`, LOG_WARN);
-          return;
-        }
-      }
-    } else
-      return;
-    if (DEV_MODE && this.debug)
-      log(value, `${op} ${typeString(value)} ${valueString(key)} in ${elementName(this)}`);
-  }
-  delete(key) {
-    if (DEV_MODE && this.debug)
-      log(key, `Delete Signal ${valueString(key)} from ${elementName(this)}`);
-    return delete this.signals[key];
-  }
-  first(selector) {
-    let element = this.root.querySelector(selector);
-    if (this.shadowRoot && !element)
-      element = this.querySelector(selector);
-    return ui(this, element ? [element] : []);
-  }
-  all(selector) {
-    let elements = this.root.querySelectorAll(selector);
-    if (this.shadowRoot && !elements.length)
-      elements = this.querySelectorAll(selector);
-    return ui(this, Array.from(elements));
-  }
-}
 // src/lib/parsers.ts
 var parseNumber = (parseFn, value) => {
   if (value == null)
@@ -527,12 +468,12 @@ var parseNumber = (parseFn, value) => {
   return Number.isFinite(parsed) ? parsed : undefined;
 };
 var getFallback = (value) => Array.isArray(value) && value[0] ? value[0] : value;
-var asBoolean = (value) => value !== "false" && value != null;
-var asInteger = (fallback = 0) => (value) => parseNumber(parseInt, value) ?? fallback;
-var asNumber = (fallback = 0) => (value) => parseNumber(parseFloat, value) ?? fallback;
-var asString = (fallback = "") => (value) => value ?? fallback;
-var asEnum = (valid) => (value) => value != null && valid.includes(value.toLowerCase()) ? value : getFallback(valid);
-var asJSON = (fallback) => (value) => {
+var asBoolean = (_, value) => value !== "false" && value != null;
+var asInteger = (fallback = 0) => (_, value) => parseNumber(parseInt, value) ?? fallback;
+var asNumber = (fallback = 0) => (_, value) => parseNumber(parseFloat, value) ?? fallback;
+var asString = (fallback = "") => (_, value) => value ?? fallback;
+var asEnum = (valid) => (_, value) => value != null && valid.includes(value.toLowerCase()) ? value : getFallback(valid);
+var asJSON = (fallback) => (_, value) => {
   if (value == null)
     return fallback;
   let result;
@@ -552,7 +493,7 @@ var ops = {
   s: "style property ",
   t: "text content"
 };
-var resolveSignalLike = (s, host, target, index) => isString(s) ? host.get(s) : isSignal(s) ? s.get() : isFunction2(s) ? s(target, index) : RESET;
+var resolveSignalLike = (s, host, target, index) => isString(s) ? host[s] : isSignal(s) ? s.get() : isFunction2(s) ? s(target, index) : RESET;
 var isSafeURL = (value) => {
   if (/^(mailto|tel):/i.test(value))
     return true;
@@ -577,11 +518,8 @@ var safeSetAttribute = (element, attr, value) => {
 var updateElement = (s, updater) => (host, target, index) => {
   const { op, read, update } = updater;
   const fallback = read(target);
-  if (isString(s) && !isComputed(host.signals[s])) {
-    const value = isString(fallback) ? parse(host, s, fallback) : fallback;
-    if (value != null)
-      host.set(s, value, false);
-  }
+  if (isString(s) && isString(fallback) && host[s] === RESET)
+    host.setAttribute(s, fallback);
   const err = (error, verb, prop = "element") => log(error, `Failed to ${verb} ${prop} ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
   effect(() => {
     let value = RESET;
@@ -649,9 +587,8 @@ var insertNode = (s, { type, where, create }) => (host, target, index) => {
         return;
       target[methods[where]](node);
     }, [target, "i"]).then(() => {
-      const maybeSignal = isString(s) ? host.signals[s] : s;
-      if (isState(maybeSignal))
-        maybeSignal.set(false);
+      if (isState(s))
+        s.set(false);
       log(target, `Inserted ${type} into ${elementName(host)}`);
     }).catch((error) => {
       err(error);
@@ -798,18 +735,22 @@ export {
   setProperty,
   setAttribute,
   removeElement,
-  parse,
+  pass,
+  on,
   log,
   isState,
   isSignal,
   isComputed,
   insertTemplate,
   insertNode,
+  first,
   enqueue,
+  emit,
   effect,
   dangerouslySetInnerHTML,
   createElement,
   computed,
+  component,
   batch,
   asString,
   asNumber,
@@ -817,8 +758,8 @@ export {
   asInteger,
   asEnum,
   asBoolean,
+  all,
   UNSET,
-  UIElement,
   RESET,
   LOG_WARN,
   LOG_INFO,

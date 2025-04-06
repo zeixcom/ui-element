@@ -1,24 +1,25 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.11.0
+ * @version 0.12.0
  * @author Esther Brunner
  */
 
 // From Cause & Effect
 export {
 	type Signal, type MaybeSignal, type State, type Computed,
-	type ComputedCallbacks, type EffectCallbacks, type EnqueueDedupe,
+	type ComputedCallback, type EffectMatcher, type EnqueueDedupe,
 	UNSET, state, computed, effect, batch, watch, enqueue,
 	isState, isComputed, isSignal, toSignal
 } from '@zeix/cause-effect'
 
 // Core
 export {
-	type AttributeParser, type ComponentSignals, type SignalInitializer, type Root, type StateUpdater,
-	RESET, UIElement, parse
-} from './src/ui-element'
+	type AttributeParser, type ComponentProps, type SignalInitializer,
+	RESET, component, first, all
+} from './src/component'
 export {
-	type UI, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
+	type EventListenerProvider,
+	on, emit, pass
 } from './src/core/ui'
 export {
 	type LogLevel,
@@ -34,7 +35,7 @@ export {
 	asBoolean, asInteger, asNumber, asString, asEnum, asJSON
 } from './src/lib/parsers'
 export {
-	type ValueProvider, type SignalLike, type ElementUpdater, type NodeInserter,
+	type SignalLike, type ElementUpdater, type NodeInserter,
 	updateElement, insertNode,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
 	dangerouslySetInnerHTML, insertTemplate, createElement, removeElement

@@ -197,10 +197,10 @@
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
 		import {
-			UIElement, batch, effect, enqueue,
-			asBoolean, asInteger, asNumber,
+			RESET, component, first, all, on, pass, batch, effect, enqueue,
+			asBoolean, asInteger, asNumber, asString,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
-			removeElement, dangerouslySetInnerHTML
+			removeElement, dangerouslySetInnerHTML, insertTemplate
 		} from '../'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -209,277 +209,170 @@
 
 		const LOADING_DELAY = 800 // Adjust this if tests for LazyLoad fail; needs to be high enough so initial loading message can be observed before it gets removed when async connectedCallback() finishes
 
-		class VoidComponent extends UIElement {}
-		VoidComponent.define('void-component')
+		component('void-component', {}, () => [])
 
-		class CausalComponent extends UIElement {
-			connectedCallback() {
-				this.set('heading', 'Hello from Internal State')
-				this.first('h1').sync(setText('heading'))
-			}
-		}
-		CausalComponent.define('causal-component')
+		component('causal-component', {
+			heading: 'Hello from Internal State'
+		}, () => [
+			first('h1', setText('heading'))
+		])
 
-		class UpdatingComponent extends UIElement {
-			static observedAttributes = ['heading', 'count', 'step', 'value', 'selected']
-			init = {
-				count: asInteger(),
-				step: asNumber(),
-				value: (value, el) => {
-					if (value == null) return
-					const parsed = Number.isInteger(el.get('step'))
-						? parseInt(value, 10)
-						: parseFloat(value) 
-					return Number.isFinite(parsed) ? parsed : undefined
-				},
-				selected: asBoolean
-			}
+		component('updating-component', {
+			count: asInteger(),
+			step: asNumber(),
+			value: (host, value) => {
+				if (value == null) return RESET
+				const parsed = Number.isInteger(host.step)
+					? parseInt(value, 10)
+					: parseFloat(value) 
+				return Number.isFinite(parsed) ? parsed : undefined
+			},
+			selected: asBoolean
+		}, () => [
+			first('h1', setText('heading'), toggleClass('selected')),
+			first('span', setText('count')),
+			first('input', setAttribute('step'), setProperty('value')),
+		])
 
-			connectedCallback() {
-				this.first('h1').sync(
-					setText('heading'),
-					toggleClass('selected')
-				)
-				this.first('span').sync(setText('count'))
-				this.first('input').sync(
-					setAttribute('step'),
-					setProperty('value')
-				)
-			}
-		}
-		UpdatingComponent.define('updating-component')
+		component('child-component', {}, () => [
+			first('h1', setText('heading')),
+			first('p', setText('text'))
+		])
 
-		class ParentComponent extends UIElement {
-			static observedAttributes = ['heading']
+		component('parent-component', {
+			heading: asString(),
+		}, (_, { heading }) => [
+			first('child-component', pass({
+				heading,
+                text: heading.map(v => v.toUpperCase())
+			}))
+		])
 
-			connectedCallback() {
-				this.first('child-component').pass({
-					heading: 'heading',
-					text: () => this.get('heading').toUpperCase()
-				})
-			}
-		}
-		ParentComponent.define('parent-component')
+		component('my-counter', {
+			value: asInteger()
+		}, (_, { value }) => [
+			first('.decrement', on('click', () => value.update(v => --v))),
+			first('.increment', on('click', () => value.update(v => ++v))),
+			first('.value', setText('value')),
+			first('.parity', setText(value.map(v => v % 2 ? 'odd' : 'even'))),
+			first('.double', setText(value.map(v => v * 2)))
+		])
 
-		class ChildComponent extends UIElement {
-			connectedCallback() {
-				this.first('h1').sync(setText('heading'))
-				this.first('p').sync(setText('text'))
-			}
-		}
-		ChildComponent.define('child-component')
+		component('greeting-configurator', {}, host => {
+			const firstName = host.querySelector('.first')
+			const lastName = host.querySelector('.last')
+			const fullName = host.querySelector('input-checkbox')
+			return [
+				first('hello-world', pass({
+					name: () => fullName.checked
+						? `${firstName.value} ${lastName.value}`
+						: firstName.value
+				}))
+			]
+		})
 
-		class MyCounter extends UIElement {
-			static observedAttributes = ['value']
-			init = {
-				value: asInteger()
-			}
+		component('hello-world', {
+			greeting: asString()
+		}, () => [
+			first('span.greeting', setText('greeting')),
+			first('span.name', setText('name'))
+		])
 
-			connectedCallback() {
-				this.first('.decrement').on('click', () => this.set('value', v => --v))
-				this.first('.increment').on('click', () => this.set('value', v => ++v))
-				this.first('.value').sync(setText('value'))
-				this.first('.parity').sync(setText(() => this.get('value') % 2 ? 'odd' : 'even'))
-				this.first('.double').sync(setText(() => this.get('value') * 2))
-			}
-		}
-		MyCounter.define('my-counter')
+		component('input-field', {}, host => [
+			first('input',
+			    on('change', e => host.value = e.target.value),
+				setProperty('value')
+			)
+		])
 
-		class GreetingConfigurator extends UIElement {
-			connectedCallback() {
-				const firstName = this.querySelector('.first')
-				this.first('hello-world').pass({
-					name: () => this.querySelector('input-checkbox').get('checked')
-						? `${firstName?.get('value')} ${this.querySelector('.last')?.get('value')}`
-						: firstName?.get('value')
-				})
-			}
-		}
-		GreetingConfigurator.define('greeting-configurator')
+		component('input-checkbox', {}, host => [
+			first('input',
+				on('change', e => host.checked = e.target.checked),
+				setProperty('checked')
+			)
+		])
 
-		class HelloWorld extends UIElement {
-			static observedAttributes = ['greeting']
-
-			connectedCallback() {
-				this.first('.greeting').sync(setText('greeting'))
-				this.first('.name').sync(setText('name'))
-			}
-		}
-		HelloWorld.define('hello-world')
-
-		class InputField extends UIElement {
-			connectedCallback() {
-				this.first('input')
-					.sync(setProperty('value'))
-					.on('change', e => this.set('value', e.target.value))
-			}
-		}
-		InputField.define('input-field')
-
-		class InputCheckbox extends UIElement {
-			connectedCallback() {
-				this.first('input')
-					.sync(setProperty('checked'))
-					.on('change', e => this.set('checked', e.target.checked))
-			}
-		}
-		InputCheckbox.define('input-checkbox')
-
-		class LazyLoad extends UIElement {
-			static localName = 'lazy-load'
-
-			// Remove the following line if you don't want to listen to changes in 'src' attribute
-			static observedAttributes = ['src']
-
-			init = {
-				src: v => { // Custom attribute parser
-					if (!v) {
-						this.set('error', 'No URL provided in src attribute')
-						return ''
-					} else if ((this.parentElement || this.getRootNode().host)?.closest(`${this.localName}[src="${v}"]`)) {
-						this.set('error', 'Recursive loading detected')
-						return ''
-					}
-					const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
-					if (url.origin === location.origin) // Sanity check for cross-origin URLs
-						return url.toString()
-					this.set('error', 'Invalid URL origin')
+		component('lazy-load', {
+			src: (host, v) => { // Custom attribute parser
+				if (!v) {
+					host.error = 'No URL provided in src attribute'
 					return ''
-				},
-				content: async () => { // Async Computed callback
-					const url = this.get('src')
-					if (!url) return ''
-					try {
-						const response = await fetch(this.get('src'))
-						await wait(LOADING_DELAY)
-						this.querySelector('.loading')?.remove()
-						if (response.ok) return response.text()
-						else this.set('error', response.statusText)
-					} catch (error) {
-						this.set('error', error.message)
-					}
+				} else if ((host.parentElement || host.getRootNode().host)?.closest(`${host.localName}[src="${v}"]`)) {
+					host.error = 'Recursive loading detected'
 					return ''
-				},
-				error: '',
-			}
+				}
+				const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
+				if (url.origin === location.origin) // Sanity check for cross-origin URLs
+					return url.toString()
+				host.error = 'Invalid URL origin'
+				return ''
+			},
+			content: (host, { src }) => async abort => { // Async Computed callback
+				const url = src.get()
+				if (!url) return ''
+				try {
+					const response = await fetch(url, { signal: abort })
+					await wait(LOADING_DELAY)
+					host.querySelector('.loading')?.remove()
+					if (response.ok) return response.text()
+					else host.error = response.statusText
+				} catch (error) {
+					host.error = error.message
+				}
+				return ''
+			},
+			error: '',
+		}, (host, { error }) => [
+			first('.error',
+				setText(error),
+				toggleAttribute('hidden', error.map(v => !v))
+			),
+			dangerouslySetInnerHTML('content', 'open')
+		])
 
-			connectedCallback() {
-				super.connectedCallback()
-
-				// Effect to set error message
-				this.first('.error').sync(
-					setProperty('hidden', () => !this.get('error')),
-					setText('error'),
-				)
-
-				// Effect to set content in shadow root
-				// Remove the second argument (for shadowrootmode) if you prefer light DOM
-				this.self.sync(dangerouslySetInnerHTML('content', 'open'))
-			}
-		}
-		LazyLoad.define()
-
-		class TabList extends UIElement {
-			static localName = 'tab-list'
-			static observedAttributes = ['accordion']
-
-			init = {
-				active: 0,
-				accordion: asBoolean,
-			}
-
-			connectedCallback() {
-				super.connectedCallback()
-
-				// Set inital active tab by querying details[open]
-				const getInitialActive = () => { 
-					const panels = Array.from(this.querySelectorAll('details'))
+		component('tab-list', {
+			accordion: asBoolean(),
+			active: host => {
+				() => { 
+					const panels = Array.from(host.querySelectorAll('details'))
 					for (let i = 0; i < panels.length; i++) {
 						if (panels[i].hasAttribute('open')) return i
 					}
 					return 0
 				}
-				this.set('active', getInitialActive())
+			},
+		}, (host, { accordion, active }) => [
+			toggleAttribute('accordion'),
+			all('menu button',
+				on('click', (_, index) => () => active.set(index)),
+				setProperty('ariaPressed', (_, index) => String(active.get() === index))
+			),
+			all('details',
+				setProperty('open', (_, index) => !!(active.get() === index)),
+				setAttribute('aria-disabled', () => String(!accordion.get()))
+			),
+			all('summary',
+				toggleClass('visually-hidden', () => !accordion.get())
+			)
+		])
 
-				// Reflect accordion attribute (may be used for styling)
-				this.self.sync(toggleAttribute('accordion'))
-
-				// Update active tab state and bind click handlers
-				this.all('menu button')
-					.on('click', (_, index) => () => {
-						this.set('active', index)
-					})
-					.sync(setProperty(
-						'ariaPressed',
-						(_, index) => String(this.get('active') === index)
-					))
-
-				// Update details panels open, hidden and disabled states
-				this.all('details').sync(
-					setProperty(
-						'open',
-						(_, index) => !!(this.get('active') === index)
-					),
-					setAttribute(
-						'aria-disabled',
-						() => String(!this.get('accordion'))
-					)
-				)
-
-				// Update summary visibility
-				this.all('summary').sync(toggleClass(
-					'visually-hidden',
-					() => !this.get('accordion')
-				))
-			}
-		}
-		TabList.define()
-
-		class PostReply extends UIElement {
-			init = {
-				message: '',
-				hidden: true
-			}
-
-			connectedCallback() {
-				super.connectedCallback()
-				this.first('button').on('click', () => {
-					this.set('hidden', false)
-				})
-				this.first('form')
-					.on('submit', e => {
-						e.preventDefault()
-						this.set('message', this.querySelector('textarea').value)
-						this.set('hidden', true)
-					})
-					.sync(setProperty('hidden'))
-
-				const template = document.getElementById('post-reply')
-				effect(() => {
-					const message = this.get('message')
-					if (!message) return
-					enqueue(() => {
-						const div = document.createElement('div')
-						const cloned = template?.content.cloneNode(true)
-						div.innerHTML = `
-							<p>${message}</p>
-							<post-reply>
-								<button type="button">Reply</button>
-								<form hidden>
-									<label>
-										<span>Message:</span>
-										<textarea required></textarea>
-									</label>
-									<button type="submit">Submit</button>
-								</form>
-							</post-reply>
-						`
-						this.append(div)
-					}, [this, 'post-reply'])
-				})
-			}
-		}
-		PostReply.define('post-reply')
+		component('post-reply', {
+			message: '',
+			formIsHidden: true
+		}, (host, { message, formIsHidden }) => [
+			first('button', on('click', () => {
+				host.formIsHidden = false
+			})),
+			first('form',
+				on('submit', e => {
+					e.preventDefault()
+					host.message = host.querySelector('textarea').value
+					host.formIsHidden = true
+				}),
+				setProperty('hidden', formIsHidden)
+			),
+			insertTemplate(host.querySelector('template'), () => !!message.get())
+		])
 
 		runTests(() => {
 

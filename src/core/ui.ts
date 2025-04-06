@@ -1,14 +1,13 @@
-import { type MaybeSignal, toSignal } from '@zeix/cause-effect'
+import { type Signal, toSignal } from '@zeix/cause-effect'
 
-import { UIElement, type ComponentSignals } from '../ui-element'
-import { elementName, log, LOG_ERROR, LOG_WARN, valueString } from './log'
-import { isDefinedObject, isFunction, isString } from './util'
+import { isFunction } from './util'
+import type { ComponentProps } from '../component'
 
 /* === Types === */
 
 type EventListenerProvider = (<E extends Element>(element: E, index: number) => EventListenerOrEventListenerObject)
 
-type PassedSignals<S extends ComponentSignals> = { [K in keyof S]: MaybeSignal<S[K]> }
+/* type PassedSignals<S extends ComponentSignals> = { [K in keyof S]: MaybeSignal<S[K]> }
 type PassedSignalsProvider<S extends ComponentSignals> = (<E extends Element>(element: E, index: number) => PassedSignals<S> | PassedSignalsProvider<S>)
 
 type UI<E extends Element, S extends ComponentSignals> = {
@@ -28,7 +27,12 @@ type UI<E extends Element, S extends ComponentSignals> = {
 	sync: (
 		...fns: ((host: UIElement<S>, target: E, index: number) => void)[]
 	) => UI<E, S>,
-}
+} */
+
+/* === Internal Functions === */
+
+const isProvider = <T>(value: unknown): value is (target: Element, index: number) => T =>
+	isFunction(value) && value.length >= 1
 
 /* === Exported Function === */
 
@@ -39,7 +43,7 @@ type UI<E extends Element, S extends ComponentSignals> = {
  * @param {UIElement<S>} host
  * @param {E} targets
  * @returns {UI<E, S>} - new UI object
- */
+ * /
 const ui = <E extends Element, S extends ComponentSignals>(
 	host: UIElement<S>,
 	targets: E[] = [host as unknown as E]
@@ -55,7 +59,7 @@ const ui = <E extends Element, S extends ComponentSignals>(
 		 * @param {string} type - event type
 		 * @param {EventListenerOrEventListenerObject | EventListenerProvider} listenerOrProvider - event listener or provider function
 		 * @returns {UI<E, S>} - self
-		 */
+		 * /
 		on: (
 			type: string,
 			listenerOrProvider: EventListenerOrEventListenerObject | EventListenerProvider
@@ -85,7 +89,7 @@ const ui = <E extends Element, S extends ComponentSignals>(
 		 * @param {string} type - event type
 		 * @param {T} detail - event detail
 		 * @returns {UI<E, S>} - self
-		 */
+		 * /
 		emit: <T>(type: string, detail?: T): UI<E, S> => {
 			targets.forEach(target => {
 				target.dispatchEvent(new CustomEvent(type, {
@@ -102,7 +106,7 @@ const ui = <E extends Element, S extends ComponentSignals>(
 		 * @since 0.9.0
 		 * @param {PassedSignals<T> | PassedSignalsProvider<T>} passedSignalsOrProvider - object of signal sources or provider function
 		 * @returns {UI<E, S>} - self
-		 */
+		 * /
 		pass: <T extends ComponentSignals>(
 			passedSignalsOrProvider: PassedSignals<T> | PassedSignalsProvider<T>
 		): UI<E, S> => {
@@ -150,7 +154,7 @@ const ui = <E extends Element, S extends ComponentSignals>(
 		 * @since 0.9.0
 		 * @param {((host: UIElement<S>, target: E, index: number) => void)[]} fns - state sync functions
 		 * @returns {UI<E, S>} - self
-		 */
+		 * /
 		sync: (
 			...fns: ((host: UIElement<S>, target: E, index: number) => void)[]
 		): UI<E, S> => {
@@ -161,9 +165,51 @@ const ui = <E extends Element, S extends ComponentSignals>(
 	}
 
 	return u
+} */
+
+const on = (
+	type: string,
+	handler: EventListenerOrEventListenerObject | EventListenerProvider
+) => <P extends ComponentProps>(
+	host: HTMLElement & P,
+	target: Element = host,
+	index = 0
+): () => void => {
+	const listener = isProvider(handler) ? handler(target, index) : handler
+	target.addEventListener(type, listener)
+	return () => target.removeEventListener(type, listener)
+}
+
+const emit = <T>(
+	type: string,
+	detail: T | ((target: Element, index: number) => T)
+) => <P extends ComponentProps>(
+	host: HTMLElement & P,
+	target: Element = host,
+	index = 0
+): void => {
+	target.dispatchEvent(new CustomEvent(type, {
+		detail: isProvider(detail) ? detail(target, index) : detail,
+		bubbles: true
+	}))
+}
+
+const pass = <P extends ComponentProps>(
+	signals: Partial<{ [K in keyof P]: Signal<P[K]> }>
+) => <Q extends ComponentProps>(
+	_: HTMLElement & P,
+	target: HTMLElement & Q,
+	index = 0
+) => {
+	const sources = isProvider(signals)
+		? signals(target, index) as Partial<{ [K in keyof P]: Signal<P[K]> }>
+		: signals
+	Object.entries(sources).forEach(([prop, source]) => {
+	  Object.defineProperty(target, prop, toSignal(source))
+	})
 }
 
 export {
-	type UI, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
-	ui
+	type EventListenerProvider,
+	on, emit, pass
 }
