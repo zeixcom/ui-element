@@ -357,6 +357,7 @@ var run = (fns, host, target = host, index = 0) => fns.flatMap((fn) => {
   return Array.isArray(cleanup) ? cleanup.filter(isFunction2) : isFunction2(cleanup) ? [cleanup] : [];
 });
 var isAttributeParser = (value) => isFunction2(value) && value.length >= 2;
+var isProvider = (value) => isFunction2(value) && value.length == 2;
 var validatePropertyName = (prop) => !(HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop));
 var first = (selector, ...fns) => (host) => {
   const target = (host.shadowRoot || host).querySelector(selector);
@@ -369,8 +370,7 @@ var component = (name, init = {}, fx) => {
     #signals = {};
     #cleanup = [];
     static observedAttributes = Object.entries(init)?.filter(([, ini]) => isAttributeParser(ini)).map(([prop]) => prop) ?? [];
-    constructor() {
-      super();
+    connectedCallback() {
       for (const [prop, ini] of Object.entries(init)) {
         if (ini == null)
           continue;
@@ -381,14 +381,17 @@ var component = (name, init = {}, fx) => {
         const signal = isAttributeParser(ini) ? state(RESET) : isFunction2(ini) ? toSignal(ini(this, this.#signals)) : state(ini);
         Object.defineProperty(this, prop, {
           get: () => signal.get(),
-          set: (value) => ("set" in signal) ? signal.set(value) : log(prop, `Computed property "${prop}" of ${elementName(this)} cannot be set`, LOG_ERROR),
+          set: (value) => {
+            if ("set" in signal)
+              signal.set(value);
+            else
+              log(prop, `Computed property "${prop}" of ${elementName(this)} cannot be set.`, LOG_ERROR);
+          },
           enumerable: true,
           configurable: true
         });
         this.#signals[prop] = signal;
       }
-    }
-    connectedCallback() {
       this.#cleanup = run(fx(this, this.#signals), this);
     }
     disconnectedCallback() {
@@ -408,10 +411,42 @@ var component = (name, init = {}, fx) => {
   customElements.define(name, CustomElement);
   return CustomElement;
 };
-// src/core/ui.ts
-var isProvider = (value) => isFunction2(value) && value.length == 2;
+var pass = (signals) => (_, target, index = 0) => {
+  const sources = isProvider(signals) ? signals(target, index) : signals;
+  if (!isDefinedObject(sources)) {
+    log(sources, `Invalid passed signals provided.`, LOG_ERROR);
+    return;
+  }
+  for (const [prop, source] of Object.entries(sources)) {
+    if (!validatePropertyName(prop)) {
+      log(prop, `Property name "${prop}" in <${target}> conflicts with HTMLElement properties or JavaScript reserved words.`, LOG_ERROR);
+      continue;
+    }
+    if (prop in target && isState(target[prop])) {
+      target[prop].set(UNSET);
+    }
+    const signal = toSignal(source);
+    if (!isSignal(signal)) {
+      log(prop, `Invalid source for property ${valueString(prop)} on ${elementName(target)}.`, LOG_ERROR);
+    }
+    Object.defineProperty(target, prop, {
+      get: () => signal.get(),
+      set: (value) => {
+        if ("set" in signal)
+          signal.set(value);
+        else
+          log(prop, `Computed property "${prop}" of ${elementName(target)} cannot be set.`, LOG_ERROR);
+      },
+      enumerable: true,
+      configurable: true
+    });
+  }
+};
 var on = (type, handler) => (host, target = host, index = 0) => {
   const listener = isProvider(handler) ? handler(target, index) : handler;
+  if (!(isFunction2(listener) || isDefinedObject(listener) && isFunction2(listener.handleEvent))) {
+    log(listener, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR);
+  }
   target.addEventListener(type, listener);
   return () => target.removeEventListener(type, listener);
 };
@@ -421,31 +456,13 @@ var emit = (type, detail) => (host, target = host, index = 0) => {
     bubbles: true
   }));
 };
-var pass = (signals) => (_, target, index = 0) => {
-  const sources = isProvider(signals) ? signals(target, index) : signals;
-  Object.entries(sources).forEach(([prop, source]) => {
-    if (prop in target && isState(target[prop])) {
-      target[prop].set(UNSET);
-    }
-    const signal = toSignal(source);
-    Object.defineProperty(target, prop, {
-      get: () => signal.get(),
-      set: (value) => ("set" in signal) ? signal.set(value) : log(prop, `Computed property "${prop}" of ${elementName(target)} cannot be set`, LOG_ERROR),
-      enumerable: true,
-      configurable: true
-    });
-  });
-};
-// src/ui-element.ts
-var RESET2 = Symbol();
-
 // src/core/context.ts
 var CONTEXT_REQUEST = "context-request";
 
 class ContextRequestEvent extends Event {
   context;
   callback;
-  subscribe2;
+  subscribe;
   constructor(context, callback, subscribe2 = false) {
     super(CONTEXT_REQUEST, {
       bubbles: true,
@@ -456,24 +473,20 @@ class ContextRequestEvent extends Event {
     this.subscribe = subscribe2;
   }
 }
-var useContext = (host) => {
-  const proto = host.constructor;
-  const consumed = proto.consumedContexts || [];
-  queueMicrotask(() => {
-    for (const context of consumed)
-      host.dispatchEvent(new ContextRequestEvent(context, (value) => host.set(String(context), value ?? RESET2)));
-  });
-  const provided = proto.providedContexts || [];
-  if (!provided.length)
-    return false;
-  host.addEventListener(CONTEXT_REQUEST, (e) => {
-    const { context, callback } = e;
-    if (!provided.includes(context) || !isFunction2(callback))
-      return;
+var provide = (signals) => on(CONTEXT_REQUEST, (e) => {
+  const { context, callback } = e;
+  const key = String(context);
+  if (Object.keys(signals).includes(key) && isFunction2(callback)) {
     e.stopPropagation();
-    callback(host.signals[String(context)]);
-  });
-  return true;
+    callback(signals[key]);
+  }
+});
+var consume = (context) => (host) => {
+  let consumed;
+  host.dispatchEvent(new ContextRequestEvent(context, (value) => {
+    consumed = value;
+  }));
+  return consumed;
 };
 // src/lib/parsers.ts
 var parseNumber = (parseFn, value) => {
@@ -554,7 +567,8 @@ var updateElement = (s, updater) => (host, target, index) => {
         name = updater.delete(target);
         return true;
       }, [target, op]).then(() => {
-        log(target, `Deleted ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`);
+        if (DEV_MODE && "debug" in target)
+          log(target, `Deleted ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`);
       }).catch((error) => {
         err(error, "delete", `${ops[op] + name} of`);
       });
@@ -567,7 +581,8 @@ var updateElement = (s, updater) => (host, target, index) => {
         name = update(target, value);
         return true;
       }, [target, op]).then(() => {
-        log(target, `Updated ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`);
+        if (DEV_MODE && "debug" in target)
+          log(target, `Updated ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`);
       }).catch((error) => {
         err(error, "update", `${ops[op] + name} of`);
       });
@@ -604,7 +619,8 @@ var insertNode = (s, { type, where, create }) => (host, target, index) => {
     }, [target, "i"]).then(() => {
       if (isState(s))
         s.set(false);
-      log(target, `Inserted ${type} into ${elementName(host)}`);
+      if (DEV_MODE && "debug" in target)
+        log(target, `Inserted ${type} into ${elementName(host)}`);
     }).catch((error) => {
       err(error);
     });
@@ -731,7 +747,8 @@ var removeElement = (s) => (host, target, index) => {
       target.remove();
       return true;
     }, [target, "r"]).then(() => {
-      log(target, `Deleted ${elementName(target)} into ${elementName(host)}`);
+      if (DEV_MODE && "debug" in target)
+        log(target, `Deleted ${elementName(target)} into ${elementName(host)}`);
     }).catch((error) => {
       err(error);
     });
@@ -739,7 +756,6 @@ var removeElement = (s) => (host, target, index) => {
 };
 export {
   watch,
-  useContext,
   updateElement,
   toggleClass,
   toggleAttribute,
@@ -750,6 +766,7 @@ export {
   setProperty,
   setAttribute,
   removeElement,
+  provide,
   pass,
   on,
   log,
@@ -764,6 +781,7 @@ export {
   effect,
   dangerouslySetInnerHTML,
   createElement,
+  consume,
   computed,
   component,
   batch,

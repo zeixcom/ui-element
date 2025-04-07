@@ -14,13 +14,9 @@ export {
 
 // Core
 export {
-	type AttributeParser, type ComponentProps, type SignalInitializer,
-	RESET, component, first, all
+	type AttributeParser, type ComponentProps, type SignalInitializer, type EventListenerProvider,
+	RESET, component, first, all, pass, on, emit
 } from './src/component'
-export {
-	type EventListenerProvider,
-	on, emit, pass
-} from './src/core/ui'
 export {
 	type LogLevel,
 	LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, log
@@ -40,7 +36,3 @@ export {
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
 	dangerouslySetInnerHTML, insertTemplate, createElement, removeElement
 } from './src/lib/effects'
-/* export {
-	type ComponentSetup,
-	component
-} from './src/lib/component' */

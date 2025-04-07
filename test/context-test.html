@@ -20,7 +20,7 @@
 	<script type="module">
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
-		import { component, state, first, provide, consume, asString, setText } from '../index.js'
+		import { component, state, first, provide, consume, asString, setText } from '../index.dev.js'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 		const animationFrame = async () => new Promise(requestAnimationFrame)
@@ -37,17 +37,17 @@
 			provide(signals)
 		])
 
-		component('user-context', {
-			'display-name': asString()
-		}, (_, signals) => [
-			provide(signals)
-		])
-
 		component('my-animation', {
 			reducedMotion: consume('reduced-motion')
 		}, () => [
 			first('span', setText('reducedMotion'))
 		])
+
+		component('user-context', {
+			'display-name': asString()
+		}, (_, signals) => [
+			provide(signals)
+		])		
 
 		component('hello-world', {
 			displayName: consume('display-name')

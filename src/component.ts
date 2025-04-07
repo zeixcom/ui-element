@@ -1,7 +1,7 @@
-import { isComputed, state, toSignal, type ComputedCallback, type Signal } from "@zeix/cause-effect"
+import { isComputed, isSignal, isState, state, toSignal, UNSET, type ComputedCallback, type Signal } from "@zeix/cause-effect"
 
-import { isFunction } from "./core/util"
-import { elementName, log, LOG_ERROR } from "./core/log"
+import { isDefinedObject, isFunction } from "./core/util"
+import { elementName, log, LOG_ERROR, valueString } from "./core/log"
 
 /* === Types === */
 
@@ -33,6 +33,11 @@ type ComponentSetup<P extends ComponentProps> = (
 	signals: { [K in keyof P]: Signal<P[K]> }
 ) => FxFunction[]
 
+type EventListenerProvider = <E extends Element>(
+	element: E,
+	index: number
+) => EventListenerOrEventListenerObject
+
 /* === Constants === */
 
 // Special value explicitly marked as any so it can be used as signal value of any type
@@ -61,6 +66,9 @@ const run = <C extends HTMLElement>(
 
 const isAttributeParser = <T extends {}>(value: unknown): value is AttributeParser<T> =>
 	isFunction(value) && value.length >= 2
+
+const isProvider = <T>(value: unknown): value is (target: Element, index: number) => T =>
+	isFunction(value) && value.length == 2
 
 const validatePropertyName = (prop: string): boolean =>
 	!((HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop)))
@@ -104,8 +112,7 @@ const component = <P extends ComponentProps>(
 			?.filter(([, ini]) => isAttributeParser(ini))
 			.map(([prop]) => prop) ?? []
 	  
-		constructor() {
-			super()
+		connectedCallback() {
 			for (const [prop, ini] of Object.entries(init)) {
 				if (ini == null) continue
 				if (!validatePropertyName(prop)) {
@@ -117,17 +124,15 @@ const component = <P extends ComponentProps>(
 					: state(ini)
 				Object.defineProperty(this, prop, {
 					get: () => signal.get(),
-					set: (value: P[keyof P]) => 'set' in signal
-						? signal.set(value)
-						: log(prop, `Computed property "${prop}" of ${elementName(this)} cannot be set`, LOG_ERROR),
+					set: (value: P[keyof P]) => {
+						if ('set' in signal) signal.set(value)
+						else log(prop, `Computed property "${prop}" of ${elementName(this)} cannot be set.`, LOG_ERROR)
+					},
 					enumerable: true,
 					configurable: true
 				})
 				this.#signals[prop as keyof P] = signal
 			}
-		}
-	  
-		connectedCallback() {
 			this.#cleanup = run(fx(this as unknown as HTMLElement & P, this.#signals), this)
 		}
 		
@@ -147,7 +152,75 @@ const component = <P extends ComponentProps>(
 	return CustomElement as unknown as typeof HTMLElement & P
 }
 
+const pass = <P extends ComponentProps>(
+	signals: Partial<{ [K in keyof P]: Signal<P[K]> }>
+) => <Q extends ComponentProps>(
+	_: HTMLElement & P,
+	target: HTMLElement & Q,
+	index = 0
+) => {
+	const sources = isProvider(signals)
+		? signals(target, index) as Partial<{ [K in keyof P]: Signal<P[K]> }>
+		: signals
+	if (!isDefinedObject(sources)) {
+		log(sources, `Invalid passed signals provided.`, LOG_ERROR)
+		return
+	}
+	for (const [prop, source] of Object.entries(sources)) {
+		if (!validatePropertyName(prop)) {
+			log(prop, `Property name "${prop}" in <${target}> conflicts with HTMLElement properties or JavaScript reserved words.`, LOG_ERROR)
+			continue
+		}
+		if (prop in target && isState(target[prop])) {
+			target[prop].set(UNSET) // clear previous state so watchers re-subscribe to new signal
+		}
+		const signal = toSignal(source)
+		if (!isSignal(signal)) {
+			log(prop, `Invalid source for property ${valueString(prop)} on ${elementName(target)}.`, LOG_ERROR)
+		}
+	  	Object.defineProperty(target, prop, {
+			get: () => signal.get(),
+			set: (value: P[keyof P]) => {
+				if ('set' in signal) signal.set(value)
+				else log(prop, `Computed property "${prop}" of ${elementName(target)} cannot be set.`, LOG_ERROR)
+			},
+			enumerable: true,
+			configurable: true
+		})
+	}
+}
+
+const on = (
+	type: string,
+	handler: EventListenerOrEventListenerObject | EventListenerProvider
+) => <P extends ComponentProps>(
+	host: HTMLElement & P,
+	target: Element = host,
+	index = 0
+): () => void => {
+	const listener = isProvider(handler) ? handler(target, index) : handler
+	if (!(isFunction(listener) || isDefinedObject(listener) && isFunction(listener.handleEvent))) {
+		log(listener, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR)
+	}
+	target.addEventListener(type, listener)
+	return () => target.removeEventListener(type, listener)
+}
+
+const emit = <T>(
+	type: string,
+	detail: T | ((target: Element, index: number) => T)
+) => <P extends ComponentProps>(
+	host: HTMLElement & P,
+	target: Element = host,
+	index = 0
+): void => {
+	target.dispatchEvent(new CustomEvent(type, {
+		detail: isProvider(detail) ? detail(target, index) : detail,
+		bubbles: true
+	}))
+}
+
 export {
-	type ComponentProps, type AttributeParser, type SignalInitializer,
-	RESET, component, first, all
+	type ComponentProps, type AttributeParser, type SignalInitializer, type EventListenerProvider,
+	RESET, component, first, all, pass, on, emit
 }

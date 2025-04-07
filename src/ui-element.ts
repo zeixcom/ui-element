@@ -6,7 +6,7 @@ import {
 import { isFunction } from "./core/util"
 import { DEV_MODE, elementName, log, LOG_ERROR, LOG_WARN, typeString, valueString } from "./core/log"
 // import { type UI, ui } from "./core/ui"
-import { type UnknownContext, useContext } from "./core/context"
+import { type UnknownContext } from "./core/context"
 
 /* === Types === */
 
@@ -203,7 +203,7 @@ export class UIElement<S extends ComponentSignals = {}> extends HTMLElement {
 					: init
 			this.set(key, result ?? RESET, false)
 		}
-		useContext(this)
+		// useContext(this)
 	}
 
 	/**

@@ -2,7 +2,7 @@ import { type Signal, effect, enqueue, isSignal, isState, UNSET } from '@zeix/ca
 
 import { isFunction, isString } from '../core/util'
 import { type ComponentProps, RESET } from '../component'
-import { elementName, log, LOG_ERROR, valueString } from '../core/log'
+import { DEV_MODE, elementName, log, LOG_ERROR, valueString } from '../core/log'
 
 /* === Types === */
 
@@ -116,7 +116,7 @@ const updateElement = <
                 name = updater.delete!(target)
                 return true
             }, [target, op]).then(() => {
-				log(target, `Deleted ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
+				if (DEV_MODE && 'debug' in target) log(target, `Deleted ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
 			}).catch((error) => {
 				err(error, 'delete', `${ops[op] + name} of`)
 			})
@@ -130,7 +130,7 @@ const updateElement = <
 				name = update(target, value)
 				return true
 			}, [target, op]).then(() => {
-				log(target, `Updated ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
+				if (DEV_MODE && 'debug' in target) log(target, `Updated ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
 			}).catch((error) => {
 				err(error, 'update', `${ops[op] + name} of`)
 			})
@@ -177,7 +177,7 @@ const insertNode = <
 			(target[methods[where]] as (...nodes: Node[]) => void)(node)
 		}, [target, 'i']).then(() => {
 			if (isState<boolean>(s)) s.set(false)
-			log(target, `Inserted ${type} into ${elementName(host)}`)
+			if (DEV_MODE && 'debug' in target) log(target, `Inserted ${type} into ${elementName(host)}`)
 		}).catch((error) => {
 			err(error)
 		})
@@ -421,7 +421,7 @@ const removeElement = <E extends Element, P extends ComponentProps>(
 			target.remove()
 			return true
 		}, [target, 'r']).then(() => {
-			log(target, `Deleted ${elementName(target)} into ${elementName(host)}`)
+			if (DEV_MODE && 'debug' in target) log(target, `Deleted ${elementName(target)} into ${elementName(host)}`)
 		}).catch((error) => {
 			err(error)
 		})

@@ -67,7 +67,7 @@
 			asBoolean, asInteger, asNumber, asString,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
 			dangerouslySetInnerHTML, createElement, removeElement, insertTemplate
-		} from '../'
+		} from '../index.dev.js'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 		const animationFrame = async () => new Promise(requestAnimationFrame)
@@ -94,8 +94,7 @@
 					host.ariaInvalid = String(!e.target.checkValidity())
 				}),
 				toggleAttribute('required'),
-                setAttribute(
-                    'aria-errormessage',
+                setAttribute('aria-errormessage',
 					computed({
 						signals: [required, ariaInvalid],
 						ok: (r, i) => r && i !== 'false'
@@ -110,8 +109,7 @@
 			active: asInteger()
 		}, host => [
 			all('li',
-				toggleClass(
-					'selected',
+				toggleClass('selected',
 					(_, index) => host.active === index
 				)
 			)

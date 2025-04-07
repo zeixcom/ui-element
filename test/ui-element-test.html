@@ -201,7 +201,7 @@
 			asBoolean, asInteger, asNumber, asString,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
 			removeElement, dangerouslySetInnerHTML, insertTemplate
-		} from '../'
+		} from '../index.dev.js'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 		const animationFrame = async () => new Promise(requestAnimationFrame)
@@ -226,7 +226,7 @@
 				const parsed = Number.isInteger(host.step)
 					? parseInt(value, 10)
 					: parseFloat(value) 
-				return Number.isFinite(parsed) ? parsed : undefined
+				return Number.isFinite(parsed) ? parsed : RESET
 			},
 			selected: asBoolean
 		}, () => [
