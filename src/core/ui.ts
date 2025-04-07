@@ -1,7 +1,8 @@
-import { type Signal, toSignal } from '@zeix/cause-effect'
+import { isState, type Signal, toSignal, UNSET } from '@zeix/cause-effect'
 
 import { isFunction } from './util'
 import type { ComponentProps } from '../component'
+import { elementName, log, LOG_ERROR } from './log'
 
 /* === Types === */
 
@@ -32,7 +33,7 @@ type UI<E extends Element, S extends ComponentSignals> = {
 /* === Internal Functions === */
 
 const isProvider = <T>(value: unknown): value is (target: Element, index: number) => T =>
-	isFunction(value) && value.length >= 1
+	isFunction(value) && value.length == 2
 
 /* === Exported Function === */
 
@@ -205,7 +206,18 @@ const pass = <P extends ComponentProps>(
 		? signals(target, index) as Partial<{ [K in keyof P]: Signal<P[K]> }>
 		: signals
 	Object.entries(sources).forEach(([prop, source]) => {
-	  Object.defineProperty(target, prop, toSignal(source))
+		if (prop in target && isState(target[prop])) {
+			target[prop].set(UNSET) // clear previous state so watchers re-subscribe to new signal
+		}
+		const signal = toSignal(source)
+	  	Object.defineProperty(target, prop, {
+			get: () => signal.get(),
+			set: (value: P[keyof P]) => 'set' in signal
+				? signal.set(value)
+				: log(prop, `Computed property "${prop}" of ${elementName(target)} cannot be set`, LOG_ERROR),
+			enumerable: true,
+			configurable: true
+		})
 	})
 }
 

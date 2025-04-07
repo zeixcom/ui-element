@@ -1,9 +1,11 @@
 import { type ComputedCallback, type Signal } from "@zeix/cause-effect";
+type ReservedWords = 'constructor' | 'prototype' | '__proto__' | 'toString' | 'valueOf' | 'hasOwnProperty' | 'isPrototypeOf' | 'propertyIsEnumerable' | 'toLocaleString';
+type ValidPropertyKey<T> = T extends keyof HTMLElement | ReservedWords ? never : T;
 type ComponentProps = {
-    [key: string]: {};
+    [K in string as ValidPropertyKey<K>]: {};
 };
 type AttributeParser<T extends {}> = (host: HTMLElement, value: string | null, old?: string | null) => T;
-type SignalInitializer<T extends {}> = T | AttributeParser<T> | ComputedCallback<T>;
+type SignalInitializer<T extends {}> = T | AttributeParser<T> | ((host: HTMLElement, signals: Signal<{}>[]) => ComputedCallback<T>);
 type FxFunction = <C extends HTMLElement>(host: C, target?: Element, index?: number) => (() => void)[];
 type ComponentSetup<P extends ComponentProps> = (host: HTMLElement & P, signals: {
     [K in keyof P]: Signal<P[K]>;

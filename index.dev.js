@@ -352,7 +352,10 @@ var RESERVED_WORDS = new Set([
   "propertyIsEnumerable",
   "toLocaleString"
 ]);
-var run = (fns, ...args) => fns.flatMap((fn) => isFunction2(fn) ? fn(...args).filter(isFunction2) : []);
+var run = (fns, host, target = host, index = 0) => fns.flatMap((fn) => {
+  const cleanup = isFunction2(fn) ? fn(host, target, index) : [];
+  return Array.isArray(cleanup) ? cleanup.filter(isFunction2) : isFunction2(cleanup) ? [cleanup] : [];
+});
 var isAttributeParser = (value) => isFunction2(value) && value.length >= 2;
 var validatePropertyName = (prop) => !(HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop));
 var first = (selector, ...fns) => (host) => {
@@ -372,17 +375,21 @@ var component = (name, init = {}, fx) => {
         if (ini == null)
           continue;
         if (!validatePropertyName(prop)) {
-          log(prop, `Property name in <${name}> conflicts with HTMLElement properties or JavaScript reserved words.`, LOG_ERROR);
+          log(prop, `Property name "${prop}" in <${name}> conflicts with HTMLElement properties or JavaScript reserved words.`, LOG_ERROR);
           continue;
         }
         const signal = isAttributeParser(ini) ? state(RESET) : isFunction2(ini) ? toSignal(ini(this, this.#signals)) : state(ini);
-        Object.defineProperty(this, prop, signal);
+        Object.defineProperty(this, prop, {
+          get: () => signal.get(),
+          set: (value) => ("set" in signal) ? signal.set(value) : log(prop, `Computed property "${prop}" of ${elementName(this)} cannot be set`, LOG_ERROR),
+          enumerable: true,
+          configurable: true
+        });
         this.#signals[prop] = signal;
       }
     }
     connectedCallback() {
-      const host = this;
-      this.#cleanup = run(fx(host, this.#signals), host);
+      this.#cleanup = run(fx(this, this.#signals), this);
     }
     disconnectedCallback() {
       for (const off of this.#cleanup)
@@ -395,15 +402,14 @@ var component = (name, init = {}, fx) => {
       const fn = init[attr];
       if (!isAttributeParser(fn))
         return;
-      const host = this;
-      host[attr] = fn(host, value, old) ?? RESET;
+      this[attr] = fn(this, value, old) ?? RESET;
     }
   }
   customElements.define(name, CustomElement);
   return CustomElement;
 };
 // src/core/ui.ts
-var isProvider = (value) => isFunction2(value) && value.length >= 1;
+var isProvider = (value) => isFunction2(value) && value.length == 2;
 var on = (type, handler) => (host, target = host, index = 0) => {
   const listener = isProvider(handler) ? handler(target, index) : handler;
   target.addEventListener(type, listener);
@@ -418,7 +424,16 @@ var emit = (type, detail) => (host, target = host, index = 0) => {
 var pass = (signals) => (_, target, index = 0) => {
   const sources = isProvider(signals) ? signals(target, index) : signals;
   Object.entries(sources).forEach(([prop, source]) => {
-    Object.defineProperty(target, prop, toSignal(source));
+    if (prop in target && isState(target[prop])) {
+      target[prop].set(UNSET);
+    }
+    const signal = toSignal(source);
+    Object.defineProperty(target, prop, {
+      get: () => signal.get(),
+      set: (value) => ("set" in signal) ? signal.set(value) : log(prop, `Computed property "${prop}" of ${elementName(target)} cannot be set`, LOG_ERROR),
+      enumerable: true,
+      configurable: true
+    });
   });
 };
 // src/ui-element.ts

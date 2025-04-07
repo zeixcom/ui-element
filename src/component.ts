@@ -1,11 +1,16 @@
 import { isComputed, state, toSignal, type ComputedCallback, type Signal } from "@zeix/cause-effect"
 
 import { isFunction } from "./core/util"
-import { log, LOG_ERROR } from "./core/log"
+import { elementName, log, LOG_ERROR } from "./core/log"
 
 /* === Types === */
 
-type ComponentProps = { [key: string]: {} }
+type ReservedWords = 'constructor' | 'prototype' | '__proto__' | 'toString' | 'valueOf' | 
+  'hasOwnProperty' | 'isPrototypeOf' | 'propertyIsEnumerable' | 'toLocaleString'
+
+type ValidPropertyKey<T> = T extends keyof HTMLElement | ReservedWords ? never : T
+
+type ComponentProps = { [K in string as ValidPropertyKey<K>]: {} }
 
 type AttributeParser<T extends {}> = (
 	host: HTMLElement,
@@ -15,7 +20,7 @@ type AttributeParser<T extends {}> = (
 
 type SignalInitializer<T extends {}> = T
 	| AttributeParser<T>
-	| ComputedCallback<T>
+	| ((host: HTMLElement, signals: Signal<{}>[]) => ComputedCallback<T>)
 
 type FxFunction = <C extends HTMLElement>(
 	host: C,
@@ -43,9 +48,16 @@ const RESERVED_WORDS = new Set(['constructor', 'prototype', '__proto__', 'toStri
 
 const run = <C extends HTMLElement>(
 	fns: FxFunction[],
-	...args: [C, Element?, number?]
+	host: C,
+	target: Element = host,
+    index: number = 0
 ): (() => void)[] =>
-	fns.flatMap(fn => isFunction(fn) ? fn(...args).filter(isFunction) : [])
+	fns.flatMap(fn => {
+		const cleanup = isFunction(fn) ? fn(host, target, index) : []
+		return Array.isArray(cleanup) ? cleanup.filter(isFunction)
+			: isFunction(cleanup) ? [cleanup]
+			: []
+	})
 
 const isAttributeParser = <T extends {}>(value: unknown): value is AttributeParser<T> =>
 	isFunction(value) && value.length >= 2
@@ -103,14 +115,20 @@ const component = <P extends ComponentProps>(
 				const signal = isAttributeParser(ini) ? state(RESET)
 					: isFunction<P[keyof P]>(ini) ? toSignal(ini(this, this.#signals))
 					: state(ini)
-				Object.defineProperty(this, prop, signal)
+				Object.defineProperty(this, prop, {
+					get: () => signal.get(),
+					set: (value: P[keyof P]) => 'set' in signal
+						? signal.set(value)
+						: log(prop, `Computed property "${prop}" of ${elementName(this)} cannot be set`, LOG_ERROR),
+					enumerable: true,
+					configurable: true
+				})
 				this.#signals[prop as keyof P] = signal
 			}
 		}
 	  
 		connectedCallback() {
-			const host = this as unknown as HTMLElement & P
-			this.#cleanup = run(fx(host, this.#signals), host)
+			this.#cleanup = run(fx(this as unknown as HTMLElement & P, this.#signals), this)
 		}
 		
 		disconnectedCallback() {
@@ -122,8 +140,7 @@ const component = <P extends ComponentProps>(
 			if (value === old || isComputed(this.#signals[attr])) return // unchanged or controlled by computed
 			const fn = init[attr as keyof P]
 			if (!isAttributeParser(fn)) return
-			const host = this as unknown as HTMLElement & P
-			host[attr as keyof P] = (fn(host, value, old) ?? RESET) as (HTMLElement & P)[keyof P]
+			(this as unknown as HTMLElement & P)[attr as keyof P] = (fn(this, value, old) ?? RESET) as (HTMLElement & P)[keyof P]
 		}
 	}
 	customElements.define(name, CustomElement)

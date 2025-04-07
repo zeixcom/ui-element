@@ -20,7 +20,7 @@
 	<script type="module">
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
-		import { component, state, provide, consume, asString, setText } from '../index.js'
+		import { component, state, first, provide, consume, asString, setText } from '../index.js'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 		const animationFrame = async () => new Promise(requestAnimationFrame)
@@ -71,9 +71,8 @@
 
 			describe('Context consumer', function () {
 
-				it('should have static consumedContexts', async function () {
-					const contextConsumer = document.querySelector('my-animation')
-					assert.equal('reduced-motion' in contextConsumer.consumedContexts, true)
+				it('should have consumed context in properties', async function () {
+					assert.equal('reducedMotion' in document.querySelector('my-animation'), true)
 				})
 
 				it('should update according to consumed context', async function () {
