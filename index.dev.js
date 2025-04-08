@@ -77,17 +77,14 @@ var watch = (run, mark) => {
     active = prev;
   }
 };
-var enqueue = (fn, dedupe) => new Promise((resolve, reject) => {
-  const wrappedCallback = () => {
+var enqueue = (fn, dedupe = []) => new Promise((resolve, reject) => {
+  updateMap.set(dedupe, () => {
     try {
       resolve(fn());
     } catch (error) {
       reject(error);
     }
-  };
-  if (dedupe) {
-    updateMap.set(dedupe, wrappedCallback);
-  }
+  });
   requestTick();
 });
 
@@ -370,28 +367,16 @@ var component = (name, init = {}, fx) => {
     #signals = {};
     #cleanup = [];
     static observedAttributes = Object.entries(init)?.filter(([, ini]) => isAttributeParser(ini)).map(([prop]) => prop) ?? [];
-    connectedCallback() {
+    constructor() {
+      super();
       for (const [prop, ini] of Object.entries(init)) {
         if (ini == null)
           continue;
-        if (!validatePropertyName(prop)) {
-          log(prop, `Property name "${prop}" in <${name}> conflicts with HTMLElement properties or JavaScript reserved words.`, LOG_ERROR);
-          continue;
-        }
-        const signal = isAttributeParser(ini) ? state(RESET) : isFunction2(ini) ? toSignal(ini(this, this.#signals)) : state(ini);
-        Object.defineProperty(this, prop, {
-          get: () => signal.get(),
-          set: (value) => {
-            if ("set" in signal)
-              signal.set(value);
-            else
-              log(prop, `Computed property "${prop}" of ${elementName(this)} cannot be set.`, LOG_ERROR);
-          },
-          enumerable: true,
-          configurable: true
-        });
-        this.#signals[prop] = signal;
+        const signal = isAttributeParser(ini) ? state(RESET) : isFunction2(ini) ? toSignal(ini(this)) : state(ini);
+        this.set(prop, signal);
       }
+    }
+    connectedCallback() {
       this.#cleanup = run(fx(this, this.#signals), this);
     }
     disconnectedCallback() {
@@ -407,40 +392,38 @@ var component = (name, init = {}, fx) => {
         return;
       this[attr] = fn(this, value, old) ?? RESET;
     }
+    set(prop, signal) {
+      if (!validatePropertyName(prop)) {
+        log(prop, `Property name ${valueString(prop)} in <${elementName(this)}> conflicts with HTMLElement properties or JavaScript reserved words.`, LOG_ERROR);
+        return;
+      }
+      if (!isSignal(signal)) {
+        log(signal, `Expected signal as value for property ${valueString(prop)} on ${elementName(this)}.`, LOG_ERROR);
+        return;
+      }
+      const prev = this.#signals[prop];
+      Object.defineProperty(this, prop, {
+        ...signal,
+        enumerable: true,
+        configurable: isState(signal)
+      });
+      this.#signals[prop] = signal;
+      if (prev && isState(prev))
+        prev.set(UNSET);
+    }
   }
   customElements.define(name, CustomElement);
   return CustomElement;
 };
-var pass = (signals) => (_, target, index = 0) => {
+var pass = (signals) => async (_, target, index = 0) => {
+  await customElements.whenDefined(target.localName);
   const sources = isProvider(signals) ? signals(target, index) : signals;
   if (!isDefinedObject(sources)) {
     log(sources, `Invalid passed signals provided.`, LOG_ERROR);
     return;
   }
-  for (const [prop, source] of Object.entries(sources)) {
-    if (!validatePropertyName(prop)) {
-      log(prop, `Property name "${prop}" in <${target}> conflicts with HTMLElement properties or JavaScript reserved words.`, LOG_ERROR);
-      continue;
-    }
-    if (prop in target && isState(target[prop])) {
-      target[prop].set(UNSET);
-    }
-    const signal = toSignal(source);
-    if (!isSignal(signal)) {
-      log(prop, `Invalid source for property ${valueString(prop)} on ${elementName(target)}.`, LOG_ERROR);
-    }
-    Object.defineProperty(target, prop, {
-      get: () => signal.get(),
-      set: (value) => {
-        if ("set" in signal)
-          signal.set(value);
-        else
-          log(prop, `Computed property "${prop}" of ${elementName(target)} cannot be set.`, LOG_ERROR);
-      },
-      enumerable: true,
-      configurable: true
-    });
-  }
+  for (const [prop, source] of Object.entries(sources))
+    target.set(prop, toSignal(source));
 };
 var on = (type, handler) => (host, target = host, index = 0) => {
   const listener = isProvider(handler) ? handler(target, index) : handler;
@@ -462,7 +445,7 @@ var CONTEXT_REQUEST = "context-request";
 class ContextRequestEvent extends Event {
   context;
   callback;
-  subscribe;
+  subscribe2;
   constructor(context, callback, subscribe2 = false) {
     super(CONTEXT_REQUEST, {
       bubbles: true,
@@ -529,7 +512,7 @@ var isSafeURL = (value) => {
     try {
       const url = new URL(value, window.location.origin);
       return ["http:", "https:", "ftp:"].includes(url.protocol);
-    } catch (error) {
+    } catch (_) {
       return false;
     }
   }
@@ -617,6 +600,8 @@ var insertNode = (s, { type, where, create }) => (host, target, index) => {
         return;
       target[methods[where]](node);
     }, [target, "i"]).then(() => {
+      if (isString(s) && isFunction2(Object.getOwnPropertyDescriptor(host, s)?.set))
+        host[s] = false;
       if (isState(s))
         s.set(false);
       if (DEV_MODE && "debug" in target)

@@ -95,8 +95,13 @@ const log = <T>(value: T, msg: string, level: LogLevel = LOG_DEBUG): T => {
 	return value
 }
 
+const assert = (assertion: boolean, msg: string, ...rest: unknown[]): boolean => {
+	console.assert(assertion, msg, ...rest)
+	return assertion
+}
+
 export {
 	type LogLevel,
-	log, elementName, valueString, typeString,
+	log, assert, elementName, valueString, typeString,
 	DEV_MODE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR
 }

@@ -1,7 +1,7 @@
 import { type Signal, effect, enqueue, isSignal, isState, UNSET } from '@zeix/cause-effect'
 
 import { isFunction, isString } from '../core/util'
-import { type ComponentProps, RESET } from '../component'
+import { type ComponentProps, type Component, RESET } from '../component'
 import { DEV_MODE, elementName, log, LOG_ERROR, valueString } from '../core/log'
 
 /* === Types === */
@@ -36,10 +36,10 @@ const ops: Record<string, string> = {
 
 const resolveSignalLike = <T, P extends ComponentProps, E extends Element>(
 	s: SignalLike<T>,
-	host: HTMLElement & P,
+	host: Component<P>,
 	target: E,
 	index: number
-): T => isString(s) ? host[s as keyof P] as T
+): T => isString(s) ? host[s] as T
 	: isSignal(s) ? s.get()
 	: isFunction<T>(s) ? s(target, index)
 	: RESET
@@ -51,7 +51,7 @@ const isSafeURL = /*#__PURE__*/ (value: string): boolean => {
 			const url = new URL(value, window.location.origin)
 			return ['http:', 'https:', 'ftp:'].includes(url.protocol)
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		} catch (error) {
+		} catch (_) {
 			return false
 		}
 	}
@@ -86,7 +86,7 @@ const updateElement = <
 >(
 	s: K | SignalLike<T>,
 	updater: ElementUpdater<E, P[K] | T>
-) => (host: HTMLElement & P, target: E, index: number): void => {
+) => (host: Component<P>, target: E, index: number): void => {
 	const { op, read, update } = updater
 	const fallback = read(target)
 
@@ -148,7 +148,7 @@ const insertNode = <
 >(
 	s: K | SignalLike<boolean>,
     { type, where, create }: NodeInserter<P>
-) => (host: HTMLElement & P, target: E, index: number): void => {
+) => (host: Component<P>, target: E, index: number): void => {
 	const methods: Record<InsertPosition, keyof Element> = {
 		beforebegin: 'before',
 		afterbegin: 'prepend',
@@ -176,6 +176,7 @@ const insertNode = <
 			if (!node) return
 			(target[methods[where]] as (...nodes: Node[]) => void)(node)
 		}, [target, 'i']).then(() => {
+			if (isString(s) && isFunction(Object.getOwnPropertyDescriptor(host, s)?.set)) (host as any)[s] = false
 			if (isState<boolean>(s)) s.set(false)
 			if (DEV_MODE && 'debug' in target) log(target, `Inserted ${type} into ${elementName(host)}`)
 		}).catch((error) => {
@@ -194,8 +195,8 @@ const setText = <E extends Element>(
 	s: SignalLike<string>
 ) => updateElement(s, {
 	op: 't',
-	read: (el: E) => el.textContent,
-	update: (el: E, value: string) => {
+	read: (el: E): string | null => el.textContent,
+	update: (el: E, value: string): string => {
 		Array.from(el.childNodes)
 			.filter(node => node.nodeType !== Node.COMMENT_NODE)
 			.forEach(node => node.remove())
@@ -217,7 +218,7 @@ const setProperty = <E extends Element, K extends keyof E>(
 ) => updateElement(s, {
 	op: 'p',
 	read: (el: E) => key in el ? el[key] : UNSET,
-	update: (el: E, value: E[K]) => {
+	update: (el: E, value: E[K]): string => {
 		el[key] = value
 		return String(key)
 	}
@@ -235,12 +236,12 @@ const setAttribute = <E extends Element>(
 	s: SignalLike<string> = name
 ) => updateElement(s, {
 	op: 'a',
-	read: (el: E) => el.getAttribute(name),
-	update: (el: E, value: string) => {
+	read: (el: E): string | null => el.getAttribute(name),
+	update: (el: E, value: string): string => {
 		safeSetAttribute(el, name, value)
 		return name
 	},
-	delete: (el: E) => {
+	delete: (el: E): string => {
 		el.removeAttribute(name)
 		return name
 	}
@@ -258,8 +259,8 @@ const toggleAttribute = <E extends Element>(
 	s: SignalLike<boolean> = name
 ) => updateElement(s, {
 	op: 'a',
-	read: (el: E) => el.hasAttribute(name),
-	update: (el: E, value: boolean) => {
+	read: (el: E): boolean => el.hasAttribute(name),
+	update: (el: E, value: boolean): string => {
 		el.toggleAttribute(name, value)
 		return name
 	}
@@ -277,8 +278,8 @@ const toggleClass = <E extends Element>(
 	s: SignalLike<boolean> = token
 ) => updateElement(s, {
 	op: 'c',
-	read: (el: E) => el.classList.contains(token),
-	update: (el: E, value: boolean) => {
+	read: (el: E): boolean => el.classList.contains(token),
+	update: (el: E, value: boolean): string => {
 		el.classList.toggle(token, value)
 		return token
 	}
@@ -296,12 +297,12 @@ const setStyle = <E extends (HTMLElement | SVGElement | MathMLElement)>(
 	s: SignalLike<string> = prop
 ) => updateElement(s, {
 	op: 's',
-	read: (el: E) => el.style.getPropertyValue(prop),
-	update: (el: E, value: string) => {
+	read: (el: E): string | null => el.style.getPropertyValue(prop),
+	update: (el: E, value: string): string => {
 		el.style.setProperty(prop, value)
 		return prop
 	},
-	delete: (el: E) => {
+	delete: (el: E): string => {
 		el.style.removeProperty(prop)
 		return prop
 	}
@@ -321,8 +322,8 @@ const dangerouslySetInnerHTML = <E extends Element>(
 	allowScripts?: boolean,
 ) => updateElement(s, {
 	op: 'h',
-    read: (el: E) => (el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? '',
-    update: (el: E, html: string) => {
+    read: (el: E): string => (el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? '',
+    update: (el: E, html: string): string => {
 		if (!html) {
 			if (el.shadowRoot) el.shadowRoot.innerHTML = '<slot></slot>'
 			return ''
@@ -356,7 +357,7 @@ const insertTemplate = <P extends ComponentProps>(
 ) => insertNode(s, {
 	type: 'template content',
 	where,
-	create: (host: HTMLElement & P) => {
+	create: (host: Component<P>): Node | undefined => {
 		if (!(template instanceof HTMLTemplateElement)) {
 			log(`Invalid template to insert into ${elementName(host)}:`, LOG_ERROR)
 			return
@@ -387,12 +388,11 @@ const createElement = (
 ) => insertNode(s, {
 	type: 'new element',
 	where,
-	create: () => {
+	create: (): Node | undefined => {
         const child = document.createElement(tag)
         for (const [key, value] of Object.entries(attributes))
 			safeSetAttribute(child, key, value)
-		if (text)
-			child.textContent = text
+		if (text) child.textContent = text
         return child
     }
 })
@@ -405,7 +405,7 @@ const createElement = (
  */
 const removeElement = <E extends Element, P extends ComponentProps>(
 	s: SignalLike<boolean>
-) => (host: HTMLElement & P, target: E, index: number): void => {
+) => (host: Component<P>, target: E, index: number): void => {
 	const err = (error: unknown) =>
 		log(error, `Failed to delete ${elementName(target)} from ${elementName(host)}:`, LOG_ERROR)
 	effect(() => {

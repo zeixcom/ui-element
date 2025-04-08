@@ -1,4 +1,7 @@
-import { isComputed, isSignal, isState, state, toSignal, UNSET, type ComputedCallback, type Signal } from "@zeix/cause-effect"
+import {
+	type ComputedCallback, type Signal,
+	isComputed, isSignal, isState, state, toSignal, UNSET
+} from "@zeix/cause-effect"
 
 import { isDefinedObject, isFunction } from "./core/util"
 import { elementName, log, LOG_ERROR, valueString } from "./core/log"
@@ -12,6 +15,10 @@ type ValidPropertyKey<T> = T extends keyof HTMLElement | ReservedWords ? never :
 
 type ComponentProps = { [K in string as ValidPropertyKey<K>]: {} }
 
+type Component<P extends ComponentProps> = HTMLElement & P & {
+	set(prop: string & keyof P, signal: Signal<P[string & keyof P]>): void
+}
+
 type AttributeParser<T extends {}> = (
 	host: HTMLElement,
 	value: string | null,
@@ -22,16 +29,16 @@ type SignalInitializer<T extends {}> = T
 	| AttributeParser<T>
 	| ((host: HTMLElement, signals: Signal<{}>[]) => ComputedCallback<T>)
 
-type FxFunction = <C extends HTMLElement>(
-	host: C,
+type FxFunction<P extends ComponentProps> = (
+	host: Component<P>,
 	target?: Element,
 	index?: number
 ) => (() => void)[]
 
 type ComponentSetup<P extends ComponentProps> = (
-	host: HTMLElement & P,
-	signals: { [K in keyof P]: Signal<P[K]> }
-) => FxFunction[]
+	host: Component<P>,
+	signals: { [K in string & keyof P]: Signal<P[K]> }
+) => FxFunction<P>[]
 
 type EventListenerProvider = <E extends Element>(
 	element: E,
@@ -51,9 +58,9 @@ const RESERVED_WORDS = new Set(['constructor', 'prototype', '__proto__', 'toStri
 
 /* === Internal Functions === */
 
-const run = <C extends HTMLElement>(
-	fns: FxFunction[],
-	host: C,
+const run = <P extends ComponentProps>(
+	fns: FxFunction<P>[],
+	host: Component<P>,
 	target: Element = host,
     index: number = 0
 ): (() => void)[] =>
@@ -75,18 +82,18 @@ const validatePropertyName = (prop: string): boolean =>
 
 /* === Exported Functions === */
 
-const first = (
+const first = <P extends ComponentProps>(
 	selector: string,
-	...fns: FxFunction[]
-) => <C extends HTMLElement>(host: C): (() => void)[] => {
+	...fns: FxFunction<P>[]
+) => (host: Component<P>): (() => void)[] => {
 	const target = (host.shadowRoot || host).querySelector(selector)
 	return target ? run(fns, host, target) : []
 }
 
-const all = (
+const all = <P extends ComponentProps>(
 	selector: string,
-	...fns: FxFunction[]
-) => <C extends HTMLElement>(host: C): (() => void)[] =>
+	...fns: FxFunction<P>[]
+) => (host: Component<P>): (() => void)[] =>
 	Array.from((host.shadowRoot || host).querySelectorAll(selector))
 		.flatMap((target, index) => run(fns, host, target, index))
 
@@ -101,39 +108,30 @@ const all = (
  */
 const component = <P extends ComponentProps>(
 	name: string,
-	init: { [K in keyof P]: SignalInitializer<P[K]> } = {} as { [K in keyof P]: SignalInitializer<P[K]> },
+	init: { [K in string & keyof P]: SignalInitializer<P[K]> } = {} as { [K in string & keyof P]: SignalInitializer<P[K]> },
 	fx: ComponentSetup<P>
-): typeof HTMLElement & P => {
+): Component<P> => {
 	class CustomElement extends HTMLElement {
-		#signals: { [K in keyof P]: Signal<P[K]> } = {} as { [K in keyof P]: Signal<P[K]> }
+		#signals: { [K in string & keyof P]: Signal<P[K]> } = {} as { [K in string & keyof P]: Signal<P[K]> }
 		#cleanup: (() => void)[] = []
 	  
 		static observedAttributes = Object.entries(init)
 			?.filter(([, ini]) => isAttributeParser(ini))
 			.map(([prop]) => prop) ?? []
 	  
-		connectedCallback() {
+		constructor() {
+			super()
 			for (const [prop, ini] of Object.entries(init)) {
 				if (ini == null) continue
-				if (!validatePropertyName(prop)) {
-					log(prop, `Property name "${prop}" in <${name}> conflicts with HTMLElement properties or JavaScript reserved words.`, LOG_ERROR)
-					continue
-				}
 				const signal = isAttributeParser(ini) ? state(RESET)
-					: isFunction<P[keyof P]>(ini) ? toSignal(ini(this, this.#signals))
+					: isFunction<P[string & keyof P]>(ini) ? toSignal(ini(this))
 					: state(ini)
-				Object.defineProperty(this, prop, {
-					get: () => signal.get(),
-					set: (value: P[keyof P]) => {
-						if ('set' in signal) signal.set(value)
-						else log(prop, `Computed property "${prop}" of ${elementName(this)} cannot be set.`, LOG_ERROR)
-					},
-					enumerable: true,
-					configurable: true
-				})
-				this.#signals[prop as keyof P] = signal
+				this.set(prop, signal)
 			}
-			this.#cleanup = run(fx(this as unknown as HTMLElement & P, this.#signals), this)
+		}
+
+		connectedCallback() {
+			this.#cleanup = run(fx(this as unknown as Component<P>, this.#signals), this as unknown as Component<P>)
 		}
 		
 		disconnectedCallback() {
@@ -143,22 +141,42 @@ const component = <P extends ComponentProps>(
 		
 		attributeChangedCallback(attr: string, old: string | null, value: string | null) {
 			if (value === old || isComputed(this.#signals[attr])) return // unchanged or controlled by computed
-			const fn = init[attr as keyof P]
+			const fn = init[attr as string & keyof P]
 			if (!isAttributeParser(fn)) return
 			(this as unknown as HTMLElement & P)[attr as keyof P] = (fn(this, value, old) ?? RESET) as (HTMLElement & P)[keyof P]
 		}
+
+		set(prop: string & keyof P, signal: Signal<P[string & keyof P]>): void {
+			if (!validatePropertyName(prop)) {
+				log(prop, `Property name ${valueString(prop)} in <${elementName(this)}> conflicts with HTMLElement properties or JavaScript reserved words.`, LOG_ERROR)
+				return
+			}
+			if (!isSignal(signal)) {
+				log(signal, `Expected signal as value for property ${valueString(prop)} on ${elementName(this)}.`, LOG_ERROR)
+				return
+			}
+			const prev = this.#signals[prop]
+			Object.defineProperty(this, prop, {
+				...signal,
+				enumerable: true,
+				configurable: isState(signal)
+			})
+			this.#signals[prop] = signal
+			if (prev && isState(prev)) prev.set(UNSET)
+		}
 	}
 	customElements.define(name, CustomElement)
-	return CustomElement as unknown as typeof HTMLElement & P
+	return CustomElement as unknown as Component<P>
 }
 
 const pass = <P extends ComponentProps>(
 	signals: Partial<{ [K in keyof P]: Signal<P[K]> }>
-) => <Q extends ComponentProps>(
-	_: HTMLElement & P,
-	target: HTMLElement & Q,
+) => async <Q extends ComponentProps>(
+	_: Component<P>,
+	target: Component<Q>,
 	index = 0
 ) => {
+	await customElements.whenDefined(target.localName)
 	const sources = isProvider(signals)
 		? signals(target, index) as Partial<{ [K in keyof P]: Signal<P[K]> }>
 		: signals
@@ -166,35 +184,15 @@ const pass = <P extends ComponentProps>(
 		log(sources, `Invalid passed signals provided.`, LOG_ERROR)
 		return
 	}
-	for (const [prop, source] of Object.entries(sources)) {
-		if (!validatePropertyName(prop)) {
-			log(prop, `Property name "${prop}" in <${target}> conflicts with HTMLElement properties or JavaScript reserved words.`, LOG_ERROR)
-			continue
-		}
-		if (prop in target && isState(target[prop])) {
-			target[prop].set(UNSET) // clear previous state so watchers re-subscribe to new signal
-		}
-		const signal = toSignal(source)
-		if (!isSignal(signal)) {
-			log(prop, `Invalid source for property ${valueString(prop)} on ${elementName(target)}.`, LOG_ERROR)
-		}
-	  	Object.defineProperty(target, prop, {
-			get: () => signal.get(),
-			set: (value: P[keyof P]) => {
-				if ('set' in signal) signal.set(value)
-				else log(prop, `Computed property "${prop}" of ${elementName(target)} cannot be set.`, LOG_ERROR)
-			},
-			enumerable: true,
-			configurable: true
-		})
-	}
+	for (const [prop, source] of Object.entries(sources))
+		target.set(prop, toSignal(source))
 }
 
 const on = (
 	type: string,
 	handler: EventListenerOrEventListenerObject | EventListenerProvider
 ) => <P extends ComponentProps>(
-	host: HTMLElement & P,
+	host: Component<P>,
 	target: Element = host,
 	index = 0
 ): () => void => {
@@ -210,7 +208,7 @@ const emit = <T>(
 	type: string,
 	detail: T | ((target: Element, index: number) => T)
 ) => <P extends ComponentProps>(
-	host: HTMLElement & P,
+	host: Component<P>,
 	target: Element = host,
 	index = 0
 ): void => {
@@ -221,6 +219,6 @@ const emit = <T>(
 }
 
 export {
-	type ComponentProps, type AttributeParser, type SignalInitializer, type EventListenerProvider,
+	type ComponentProps, type Component, type AttributeParser, type SignalInitializer, type EventListenerProvider,
 	RESET, component, first, all, pass, on, emit
 }

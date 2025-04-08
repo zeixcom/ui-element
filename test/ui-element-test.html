@@ -235,9 +235,12 @@
 			first('input', setAttribute('step'), setProperty('value')),
 		])
 
-		component('child-component', {}, () => [
-			first('h1', setText('heading')),
-			first('p', setText('text'))
+		component('child-component', {
+			heading: asString(RESET),
+            text: asString(RESET)
+		}, (_, signals) => [
+			first('h1', setText(signals.heading)),
+			first('p', setText(signals.text))
 		])
 
 		component('parent-component', {
@@ -263,21 +266,20 @@
 			first('.double', setText(value.map(v => v * 2)))
 		])
 
-		component('greeting-configurator', {}, host => {
-			const firstName = host.querySelector('.first')
-			const lastName = host.querySelector('.last')
-			const fullName = host.querySelector('input-checkbox')
-			return [
-				first('hello-world', pass({
-					name: () => fullName.checked
-						? `${firstName.value} ${lastName.value}`
-						: firstName.value
-				}))
-			]
-		})
+		component('greeting-configurator', {}, host => [
+			first('hello-world', pass({
+				name: () => {
+					const firstName = host.querySelector('.first')
+					return host.querySelector('input-checkbox')?.checked
+					? `${firstName?.value} ${host.querySelector('.last')?.value}`
+					: firstName?.value
+				}
+			}))
+		])
 
 		component('hello-world', {
-			greeting: asString()
+			greeting: asString(),
+			name: asString(RESET)
 		}, () => [
 			first('span.greeting', setText('greeting')),
 			first('span.name', setText('name'))
@@ -316,12 +318,12 @@
 				}
 				const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
 				if (url.origin === location.origin) // Sanity check for cross-origin URLs
-					return url.toString()
+					return String(url)
 				host.error = 'Invalid URL origin'
 				return ''
 			},
-			content: (host, { src }) => async abort => { // Async Computed callback
-				const url = src.get()
+			content: host => async abort => { // Async Computed callback
+				const url = host.src
 				if (!url) return ''
 				try {
 					const response = await fetch(url, { signal: abort })
@@ -344,20 +346,20 @@
 		])
 
 		component('tab-list', {
-			accordion: asBoolean(),
-			active: host => {
-				() => { 
-					const panels = Array.from(host.querySelectorAll('details'))
-					for (let i = 0; i < panels.length; i++) {
-						if (panels[i].hasAttribute('open')) return i
-					}
-					return 0
+			accordion: asBoolean,
+			active: host => { 
+				const panels = Array.from(host.querySelectorAll('details'))
+				for (let i = 0; i < panels.length; i++) {
+					if (panels[i].hasAttribute('open')) return i
 				}
+				return 0
 			},
 		}, (host, { accordion, active }) => [
 			toggleAttribute('accordion'),
 			all('menu button',
-				on('click', (_, index) => () => active.set(index)),
+				on('click', (_, index) => () => {
+					active.set(index)
+				}),
 				setProperty('ariaPressed', (_, index) => String(active.get() === index))
 			),
 			all('details',
@@ -410,77 +412,6 @@
 					assert.equal(voidComponent.hasOwnProperty('test'), false)
 				})
 
-				/* it('should create a new state with set()', async function () {
-					const voidComponent = document.getElementById('void')
-					voidComponent.set('foo', 'foo')
-					await animationFrame()
-					assert.equal(voidComponent.get('foo'), 'foo')
-				})
-
-				it('should return true with has() for set state', async function () {
-					const voidComponent = document.getElementById('void')
-					voidComponent.set('bar', 'bar')
-					await animationFrame()
-					assert.equal(voidComponent.has('bar'), true)
-				})
-
-				it('should update an existing state with set()', async function () {
-					const voidComponent = document.getElementById('void')
-					for (let i = 1; i <= 10; i++) {
-						voidComponent.set('test', i)
-					}
-					await animationFrame()
-					assert.equal(voidComponent.get('test'), 10)
-				})
-
-				it('should trigger dependent effects with set()', async function () {
-					const voidComponent = document.getElementById('void2')
-					voidComponent.set('foo', 'test', false)
-					let effectDidRun = false
-					effect(() => {
-						voidComponent.get('foo')
-						effectDidRun = true
-					})
-					await animationFrame()
-					assert.isTrue(effectDidRun)
-				})
-
-				it('should trigger dependent effects with set() again after change', async function () {
-					const voidComponent = document.getElementById('void2')
-					voidComponent.set('foo', 'test', false)
-					let effectDidRun = false
-					effect(() => {
-						voidComponent.get('foo')
-						effectDidRun = true
-					})
-					voidComponent.set('foo', 'bar')
-					await animationFrame()
-					assert.isTrue(effectDidRun)
-				})
-
-				it('repeated set() should trigger dependent effect only once', async function () {
-					const voidComponent = document.getElementById('void2')
-					voidComponent.set('bar', 0)
-					let result = 0
-					batch(() => {
-						for (let i = 1; i <= 10; i++) {
-							voidComponent.set('bar', i)
-						}
-					})
-					effect(() => {
-						voidComponent.get('bar')
-						result++
-					})
-					assert.equal(result, 1)
-				})
-
-				it('should return false with has() for deleted state', async function () {
-					const voidComponent = document.getElementById('void')
-					voidComponent.set('test', 'test')
-					voidComponent.delete('test')
-					await animationFrame()
-					assert.equal(voidComponent.has('test'), false)
-				}) */
 			})
 
 			describe('Causal component', function () {

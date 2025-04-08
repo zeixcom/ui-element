@@ -20,7 +20,7 @@
 	<script type="module">
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
-		import { component, state, first, provide, consume, asString, setText } from '../index.dev.js'
+		import { RESET, component, state, first, provide, consume, asString, setText } from '../index.dev.js'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 		const animationFrame = async () => new Promise(requestAnimationFrame)
@@ -44,7 +44,7 @@
 		])
 
 		component('user-context', {
-			'display-name': asString()
+			'display-name': asString(RESET)
 		}, (_, signals) => [
 			provide(signals)
 		])		
