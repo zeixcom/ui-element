@@ -218,7 +218,7 @@
 		])
 
 		component('updating-component', {
-			heading: asString(),
+			heading: asString(RESET),
 			count: asInteger(),
 			step: asNumber(),
 			value: (host, value) => {
@@ -238,61 +238,57 @@
 		component('child-component', {
 			heading: asString(RESET),
             text: asString(RESET)
-		}, (_, signals) => [
-			first('h1', setText(signals.heading)),
-			first('p', setText(signals.text))
+		}, () => [
+			first('h1', setText('heading')),
+			first('p', setText('text'))
 		])
 
 		component('parent-component', {
-			heading: asString(),
-		}, (_, { heading }) => [
+			heading: asString(RESET),
+		}, host => [
 			first('child-component', pass({
-				heading,
-                text: heading.map(v => v.toUpperCase())
+				heading: 'heading',
+                text: () => host.heading.toUpperCase()
 			}))
 		])
 
 		component('my-counter', {
 			value: asInteger()
-		}, (_, { value }) => [
-			first('.decrement', on('click', () => {
-				value.update(v => --v)
-			})),
-			first('.increment', on('click', () => {
-				value.update(v => ++v)
-			})),
+		}, host => [
+			first('.decrement', on('click', () => { host.value-- })),
+			first('.increment', on('click', () => { host.value++ })),
 			first('.value', setText('value')),
-			first('.parity', setText(value.map(v => v % 2 ? 'odd' : 'even'))),
-			first('.double', setText(value.map(v => v * 2)))
+			first('.parity', setText(() => host.value % 2 ? 'odd' : 'even')),
+			first('.double', setText(() => host.value * 2))
 		])
 
 		component('greeting-configurator', {}, host => [
 			first('hello-world', pass({
 				name: () => {
 					const firstName = host.querySelector('.first')
-					return host.querySelector('input-checkbox')?.checked
-					? `${firstName?.value} ${host.querySelector('.last')?.value}`
-					: firstName?.value
+					const lastName = host.querySelector('.last')
+					const useFullname = host.querySelector('input-checkbox')
+					return useFullname.checked
+						? `${firstName.value} ${lastName.value}`
+						: firstName.value
 				}
 			}))
 		])
 
 		component('hello-world', {
-			greeting: asString(),
-			name: asString(RESET)
+			greeting: asString(RESET),
+			name: asString('World')
 		}, () => [
-			first('span.greeting', setText('greeting')),
-			first('span.name', setText('name'))
+			first('.greeting', setText('greeting')),
+			first('.name', setText('name'))
 		])
 
 		component('input-field', {
-			value: asString()
+			value: asString(RESET)
 		}, host => [
 			first('input',
 				setProperty('value'),
-			    on('change', e => {
-					host.value = e.target.value
-				})
+			    on('change', e => { host.value = e.target.value })
 			)
 		])
 
@@ -301,9 +297,7 @@
 		}, host => [
 			first('input',
 				setProperty('checked'),
-				on('change', e => {
-					host.checked = e.target.checked
-				})
+				on('change', e => { host.checked = e.target.checked })
 			)
 		])
 
@@ -337,10 +331,10 @@
 				return ''
 			},
 			error: '',
-		}, (host, { error }) => [
+		}, host => [
 			first('.error',
-				setText(error),
-				toggleAttribute('hidden', error.map(v => !v))
+				setText('error'),
+				setProperty('hidden', () => !host.error)
 			),
 			dangerouslySetInnerHTML('content', 'open')
 		])
@@ -354,39 +348,37 @@
 				}
 				return 0
 			},
-		}, (host, { accordion, active }) => [
+		}, host => [
 			toggleAttribute('accordion'),
 			all('menu button',
-				on('click', (_, index) => () => {
-					active.set(index)
-				}),
-				setProperty('ariaPressed', (_, index) => String(active.get() === index))
+				on('click', (_, index) => () => { host.active = index }),
+				setProperty('ariaPressed', (_, index) => String(host.active === index))
 			),
 			all('details',
-				setProperty('open', (_, index) => !!(active.get() === index)),
-				setAttribute('aria-disabled', () => String(!accordion.get()))
+				setProperty('open', (_, index) => !!(host.active === index)),
+				setAttribute('aria-disabled', () => String(!host.accordion))
 			),
 			all('summary',
-				toggleClass('visually-hidden', () => !accordion.get())
+				toggleClass('visually-hidden', () => !host.accordion)
 			)
 		])
 
 		component('post-reply', {
 			message: '',
 			formIsHidden: true
-		}, (host, { message, formIsHidden }) => [
-			first('button', on('click', () => {
-				host.formIsHidden = false
-			})),
+		}, host => [
+			first('button',
+				on('click', () => { host.formIsHidden = false })
+			),
 			first('form',
 				on('submit', e => {
 					e.preventDefault()
 					host.message = host.querySelector('textarea').value
 					host.formIsHidden = true
 				}),
-				setProperty('hidden', formIsHidden)
+				setProperty('hidden', 'formIsHidden')
 			),
-			insertTemplate(host.querySelector('template'), () => !!message.get())
+			insertTemplate(host.querySelector('template'), () => !!host.message)
 		])
 
 		runTests(() => {

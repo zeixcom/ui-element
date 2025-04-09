@@ -1,6 +1,6 @@
 import type { Signal } from "@zeix/cause-effect"
 
-import { type ComponentProps, on } from "../component"
+import { type Component, type ComponentProps } from "../component"
 import { isFunction } from "./util"
 
 /** @see https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md */
@@ -81,15 +81,19 @@ class ContextRequestEvent<T extends UnknownContext> extends Event {
 }
 
 const provide = <P extends ComponentProps>(
-	signals: Partial<{ [K in keyof P]: Signal<P[K]> }>
-) => on(CONTEXT_REQUEST, (e: Event) => {
-	const { context, callback } = e as ContextRequestEvent<Context<unknown, P[keyof P]>>
-	const key: keyof P = String(context)
-	if (Object.keys(signals).includes(key) && isFunction(callback)) {
-		e.stopPropagation()
-		callback(signals[key])
+	provided: Context<keyof P, Signal<P[keyof P]>>[],
+) => (host: Component<P>) => {
+	const listener = (e: Event) => {
+		const { context, callback } = e as ContextRequestEvent<Context<keyof P, Signal<P[keyof P]>>>
+		if (provided.includes(context) && isFunction(callback)) {
+			e.stopPropagation()
+			callback(host.get(String(context)))
+		}
 	}
-})
+	host.addEventListener(CONTEXT_REQUEST, listener)
+	return () => host.removeEventListener(CONTEXT_REQUEST, listener)
+}
+
 const consume = <T extends {}, C extends HTMLElement>(
 	context: Context<string, Signal<T>>
 ) => (host: C) => {

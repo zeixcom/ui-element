@@ -1,9 +1,9 @@
 import {
 	type ComputedCallback, type Signal,
-	isComputed, isSignal, isState, state, toSignal, UNSET
+	isComputed, isSignal, isState, toSignal, UNSET
 } from "@zeix/cause-effect"
 
-import { isDefinedObject, isFunction } from "./core/util"
+import { isDefinedObject, isFunction, isString } from "./core/util"
 import { elementName, log, LOG_ERROR, valueString } from "./core/log"
 
 /* === Types === */
@@ -16,7 +16,12 @@ type ValidPropertyKey<T> = T extends keyof HTMLElement | ReservedWords ? never :
 type ComponentProps = { [K in string as ValidPropertyKey<K>]: {} }
 
 type Component<P extends ComponentProps> = HTMLElement & P & {
+	debug?: boolean
+	attributeChangedCallback(name: string, old: string | null, value: string | null): void
+	has(prop: string & keyof P): boolean
+	get(prop: string & keyof P): Signal<P[string & keyof P]>
 	set(prop: string & keyof P, signal: Signal<P[string & keyof P]>): void
+	delete(prop: string & keyof P): void
 }
 
 type AttributeParser<T extends {}> = (
@@ -27,7 +32,7 @@ type AttributeParser<T extends {}> = (
 
 type SignalInitializer<T extends {}> = T
 	| AttributeParser<T>
-	| ((host: HTMLElement, signals: Signal<{}>[]) => ComputedCallback<T>)
+	| ((host: HTMLElement) => T | ComputedCallback<T>)
 
 type FxFunction<P extends ComponentProps> = (
 	host: Component<P>,
@@ -37,7 +42,6 @@ type FxFunction<P extends ComponentProps> = (
 
 type ComponentSetup<P extends ComponentProps> = (
 	host: Component<P>,
-	signals: { [K in string & keyof P]: Signal<P[K]> }
 ) => FxFunction<P>[]
 
 type EventListenerProvider = <E extends Element>(
@@ -103,13 +107,13 @@ const all = <P extends ComponentProps>(
  * @since 0.12.0
  * @param {string} name - name of the custom element
  * @param {{ [K in keyof S]: SignalInitializer<S[K]> }} init - states of the component
- * @param {FxFunction<S>[]} fx - setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
+ * @param {FxFunction<S>[]} setup - setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
  * @returns {typeof HTMLElement & P} - constructor function for the custom element
  */
 const component = <P extends ComponentProps>(
 	name: string,
 	init: { [K in string & keyof P]: SignalInitializer<P[K]> } = {} as { [K in string & keyof P]: SignalInitializer<P[K]> },
-	fx: ComponentSetup<P>
+	setup: ComponentSetup<P>
 ): Component<P> => {
 	class CustomElement extends HTMLElement {
 		#signals: { [K in string & keyof P]: Signal<P[K]> } = {} as { [K in string & keyof P]: Signal<P[K]> }
@@ -117,21 +121,21 @@ const component = <P extends ComponentProps>(
 	  
 		static observedAttributes = Object.entries(init)
 			?.filter(([, ini]) => isAttributeParser(ini))
-			.map(([prop]) => prop) ?? []
+			.map(([prop]) => prop)?? []
 	  
 		constructor() {
 			super()
 			for (const [prop, ini] of Object.entries(init)) {
 				if (ini == null) continue
-				const signal = isAttributeParser(ini) ? state(RESET)
-					: isFunction<P[string & keyof P]>(ini) ? toSignal(ini(this))
-					: state(ini)
-				this.set(prop, signal)
+				const result = isAttributeParser(ini) ? ini(this, null)
+					: isFunction<P[string & keyof P]>(ini) ? ini(this)
+					: ini
+				this.set(prop, toSignal(result ?? RESET))
 			}
 		}
 
 		connectedCallback() {
-			this.#cleanup = run(fx(this as unknown as Component<P>, this.#signals), this as unknown as Component<P>)
+			this.#cleanup = run(setup(this as unknown as Component<P>), this as unknown as Component<P>)
 		}
 		
 		disconnectedCallback() {
@@ -141,9 +145,17 @@ const component = <P extends ComponentProps>(
 		
 		attributeChangedCallback(attr: string, old: string | null, value: string | null) {
 			if (value === old || isComputed(this.#signals[attr])) return // unchanged or controlled by computed
-			const fn = init[attr as string & keyof P]
-			if (!isAttributeParser(fn)) return
-			(this as unknown as HTMLElement & P)[attr as keyof P] = (fn(this, value, old) ?? RESET) as (HTMLElement & P)[keyof P]
+			const parse = init[attr]
+			if (!isAttributeParser<P[keyof P]>(parse)) return
+			(this as unknown as P)[attr as keyof P] = parse(this as unknown as Component<P>, value, old)
+		}
+
+		has(prop: string & keyof P): boolean {
+			return prop in this.#signals
+		}
+
+		get(prop: string & keyof P): Signal<P[string & keyof P]> {
+			return this.#signals[prop]
 		}
 
 		set(prop: string & keyof P, signal: Signal<P[string & keyof P]>): void {
@@ -156,36 +168,49 @@ const component = <P extends ComponentProps>(
 				return
 			}
 			const prev = this.#signals[prop]
-			Object.defineProperty(this, prop, {
-				...signal,
-				enumerable: true,
-				configurable: isState(signal)
-			})
+			const writable = isState(signal)
 			this.#signals[prop] = signal
+			Object.defineProperty(this, prop, {
+				get: signal.get,
+				set: writable ? signal.set : undefined,
+				enumerable: true,
+				configurable: writable,
+			})
 			if (prev && isState(prev)) prev.set(UNSET)
+		}
+
+		delete(prop: string & keyof P): boolean {
+			const signal = this.#signals[prop]
+			if (isState(signal)) {
+				signal.set(UNSET)
+				delete (this as unknown as Component<P>)[prop]
+			}
+			return delete this.#signals[prop]
 		}
 	}
 	customElements.define(name, CustomElement)
 	return CustomElement as unknown as Component<P>
 }
 
-const pass = <P extends ComponentProps>(
-	signals: Partial<{ [K in keyof P]: Signal<P[K]> }>
-) => async <Q extends ComponentProps>(
-	_: Component<P>,
+const pass = <P extends ComponentProps, Q extends ComponentProps>(
+	signals: Partial<{ [K in keyof Q]: Signal<Q[K]> }>
+) => async (
+	host: Component<P>,
 	target: Component<Q>,
 	index = 0
 ) => {
 	await customElements.whenDefined(target.localName)
 	const sources = isProvider(signals)
-		? signals(target, index) as Partial<{ [K in keyof P]: Signal<P[K]> }>
+		? signals(target, index) as Partial<{ [K in keyof Q]: Signal<Q[K]> }>
 		: signals
 	if (!isDefinedObject(sources)) {
 		log(sources, `Invalid passed signals provided.`, LOG_ERROR)
 		return
 	}
-	for (const [prop, source] of Object.entries(sources))
-		target.set(prop, toSignal(source))
+	for (const [prop, source] of Object.entries(sources)) {
+		const signal = isString(source) ? host.get(prop) : toSignal(source)
+		target.set(prop, signal)
+	}
 }
 
 const on = (

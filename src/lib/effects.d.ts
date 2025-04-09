@@ -89,7 +89,12 @@ declare const dangerouslySetInnerHTML: <E extends Element>(s: SignalLike<string>
  * @param {InsertPosition} where - position to insert the template relative to the target element ('beforebegin', 'afterbegin', 'beforeend', 'afterend')
  */
 declare const insertTemplate: <P extends ComponentProps>(template: HTMLTemplateElement, s: SignalLike<boolean>, where?: InsertPosition) => (host: Component<P & {
+    debug?: boolean;
+    attributeChangedCallback(name: string, old: string | null, value: string | null): void;
+    has(prop: string & keyof P): boolean;
+    get(prop: string & keyof P): Signal<P[string & keyof P]>;
     set(prop: string & keyof P, signal: Signal<P[string & keyof P]>): void;
+    delete(prop: string & keyof P): void;
 }>, target: Element, index: number) => void;
 /**
  * Create an element with a given tag name and optionally set its attributes

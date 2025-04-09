@@ -88,19 +88,16 @@
 		component('update-attribute', {
 			required: asBoolean,
 			ariaInvalid: 'false'
-		}, (host, { required, ariaInvalid }) => [
+		}, host => [
 			first('input',
 				on('change', e => {
 					host.ariaInvalid = String(!e.target.checkValidity())
 				}),
 				toggleAttribute('required'),
                 setAttribute('aria-errormessage',
-					computed({
-						signals: [required, ariaInvalid],
-						ok: (r, i) => r && i !== 'false'
-							? host.querySelector('p').id
-							: RESET
-					})
+					() => host.required && host.ariaInvalid !== 'false'
+						? host.querySelector('p').id
+						: RESET
 				)
 			)
 		])

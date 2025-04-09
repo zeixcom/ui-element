@@ -1,5 +1,5 @@
 import type { Signal } from "@zeix/cause-effect";
-import { type ComponentProps } from "../component";
+import { type Component, type ComponentProps } from "../component";
 /** @see https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md */
 /**
  * A context key.
@@ -59,6 +59,6 @@ declare class ContextRequestEvent<T extends UnknownContext> extends Event {
     readonly subscribe: boolean;
     constructor(context: T, callback: ContextCallback<ContextType<T>>, subscribe?: boolean);
 }
-declare const provide: <P extends ComponentProps>(signals: Partial<{ [K in keyof P]: Signal<P[K]>; }>) => <P_1 extends ComponentProps>(host: import("../component").Component<P_1>, target?: Element, index?: number) => () => void;
+declare const provide: <P extends ComponentProps>(provided: Context<keyof P, Signal<P[keyof P]>>[]) => (host: Component<P>) => () => void;
 declare const consume: <T extends {}, C extends HTMLElement>(context: Context<string, Signal<T>>) => (host: C) => undefined;
 export { type Context, type UnknownContext, CONTEXT_REQUEST, ContextRequestEvent, provide, consume };

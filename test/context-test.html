@@ -33,8 +33,8 @@
 				mql.onchange = e => reducedMotion.set(e.matches)
 				return reducedMotion
 			}
-		}, (_, signals) => [
-			provide(signals)
+		}, () => [
+			provide(['reduced-motion'])
 		])
 
 		component('my-animation', {
@@ -45,8 +45,8 @@
 
 		component('user-context', {
 			'display-name': asString(RESET)
-		}, (_, signals) => [
-			provide(signals)
+		}, () => [
+			provide(['display-name'])
 		])		
 
 		component('hello-world', {

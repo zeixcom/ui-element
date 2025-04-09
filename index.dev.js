@@ -361,7 +361,7 @@ var first = (selector, ...fns) => (host) => {
   return target ? run(fns, host, target) : [];
 };
 var all = (selector, ...fns) => (host) => Array.from((host.shadowRoot || host).querySelectorAll(selector)).flatMap((target, index) => run(fns, host, target, index));
-var component = (name, init = {}, fx) => {
+var component = (name, init = {}, setup) => {
 
   class CustomElement extends HTMLElement {
     #signals = {};
@@ -372,12 +372,12 @@ var component = (name, init = {}, fx) => {
       for (const [prop, ini] of Object.entries(init)) {
         if (ini == null)
           continue;
-        const signal = isAttributeParser(ini) ? state(RESET) : isFunction2(ini) ? toSignal(ini(this)) : state(ini);
-        this.set(prop, signal);
+        const result = isAttributeParser(ini) ? ini(this, null) : isFunction2(ini) ? ini(this) : ini;
+        this.set(prop, toSignal(result ?? RESET));
       }
     }
     connectedCallback() {
-      this.#cleanup = run(fx(this, this.#signals), this);
+      this.#cleanup = run(setup(this), this);
     }
     disconnectedCallback() {
       for (const off of this.#cleanup)
@@ -387,10 +387,16 @@ var component = (name, init = {}, fx) => {
     attributeChangedCallback(attr, old, value) {
       if (value === old || isComputed(this.#signals[attr]))
         return;
-      const fn = init[attr];
-      if (!isAttributeParser(fn))
+      const parse = init[attr];
+      if (!isAttributeParser(parse))
         return;
-      this[attr] = fn(this, value, old) ?? RESET;
+      this[attr] = parse(this, value, old);
+    }
+    has(prop) {
+      return prop in this.#signals;
+    }
+    get(prop) {
+      return this.#signals[prop];
     }
     set(prop, signal) {
       if (!validatePropertyName(prop)) {
@@ -402,28 +408,40 @@ var component = (name, init = {}, fx) => {
         return;
       }
       const prev = this.#signals[prop];
-      Object.defineProperty(this, prop, {
-        ...signal,
-        enumerable: true,
-        configurable: isState(signal)
-      });
+      const writable = isState(signal);
       this.#signals[prop] = signal;
+      Object.defineProperty(this, prop, {
+        get: signal.get,
+        set: writable ? signal.set : undefined,
+        enumerable: true,
+        configurable: writable
+      });
       if (prev && isState(prev))
         prev.set(UNSET);
+    }
+    delete(prop) {
+      const signal = this.#signals[prop];
+      if (isState(signal)) {
+        signal.set(UNSET);
+        delete this[prop];
+      }
+      return delete this.#signals[prop];
     }
   }
   customElements.define(name, CustomElement);
   return CustomElement;
 };
-var pass = (signals) => async (_, target, index = 0) => {
+var pass = (signals) => async (host, target, index = 0) => {
   await customElements.whenDefined(target.localName);
   const sources = isProvider(signals) ? signals(target, index) : signals;
   if (!isDefinedObject(sources)) {
     log(sources, `Invalid passed signals provided.`, LOG_ERROR);
     return;
   }
-  for (const [prop, source] of Object.entries(sources))
-    target.set(prop, toSignal(source));
+  for (const [prop, source] of Object.entries(sources)) {
+    const signal = isString(source) ? host.get(prop) : toSignal(source);
+    target.set(prop, signal);
+  }
 };
 var on = (type, handler) => (host, target = host, index = 0) => {
   const listener = isProvider(handler) ? handler(target, index) : handler;
@@ -456,14 +474,17 @@ class ContextRequestEvent extends Event {
     this.subscribe = subscribe2;
   }
 }
-var provide = (signals) => on(CONTEXT_REQUEST, (e) => {
-  const { context, callback } = e;
-  const key = String(context);
-  if (Object.keys(signals).includes(key) && isFunction2(callback)) {
-    e.stopPropagation();
-    callback(signals[key]);
-  }
-});
+var provide = (provided) => (host) => {
+  const listener = (e) => {
+    const { context, callback } = e;
+    if (provided.includes(context) && isFunction2(callback)) {
+      e.stopPropagation();
+      callback(host.get(String(context)));
+    }
+  };
+  host.addEventListener(CONTEXT_REQUEST, listener);
+  return () => host.removeEventListener(CONTEXT_REQUEST, listener);
+};
 var consume = (context) => (host) => {
   let consumed;
   host.dispatchEvent(new ContextRequestEvent(context, (value) => {
@@ -504,7 +525,7 @@ var ops = {
   s: "style property ",
   t: "text content"
 };
-var resolveSignalLike = (s, host, target, index) => isString(s) ? host[s] : isSignal(s) ? s.get() : isFunction2(s) ? s(target, index) : RESET;
+var resolveSignalLike = (s, host, target, index) => isString(s) ? host.get(s).get() : isSignal(s) ? s.get() : isFunction2(s) ? s(target, index) : RESET;
 var isSafeURL = (value) => {
   if (/^(mailto|tel):/i.test(value))
     return true;
@@ -530,7 +551,7 @@ var updateElement = (s, updater) => (host, target, index) => {
   const { op, read, update } = updater;
   const fallback = read(target);
   if (isString(s) && isString(fallback) && host[s] === RESET)
-    host.setAttribute(s, fallback);
+    host.attributeChangedCallback(s, null, fallback);
   const err = (error, verb, prop = "element") => log(error, `Failed to ${verb} ${prop} ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
   effect(() => {
     let value = RESET;
@@ -550,7 +571,7 @@ var updateElement = (s, updater) => (host, target, index) => {
         name = updater.delete(target);
         return true;
       }, [target, op]).then(() => {
-        if (DEV_MODE && "debug" in target)
+        if (DEV_MODE && host.debug)
           log(target, `Deleted ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`);
       }).catch((error) => {
         err(error, "delete", `${ops[op] + name} of`);
@@ -564,7 +585,7 @@ var updateElement = (s, updater) => (host, target, index) => {
         name = update(target, value);
         return true;
       }, [target, op]).then(() => {
-        if (DEV_MODE && "debug" in target)
+        if (DEV_MODE && host.debug)
           log(target, `Updated ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`);
       }).catch((error) => {
         err(error, "update", `${ops[op] + name} of`);
@@ -600,11 +621,11 @@ var insertNode = (s, { type, where, create }) => (host, target, index) => {
         return;
       target[methods[where]](node);
     }, [target, "i"]).then(() => {
-      if (isString(s) && isFunction2(Object.getOwnPropertyDescriptor(host, s)?.set))
+      if (isString(s) && Object.getOwnPropertyDescriptor(host, s)?.set)
         host[s] = false;
       if (isState(s))
         s.set(false);
-      if (DEV_MODE && "debug" in target)
+      if (DEV_MODE && host.debug)
         log(target, `Inserted ${type} into ${elementName(host)}`);
     }).catch((error) => {
       err(error);
@@ -732,7 +753,7 @@ var removeElement = (s) => (host, target, index) => {
       target.remove();
       return true;
     }, [target, "r"]).then(() => {
-      if (DEV_MODE && "debug" in target)
+      if (DEV_MODE && host.debug)
         log(target, `Deleted ${elementName(target)} into ${elementName(host)}`);
     }).catch((error) => {
       err(error);

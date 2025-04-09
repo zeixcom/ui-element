@@ -39,7 +39,7 @@ const resolveSignalLike = <T, P extends ComponentProps, E extends Element>(
 	host: Component<P>,
 	target: E,
 	index: number
-): T => isString(s) ? host[s] as T
+): T => isString(s) ? host.get(s).get() as T
 	: isSignal(s) ? s.get()
 	: isFunction<T>(s) ? s(target, index)
 	: RESET
@@ -92,7 +92,7 @@ const updateElement = <
 
 	// If not yet set, set signal value to value read from DOM
 	if (isString(s) && isString(fallback) && host[s as K] === RESET)
-		host.setAttribute(s, fallback)
+		host.attributeChangedCallback(s, null, fallback)
 
 	const err = (error: unknown, verb: string, prop: string = 'element') =>
 		log(error, `Failed to ${verb} ${prop} ${elementName(target)} in ${elementName(host)}`, LOG_ERROR)
@@ -116,7 +116,8 @@ const updateElement = <
                 name = updater.delete!(target)
                 return true
             }, [target, op]).then(() => {
-				if (DEV_MODE && 'debug' in target) log(target, `Deleted ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
+				if (DEV_MODE && host.debug)
+					log(target, `Deleted ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
 			}).catch((error) => {
 				err(error, 'delete', `${ops[op] + name} of`)
 			})
@@ -130,7 +131,8 @@ const updateElement = <
 				name = update(target, value)
 				return true
 			}, [target, op]).then(() => {
-				if (DEV_MODE && 'debug' in target) log(target, `Updated ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
+				if (DEV_MODE && host.debug)
+					log(target, `Updated ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
 			}).catch((error) => {
 				err(error, 'update', `${ops[op] + name} of`)
 			})
@@ -176,9 +178,12 @@ const insertNode = <
 			if (!node) return
 			(target[methods[where]] as (...nodes: Node[]) => void)(node)
 		}, [target, 'i']).then(() => {
-			if (isString(s) && isFunction(Object.getOwnPropertyDescriptor(host, s)?.set)) (host as any)[s] = false
-			if (isState<boolean>(s)) s.set(false)
-			if (DEV_MODE && 'debug' in target) log(target, `Inserted ${type} into ${elementName(host)}`)
+			if (isString(s) && Object.getOwnPropertyDescriptor(host, s)?.set)
+				(host as any)[s] = false
+			if (isState<boolean>(s))
+				s.set(false)
+			if (DEV_MODE && host.debug)
+				log(target, `Inserted ${type} into ${elementName(host)}`)
 		}).catch((error) => {
 			err(error)
 		})
@@ -421,7 +426,7 @@ const removeElement = <E extends Element, P extends ComponentProps>(
 			target.remove()
 			return true
 		}, [target, 'r']).then(() => {
-			if (DEV_MODE && 'debug' in target) log(target, `Deleted ${elementName(target)} into ${elementName(host)}`)
+			if (DEV_MODE && host.debug) log(target, `Deleted ${elementName(target)} into ${elementName(host)}`)
 		}).catch((error) => {
 			err(error)
 		})
