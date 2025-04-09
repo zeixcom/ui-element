@@ -14,12 +14,12 @@ type Component<P extends ComponentProps> = HTMLElement & P & {
 };
 type AttributeParser<T extends {}> = (host: HTMLElement, value: string | null, old?: string | null) => T;
 type SignalInitializer<T extends {}> = T | AttributeParser<T> | ((host: HTMLElement) => T | ComputedCallback<T>);
-type FxFunction<P extends ComponentProps> = (host: Component<P>, target?: Element, index?: number) => (() => void)[];
-type ComponentSetup<P extends ComponentProps> = (host: Component<P>) => FxFunction<P>[];
+type FxFunction<P extends ComponentProps, E extends Element> = (host: Component<P>, target: E, index?: number) => (() => void)[];
+type ComponentSetup<P extends ComponentProps> = (host: Component<P>) => FxFunction<P, Component<P>>[];
 type EventListenerProvider = <E extends Element>(element: E, index: number) => EventListenerOrEventListenerObject;
 declare const RESET: any;
-declare const first: <P extends ComponentProps>(selector: string, ...fns: FxFunction<P>[]) => (host: Component<P>) => (() => void)[];
-declare const all: <P extends ComponentProps>(selector: string, ...fns: FxFunction<P>[]) => (host: Component<P>) => (() => void)[];
+declare const first: <E extends Element, P extends ComponentProps = ComponentProps>(selector: string, ...fns: FxFunction<P, E>[]) => (host: Component<P>) => (() => void)[];
+declare const all: <E extends Element, P extends ComponentProps = ComponentProps>(selector: string, ...fns: FxFunction<P, E>[]) => (host: Component<P>) => (() => void)[];
 /**
  * Define a component with its states and setup function (connectedCallback)
  *

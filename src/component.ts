@@ -34,15 +34,15 @@ type SignalInitializer<T extends {}> = T
 	| AttributeParser<T>
 	| ((host: HTMLElement) => T | ComputedCallback<T>)
 
-type FxFunction<P extends ComponentProps> = (
+type FxFunction<P extends ComponentProps, E extends Element> = (
 	host: Component<P>,
-	target?: Element,
+	target: E,
 	index?: number
 ) => (() => void)[]
 
 type ComponentSetup<P extends ComponentProps> = (
 	host: Component<P>,
-) => FxFunction<P>[]
+) => FxFunction<P, Component<P>>[]
 
 type EventListenerProvider = <E extends Element>(
 	element: E,
@@ -62,10 +62,10 @@ const RESERVED_WORDS = new Set(['constructor', 'prototype', '__proto__', 'toStri
 
 /* === Internal Functions === */
 
-const run = <P extends ComponentProps>(
-	fns: FxFunction<P>[],
+const run = <P extends ComponentProps, E extends Element>(
+	fns: FxFunction<P, E>[],
 	host: Component<P>,
-	target: Element = host,
+	target: E,
     index: number = 0
 ): (() => void)[] =>
 	fns.flatMap(fn => {
@@ -86,19 +86,19 @@ const validatePropertyName = (prop: string): boolean =>
 
 /* === Exported Functions === */
 
-const first = <P extends ComponentProps>(
+const first = <E extends Element, P extends ComponentProps>(
 	selector: string,
-	...fns: FxFunction<P>[]
+	...fns: FxFunction<P, E>[]
 ) => (host: Component<P>): (() => void)[] => {
-	const target = (host.shadowRoot || host).querySelector(selector)
+	const target = (host.shadowRoot || host).querySelector<E>(selector)
 	return target ? run(fns, host, target) : []
 }
 
-const all = <P extends ComponentProps>(
+const all = <E extends Element, P extends ComponentProps>(
 	selector: string,
-	...fns: FxFunction<P>[]
+	...fns: FxFunction<P, E>[]
 ) => (host: Component<P>): (() => void)[] =>
-	Array.from((host.shadowRoot || host).querySelectorAll(selector))
+	Array.from((host.shadowRoot || host).querySelectorAll<E>(selector))
 		.flatMap((target, index) => run(fns, host, target, index))
 
 /**
@@ -135,7 +135,11 @@ const component = <P extends ComponentProps>(
 		}
 
 		connectedCallback() {
-			this.#cleanup = run(setup(this as unknown as Component<P>), this as unknown as Component<P>)
+			this.#cleanup = run(
+				setup(this as unknown as Component<P>),
+				this as unknown as Component<P>,
+				this as unknown as Component<P>
+			)
 		}
 		
 		disconnectedCallback() {

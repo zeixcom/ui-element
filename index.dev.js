@@ -349,7 +349,7 @@ var RESERVED_WORDS = new Set([
   "propertyIsEnumerable",
   "toLocaleString"
 ]);
-var run = (fns, host, target = host, index = 0) => fns.flatMap((fn) => {
+var run = (fns, host, target, index = 0) => fns.flatMap((fn) => {
   const cleanup = isFunction2(fn) ? fn(host, target, index) : [];
   return Array.isArray(cleanup) ? cleanup.filter(isFunction2) : isFunction2(cleanup) ? [cleanup] : [];
 });
@@ -377,7 +377,7 @@ var component = (name, init = {}, setup) => {
       }
     }
     connectedCallback() {
-      this.#cleanup = run(setup(this), this);
+      this.#cleanup = run(setup(this), this, this);
     }
     disconnectedCallback() {
       for (const off of this.#cleanup)
@@ -547,13 +547,13 @@ var safeSetAttribute = (element, attr, value) => {
     throw new Error(`Unsafe URL for ${attr}: ${value}`);
   element.setAttribute(attr, value);
 };
-var updateElement = (s, updater) => (host, target, index) => {
+var updateElement = (s, updater) => (host, target, index = 0) => {
   const { op, read, update } = updater;
   const fallback = read(target);
   if (isString(s) && isString(fallback) && host[s] === RESET)
     host.attributeChangedCallback(s, null, fallback);
   const err = (error, verb, prop = "element") => log(error, `Failed to ${verb} ${prop} ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
-  effect(() => {
+  return [effect(() => {
     let value = RESET;
     try {
       value = resolveSignalLike(s, host, target, index);
@@ -591,9 +591,9 @@ var updateElement = (s, updater) => (host, target, index) => {
         err(error, "update", `${ops[op] + name} of`);
       });
     }
-  });
+  })];
 };
-var insertNode = (s, { type, where, create }) => (host, target, index) => {
+var insertNode = (s, { type, where, create }) => (host, target, index = 0) => {
   const methods = {
     beforebegin: "before",
     afterbegin: "prepend",
@@ -602,10 +602,10 @@ var insertNode = (s, { type, where, create }) => (host, target, index) => {
   };
   if (!isFunction2(target[methods[where]])) {
     log(`Invalid insertPosition ${valueString(where)} for ${elementName(host)}:`, LOG_ERROR);
-    return;
+    return [];
   }
   const err = (error) => log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR);
-  effect(() => {
+  return [effect(() => {
     let really = false;
     try {
       really = resolveSignalLike(s, host, target, index);
@@ -630,7 +630,7 @@ var insertNode = (s, { type, where, create }) => (host, target, index) => {
     }).catch((error) => {
       err(error);
     });
-  });
+  })];
 };
 var setText = (s) => updateElement(s, {
   op: "t",
@@ -737,9 +737,9 @@ var createElement = (tag, s, where = "beforeend", attributes = {}, text) => inse
     return child;
   }
 });
-var removeElement = (s) => (host, target, index) => {
+var removeElement = (s) => (host, target, index = 0) => {
   const err = (error) => log(error, `Failed to delete ${elementName(target)} from ${elementName(host)}:`, LOG_ERROR);
-  effect(() => {
+  return [effect(() => {
     let really = false;
     try {
       really = resolveSignalLike(s, host, target, index);
@@ -758,7 +758,7 @@ var removeElement = (s) => (host, target, index) => {
     }).catch((error) => {
       err(error);
     });
-  });
+  })];
 };
 export {
   watch,
