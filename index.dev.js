@@ -419,14 +419,6 @@ var component = (name, init = {}, setup) => {
       if (prev && isState(prev))
         prev.set(UNSET);
     }
-    delete(prop) {
-      const signal = this.#signals[prop];
-      if (isState(signal)) {
-        signal.set(UNSET);
-        delete this[prop];
-      }
-      return delete this.#signals[prop];
-    }
   }
   customElements.define(name, CustomElement);
   return CustomElement;
@@ -449,7 +441,7 @@ var on = (type, handler) => (host, target = host, index = 0) => {
     log(listener, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR);
   }
   target.addEventListener(type, listener);
-  return () => target.removeEventListener(type, listener);
+  return [() => target.removeEventListener(type, listener)];
 };
 var emit = (type, detail) => (host, target = host, index = 0) => {
   target.dispatchEvent(new CustomEvent(type, {

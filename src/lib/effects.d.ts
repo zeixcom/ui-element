@@ -1,6 +1,6 @@
 import { type Signal } from '@zeix/cause-effect';
-import { type ComponentProps, type Component } from '../component';
-type SignalLike<T, P extends ComponentProps> = (string & keyof P) | Signal<NonNullable<T>> | (<E extends Element>(target: E, index: number) => T);
+import { type ComponentProps, type Component, type Provider } from '../component';
+type SignalLike<T, P extends ComponentProps> = string & keyof P | Signal<NonNullable<T>> | Provider<T>;
 type ElementUpdater<E extends Element, T> = {
     op: string;
     read: (element: E) => T | null;

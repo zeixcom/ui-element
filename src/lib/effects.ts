@@ -1,14 +1,14 @@
 import { type Signal, effect, enqueue, isSignal, isState, UNSET } from '@zeix/cause-effect'
 
 import { isFunction, isString } from '../core/util'
-import { type ComponentProps, type Component, RESET } from '../component'
+import { type ComponentProps, type Component, RESET, type Provider } from '../component'
 import { DEV_MODE, elementName, log, LOG_ERROR, valueString } from '../core/log'
 
 /* === Types === */
 
 type SignalLike<T, P extends ComponentProps> = string & keyof P
 	| Signal<NonNullable<T>>
-	| (<E extends Element>(target: E, index: number) => T)
+	| Provider<T>
 
 type ElementUpdater<E extends Element, T> = {
 	op: string,

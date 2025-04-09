@@ -21,33 +21,32 @@ type Component<P extends ComponentProps> = HTMLElement & P & {
 	has(prop: string & keyof P): boolean
 	get(prop: string & keyof P): Signal<P[string & keyof P]>
 	set(prop: string & keyof P, signal: Signal<P[string & keyof P]>): void
-	delete(prop: string & keyof P): void
 }
 
-type AttributeParser<T extends {}> = (
+type Parser<T extends {}> = (
 	host: HTMLElement,
 	value: string | null,
 	old?: string | null
 ) => T
 
-type SignalInitializer<T extends {}> = T
-	| AttributeParser<T>
+type Initializer<T extends {}> = T
+	| Parser<T>
 	| ((host: HTMLElement) => T | ComputedCallback<T>)
 
 type FxFunction<P extends ComponentProps, E extends Element> = (
 	host: Component<P>,
 	target: E,
 	index?: number
-) => (() => void)[]
+) => void | (() => void) | (() => void)[]
 
 type ComponentSetup<P extends ComponentProps> = (
 	host: Component<P>,
 ) => FxFunction<P, Component<P>>[]
 
-type EventListenerProvider = <E extends Element>(
+type Provider<T> = <E extends Element>(
 	element: E,
 	index: number
-) => EventListenerOrEventListenerObject
+) => T
 
 /* === Constants === */
 
@@ -75,7 +74,7 @@ const run = <P extends ComponentProps, E extends Element>(
 			: []
 	})
 
-const isAttributeParser = <T extends {}>(value: unknown): value is AttributeParser<T> =>
+const isAttributeParser = <T extends {}>(value: unknown): value is Parser<T> =>
 	isFunction(value) && value.length >= 2
 
 const isProvider = <T>(value: unknown): value is (target: Element, index: number) => T =>
@@ -112,7 +111,7 @@ const all = <E extends Element, P extends ComponentProps>(
  */
 const component = <P extends ComponentProps>(
 	name: string,
-	init: { [K in string & keyof P]: SignalInitializer<P[K]> } = {} as { [K in string & keyof P]: SignalInitializer<P[K]> },
+	init: { [K in string & keyof P]: Initializer<P[K]> } = {} as { [K in string & keyof P]: Initializer<P[K]> },
 	setup: ComponentSetup<P>
 ): Component<P> => {
 	class CustomElement extends HTMLElement {
@@ -182,22 +181,13 @@ const component = <P extends ComponentProps>(
 			})
 			if (prev && isState(prev)) prev.set(UNSET)
 		}
-
-		delete(prop: string & keyof P): boolean {
-			const signal = this.#signals[prop]
-			if (isState(signal)) {
-				signal.set(UNSET)
-				delete (this as unknown as Component<P>)[prop]
-			}
-			return delete this.#signals[prop]
-		}
 	}
 	customElements.define(name, CustomElement)
 	return CustomElement as unknown as Component<P>
 }
 
 const pass = <P extends ComponentProps, Q extends ComponentProps>(
-	signals: Partial<{ [K in keyof Q]: Signal<Q[K]> }>
+	signals: Partial<{ [K in keyof Q]: Signal<Q[K]> }> | Provider<Partial<{ [K in keyof Q]: Signal<Q[K]> }>>
 ) => async (
 	host: Component<P>,
 	target: Component<Q>,
@@ -219,18 +209,18 @@ const pass = <P extends ComponentProps, Q extends ComponentProps>(
 
 const on = (
 	type: string,
-	handler: EventListenerOrEventListenerObject | EventListenerProvider
+	handler: EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>,
 ) => <P extends ComponentProps>(
 	host: Component<P>,
 	target: Element = host,
 	index = 0
-): () => void => {
+): (() => void)[] => {
 	const listener = isProvider(handler) ? handler(target, index) : handler
 	if (!(isFunction(listener) || isDefinedObject(listener) && isFunction(listener.handleEvent))) {
 		log(listener, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR)
 	}
 	target.addEventListener(type, listener)
-	return () => target.removeEventListener(type, listener)
+	return [() => target.removeEventListener(type, listener)]
 }
 
 const emit = <T>(
@@ -248,6 +238,6 @@ const emit = <T>(
 }
 
 export {
-	type ComponentProps, type Component, type AttributeParser, type SignalInitializer, type EventListenerProvider,
+	type ComponentProps, type Component, type Parser, type Initializer, type Provider,
 	RESET, component, first, all, pass, on, emit
 }

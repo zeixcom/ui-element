@@ -1,22 +1,17 @@
-import { UIElement, asBoolean, setProperty, toggleAttribute } from "../../../"
+import { asBoolean, component, first, on, setProperty, toggleAttribute } from "../../../"
 
-export class InputCheckbox extends UIElement<{ checked: boolean }> {
-	static localName = 'input-checkbox'
-	static observedAttributes = ['checked']
-
-	init = {
-		checked: asBoolean
-	}
-
-	connectedCallback() {
-		super.connectedCallback()
-
-		this.first<HTMLInputElement>('input')
-			.sync(setProperty('checked'))
-			.on('change', (e: Event) => {
-				this.set('checked', (e.target as HTMLInputElement)?.checked)
-			})
-		this.self.sync(toggleAttribute('checked'))
-	}
+type InputCheckboxProps = {
+	checked: boolean
 }
-InputCheckbox.define()
+
+component('input-checkbox', {
+	checked: asBoolean
+}, host => [
+	toggleAttribute('checked'),
+	first<HTMLInputElement, InputCheckboxProps>('input',
+		setProperty('checked'),
+		on('change', (e: Event) => {
+			host.checked = (e.target as HTMLInputElement)?.checked
+		})
+	)
+])
