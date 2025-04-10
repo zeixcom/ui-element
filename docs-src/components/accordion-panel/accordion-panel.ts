@@ -1,19 +1,16 @@
-import { asBoolean, component, first, setProperty, toggleAttribute } from "../../../"
+import { asBoolean, component, setProperty, toggleAttribute } from '../../../'
 
-type AccordionPanelProps = {
-	open: boolean,
-	collapsible: boolean
-}
-
-component<AccordionPanelProps>('accordion-panel', {
+export default component('accordion-panel', {
 	open: asBoolean,
 	collapsible: asBoolean
-}, host => [
-	toggleAttribute('open'),
-	toggleAttribute('collapsible'),
-	setProperty('hidden', () => !host.open && !host.collapsible),
-	first<HTMLDetailsElement, AccordionPanelProps>('details',
-		setProperty('open'),
-		setProperty('ariaDisabled', () => String(!host.collapsible))
+}, el => {
+	el.self(
+		toggleAttribute('open'),
+		toggleAttribute('collapsible'),
+		setProperty('hidden', () => !el.open && !el.collapsible),
 	)
-])
+	el.first<HTMLDetailsElement>('details',
+		setProperty('open'),
+		setProperty('ariaDisabled', () => String(!el.collapsible))
+	)
+})

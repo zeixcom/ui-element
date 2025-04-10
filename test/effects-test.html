@@ -63,7 +63,7 @@
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
 		import {
-			component, first, all, on, computed, effect, RESET, UNSET,
+			component, on, computed, effect, RESET, UNSET,
 			asBoolean, asInteger, asNumber, asString,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
 			dangerouslySetInnerHTML, createElement, removeElement, insertTemplate
@@ -75,103 +75,101 @@
 
 		component('update-text', {
 			text: asString(),
-		}, () => [
-			first('p', setText('text'))
-		])
+		}, el => {
+			el.first('p', setText('text'))
+		})
 
 		component('update-property', {
 			value: asString(),
-		}, () => [
-			first('input', setProperty('value'))
-		])
+		}, el => {
+			el.first('input', setProperty('value'))
+		})
 
 		component('update-attribute', {
 			required: asBoolean,
 			ariaInvalid: 'false'
-		}, host => [
-			first('input',
+		}, el => {
+			el.first('input',
 				on('change', e => {
-					host.ariaInvalid = String(!e.target.checkValidity())
+					el.ariaInvalid = String(!e.target.checkValidity())
 				}),
 				toggleAttribute('required'),
                 setAttribute('aria-errormessage',
-					() => host.required && host.ariaInvalid !== 'false'
-						? host.querySelector('p').id
+					() => el.required && el.ariaInvalid !== 'false'
+						? el.querySelector('p').id
 						: RESET
 				)
 			)
-		])
+		})
 
 		component('update-class', {
 			active: asInteger()
-		}, host => [
-			all('li',
+		}, el => {
+			el.all('li',
 				toggleClass('selected',
-					(_, index) => host.active === index
+					(_, index) => el.active === index
 				)
 			)
-		])
+		})
 
 		component('update-style', {
 			color: asString()
-		}, () => [
-			first('p', setStyle('color'))
-		])
+		}, el => {
+			el.first('p', setStyle('color'))
+		})
 
 		component('dangerous-inner-html', {
 			content: '<p>Initial content</p>'
-		}, () => [
-			dangerouslySetInnerHTML('content')
-		])
+		}, el => {
+			el.self(dangerouslySetInnerHTML('content'))
+		})
 
 		component('shadow-dangerous-inner-html', {
 			content: '<p>Initial shadow content</p>'
-		}, () => [
-			dangerouslySetInnerHTML('content', 'open')
-		])
+		}, el => {
+			el.self(dangerouslySetInnerHTML('content', 'open'))
+		})
 
 		component('dangerous-with-scripts', {
 			content: '<p id="test-p-shadow">Original</p>'
-		}, () => [
-			dangerouslySetInnerHTML('content', 'open', true)
-		])
+		}, el => {
+			el.self(dangerouslySetInnerHTML('content', 'open', true))
+		})
 	
 		component('create-element', {
 			before: false,
 			prepend: false,
 			append: false,
 			after: false
-		}, () => [
-			first('ul',
+		}, el => {
+			el.first('ul',
 				createElement('p', 'before', 'beforebegin', {}, 'Before'),
 				createElement('li', 'prepend', 'afterbegin', { value: 'foo' }, 'Prepend'),
 				createElement('li', 'append'),
 				createElement('p', 'after', 'afterend', { value: 'bar' })
 			)
-		])
+		})
 
 		component('remove-element', {
 			items: [1, 2, 3]
-		}, host => [
-			all('li', removeElement((_, index) => !host.items.includes(index + 1)))
-		])
+		}, el => {
+			el.all('li', removeElement((_, index) => !el.items.includes(index + 1)))
+		})
 
 		component('insert-template', {
 			before: false,
 			prepend: false,
 			append: false,
 			after: false
-		}, host => {
-			const pTemplate = host.querySelector('.p')
-			const liTemplate = host.querySelector('.li')
-			return [
-				first('ul',
-					insertTemplate(pTemplate, 'before', 'beforebegin'),
-					insertTemplate(liTemplate, 'prepend', 'afterbegin'),
-					insertTemplate(liTemplate, 'append'),
-					insertTemplate(pTemplate, 'after', 'afterend')
-				)
-			]
+		}, el => {
+			const pTemplate = el.querySelector('.p')
+			const liTemplate = el.querySelector('.li')
+			el.first('ul',
+				insertTemplate(pTemplate, 'before', 'beforebegin'),
+				insertTemplate(liTemplate, 'prepend', 'afterbegin'),
+				insertTemplate(liTemplate, 'append'),
+				insertTemplate(pTemplate, 'after', 'afterend')
+			)
 		})
 
 		runTests(() => {

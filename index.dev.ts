@@ -14,15 +14,15 @@ export {
 
 // Core
 export {
-	type Parser, type ComponentProps, type Initializer, type Provider,
-	RESET, component, first, all, pass, on, emit
+	type Component, type ComponentProps, type Initializer, type Parser, type SignalProducer, type Provider,
+	RESET, component, pass, on, emit
 } from './src/component'
 export {
 	type LogLevel,
 	LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, log
 } from './src/core/log'
 export {
-	type Context, type UnknownContext,
+	type Context, type UnknownContext, type ContextType,
 	provide, consume
 } from './src/core/context'
 

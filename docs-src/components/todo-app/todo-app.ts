@@ -1,94 +1,82 @@
-import { UIElement, setAttribute, setProperty, setText } from "../../.."
-import type { InputCheckbox } from "../input-checkbox/input-checkbox"
+import { component, on, pass, setAttribute, setProperty, setText } from '../../../'
+import InputCheckbox from "../input-checkbox/input-checkbox"
 import type { InputField } from "../input-field/input-field"
-import type { InputRadiogroup } from "../input-radiogroup/input-radiogroup"
+import InputRadiogroup from "../input-radiogroup/input-radiogroup"
 
-export class TodoApp extends UIElement<{
-	tasks: InputCheckbox[],
-	total: number,
-	completed: number,
-	active: number,
-	filter: string,
-}> {
-	static localName = 'todo-app'
+export default component('todo-app', {
+	tasks: [] as typeof InputCheckbox[],
+	total: el => () => el.tasks.length,
+	completed: el => () => el.tasks.filter(task => task.checked).length,
+	active: el => () => {
+		const tasks = el.tasks
+		return tasks.length - tasks.filter(task => task.checked).length
+	},
+	filter: el => () => (el.querySelector<typeof InputRadiogroup>('input-radiogroup')?.value ?? 'all'),
+}, el => {
 
-	init = {
-		tasks: [],
-		total: () => this.get('tasks').length,
-        completed: () => this.get('tasks').filter(el => el.get('checked')).length,
-        active: () => {
-			const tasks = this.get('tasks')
-			return tasks.length - tasks.filter(el => el.get('checked')).length
-		},
-        filter: () => (this.querySelector<InputRadiogroup>('input-radiogroup')?.get('value')?? 'all'),
+	// Set tasks state from the DOM
+	const updateTasks = () => {
+		el.tasks = Array.from(el.querySelectorAll<typeof InputCheckbox>('input-checkbox'))
 	}
+	updateTasks()
 
-	connectedCallback() {
-		super.connectedCallback()
+	// Coordinate new todo form
+	const input = el.querySelector<InputField>('input-field')
+	el.first('form', on('submit', (e: Event) => {
+		e.preventDefault()
 
-		// Set tasks state from the DOM
-		const updateTasks = () => {
-			this.set('tasks', this.all<InputCheckbox>('input-checkbox').targets)
-		}
-		updateTasks()
-
-		// Coordinate new todo form
-		const input = this.querySelector<InputField>('input-field')
-		this.first('form').on('submit', (e: Event) => {
-			e.preventDefault()
-
-			// Wait for microtask to ensure the input field value is updated
-			queueMicrotask(() => {
-				const value = input?.get('value').toString().trim()
-				if (value) {
-					const ol = this.querySelector('ol')
-					const fragment = this.querySelector('template')
-						?.content.cloneNode(true) as DocumentFragment
-					const span = fragment.querySelector('span')
-					if (ol && fragment && span) {
-						span.textContent = value
-						ol.appendChild(fragment)
-					}
-					updateTasks()
-					input?.clear()
+		// Wait for microtask to ensure the input field value is updated
+		queueMicrotask(() => {
+			const value = input?.value.toString().trim()
+			if (value) {
+				const ol = el.querySelector('ol')
+				const fragment = el.querySelector('template')
+					?.content.cloneNode(true) as DocumentFragment
+				const span = fragment.querySelector('span')
+				if (ol && fragment && span) {
+					span.textContent = value
+					ol.appendChild(fragment)
 				}
-			})
-		})
-
-		// Coordinate .submit button
-		this.first('.submit').pass({
-			disabled: () => input?.get('empty') ?? true
-		})
-
-		// Event handler and effect on ol element
-		this.first('ol')
-			.sync(setAttribute('filter', 'filter'))
-			.on('click', (e: Event) => {
-				const el = e.target as HTMLElement
-				if (el.localName === 'button') {
-					el.closest('li')?.remove()
-					updateTasks()
-				}
-			})
-
-		// Effects on .todo-count elements
-		this.first('.count').sync(setText('active'))
-		this.first('.singular').sync(setProperty('hidden', () => (this.get('active') ?? 0) > 1))
-		this.first('.plural').sync(setProperty('hidden', () => this.get('active') === 1))
-		this.first('.remaining').sync(setProperty('hidden', () => !this.get('active')))
-		this.first('.all-done').sync(setProperty('hidden', () => !!this.get('active')))
-
-		// Coordinate .clear-completed button
-		this.first('.clear-completed')
-			.on('click', () => {
-				this.get('tasks')
-					.filter(el => el.get('checked'))
-					.forEach(el => el.parentElement?.remove())
 				updateTasks()
-			})
-			.pass({
-				disabled: () => !this.get('completed')
-			})
-	}
-}
-TodoApp.define()
+				input?.clear()
+			}
+		})
+	}))
+
+	// Coordinate .submit button
+	el.first('.submit', pass({
+		disabled: () => input?.empty ?? true
+	}))
+
+	// Event handler and effect on ol element
+	el.first('ol',
+		setAttribute('filter', 'filter'),
+		on('click', (e: Event) => {
+			const el = e.target as HTMLElement
+			if (el.localName === 'button') {
+				el.closest('li')?.remove()
+				updateTasks()
+			}
+		})
+	)
+
+	// Effects on .todo-count elements
+	el.first('.count', setText('active'))
+	el.first<HTMLElement>('.singular', setProperty('hidden', () => (el.active ?? 0) > 1))
+	el.first<HTMLElement>('.plural', setProperty('hidden', () => el.active === 1))
+	el.first<HTMLElement>('.remaining', setProperty('hidden', () => !el.active))
+	el.first<HTMLElement>('.all-done', setProperty('hidden', () => !!el.active))
+
+	// Coordinate .clear-completed button
+	el.first('.clear-completed',
+		on('click', () => {
+			el.tasks
+				.filter(task => task.checked)
+				.forEach(task => task.parentElement?.remove())
+			updateTasks()
+		}),
+		pass({
+			disabled: () => !el.completed
+		})
+	)
+})

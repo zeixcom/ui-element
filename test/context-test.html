@@ -20,7 +20,7 @@
 	<script type="module">
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
-		import { RESET, component, state, first, provide, consume, asString, setText } from '../index.dev.js'
+		import { RESET, component, state, provide, consume, asString, setText } from '../index.dev.js'
 
 		const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 		const animationFrame = async () => new Promise(requestAnimationFrame)
@@ -33,27 +33,27 @@
 				mql.onchange = e => reducedMotion.set(e.matches)
 				return reducedMotion
 			}
-		}, () => [
-			provide(['reduced-motion'])
-		])
+		}, el => {
+			el.self(provide(['reduced-motion']))
+		})
 
 		component('my-animation', {
 			reducedMotion: consume('reduced-motion')
-		}, () => [
-			first('span', setText('reducedMotion'))
-		])
+		}, el => {
+			el.first('span', setText('reducedMotion'))
+		})
 
 		component('user-context', {
 			'display-name': asString(RESET)
-		}, () => [
-			provide(['display-name'])
-		])		
+		}, el => {
+			el.self(provide(['display-name']))
+		})		
 
 		component('hello-world', {
 			displayName: consume('display-name')
-		}, () => [
-			first('span', setText('displayName'))
-		])
+		}, el => {
+			el.first('span', setText('displayName'))
+		})
 
 		runTests(() => {
 

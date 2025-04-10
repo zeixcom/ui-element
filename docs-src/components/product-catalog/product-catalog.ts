@@ -1,23 +1,12 @@
-import { UIElement } from "../../../"
-import type { SpinButton } from "../spin-button/spin-button"
+import { component, pass } from '../../../'
+import SpinButton from '../spin-button/spin-button'
 
-const asPositiveIntegerString = (value: unknown): string =>
-	typeof value ==='number' && Number.isInteger(value) && value > 0
-		? String(value)
-		: ''
-
-export class ProductCatalog extends UIElement {
-	static localName = 'product-catalog'
-
-	connectedCallback() {
-        
-		// Pass the total to the badge button for display
-		this.first('input-button').pass({
-			badge: () => asPositiveIntegerString(
-				this.all<SpinButton>('spin-button').targets
-					.reduce((sum, item) => sum + item.get('value'), 0)
-			)
-		})
-	}
-}
-ProductCatalog.define()
+export default component('product-catalog', {}, el => {
+	el.first('input-button', pass({
+		badge: () => {
+			const total = Array.from(el.querySelectorAll<typeof SpinButton>('spin-button'))
+				.reduce((sum, item) => sum + item.value, 0)
+			return total === 'number' && Number.isInteger(total) && total > 0 ? String(total) : ''
+		}
+	}))
+})

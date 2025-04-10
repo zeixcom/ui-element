@@ -105,6 +105,6 @@ const consume = <T extends {}, C extends HTMLElement>(
 }
 
 export {
-	type Context, type UnknownContext,
+	type Context, type UnknownContext, type ContextType,
 	CONTEXT_REQUEST, ContextRequestEvent, provide, consume
 }

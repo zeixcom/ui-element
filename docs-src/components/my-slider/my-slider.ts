@@ -1,18 +1,16 @@
-import { type Provider, all, component, first, on, State, toggleClass } from "../../../"
+import { type Provider, component, on, State, toggleClass } from '../../../'
 
-component('my-slider', {
+export default component('my-slider', {
 	active: 0
-}, host => {
-	const total = host.querySelectorAll('.slide').length
-	const getActiveByIndex: Provider<boolean> = (_, index) => host.active === index
-	return [
-		first('.prev', on('click', () => {
-			(host.get('active') as State<number>).update(v => (v - 1 + total) % total)
-		})),
-		first('.next', on('click', () => {
-			(host.get('active') as State<number>).update(v => (v + 1 + total) % total)
-		})),
-		all('.slide', toggleClass('active', getActiveByIndex)),
-		all('.dots span', toggleClass('active', getActiveByIndex))
-	]
+}, el => {
+	const total = el.querySelectorAll('.slide').length
+	const getActiveByIndex: Provider<boolean> = (_, index) => el.active === index
+	el.first('.prev', on('click', () => {
+		(el.get('active') as State<number>).update(v => (v - 1 + total) % total)
+	}))
+	el.first('.next', on('click', () => {
+		(el.get('active') as State<number>).update(v => (v + 1 + total) % total)
+	}))
+	el.all('.slide', toggleClass('active', getActiveByIndex))
+	el.all('.dots span', toggleClass('active', getActiveByIndex))
 })

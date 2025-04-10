@@ -1,10 +1,10 @@
-import { setText, RESET, component, first, on } from "../../../"
+import { component, on, RESET, setText } from '../../../'
 
-component('hello-world', {
+export default component('hello-world', {
 	name: RESET
-}, host => [
-	first('span', setText('name')),
-	first('input', on('input', (e: Event) => {
-		host.name = (e.target as HTMLInputElement)?.value || RESET
+}, el => {
+	el.first('span', setText('name'))
+	el.first('input', on('input', (e: Event) => {
+		el.name = (e.target as HTMLInputElement)?.value || RESET
 	}))
-])
+})

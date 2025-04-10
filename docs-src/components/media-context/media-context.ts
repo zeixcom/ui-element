@@ -1,89 +1,71 @@
-import { UIElement, type Context } from '../../../'
-
-/* === Provided Context Keys === */
-
-const MEDIA_MOTION = 'media-motion'
-const MEDIA_THEME = 'media-theme'
-const MEDIA_VIEWPORT = 'media-viewport'
-const MEDIA_ORIENTATION = 'media-orientation'
+import { type Context, type SignalProducer, type State, component, provide, state } from '../../../'
 
 /* === Pure Functions === */
 
-const parseBreakpoint = (value: string | null, fallback: string) => {
-	const attr = value?.trim()
-	if (!attr) return fallback
-	const unit = attr.match(/em$/) ? 'em' : 'px'
-	const v = parseFloat(attr)
-	return Number.isFinite(v) ? v + unit : fallback
+const matchMotion: SignalProducer<boolean, HTMLElement> = () => {
+	const mql = matchMedia('(prefers-reduced-motion: reduce)')
+	const reducedMotion = state(mql.matches)
+	mql.addEventListener('change', e => {
+		reducedMotion.set(e.matches)
+	})
+	return reducedMotion
 }
 
-/* === Class Definition === */
+const matchTheme: SignalProducer<string, HTMLElement> = () => {
+	const mql = matchMedia('(prefers-color-scheme: dark)')
+	const colorScheme = state(mql.matches ? 'dark' : 'light')
+	mql.addEventListener('change', e => {
+		colorScheme.set(e.matches ? 'dark' : 'light')
+	})
+	return colorScheme
+}
 
-export class MediaContext extends UIElement<{
-	'media-motion': boolean,
-    'media-theme': string,
-    'media-viewport': string,
-    'media-orientation': string,
-}> {
-	static readonly localName ='media-context'
-	static providedContexts = [
-		MEDIA_MOTION as Context<string, boolean>,
-		MEDIA_THEME as Context<string, string>,
-		MEDIA_VIEWPORT as Context<string, string>,
-		MEDIA_ORIENTATION as Context<string, string>,
-	]
-
-	connectedCallback() {
-		super.connectedCallback()
-
-		const THEME_LIGHT = 'light'
-		const THEME_DARK = 'dark'
-		const VIEWPORT_XS = 'xs'
-		const VIEWPORT_SM = 'sm'
-		const VIEWPORT_MD = 'md'
-		const VIEWPORT_LG = 'lg'
-		const VIEWPORT_XL = 'xl'
-		const ORIENTATION_LANDSCAPE = 'landscape'
-		const ORIENTATION_PORTRAIT = 'portrait'
-
-		const getBreakpoints = () => ({
-			sm: parseBreakpoint(this.getAttribute(VIEWPORT_SM), '32em'),
-			md: parseBreakpoint(this.getAttribute(VIEWPORT_MD), '48em'),
-			lg: parseBreakpoint(this.getAttribute(VIEWPORT_LG), '72em'),
-			xl: parseBreakpoint(this.getAttribute(VIEWPORT_XL), '108em'),
-		})
-		const breakpoints = getBreakpoints()
-
-		const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
-		const colorScheme = matchMedia('(prefers-color-scheme: dark)')
-		const screenSmall = matchMedia(`(min-width: ${breakpoints.sm})`)
-		const screenMedium = matchMedia(`(min-width: ${breakpoints.md})`)
-		const screenLarge = matchMedia(`(min-width: ${breakpoints.lg})`)
-		const screenXLarge = matchMedia(`(min-width: ${breakpoints.xl})`)
-		const screenOrientation = matchMedia('(orientation: landscape)')
-
-		const getViewport = () => {
-			if (screenXLarge.matches) return VIEWPORT_XL
-            if (screenLarge.matches) return VIEWPORT_LG
-            if (screenMedium.matches) return VIEWPORT_MD
-            if (screenSmall.matches) return VIEWPORT_SM
-            return VIEWPORT_XS
-		}
-
-		// set initial values
-		this.set(MEDIA_MOTION, reducedMotion.matches)
-		this.set(MEDIA_THEME, colorScheme.matches ? THEME_DARK : THEME_LIGHT)
-		this.set(MEDIA_VIEWPORT, getViewport())
-		this.set(MEDIA_ORIENTATION, screenOrientation.matches ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT)
-
-		// event listeners
-		reducedMotion.addEventListener('change', e => this.set(MEDIA_MOTION, e.matches))
-		colorScheme.addEventListener('change', e => this.set(MEDIA_THEME, e.matches ? THEME_DARK : THEME_LIGHT))
-		screenSmall.addEventListener('change', () => this.set(MEDIA_VIEWPORT, getViewport()))
-		screenMedium.addEventListener('change', () => this.set(MEDIA_VIEWPORT, getViewport()))
-		screenLarge.addEventListener('change', () => this.set(MEDIA_VIEWPORT, getViewport()))
-		screenXLarge.addEventListener('change', () => this.set(MEDIA_VIEWPORT, getViewport()))
-		screenOrientation.addEventListener('change', e => this.set(MEDIA_THEME, e.matches ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT))
+const matchViewport: SignalProducer<string, HTMLElement> = el => {
+	const getBreakpoint = (attr: string, fallback: string) => {
+		const value = el.getAttribute(attr)
+		const trimmed = value?.trim()
+		if (!trimmed) return fallback
+		const unit = trimmed.match(/em$/) ? 'em' : 'px'
+		const v = parseFloat(trimmed)
+		return Number.isFinite(v) ? v + unit : fallback
 	}
+	const mqlSM = matchMedia(`(min-width: ${getBreakpoint('sm', '32em')})`)
+	const mqlMD = matchMedia(`(min-width: ${getBreakpoint('md', '48em')})`)
+	const mqlLG = matchMedia(`(min-width: ${getBreakpoint('lg', '72em')})`)
+	const mqlXL = matchMedia(`(min-width: ${getBreakpoint('xl', '104em')})`)
+	const getViewport = () =>
+		mqlXL.matches ? 'xl'
+			: mqlLG.matches ? 'lg'
+			: mqlMD.matches ? 'md'
+			: mqlSM.matches ? 'sm'
+			: 'xs'
+	const viewport = state(getViewport())
+	mqlSM.addEventListener('change', () => { viewport.set(getViewport()) })
+	mqlMD.addEventListener('change', () => { viewport.set(getViewport()) })
+	mqlLG.addEventListener('change', () => { viewport.set(getViewport()) })
+	mqlXL.addEventListener('change', () => { viewport.set(getViewport()) })
+	return viewport
 }
-MediaContext.define()
+
+const matchOrientation: SignalProducer<string, HTMLElement> = () => {
+	const mql = matchMedia('(orientation: landscape)')
+	const orientation = state(mql.matches? 'landscape' : 'portrait')
+	mql.addEventListener('change', e => {
+		orientation.set(e.matches? 'landscape' : 'portrait')
+	})
+	return orientation
+}
+
+/* === Component Definition === */
+
+export default component('media-context', {
+	'media-motion': matchMotion,
+	'media-theme': matchTheme,
+	'media-viewport': matchViewport,
+    'media-orientation': matchOrientation
+}, el => el.self(provide([
+	'media-motion' as Context<'media-motion', State<boolean>>,
+	'media-theme' as Context<'media-theme', State<string>>,
+	'media-viewport' as Context<'media-viewport', State<string>>,
+	'media-orientation' as Context<'media-orientation', State<string>>
+])))

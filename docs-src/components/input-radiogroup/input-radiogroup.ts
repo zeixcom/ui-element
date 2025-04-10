@@ -1,15 +1,15 @@
-import { all, asString, component, on, setAttribute, toggleClass } from '../../../'
+import { asString, component, on, setAttribute, toggleClass } from '../../../'
 
-component('input-radiogroup', {
+export default component('input-radiogroup', {
 	value: asString()
-}, host => [
-	setAttribute('value'),
-	all('input', on('change', (e: Event) => {
-		host.value = (e.target as HTMLInputElement)?.value
-	})),
-	all('label',
+}, el => {
+	el.self(setAttribute('value'))
+	el.all('input', on('change', (e: Event) => {
+		el.value = (e.target as HTMLInputElement)?.value
+	}))
+	el.all('label',
 		toggleClass('selected',
-			target => host.value === target.querySelector('input')?.value
+			target => el.value === target.querySelector('input')?.value
 		)
 	)
-])
+})

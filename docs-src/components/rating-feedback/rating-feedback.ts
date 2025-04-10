@@ -1,56 +1,42 @@
-import { setProperty, UIElement } from "../../../";
-import { type InputButton } from "../input-button/input-button";
-import { type RatingStars } from "../rating-stars/rating-stars";
+import { component, on, pass, setProperty } from '../../../'
+import InputButton from '../input-button/input-button'
+import RatingStars from '../rating-stars/rating-stars'
 
-export class RatingFeedback extends UIElement<{
-	rating: number,
-	empty: boolean,
-	submitted: boolean
-}> {
-	static localName = 'rating-feedback'
+export default component('rating-feedback', {
+	rating: 0,
+	empty: true,
+	submitted: false,
+}, el => {
 
-	init = {
-		rating: 0,
-		empty: true,
-        submitted: false,
-    }
-
-	connectedCallback() {
-		super.connectedCallback()
-
-		// Event listeners for rating changes and form submission
-		this.self
-			.on('change-rating', (e: Event) => {
-				this.set('rating', (e as CustomEvent<number>).detail)
-			})
-			.on('submit', (e: Event) => {
-				e.preventDefault()
-				this.set('submitted', true)
-				console.log('Feedback submitted')
-			})
-
-		// Event listener for hide button
-		this.first('.hide').on('click', () => {
-			const feedback = this.querySelector<HTMLElement>('.feedback')
-			if (feedback) feedback.hidden = true
+	// Event listeners for rating changes and form submission
+	el.self(
+		on('change-rating', (e: Event) => {
+			el.rating = (e as CustomEvent<number>).detail
+		}),
+		on('submit', (e: Event) => {
+			e.preventDefault()
+			el.submitted = true
+			console.log('Feedback submitted')
 		})
+	)
 
-		// Event listener for texteare
-		this.first('textarea').on('input', (e: Event) => {
-			this.set('empty', (e.target as HTMLTextAreaElement)?.value.trim() === '')
-		})
+	// Event listener for hide button
+	el.first('.hide', on('click', () => {
+		el.querySelector<HTMLElement>('.feedback')?.hidden = true
+	}))
 
-		// Effects on rating changes
-		const stars = this.querySelector<RatingStars>('rating-stars')
-		this.first('.feedback')
-			.sync(setProperty('hidden', () => this.get('submitted') || !(stars?.get('value') ?? 0)))
-		this.all('.feedback p')
-			.sync(setProperty('hidden', (_, index) => stars?.get('value') !== index + 1))
+	// Event listener for texteare
+	el.first('textarea', on('input', (e: Event) => {
+		el.empty = (e.target as HTMLTextAreaElement)?.value.trim() === ''
+	}))
 
-		// Effect on empty state
-		this.first<InputButton>('input-button').pass({
-			disabled: 'empty'
-		})
-	}
-}
-RatingFeedback.define()
+	// Effects on rating changes
+	const stars = el.querySelector<typeof RatingStars>('rating-stars')
+	el.first<HTMLElement>('.feedback', setProperty('hidden', () => el.submitted || !stars?.value))
+	el.all<HTMLElement>('.feedback p', setProperty('hidden', (_, index) => stars?.value !== index + 1))
+
+	// Effect on empty state
+	el.first<typeof InputButton>('input-button', pass({
+		disabled: 'empty'
+	}))
+})

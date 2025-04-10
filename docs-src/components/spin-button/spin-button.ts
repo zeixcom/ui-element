@@ -1,42 +1,24 @@
-import { UIElement, asInteger, setProperty, setText, toggleAttribute } from '../../../'
+import { asInteger, component, on, setProperty, setText, toggleAttribute } from '../../../'
 
-export class SpinButton extends UIElement<{
-	value: number,
-	zero: boolean,
-}> {
-	static localName ='spin-button'
-	static observedAttributes = ['value']
-
-	init = {
-        value: asInteger(),
-		zero: () => this.get('value') === 0
-    }
-
-	connectedCallback() {
-        super.connectedCallback()
-
-		const zeroLabel = this.getAttribute('zero-label') || 'Add to Cart'
-		const incrementLabel = this.getAttribute('increment-label') || 'Increment'
-		const max = asInteger(9)(this.getAttribute('max'))
-
-		// Event handlers
-		const changeValue = (direction: number = 1) => () => {
-			this.set('value', v => v + direction)
-		}
-
-		// Effects
-		this.first('.value')
-			.sync(setText('value'), setProperty('hidden', 'zero'))
-		this.first('.decrement')
-			.on('click', changeValue(-1))
-			.sync(setProperty('hidden', 'zero'))
-		this.first('.increment')
-			.on('click', changeValue())
-			.sync(
-				setText(() => this.get('zero') ? zeroLabel : '+'),
-				setProperty('ariaLabel', () => this.get('zero') ? zeroLabel : incrementLabel),
-				toggleAttribute('disabled', () => this.get('value') >= max)
-			)
-    }
-}
-SpinButton.define()
+export default component('spin-button', {
+	value: asInteger(),
+	zero: el => () => el.value === 0
+}, el => {
+	const zeroLabel = el.getAttribute('zero-label') || 'Add to Cart'
+	const incrementLabel = el.getAttribute('increment-label') || 'Increment'
+	const max = asInteger(9)(el, el.getAttribute('max'))
+	el.first<HTMLElement>('.value',
+		setText('value'),
+		setProperty('hidden', 'zero')
+	)
+	el.first<HTMLElement>('.decrement',
+		setProperty('hidden', 'zero'),
+		on('click', () => { el.value-- })
+	)
+	el.first('.increment',
+		setText(() => el.zero ? zeroLabel : '+'),
+		setProperty('ariaLabel', () => el.zero ? zeroLabel : incrementLabel),
+		toggleAttribute('disabled', () => el.value >= max),
+		on('click', () => { el.value++ })
+	)
+})

@@ -197,7 +197,7 @@
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
 		import {
-			RESET, component, first, all, on, pass, batch, effect, enqueue,
+			RESET, component, on, pass, batch, effect, enqueue,
 			asBoolean, asInteger, asNumber, asString,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
 			removeElement, dangerouslySetInnerHTML, insertTemplate
@@ -209,177 +209,179 @@
 
 		const LOADING_DELAY = 800 // Adjust this if tests for LazyLoad fail; needs to be high enough so initial loading message can be observed before it gets removed when async connectedCallback() finishes
 
-		component('void-component', {}, () => [])
+		component('void-component', {}, () => {})
 
 		component('causal-component', {
 			heading: 'Hello from Internal State'
-		}, () => [
-			first('h1', setText('heading'))
-		])
+		}, el => {
+			el.first('h1', setText('heading'))
+		})
 
 		component('updating-component', {
 			heading: asString(RESET),
 			count: asInteger(),
 			step: asNumber(),
-			value: (host, value) => {
+			value: (el, value) => {
 				if (value == null) return RESET
-				const parsed = Number.isInteger(host.step)
+				const parsed = Number.isInteger(el.step)
 					? parseInt(value, 10)
 					: parseFloat(value) 
 				return Number.isFinite(parsed) ? parsed : RESET
 			},
 			selected: asBoolean
-		}, () => [
-			first('h1', setText('heading'), toggleClass('selected')),
-			first('span', setText('count')),
-			first('input', setAttribute('step'), setProperty('value')),
-		])
+		}, el => {
+			el.first('h1', setText('heading'), toggleClass('selected'))
+			el.first('span', setText('count'))
+			el.first('input', setAttribute('step'), setProperty('value'))
+		})
 
 		component('child-component', {
 			heading: asString(RESET),
             text: asString(RESET)
-		}, () => [
-			first('h1', setText('heading')),
-			first('p', setText('text'))
-		])
+		}, el => {
+			el.first('h1', setText('heading'))
+			el.first('p', setText('text'))
+		})
 
 		component('parent-component', {
-			heading: asString(RESET),
-		}, host => [
-			first('child-component', pass({
+			heading: asString(RESET)
+		}, el => {
+			el.first('child-component', pass({
 				heading: 'heading',
-                text: () => host.heading.toUpperCase()
+                text: () => el.heading.toUpperCase()
 			}))
-		])
+		})
 
 		component('my-counter', {
 			value: asInteger()
-		}, host => [
-			first('.decrement', on('click', () => { host.value-- })),
-			first('.increment', on('click', () => { host.value++ })),
-			first('.value', setText('value')),
-			first('.parity', setText(() => host.value % 2 ? 'odd' : 'even')),
-			first('.double', setText(() => host.value * 2))
-		])
+		}, el => {
+			el.first('.decrement', on('click', () => { el.value-- }))
+			el.first('.increment', on('click', () => { el.value++ }))
+			el.first('.value', setText('value'))
+			el.first('.parity', setText(() => el.value % 2 ? 'odd' : 'even'))
+			el.first('.double', setText(() => el.value * 2))
+		})
 
-		component('greeting-configurator', {}, host => [
-			first('hello-world', pass({
+		component('greeting-configurator', {}, el => {
+			el.first('hello-world', pass({
 				name: () => {
-					const firstName = host.querySelector('.first')
-					const lastName = host.querySelector('.last')
-					const useFullname = host.querySelector('input-checkbox')
+					const firstName = el.querySelector('.first')
+					const lastName = el.querySelector('.last')
+					const useFullname = el.querySelector('input-checkbox')
 					return useFullname.checked
 						? `${firstName.value} ${lastName.value}`
 						: firstName.value
 				}
 			}))
-		])
+		})
 
 		component('hello-world', {
 			greeting: asString(RESET),
 			name: asString('World')
-		}, () => [
-			first('.greeting', setText('greeting')),
-			first('.name', setText('name'))
-		])
+		}, el => {
+			el.first('.greeting', setText('greeting'))
+			el.first('.name', setText('name'))
+		})
 
 		component('input-field', {
 			value: asString(RESET)
-		}, host => [
-			first('input',
+		}, el => {
+			el.first('input',
 				setProperty('value'),
-			    on('change', e => { host.value = e.target.value })
+			    on('change', e => { el.value = e.target.value })
 			)
-		])
+		})
 
 		component('input-checkbox', {
 			checked: asBoolean
-		}, host => [
-			first('input',
+		}, el => {
+			el.first('input',
 				setProperty('checked'),
-				on('change', e => { host.checked = e.target.checked })
+				on('change', e => { el.checked = e.target.checked })
 			)
-		])
+		})
 
 		component('lazy-load', {
-			src: (host, v) => { // Custom attribute parser
+			error: '',
+			src: (el, v) => { // Custom attribute parser
 				if (!v) {
-					host.error = 'No URL provided in src attribute'
+					el.error = 'No URL provided in src attribute'
 					return ''
-				} else if ((host.parentElement || host.getRootNode().host)?.closest(`${host.localName}[src="${v}"]`)) {
-					host.error = 'Recursive loading detected'
+				} else if ((el.parentElement || el.getRootNode().host)?.closest(`${el.localName}[src="${v}"]`)) {
+					el.error = 'Recursive loading detected'
 					return ''
 				}
 				const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
-				if (url.origin === location.origin) // Sanity check for cross-origin URLs
+				if (url.origin === location.origin) { // Sanity check for cross-origin URLs
+					el.error = '' // Success: wipe previous error if there was any
 					return String(url)
-				host.error = 'Invalid URL origin'
+				}
+				el.error = 'Invalid URL origin'
 				return ''
 			},
-			content: host => async abort => { // Async Computed callback
-				const url = host.src
+			content: el => async abort => { // Async Computed callback
+				const url = el.src
 				if (!url) return ''
 				try {
 					const response = await fetch(url, { signal: abort })
 					await wait(LOADING_DELAY)
-					host.querySelector('.loading')?.remove()
+					el.querySelector('.loading')?.remove()
 					if (response.ok) return response.text()
-					else host.error = response.statusText
+					else el.error = response.statusText
 				} catch (error) {
-					host.error = error.message
+					el.error = error.message
 				}
 				return ''
-			},
-			error: '',
-		}, host => [
-			first('.error',
+			}
+		}, el => {
+			el.first('.error',
 				setText('error'),
-				setProperty('hidden', () => !host.error)
-			),
-			dangerouslySetInnerHTML('content', 'open')
-		])
+				setProperty('hidden', () => !el.error)
+			)
+			el.self(dangerouslySetInnerHTML('content', 'open'))
+		})
 
 		component('tab-list', {
 			accordion: asBoolean,
-			active: host => { 
-				const panels = Array.from(host.querySelectorAll('details'))
+			active: el => { 
+				const panels = Array.from(el.querySelectorAll('details'))
 				for (let i = 0; i < panels.length; i++) {
 					if (panels[i].hasAttribute('open')) return i
 				}
 				return 0
 			},
-		}, host => [
-			toggleAttribute('accordion'),
-			all('menu button',
-				on('click', (_, index) => () => { host.active = index }),
-				setProperty('ariaPressed', (_, index) => String(host.active === index))
-			),
-			all('details',
-				setProperty('open', (_, index) => !!(host.active === index)),
-				setAttribute('aria-disabled', () => String(!host.accordion))
-			),
-			all('summary',
-				toggleClass('visually-hidden', () => !host.accordion)
+		}, el => {
+			el.self(toggleAttribute('accordion'))
+			el.all('menu button',
+				on('click', (_, index) => () => { el.active = index }),
+				setProperty('ariaPressed', (_, index) => String(el.active === index))
 			)
-		])
+			el.all('details',
+				setProperty('open', (_, index) => !!(el.active === index)),
+				setAttribute('aria-disabled', () => String(!el.accordion))
+			)
+			el.all('summary',
+				toggleClass('visually-hidden', () => !el.accordion)
+			)
+		})
 
 		component('post-reply', {
 			message: '',
 			formIsHidden: true
-		}, host => [
-			first('button',
-				on('click', () => { host.formIsHidden = false })
-			),
-			first('form',
+		}, el => {
+			el.first('button',
+				on('click', () => { el.formIsHidden = false })
+			)
+			el.first('form',
 				on('submit', e => {
 					e.preventDefault()
-					host.message = host.querySelector('textarea').value
-					host.formIsHidden = true
+					el.message = el.querySelector('textarea').value
+					el.formIsHidden = true
 				}),
 				setProperty('hidden', 'formIsHidden')
-			),
-			insertTemplate(host.querySelector('template'), () => !!host.message)
-		])
+			)
+			el.self(insertTemplate(el.querySelector('template'), () => !!el.message))
+		})
 
 		runTests(() => {
 

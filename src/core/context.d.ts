@@ -61,4 +61,4 @@ declare class ContextRequestEvent<T extends UnknownContext> extends Event {
 }
 declare const provide: <P extends ComponentProps>(provided: Context<keyof P, Signal<P[keyof P]>>[]) => (host: Component<P>) => () => void;
 declare const consume: <T extends {}, C extends HTMLElement>(context: Context<string, Signal<T>>) => (host: C) => undefined;
-export { type Context, type UnknownContext, CONTEXT_REQUEST, ContextRequestEvent, provide, consume };
+export { type Context, type UnknownContext, type ContextType, CONTEXT_REQUEST, ContextRequestEvent, provide, consume };

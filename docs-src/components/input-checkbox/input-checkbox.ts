@@ -1,17 +1,13 @@
-import { asBoolean, component, first, on, setProperty, toggleAttribute } from "../../../"
+import { asBoolean, component, on, setProperty, toggleAttribute } from '../../../'
 
-type InputCheckboxProps = {
-	checked: boolean
-}
-
-component('input-checkbox', {
+export default component('input-checkbox', {
 	checked: asBoolean
-}, host => [
-	toggleAttribute('checked'),
-	first<HTMLInputElement, InputCheckboxProps>('input',
+}, el => {
+	el.self(toggleAttribute('checked'))
+	el.first<HTMLInputElement>('input',
 		setProperty('checked'),
 		on('change', (e: Event) => {
-			host.checked = (e.target as HTMLInputElement)?.checked
+			el.checked = (e.target as HTMLInputElement)?.checked
 		})
 	)
-])
+})

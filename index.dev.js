@@ -353,31 +353,27 @@ var run = (fns, host, target, index = 0) => fns.flatMap((fn) => {
   const cleanup = isFunction2(fn) ? fn(host, target, index) : [];
   return Array.isArray(cleanup) ? cleanup.filter(isFunction2) : isFunction2(cleanup) ? [cleanup] : [];
 });
-var isAttributeParser = (value) => isFunction2(value) && value.length >= 2;
+var isParser = (value) => isFunction2(value) && value.length >= 2;
+var isSignalProducer = (value) => isFunction2(value) && value.length < 2;
 var isProvider = (value) => isFunction2(value) && value.length == 2;
 var validatePropertyName = (prop) => !(HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop));
-var first = (selector, ...fns) => (host) => {
-  const target = (host.shadowRoot || host).querySelector(selector);
-  return target ? run(fns, host, target) : [];
-};
-var all = (selector, ...fns) => (host) => Array.from((host.shadowRoot || host).querySelectorAll(selector)).flatMap((target, index) => run(fns, host, target, index));
 var component = (name, init = {}, setup) => {
 
   class CustomElement extends HTMLElement {
     #signals = {};
     #cleanup = [];
-    static observedAttributes = Object.entries(init)?.filter(([, ini]) => isAttributeParser(ini)).map(([prop]) => prop) ?? [];
+    static observedAttributes = Object.entries(init)?.filter(([, ini]) => isParser(ini)).map(([prop]) => prop) ?? [];
     constructor() {
       super();
       for (const [prop, ini] of Object.entries(init)) {
         if (ini == null)
           continue;
-        const result = isAttributeParser(ini) ? ini(this, null) : isFunction2(ini) ? ini(this) : ini;
+        const result = isParser(ini) ? ini(this, null) : isSignalProducer(ini) ? ini(this) : ini;
         this.set(prop, toSignal(result ?? RESET));
       }
     }
     connectedCallback() {
-      this.#cleanup = run(setup(this), this, this);
+      setup(this);
     }
     disconnectedCallback() {
       for (const off of this.#cleanup)
@@ -388,7 +384,7 @@ var component = (name, init = {}, setup) => {
       if (value === old || isComputed(this.#signals[attr]))
         return;
       const parse = init[attr];
-      if (!isAttributeParser(parse))
+      if (!isParser(parse))
         return;
       this[attr] = parse(this, value, old);
     }
@@ -418,6 +414,17 @@ var component = (name, init = {}, setup) => {
       });
       if (prev && isState(prev))
         prev.set(UNSET);
+    }
+    self(...fns) {
+      this.#cleanup.push(...run(fns, this, this));
+    }
+    first(selector, ...fns) {
+      const target = (this.shadowRoot || this).querySelector(selector);
+      if (target)
+        this.#cleanup.push(...run(fns, this, target));
+    }
+    all(selector, ...fns) {
+      this.#cleanup.push(...Array.from((this.shadowRoot || this).querySelectorAll(selector)).flatMap((target, index) => run(fns, this, target, index)));
     }
   }
   customElements.define(name, CustomElement);
@@ -491,12 +498,11 @@ var parseNumber = (parseFn, value) => {
   const parsed = parseFn(value);
   return Number.isFinite(parsed) ? parsed : undefined;
 };
-var getFallback = (value) => Array.isArray(value) && value[0] ? value[0] : value;
 var asBoolean = (_, value) => value !== "false" && value != null;
 var asInteger = (fallback = 0) => (_, value) => parseNumber(parseInt, value) ?? fallback;
 var asNumber = (fallback = 0) => (_, value) => parseNumber(parseFloat, value) ?? fallback;
 var asString = (fallback = "") => (_, value) => value ?? fallback;
-var asEnum = (valid) => (_, value) => value != null && valid.includes(value.toLowerCase()) ? value : getFallback(valid);
+var asEnum = (valid) => (_, value) => value != null && valid.includes(value.toLowerCase()) ? value : valid[0];
 var asJSON = (fallback) => (_, value) => {
   if (value == null)
     return fallback;
@@ -773,7 +779,6 @@ export {
   isComputed,
   insertTemplate,
   insertNode,
-  first,
   enqueue,
   emit,
   effect,
@@ -789,7 +794,6 @@ export {
   asInteger,
   asEnum,
   asBoolean,
-  all,
   UNSET,
   RESET,
   LOG_WARN,

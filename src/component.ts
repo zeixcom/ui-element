@@ -1,5 +1,5 @@
 import {
-	type ComputedCallback, type Signal,
+	type MaybeSignal, type Signal,
 	isComputed, isSignal, isState, toSignal, UNSET
 } from "@zeix/cause-effect"
 
@@ -21,17 +21,24 @@ type Component<P extends ComponentProps> = HTMLElement & P & {
 	has(prop: string & keyof P): boolean
 	get(prop: string & keyof P): Signal<P[string & keyof P]>
 	set(prop: string & keyof P, signal: Signal<P[string & keyof P]>): void
+	self(...fns: FxFunction<P, Component<P>>[]): void
+	first<E extends Element>(selector: string, ...fns: FxFunction<P, E>[]): void
+	all<E extends Element>(selector: string, ...fns: FxFunction<P, E>[]): void
 }
 
-type Parser<T extends {}> = (
-	host: HTMLElement,
+type Parser<T extends {}, C extends HTMLElement> = (
+	host: C,
 	value: string | null,
 	old?: string | null
 ) => T
 
-type Initializer<T extends {}> = T
-	| Parser<T>
-	| ((host: HTMLElement) => T | ComputedCallback<T>)
+type SignalProducer<T extends {}, C extends HTMLElement> = (
+	host: C
+) => MaybeSignal<T>
+
+type Initializer<T extends {}, C extends HTMLElement> = T
+	| Parser<T, C>
+	| SignalProducer<T, C>
 
 type FxFunction<P extends ComponentProps, E extends Element> = (
 	host: Component<P>,
@@ -39,9 +46,7 @@ type FxFunction<P extends ComponentProps, E extends Element> = (
 	index?: number
 ) => void | (() => void) | (() => void)[]
 
-type ComponentSetup<P extends ComponentProps> = (
-	host: Component<P>,
-) => FxFunction<P, Component<P>>[]
+type ComponentSetup<P extends ComponentProps> = (host: Component<P>) => void
 
 type Provider<T> = <E extends Element>(
 	element: E,
@@ -74,10 +79,13 @@ const run = <P extends ComponentProps, E extends Element>(
 			: []
 	})
 
-const isAttributeParser = <T extends {}>(value: unknown): value is Parser<T> =>
+const isParser = <T extends {}, C extends HTMLElement>(value: unknown): value is Parser<T, C> =>
 	isFunction(value) && value.length >= 2
 
-const isProvider = <T>(value: unknown): value is (target: Element, index: number) => T =>
+const isSignalProducer = <T extends {}, C extends HTMLElement>(value: unknown): value is SignalProducer<T, C> =>
+	isFunction(value) && value.length < 2
+
+const isProvider = <T>(value: unknown): value is Provider<T> =>
 	isFunction(value) && value.length == 2
 
 const validatePropertyName = (prop: string): boolean =>
@@ -85,33 +93,18 @@ const validatePropertyName = (prop: string): boolean =>
 
 /* === Exported Functions === */
 
-const first = <E extends Element, P extends ComponentProps>(
-	selector: string,
-	...fns: FxFunction<P, E>[]
-) => (host: Component<P>): (() => void)[] => {
-	const target = (host.shadowRoot || host).querySelector<E>(selector)
-	return target ? run(fns, host, target) : []
-}
-
-const all = <E extends Element, P extends ComponentProps>(
-	selector: string,
-	...fns: FxFunction<P, E>[]
-) => (host: Component<P>): (() => void)[] =>
-	Array.from((host.shadowRoot || host).querySelectorAll<E>(selector))
-		.flatMap((target, index) => run(fns, host, target, index))
-
 /**
  * Define a component with its states and setup function (connectedCallback)
  * 
  * @since 0.12.0
  * @param {string} name - name of the custom element
- * @param {{ [K in keyof S]: SignalInitializer<S[K]> }} init - states of the component
+ * @param {{ [K in keyof S]: Initializer<S[K], Component<P>> }} init - signals of the component
  * @param {FxFunction<S>[]} setup - setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
  * @returns {typeof HTMLElement & P} - constructor function for the custom element
  */
 const component = <P extends ComponentProps>(
 	name: string,
-	init: { [K in string & keyof P]: Initializer<P[K]> } = {} as { [K in string & keyof P]: Initializer<P[K]> },
+	init: { [K in string & keyof P]: Initializer<P[K], Component<P>> } = {} as { [K in string & keyof P]: Initializer<P[K], Component<P>> },
 	setup: ComponentSetup<P>
 ): Component<P> => {
 	class CustomElement extends HTMLElement {
@@ -119,26 +112,24 @@ const component = <P extends ComponentProps>(
 		#cleanup: (() => void)[] = []
 	  
 		static observedAttributes = Object.entries(init)
-			?.filter(([, ini]) => isAttributeParser(ini))
+			?.filter(([, ini]) => isParser(ini))
 			.map(([prop]) => prop)?? []
 	  
 		constructor() {
 			super()
 			for (const [prop, ini] of Object.entries(init)) {
 				if (ini == null) continue
-				const result = isAttributeParser(ini) ? ini(this, null)
-					: isFunction<P[string & keyof P]>(ini) ? ini(this)
+				const result = isParser<P[keyof P], Component<P>>(ini)
+					? ini(this as unknown as Component<P>, null)
+					: isSignalProducer<P[keyof P], Component<P>>(ini)
+					? ini(this as unknown as Component<P>)
 					: ini
 				this.set(prop, toSignal(result ?? RESET))
 			}
 		}
 
 		connectedCallback() {
-			this.#cleanup = run(
-				setup(this as unknown as Component<P>),
-				this as unknown as Component<P>,
-				this as unknown as Component<P>
-			)
+			setup(this as unknown as Component<P>)
 		}
 		
 		disconnectedCallback() {
@@ -148,8 +139,8 @@ const component = <P extends ComponentProps>(
 		
 		attributeChangedCallback(attr: string, old: string | null, value: string | null) {
 			if (value === old || isComputed(this.#signals[attr])) return // unchanged or controlled by computed
-			const parse = init[attr]
-			if (!isAttributeParser<P[keyof P]>(parse)) return
+			const parse = init[attr] as Parser<P[keyof P], Component<P>>
+			if (!isParser(parse)) return
 			(this as unknown as P)[attr as keyof P] = parse(this as unknown as Component<P>, value, old)
 		}
 
@@ -180,6 +171,20 @@ const component = <P extends ComponentProps>(
 				configurable: writable,
 			})
 			if (prev && isState(prev)) prev.set(UNSET)
+		}
+
+		self(...fns: FxFunction<P, Component<P>>[]): void {
+			this.#cleanup.push(...run(fns, this as unknown as Component<P>, this as unknown as Component<P>))
+		}
+
+		first<E extends Element>(selector: string, ...fns: FxFunction<P, E>[]): void {
+			const target = (this.shadowRoot || this).querySelector<E>(selector)
+			if (target) this.#cleanup.push(...run(fns, this as unknown as Component<P>, target))
+		}
+		
+		all<E extends Element>(selector: string, ...fns: FxFunction<P, E>[]): void {
+			this.#cleanup.push(...Array.from((this.shadowRoot || this).querySelectorAll<E>(selector))
+				.flatMap((target, index) => run(fns, this as unknown as Component<P>, target, index)))
 		}
 	}
 	customElements.define(name, CustomElement)
@@ -238,6 +243,6 @@ const emit = <T>(
 }
 
 export {
-	type ComponentProps, type Component, type Parser, type Initializer, type Provider,
-	RESET, component, first, all, pass, on, emit
+	type ComponentProps, type Component, type Parser, type SignalProducer, type Initializer, type Provider,
+	RESET, component, pass, on, emit
 }
