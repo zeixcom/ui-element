@@ -329,6 +329,18 @@ var idString = (id) => id ? `#${id}` : "";
 var classString = (classList) => classList.length ? `.${Array.from(classList).join(".")}` : "";
 var elementName = (el) => `<${el.localName}${idString(el.id)}${classString(el.classList)}>`;
 var valueString = (value) => isString(value) ? `"${value}"` : isDefinedObject(value) ? JSON.stringify(value) : String(value);
+var typeString = (value) => {
+  if (value === null)
+    return "null";
+  if (typeof value !== "object")
+    return typeof value;
+  if (Array.isArray(value))
+    return "Array";
+  if (Symbol.toStringTag in Object(value)) {
+    return value[Symbol.toStringTag];
+  }
+  return value.constructor?.name || "Object";
+};
 var log = (value, msg, level = LOG_DEBUG) => {
   if (DEV_MODE || [LOG_ERROR, LOG_WARN].includes(level))
     console[level](msg, value);
@@ -355,12 +367,11 @@ var run = (fns, host, target, index = 0) => fns.flatMap((fn) => {
 });
 var isParser = (value) => isFunction2(value) && value.length >= 2;
 var isSignalProducer = (value) => isFunction2(value) && value.length < 2;
-var isProvider = (value) => isFunction2(value) && value.length == 2;
 var validatePropertyName = (prop) => !(HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop));
-var isComponent = (value) => value instanceof HTMLElement && value.localName.includes("-");
 var component = (name, init = {}, setup) => {
 
   class CustomElement extends HTMLElement {
+    debug;
     #signals = {};
     #cleanup = [];
     static observedAttributes = Object.entries(init)?.filter(([, ini]) => isParser(ini)).map(([prop]) => prop) ?? [];
@@ -374,12 +385,19 @@ var component = (name, init = {}, setup) => {
       }
     }
     connectedCallback() {
+      if (DEV_MODE) {
+        this.debug = this.hasAttribute("debug");
+        if (this.debug)
+          log(this, "Connected");
+      }
       setup(this);
     }
     disconnectedCallback() {
       for (const off of this.#cleanup)
         off();
       this.#cleanup.length = 0;
+      if (DEV_MODE && this.debug)
+        log(this, "Disconnected");
     }
     attributeChangedCallback(attr, old, value) {
       if (value === old || isComputed(this.#signals[attr]))
@@ -387,13 +405,19 @@ var component = (name, init = {}, setup) => {
       const parse = init[attr];
       if (!isParser(parse))
         return;
-      this[attr] = parse(this, value, old);
+      const parsed = parse(this, value, old);
+      if (DEV_MODE && this.debug)
+        log(value, `Attribute "${attr}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`);
+      this[attr] = parsed;
     }
     has(prop) {
       return prop in this.#signals;
     }
     get(prop) {
-      return this.#signals[prop];
+      const signal = this.#signals[prop];
+      if (DEV_MODE && this.debug)
+        log(signal, `Get ${typeString(signal)} ${valueString(prop)} in ${elementName(this)}`);
+      return signal;
     }
     set(prop, signal) {
       if (!validatePropertyName(prop)) {
@@ -415,6 +439,8 @@ var component = (name, init = {}, setup) => {
       });
       if (prev && isState(prev))
         prev.set(UNSET);
+      if (DEV_MODE && this.debug)
+        log(signal, `Set ${typeString(signal)} ${valueString(prop)} in ${elementName(this)}`);
     }
     self(...fns) {
       this.#cleanup.push(...run(fns, this, this));
@@ -430,6 +456,23 @@ var component = (name, init = {}, setup) => {
   }
   customElements.define(name, CustomElement);
   return CustomElement;
+};
+// src/core/ui.ts
+var isProvider = (value) => isFunction2(value) && value.length == 2;
+var isComponent = (value) => value instanceof HTMLElement && value.localName.includes("-");
+var on = (type, handler) => (host, target = host, index = 0) => {
+  const listener = isProvider(handler) ? handler(target, index) : handler;
+  if (!(isFunction2(listener) || isDefinedObject(listener) && isFunction2(listener.handleEvent))) {
+    log(listener, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR);
+  }
+  target.addEventListener(type, listener);
+  return () => target.removeEventListener(type, listener);
+};
+var emit = (type, detail) => (host, target = host, index = 0) => {
+  target.dispatchEvent(new CustomEvent(type, {
+    detail: isProvider(detail) ? detail(target, index) : detail,
+    bubbles: true
+  }));
 };
 var pass = (signals) => (host, target, index = 0) => {
   const targetName = target.localName;
@@ -456,20 +499,6 @@ var pass = (signals) => (host, target, index = 0) => {
   return () => {
     disposed = true;
   };
-};
-var on = (type, handler) => (host, target = host, index = 0) => {
-  const listener = isProvider(handler) ? handler(target, index) : handler;
-  if (!(isFunction2(listener) || isDefinedObject(listener) && isFunction2(listener.handleEvent))) {
-    log(listener, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR);
-  }
-  target.addEventListener(type, listener);
-  return () => target.removeEventListener(type, listener);
-};
-var emit = (type, detail) => (host, target = host, index = 0) => {
-  target.dispatchEvent(new CustomEvent(type, {
-    detail: isProvider(detail) ? detail(target, index) : detail,
-    bubbles: true
-  }));
 };
 // src/core/context.ts
 var CONTEXT_REQUEST = "context-request";

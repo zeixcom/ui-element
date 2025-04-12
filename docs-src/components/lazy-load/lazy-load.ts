@@ -1,4 +1,7 @@
-import { type Parser, type SignalProducer, setProperty, setText, dangerouslySetInnerHTML, component } from '../../../'
+import {
+	type AttributeParser, type SignalProducer,
+	setProperty, setText, dangerouslySetInnerHTML, component
+} from '../../../'
 
 export type LazyLoadProps = {
 	error: string
@@ -8,7 +11,7 @@ export type LazyLoadProps = {
 
 /* === Attribute Parser === */
 
-const asURL: Parser<string, HTMLElement & { error: string }> = (el, v) => {
+const asURL: AttributeParser<string, HTMLElement & { error: string }> = (el, v) => {
 	if (!v) {
 		el.error = 'No URL provided in src attribute'
 		return ''

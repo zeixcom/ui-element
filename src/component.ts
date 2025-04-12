@@ -3,8 +3,8 @@ import {
 	isComputed, isSignal, isState, toSignal, UNSET
 } from "@zeix/cause-effect"
 
-import { isDefinedObject, isFunction, isString } from "./core/util"
-import { elementName, log, LOG_ERROR, valueString } from "./core/log"
+import { isFunction } from "./core/util"
+import { DEV_MODE, elementName, log, LOG_ERROR, typeString, valueString } from "./core/log"
 
 /* === Types === */
 
@@ -26,7 +26,7 @@ type Component<P extends ComponentProps> = HTMLElement & P & {
 	all<E extends Element>(selector: string, ...fns: FxFunction<P, E>[]): void
 }
 
-type Parser<T extends {}, C extends HTMLElement> = (
+type AttributeParser<T extends {}, C extends HTMLElement> = (
 	host: C,
 	value: string | null,
 	old?: string | null
@@ -36,8 +36,8 @@ type SignalProducer<T extends {}, C extends HTMLElement> = (
 	host: C
 ) => MaybeSignal<T>
 
-type Initializer<T extends {}, C extends HTMLElement> = T
-	| Parser<T, C>
+type SignalInitializer<T extends {}, C extends HTMLElement> = T
+	| AttributeParser<T, C>
 	| SignalProducer<T, C>
 
 type FxFunction<P extends ComponentProps, E extends Element> = (
@@ -45,17 +45,6 @@ type FxFunction<P extends ComponentProps, E extends Element> = (
 	target: E,
 	index?: number
 ) => void | (() => void) | (() => void)[]
-
-type ComponentSetup<P extends ComponentProps> = (host: Component<P>) => void
-
-type Provider<T> = <E extends Element>(
-	element: E,
-	index: number
-) => T
-
-type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
-	[K in string & keyof Q]?: Signal<Q[K]> | Provider<Q[K]> | (() => Q[K]) | string & keyof P
-}
 
 /* === Constants === */
 
@@ -83,20 +72,14 @@ const run = <P extends ComponentProps, E extends Element>(
 			: []
 	})
 
-const isParser = <T extends {}, C extends HTMLElement>(value: unknown): value is Parser<T, C> =>
+const isParser = <T extends {}, C extends HTMLElement>(value: unknown): value is AttributeParser<T, C> =>
 	isFunction(value) && value.length >= 2
 
 const isSignalProducer = <T extends {}, C extends HTMLElement>(value: unknown): value is SignalProducer<T, C> =>
 	isFunction(value) && value.length < 2
 
-const isProvider = <T>(value: unknown): value is Provider<T> =>
-	isFunction(value) && value.length == 2
-
 const validatePropertyName = (prop: string): boolean =>
 	!((HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop)))
-
-const isComponent = (value: unknown): value is Component<ComponentProps> =>
-	value instanceof HTMLElement && value.localName.includes('-')
 
 /* === Exported Functions === */
 
@@ -111,17 +94,29 @@ const isComponent = (value: unknown): value is Component<ComponentProps> =>
  */
 const component = <P extends ComponentProps>(
 	name: string,
-	init: { [K in string & keyof P]: Initializer<P[K], Component<P>> } = {} as { [K in string & keyof P]: Initializer<P[K], Component<P>> },
-	setup: ComponentSetup<P>
+	init: {
+		[K in string & keyof P]: SignalInitializer<P[K], Component<P>>
+	} = {} as {
+		[K in string & keyof P]: SignalInitializer<P[K], Component<P>>
+	},
+	setup: (host: Component<P>) => void
 ): Component<P> => {
 	class CustomElement extends HTMLElement {
-		#signals: { [K in string & keyof P]: Signal<P[K]> } = {} as { [K in string & keyof P]: Signal<P[K]> }
+		debug?: boolean
+		#signals: {
+			[K in string & keyof P]: Signal<P[K]>
+		} = {} as {
+			[K in string & keyof P]: Signal<P[K]>
+		}
 		#cleanup: (() => void)[] = []
 	  
 		static observedAttributes = Object.entries(init)
 			?.filter(([, ini]) => isParser(ini))
 			.map(([prop]) => prop)?? []
 	  
+		/**
+		 * Constructor function for the custom element: initializes signals
+		 */
 		constructor() {
 			super()
 			for (const [prop, ini] of Object.entries(init)) {
@@ -135,30 +130,75 @@ const component = <P extends ComponentProps>(
 			}
 		}
 
+		/**
+		 * Native callback function when the custom element is first connected to the document
+		 */
 		connectedCallback() {
+			if (DEV_MODE) {
+				this.debug = this.hasAttribute('debug')
+				if (this.debug) log(this, 'Connected')
+			}
 			setup(this as unknown as Component<P>)
 		}
 		
+		/**
+		 * Native callback function when the custom element is disconnected from the document
+		 */
 		disconnectedCallback() {
 			for (const off of this.#cleanup) off()
 			this.#cleanup.length = 0
+			if (DEV_MODE && this.debug) log(this, 'Disconnected')
 		}
 		
+		/**
+		 * Native callback function when an observed attribute of the custom element changes
+		 * 
+		 * @param {string} attr - name of the modified attribute
+		 * @param {string | null} old - old value of the modified attribute
+		 * @param {string | null} value - new value of the modified attribute
+		 */
 		attributeChangedCallback(attr: string, old: string | null, value: string | null) {
 			if (value === old || isComputed(this.#signals[attr])) return // unchanged or controlled by computed
-			const parse = init[attr] as Parser<P[keyof P], Component<P>>
+			const parse = init[attr] as AttributeParser<P[keyof P], Component<P>>
 			if (!isParser(parse)) return
-			(this as unknown as P)[attr as keyof P] = parse(this as unknown as Component<P>, value, old)
+			const parsed = parse(this as unknown as Component<P>, value, old)
+			if (DEV_MODE && this.debug)
+				log(value, `Attribute "${attr}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`);
+			(this as unknown as P)[attr as keyof P] = parsed
 		}
 
+		/**
+		 * Check whether a state property is set
+		 * 
+		 * @since 0.2.0
+		 * @param {string} prop - state to be checked
+		 * @returns {boolean} `true` if this element has state with the given key; `false` otherwise
+		 */
 		has(prop: string & keyof P): boolean {
 			return prop in this.#signals
 		}
 
+		/**
+		 * Get the the signal of a state property
+		 *
+		 * @since 0.2.0
+		 * @param {K} prop - state to get value from
+		 * @returns {S[K]} current value of state; undefined if state does not exist
+		 */
 		get(prop: string & keyof P): Signal<P[string & keyof P]> {
-			return this.#signals[prop]
+			const signal = this.#signals[prop]
+			if (DEV_MODE && this.debug)
+				log(signal, `Get ${typeString(signal)} ${valueString(prop)} in ${elementName(this)}`)
+			return signal
 		}
 
+		/**
+		 * Set a signal for a state property
+		 * 
+		 * @since 0.2.0
+		 * @param {K} prop - state to set value to
+		 * @param {Signal<P[string & keyof P]>} signal - signal to set value to
+		 */
 		set(prop: string & keyof P, signal: Signal<P[string & keyof P]>): void {
 			if (!validatePropertyName(prop)) {
 				log(prop, `Property name ${valueString(prop)} in <${elementName(this)}> conflicts with HTMLElement properties or JavaScript reserved words.`, LOG_ERROR)
@@ -178,17 +218,39 @@ const component = <P extends ComponentProps>(
 				configurable: writable,
 			})
 			if (prev && isState(prev)) prev.set(UNSET)
+			if (DEV_MODE && this.debug)
+				log(signal, `Set ${typeString(signal)} ${valueString(prop)} in ${elementName(this)}`)
 		}
 
+		/**
+		 * Apply effect functions to the custom element itself
+		 * 
+		 * @since 0.8.1
+		 * @property {UI<UIElement>} self - UI object for this element
+		 */
 		self(...fns: FxFunction<P, Component<P>>[]): void {
 			this.#cleanup.push(...run(fns, this as unknown as Component<P>, this as unknown as Component<P>))
 		}
 
+		/**
+		 * Apply effect functions to a first matching sub-element within the custom element
+		 * 
+		 * @since 0.8.1
+		 * @param {string} selector - selector to match sub-element
+		 * @returns {UI<Element>[]} - array of zero or one UI objects of matching sub-element
+		 */
 		first<E extends Element>(selector: string, ...fns: FxFunction<P, E>[]): void {
 			const target = (this.shadowRoot || this).querySelector<E>(selector)
 			if (target) this.#cleanup.push(...run(fns, this as unknown as Component<P>, target))
 		}
 		
+		/**
+		 * Apply effect functions to all matching sub-elements within the custom element
+		 * 
+		 * @since 0.8.1
+		 * @param {string} selector - selector to match sub-elements
+		 * @returns {UI<Element>} - array of UI object of matching sub-elements
+		 */
 		all<E extends Element>(selector: string, ...fns: FxFunction<P, E>[]): void {
 			this.#cleanup.push(...Array.from((this.shadowRoot || this).querySelectorAll<E>(selector))
 				.flatMap((target, index) => run(fns, this as unknown as Component<P>, target, index)))
@@ -198,73 +260,9 @@ const component = <P extends ComponentProps>(
 	return CustomElement as unknown as Component<P>
 }
 
-const pass = <P extends ComponentProps, Q extends ComponentProps>(
-	signals: PassedSignals<P, Q>
-) => <E extends Element>(
-	host: Component<P>,
-	target: E,
-	index = 0
-): void | (() => void) => {
-	const targetName = target.localName
-	if (!isComponent(target)) {
-        log(target, `Target element must be a custom element that extends HTMLElement.`, LOG_ERROR)
-        return
-    }
-	let disposed = false
-	customElements.whenDefined(targetName).then(() => {
-		if (disposed) return
-		const sources = isProvider(signals)
-			? signals(target, index) as PassedSignals<P, Q>
-			: signals
-		if (!isDefinedObject(sources)) {
-			log(sources, `Invalid passed signals provided.`, LOG_ERROR)
-			return
-		}
-		for (const [prop, source] of Object.entries(sources)) {
-			const signal = isString(source)
-				? host.get(prop)
-				: toSignal(source as MaybeSignal<Q[keyof Q]>)
-			target.set(prop, signal)
-		}
-	}).catch((error) => {
-		log(error, `Failed to pass signals to ${elementName(target)}.`, LOG_ERROR)
-	})
-	return () => {
-		disposed = true
-	}
-}
-
-const on = (
-	type: string,
-	handler: EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>,
-) => <P extends ComponentProps>(
-	host: Component<P>,
-	target: Element = host,
-	index = 0
-): () => void => {
-	const listener = isProvider(handler) ? handler(target, index) : handler
-	if (!(isFunction(listener) || isDefinedObject(listener) && isFunction(listener.handleEvent))) {
-		log(listener, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR)
-	}
-	target.addEventListener(type, listener)
-	return () => target.removeEventListener(type, listener)
-}
-
-const emit = <T>(
-	type: string,
-	detail: T | ((target: Element, index: number) => T)
-) => <P extends ComponentProps>(
-	host: Component<P>,
-	target: Element = host,
-	index = 0
-): void => {
-	target.dispatchEvent(new CustomEvent(type, {
-		detail: isProvider(detail) ? detail(target, index) : detail,
-		bubbles: true
-	}))
-}
-
 export {
-	type ComponentProps, type Component, type Parser, type SignalProducer, type Initializer, type Provider, type PassedSignals,
-	RESET, component, pass, on, emit
+	type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords,
+	type SignalInitializer, type AttributeParser, type SignalProducer,
+	type FxFunction,
+	RESET, component
 }

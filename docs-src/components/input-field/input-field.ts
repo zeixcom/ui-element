@@ -1,5 +1,5 @@
 import {
-	type Component, type Parser, type SignalProducer,
+	type AttributeParser, type SignalProducer,
 	component, effect, emit, on, setAttribute, setProperty, setText, UNSET
 } from '../../../'
 
@@ -10,7 +10,7 @@ export type InputFieldProps = {
 	length: number,
 	empty: boolean,
 	error: string,
-	ariaInvalid: "true" | "false",
+	ariaInvalid: 'true' | 'false',
 	'aria-errormessage': string,
     description: string,
 	'aria-describedby': string
@@ -22,8 +22,8 @@ export type InputFieldProps = {
 const isNumber = (num: any) => typeof num === 'number'
 
 // Convert any value to a boolean string
-const toBooleanString = (value: any): "true" | "false" =>
-	!value || value === "false" ? "false" : "true"
+const toBooleanString = (value: any): 'true' | 'false' =>
+	!value || value === 'false' ? 'false' : 'true'
 
 // Parse a value as a number with optional integer flag and fallback value
 const parseNumber = (v: any, int = false, fallback = 0): number => {
@@ -33,7 +33,7 @@ const parseNumber = (v: any, int = false, fallback = 0): number => {
 
 /* === Attribute Parsers === */
 
-const asNumberOrString: Parser<string | number, Component<InputFieldProps>> = (el, v) => {
+const asNumberOrString: AttributeParser<string | number, HTMLElement> = (el, v) => {
 	const input = el.querySelector('input')
 	return input && input.type === 'number' ? parseNumber(v, el.hasAttribute('integer'), 0) : (v ?? '')
 }
@@ -43,7 +43,7 @@ const asNumberOrString: Parser<string | number, Component<InputFieldProps>> = (e
 const createEmpty: SignalProducer<boolean, HTMLElement & { length: number }> = el =>
 	() => el.length === 0
 
-const createAriaInvalid: SignalProducer<"true" | "false", HTMLElement & { error: string }> = el =>
+const createAriaInvalid: SignalProducer<'true' | 'false', HTMLElement & { error: string }> = el =>
 	() => toBooleanString(el.error)
 
 const createAriaErrorMessage: SignalProducer<string, HTMLElement & { error: string }> = el =>

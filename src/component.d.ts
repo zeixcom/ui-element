@@ -14,15 +14,10 @@ type Component<P extends ComponentProps> = HTMLElement & P & {
     first<E extends Element>(selector: string, ...fns: FxFunction<P, E>[]): void;
     all<E extends Element>(selector: string, ...fns: FxFunction<P, E>[]): void;
 };
-type Parser<T extends {}, C extends HTMLElement> = (host: C, value: string | null, old?: string | null) => T;
+type AttributeParser<T extends {}, C extends HTMLElement> = (host: C, value: string | null, old?: string | null) => T;
 type SignalProducer<T extends {}, C extends HTMLElement> = (host: C) => MaybeSignal<T>;
-type Initializer<T extends {}, C extends HTMLElement> = T | Parser<T, C> | SignalProducer<T, C>;
+type SignalInitializer<T extends {}, C extends HTMLElement> = T | AttributeParser<T, C> | SignalProducer<T, C>;
 type FxFunction<P extends ComponentProps, E extends Element> = (host: Component<P>, target: E, index?: number) => void | (() => void) | (() => void)[];
-type ComponentSetup<P extends ComponentProps> = (host: Component<P>) => void;
-type Provider<T> = <E extends Element>(element: E, index: number) => T;
-type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
-    [K in string & keyof Q]?: Signal<Q[K]> | Provider<Q[K]> | (() => Q[K]) | (string & keyof P);
-};
 declare const RESET: any;
 /**
  * Define a component with its states and setup function (connectedCallback)
@@ -33,8 +28,5 @@ declare const RESET: any;
  * @param {FxFunction<S>[]} setup - setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
  * @returns {typeof HTMLElement & P} - constructor function for the custom element
  */
-declare const component: <P extends ComponentProps>(name: string, init: { [K in string & keyof P]: Initializer<P[K], Component<P>>; } | undefined, setup: ComponentSetup<P>) => Component<P>;
-declare const pass: <P extends ComponentProps, Q extends ComponentProps>(signals: PassedSignals<P, Q>) => <E extends Element>(host: Component<P>, target: E, index?: number) => void | (() => void);
-declare const on: (type: string, handler: EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>) => <P extends ComponentProps>(host: Component<P>, target?: Element, index?: number) => () => void;
-declare const emit: <T>(type: string, detail: T | ((target: Element, index: number) => T)) => <P extends ComponentProps>(host: Component<P>, target?: Element, index?: number) => void;
-export { type ComponentProps, type Component, type Parser, type SignalProducer, type Initializer, type Provider, type PassedSignals, RESET, component, pass, on, emit };
+declare const component: <P extends ComponentProps>(name: string, init: { [K in string & keyof P]: SignalInitializer<P[K], Component<P>>; } | undefined, setup: (host: Component<P>) => void) => Component<P>;
+export { type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords, type SignalInitializer, type AttributeParser, type SignalProducer, type FxFunction, RESET, component };

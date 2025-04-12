@@ -1,8 +1,9 @@
 import { type Signal, effect, enqueue, isSignal, isState, UNSET } from '@zeix/cause-effect'
 
 import { isFunction, isString } from '../core/util'
-import { type ComponentProps, type Component, RESET, type Provider } from '../component'
+import { type ComponentProps, type Component, RESET } from '../component'
 import { DEV_MODE, elementName, log, LOG_ERROR, valueString } from '../core/log'
+import type { Provider } from '../core/ui'
 
 /* === Types === */
 
