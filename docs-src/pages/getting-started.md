@@ -115,30 +115,29 @@ Save the following inside a `<script type="module">` tag or an external JavaScri
 
 ```html
 <script type="module">
-	import { UIElement, setText, RESET } from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
+	import { asString, component, setText, RESET } from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
 
-	class HelloWorld extends UIElement {
-		static localName = 'hello-world';
+	component('hello-world', {
+		// Parse 'name' attribute, falling back to server-rendered content
+		name: asString(RESET)
+	}, el => {
 
-		connectedCallback() {
+		// Update content dynamically based on the 'name' signal
+		el.first('span', setText('name'))
 
-			// Update content dynamically based on the 'name' signal
-			this.first('span').sync(setText('name'));
-
-			// Handle user input to change the 'name'
-			this.first('input').on('input', e => {
-				this.set('name', e.target.value || RESET)
-			});
-		}
-	}
-	HelloWorld.define();
+		// Handle user input to change the 'name'
+		el.first('input', on('input', e => {
+			el.name = e.target.value || RESET
+		}))
+	})
 </script>
 ```
 
 **What Happens Here?**
 
+* ✅ The `asString(RESET)` signal **parses the 'name' attribute**, falling back to server-rendered value (constant `RESET`).
 * ✅ The `setText('name')` effect **syncs the state** with the `<span>`.
-* ✅ The `.on('input')` event **updates the state** whenever you type, falling back to the initial value if empty with (constant `RESET`).
+* ✅ The `on('input')` event **updates the state** whenever you type in the first `<input>` field, falling back to server-rendered value if empty.
 * ✅ The Web Component **hydrates automatically** when inserted into the page.
 
 </section>

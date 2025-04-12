@@ -390,7 +390,9 @@ var component = (name, init = {}, setup) => {
         if (this.debug)
           log(this, "Connected");
       }
-      setup(this);
+      const cleanup = setup(this);
+      if (isFunction2(cleanup))
+        this.#cleanup.push(cleanup);
     }
     disconnectedCallback() {
       for (const off of this.#cleanup)

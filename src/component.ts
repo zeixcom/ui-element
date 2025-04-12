@@ -99,7 +99,7 @@ const component = <P extends ComponentProps>(
 	} = {} as {
 		[K in string & keyof P]: SignalInitializer<P[K], Component<P>>
 	},
-	setup: (host: Component<P>) => void
+	setup: (host: Component<P>) => void | (() => void),
 ): Component<P> => {
 	class CustomElement extends HTMLElement {
 		debug?: boolean
@@ -138,7 +138,8 @@ const component = <P extends ComponentProps>(
 				this.debug = this.hasAttribute('debug')
 				if (this.debug) log(this, 'Connected')
 			}
-			setup(this as unknown as Component<P>)
+			const cleanup = setup(this as unknown as Component<P>)
+			if (isFunction(cleanup)) this.#cleanup.push(cleanup)
 		}
 		
 		/**

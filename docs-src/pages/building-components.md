@@ -13,41 +13,21 @@ description: "Anatomy, lifecycle, signals, effects"
 
 <section>
 
-## Anatomy of a UIElement Component
+## Anatomy of Components
 
 UIElement builds on **Web Components**, extending `HTMLElement` to provide **built-in state management and reactive updates**.
 
 ### Defining a Component
 
-A UIElement component is created by extending `UIElement`:
+A UIElement creates components using the `component()` function:
 
 ```js
-class MyComponent extends UIElement {
-	/* component definition */
-}
+component('my-component', {}, () => {
+	// Component setup
+})
 ```
 
-### Registering a Custom Element
-
-Every UIElement component must be registered with a valid custom tag name (two or more words joined with `-`) using `.define()`.
-
-```js
-MyComponent.define('my-component');
-```
-
-<callout-box class="tip">
-
-**Alternative**: If you prefer you can also declare the custom element tag within the component and call `.define()` without arguments.
-
-```js
-class MyComponent extends UIElement {
-	static localName = 'my-component';
-	/* component definition */
-}
-MyComponent.define()
-```
-
-</callout-box>
+Every UIElement component must be registered with a valid custom element tag name (two or more words joined with `-`) as the first parameter.
 
 ### Using the Custom Element in HTML
 
@@ -63,75 +43,75 @@ Once registered, the component can be used like any native HTML element:
 
 ## Web Component Lifecycle in UIElement
 
-Every UIElement component follows a **lifecycle** from creation to removal. Here's how the key lifecycle methods work:
+UIElement manages the ** Web Component lifecycle** from creation to removal. Here's what happens.
 
 ### Component Creation (constructor())
 
-Runs when the element is created **but before it's attached to the DOM**. Avoid accessing attributes or child elements here.
+This is when reactive properties are initialized. You pass a second argument to the `component()` function to defines initial values for **component states**.
+
+```js
+component('my-component', {
+	count: 0, // Initial value of 'count' signal
+	isEven: el => () => !(el.count % 2) // Computed signal based on 'count'
+	value: asInteger(5), // Parse 'value' attribute as integer
+	name: consume('display-name') // Consume 'display-name' signal from closest context provider
+}, () => {
+	// Component setup
+})
+```
+
+In this example you see all 4 ways to define a reactive property:
+
+* ✅ A **static initial value** for a `State` signal (e.g., `count: 0`)
+* ✅ A **signal producer** that derives an initial value or a callback function from other properties of the element (e.g., `isEven: el => () => !(el.count % 2)`)
+* ✅ An **attribute parser** that may provide a fallback value (e.g., `value: asInteger(5)`)
+* ✅ A **context consumer** that emits a `ContextRequestEvent` (e.g., `name: consume('display-name')`)
+
+<callout-box class="caution">
+**Note**: Property initialization runs **before the element is attached to the DOM**. You can't access other properties or child elements here.
+</callout-box>
 
 ### Mounted in the DOM (connectedCallback())
 
 Runs when the component is added to the page. This is where you:
 
-* ✅ **Initialize state**
+* ✅ **Access sub-elements**
 * ✅ **Set up event listeners**
 * ✅ **Apply effects**
+* ✅ **Emit custom events**
+* ✅ **Provide context**
 
 ```js
-class MyComponent extends UIElement {
-	connectedCallback() {
-		this.first('.increment').on('click', () => { // Add click event listener
-			this.set('count', v => null != v ? ++v : 1);
-		});
-		this.first('.count').sync(setText('count')); // Apply effect to update text
-	}
-}
-```
-
-If your component initializes states from `states` or provides or consumes context (`static providedContexts` / `static consumedContexts`), you need to call `super.connectedCallback()`.
-
-```js
-class HelloUser extends UIElement {
-	static consumedContexts = ['display-name']; // Signal provided by a parent component
-
-	init = {
-		greeting: 'Hello', // Initial value of 'greeting' signal
-		upper: () => this.get('display-name').toUpperCase(), // Compute function for transformation on 'display-name' signal
-	}
-
-	connectedCallback() {
-		super.connectedCallback(); // Initializes state signals from values, attributes, context or creates computed signals from functions 
-
-		this.first('.greeting').sync(setText('greeting'));
-		this.first('.user').sync(setText('display-name'));
-		this.first('.profile h2').sync(setText('upper'));
-	}
-}
+component('my-component', {
+	count: 0,
+}, el => {
+	el.first('.increment', on('click', () => { el.count++ })) // Add click event listener
+	el.first('.count', setText('count')) // Apply effect to update text
+	el.self(
+		emit('update-count', el.count) // Emit custom event
+		provide('count') // Provide context
+	)
+})
 ```
 
 ### Removed from the DOM (disconnectedCallback())
 
-Runs when the component is removed. Event listeners bound with `.on()` are automatically removed by UIElement.
+Runs when the component is removed. Event listeners bound with `on()` and signal subscriptions of effects are automatically removed by UIElement.
 
-If you added **event listeners** outside the scope of your component or **external subscriptions**, you need to manually clean up.
+If you added **event listeners** outside the scope of your component or **external subscriptions**, you need to return a cleanup function:
 
 ```js
-class MyComponent extends UIElement {
+component('my-component', {}, el => {
+	const intersectionObserver = new IntersectionObserver(([entry]) => {
+		// Do something
+	}).observe(el)
 
-	connectedCallback() {
-		this.intersectionObserver = new IntersectionObserver(([entry]) => {
-			// Do something
-		}).observe(this);
+	return () => {
+		// Cleanup logic
+		intersectionObserver.disconnect()
 	}
-
-	disconnentedCallback() {
-		super.disconnectedCallback(); // Automatically removes event listeners bound with `.on()`
-		if (this.intersectionObserver) this.intersectionObserver.disconnect();
-	}
-}
+})
 ```
-
-Use this to clean up **event listeners or external subscriptions**.
 
 ### Observed Attributes (attributeChangedCallback())
 
