@@ -1,6 +1,10 @@
 import { asString, component, on, setAttribute, toggleClass } from '../../../'
 
-export default component('input-radiogroup', {
+export type InputRadiogroupProps = {
+    value: string
+}
+
+const InputRadiogroup = component('input-radiogroup', {
 	value: asString()
 }, el => {
 	el.self(setAttribute('value'))
@@ -13,3 +17,11 @@ export default component('input-radiogroup', {
 		)
 	)
 })
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'input-radiogroup': typeof InputRadiogroup
+	}
+}
+
+export default InputRadiogroup

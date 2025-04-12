@@ -20,6 +20,9 @@ type Initializer<T extends {}, C extends HTMLElement> = T | Parser<T, C> | Signa
 type FxFunction<P extends ComponentProps, E extends Element> = (host: Component<P>, target: E, index?: number) => void | (() => void) | (() => void)[];
 type ComponentSetup<P extends ComponentProps> = (host: Component<P>) => void;
 type Provider<T> = <E extends Element>(element: E, index: number) => T;
+type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
+    [K in string & keyof Q]?: Signal<Q[K]> | Provider<Q[K]> | (() => Q[K]) | (string & keyof P);
+};
 declare const RESET: any;
 /**
  * Define a component with its states and setup function (connectedCallback)
@@ -31,7 +34,7 @@ declare const RESET: any;
  * @returns {typeof HTMLElement & P} - constructor function for the custom element
  */
 declare const component: <P extends ComponentProps>(name: string, init: { [K in string & keyof P]: Initializer<P[K], Component<P>>; } | undefined, setup: ComponentSetup<P>) => Component<P>;
-declare const pass: <P extends ComponentProps, Q extends ComponentProps>(signals: Partial<{ [K in keyof Q]: Signal<Q[K]>; }> | Provider<Partial<{ [K in keyof Q]: Signal<Q[K]>; }>>) => (host: Component<P>, target: Component<Q>, index?: number) => Promise<void>;
-declare const on: (type: string, handler: EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>) => <P extends ComponentProps>(host: Component<P>, target?: Element, index?: number) => (() => void)[];
+declare const pass: <P extends ComponentProps, Q extends ComponentProps>(signals: PassedSignals<P, Q>) => <E extends Element>(host: Component<P>, target: E, index?: number) => void | (() => void);
+declare const on: (type: string, handler: EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>) => <P extends ComponentProps>(host: Component<P>, target?: Element, index?: number) => () => void;
 declare const emit: <T>(type: string, detail: T | ((target: Element, index: number) => T)) => <P extends ComponentProps>(host: Component<P>, target?: Element, index?: number) => void;
-export { type ComponentProps, type Component, type Parser, type SignalProducer, type Initializer, type Provider, RESET, component, pass, on, emit };
+export { type ComponentProps, type Component, type Parser, type SignalProducer, type Initializer, type Provider, type PassedSignals, RESET, component, pass, on, emit };

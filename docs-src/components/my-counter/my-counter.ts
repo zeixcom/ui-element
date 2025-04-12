@@ -1,6 +1,10 @@
 import { asInteger, component, on, setText } from '../../../'
 
-export default component('my-counter', {
+export type MyCounterProps = {
+	count: number
+}
+
+const MyCounter = component('my-counter', {
 	count: asInteger()
 }, el => {
 	el.first('.count', setText('count'))
@@ -8,3 +12,11 @@ export default component('my-counter', {
 	el.first('.increment', on('click', () => { el.count++ }))
     el.first('.decrement', on('click', () => { el.count-- }))
 })
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'my-counter': typeof MyCounter
+	}
+}
+
+export default MyCounter

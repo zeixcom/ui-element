@@ -357,6 +357,7 @@ var isParser = (value) => isFunction2(value) && value.length >= 2;
 var isSignalProducer = (value) => isFunction2(value) && value.length < 2;
 var isProvider = (value) => isFunction2(value) && value.length == 2;
 var validatePropertyName = (prop) => !(HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop));
+var isComponent = (value) => value instanceof HTMLElement && value.localName.includes("-");
 var component = (name, init = {}, setup) => {
 
   class CustomElement extends HTMLElement {
@@ -430,17 +431,31 @@ var component = (name, init = {}, setup) => {
   customElements.define(name, CustomElement);
   return CustomElement;
 };
-var pass = (signals) => async (host, target, index = 0) => {
-  await customElements.whenDefined(target.localName);
-  const sources = isProvider(signals) ? signals(target, index) : signals;
-  if (!isDefinedObject(sources)) {
-    log(sources, `Invalid passed signals provided.`, LOG_ERROR);
+var pass = (signals) => (host, target, index = 0) => {
+  const targetName = target.localName;
+  if (!isComponent(target)) {
+    log(target, `Target element must be a custom element that extends HTMLElement.`, LOG_ERROR);
     return;
   }
-  for (const [prop, source] of Object.entries(sources)) {
-    const signal = isString(source) ? host.get(prop) : toSignal(source);
-    target.set(prop, signal);
-  }
+  let disposed = false;
+  customElements.whenDefined(targetName).then(() => {
+    if (disposed)
+      return;
+    const sources = isProvider(signals) ? signals(target, index) : signals;
+    if (!isDefinedObject(sources)) {
+      log(sources, `Invalid passed signals provided.`, LOG_ERROR);
+      return;
+    }
+    for (const [prop, source] of Object.entries(sources)) {
+      const signal = isString(source) ? host.get(prop) : toSignal(source);
+      target.set(prop, signal);
+    }
+  }).catch((error) => {
+    log(error, `Failed to pass signals to ${elementName(target)}.`, LOG_ERROR);
+  });
+  return () => {
+    disposed = true;
+  };
 };
 var on = (type, handler) => (host, target = host, index = 0) => {
   const listener = isProvider(handler) ? handler(target, index) : handler;
@@ -448,7 +463,7 @@ var on = (type, handler) => (host, target = host, index = 0) => {
     log(listener, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR);
   }
   target.addEventListener(type, listener);
-  return [() => target.removeEventListener(type, listener)];
+  return () => target.removeEventListener(type, listener);
 };
 var emit = (type, detail) => (host, target = host, index = 0) => {
   target.dispatchEvent(new CustomEvent(type, {
@@ -551,7 +566,7 @@ var updateElement = (s, updater) => (host, target, index = 0) => {
   if (isString(s) && isString(fallback) && host[s] === RESET)
     host.attributeChangedCallback(s, null, fallback);
   const err = (error, verb, prop = "element") => log(error, `Failed to ${verb} ${prop} ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
-  return [effect(() => {
+  return effect(() => {
     let value = RESET;
     try {
       value = resolveSignalLike(s, host, target, index);
@@ -589,7 +604,7 @@ var updateElement = (s, updater) => (host, target, index = 0) => {
         err(error, "update", `${ops[op] + name} of`);
       });
     }
-  })];
+  });
 };
 var insertNode = (s, { type, where, create }) => (host, target, index = 0) => {
   const methods = {
@@ -600,10 +615,10 @@ var insertNode = (s, { type, where, create }) => (host, target, index = 0) => {
   };
   if (!isFunction2(target[methods[where]])) {
     log(`Invalid insertPosition ${valueString(where)} for ${elementName(host)}:`, LOG_ERROR);
-    return [];
+    return;
   }
   const err = (error) => log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR);
-  return [effect(() => {
+  return effect(() => {
     let really = false;
     try {
       really = resolveSignalLike(s, host, target, index);
@@ -628,7 +643,7 @@ var insertNode = (s, { type, where, create }) => (host, target, index = 0) => {
     }).catch((error) => {
       err(error);
     });
-  })];
+  });
 };
 var setText = (s) => updateElement(s, {
   op: "t",
@@ -737,7 +752,7 @@ var createElement = (tag, s, where = "beforeend", attributes = {}, text) => inse
 });
 var removeElement = (s) => (host, target, index = 0) => {
   const err = (error) => log(error, `Failed to delete ${elementName(target)} from ${elementName(host)}:`, LOG_ERROR);
-  return [effect(() => {
+  return effect(() => {
     let really = false;
     try {
       really = resolveSignalLike(s, host, target, index);
@@ -756,7 +771,7 @@ var removeElement = (s) => (host, target, index = 0) => {
     }).catch((error) => {
       err(error);
     });
-  })];
+  });
 };
 export {
   watch,

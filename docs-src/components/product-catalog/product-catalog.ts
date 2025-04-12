@@ -1,12 +1,26 @@
-import { component, pass } from '../../../'
-import SpinButton from '../spin-button/spin-button'
+import { type SignalProducer, component, pass } from '../../../'
+import { InputButtonProps } from '../input-button/input-button'
 
-export default component('product-catalog', {}, el => {
-	el.first('input-button', pass({
-		badge: () => {
-			const total = Array.from(el.querySelectorAll<typeof SpinButton>('spin-button'))
-				.reduce((sum, item) => sum + item.value, 0)
-			return total === 'number' && Number.isInteger(total) && total > 0 ? String(total) : ''
-		}
+export type ProductCatalogProps = {
+	total: number
+}
+
+const calcTotal: SignalProducer<number, HTMLElement> = el =>
+	() => Array.from(el.querySelectorAll('spin-button'))
+		.reduce((sum, item) => sum + item.value, 0)
+
+const ProductCatalog = component('product-catalog', {
+	total: calcTotal
+}, el => {
+	el.first('input-button', pass<ProductCatalogProps, InputButtonProps>({
+		badge: () => el.total > 0 ? String(el.total) : ''
 	}))
 })
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'product-catalog': typeof ProductCatalog
+	}
+}
+
+export default ProductCatalog

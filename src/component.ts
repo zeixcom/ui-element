@@ -53,6 +53,10 @@ type Provider<T> = <E extends Element>(
 	index: number
 ) => T
 
+type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
+	[K in string & keyof Q]?: Signal<Q[K]> | Provider<Q[K]> | (() => Q[K]) | string & keyof P
+}
+
 /* === Constants === */
 
 // Special value explicitly marked as any so it can be used as signal value of any type
@@ -90,6 +94,9 @@ const isProvider = <T>(value: unknown): value is Provider<T> =>
 
 const validatePropertyName = (prop: string): boolean =>
 	!((HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop)))
+
+const isComponent = (value: unknown): value is Component<ComponentProps> =>
+	value instanceof HTMLElement && value.localName.includes('-')
 
 /* === Exported Functions === */
 
@@ -192,23 +199,38 @@ const component = <P extends ComponentProps>(
 }
 
 const pass = <P extends ComponentProps, Q extends ComponentProps>(
-	signals: Partial<{ [K in keyof Q]: Signal<Q[K]> }> | Provider<Partial<{ [K in keyof Q]: Signal<Q[K]> }>>
-) => async (
+	signals: PassedSignals<P, Q>
+) => <E extends Element>(
 	host: Component<P>,
-	target: Component<Q>,
+	target: E,
 	index = 0
-) => {
-	await customElements.whenDefined(target.localName)
-	const sources = isProvider(signals)
-		? signals(target, index) as Partial<{ [K in keyof Q]: Signal<Q[K]> }>
-		: signals
-	if (!isDefinedObject(sources)) {
-		log(sources, `Invalid passed signals provided.`, LOG_ERROR)
-		return
-	}
-	for (const [prop, source] of Object.entries(sources)) {
-		const signal = isString(source) ? host.get(prop) : toSignal(source)
-		target.set(prop, signal)
+): void | (() => void) => {
+	const targetName = target.localName
+	if (!isComponent(target)) {
+        log(target, `Target element must be a custom element that extends HTMLElement.`, LOG_ERROR)
+        return
+    }
+	let disposed = false
+	customElements.whenDefined(targetName).then(() => {
+		if (disposed) return
+		const sources = isProvider(signals)
+			? signals(target, index) as PassedSignals<P, Q>
+			: signals
+		if (!isDefinedObject(sources)) {
+			log(sources, `Invalid passed signals provided.`, LOG_ERROR)
+			return
+		}
+		for (const [prop, source] of Object.entries(sources)) {
+			const signal = isString(source)
+				? host.get(prop)
+				: toSignal(source as MaybeSignal<Q[keyof Q]>)
+			target.set(prop, signal)
+		}
+	}).catch((error) => {
+		log(error, `Failed to pass signals to ${elementName(target)}.`, LOG_ERROR)
+	})
+	return () => {
+		disposed = true
 	}
 }
 
@@ -219,13 +241,13 @@ const on = (
 	host: Component<P>,
 	target: Element = host,
 	index = 0
-): (() => void)[] => {
+): () => void => {
 	const listener = isProvider(handler) ? handler(target, index) : handler
 	if (!(isFunction(listener) || isDefinedObject(listener) && isFunction(listener.handleEvent))) {
 		log(listener, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR)
 	}
 	target.addEventListener(type, listener)
-	return [() => target.removeEventListener(type, listener)]
+	return () => target.removeEventListener(type, listener)
 }
 
 const emit = <T>(
@@ -243,6 +265,6 @@ const emit = <T>(
 }
 
 export {
-	type ComponentProps, type Component, type Parser, type SignalProducer, type Initializer, type Provider,
+	type ComponentProps, type Component, type Parser, type SignalProducer, type Initializer, type Provider, type PassedSignals,
 	RESET, component, pass, on, emit
 }

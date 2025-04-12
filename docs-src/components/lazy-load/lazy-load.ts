@@ -1,6 +1,13 @@
 import { type Parser, type SignalProducer, setProperty, setText, dangerouslySetInnerHTML, component } from '../../../'
 
-// Custom attribute parser
+export type LazyLoadProps = {
+	error: string
+	src: string
+	content: string
+}
+
+/* === Attribute Parser === */
+
 const asURL: Parser<string, HTMLElement & { error: string }> = (el, v) => {
 	if (!v) {
 		el.error = 'No URL provided in src attribute'
@@ -18,6 +25,8 @@ const asURL: Parser<string, HTMLElement & { error: string }> = (el, v) => {
 	return ''
 }
 
+/* === Signal Producer === */
+
 const fetchContent: SignalProducer<string, HTMLElement & { error: string, src: string }> = el =>
 	async abort => { // Async Computed callback
 		const url = el.src
@@ -33,7 +42,10 @@ const fetchContent: SignalProducer<string, HTMLElement & { error: string, src: s
 		return ''
 	}
 
-export default component('lazy-load', {
+
+/* === Component === */
+
+const LazyLoad = component('lazy-load', {
 	error: '',
 	src: asURL,
 	content: fetchContent
@@ -44,3 +56,11 @@ export default component('lazy-load', {
 	)
 	el.self(dangerouslySetInnerHTML('content', 'open'))
 })
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'lazy-load': typeof LazyLoad
+	}
+}
+
+export default LazyLoad

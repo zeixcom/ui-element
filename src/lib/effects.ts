@@ -81,7 +81,7 @@ const safeSetAttribute = /*#__PURE__*/ (
 const updateElement = <E extends Element, T extends {}, P extends ComponentProps>(
 	s: SignalLike<T, P>,
 	updater: ElementUpdater<E, T>
-) => (host: Component<P>, target: E, index: number = 0): (() => void)[] => {
+) => (host: Component<P>, target: E, index: number = 0): () => void => {
 	const { op, read, update } = updater
 	const fallback = read(target)
 
@@ -93,7 +93,7 @@ const updateElement = <E extends Element, T extends {}, P extends ComponentProps
 		log(error, `Failed to ${verb} ${prop} ${elementName(target)} in ${elementName(host)}`, LOG_ERROR)
 
     // Update the element's DOM state according to the signal value
-	return [effect(() => {
+	return effect(() => {
 		let value = RESET
 		try {
 			value = resolveSignalLike(s, host, target, index)
@@ -132,7 +132,7 @@ const updateElement = <E extends Element, T extends {}, P extends ComponentProps
 				err(error, 'update', `${ops[op] + name} of`)
 			})
 		}
-	})]
+	})
 }
 
 /**
@@ -141,7 +141,7 @@ const updateElement = <E extends Element, T extends {}, P extends ComponentProps
 const insertNode = <E extends Element, P extends ComponentProps>(
 	s: SignalLike<boolean, P>,
     { type, where, create }: NodeInserter<P>
-) => (host: Component<P>, target: E, index: number = 0): (() => void)[] => {
+) => (host: Component<P>, target: E, index: number = 0): void | (() => void) => {
 	const methods: Record<InsertPosition, keyof Element> = {
 		beforebegin: 'before',
 		afterbegin: 'prepend',
@@ -150,12 +150,12 @@ const insertNode = <E extends Element, P extends ComponentProps>(
 	}
 	if (!isFunction(target[methods[where]])) {
 		log(`Invalid insertPosition ${valueString(where)} for ${elementName(host)}:`, LOG_ERROR)
-        return []
+        return
     }
 	const err = (error: unknown) =>
 		log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR)
 
-	return [effect(() => {
+	return effect(() => {
 		let really = false
 		try {
 			really = resolveSignalLike(s, host, target, index)
@@ -178,7 +178,7 @@ const insertNode = <E extends Element, P extends ComponentProps>(
 		}).catch((error) => {
 			err(error)
 		})
-	})]
+	})
 }
 
 /**
@@ -401,10 +401,10 @@ const createElement = <P extends ComponentProps>(
  */
 const removeElement = <E extends Element, P extends ComponentProps>(
 	s: SignalLike<boolean, P>
-) => (host: Component<P>, target: E, index: number = 0): (() => void)[] => {
+) => (host: Component<P>, target: E, index: number = 0): () => void => {
 	const err = (error: unknown) =>
 		log(error, `Failed to delete ${elementName(target)} from ${elementName(host)}:`, LOG_ERROR)
-	return [effect(() => {
+	return effect(() => {
 		let really = false
 		try {
 			really = resolveSignalLike(s, host, target, index)
@@ -421,7 +421,7 @@ const removeElement = <E extends Element, P extends ComponentProps>(
 		}).catch((error) => {
 			err(error)
 		})
-	})]
+	})
 }
 
 /* === Exported Types === */

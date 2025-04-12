@@ -1,6 +1,11 @@
 import { asBoolean, component, on, setAttribute, setProperty, toggleAttribute, toggleClass } from '../../../'
 
-export default component('tab-list', {
+export type TabListProps = {
+	accordion: boolean
+	active: number
+}
+
+const TabList = component('tab-list', {
 	accordion: asBoolean,
 	active: (host: HTMLElement) => { 
 		const panels: HTMLDetailsElement[] = Array.from(host.querySelectorAll('details'))
@@ -23,3 +28,11 @@ export default component('tab-list', {
 		toggleClass('visually-hidden', () => !el.accordion)
 	)
 })
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'tab-list': typeof TabList
+	}
+}
+
+export default TabList

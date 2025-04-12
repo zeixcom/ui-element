@@ -14,7 +14,9 @@ export {
 
 // Core
 export {
-	type Component, type ComponentProps, type Initializer, type Parser, type SignalProducer, type Provider,
+	type Component, type ComponentProps,
+	type Initializer, type Parser, type SignalProducer,
+	type Provider, type PassedSignals,
 	RESET, component, pass, on, emit
 } from './src/component'
 export {

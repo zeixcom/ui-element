@@ -1,8 +1,13 @@
-import { asInteger, component, on, setProperty, setText, toggleAttribute } from '../../../'
+import { type SignalProducer, asInteger, component, on, setProperty, setText, toggleAttribute } from '../../../'
 
-export default component('spin-button', {
+export type SpinButtonProps = {
+	value: number
+	zero: boolean
+}
+
+const SpinButton = component('spin-button', {
 	value: asInteger(),
-	zero: el => () => el.value === 0
+	zero: (el => () => el.value === 0) as SignalProducer<boolean, typeof SpinButton>,
 }, el => {
 	const zeroLabel = el.getAttribute('zero-label') || 'Add to Cart'
 	const incrementLabel = el.getAttribute('increment-label') || 'Increment'
@@ -22,3 +27,11 @@ export default component('spin-button', {
 		on('click', () => { el.value++ })
 	)
 })
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'spin-button': typeof SpinButton
+	}
+}
+
+export default SpinButton

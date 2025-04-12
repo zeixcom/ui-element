@@ -1,8 +1,13 @@
 import { component, on, pass, setProperty } from '../../../'
-import InputButton from '../input-button/input-button'
-import RatingStars from '../rating-stars/rating-stars'
+import type { InputButtonProps } from '../input-button/input-button'
 
-export default component('rating-feedback', {
+export type RatingFeedbackProps = {
+	rating: number
+	empty: boolean
+	submitted: boolean
+}
+
+const RatingFeedback = component('rating-feedback', {
 	rating: 0,
 	empty: true,
 	submitted: false,
@@ -22,7 +27,8 @@ export default component('rating-feedback', {
 
 	// Event listener for hide button
 	el.first('.hide', on('click', () => {
-		el.querySelector<HTMLElement>('.feedback')?.hidden = true
+		const feedback = el.querySelector<HTMLElement>('.feedback')
+		if (feedback) feedback.hidden = true
 	}))
 
 	// Event listener for texteare
@@ -31,12 +37,20 @@ export default component('rating-feedback', {
 	}))
 
 	// Effects on rating changes
-	const stars = el.querySelector<typeof RatingStars>('rating-stars')
+	const stars = el.querySelector('rating-stars')
 	el.first<HTMLElement>('.feedback', setProperty('hidden', () => el.submitted || !stars?.value))
 	el.all<HTMLElement>('.feedback p', setProperty('hidden', (_, index) => stars?.value !== index + 1))
 
 	// Effect on empty state
-	el.first<typeof InputButton>('input-button', pass({
+	el.first('input-button', pass<RatingFeedbackProps, InputButtonProps>({
 		disabled: 'empty'
 	}))
 })
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'rating-feedback': typeof RatingFeedback
+	}
+}
+
+export default RatingFeedback

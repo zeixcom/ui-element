@@ -1,22 +1,22 @@
-import { effect, setAttribute, setProperty, setText, UIElement, UNSET } from '../../../'
+import {
+	type Component, type Parser, type SignalProducer,
+	component, effect, emit, on, setAttribute, setProperty, setText, UNSET
+} from '../../../'
 
 /* === Type === */
 
-type InputFieldSignals = {
+export type InputFieldProps = {
 	value: string | number,
 	length: number,
 	empty: boolean,
 	error: string,
 	ariaInvalid: "true" | "false",
 	'aria-errormessage': string,
-    /* description?: string,
-    isInteger?: boolean,
-    min?: number,
-    max?: number,
-	'aria-describedby'?: string, */
+    description: string,
+	'aria-describedby': string
 }
 
-/* === Pure functions === */
+/* === Pure Functions === */
 
 // Check if value is a number
 const isNumber = (num: any) => typeof num === 'number'
@@ -31,204 +31,186 @@ const parseNumber = (v: any, int = false, fallback = 0): number => {
 	return Number.isFinite(temp) ? temp : fallback
 }
 
-/* === Class definition === */
+/* === Attribute Parsers === */
 
-export class InputField extends UIElement<InputFieldSignals> {
-	static observedAttributes = ['value', 'description']
+const asNumberOrString: Parser<string | number, Component<InputFieldProps>> = (el, v) => {
+	const input = el.querySelector('input')
+	return input && input.type === 'number' ? parseNumber(v, el.hasAttribute('integer'), 0) : (v ?? '')
+}
 
-	init = {
-		value: (v: string | null, el: UIElement<InputFieldSignals>): string | number =>
-			(el as InputField).isNumber
-				? parseNumber(v, (el as InputField).isInteger, 0)
-				: (v ?? ''),
-		length: 0,
-		empty: () => this.get('length') === 0,
-		error: '',
-		ariaInvalid: () => toBooleanString(this.get('error')),
-		'aria-errormessage': () =>
-			this.get('error') ? this.querySelector('.error')?.id : UNSET,
-	}
+/* === Signal Producers === */
 
-	isNumber = false
-	isInteger = false
-	input: HTMLInputElement | null = null
-	step = 1
-	min = 0
-	max = 100
+const createEmpty: SignalProducer<boolean, HTMLElement & { length: number }> = el =>
+	() => el.length === 0
 
-	connectedCallback() {
-		super.connectedCallback()
+const createAriaInvalid: SignalProducer<"true" | "false", HTMLElement & { error: string }> = el =>
+	() => toBooleanString(el.error)
 
-		// Set properties
-		this.input = this.querySelector('input')
-		this.isNumber = (this.input && this.input.type === 'number') ?? false
-		this.isInteger = this.hasAttribute('integer')
-		if (this.input && this.isNumber) {
-			this.step = parseNumber(this.input.step, this.isInteger, 1)
-			this.min = parseNumber(this.input.min, this.isInteger, 0)
-			this.max = parseNumber(this.input.max, this.isInteger, 100)
-		}
-		this.set('length', this.input?.value.length ?? 0)
+const createAriaErrorMessage: SignalProducer<string, HTMLElement & { error: string }> = el =>
+	() => el.error? el.querySelector('.error')?.id : UNSET
 
-		// Handle input changes
-		this.first('input')
-			.on('change', () => {
-				this.#triggerChange(
-					this.isNumber
-						? (this.input?.valueAsNumber ?? 0)
-						: (this.input?.value ?? '')
-				)
-			})
-			.on('input', () => {
-				this.set('length', this.input?.value.length ?? 0)
-			})
+const createAriaDescribedBy: SignalProducer<string, HTMLElement & { description: string }> = el =>
+	() => el.description? el.querySelector('.description')?.id : UNSET
 
-		// Handle arrow key events to increment / decrement value
-		if (this.isNumber) {
-			this.first('input').on('keydown', (e: Event) => {
-				const evt = e as KeyboardEvent
-				if (['ArrowUp', 'ArrowDown'].includes(evt.key)) {
-					e.stopPropagation()
-					e.preventDefault()
-					if (evt.key === 'ArrowDown')
-						this.stepDown(evt.shiftKey ? this.step * 10 : this.step)
-					if (evt.key === 'ArrowUp')
-						this.stepUp(evt.shiftKey ? this.step * 10 : this.step)
-				}
-			})
-		}
+/* === Component === */
 
-		// Setup error message
-		this.first('.error').sync(setText('error'))
-		this.first('input').sync(
-			setProperty('ariaInvalid'),
-			setAttribute('aria-errormessage')
-		)
-
-		// Setup description
-		const description = this.querySelector<HTMLElement>('.description')
-		if (description) {
-			
-			// Derived states
-			const maxLength = this.input?.maxLength
-			const remainingMessage = maxLength && description.dataset.remaining
-			const defaultDescription = description.textContent ?? ''
-			this.set(
-				'description',
-				remainingMessage
-					? () => {
-						const length = this.get('length')
-						return length
-							? remainingMessage.replace('${x}', String(maxLength - length))
-							: defaultDescription
-					}
-					: defaultDescription
-			)
-			this.set(
-				'aria-describedby',
-				() => this.get('description') ? description.id : UNSET
-			)
-
-			// Effects
-			this.first('.description').sync(setText('description'))
-			this.first('input').sync(setAttribute('aria-describedby'))
-		}
-
-		// Handle spin button clicks and update their disabled state
-		const spinButton = this.querySelector('.spinbutton') as HTMLElement | null
-		if (this.isNumber && spinButton) {
-			this.first<HTMLButtonElement>('.decrement')
-				.on('click', (e: Event) => {
-					this.stepDown((e as MouseEvent).shiftKey ? this.step * 10 : this.step)
-				}).sync(setProperty(
-					'disabled',
-					() => isNumber(this.min) && (this.get('value') as number ?? 0) - this.step < this.min
-				))
-			this.first<HTMLButtonElement>('.increment')
-				.on('click', (e: Event) => {
-					this.stepUp((e as MouseEvent).shiftKey ? this.step * 10 : this.step)
-				})
-				.sync(setProperty(
-					'disabled',
-					() => isNumber(this.max) && (this.get('value') as number ?? 0) + this.step > this.max
-				))
-		}
-
-		// Setup clear button
-		this.first('.clear')
-			.on('click', () => {
-				this.clear()
-				this.input?.focus()
-			})
-			.sync(setProperty('hidden', 'empty'))
-
-		// Validate and update value
-		effect(() => {
-			const value = this.get('value')
-			const validate = this.getAttribute('validate')
-			if (value && validate) {
-
-				// Validate input value against a server-side endpoint
-				fetch(`${validate}?name=${this.input?.name}value=${this.input?.value}`)
-					.then(async response => {
-						const text = await response.text()
-						this.input?.setCustomValidity(text)
-						this.set('error', text)
-					})
-					.catch(err => this.set('error', err.message))
-			}
-
-			// Ensure value is a number if it is not already a number
-			if (this.isNumber && !isNumber(value))
-				// Effect will be called again with numeric value
-				return this.set('value', parseNumber(value, this.isInteger, 0))
-
-			// Change value only if it is a valid number
-			if (this.input && this.isNumber && Number.isFinite(value))
-				this.input.value = String(value)
-		})
- 	}
-
-	// Clear the input field
-	clear() {
-		this.set('value', '')
-		this.set('length', 0)
-		if (this.input) {
-			this.input.value = ''
-			this.input.focus()
-		}
-	}
-
-	stepUp(stepIncrement: number = this.step) {
-		if (this.isNumber)
-			this.#triggerChange(v => this.#nearestStep(v + stepIncrement))
-	}
-
-	stepDown(stepDecrement: number = this.step) {
-		if (this.isNumber)
-			this.#triggerChange(v => this.#nearestStep(v - stepDecrement))
-    }
+const InputField = component('input-field', {
+	value: asNumberOrString,
+	length: 0,
+	empty: createEmpty,
+	error: '',
+	ariaInvalid: createAriaInvalid,
+	'aria-errormessage': createAriaErrorMessage,
+	description: '',
+	'aria-describedby': createAriaDescribedBy
+}, el => {
+	const input = el.querySelector('input')
+	const typeNumber = input && input.type === 'number'
+	const integer = el.hasAttribute('integer')
+	const step = parseNumber(input?.step, integer, 1)
+	const min = parseNumber(input?.min, integer, 0)
+	const max = parseNumber(input?.max, integer, 100)
 
 	// Trigger value-change event to commit the value change
-	#triggerChange = (value: string | number | ((v: any) => string | number))  => {
-		this.set('value', value)
-		this.set('error', this.input?.validationMessage ?? '')
-		if (typeof value === 'function')
-			value = this.get('value')
-		if (this.input?.value !== String(value))
-			this.self.emit('value-change', value)
+	const triggerChange = (value: string | number | ((v: any) => string | number))  => {
+		el.value = typeof value === 'function' ? value(el.value) : value
+		el.error = input?.validationMessage ?? ''
+		if (input?.value !== String(value))
+		el.self(emit('value-change', value))
 	}
 
 	// Round a value to the nearest step
-	#nearestStep = (v: number) => {
-		const steps = Math.round((this.max - this.min) / this.step)
+	const nearestStep = (v: number) => {
+		const steps = Math.round((max - min) / step)
 		// Bring to 0-1 range
-		let zerone = Math.round((v - this.min) * steps / (this.max - this.min)) / steps
+		let zerone = Math.round((v - min) * steps / (max - min)) / steps
 		// Keep in range in case value is off limits
 		zerone = Math.min(Math.max(zerone, 0), 1)
-		const value = zerone * (this.max - this.min) + this.min
-		return this.isInteger ? Math.round(value) : value
+		const value = zerone * (max - min) + min
+		return integer ? Math.round(value) : value
+	}
+	
+	// Handle input changes
+	el.first('input',
+		on('change', () => {
+			triggerChange(typeNumber ? input?.valueAsNumber ?? 0 : input?.value ?? '')
+		}),
+		on('input', () => {
+			el.length = input?.value.length ?? 0
+		})
+	)
+
+	// Validate and update value
+	effect(() => {
+		const value = el.value
+		const validate = el.getAttribute('validate')
+		if (value && validate) {
+
+			// Validate input value against a server-side endpoint
+			fetch(`${validate}?name=${input?.name}value=${input?.value}`)
+				.then(async response => {
+					const text = await response.text()
+					input?.setCustomValidity(text)
+					el.error = text
+				})
+				.catch(err => {
+					el.error = err.message
+				})
+		}
+
+		// Ensure value is a number if it is not already a number
+		if (typeNumber && !isNumber(value)) {
+			// Effect will be called again with numeric value
+			el.value = parseNumber(value, integer, 0)
+			return
+		}
+
+		// Change value only if it is a valid number
+		if (input && typeNumber && Number.isFinite(value))
+			input.value = String(value)
+	})
+
+	if (typeNumber) {
+
+		// Handle arrow key events to increment / decrement value
+		el.first('input', on('keydown', (e: Event) => {
+			const evt = e as KeyboardEvent
+			if (['ArrowUp', 'ArrowDown'].includes(evt.key)) {
+				e.stopPropagation()
+				e.preventDefault()
+				if (evt.key === 'ArrowDown')
+					triggerChange(v => nearestStep(v - (evt.shiftKey ? step * 10 : step)))
+				if (evt.key === 'ArrowUp')
+					triggerChange(v => nearestStep(v + (evt.shiftKey ? step * 10 : step)))
+			}
+		}))
+
+		// Handle spin button clicks and update their disabled state
+		const spinButton = el.querySelector('.spinbutton') as HTMLElement | null
+		if (typeNumber && spinButton) {
+			el.first<HTMLButtonElement>('.decrement',
+				on('click', (e: Event) => {
+					triggerChange(v => nearestStep(v - ((e as MouseEvent).shiftKey ? step * 10 : step)))
+				}),
+				setProperty('disabled',
+					() => (isNumber(min) ? el.value as number : 0) - step < min
+				)
+			)
+			el.first<HTMLButtonElement>('.increment',
+				on('click', (e: Event) => {
+					triggerChange(v => nearestStep(v + ((e as MouseEvent).shiftKey ? step * 10 : step)))
+				}),
+				setProperty('disabled',
+					() => (isNumber(max) ? el.value as number : 0) - step > max
+				)
+			)
+		}
+
+	} else {
+
+		// Setup clear button
+		el.first<HTMLElement>('.clear',
+			on('click', () => {
+				el.value = ''
+				el.length = 0
+				input?.focus()
+			}),
+			setProperty('hidden', 'empty')
+		)
 	}
 
+	// Setup error message
+	el.first('.error', setText('error'))
+	el.first('input',
+		setProperty('ariaInvalid'),
+		setAttribute('aria-errormessage')
+	)
+
+	// Setup description
+	const description = el.querySelector<HTMLElement>('.description')
+	if (description) {
+		
+		// Derived states
+		const maxLength = input?.maxLength
+		const remainingMessage = maxLength && description.dataset.remaining
+		const defaultDescription = description.textContent ?? ''
+		el.description = remainingMessage
+			? el.length
+				? remainingMessage.replace('${x}', String(maxLength - el.length))
+				: defaultDescription
+			: defaultDescription
+
+		// Effects
+		el.first('.description', setText('description'))
+		el.first('input', setAttribute('aria-describedby'))
+	}
+
+})
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'input-field': typeof InputField
+	}
 }
-InputField.define('input-field')
+
+export default InputField

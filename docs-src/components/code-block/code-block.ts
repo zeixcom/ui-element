@@ -2,7 +2,11 @@ import { asBoolean, component, on, toggleAttribute } from '../../../'
 
 import InputButton from '../input-button/input-button'
 
-export default component('code-block',{
+export type CodeBlockProps = {
+    collapsed: boolean
+}
+
+const CodeBlock = component('code-block',{
 	collapsed: asBoolean
 }, el => {
 	const code = el.querySelector('code')
@@ -28,3 +32,11 @@ export default component('code-block',{
 		}, status === 'success' ? 1000 : 3000)
 	}))
 })
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'code-block': typeof CodeBlock
+	}
+}
+
+export default CodeBlock

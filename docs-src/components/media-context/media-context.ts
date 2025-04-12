@@ -1,6 +1,13 @@
 import { type Context, type SignalProducer, type State, component, provide, state } from '../../../'
 
-/* === Pure Functions === */
+export type ThemeContext = {
+	'media-motion': boolean
+	'media-theme': string
+	'media-viewport': string
+	'media-orientation': string
+}
+
+/* === Signal Producers === */
 
 const matchMotion: SignalProducer<boolean, HTMLElement> = () => {
 	const mql = matchMedia('(prefers-reduced-motion: reduce)')
@@ -56,9 +63,9 @@ const matchOrientation: SignalProducer<string, HTMLElement> = () => {
 	return orientation
 }
 
-/* === Component Definition === */
+/* === Component === */
 
-export default component('media-context', {
+const MediaContext = component('media-context', {
 	'media-motion': matchMotion,
 	'media-theme': matchTheme,
 	'media-viewport': matchViewport,
@@ -69,3 +76,11 @@ export default component('media-context', {
 	'media-viewport' as Context<'media-viewport', State<string>>,
 	'media-orientation' as Context<'media-orientation', State<string>>
 ])))
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'media-context': typeof MediaContext
+	}
+}
+
+export default MediaContext

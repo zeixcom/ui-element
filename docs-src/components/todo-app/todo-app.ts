@@ -1,17 +1,29 @@
-import { component, on, pass, setAttribute, setProperty, setText } from '../../../'
-import InputCheckbox from "../input-checkbox/input-checkbox"
-import type { InputField } from "../input-field/input-field"
-import InputRadiogroup from "../input-radiogroup/input-radiogroup"
+import { type SignalProducer, component, on, pass, setAttribute, setProperty, setText } from '../../../'
+import InputCheckbox from '../input-checkbox/input-checkbox'
+import InputField from '../input-field/input-field'
 
-export default component('todo-app', {
+/* === Signal Producers === */
+
+const createTotal: SignalProducer<number, HTMLElement & { tasks: typeof InputCheckbox[] }> = el =>
+	() => el.tasks.length
+
+const createCompleted: SignalProducer<number, HTMLElement & { tasks: typeof InputCheckbox[] }> = el =>
+	() => el.tasks.filter(task => task.checked).length
+
+const createActive: SignalProducer<number, HTMLElement & { tasks: typeof InputCheckbox[] }> = el =>
+	() => el.tasks.length - el.tasks.filter(task => task.checked).length
+
+const createFilter: SignalProducer<string, HTMLElement> = el =>
+	() => (el.querySelector('input-radiogroup')?.value?? 'all')
+
+/* === Component === */
+
+const TodoApp = component('todo-app', {
 	tasks: [] as typeof InputCheckbox[],
-	total: el => () => el.tasks.length,
-	completed: el => () => el.tasks.filter(task => task.checked).length,
-	active: el => () => {
-		const tasks = el.tasks
-		return tasks.length - tasks.filter(task => task.checked).length
-	},
-	filter: el => () => (el.querySelector<typeof InputRadiogroup>('input-radiogroup')?.value ?? 'all'),
+	total: createTotal,
+	completed: createCompleted,
+	active: createActive,
+	filter: createFilter,
 }, el => {
 
 	// Set tasks state from the DOM
@@ -21,32 +33,33 @@ export default component('todo-app', {
 	updateTasks()
 
 	// Coordinate new todo form
-	const input = el.querySelector<InputField>('input-field')
-	el.first('form', on('submit', (e: Event) => {
-		e.preventDefault()
+	const input = el.querySelector<typeof InputField>('input-field')
+	if (input) {
+		el.first('form', on('submit', (e: Event) => {
+			e.preventDefault()
 
-		// Wait for microtask to ensure the input field value is updated
-		queueMicrotask(() => {
-			const value = input?.value.toString().trim()
-			if (value) {
-				const ol = el.querySelector('ol')
-				const fragment = el.querySelector('template')
-					?.content.cloneNode(true) as DocumentFragment
-				const span = fragment.querySelector('span')
-				if (ol && fragment && span) {
-					span.textContent = value
-					ol.appendChild(fragment)
+			// Wait for microtask to ensure the input field value is updated
+			queueMicrotask(() => {
+				const value = input?.value.toString().trim()
+				if (value) {
+					const ol = el.querySelector('ol')
+					const fragment = el.querySelector('template')
+						?.content.cloneNode(true) as DocumentFragment
+					const span = fragment.querySelector('span')
+					if (ol && fragment && span) {
+						span.textContent = value
+						ol.appendChild(fragment)
+					}
+					updateTasks()
+					if (input) input.value = ''
 				}
-				updateTasks()
-				input?.clear()
-			}
-		})
-	}))
+			})
+		}))
 
-	// Coordinate .submit button
-	el.first('.submit', pass({
-		disabled: () => input?.empty ?? true
-	}))
+		el.first('.submit', pass({
+			disabled: () => input?.empty ?? true
+		}))
+	}	
 
 	// Event handler and effect on ol element
 	el.first('ol',
@@ -80,3 +93,11 @@ export default component('todo-app', {
 		})
 	)
 })
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'todo-app': typeof TodoApp
+	}
+}
+
+export default TodoApp
