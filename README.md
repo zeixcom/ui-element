@@ -1,6 +1,6 @@
 # UIElement
 
-Version 0.11.0
+Version 0.12.0
 
 **UIElement** - transform reusable markup, styles and behavior into powerful, reactive, and maintainable Web Components.
 
@@ -53,30 +53,18 @@ Server-rendered markup:
 UIElement component:
 
 ```js
-import { UIElement, asInteger, setText } from '@zeix/ui-element'
+import { component, asInteger, setText } from '@zeix/ui-element'
 
-class ShowAppreciation extends UIElement {
-    #count = Symbol() // Use a private Symbol as state key
+component('show-appreciation', {
+    count: asInteger(RESET) // Get initial value from .count element
+}, el => {
 
-    connectedCallback() {
-        // Initialize count state
-        this.set(this.#count, asInteger(0)(this.querySelector('.count').textContent))
+    // Bind click event to increment count
+    el.first('button', on('click', () => { el.count++ }))
 
-        // Bind click event to increment count
-        this.first('button').on('click', () => {
-            this.set(this.#count, v => ++v)
-        })
-
-        // Update .count text when count changes
-        this.first('.count').sync(setText(this.#count))
-    }
-
-    // Expose read-only property for count
-    get count() {
-        return this.get(this.#count)
-    }
-}
-ShowAppreciation.define('show-appreciation')
+    // Update.count text when count changes
+    el.first('.count', setText('count'))
+})
 ```
 
 Example styles:
@@ -143,63 +131,39 @@ An example demonstrating how to pass states from one component to another. Serve
 UIElement components:
 
 ```js
-import { UIElement, setAttribute, toggleAttribute } from '@zeix/ui-element'
+import { asBoolean, component, on, setAttribute, setProperty, toggleAttribute, toggleClass } from '@zeix/ui-element'
 
-class TabList extends UIElement {
-    static localName = 'tab-list'
-    static observedAttributes = ['accordion']
+component('tab-list', {
+	active: 0,
+	accordion: asBoolean,
+}, el => {
+	// Set inital active tab by querying details[open]
+	const panels = Array.from(el.querySelectorAll('details'))
+	el.active = panels.findIndex(panel => panel.hasAttribute('open'))
 
-    init = {
-        active: 0,
-        accordion: asBoolean,
-    }
+	// Reflect accordion attribute (may be used for styling)
+	el.self(toggleAttribute('accordion'))
 
-    connectedCallback() {
-        super.connectedCallback()
+	// Update active tab state and bind click handlers
+	el.all('menu button',
+		on('click', (_, index) => () => {
+			el.active = index
+		}),
+		setProperty('ariaPressed', (_, index) => String(el.active === index))
+	)
 
-        // Set inital active tab by querying details[open]
-        const getInitialActive = () => { 
-            const panels = Array.from(this.querySelectorAll('details'))
-            for (let i = 0; i < panels.length; i++) {
-                if (panels[i].hasAttribute('open')) return i
-            }
-            return 0
-        }
-        this.set('active', getInitialActive())
+	// Update details panels open, hidden and disabled states
+	el.all('details',
+		on('toggle', (_, index) => () => {
+			el.active = el.active === index ? -1 : index
+		}),
+		setProperty('open', (_, index) => !!(el.active === index)),
+		setAttribute('aria-disabled', () => String(!el.accordion))
+	)
 
-        // Reflect accordion attribute (may be used for styling)
-        this.self.sync(toggleAttribute('accordion'))
-
-        // Update active tab state and bind click handlers
-        this.all('menu button')
-            .on('click', (_, index) => () => {
-                this.set('active', index)
-            })
-            .sync(setProperty(
-                'ariaPressed',
-                (_, index) => String(this.get('active') === index)
-            ))
-
-        // Update details panels open, hidden and disabled states
-        this.all('details').sync(
-            setProperty(
-                'open',
-                (_, index) => !!(this.get('active') === index)
-            ),
-            setAttribute(
-                'aria-disabled',
-                () => String(!this.get('accordion'))
-            )
-        )
-
-        // Update summary visibility
-        this.all('summary').sync(toggleClass(
-            'visually-hidden',
-            () => !this.get('accordion')
-        ))
-    }
-}
-TabList.define()
+	// Update summary visibility
+	el.all('summary', toggleClass('visually-hidden', () => !el.accordion))
+})
 ```
 
 Example styles:
@@ -254,58 +218,51 @@ A more complex component demonstrating async fetch from the server:
 ```
 
 ```js
-import { UIElement, setProperty, setText, dangerouslySetInnerHTML } from '@zeix/ui-element'
+import { component, dangerouslySetInnerHTML, setProperty, setText } from '@zeix/ui-element'
 
-class LazyLoad extends UIElement {
-    static localName = 'lazy-load'
-
-    // Remove the following line if you don't want to listen to changes in 'src' attribute
-    static observedAttributes = ['src']
-
-    init = {
-        src: v => { // Custom attribute parser
-            if (!v) {
-                this.set('error', 'No URL provided in src attribute')
-                return ''
-            } else if ((this.parentElement || this.getRootNode().host)?.closest(`${this.localName}[src="${v}"]`)) {
-                this.set('error', 'Recursive loading detected')
-                return ''
-            }
-            const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
-            if (url.origin === location.origin) // Sanity check for cross-origin URLs
-                return url.toString()
-            this.set('error', 'Invalid URL origin')
-            return ''
-        },
-        content: async () => { // Async Computed callback
-            const url = this.get('src')
-            if (!url) return ''
-            try {
-                const response = await fetch(this.get('src'))
-                this.querySelector('.loading')?.remove()
-                if (response.ok) return response.text()
-                else this.set('error', response.statusText)
-            } catch (error) {
-                this.set('error', error.message)
-            }
-            return ''
-        },
-        error: '',
-    }
-
-    connectedCallback() {
-        super.connectedCallback()
-
-        // Effect to set error message
-        this.first('.error').sync(
-            setProperty('hidden', () => !this.get('error')),
-            setText('error'),
-        )
-
-        // Effect to set content in shadow root
-        // Remove the second argument (for shadowrootmode) if you prefer light DOM
-        this.self.sync(dangerouslySetInnerHTML('content', 'open'))
-    }
+// Custom attribute parser
+const asURL = (el, v) => {
+	if (!v) {
+		el.error = 'No URL provided in src attribute'
+		return ''
+	} else if ((el.parentElement || (el.getRootNode() as ShadowRoot).host)?.closest(`${el.localName}[src="${v}"]`)) {
+		el.error = 'Recursive loading detected'
+		return ''
+	}
+	const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
+	if (url.origin === location.origin) { // Sanity check for cross-origin URLs
+		el.error = '' // Success: wipe previous error if there was any
+		return String(url)
+	}
+	el.error = 'Invalid URL origin'
+	return ''
 }
-LazyLoad.define()
+
+// Custom signal producer, needs src and error properties on element
+const fetchText = el =>
+	async abort => { // Async Computed callback
+		const url = el.src
+		if (!url) return ''
+		try {
+			const response = await fetch(url, { signal: abort })
+			el.querySelector('.loading')?.remove()
+			if (response.ok) return response.text()
+			else el.error = response.statusText
+		} catch (error) {
+			el.error = error.message
+		}
+		return ''
+	}
+
+component('lazy-load', {
+	error: '',
+	src: asURL,
+	content: fetchText
+}, el => {
+	el.self(dangerouslySetInnerHTML('content', 'open'))
+	el.first('.error',
+		setText('error'),
+		setProperty('hidden', () => !el.error)
+	)
+})
 ```

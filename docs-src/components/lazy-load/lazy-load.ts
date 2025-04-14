@@ -30,7 +30,7 @@ const asURL: AttributeParser<string, HTMLElement & { error: string }> = (el, v) 
 
 /* === Signal Producer === */
 
-const fetchContent: SignalProducer<string, HTMLElement & { error: string, src: string }> = el =>
+const fetchText: SignalProducer<string, HTMLElement & { error: string, src: string }> = el =>
 	async abort => { // Async Computed callback
 		const url = el.src
 		if (!url) return ''
@@ -51,13 +51,13 @@ const fetchContent: SignalProducer<string, HTMLElement & { error: string, src: s
 const LazyLoad = component('lazy-load', {
 	error: '',
 	src: asURL,
-	content: fetchContent
+	content: fetchText
 }, el => {
 	el.first<HTMLElement>('.error',
 		setText('error'),
 		setProperty('hidden', () => !el.error)
 	)
-	el.self(dangerouslySetInnerHTML('content', 'open'))
+	el.self(dangerouslySetInnerHTML('content'))
 })
 
 declare global {

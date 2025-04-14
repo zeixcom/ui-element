@@ -43,7 +43,7 @@ Once registered, the component can be used like any native HTML element:
 
 ## Web Component Lifecycle in UIElement
 
-UIElement manages the ** Web Component lifecycle** from creation to removal. Here's what happens.
+UIElement manages the **Web Component lifecycle** from creation to removal. Here's what happens.
 
 ### Component Creation (constructor())
 
@@ -62,24 +62,26 @@ component('my-component', {
 
 In this example you see all 4 ways to define a reactive property:
 
-* ✅ A **static initial value** for a `State` signal (e.g., `count: 0`)
-* ✅ A **signal producer** that derives an initial value or a callback function from other properties of the element (e.g., `isEven: el => () => !(el.count % 2)`)
-* ✅ An **attribute parser** that may provide a fallback value (e.g., `value: asInteger(5)`)
-* ✅ A **context consumer** that emits a `ContextRequestEvent` (e.g., `name: consume('display-name')`)
+* A **static initial value** for a `State` signal (e.g., `count: 0`)
+* A **signal producer** that derives an initial value or a callback function from other properties of the element (e.g., `isEven: el => () => !(el.count % 2)`)
+* An **attribute parser** that may provide a fallback value (e.g., `value: asInteger(5)`)
+* A **context consumer** that emits a `ContextRequestEvent` (e.g., `name: consume('display-name')`)
 
 <callout-box class="caution">
+
 **Note**: Property initialization runs **before the element is attached to the DOM**. You can't access other properties or child elements here.
+
 </callout-box>
 
 ### Mounted in the DOM (connectedCallback())
 
 Runs when the component is added to the page. This is where you:
 
-* ✅ **Access sub-elements**
-* ✅ **Set up event listeners**
-* ✅ **Apply effects**
-* ✅ **Emit custom events**
-* ✅ **Provide context**
+* **Access sub-elements**
+* **Set up event listeners**
+* **Apply effects**
+* **Emit custom events**
+* **Provide context**
 
 ```js
 component('my-component', {
@@ -197,12 +199,12 @@ init = {
 
 ### Pre-defined Parsers in UIElement
 
-| Function     | Description |
-| ------------ | ----------- |
-| `asBoolean`  | Converts `"true"` / `"false"` to a **boolean** (`true` / `false`). Also treats empty attributes (`checked`) as `true`. |
-| `asInteger()` | Converts a numeric string (e.g., `"42"`) to an **integer** (`42`). |
-| `asNumber()` | Converts a numeric string (e.g., `"3.14"`) to a **floating-point number** (`3.14`). |
-| `asString()` | Returns the attribute value as a **string** (unchanged). |
+| Function        | Description |
+| --------------- | ----------- |
+| `asBoolean`     | Converts `"true"` / `"false"` to a **boolean** (`true` / `false`). Also treats empty attributes (`checked`) as `true`. |
+| `asInteger()`   | Converts a numeric string (e.g., `"42"`) to an **integer** (`42`). |
+| `asNumber()`    | Converts a numeric string (e.g., `"3.14"`) to a **floating-point number** (`3.14`). |
+| `asString()`    | Returns the attribute value as a **string** (unchanged). |
 | `asEnum([...])` | Ensures the string matches **one of the allowed values**. Example: `asEnum(['small', 'medium', 'large'])`. If the value is not in the list, it defaults to the first option. |
 | `asJSON({...})` | Parses a JSON string (e.g., `'["a", "b", "c"]'`) into an **array** or **object**. If invalid, returns the fallback object. |
 
