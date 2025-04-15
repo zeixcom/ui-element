@@ -151,20 +151,12 @@
 
 			describe('asJSON()', function () {
 
-				it('should be {} for undefined', function () {
-					let result
-					try {
-						result = asJSON({})()
-					} catch (error) {
-						assert.fail(`Failed to parse JSON ${error.message}`)
-					} finally {
-						assert.deepEqual(result, {}, 'Should return {} for undefined attribute')
-					}
+				it('should throw for undefined', function () {
+					assert.throws(() => asJSON()(), ReferenceError)
 				})
 
-				it('should be {} for boolean attribute', function () {
-					const result = asJSON({})(body, '')
-					assert.deepEqual(result, {}, 'Should return {} for boolean attribute')
+				it('should throw for boolean attribute', function () {
+					assert.throws(() => asJSON({})(body, ''), SyntaxError)
 				})
 
 				it('should be {} for "null"', function () {

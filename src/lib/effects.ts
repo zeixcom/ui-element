@@ -2,7 +2,7 @@ import { type Signal, effect, enqueue, isSignal, isState, UNSET } from '@zeix/ca
 
 import { isFunction, isString } from '../core/util'
 import { type ComponentProps, type Component, RESET } from '../component'
-import { DEV_MODE, elementName, log, LOG_ERROR, valueString } from '../core/log'
+import { DEV_MODE, elementName, log, LOG_ERROR } from '../core/log'
 import type { Provider } from '../core/ui'
 
 /* === Types === */
@@ -40,7 +40,7 @@ const resolveSignalLike = <T, P extends ComponentProps, E extends Element>(
 	host: Component<P>,
 	target: E,
 	index: number
-): T => isString(s) ? host.get(s).get() as T
+): T => isString(s) ? host.getSignal(s).get() as T
 	: isSignal(s) ? s.get()
 	: isFunction<T>(s) ? s(target, index)
 	: RESET
@@ -150,7 +150,7 @@ const insertNode = <E extends Element, P extends ComponentProps>(
         afterend: 'after'
 	}
 	if (!isFunction(target[methods[where]])) {
-		log(`Invalid insertPosition ${valueString(where)} for ${elementName(host)}:`, LOG_ERROR)
+		log(`Invalid insertPosition "${where}" for ${elementName(host)}:`, LOG_ERROR)
         return
     }
 	const err = (error: unknown) =>

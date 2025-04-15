@@ -4,7 +4,7 @@ import {
 } from "@zeix/cause-effect"
 
 import { isFunction } from "./core/util"
-import { DEV_MODE, elementName, log, LOG_ERROR, typeString, valueString } from "./core/log"
+import { DEV_MODE, elementName, log, typeString, valueString } from "./core/log"
 
 /* === Types === */
 
@@ -18,9 +18,8 @@ type ComponentProps = { [K in string as ValidPropertyKey<K>]: {} }
 type Component<P extends ComponentProps> = HTMLElement & P & {
 	debug?: boolean
 	attributeChangedCallback(name: string, old: string | null, value: string | null): void
-	has(prop: string & keyof P): boolean
-	get(prop: string & keyof P): Signal<P[string & keyof P]>
-	set(prop: string & keyof P, signal: Signal<P[string & keyof P]>): void
+	getSignal(prop: string & keyof P): Signal<P[string & keyof P]>
+	setSignal(prop: string & keyof P, signal: Signal<P[string & keyof P]>): void
 	self(...fns: FxFunction<P, Component<P>>[]): void
 	first<E extends Element>(selector: string, ...fns: FxFunction<P, E>[]): void
 	all<E extends Element>(selector: string, ...fns: FxFunction<P, E>[]): void
@@ -126,7 +125,7 @@ const component = <P extends ComponentProps>(
 					: isSignalProducer<P[keyof P], Component<P>>(ini)
 					? ini(this as unknown as Component<P>)
 					: ini
-				this.set(prop, toSignal(result ?? RESET))
+				this.setSignal(prop, toSignal(result ?? RESET))
 			}
 		}
 
@@ -169,50 +168,38 @@ const component = <P extends ComponentProps>(
 		}
 
 		/**
-		 * Check whether a state property is set
-		 * 
-		 * @since 0.2.0
-		 * @param {string} prop - state to be checked
-		 * @returns {boolean} `true` if this element has state with the given key; `false` otherwise
-		 */
-		has(prop: string & keyof P): boolean {
-			return prop in this.#signals
-		}
-
-		/**
-		 * Get the the signal of a state property
+		 * Get the the signal for a given key
 		 *
-		 * @since 0.2.0
-		 * @param {K} prop - state to get value from
-		 * @returns {S[K]} current value of state; undefined if state does not exist
+		 * @since 0.12.0
+		 * @param {K} key - key to get signal for
+		 * @returns {S[K]} current value of signal; undefined if state does not exist
 		 */
-		get(prop: string & keyof P): Signal<P[string & keyof P]> {
-			const signal = this.#signals[prop]
+		getSignal(key: string & keyof P): Signal<P[string & keyof P]> {
+			const signal = this.#signals[key]
 			if (DEV_MODE && this.debug)
-				log(signal, `Get ${typeString(signal)} ${valueString(prop)} in ${elementName(this)}`)
+				log(signal, `Get ${typeString(signal)} "${key}" in ${elementName(this)}`)
 			return signal
 		}
 
 		/**
-		 * Set a signal for a state property
+		 * Set the signal for a given key
 		 * 
-		 * @since 0.2.0
-		 * @param {K} prop - state to set value to
+		 * @since 0.12.0
+		 * @param {K} key - key to set signal for
 		 * @param {Signal<P[string & keyof P]>} signal - signal to set value to
+		 * @throws {TypeError} if key is not a valid property key
+		 * @throws {TypeError} if signal is not a valid signal
+		 * @returns {void}
 		 */
-		set(prop: string & keyof P, signal: Signal<P[string & keyof P]>): void {
-			if (!validatePropertyName(prop)) {
-				log(prop, `Property name ${valueString(prop)} in <${elementName(this)}> conflicts with HTMLElement properties or JavaScript reserved words.`, LOG_ERROR)
-				return
-			}
-			if (!isSignal(signal)) {
-				log(signal, `Expected signal as value for property ${valueString(prop)} on ${elementName(this)}.`, LOG_ERROR)
-				return
-			}
-			const prev = this.#signals[prop]
+		setSignal(key: string & keyof P, signal: Signal<P[string & keyof P]>): void {
+			if (!validatePropertyName(key))
+				throw new TypeError(`Invalid property name "${key}". Property names must be valid JavaScript identifiers and not conflict with inherited HTMLElement properties.`)
+			if (!isSignal(signal))
+				throw new TypeError(`Expected signal as value for property "${key}" on ${elementName(this)}.`)
+			const prev = this.#signals[key]
 			const writable = isState(signal)
-			this.#signals[prop] = signal
-			Object.defineProperty(this, prop, {
+			this.#signals[key] = signal
+			Object.defineProperty(this, key, {
 				get: signal.get,
 				set: writable ? signal.set : undefined,
 				enumerable: true,
@@ -220,7 +207,7 @@ const component = <P extends ComponentProps>(
 			})
 			if (prev && isState(prev)) prev.set(UNSET)
 			if (DEV_MODE && this.debug)
-				log(signal, `Set ${typeString(signal)} ${valueString(prop)} in ${elementName(this)}`)
+				log(signal, `Set ${typeString(signal)} "${key} in ${elementName(this)}`)
 		}
 
 		/**

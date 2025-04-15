@@ -1,5 +1,4 @@
 import type { AttributeParser } from '../component'
-import { log, LOG_ERROR } from '../core/log'
 
 /* === Internal Function === */
 
@@ -74,15 +73,19 @@ const asEnum = (valid: [string, ...string[]]): AttributeParser<string, HTMLEleme
  * @since 0.11.0
  * @param {T} fallback - fallback value
  * @returns {Parser<T, HTMLElement>} - parser function
+ * @throws {ReferenceError} - if the value and fallback are both null or undefined
+ * @throws {SyntaxError} - if the value is not a valid JSON object
  */
 const asJSON = <T extends {}>(fallback: T): AttributeParser<T, HTMLElement> =>
 	(_: HTMLElement, value: string | null): T => {
+		if ((value ?? fallback) == null) throw new ReferenceError('Value and fallback are both null or undefined')
 		if (value == null) return fallback
+		if (value === '') throw new SyntaxError('Empty string is not valid JSON')
 		let result: T | undefined
 		try {
 			result = JSON.parse(value)
 		} catch (error) {
-			log(error, 'Failed to parse JSON', LOG_ERROR)
+			throw new SyntaxError(`Failed to parse JSON: ${String(error)}`, { cause: error })
 		}
 		return result ?? fallback
 	}

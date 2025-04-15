@@ -7,9 +7,8 @@ type ComponentProps = {
 type Component<P extends ComponentProps> = HTMLElement & P & {
     debug?: boolean;
     attributeChangedCallback(name: string, old: string | null, value: string | null): void;
-    has(prop: string & keyof P): boolean;
-    get(prop: string & keyof P): Signal<P[string & keyof P]>;
-    set(prop: string & keyof P, signal: Signal<P[string & keyof P]>): void;
+    getSignal(prop: string & keyof P): Signal<P[string & keyof P]>;
+    setSignal(prop: string & keyof P, signal: Signal<P[string & keyof P]>): void;
     self(...fns: FxFunction<P, Component<P>>[]): void;
     first<E extends Element>(selector: string, ...fns: FxFunction<P, E>[]): void;
     all<E extends Element>(selector: string, ...fns: FxFunction<P, E>[]): void;

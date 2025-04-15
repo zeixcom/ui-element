@@ -77,14 +77,17 @@ var watch = (run, mark) => {
     active = prev;
   }
 };
-var enqueue = (fn, dedupe = []) => new Promise((resolve, reject) => {
-  updateMap.set(dedupe, () => {
+var enqueue = (fn, dedupe) => new Promise((resolve, reject) => {
+  const wrappedCallback = () => {
     try {
       resolve(fn());
     } catch (error) {
       reject(error);
     }
-  });
+  };
+  if (dedupe) {
+    updateMap.set(dedupe, wrappedCallback);
+  }
   requestTick();
 });
 
@@ -381,7 +384,7 @@ var component = (name, init = {}, setup) => {
         if (ini == null)
           continue;
         const result = isParser(ini) ? ini(this, null) : isSignalProducer(ini) ? ini(this) : ini;
-        this.set(prop, toSignal(result ?? RESET));
+        this.setSignal(prop, toSignal(result ?? RESET));
       }
     }
     connectedCallback() {
@@ -412,28 +415,21 @@ var component = (name, init = {}, setup) => {
         log(value, `Attribute "${attr}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`);
       this[attr] = parsed;
     }
-    has(prop) {
-      return prop in this.#signals;
-    }
-    get(prop) {
-      const signal = this.#signals[prop];
+    getSignal(key) {
+      const signal = this.#signals[key];
       if (DEV_MODE && this.debug)
-        log(signal, `Get ${typeString(signal)} ${valueString(prop)} in ${elementName(this)}`);
+        log(signal, `Get ${typeString(signal)} "${key}" in ${elementName(this)}`);
       return signal;
     }
-    set(prop, signal) {
-      if (!validatePropertyName(prop)) {
-        log(prop, `Property name ${valueString(prop)} in <${elementName(this)}> conflicts with HTMLElement properties or JavaScript reserved words.`, LOG_ERROR);
-        return;
-      }
-      if (!isSignal(signal)) {
-        log(signal, `Expected signal as value for property ${valueString(prop)} on ${elementName(this)}.`, LOG_ERROR);
-        return;
-      }
-      const prev = this.#signals[prop];
+    setSignal(key, signal) {
+      if (!validatePropertyName(key))
+        throw new TypeError(`Invalid property name "${key}". Property names must be valid JavaScript identifiers and not conflict with inherited HTMLElement properties.`);
+      if (!isSignal(signal))
+        throw new TypeError(`Expected signal as value for property "${key}" on ${elementName(this)}.`);
+      const prev = this.#signals[key];
       const writable = isState(signal);
-      this.#signals[prop] = signal;
-      Object.defineProperty(this, prop, {
+      this.#signals[key] = signal;
+      Object.defineProperty(this, key, {
         get: signal.get,
         set: writable ? signal.set : undefined,
         enumerable: true,
@@ -442,7 +438,7 @@ var component = (name, init = {}, setup) => {
       if (prev && isState(prev))
         prev.set(UNSET);
       if (DEV_MODE && this.debug)
-        log(signal, `Set ${typeString(signal)} ${valueString(prop)} in ${elementName(this)}`);
+        log(signal, `Set ${typeString(signal)} "${key} in ${elementName(this)}`);
     }
     self(...fns) {
       this.#cleanup.push(...run(fns, this, this));
@@ -461,12 +457,12 @@ var component = (name, init = {}, setup) => {
 };
 // src/core/ui.ts
 var isProvider = (value) => isFunction2(value) && value.length == 2;
+var isEventListener = (value) => isFunction2(value) || isDefinedObject(value) && isFunction2(value.handleEvent);
 var isComponent = (value) => value instanceof HTMLElement && value.localName.includes("-");
 var on = (type, handler) => (host, target = host, index = 0) => {
   const listener = isProvider(handler) ? handler(target, index) : handler;
-  if (!(isFunction2(listener) || isDefinedObject(listener) && isFunction2(listener.handleEvent))) {
-    log(listener, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR);
-  }
+  if (!isEventListener(listener))
+    throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
   target.addEventListener(type, listener);
   return () => target.removeEventListener(type, listener);
 };
@@ -478,29 +474,19 @@ var emit = (type, detail) => (host, target = host, index = 0) => {
 };
 var pass = (signals) => (host, target, index = 0) => {
   const targetName = target.localName;
-  if (!isComponent(target)) {
-    log(target, `Target element must be a custom element that extends HTMLElement.`, LOG_ERROR);
-    return;
-  }
-  let disposed = false;
+  if (!isComponent(target))
+    throw new TypeError(`Target element must be a custom element`);
+  const sources = isProvider(signals) ? signals(target, index) : signals;
+  if (!isDefinedObject(sources))
+    throw new TypeError(`Passed signals must be an object or a provider function`);
   customElements.whenDefined(targetName).then(() => {
-    if (disposed)
-      return;
-    const sources = isProvider(signals) ? signals(target, index) : signals;
-    if (!isDefinedObject(sources)) {
-      log(sources, `Invalid passed signals provided.`, LOG_ERROR);
-      return;
-    }
     for (const [prop, source] of Object.entries(sources)) {
-      const signal = isString(source) ? host.get(prop) : toSignal(source);
-      target.set(prop, signal);
+      const signal = isString(source) ? host.getSignal(prop) : toSignal(source);
+      target.setSignal(prop, signal);
     }
   }).catch((error) => {
-    log(error, `Failed to pass signals to ${elementName(target)}.`, LOG_ERROR);
+    throw new Error(`Failed to pass signals to ${elementName(target)}}`, { cause: error });
   });
-  return () => {
-    disposed = true;
-  };
 };
 // src/core/context.ts
 var CONTEXT_REQUEST = "context-request";
@@ -508,7 +494,7 @@ var CONTEXT_REQUEST = "context-request";
 class ContextRequestEvent extends Event {
   context;
   callback;
-  subscribe2;
+  subscribe;
   constructor(context, callback, subscribe2 = false) {
     super(CONTEXT_REQUEST, {
       bubbles: true,
@@ -524,7 +510,7 @@ var provide = (provided) => (host) => {
     const { context, callback } = e;
     if (provided.includes(context) && isFunction2(callback)) {
       e.stopPropagation();
-      callback(host.get(String(context)));
+      callback(host.getSignal(String(context)));
     }
   };
   host.addEventListener(CONTEXT_REQUEST, listener);
@@ -550,13 +536,17 @@ var asNumber = (fallback = 0) => (_, value) => parseNumber(parseFloat, value) ??
 var asString = (fallback = "") => (_, value) => value ?? fallback;
 var asEnum = (valid) => (_, value) => value != null && valid.includes(value.toLowerCase()) ? value : valid[0];
 var asJSON = (fallback) => (_, value) => {
+  if ((value ?? fallback) == null)
+    throw new ReferenceError("Value and fallback are both null or undefined");
   if (value == null)
     return fallback;
+  if (value === "")
+    throw new SyntaxError("Empty string is not valid JSON");
   let result;
   try {
     result = JSON.parse(value);
   } catch (error) {
-    log(error, "Failed to parse JSON", LOG_ERROR);
+    throw new SyntaxError(`Failed to parse JSON: ${String(error)}`, { cause: error });
   }
   return result ?? fallback;
 };
@@ -569,7 +559,7 @@ var ops = {
   s: "style property ",
   t: "text content"
 };
-var resolveSignalLike = (s, host, target, index) => isString(s) ? host.get(s).get() : isSignal(s) ? s.get() : isFunction2(s) ? s(target, index) : RESET;
+var resolveSignalLike = (s, host, target, index) => isString(s) ? host.getSignal(s).get() : isSignal(s) ? s.get() : isFunction2(s) ? s(target, index) : RESET;
 var isSafeURL = (value) => {
   if (/^(mailto|tel):/i.test(value))
     return true;
@@ -645,7 +635,7 @@ var insertNode = (s, { type, where, create }) => (host, target, index = 0) => {
     afterend: "after"
   };
   if (!isFunction2(target[methods[where]])) {
-    log(`Invalid insertPosition ${valueString(where)} for ${elementName(host)}:`, LOG_ERROR);
+    log(`Invalid insertPosition "${where}" for ${elementName(host)}:`, LOG_ERROR);
     return;
   }
   const err = (error) => log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR);

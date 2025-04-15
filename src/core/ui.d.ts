@@ -8,7 +8,8 @@ type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
  * Attach an event listener to an element
  *
  * @param {string} type - event type to listen for
- * @param {EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>} handler - event handler or provider function
+ * @param {EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>} handler - event listener or provider function
+ * @throws {TypeError} - if the provided handler is not an event listener or a provider function
  */
 declare const on: (type: string, handler: EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>) => <P extends ComponentProps>(host: Component<P>, target?: Element, index?: number) => () => void;
 /**
@@ -22,6 +23,9 @@ declare const emit: <T>(type: string, detail: T | Provider<T>) => <P extends Com
  * Pass signals to a custom element
  *
  * @param {PassedSignals<P, Q>} signals - signals to be passed to the custom element
+ * @throws {TypeError} - if the target element is not a custom element
+ * @throws {TypeError} - if the provided signals are not an object or a provider function
+ * @throws {Error} - if it fails to pass signals to the target element
  */
-declare const pass: <P extends ComponentProps, Q extends ComponentProps>(signals: PassedSignals<P, Q>) => <E extends Element>(host: Component<P>, target: E, index?: number) => void | (() => void);
+declare const pass: <P extends ComponentProps, Q extends ComponentProps>(signals: PassedSignals<P, Q>) => <E extends Element>(host: Component<P>, target: E, index?: number) => void;
 export { type Provider, type PassedSignals, on, emit, pass };

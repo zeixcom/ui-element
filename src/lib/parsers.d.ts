@@ -46,6 +46,8 @@ declare const asEnum: (valid: [string, ...string[]]) => AttributeParser<string, 
  * @since 0.11.0
  * @param {T} fallback - fallback value
  * @returns {Parser<T, HTMLElement>} - parser function
+ * @throws {ReferenceError} - if the value and fallback are both null or undefined
+ * @throws {SyntaxError} - if the value is not a valid JSON object
  */
 declare const asJSON: <T extends {}>(fallback: T) => AttributeParser<T, HTMLElement>;
 export { asBoolean, asInteger, asNumber, asString, asEnum, asJSON };

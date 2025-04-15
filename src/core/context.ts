@@ -87,7 +87,7 @@ const provide = <P extends ComponentProps>(
 		const { context, callback } = e as ContextRequestEvent<Context<keyof P, Signal<P[keyof P]>>>
 		if (provided.includes(context) && isFunction(callback)) {
 			e.stopPropagation()
-			callback(host.get(String(context)))
+			callback(host.getSignal(String(context)))
 		}
 	}
 	host.addEventListener(CONTEXT_REQUEST, listener)

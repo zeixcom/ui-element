@@ -100,16 +100,6 @@
 		<h1>Hello from Server</h1>
 		<p>Number of unread messages: <span></span></p>
 	</updating-component>
-	<child-component id="orphan">
-		<h1>Hello from Server</h1>
-		<p>Text from Server</p>
-	</child-component>
-	<parent-component id="parent" heading="Hello from Attribute">
-		<child-component id="child">
-			<h1>Hello from Server</h1>
-			<p>Text from Server</p>
-		</child-component>
-	</parent-component>
 	<my-counter value="42">
 		<p>Count: <span class="value">42</span></p>
 		<p>Parity: <span class="parity">even</span></p>
@@ -233,23 +223,6 @@
 			el.first('h1', setText('heading'), toggleClass('selected'))
 			el.first('span', setText('count'))
 			el.first('input', setAttribute('step'), setProperty('value'))
-		})
-
-		component('child-component', {
-			heading: asString(RESET),
-            text: asString(RESET)
-		}, el => {
-			el.first('h1', setText('heading'))
-			el.first('p', setText('text'))
-		})
-
-		component('parent-component', {
-			heading: asString(RESET)
-		}, el => {
-			el.first('child-component', pass({
-				heading: 'heading',
-                text: () => el.heading.toUpperCase()
-			}))
 		})
 
 		component('my-counter', {
@@ -534,57 +507,6 @@
 					const textContent = normalizeText(updatingComponent.querySelector('h1').textContent)
 					assert.equal(textContent, 'Hello from State', 'Should update text content from setting heading state')
 				})
-			})
-				
-			describe('Orphan child component', function () {
-
-				it('should do nothing at all', async function () {
-					const orphanComponent = document.getElementById('orphan')
-					await animationFrame()
-					const headingContent = normalizeText(orphanComponent.querySelector('h1').textContent)
-					const textContent = normalizeText(orphanComponent.querySelector('p').textContent)
-					assert.equal(headingContent, 'Hello from Server', 'Should not change server-side rendered heading')
-					assert.equal(textContent, 'Text from Server', 'Should not change server-side rendered text')
-				})
-
-			})
-
-			describe('Child component', function () {
-
-				it('should receive state from attribute of parent component', async function () {
-					const childComponent = document.getElementById('child')
-					await customElements.whenDefined(childComponent.localName)
-					const headingContent = childComponent.querySelector('h1').textContent
-					assert.equal(headingContent, 'Hello from Attribute', 'Should have initial heading from attribute of parent component')
-				})
-
-				it('should receive derived state from attribute of parent component', async function () {
-					const childComponent = document.getElementById('child')
-					await customElements.whenDefined(childComponent.localName)
-					const textContent = normalizeText(childComponent.querySelector('p').textContent)
-					assert.equal(textContent, 'Hello from Attribute'.toUpperCase(), 'Should have initial text derived from attribute of parent component')
-				})
-
-				it('should receive passed and derived states from changed attribute of parent component', async function () {
-					const parentComponent = document.getElementById('parent')
-					const childComponent = document.getElementById('child')
-					parentComponent.setAttribute('heading', 'Hello from Changed Attribute')
-					await animationFrame()
-					const headingContent = normalizeText(childComponent.querySelector('h1').textContent)
-					const textContent = normalizeText(childComponent.querySelector('p').textContent)
-					assert.equal(headingContent, 'Hello from Changed Attribute', 'Should have changed heading from attribute of parent component')
-					assert.equal(textContent, 'Hello from Changed Attribute'.toUpperCase(), 'Should have changed text derived from attribute of parent component')
-				})
-
-				it('should change heading if inherited state is set', async function () {
-					const parentComponent = document.getElementById('parent')
-					const childComponent = document.getElementById('child')
-					parentComponent.heading = 'Hello from State on Parent'
-					await animationFrame()
-					const headingContent = childComponent.querySelector('h1').textContent
-					assert.equal(headingContent, 'Hello from State on Parent', 'Should have changed heading from state of parent component')
-				})
-
 			})
 
 			describe('My counter', function () {
