@@ -63,7 +63,7 @@
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
 		import {
-			component, on, computed, effect, RESET, UNSET,
+			component, first, all, on, computed, effect, RESET, UNSET,
 			asBoolean, asInteger, asNumber, asString,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
 			dangerouslySetInnerHTML, createElement, removeElement, insertTemplate
@@ -75,21 +75,21 @@
 
 		component('update-text', {
 			text: asString(),
-		}, el => {
-			el.first('p', setText('text'))
-		})
+		}, () => [
+			first('p', setText('text'))
+		])
 
 		component('update-property', {
 			value: asString(),
-		}, el => {
-			el.first('input', setProperty('value'))
-		})
+		}, () => [
+			first('input', setProperty('value'))
+		])
 
 		component('update-attribute', {
 			required: asBoolean,
 			ariaInvalid: 'false'
-		}, el => {
-			el.first('input',
+		}, el => [
+			first('input',
 				on('change', e => {
 					el.ariaInvalid = String(!e.target.checkValidity())
 				}),
@@ -100,61 +100,61 @@
 						: RESET
 				)
 			)
-		})
+		])
 
 		component('update-class', {
 			active: asInteger()
-		}, el => {
-			el.all('li',
+		}, el => [
+			all('li',
 				toggleClass('selected',
 					(_, index) => el.active === index
 				)
 			)
-		})
+		])
 
 		component('update-style', {
 			color: asString()
-		}, el => {
-			el.first('p', setStyle('color'))
-		})
+		}, () => [
+			first('p', setStyle('color'))
+		])
 
 		component('dangerous-inner-html', {
 			content: '<p>Initial content</p>'
-		}, el => {
-			el.self(dangerouslySetInnerHTML('content'))
-		})
+		}, () => [
+			dangerouslySetInnerHTML('content')
+		])
 
 		component('shadow-dangerous-inner-html', {
 			content: '<p>Initial shadow content</p>'
-		}, el => {
-			el.self(dangerouslySetInnerHTML('content', 'open'))
-		})
+		}, () => [
+			dangerouslySetInnerHTML('content', 'open')
+		])
 
 		component('dangerous-with-scripts', {
 			content: '<p id="test-p-shadow">Original</p>'
-		}, el => {
-			el.self(dangerouslySetInnerHTML('content', 'open', true))
-		})
+		}, () => [
+			dangerouslySetInnerHTML('content', 'open', true)
+		])
 	
 		component('create-element', {
 			before: false,
 			prepend: false,
 			append: false,
 			after: false
-		}, el => {
-			el.first('ul',
+		}, () => [
+			first('ul',
 				createElement('p', 'before', 'beforebegin', {}, 'Before'),
 				createElement('li', 'prepend', 'afterbegin', { value: 'foo' }, 'Prepend'),
 				createElement('li', 'append'),
 				createElement('p', 'after', 'afterend', { value: 'bar' })
 			)
-		})
+		])
 
 		component('remove-element', {
 			items: [1, 2, 3]
-		}, el => {
-			el.all('li', removeElement((_, index) => !el.items.includes(index + 1)))
-		})
+		}, el => [
+			all('li', removeElement((_, index) => !el.items.includes(index + 1)))
+		])
 
 		component('insert-template', {
 			before: false,
@@ -164,12 +164,14 @@
 		}, el => {
 			const pTemplate = el.querySelector('.p')
 			const liTemplate = el.querySelector('.li')
-			el.first('ul',
-				insertTemplate(pTemplate, 'before', 'beforebegin'),
-				insertTemplate(liTemplate, 'prepend', 'afterbegin'),
-				insertTemplate(liTemplate, 'append'),
-				insertTemplate(pTemplate, 'after', 'afterend')
-			)
+			return [
+				first('ul',
+					insertTemplate(pTemplate, 'before', 'beforebegin'),
+					insertTemplate(liTemplate, 'prepend', 'afterbegin'),
+					insertTemplate(liTemplate, 'append'),
+					insertTemplate(pTemplate, 'after', 'afterend')
+				)
+			]
 		})
 
 		runTests(() => {

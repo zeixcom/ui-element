@@ -1,6 +1,6 @@
 import { toSignal, type MaybeSignal, type Signal } from "@zeix/cause-effect"
 
-import type { Component, ComponentProps } from "../component"
+import type { Component, ComponentProps, FxFunction } from "../component"
 import { elementName } from "./log"
 import { isDefinedObject, isFunction, isString } from "./util"
 
@@ -28,9 +28,50 @@ const isComponent = (value: unknown): value is Component<ComponentProps> =>
 
 /* === Exported Functions === */
 
+const run = <P extends ComponentProps, E extends Element>(
+	fns: FxFunction<P, E>[],
+	host: Component<P>,
+	target?: E,
+    index?: number
+): (() => void)[] =>
+	fns.flatMap(fn => {
+		const cleanup = isFunction(fn) ? fn(host, target ?? host, index) : []
+		return Array.isArray(cleanup) ? cleanup.filter(isFunction)
+			: isFunction(cleanup) ? [cleanup]
+			: []
+	})
+	
+/**
+ * Apply effect functions to a first matching sub-element within the custom element
+ * 
+ * @since 0.12.0
+ * @param {string} selector - selector to match sub-element
+ */
+const first = <E extends Element, P extends ComponentProps>(
+	selector: string,
+	...fns: FxFunction<P, E>[]
+) => (host: Component<P>): (() => void)[] => {
+		const target = (host.shadowRoot || host).querySelector<E>(selector)
+		return target ?  run(fns, host, target) : []
+	}
+
+/**
+ * Apply effect functions to all matching sub-elements within the custom element
+ * 
+ * @since 0.12.0
+ * @param {string} selector - selector to match sub-elements
+ */
+const all = <E extends Element, P extends ComponentProps>(
+	selector: string,
+	...fns: FxFunction<P, E>[]
+) => (host: Component<P>): (() => void)[] =>
+	Array.from((host.shadowRoot || host).querySelectorAll<E>(selector))
+		.flatMap((target, index) => run(fns, host, target, index))
+
 /**
  * Attach an event listener to an element
  * 
+ * @since 0.12.0
  * @param {string} type - event type to listen for
  * @param {EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>} handler - event listener or provider function
  * @throws {TypeError} - if the provided handler is not an event listener or a provider function
@@ -53,6 +94,7 @@ const on = (
 /**
  * Emit a custom event with the given detail
  * 
+ * @since 0.12.0
  * @param {string} type - event type to emit
  * @param {T | Provider<T>} detail - event detail or provider function
  */
@@ -73,6 +115,7 @@ const emit = <T>(
 /**
  * Pass signals to a custom element
  * 
+ * @since 0.12.0
  * @param {PassedSignals<P, Q>} signals - signals to be passed to the custom element
  * @throws {TypeError} - if the target element is not a custom element
  * @throws {TypeError} - if the provided signals are not an object or a provider function
@@ -105,4 +148,4 @@ const pass = <P extends ComponentProps, Q extends ComponentProps>(
 	})
 }
 
-export { type Provider, type PassedSignals, on, emit, pass }
+export { type Provider, type PassedSignals, run, all, first, on, emit, pass }

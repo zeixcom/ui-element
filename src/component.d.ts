@@ -27,5 +27,5 @@ declare const RESET: any;
  * @param {FxFunction<S>[]} setup - setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
  * @returns {typeof HTMLElement & P} - constructor function for the custom element
  */
-declare const component: <P extends ComponentProps>(name: string, init: { [K in string & keyof P]: SignalInitializer<P[K], Component<P>>; } | undefined, setup: (host: Component<P>) => void | (() => void)) => Component<P>;
+declare const component: <P extends ComponentProps>(name: string, init: { [K in string & keyof P]: SignalInitializer<P[K], Component<P>>; } | undefined, setup: (host: Component<P>) => FxFunction<P, Component<P>>[]) => Component<P>;
 export { type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords, type SignalInitializer, type AttributeParser, type SignalProducer, type FxFunction, RESET, component };

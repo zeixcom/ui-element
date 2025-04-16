@@ -1,4 +1,4 @@
-import { asString, component, on, setAttribute, toggleClass } from '../../../'
+import { all, asString, component, on, setAttribute, toggleClass } from '../../../'
 
 export type InputRadiogroupProps = {
     value: string
@@ -6,17 +6,17 @@ export type InputRadiogroupProps = {
 
 const InputRadiogroup = component('input-radiogroup', {
 	value: asString()
-}, el => {
-	el.self(setAttribute('value'))
-	el.all('input', on('change', (e: Event) => {
+}, el => [
+	setAttribute('value'),
+	all('input', on('change', (e: Event) => {
 		el.value = (e.target as HTMLInputElement)?.value
-	}))
-	el.all('label',
+	})),
+	all('label',
 		toggleClass('selected',
 			target => el.value === target.querySelector('input')?.value
 		)
 	)
-})
+])
 
 declare global {
 	interface HTMLElementTagNameMap {

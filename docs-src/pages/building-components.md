@@ -117,7 +117,7 @@ component('my-component', {}, el => {
 
 ### Observed Attributes (attributeChangedCallback())
 
-UIElement **automatically converts attributes to reactive signals**. Usually, you don’t need to override this method manually.
+UIElement **automatically converts attributes to signals**. Usually, you don’t need to override this method manually.
 
 </section>
 
@@ -125,21 +125,26 @@ UIElement **automatically converts attributes to reactive signals**. Usually, yo
 
 ## State Management with UIElement
 
-UIElement manages state using **signals**, which are reactive values that trigger updates when they change. We use a familiar `Map`-like API:
+UIElement manages state using **signals**, which are atomic reactive states that trigger updates when they change. We use regular properties to access or update them.
 
-### Defining & Using Signals
-
-```js
-this.set('count', 0); // Create a state signal
-this.set('isEven', () => !((this.get('count') ?? 0) % 2)); // Create a derived signal
-```
-
-### Checking & Removing Signals
+### Accessing and Updating Signal Values
 
 ```js
-if (this.has('count')) { /* Do something */ }
-this.delete('count'); // Removes the signal and its dependencies
+console.log('count' in el); // Check if the signal exists
+console.log(el.count); // Read the signal value
+el.count = 42; // Update the signal value
 ```
+
+### Accessing & Setting Signals Directly
+
+If you need to access the signals for a property key directly, you can use the `getSignal()` and `setSignal()` methods:
+
+```js
+const doubleString = el.getSignal('count').map(v => String(v * 2)); // Derive a new Computed signal from 'count' signal
+el.querySelector('input-field').setSignal('description', doubleString); // Replace the signal on another element with a new one
+```
+
+However, you should **avoid manipulating signals directly** unless you have a **specific reason** to do so. Use the `pass()`function to pass a signal or a derivation thereof to other elements.
 
 ### Characteristics and Special Values
 

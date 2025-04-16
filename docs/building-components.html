@@ -17,6 +17,30 @@
 		<ol>
 			
 				<li>
+					<a href="claude-introduction.html">
+						<span class="icon">📄</span>
+						<strong>Untitled</strong>
+						<small></small>
+					</a>
+				</li>
+
+				<li>
+					<a href="claude-getting-started.html">
+						<span class="icon">📄</span>
+						<strong>Untitled</strong>
+						<small></small>
+					</a>
+				</li>
+
+				<li>
+					<a href="claude-core-concepts.html">
+						<span class="icon">📄</span>
+						<strong>Untitled</strong>
+						<small></small>
+					</a>
+				</li>
+
+				<li>
 					<a href="index.html">
 						<span class="icon">📖</span>
 						<strong>Introduction</strong>
@@ -237,21 +261,22 @@
 	<button type="button" class="overlay">Expand</button>
 </code-block>
 <h3>Observed Attributes (attributeChangedCallback())</h3>
-<p>UIElement <strong>automatically converts attributes to reactive signals</strong>. Usually, you don’t need to override this method manually.</p>
+<p>UIElement <strong>automatically converts attributes to signals</strong>. Usually, you don’t need to override this method manually.</p>
 </section>
 
 <section>
 
 <h2>State Management with UIElement</h2>
-<p>UIElement manages state using <strong>signals</strong>, which are reactive values that trigger updates when they change. We use a familiar <code>Map</code>-like API:</p>
-<h3>Defining &amp; Using Signals</h3>
+<p>UIElement manages state using <strong>signals</strong>, which are atomic reactive states that trigger updates when they change. We use regular properties to access or update them.</p>
+<h3>Accessing and Updating Signal Values</h3>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">); </span><span style="color:#88846F">// Create a state signal</span></span>
-<span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'isEven'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">%</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">)); </span><span style="color:#88846F">// Create a derived signal</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F92672"> in</span><span style="color:#F8F8F2"> el); </span><span style="color:#88846F">// Check if the signal exists</span></span>
+<span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(el.count); </span><span style="color:#88846F">// Read the signal value</span></span>
+<span class="line"><span style="color:#F8F8F2">el.count </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 42</span><span style="color:#F8F8F2">; </span><span style="color:#88846F">// Update the signal value</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -260,14 +285,15 @@
 	</input-button>
 	
 </code-block>
-<h3>Checking &amp; Removing Signals</h3>
+<h3>Accessing &amp; Setting Signals Directly</h3>
+<p>If you need to access the signals for a property key directly, you can use the <code>getSignal()</code> and <code>setSignal()</code> methods:</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">if</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">has</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">)) { </span><span style="color:#88846F">/* Do something */</span><span style="color:#F8F8F2"> }</span></span>
-<span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">delete</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">); </span><span style="color:#88846F">// Removes the signal and its dependencies</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> doubleString </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">getSignal</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">map</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(v </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">)); </span><span style="color:#88846F">// Derive a new Computed signal from 'count' signal</span></span>
+<span class="line"><span style="color:#F8F8F2">el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-field'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">setSignal</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'description'</span><span style="color:#F8F8F2">, doubleString); </span><span style="color:#88846F">// Replace the signal on another element with a new one</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -276,6 +302,7 @@
 	</input-button>
 	
 </code-block>
+<p>However, you should <strong>avoid manipulating signals directly</strong> unless you have a <strong>specific reason</strong> to do so. Use the <code>pass()</code>function to pass a signal or a derivation thereof to other elements.</p>
 <h3>Characteristics and Special Values</h3>
 <p>Signals in UIElement are of a <strong>fixed type</strong> and <strong>non-nullable</strong>. This allows to <strong>simplify the logic</strong> as you will never have to check the type or perform null-checks.</p>
 <ul>

@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> – UIElement Docs</title>
+    <meta name="description" content="">
+	<base href="./">
+    <link rel="stylesheet" href="assets/main.css">
+	<script type="module" src="assets/main.js"></script>
+</head>
+<body>
+	<header class="content-grid">
+		<h1 class="content">UIElement Docs <small>Version 0.12.0</small></h1>
+		
+	<nav class="breakout">
+		<ol>
+			
+				<li>
+					<a href="claude-introduction.html">
+						<span class="icon">📄</span>
+						<strong>Untitled</strong>
+						<small></small>
+					</a>
+				</li>
+
+				<li>
+					<a href="claude-getting-started.html">
+						<span class="icon">📄</span>
+						<strong>Untitled</strong>
+						<small></small>
+					</a>
+				</li>
+
+				<li>
+					<a href="claude-core-concepts.html" class="active">
+						<span class="icon">📄</span>
+						<strong>Untitled</strong>
+						<small></small>
+					</a>
+				</li>
+
+				<li>
+					<a href="index.html">
+						<span class="icon">📖</span>
+						<strong>Introduction</strong>
+						<small>Overview and key benefits of UIElement</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="getting-started.html">
+						<span class="icon">🚀</span>
+						<strong>Getting Started</strong>
+						<small>Installation, setup, and first steps</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="building-components.html">
+						<span class="icon">🏗️</span>
+						<strong>Building Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="styling-components.html">
+						<span class="icon">🎨</span>
+						<strong>Styling Components</strong>
+						<small>Scoped styles, CSS custom properties</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="data-flow.html">
+						<span class="icon">🔄</span>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="patterns-techniques.html">
+						<span class="icon">💡</span>
+						<strong>Patterns & Techniques</strong>
+						<small>Composition, scheduling, best practices</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="examples-recipes.html">
+						<span class="icon">🍽️</span>
+						<strong>Examples & Recipes</strong>
+						<small>Common use cases and demos</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="api-reference.html">
+						<span class="icon">📚</span>
+						<strong>API Reference</strong>
+						<small>Detailed documentation of classes and functions</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="about-community.html">
+						<span class="icon">🤝</span>
+						<strong>About & Community</strong>
+						<small>License, versioning, getting involved</small>
+					</a>
+				</li>
+		</ol>
+	</nav>
+	</header>
+    
+    <main>
+        <h1>Core Concepts</h1>
+<p>Understanding UIElement&#39;s core concepts will give you the foundation to build efficient, responsive web components. This chapter explores the fundamental building blocks of UIElement: components, signals, effects, and element interactions.</p>
+<h2>Component Definition</h2>
+<p>At the heart of UIElement is the <code>component()</code> function, which defines a new Web Component with reactive capabilities.</p>
+<h3>Basic Structure</h3>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { component } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'custom-element'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#88846F">  // Initial properties and attribute parsers</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">  // Setup logic and effects</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
+<p>The <code>component()</code> function has three parameters:</p>
+<ol>
+<li><strong>name</strong>: A unique tag name for your custom element (must include a hyphen)</li>
+<li><strong>init</strong>: An object defining properties and their initializers</li>
+<li><strong>setup</strong>: A function that runs when the component connects to the DOM</li>
+</ol>
+<p>Let&#39;s examine each part in detail:</p>
+<h3>Component Naming</h3>
+<p>Custom element names must:</p>
+<ul>
+<li>Include at least one hyphen (<code>-</code>)</li>
+<li>Be lowercase</li>
+<li>Not conflict with existing HTML elements</li>
+</ul>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Good examples</span></span>
+<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-counter'</span><span style="color:#F8F8F2">, {</span><span style="color:#F92672">...</span><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span><span style="color:#F92672">...</span><span style="color:#F8F8F2">})</span></span>
+<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'app-navigation'</span><span style="color:#F8F8F2">, {</span><span style="color:#F92672">...</span><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span><span style="color:#F92672">...</span><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// Invalid examples</span></span>
+<span class="line"><span style="color:#88846F">// component('counter', {...}, el => {...})     // No hyphen</span></span>
+<span class="line"><span style="color:#88846F">// component('DIV-element', {...}, el => {...}) // Not lowercase</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
+<h3>Initialization Object</h3>
+<p>The initialization object defines reactive properties for your component:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'user-card'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#88846F">  // Basic properties</span></span>
+<span class="line"><span style="color:#F8F8F2">  name: </span><span style="color:#E6DB74">'Anonymous'</span><span style="color:#F8F8F2">,              </span><span style="color:#88846F">// String default</span></span>
+<span class="line"><span style="color:#F8F8F2">  age: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,                         </span><span style="color:#88846F">// Number default</span></span>
+<span class="line"><span style="color:#F8F8F2">  active: </span><span style="color:#AE81FF">true</span><span style="color:#F8F8F2">,                   </span><span style="color:#88846F">// Boolean default</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#88846F">  // Using attribute parsers</span></span>
+<span class="line"><span style="color:#F8F8F2">  level: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">),            </span><span style="color:#88846F">// Parse as integer with default 1</span></span>
+<span class="line"><span style="color:#F8F8F2">  theme: </span><span style="color:#A6E22E">asEnum</span><span style="color:#F8F8F2">([</span><span style="color:#E6DB74">'light'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'dark'</span><span style="color:#F8F8F2">]), </span><span style="color:#88846F">// Restrict to enum values</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#88846F">  // Computed properties</span></span>
+<span class="line"><span style="color:#A6E22E">  fullName</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#E6DB74"> `</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">el.firstName</span><span style="color:#F92672">}</span><span style="color:#F92672"> ${</span><span style="color:#F8F8F2">el.lastName</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#88846F">  // Value from DOM (RESET)</span></span>
+<span class="line"><span style="color:#F8F8F2">  count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(RESET)         </span><span style="color:#88846F">// Get initial value from DOM</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">  // Setup logic</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<p>Each property becomes:</p>
+<ul>
+<li>A reactive state on the component</li>
+<li>A getter/setter for direct property access</li>
+<li>Automatically connected to observed attributes</li>
+</ul>
+<p>The special <code>RESET</code> value tells UIElement to look for an initial value in the DOM. This is useful for progressive enhancement.</p>
+<h3>Setup Function</h3>
+<p>The setup function runs when the component connects to the DOM:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'expandable-section'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">  expanded: </span><span style="color:#AE81FF">false</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">  // Select elements and apply effects</span></span>
+<span class="line"><span style="color:#F8F8F2">  el.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.toggle'</span><span style="color:#F8F8F2">, </span></span>
+<span class="line"><span style="color:#A6E22E">    on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">      el.expanded </span><span style="color:#F92672">=</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.expanded</span></span>
+<span class="line"><span style="color:#F8F8F2">    })</span></span>
+<span class="line"><span style="color:#F8F8F2">  )</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#F8F8F2">  el.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.content'</span><span style="color:#F8F8F2">, </span></span>
+<span class="line"><span style="color:#A6E22E">    toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.expanded)</span></span>
+<span class="line"><span style="color:#F8F8F2">  )</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#88846F">  // Return cleanup function (optional)</span></span>
+<span class="line"><span style="color:#F92672">  return</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">    console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Component disconnected and cleaned up'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<p>The setup function:</p>
+<ul>
+<li>Receives the component instance as its parameter</li>
+<li>Sets up event listeners and effects</li>
+<li>Can return a cleanup function that runs when the component disconnects</li>
+</ul>
+<h2>Signal-Based State</h2>
+<p>UIElement uses a signal-based reactivity system that efficiently tracks dependencies and updates only what changed.</p>
+<h3>State Signals</h3>
+<p>State signals are writable values that notify subscribers when they change:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { state } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// Create a state signal with initial value</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> count </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// Read the current value</span></span>
+<span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(count.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()) </span><span style="color:#88846F">// 0</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// Update the value</span></span>
+<span class="line"><span style="color:#F8F8F2">count.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">5</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// Modify based on current value</span></span>
+<span class="line"><span style="color:#F8F8F2">count.</span><span style="color:#A6E22E">update</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">current</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> current </span><span style="color:#F92672">+</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<p>When you define properties in the component initialization object, UIElement creates state signals for them automatically:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-counter'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">  count: </span><span style="color:#AE81FF">0</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">  // Access state through property</span></span>
+<span class="line"><span style="color:#F8F8F2">  console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(el.count) </span><span style="color:#88846F">// 0</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#88846F">  // Update state through property</span></span>
+<span class="line"><span style="color:#F8F8F2">  el.count </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 5</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#88846F">  // Access underlying signal directly (rarely needed)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> countSignal </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">getSignal</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<h3>Computed Signals</h3>
+<p>Computed signals derive their value from other signals:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { state, computed } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// Create state signals</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> firstName </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'John'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> lastName </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Doe'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// Create a computed signal</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> fullName </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> computed</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">  return</span><span style="color:#E6DB74"> `</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">firstName.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span><span style="color:#F92672">}</span><span style="color:#F92672"> ${</span><span style="color:#F8F8F2">lastName.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(fullName.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()) </span><span style="color:#88846F">// "John Doe"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// When a dependency changes, the computed value updates</span></span>
+<span class="line"><span style="color:#F8F8F2">lastName.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Smith'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(fullName.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()) </span><span style="color:#88846F">// "John Smith"</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<p>In components, computed signals are often created from state signals:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'price-calculator'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">  quantity: </span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  unitPrice: </span><span style="color:#AE81FF">10</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#88846F">  // Create a computed property</span></span>
+<span class="line"><span style="color:#A6E22E">  total</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.quantity </span><span style="color:#F92672">*</span><span style="color:#F8F8F2"> el.unitPrice</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">  // The total automatically updates when quantity or unitPrice changes</span></span>
+<span class="line"><span style="color:#F8F8F2">  el.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.total'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'total'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<h3>Signal Dependencies</h3>
+<p>UIElement automatically tracks dependencies between signals:</p>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// This effect depends on count</span></span>
+<span class="line"><span style="color:#A6E22E">effect</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">  console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">`Count is now: </span><span style="color:#F92672">${</span><span style="color:#F8F8F2">count.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// This triggers the effect</span></span>
+<span class="line"><span style="color:#F8F8F2">count.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">10</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
+<p>Signal dependencies form a directed acyclic graph that ensures:</p>
+<ul>
+<li>Updates propagate efficiently</li>
+<li>Each dependent is notified exactly once</li>
+<li>Circular dependencies are detected and prevented</li>
+</ul>
+<h2>Effects and DOM Updates</h2>
+<p>Effects are functions that run when their signal dependencies change. They&#39;re the bridge between your component&#39;s state and its appearance in the DOM.</p>
+<h3>Basic Effects</h3>
+<p>The <code>effect()</code> function creates a reactive effect:</p>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { effect } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">effect</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">  document.title </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> `Count: </span><span style="color:#F92672">${</span><span style="color:#F8F8F2">count.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
+<p>This effect:</p>
+<ol>
+<li>Runs immediately when created</li>
+<li>Automatically tracks what signals it reads</li>
+<li>Re-runs whenever those signals change</li>
+</ol>
+<h3>DOM Effects</h3>
+<p>UIElement provides specialized effect functions for DOM manipulation:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'status-badge'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">  status: </span><span style="color:#E6DB74">'inactive'</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">  el.</span><span style="color:#A6E22E">self</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#88846F">    // Update text content</span></span>
+<span class="line"><span style="color:#A6E22E">    setText</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#E6DB74"> `Status: </span><span style="color:#F92672">${</span><span style="color:#F8F8F2">el.status</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">    </span></span>
+<span class="line"><span style="color:#88846F">    // Toggle classes based on status</span></span>
+<span class="line"><span style="color:#A6E22E">    toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.status </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'active'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">    toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'warning'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.status </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'warning'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">    toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'error'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.status </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'error'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">  )</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<p>Common DOM effect functions include:</p>
+<ul>
+<li><code>setText()</code>: Update text content</li>
+<li><code>toggleClass()</code>: Add/remove CSS classes</li>
+<li><code>setAttribute()</code>: Set HTML attributes</li>
+<li><code>setProperty()</code>: Set DOM properties</li>
+<li><code>setStyle()</code>: Update CSS styles</li>
+</ul>
+<h3>Effect Composition</h3>
+<p>You can combine multiple effects for complex UI updates:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'progress-indicator'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">  progress: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  status: </span><span style="color:#E6DB74">'idle'</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">  el.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.bar'</span><span style="color:#F8F8F2">, </span></span>
+<span class="line"><span style="color:#88846F">    // Update multiple aspects based on state</span></span>
+<span class="line"><span style="color:#A6E22E">    setStyle</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'width'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#E6DB74"> `</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">el.progress</span><span style="color:#F92672">}</span><span style="color:#E6DB74">%`</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">    toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'complete'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.progress </span><span style="color:#F92672">>=</span><span style="color:#AE81FF"> 100</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">    setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-valuenow'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'progress'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">  )</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#F8F8F2">  el.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.label'</span><span style="color:#F8F8F2">, </span></span>
+<span class="line"><span style="color:#A6E22E">    setText</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">      if</span><span style="color:#F8F8F2"> (el.status </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'error'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">return</span><span style="color:#E6DB74"> 'Error occurred'</span></span>
+<span class="line"><span style="color:#F92672">      return</span><span style="color:#E6DB74"> `</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">el.progress</span><span style="color:#F92672">}</span><span style="color:#E6DB74">% complete`</span></span>
+<span class="line"><span style="color:#F8F8F2">    })</span></span>
+<span class="line"><span style="color:#F8F8F2">  )</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<h3>Batched Updates</h3>
+<p>UIElement batches DOM updates to minimize browser reflow:</p>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { batch } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">batch</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">  // These state changes trigger only one UI update</span></span>
+<span class="line"><span style="color:#F8F8F2">  name.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Jane'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">  age.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">30</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">  active.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">true</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
+<p>Even without explicit batching, UIElement schedules DOM updates efficiently using requestAnimationFrame.</p>
+<h2>Component Lifecycle</h2>
+<p>Understanding a component&#39;s lifecycle helps you manage resources and handle initialization properly.</p>
+<h3>Connection and Disconnection</h3>
+<p>The component lifecycle has several phases:</p>
+<ol>
+<li><strong>Construction</strong>: The element instance is created</li>
+<li><strong>Connection</strong>: The element is added to the DOM</li>
+<li><strong>Attribute changes</strong>: Attributes are modified</li>
+<li><strong>Disconnection</strong>: The element is removed from the DOM</li>
+</ol>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'time-display'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">  format: </span><span style="color:#E6DB74">'HH:mm:ss'</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">  // This runs when connected to DOM</span></span>
+<span class="line"><span style="color:#F8F8F2">  console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Time display connected'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#88846F">  // Set up an interval</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> intervalId </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> setInterval</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">    el.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.time'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Date</span><span style="color:#F8F8F2">().</span><span style="color:#A6E22E">toLocaleTimeString</span><span style="color:#F8F8F2">()))</span></span>
+<span class="line"><span style="color:#F8F8F2">  }, </span><span style="color:#AE81FF">1000</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#88846F">  // Clean up when disconnected</span></span>
+<span class="line"><span style="color:#F92672">  return</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">    console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Time display disconnected'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#A6E22E">    clearInterval</span><span style="color:#F8F8F2">(intervalId)</span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<h3>Cleanup Functions</h3>
+<p>To prevent memory leaks, return a cleanup function that:</p>
+<ul>
+<li>Clears intervals or timeouts</li>
+<li>Removes global event listeners</li>
+<li>Releases resources</li>
+</ul>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">el.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.dialog'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">  // Add global event listener</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#A6E22E"> handleEscape</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">    if</span><span style="color:#F8F8F2"> (e.key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'Escape'</span><span style="color:#F8F8F2">) el.open </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> false</span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#F8F8F2">  document.</span><span style="color:#A6E22E">addEventListener</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'keydown'</span><span style="color:#F8F8F2">, handleEscape)</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#88846F">  // Return cleanup for this effect</span></span>
+<span class="line"><span style="color:#F92672">  return</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">    document.</span><span style="color:#A6E22E">removeEventListener</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'keydown'</span><span style="color:#F8F8F2">, handleEscape)</span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"><span style="color:#F8F8F2">}))</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<p>UIElement automatically manages cleanup for DOM effects and event listeners attached through <code>on()</code>.</p>
+<h2>Attribute Parsers</h2>
+<p>Attribute parsers convert HTML attribute strings to typed JavaScript values:</p>
+<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">html</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">user-card</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"John"</span><span style="color:#A6E22E"> age</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"42"</span><span style="color:#A6E22E"> premium</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"true"</span><span style="color:#A6E22E"> level</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"2"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">user-card</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'user-card'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">  name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Anonymous'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">  age: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">  premium: asBoolean,</span></span>
+<span class="line"><span style="color:#F8F8F2">  level: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">  // Access typed values</span></span>
+<span class="line"><span style="color:#F8F8F2">  console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">typeof</span><span style="color:#F8F8F2"> el.name)    </span><span style="color:#88846F">// "string" </span></span>
+<span class="line"><span style="color:#F8F8F2">  console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">typeof</span><span style="color:#F8F8F2"> el.age)     </span><span style="color:#88846F">// "number"</span></span>
+<span class="line"><span style="color:#F8F8F2">  console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">typeof</span><span style="color:#F8F8F2"> el.premium) </span><span style="color:#88846F">// "boolean"</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<h3>Built-in Parsers</h3>
+<p>UIElement provides several built-in parsers:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { </span></span>
+<span class="line"><span style="color:#F8F8F2">  asBoolean, </span></span>
+<span class="line"><span style="color:#F8F8F2">  asInteger, </span></span>
+<span class="line"><span style="color:#F8F8F2">  asNumber, </span></span>
+<span class="line"><span style="color:#F8F8F2">  asString, </span></span>
+<span class="line"><span style="color:#F8F8F2">  asEnum, </span></span>
+<span class="line"><span style="color:#F8F8F2">  asJSON </span></span>
+<span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'config-panel'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">  enabled: asBoolean,               </span><span style="color:#88846F">// true for any value except "false"</span></span>
+<span class="line"><span style="color:#F8F8F2">  count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">),              </span><span style="color:#88846F">// Parse as integer with default 0</span></span>
+<span class="line"><span style="color:#F8F8F2">  amount: </span><span style="color:#A6E22E">asNumber</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">),              </span><span style="color:#88846F">// Parse as float with default 0</span></span>
+<span class="line"><span style="color:#F8F8F2">  name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Default'</span><span style="color:#F8F8F2">),        </span><span style="color:#88846F">// String with default</span></span>
+<span class="line"><span style="color:#F8F8F2">  theme: </span><span style="color:#A6E22E">asEnum</span><span style="color:#F8F8F2">([</span><span style="color:#E6DB74">'light'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'dark'</span><span style="color:#F8F8F2">]), </span><span style="color:#88846F">// Restrict to enum values</span></span>
+<span class="line"><span style="color:#F8F8F2">  options: </span><span style="color:#A6E22E">asJSON</span><span style="color:#F8F8F2">({ active: </span><span style="color:#AE81FF">true</span><span style="color:#F8F8F2"> }) </span><span style="color:#88846F">// Parse JSON with default object</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">  // Setup code</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<h3>Custom Parsers</h3>
+<p>You can create custom parsers for specialized needs:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Custom date parser</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> asDate</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">fallback</span><span style="color:#F92672"> =</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Date</span><span style="color:#F8F8F2">()) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">value</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">  if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">value) </span><span style="color:#F92672">return</span><span style="color:#F8F8F2"> fallback</span></span>
+<span class="line"><span style="color:#F8F8F2">  </span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> date </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Date</span><span style="color:#F8F8F2">(value)</span></span>
+<span class="line"><span style="color:#F92672">  return</span><span style="color:#A6E22E"> isNaN</span><span style="color:#F8F8F2">(date.</span><span style="color:#A6E22E">getTime</span><span style="color:#F8F8F2">()) </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> fallback </span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> date</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'event-card'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">  eventDate: </span><span style="color:#A6E22E">asDate</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">  el.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.date'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">    return</span><span style="color:#F8F8F2"> el.eventDate.</span><span style="color:#A6E22E">toLocaleDateString</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">  }))</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<p>A parser function:</p>
+<ol>
+<li>Receives the element and attribute value</li>
+<li>Returns the parsed value</li>
+<li>Can access component properties if needed</li>
+</ol>
+<h2>Element Selectors</h2>
+<p>UIElement provides three methods to select and manipulate elements:</p>
+<h3>el.self()</h3>
+<p>Apply effects to the component itself:</p>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'toggle-switch'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">  active: </span><span style="color:#AE81FF">false</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">  el.</span><span style="color:#A6E22E">self</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#A6E22E">    toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">    toggleAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-pressed'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">  )</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
+<h3>el.first()</h3>
+<p>Select and manipulate the first element matching a selector:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'message-box'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">  message: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  type: </span><span style="color:#E6DB74">'info'</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">  el.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.message'</span><span style="color:#F8F8F2">, </span></span>
+<span class="line"><span style="color:#A6E22E">    setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'message'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">    toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'error'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.type </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'error'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">    toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'warning'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.type </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'warning'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">    toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'info'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.type </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'info'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">  )</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<h3>el.all()</h3>
+<p>Select and manipulate all elements matching a selector:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'star-rating'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">  rating: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  maxStars: </span><span style="color:#AE81FF">5</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">  el.</span><span style="color:#A6E22E">all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.star'</span><span style="color:#F8F8F2">, </span></span>
+<span class="line"><span style="color:#88846F">    // Each star gets these effects</span></span>
+<span class="line"><span style="color:#A6E22E">    toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'filled'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> index </span><span style="color:#F92672">&#x3C;</span><span style="color:#F8F8F2"> el.rating),</span></span>
+<span class="line"><span style="color:#A6E22E">    on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">      el.rating </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> index </span><span style="color:#F92672">+</span><span style="color:#AE81FF"> 1</span></span>
+<span class="line"><span style="color:#F8F8F2">    })</span></span>
+<span class="line"><span style="color:#F8F8F2">  )</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<p>The callback receives:</p>
+<ul>
+<li>The host element (component)</li>
+<li>The target element (selected element)</li>
+<li>The index (for <code>el.all()</code>)</li>
+</ul>
+<h2>Summary</h2>
+<p>UIElement&#39;s core concepts work together to create a powerful, efficient system for building reactive web components:</p>
+<ul>
+<li><strong>Components</strong> define custom elements with reactive properties</li>
+<li><strong>Signals</strong> track values and their dependencies</li>
+<li><strong>Effects</strong> connect state changes to DOM updates</li>
+<li><strong>Element selectors</strong> target DOM elements for manipulation</li>
+</ul>
+<p>With these fundamentals in place, you can now move on to advanced component building techniques in the next chapter.</p>
+
+    </main>
+    <footer class="content-grid">
+		<div class="content">
+			<h2 class="visually-hidden">Footer</h2>
+			<p>© 2024 – 2025 Zeix AG</p>
+		</div>
+	</footer>
+</body>
+</html>

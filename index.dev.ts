@@ -25,7 +25,7 @@ export {
 } from './src/core/log'
 export {
 	type Provider, type PassedSignals,
-	on, emit, pass
+	first, all, on, emit, pass
 } from './src/core/ui'
 export {
 	type Context, type UnknownContext, type ContextType,

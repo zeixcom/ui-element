@@ -77,17 +77,14 @@ var watch = (run, mark) => {
     active = prev;
   }
 };
-var enqueue = (fn, dedupe) => new Promise((resolve, reject) => {
-  const wrappedCallback = () => {
+var enqueue = (fn, dedupe = []) => new Promise((resolve, reject) => {
+  updateMap.set(dedupe, () => {
     try {
       resolve(fn());
     } catch (error) {
       reject(error);
     }
-  };
-  if (dedupe) {
-    updateMap.set(dedupe, wrappedCallback);
-  }
+  });
   requestTick();
 });
 
@@ -350,6 +347,49 @@ var log = (value, msg, level = LOG_DEBUG) => {
   return value;
 };
 
+// src/core/ui.ts
+var isProvider = (value) => isFunction2(value) && value.length == 2;
+var isEventListener = (value) => isFunction2(value) || isDefinedObject(value) && isFunction2(value.handleEvent);
+var isComponent = (value) => value instanceof HTMLElement && value.localName.includes("-");
+var run = (fns, host, target, index) => fns.flatMap((fn) => {
+  const cleanup = isFunction2(fn) ? fn(host, target ?? host, index) : [];
+  return Array.isArray(cleanup) ? cleanup.filter(isFunction2) : isFunction2(cleanup) ? [cleanup] : [];
+});
+var first = (selector, ...fns) => (host) => {
+  const target = (host.shadowRoot || host).querySelector(selector);
+  return target ? run(fns, host, target) : [];
+};
+var all = (selector, ...fns) => (host) => Array.from((host.shadowRoot || host).querySelectorAll(selector)).flatMap((target, index) => run(fns, host, target, index));
+var on = (type, handler) => (host, target = host, index = 0) => {
+  const listener = isProvider(handler) ? handler(target, index) : handler;
+  if (!isEventListener(listener))
+    throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
+  target.addEventListener(type, listener);
+  return () => target.removeEventListener(type, listener);
+};
+var emit = (type, detail) => (host, target = host, index = 0) => {
+  target.dispatchEvent(new CustomEvent(type, {
+    detail: isProvider(detail) ? detail(target, index) : detail,
+    bubbles: true
+  }));
+};
+var pass = (signals) => (host, target, index = 0) => {
+  const targetName = target.localName;
+  if (!isComponent(target))
+    throw new TypeError(`Target element must be a custom element`);
+  const sources = isProvider(signals) ? signals(target, index) : signals;
+  if (!isDefinedObject(sources))
+    throw new TypeError(`Passed signals must be an object or a provider function`);
+  customElements.whenDefined(targetName).then(() => {
+    for (const [prop, source] of Object.entries(sources)) {
+      const signal = isString(source) ? host.getSignal(prop) : toSignal(source);
+      target.setSignal(prop, signal);
+    }
+  }).catch((error) => {
+    throw new Error(`Failed to pass signals to ${elementName(target)}}`, { cause: error });
+  });
+};
+
 // src/component.ts
 var RESET = Symbol();
 var HTML_ELEMENT_PROPS = new Set(Object.getOwnPropertyNames(HTMLElement.prototype));
@@ -364,10 +404,6 @@ var RESERVED_WORDS = new Set([
   "propertyIsEnumerable",
   "toLocaleString"
 ]);
-var run = (fns, host, target, index = 0) => fns.flatMap((fn) => {
-  const cleanup = isFunction2(fn) ? fn(host, target, index) : [];
-  return Array.isArray(cleanup) ? cleanup.filter(isFunction2) : isFunction2(cleanup) ? [cleanup] : [];
-});
 var isParser = (value) => isFunction2(value) && value.length >= 2;
 var isSignalProducer = (value) => isFunction2(value) && value.length < 2;
 var validatePropertyName = (prop) => !(HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop));
@@ -393,9 +429,10 @@ var component = (name, init = {}, setup) => {
         if (this.debug)
           log(this, "Connected");
       }
-      const cleanup = setup(this);
-      if (isFunction2(cleanup))
-        this.#cleanup.push(cleanup);
+      const fns = setup(this);
+      if (!Array.isArray(fns))
+        throw new TypeError(`Expected array of functions as return value of setup() in ${elementName(this)}`);
+      this.#cleanup = run(fns, this);
     }
     disconnectedCallback() {
       for (const off of this.#cleanup)
@@ -455,46 +492,13 @@ var component = (name, init = {}, setup) => {
   customElements.define(name, CustomElement);
   return CustomElement;
 };
-// src/core/ui.ts
-var isProvider = (value) => isFunction2(value) && value.length == 2;
-var isEventListener = (value) => isFunction2(value) || isDefinedObject(value) && isFunction2(value.handleEvent);
-var isComponent = (value) => value instanceof HTMLElement && value.localName.includes("-");
-var on = (type, handler) => (host, target = host, index = 0) => {
-  const listener = isProvider(handler) ? handler(target, index) : handler;
-  if (!isEventListener(listener))
-    throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
-  target.addEventListener(type, listener);
-  return () => target.removeEventListener(type, listener);
-};
-var emit = (type, detail) => (host, target = host, index = 0) => {
-  target.dispatchEvent(new CustomEvent(type, {
-    detail: isProvider(detail) ? detail(target, index) : detail,
-    bubbles: true
-  }));
-};
-var pass = (signals) => (host, target, index = 0) => {
-  const targetName = target.localName;
-  if (!isComponent(target))
-    throw new TypeError(`Target element must be a custom element`);
-  const sources = isProvider(signals) ? signals(target, index) : signals;
-  if (!isDefinedObject(sources))
-    throw new TypeError(`Passed signals must be an object or a provider function`);
-  customElements.whenDefined(targetName).then(() => {
-    for (const [prop, source] of Object.entries(sources)) {
-      const signal = isString(source) ? host.getSignal(prop) : toSignal(source);
-      target.setSignal(prop, signal);
-    }
-  }).catch((error) => {
-    throw new Error(`Failed to pass signals to ${elementName(target)}}`, { cause: error });
-  });
-};
 // src/core/context.ts
 var CONTEXT_REQUEST = "context-request";
 
 class ContextRequestEvent extends Event {
   context;
   callback;
-  subscribe;
+  subscribe2;
   constructor(context, callback, subscribe2 = false) {
     super(CONTEXT_REQUEST, {
       bubbles: true,
@@ -815,6 +819,7 @@ export {
   isComputed,
   insertTemplate,
   insertNode,
+  first,
   enqueue,
   emit,
   effect,
@@ -830,6 +835,7 @@ export {
   asInteger,
   asEnum,
   asBoolean,
+  all,
   UNSET,
   RESET,
   LOG_WARN,

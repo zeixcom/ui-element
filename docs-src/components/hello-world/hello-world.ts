@@ -1,4 +1,4 @@
-import { component, on, RESET, setText } from '../../../'
+import { component, first, on, RESET, setText } from '../../../'
 
 export type HelloWorldProps = {
 	name: string
@@ -6,12 +6,12 @@ export type HelloWorldProps = {
 
 const HelloWorld = component('hello-world', {
 	name: RESET
-}, el => {
-	el.first('span', setText('name'))
-	el.first('input', on('input', (e: Event) => {
+}, el => [
+	first('span', setText('name')),
+	first('input', on('input', (e: Event) => {
 		el.name = (e.target as HTMLInputElement)?.value || RESET
 	}))
-})
+])
 
 declare global {
 	interface HTMLElementTagNameMap {

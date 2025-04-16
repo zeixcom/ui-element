@@ -53,18 +53,18 @@ Server-rendered markup:
 UIElement component:
 
 ```js
-import { component, asInteger, setText } from '@zeix/ui-element'
+import { component, asInteger, first, setText } from '@zeix/ui-element'
 
 component('show-appreciation', {
     count: asInteger(RESET) // Get initial value from .count element
-}, el => {
+}, el => [
 
     // Bind click event to increment count
-    el.first('button', on('click', () => { el.count++ }))
+    first('button', on('click', () => { el.count++ })),
 
     // Update.count text when count changes
-    el.first('.count', setText('count'))
-})
+    first('.count', setText('count'))
+])
 ```
 
 Example styles:
@@ -131,7 +131,7 @@ An example demonstrating how to pass states from one component to another. Serve
 UIElement components:
 
 ```js
-import { asBoolean, component, on, setAttribute, setProperty, toggleAttribute, toggleClass } from '@zeix/ui-element'
+import { asBoolean, component, all, on, setAttribute, setProperty, toggleAttribute, toggleClass } from '@zeix/ui-element'
 
 component('tab-list', {
 	active: 0,
@@ -141,28 +141,30 @@ component('tab-list', {
 	const panels = Array.from(el.querySelectorAll('details'))
 	el.active = panels.findIndex(panel => panel.hasAttribute('open'))
 
-	// Reflect accordion attribute (may be used for styling)
-	el.self(toggleAttribute('accordion'))
+	return [
+		// Reflect accordion attribute (may be used for styling)
+		toggleAttribute('accordion'),
 
-	// Update active tab state and bind click handlers
-	el.all('menu button',
-		on('click', (_, index) => () => {
-			el.active = index
-		}),
-		setProperty('ariaPressed', (_, index) => String(el.active === index))
-	)
+		// Update active tab state and bind click handlers
+		all('menu button',
+			on('click', (_, index) => () => {
+				el.active = index
+			}),
+			setProperty('ariaPressed', (_, index) => String(el.active === index))
+		),
 
-	// Update details panels open, hidden and disabled states
-	el.all('details',
-		on('toggle', (_, index) => () => {
-			el.active = el.active === index ? -1 : index
-		}),
-		setProperty('open', (_, index) => !!(el.active === index)),
-		setAttribute('aria-disabled', () => String(!el.accordion))
-	)
+		// Update details panels open, hidden and disabled states
+		all('details',
+			on('toggle', (_, index) => () => {
+				el.active = el.active === index ? -1 : index
+			}),
+			setProperty('open', (_, index) => !!(el.active === index)),
+			setAttribute('aria-disabled', () => String(!el.accordion))
+		),
 
-	// Update summary visibility
-	el.all('summary', toggleClass('visually-hidden', () => !el.accordion))
+		// Update summary visibility
+		all('summary', toggleClass('visually-hidden', () => !el.accordion))
+	]
 })
 ```
 
@@ -218,7 +220,7 @@ A more complex component demonstrating async fetch from the server:
 ```
 
 ```js
-import { component, dangerouslySetInnerHTML, setProperty, setText } from '@zeix/ui-element'
+import { component, first, dangerouslySetInnerHTML, setProperty, setText } from '@zeix/ui-element'
 
 // Custom attribute parser
 const asURL = (el, v) => {
@@ -258,11 +260,11 @@ component('lazy-load', {
 	error: '',
 	src: asURL,
 	content: fetchText
-}, el => {
-	el.self(dangerouslySetInnerHTML('content', 'open'))
-	el.first('.error',
+}, el => [
+	dangerouslySetInnerHTML('content', 'open'),
+	first('.error',
 		setText('error'),
 		setProperty('hidden', () => !el.error)
 	)
-})
+])
 ```

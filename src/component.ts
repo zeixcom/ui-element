@@ -5,6 +5,7 @@ import {
 
 import { isFunction } from "./core/util"
 import { DEV_MODE, elementName, log, typeString, valueString } from "./core/log"
+import { run } from "./core/ui"
 
 /* === Types === */
 
@@ -58,19 +59,6 @@ const RESERVED_WORDS = new Set(['constructor', 'prototype', '__proto__', 'toStri
 
 /* === Internal Functions === */
 
-const run = <P extends ComponentProps, E extends Element>(
-	fns: FxFunction<P, E>[],
-	host: Component<P>,
-	target: E,
-    index: number = 0
-): (() => void)[] =>
-	fns.flatMap(fn => {
-		const cleanup = isFunction(fn) ? fn(host, target, index) : []
-		return Array.isArray(cleanup) ? cleanup.filter(isFunction)
-			: isFunction(cleanup) ? [cleanup]
-			: []
-	})
-
 const isParser = <T extends {}, C extends HTMLElement>(value: unknown): value is AttributeParser<T, C> =>
 	isFunction(value) && value.length >= 2
 
@@ -98,7 +86,7 @@ const component = <P extends ComponentProps>(
 	} = {} as {
 		[K in string & keyof P]: SignalInitializer<P[K], Component<P>>
 	},
-	setup: (host: Component<P>) => void | (() => void),
+	setup: (host: Component<P>) => FxFunction<P, Component<P>>[],
 ): Component<P> => {
 	class CustomElement extends HTMLElement {
 		debug?: boolean
@@ -137,8 +125,10 @@ const component = <P extends ComponentProps>(
 				this.debug = this.hasAttribute('debug')
 				if (this.debug) log(this, 'Connected')
 			}
-			const cleanup = setup(this as unknown as Component<P>)
-			if (isFunction(cleanup)) this.#cleanup.push(cleanup)
+			const fns = setup(this as unknown as Component<P>)
+			if (!Array.isArray(fns))
+				throw new TypeError(`Expected array of functions as return value of setup() in ${elementName(this)}`)
+			this.#cleanup = run(fns, this as unknown as Component<P>)
 		}
 		
 		/**
