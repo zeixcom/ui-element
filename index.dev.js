@@ -455,14 +455,14 @@ var component = (name, init = {}, setup) => {
     getSignal(key) {
       const signal = this.#signals[key];
       if (DEV_MODE && this.debug)
-        log(signal, `Get ${typeString(signal)} "${key}" in ${elementName(this)}`);
+        log(signal, `Get ${typeString(signal)} "${String(key)}" in ${elementName(this)}`);
       return signal;
     }
     setSignal(key, signal) {
-      if (!validatePropertyName(key))
-        throw new TypeError(`Invalid property name "${key}". Property names must be valid JavaScript identifiers and not conflict with inherited HTMLElement properties.`);
+      if (!validatePropertyName(String(key)))
+        throw new TypeError(`Invalid property name "${String(key)}". Property names must be valid JavaScript identifiers and not conflict with inherited HTMLElement properties.`);
       if (!isSignal(signal))
-        throw new TypeError(`Expected signal as value for property "${key}" on ${elementName(this)}.`);
+        throw new TypeError(`Expected signal as value for property "${String(key)}" on ${elementName(this)}.`);
       const prev = this.#signals[key];
       const writable = isState(signal);
       this.#signals[key] = signal;
@@ -475,18 +475,7 @@ var component = (name, init = {}, setup) => {
       if (prev && isState(prev))
         prev.set(UNSET);
       if (DEV_MODE && this.debug)
-        log(signal, `Set ${typeString(signal)} "${key} in ${elementName(this)}`);
-    }
-    self(...fns) {
-      this.#cleanup.push(...run(fns, this, this));
-    }
-    first(selector, ...fns) {
-      const target = (this.shadowRoot || this).querySelector(selector);
-      if (target)
-        this.#cleanup.push(...run(fns, this, target));
-    }
-    all(selector, ...fns) {
-      this.#cleanup.push(...Array.from((this.shadowRoot || this).querySelectorAll(selector)).flatMap((target, index) => run(fns, this, target, index)));
+        log(signal, `Set ${typeString(signal)} "${String(key)} in ${elementName(this)}`);
     }
   }
   customElements.define(name, CustomElement);
@@ -638,10 +627,8 @@ var insertNode = (s, { type, where, create }) => (host, target, index = 0) => {
     beforeend: "append",
     afterend: "after"
   };
-  if (!isFunction2(target[methods[where]])) {
-    log(`Invalid insertPosition "${where}" for ${elementName(host)}:`, LOG_ERROR);
-    return;
-  }
+  if (!isFunction2(target[methods[where]]))
+    throw new TypeError(`Invalid insertPosition "${where}" for ${elementName(host)}`);
   const err = (error) => log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR);
   return effect(() => {
     let really = false;
@@ -654,15 +641,14 @@ var insertNode = (s, { type, where, create }) => (host, target, index = 0) => {
     if (!really)
       return;
     enqueue(() => {
-      const node = create(host);
+      const node = create();
       if (!node)
         return;
       target[methods[where]](node);
     }, [target, "i"]).then(() => {
-      if (isString(s) && Object.getOwnPropertyDescriptor(host, s)?.set)
-        host[s] = false;
-      if (isState(s))
-        s.set(false);
+      const signal = isSignal(s) ? s : isString(s) ? host.getSignal(s) : undefined;
+      if (isState(signal))
+        signal.set(false);
       if (DEV_MODE && host.debug)
         log(target, `Inserted ${type} into ${elementName(host)}`);
     }).catch((error) => {
@@ -751,27 +737,30 @@ var dangerouslySetInnerHTML = (s, attachShadow, allowScripts) => updateElement(s
     return " with scripts";
   }
 });
-var insertTemplate = (template, s, where = "beforeend") => insertNode(s, {
-  type: "template content",
-  where,
-  create: (host) => {
-    if (!(template instanceof HTMLTemplateElement)) {
-      log(`Invalid template to insert into ${elementName(host)}:`, LOG_ERROR);
-      return;
+var insertTemplate = (template, s, where = "beforeend", content) => {
+  if (!(template instanceof HTMLTemplateElement))
+    throw new TypeError("Expected template to be an HTMLTemplateElement");
+  return insertNode(s, {
+    type: "template content",
+    where,
+    create: () => {
+      const clone = document.importNode(template.content, true);
+      const slot = clone.querySelector("slot");
+      if (slot)
+        slot.replaceWith(document.createTextNode(content ? content : slot.textContent ?? ""));
+      return clone;
     }
-    const clone = host.shadowRoot ? document.importNode(template.content, true) : template.content.cloneNode(true);
-    return clone;
-  }
-});
-var createElement = (tag, s, where = "beforeend", attributes = {}, text) => insertNode(s, {
+  });
+};
+var createElement = (tag, s, where = "beforeend", attributes = {}, content) => insertNode(s, {
   type: "new element",
   where,
   create: () => {
     const child = document.createElement(tag);
     for (const [key, value] of Object.entries(attributes))
       safeSetAttribute(child, key, value);
-    if (text)
-      child.textContent = text;
+    if (content)
+      child.textContent = content;
     return child;
   }
 });
@@ -791,6 +780,9 @@ var removeElement = (s) => (host, target, index = 0) => {
       target.remove();
       return true;
     }, [target, "r"]).then(() => {
+      const signal = isSignal(s) ? s : isString(s) ? host.getSignal(s) : undefined;
+      if (isState(signal))
+        signal.set(false);
       if (DEV_MODE && host.debug)
         log(target, `Deleted ${elementName(target)} into ${elementName(host)}`);
     }).catch((error) => {

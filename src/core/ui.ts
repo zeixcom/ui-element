@@ -12,7 +12,7 @@ type Provider<T> = <E extends Element>(
 ) => T
 
 type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
-	[K in string & keyof Q]?: Signal<Q[K]> | Provider<Q[K]> | (() => Q[K]) | string & keyof P
+	[K in keyof Q]?: Signal<Q[K]> | Provider<Q[K]> | (() => Q[K]) | keyof P
 }
 
 /* === Internal Function === */

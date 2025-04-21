@@ -1,22 +1,19 @@
-import { all, component, first, on, State, toggleClass } from '../../../'
+import { type Provider, all, component, first, on, state, toggleClass } from '../../../'
 
-export type MySliderProps = {
-	active: number
-}
 
-const MySlider = component('my-slider', {
-	active: 0
-}, el => {
+const MySlider = component('my-slider', {}, el => {
+	const active = state(0)
 	const total = el.querySelectorAll('.slide').length
+	const isActiveProvider: Provider<boolean> = (_, index) => active.get() === index
 	return [
 		first('.prev', on('click', () => {
-			(el.getSignal('active') as State<number>).update(v => (v - 1 + total) % total)
+			active.update(v => (v - 1 + total) % total)
 		})),
 		first('.next', on('click', () => {
-			(el.getSignal('active') as State<number>).update(v => (v + 1 + total) % total)
+			active.update(v => (v + 1 + total) % total)
 		})),
-		all('.slide', toggleClass('active', (_, index) => el.active === index)),
-		all('.dots span', toggleClass('active', (_, index) => el.active === index))
+		all('.slide', toggleClass('active', isActiveProvider)),
+		all('.dots span', toggleClass('active', isActiveProvider))
 	]
 })
 

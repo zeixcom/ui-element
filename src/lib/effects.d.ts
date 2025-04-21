@@ -1,17 +1,17 @@
 import { type Signal } from '@zeix/cause-effect';
 import { type ComponentProps, type Component } from '../component';
 import type { Provider } from '../core/ui';
-type SignalLike<T, P extends ComponentProps> = string & keyof P | Signal<NonNullable<T>> | Provider<T>;
+type SignalLike<T, P extends ComponentProps> = keyof P | Signal<NonNullable<T>> | Provider<T>;
 type ElementUpdater<E extends Element, T> = {
     op: string;
     read: (element: E) => T | null;
     update: (element: E, value: T) => string;
     delete?: (element: E) => string;
 };
-type NodeInserter<P extends ComponentProps> = {
+type NodeInserter = {
     type: string;
     where: InsertPosition;
-    create: (host: Component<P>) => Node | undefined;
+    create: () => Node | undefined;
 };
 /**
  * Effect for setting properties of a target element according to a given SignalLike
@@ -23,8 +23,13 @@ type NodeInserter<P extends ComponentProps> = {
 declare const updateElement: <E extends Element, T extends {}, P extends ComponentProps>(s: SignalLike<T, P>, updater: ElementUpdater<E, T>) => (host: Component<P>, target: E, index?: number) => () => void;
 /**
  * Effect to insert a node relative to an element according to a given SignalLike
+ *
+ * @since 0.9.0
+ * @param {SignalLike<string>} s - state bound to the node insertion
+ * @param {NodeInserter} inserter - inserter object containing type, where, and create methods
+ * @throws {TypeError} if the insertPosition is invalid for the target element
  */
-declare const insertNode: <E extends Element, P extends ComponentProps>(s: SignalLike<boolean, P>, { type, where, create }: NodeInserter<P>) => (host: Component<P>, target: E, index?: number) => void | (() => void);
+declare const insertNode: <E extends Element, P extends ComponentProps>(s: SignalLike<boolean, P>, { type, where, create }: NodeInserter) => (host: Component<P>, target: E, index?: number) => void | (() => void);
 /**
  * Set text content of an element
  *
@@ -39,7 +44,7 @@ declare const setText: <E extends Element, P extends ComponentProps>(s: SignalLi
  * @param {string} key - name of property to be set
  * @param {SignalLike<E[K]>} s - state bound to the property value
  */
-declare const setProperty: <E extends Element, K extends keyof E, P extends ComponentProps>(key: K, s?: SignalLike<E[K], P>) => (host: Component<P>, target: E, index?: number) => () => void;
+declare const setProperty: <E extends Element, K extends keyof E, P extends ComponentProps>(key: K, s?: SignalLike<NonNullable<E[K]>, P>) => (host: Component<P>, target: E, index?: number) => () => void;
 /**
  * Set attribute of an element
  *
@@ -88,19 +93,21 @@ declare const dangerouslySetInnerHTML: <E extends Element, P extends ComponentPr
  * @param {HTMLTemplateElement} template - template element to clone or import from
  * @param {SignalLike<boolean>} s - insert if SignalLike evalutes to true, otherwise ignore
  * @param {InsertPosition} where - position to insert the template relative to the target element ('beforebegin', 'afterbegin', 'beforeend', 'afterend')
+ * @param {string} content - content to be inserted into the template's slot
+ * @throws {TypeError} if the template is not an HTMLTemplateElement
  */
-declare const insertTemplate: <P extends ComponentProps>(template: HTMLTemplateElement, s: SignalLike<boolean, P>, where?: InsertPosition) => (host: Component<P>, target: Element, index?: number) => void | (() => void);
+declare const insertTemplate: <P extends ComponentProps>(template: HTMLTemplateElement, s: SignalLike<boolean, P>, where?: InsertPosition, content?: string) => (host: Component<P>, target: Element, index?: number) => void | (() => void);
 /**
  * Create an element with a given tag name and optionally set its attributes
  *
  * @since 0.11.0
  * @param {string} tag - tag name of the element to create
  * @param {SignalLike<boolean>} s - insert if SignalLike evalutes to true, otherwise ignore
- * @param {InsertPosition} [where] - position to insert the template relative to the target element ('beforebegin', 'afterbegin', 'beforeend', 'afterend')
- * @param {Record<string, string>} [attributes] - attributes to set on the element
- * @param {string} [text] - text content to set on the element
+ * @param {InsertPosition} where - position to insert the template relative to the target element ('beforebegin', 'afterbegin', 'beforeend', 'afterend')
+ * @param {Record<string, string>} attributes - attributes to set on the element
+ * @param {string} content - text content to be inserted into the element
  */
-declare const createElement: <P extends ComponentProps>(tag: string, s: SignalLike<boolean, P>, where?: InsertPosition, attributes?: Record<string, string>, text?: string) => (host: Component<P>, target: Element, index?: number) => void | (() => void);
+declare const createElement: <P extends ComponentProps>(tag: string, s: SignalLike<boolean, P>, where?: InsertPosition, attributes?: Record<string, string>, content?: string) => (host: Component<P>, target: Element, index?: number) => void | (() => void);
 /**
  * Remove an element from the DOM
  *

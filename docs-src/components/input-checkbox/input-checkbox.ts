@@ -1,11 +1,13 @@
-import { asBoolean, component, first, on, setProperty, toggleAttribute } from '../../../'
+import { asBoolean, asString, component, first, on, RESET, setProperty, setText, toggleAttribute } from '../../../'
 
 export type InputCheckboxProps = {
-	checked: boolean
+	checked: boolean,
+	label: string
 }
 
 const InputCheckbox = component('input-checkbox', {
-	checked: asBoolean
+	checked: asBoolean,
+	label: asString(RESET)
 }, el => [
 	toggleAttribute('checked'),
 	first<HTMLInputElement, InputCheckboxProps>('input',
@@ -13,7 +15,8 @@ const InputCheckbox = component('input-checkbox', {
 		on('change', (e: Event) => {
 			el.checked = (e.target as HTMLInputElement)?.checked
 		})
-	)
+	),
+	first('.label', setText('label'))
 ])
 
 declare global {

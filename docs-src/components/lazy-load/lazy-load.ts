@@ -1,6 +1,7 @@
 import {
 	type AttributeParser, type SignalProducer,
-	setProperty, setText, dangerouslySetInnerHTML, component
+	setProperty, setText, dangerouslySetInnerHTML, component,
+	first
 } from '../../../'
 
 export type LazyLoadProps = {
@@ -52,13 +53,13 @@ const LazyLoad = component('lazy-load', {
 	error: '',
 	src: asURL,
 	content: fetchText
-}, el => {
-	el.first<HTMLElement>('.error',
+}, el => [
+	dangerouslySetInnerHTML('content'),
+	first<HTMLElement, LazyLoadProps>('.error',
 		setText('error'),
 		setProperty('hidden', () => !el.error)
 	)
-	el.self(dangerouslySetInnerHTML('content'))
-})
+])
 
 declare global {
 	interface HTMLElementTagNameMap {

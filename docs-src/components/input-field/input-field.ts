@@ -1,6 +1,6 @@
 import {
 	type AttributeParser, type SignalProducer,
-	component, effect, emit, on, setAttribute, setProperty, setText, UNSET
+	component, effect, emit, first, FxFunction, on, setAttribute, setProperty, setText, UNSET
 } from '../../../'
 
 /* === Type === */
@@ -64,6 +64,7 @@ const InputField = component('input-field', {
 	description: '',
 	'aria-describedby': createAriaDescribedBy
 }, el => {
+	const fns: FxFunction<InputFieldProps, HTMLElement>[] = []
 	const input = el.querySelector('input')
 	const typeNumber = input && input.type === 'number'
 	const integer = el.hasAttribute('integer')
@@ -76,7 +77,7 @@ const InputField = component('input-field', {
 		el.value = typeof value === 'function' ? value(el.value) : value
 		el.error = input?.validationMessage ?? ''
 		if (input?.value !== String(value))
-		el.self(emit('value-change', value))
+		emit('value-change', value)(el)
 	}
 
 	// Round a value to the nearest step
@@ -91,13 +92,15 @@ const InputField = component('input-field', {
 	}
 	
 	// Handle input changes
-	el.first('input',
-		on('change', () => {
-			triggerChange(typeNumber ? input?.valueAsNumber ?? 0 : input?.value ?? '')
-		}),
-		on('input', () => {
-			el.length = input?.value.length ?? 0
-		})
+	fns.push(
+		first('input',
+			on('change', () => {
+				triggerChange(typeNumber ? input?.valueAsNumber ?? 0 : input?.value ?? '')
+			}),
+			on('input', () => {
+				el.length = input?.value.length ?? 0
+			})
+		)
 	)
 
 	// Validate and update value
@@ -133,35 +136,41 @@ const InputField = component('input-field', {
 	if (typeNumber) {
 
 		// Handle arrow key events to increment / decrement value
-		el.first('input', on('keydown', (e: Event) => {
-			const evt = e as KeyboardEvent
-			if (['ArrowUp', 'ArrowDown'].includes(evt.key)) {
-				e.stopPropagation()
-				e.preventDefault()
-				if (evt.key === 'ArrowDown')
-					triggerChange(v => nearestStep(v - (evt.shiftKey ? step * 10 : step)))
-				if (evt.key === 'ArrowUp')
-					triggerChange(v => nearestStep(v + (evt.shiftKey ? step * 10 : step)))
-			}
-		}))
+		fns.push(
+			first('input',
+				on('keydown', (e: Event) => {
+					const { key, shiftKey } = e as KeyboardEvent
+					if (['ArrowUp', 'ArrowDown'].includes(key)) {
+						e.stopPropagation()
+						e.preventDefault()
+						if (key === 'ArrowDown')
+							triggerChange(v => nearestStep(v - (shiftKey ? step * 10 : step)))
+						if (key === 'ArrowUp')
+							triggerChange(v => nearestStep(v + (shiftKey ? step * 10 : step)))
+					}
+				})
+			)
+		)
 
 		// Handle spin button clicks and update their disabled state
 		const spinButton = el.querySelector('.spinbutton') as HTMLElement | null
 		if (typeNumber && spinButton) {
-			el.first<HTMLButtonElement>('.decrement',
-				on('click', (e: Event) => {
-					triggerChange(v => nearestStep(v - ((e as MouseEvent).shiftKey ? step * 10 : step)))
-				}),
-				setProperty('disabled',
-					() => (isNumber(min) ? el.value as number : 0) - step < min
-				)
-			)
-			el.first<HTMLButtonElement>('.increment',
-				on('click', (e: Event) => {
-					triggerChange(v => nearestStep(v + ((e as MouseEvent).shiftKey ? step * 10 : step)))
-				}),
-				setProperty('disabled',
-					() => (isNumber(max) ? el.value as number : 0) - step > max
+			fns.push(
+				first<HTMLButtonElement, InputFieldProps>('.decrement',
+					on('click', (e: Event) => {
+						triggerChange(v => nearestStep(v - ((e as MouseEvent).shiftKey ? step * 10 : step)))
+					}),
+					setProperty('disabled',
+						() => (isNumber(min) ? el.value as number : 0) - step < min
+					)
+				),
+				first<HTMLButtonElement, InputFieldProps>('.increment',
+					on('click', (e: Event) => {
+						triggerChange(v => nearestStep(v + ((e as MouseEvent).shiftKey ? step * 10 : step)))
+					}),
+					setProperty('disabled',
+						() => (isNumber(max) ? el.value as number : 0) - step > max
+					)
 				)
 			)
 		}
@@ -169,21 +178,25 @@ const InputField = component('input-field', {
 	} else {
 
 		// Setup clear button
-		el.first<HTMLElement>('.clear',
-			on('click', () => {
-				el.value = ''
-				el.length = 0
-				input?.focus()
-			}),
-			setProperty('hidden', 'empty')
+		fns.push(
+			first<HTMLElement, InputFieldProps>('.clear',
+				on('click', () => {
+					el.value = ''
+					el.length = 0
+					input?.focus()
+				}),
+				setProperty('hidden', 'empty')
+			)
 		)
 	}
 
 	// Setup error message
-	el.first('.error', setText('error'))
-	el.first('input',
-		setProperty('ariaInvalid'),
-		setAttribute('aria-errormessage')
+	fns.push(
+		first('.error', setText('error')),
+		first('input',
+			setProperty('ariaInvalid'),
+			setAttribute('aria-errormessage')
+		)
 	)
 
 	// Setup description
@@ -201,10 +214,13 @@ const InputField = component('input-field', {
 			: defaultDescription
 
 		// Effects
-		el.first('.description', setText('description'))
-		el.first('input', setAttribute('aria-describedby'))
+		fns.push(
+			first('.description', setText('description')),
+			first('input', setAttribute('aria-describedby'))
+		)
 	}
 
+	return fns
 })
 
 declare global {

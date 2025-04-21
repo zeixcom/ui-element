@@ -70,12 +70,14 @@ const MediaContext = component('media-context', {
 	'media-theme': matchTheme,
 	'media-viewport': matchViewport,
     'media-orientation': matchOrientation
-}, el => el.self(provide([
-	'media-motion' as Context<'media-motion', State<boolean>>,
-	'media-theme' as Context<'media-theme', State<string>>,
-	'media-viewport' as Context<'media-viewport', State<string>>,
-	'media-orientation' as Context<'media-orientation', State<string>>
-])))
+}, () => [
+	provide([
+		'media-motion' as Context<'media-motion', State<boolean>>,
+		'media-theme' as Context<'media-theme', State<string>>,
+		'media-viewport' as Context<'media-viewport', State<string>>,
+		'media-orientation' as Context<'media-orientation', State<string>>
+	])
+])
 
 declare global {
 	interface HTMLElementTagNameMap {

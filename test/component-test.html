@@ -157,7 +157,7 @@
 			<p>Content of tab panel 3</p>
 		</details>
 	</tab-list>
-	<template id="post-reply">
+	<template id="post-reply-template">
 		<div>
             <p></p>
 			<post-reply>
@@ -187,7 +187,7 @@
 		import { runTests } from '@web/test-runner-mocha'
 		import { assert } from '@esm-bundle/chai'
 		import {
-			RESET, component, first, all, on, pass, batch, effect, enqueue,
+			RESET, component, first, all, on, pass, state,
 			asBoolean, asInteger, asNumber, asString,
 			setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
 			removeElement, dangerouslySetInnerHTML, insertTemplate
@@ -330,7 +330,7 @@
 				setProperty('ariaPressed', (_, index) => String(el.active === index))
 			),
 			all('details',
-				setProperty('open', (_, index) => !!(el.active === index)),
+				setProperty('open', (_, index) => el.active === index),
 				setAttribute('aria-disabled', () => String(!el.accordion))
 			),
 			all('summary',
@@ -338,23 +338,29 @@
 			)
 		])
 
-		component('post-reply', {
-			message: '',
-			formIsHidden: true
-		}, el => [
-			first('button',
-				on('click', () => { el.formIsHidden = false })
-			),
-			first('form',
-				on('submit', e => {
-					e.preventDefault()
-					el.message = el.querySelector('textarea').value
-					el.formIsHidden = true
-				}),
-				setProperty('hidden', 'formIsHidden')
-			),
-			insertTemplate(el.querySelector('template'), () => !!el.message)
-		])
+		component('post-reply', {}, el => {
+			const message = state('')
+			const formIsHidden = state(true)
+			return [
+				first('button',
+					on('click', () => { formIsHidden.set(false) })
+				),
+				first('form',
+					on('submit', e => {
+						e.preventDefault()
+						message.set(el.querySelector('textarea').value)
+						formIsHidden.set(true)
+					}),
+					setProperty('hidden', formIsHidden)
+				),
+				insertTemplate(
+					document.getElementById('post-reply-template'),
+					message.map(v => !!v),
+					'beforeend',
+					message.get()
+				)
+			]
+		})
 
 		runTests(() => {
 

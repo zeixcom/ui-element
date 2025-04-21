@@ -1,4 +1,5 @@
-import { type SignalProducer, component, pass } from '../../../'
+import { type SignalProducer, component, first, pass } from '../../../'
+import SpinButton from '../spin-button/spin-button'
 import { InputButtonProps } from '../input-button/input-button'
 
 export type ProductCatalogProps = {
@@ -6,16 +7,16 @@ export type ProductCatalogProps = {
 }
 
 const calcTotal: SignalProducer<number, HTMLElement> = el =>
-	() => Array.from(el.querySelectorAll('spin-button'))
+	() => Array.from(el.querySelectorAll<typeof SpinButton>('spin-button'))
 		.reduce((sum, item) => sum + item.value, 0)
 
 const ProductCatalog = component('product-catalog', {
 	total: calcTotal
-}, el => {
-	el.first('input-button', pass<ProductCatalogProps, InputButtonProps>({
+}, el => [
+	first('input-button', pass<ProductCatalogProps, InputButtonProps>({
 		badge: () => el.total > 0 ? String(el.total) : ''
 	}))
-})
+])
 
 declare global {
 	interface HTMLElementTagNameMap {

@@ -33,9 +33,9 @@
 	</create-element>
 	<remove-element>
 		<ul>
-			<li data-value="1">Item 1</li>
-            <li data-value="2">Item 2</li>
-            <li data-value="3">Item 3</li>
+			<li data-key="1">Item 1</li>
+            <li data-key="2">Item 2</li>
+            <li data-key="3">Item 3</li>
 		</ul>
 	</remove-element>
 	<insert-template id="insert-light">
@@ -153,7 +153,7 @@
 		component('remove-element', {
 			items: [1, 2, 3]
 		}, el => [
-			all('li', removeElement((_, index) => !el.items.includes(index + 1)))
+			all('li', removeElement(li => !el.items.includes(parseInt(li.dataset.key))))
 		])
 
 		component('insert-template', {

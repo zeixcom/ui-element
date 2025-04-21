@@ -1,97 +1,82 @@
-import { type SignalProducer, component, on, pass, setAttribute, setProperty, setText } from '../../../'
+import { type ComponentProps, component, computed, first, insertTemplate, on, setAttribute, setProperty, setText, state } from '../../../'
+import InputButton from '../input-button/input-button'
 import InputCheckbox from '../input-checkbox/input-checkbox'
 import InputField from '../input-field/input-field'
 
-/* === Signal Producers === */
-
-const createTotal: SignalProducer<number, HTMLElement & { tasks: typeof InputCheckbox[] }> = el =>
-	() => el.tasks.length
-
-const createCompleted: SignalProducer<number, HTMLElement & { tasks: typeof InputCheckbox[] }> = el =>
-	() => el.tasks.filter(task => task.checked).length
-
-const createActive: SignalProducer<number, HTMLElement & { tasks: typeof InputCheckbox[] }> = el =>
-	() => el.tasks.length - el.tasks.filter(task => task.checked).length
-
-const createFilter: SignalProducer<string, HTMLElement> = el =>
-	() => (el.querySelector('input-radiogroup')?.value?? 'all')
-
 /* === Component === */
 
-const TodoApp = component('todo-app', {
-	tasks: [] as typeof InputCheckbox[],
-	total: createTotal,
-	completed: createCompleted,
-	active: createActive,
-	filter: createFilter,
-}, el => {
-
-	// Set tasks state from the DOM
-	const updateTasks = () => {
-		el.tasks = Array.from(el.querySelectorAll<typeof InputCheckbox>('input-checkbox'))
-	}
-	updateTasks()
-
-	// Coordinate new todo form
+const TodoApp = component('todo-app', {}, el => {
+	const tasks = state(Array.from(el.querySelectorAll<typeof InputCheckbox>('input-checkbox')))
+	const total = tasks.map(tasks => tasks.length)
+	const completed = tasks.map(tasks => tasks.filter(task => task.checked).length)
+	const active = computed({
+		signals: [total, completed],
+		ok: (t, c) => t - c
+	})
+	const addTask = state(false)
 	const input = el.querySelector<typeof InputField>('input-field')
-	if (input) {
-		el.first('form', on('submit', (e: Event) => {
-			e.preventDefault()
+	if (!input) throw new Error('No input field found')
+	const template = el.querySelector('template')
+	if (!template) throw new Error('No template found')
 
-			// Wait for microtask to ensure the input field value is updated
-			queueMicrotask(() => {
-				const value = input?.value.toString().trim()
-				if (value) {
-					const ol = el.querySelector('ol')
-					const fragment = el.querySelector('template')
-						?.content.cloneNode(true) as DocumentFragment
-					const span = fragment.querySelector('span')
-					if (ol && fragment && span) {
-						span.textContent = value
-						ol.appendChild(fragment)
-					}
-					updateTasks()
-					if (input) input.value = ''
+	return [
+		first('form',
+			on('submit', (e: Event) => {
+				e.preventDefault()
+				queueMicrotask(() => {
+					const value = input?.value.toString().trim()
+					if (value) addTask.set(true)
+				})
+			})
+		),
+		first<typeof InputButton, ComponentProps>('.submit',
+			setProperty('disabled', () => input.empty),
+			/* pass({
+				disabled: () => input.empty ?? true
+			}) */
+		),
+		first('ol',
+			setAttribute('filter',
+				() => (el.querySelector('input-radiogroup')?.value ?? 'all')
+			),
+			insertTemplate(template, addTask, 'beforeend', String(input.value)),
+			on('click', (e: Event) => {
+				const target = e.target as HTMLElement
+				if (target.localName === 'button') {
+					target.closest('li')?.remove()
+					tasks.set(Array.from(el.querySelectorAll<typeof InputCheckbox>('input-checkbox')))
 				}
 			})
-		}))
+		),
+		first('.count',
+			setText(active.map(a => String(a)))
+		),
+		first<HTMLElement, ComponentProps>('.singular',
+			setProperty('hidden', active.map(a => a > 1))
+		),
+		first<HTMLElement, ComponentProps>('.plural',
+			setProperty('hidden', active.map(a => a === 1))
+		),
+		first<HTMLElement, ComponentProps>('.remaining',
+			setProperty('hidden', active.map(a => !a))
+		),
+		first<HTMLElement, ComponentProps>('.all-done',
+			setProperty('hidden', active.map(a => !!a))
+		),
+		first<typeof InputButton, ComponentProps>('.clear-completed',
+			setProperty('disabled', completed.map(c => !c)),
+			on('click', () => {
+				tasks.get()
+					.filter(task => task.checked)
+					.forEach(task => task.parentElement?.remove())
+				tasks.set(Array.from(el.querySelectorAll<typeof InputCheckbox>('input-checkbox')))
+			}),
+			/* pass({
+				disabled: () => !el.completed
+			}) */
+		)
+	]
 
-		el.first('.submit', pass({
-			disabled: () => input?.empty ?? true
-		}))
-	}	
-
-	// Event handler and effect on ol element
-	el.first('ol',
-		setAttribute('filter', 'filter'),
-		on('click', (e: Event) => {
-			const el = e.target as HTMLElement
-			if (el.localName === 'button') {
-				el.closest('li')?.remove()
-				updateTasks()
-			}
-		})
-	)
-
-	// Effects on .todo-count elements
-	el.first('.count', setText('active'))
-	el.first<HTMLElement>('.singular', setProperty('hidden', () => (el.active ?? 0) > 1))
-	el.first<HTMLElement>('.plural', setProperty('hidden', () => el.active === 1))
-	el.first<HTMLElement>('.remaining', setProperty('hidden', () => !el.active))
-	el.first<HTMLElement>('.all-done', setProperty('hidden', () => !!el.active))
-
-	// Coordinate .clear-completed button
-	el.first('.clear-completed',
-		on('click', () => {
-			el.tasks
-				.filter(task => task.checked)
-				.forEach(task => task.parentElement?.remove())
-			updateTasks()
-		}),
-		pass({
-			disabled: () => !el.completed
-		})
-	)
 })
 
 declare global {

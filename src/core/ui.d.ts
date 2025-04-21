@@ -2,7 +2,7 @@ import { type Signal } from "@zeix/cause-effect";
 import type { Component, ComponentProps, FxFunction } from "../component";
 type Provider<T> = <E extends Element>(element: E, index: number) => T;
 type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
-    [K in string & keyof Q]?: Signal<Q[K]> | Provider<Q[K]> | (() => Q[K]) | (string & keyof P);
+    [K in keyof Q]?: Signal<Q[K]> | Provider<Q[K]> | (() => Q[K]) | keyof P;
 };
 declare const run: <P extends ComponentProps, E extends Element>(fns: FxFunction<P, E>[], host: Component<P>, target?: E, index?: number) => (() => void)[];
 /**

@@ -7,7 +7,7 @@ import type { Provider } from '../core/ui'
 
 /* === Types === */
 
-type SignalLike<T, P extends ComponentProps> = string & keyof P
+type SignalLike<T, P extends ComponentProps> = keyof P
 	| Signal<NonNullable<T>>
 	| Provider<T>
 
@@ -18,10 +18,10 @@ type ElementUpdater<E extends Element, T> = {
     delete?: (element: E) => string
 }
 
-type NodeInserter<P extends ComponentProps> = {
+type NodeInserter = {
 	type: string,
 	where: InsertPosition,
-	create: (host: Component<P>) => Node | undefined
+	create: () => Node | undefined
 }
 
 /* === Internal === */
@@ -35,12 +35,12 @@ const ops: Record<string, string> = {
 	t: 'text content',
 }
 
-const resolveSignalLike = <T, P extends ComponentProps, E extends Element>(
+const resolveSignalLike = <T extends {}, P extends ComponentProps, E extends Element>(
 	s: SignalLike<T, P>,
 	host: Component<P>,
 	target: E,
 	index: number
-): T => isString(s) ? host.getSignal(s).get() as T
+): T => isString(s) ? host.getSignal(s).get() as unknown as T
 	: isSignal(s) ? s.get()
 	: isFunction<T>(s) ? s(target, index)
 	: RESET
@@ -138,10 +138,15 @@ const updateElement = <E extends Element, T extends {}, P extends ComponentProps
 
 /**
  * Effect to insert a node relative to an element according to a given SignalLike
+ * 
+ * @since 0.9.0
+ * @param {SignalLike<string>} s - state bound to the node insertion
+ * @param {NodeInserter} inserter - inserter object containing type, where, and create methods
+ * @throws {TypeError} if the insertPosition is invalid for the target element
  */
 const insertNode = <E extends Element, P extends ComponentProps>(
 	s: SignalLike<boolean, P>,
-    { type, where, create }: NodeInserter<P>
+    { type, where, create }: NodeInserter
 ) => (host: Component<P>, target: E, index: number = 0): void | (() => void) => {
 	const methods: Record<InsertPosition, keyof Element> = {
 		beforebegin: 'before',
@@ -149,10 +154,8 @@ const insertNode = <E extends Element, P extends ComponentProps>(
         beforeend: 'append',
         afterend: 'after'
 	}
-	if (!isFunction(target[methods[where]])) {
-		log(`Invalid insertPosition "${where}" for ${elementName(host)}:`, LOG_ERROR)
-        return
-    }
+	if (!isFunction(target[methods[where]]))
+		throw new TypeError(`Invalid insertPosition "${where}" for ${elementName(host)}`)
 	const err = (error: unknown) =>
 		log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR)
 
@@ -166,14 +169,12 @@ const insertNode = <E extends Element, P extends ComponentProps>(
 		}
 		if (!really) return
         enqueue(() => {
-			const node = create(host)
+			const node = create()
 			if (!node) return
 			(target[methods[where]] as (...nodes: Node[]) => void)(node)
 		}, [target, 'i']).then(() => {
-			if (isString(s) && Object.getOwnPropertyDescriptor(host, s)?.set)
-				(host as any)[s] = false
-			if (isState<boolean>(s))
-				s.set(false)
+			const signal = isSignal(s) ? s : isString(s) ? host.getSignal(s) : undefined
+			if (isState<boolean>(signal)) signal.set(false)
 			if (DEV_MODE && host.debug)
 				log(target, `Inserted ${type} into ${elementName(host)}`)
 		}).catch((error) => {
@@ -211,7 +212,7 @@ const setText = <E extends Element, P extends ComponentProps>(
  */
 const setProperty = <E extends Element, K extends keyof E, P extends ComponentProps>(
 	key: K,
-	s: SignalLike<E[K], P> = key as SignalLike<E[K], P>
+	s: SignalLike<NonNullable<E[K]>, P> = key as SignalLike<NonNullable<E[K]>, P>
 ) => updateElement(s, {
 	op: 'p',
 	read: (el: E) => key in el ? el[key] : UNSET,
@@ -346,25 +347,28 @@ const dangerouslySetInnerHTML = <E extends Element, P extends ComponentProps>(
  * @param {HTMLTemplateElement} template - template element to clone or import from
  * @param {SignalLike<boolean>} s - insert if SignalLike evalutes to true, otherwise ignore
  * @param {InsertPosition} where - position to insert the template relative to the target element ('beforebegin', 'afterbegin', 'beforeend', 'afterend')
+ * @param {string} content - content to be inserted into the template's slot
+ * @throws {TypeError} if the template is not an HTMLTemplateElement
  */
 const insertTemplate = <P extends ComponentProps>(
 	template: HTMLTemplateElement,
 	s: SignalLike<boolean, P>,
-	where: InsertPosition = 'beforeend'
-) => insertNode(s, {
-	type: 'template content',
-	where,
-	create: (host: Component<P>): Node | undefined => {
-		if (!(template instanceof HTMLTemplateElement)) {
-			log(`Invalid template to insert into ${elementName(host)}:`, LOG_ERROR)
-			return
+	where: InsertPosition = 'beforeend',
+	content?: string
+) => {
+	if (!(template instanceof HTMLTemplateElement))
+		throw new TypeError('Expected template to be an HTMLTemplateElement')
+	return insertNode(s, {
+		type: 'template content',
+		where,
+		create: (): Node | undefined => {
+			const clone = document.importNode(template.content, true)
+			const slot = clone.querySelector('slot')
+			if (slot) slot.replaceWith(document.createTextNode(content ? content : slot.textContent ?? ''))
+			return clone
 		}
-		const clone = host.shadowRoot
-			? document.importNode(template.content, true)
-			: template.content.cloneNode(true)
-		return clone
-	}
-})
+	})
+}
 
 /**
  * Create an element with a given tag name and optionally set its attributes
@@ -372,16 +376,16 @@ const insertTemplate = <P extends ComponentProps>(
  * @since 0.11.0
  * @param {string} tag - tag name of the element to create
  * @param {SignalLike<boolean>} s - insert if SignalLike evalutes to true, otherwise ignore
- * @param {InsertPosition} [where] - position to insert the template relative to the target element ('beforebegin', 'afterbegin', 'beforeend', 'afterend')
- * @param {Record<string, string>} [attributes] - attributes to set on the element
- * @param {string} [text] - text content to set on the element
+ * @param {InsertPosition} where - position to insert the template relative to the target element ('beforebegin', 'afterbegin', 'beforeend', 'afterend')
+ * @param {Record<string, string>} attributes - attributes to set on the element
+ * @param {string} content - text content to be inserted into the element
  */
 const createElement = <P extends ComponentProps>(
     tag: string,
     s: SignalLike<boolean, P>,
 	where: InsertPosition = 'beforeend',
 	attributes: Record<string, string> = {},
-	text?: string,
+	content?: string
 ) => insertNode(s, {
 	type: 'new element',
 	where,
@@ -389,7 +393,7 @@ const createElement = <P extends ComponentProps>(
         const child = document.createElement(tag)
         for (const [key, value] of Object.entries(attributes))
 			safeSetAttribute(child, key, value)
-		if (text) child.textContent = text
+		if (content) child.textContent = content
         return child
     }
 })
@@ -405,6 +409,7 @@ const removeElement = <E extends Element, P extends ComponentProps>(
 ) => (host: Component<P>, target: E, index: number = 0): () => void => {
 	const err = (error: unknown) =>
 		log(error, `Failed to delete ${elementName(target)} from ${elementName(host)}:`, LOG_ERROR)
+
 	return effect(() => {
 		let really = false
 		try {
@@ -418,7 +423,10 @@ const removeElement = <E extends Element, P extends ComponentProps>(
 			target.remove()
 			return true
 		}, [target, 'r']).then(() => {
-			if (DEV_MODE && host.debug) log(target, `Deleted ${elementName(target)} into ${elementName(host)}`)
+			const signal = isSignal(s) ? s : isString(s) ? host.getSignal(s) : undefined
+			if (isState<boolean>(signal)) signal.set(false)
+			if (DEV_MODE && host.debug)
+				log(target, `Deleted ${elementName(target)} into ${elementName(host)}`)
 		}).catch((error) => {
 			err(error)
 		})

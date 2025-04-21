@@ -1,50 +1,50 @@
-import { component, on, pass, setProperty } from '../../../'
-import type { InputButtonProps } from '../input-button/input-button'
+import { type ComponentProps, all, component, first, on, setProperty, state } from '../../../'
+import InputButton from '../input-button/input-button'
+import RatingStars from '../rating-stars/rating-stars'
 
-export type RatingFeedbackProps = {
-	rating: number
-	empty: boolean
-	submitted: boolean
-}
-
-const RatingFeedback = component('rating-feedback', {
-	rating: 0,
-	empty: true,
-	submitted: false,
-}, el => {
+const RatingFeedback = component('rating-feedback', {}, el => {
+	const rating = state(0)
+	const empty = state(true)
+	const submitted = state(false)
+	const stars = el.querySelector<typeof RatingStars>('rating-stars')
+	if (!stars)
+		throw new Error('No rating-stars component found')
+	return [
 
 	// Event listeners for rating changes and form submission
-	el.self(
-		on('change-rating', (e: Event) => {
-			el.rating = (e as CustomEvent<number>).detail
-		}),
-		on('submit', (e: Event) => {
-			e.preventDefault()
-			el.submitted = true
-			console.log('Feedback submitted')
-		})
-	)
+	on('change-rating', (e: Event) => {
+		rating.set((e as CustomEvent<number>).detail)
+	}),
+	on('submit', (e: Event) => {
+		e.preventDefault()
+		submitted.set(true)
+		console.log('Feedback submitted')
+	}),
 
 	// Event listener for hide button
-	el.first('.hide', on('click', () => {
+	first('.hide', on('click', () => {
 		const feedback = el.querySelector<HTMLElement>('.feedback')
 		if (feedback) feedback.hidden = true
-	}))
+	})),
 
 	// Event listener for texteare
-	el.first('textarea', on('input', (e: Event) => {
-		el.empty = (e.target as HTMLTextAreaElement)?.value.trim() === ''
-	}))
+	first('textarea', on('input', (e: Event) => {
+		empty.set((e.target as HTMLTextAreaElement)?.value.trim() === '')
+	})),
 
 	// Effects on rating changes
-	const stars = el.querySelector('rating-stars')
-	el.first<HTMLElement>('.feedback', setProperty('hidden', () => el.submitted || !stars?.value))
-	el.all<HTMLElement>('.feedback p', setProperty('hidden', (_, index) => stars?.value !== index + 1))
+	first<HTMLElement, ComponentProps>('.feedback',
+		setProperty('hidden', () => submitted.get() || !rating.get())
+	),
+	all<HTMLElement, ComponentProps>('.feedback p',
+		setProperty('hidden', (_, index) => rating.get() !== index + 1)
+	),
 
 	// Effect on empty state
-	el.first('input-button', pass<RatingFeedbackProps, InputButtonProps>({
-		disabled: 'empty'
-	}))
+	first<typeof InputButton, ComponentProps>('input-button',
+		setProperty('disabled', empty)
+	)
+]
 })
 
 declare global {

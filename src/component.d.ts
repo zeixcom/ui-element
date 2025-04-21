@@ -5,13 +5,14 @@ type ComponentProps = {
     [K in string as ValidPropertyKey<K>]: {};
 };
 type Component<P extends ComponentProps> = HTMLElement & P & {
+    adoptedCallback?(): void;
+    attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
+    connectedCallback(): void;
+    disconnectedCallback(): void;
     debug?: boolean;
-    attributeChangedCallback(name: string, old: string | null, value: string | null): void;
-    getSignal(prop: string & keyof P): Signal<P[string & keyof P]>;
-    setSignal(prop: string & keyof P, signal: Signal<P[string & keyof P]>): void;
-    self(...fns: FxFunction<P, Component<P>>[]): void;
-    first<E extends Element>(selector: string, ...fns: FxFunction<P, E>[]): void;
-    all<E extends Element>(selector: string, ...fns: FxFunction<P, E>[]): void;
+    shadowRoot: ShadowRoot | null;
+    getSignal(prop: keyof P): Signal<P[keyof P]>;
+    setSignal(prop: keyof P, signal: Signal<P[keyof P]>): void;
 };
 type AttributeParser<T extends {}, C extends HTMLElement> = (host: C, value: string | null, old?: string | null) => T;
 type SignalProducer<T extends {}, C extends HTMLElement> = (host: C) => MaybeSignal<T>;
@@ -27,5 +28,5 @@ declare const RESET: any;
  * @param {FxFunction<S>[]} setup - setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
  * @returns {typeof HTMLElement & P} - constructor function for the custom element
  */
-declare const component: <P extends ComponentProps>(name: string, init: { [K in string & keyof P]: SignalInitializer<P[K], Component<P>>; } | undefined, setup: (host: Component<P>) => FxFunction<P, Component<P>>[]) => Component<P>;
+declare const component: <P extends ComponentProps>(name: string, init: { [K in keyof P]: SignalInitializer<P[K], Component<P>>; } | undefined, setup: (host: Component<P>) => FxFunction<P, Component<P>>[]) => Component<P>;
 export { type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords, type SignalInitializer, type AttributeParser, type SignalProducer, type FxFunction, RESET, component };

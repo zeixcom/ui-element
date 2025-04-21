@@ -1,4 +1,4 @@
-import { asBoolean, component, on, setAttribute, setProperty, toggleAttribute, toggleClass } from '../../../'
+import { all, asBoolean, component, on, setAttribute, setProperty, toggleAttribute, toggleClass } from '../../../'
 
 export type TabListProps = {
 	accordion: boolean
@@ -11,18 +11,24 @@ const TabList = component('tab-list', {
 }, el => {
 	const panels = Array.from(el.querySelectorAll('details'))
 	el.active = panels.findIndex(panel => panel.hasAttribute('open'))
-	el.self(toggleAttribute('accordion'))
-	el.all('menu button',
-		on('click', (_, index) => () => {
-			el.active = index
-		}),
-		setProperty('ariaPressed', (_, index) => String(el.active === index))
-	)
-	el.all<HTMLDetailsElement>('details',
-		setProperty('open', (_, index) => !!(el.active === index)),
-		setAttribute('aria-disabled', () => String(!el.accordion))
-	)
-	el.all('summary', toggleClass('visually-hidden', () => !el.accordion))
+	return [
+		toggleAttribute('accordion'),
+		all('menu button',
+			on('click', (_, index) => () => {
+				el.active = index
+			}),
+			setProperty('ariaPressed',
+				(_, index) => String(el.active === index)
+			)
+		),
+		all<HTMLDetailsElement, TabListProps>('details',
+			setProperty('open', (_, index) => el.active === index),
+			setAttribute('aria-disabled', () => String(el.accordion)),
+		),
+		all('summary',
+			toggleClass('visually-hidden', () => !el.accordion)
+		)
+	]
 })
 
 declare global {
