@@ -96,7 +96,7 @@ declare const dangerouslySetInnerHTML: <E extends Element, P extends ComponentPr
  * @param {string} content - content to be inserted into the template's slot
  * @throws {TypeError} if the template is not an HTMLTemplateElement
  */
-declare const insertTemplate: <P extends ComponentProps>(template: HTMLTemplateElement, s: SignalLike<boolean, P>, where?: InsertPosition, content?: string) => (host: Component<P>, target: Element, index?: number) => void | (() => void);
+declare const insertTemplate: <P extends ComponentProps>(template: HTMLTemplateElement, s: SignalLike<boolean, P>, where?: InsertPosition, content?: string | (() => string)) => (host: Component<P>, target: Element, index?: number) => void | (() => void);
 /**
  * Create an element with a given tag name and optionally set its attributes
  *
@@ -107,7 +107,7 @@ declare const insertTemplate: <P extends ComponentProps>(template: HTMLTemplateE
  * @param {Record<string, string>} attributes - attributes to set on the element
  * @param {string} content - text content to be inserted into the element
  */
-declare const createElement: <P extends ComponentProps>(tag: string, s: SignalLike<boolean, P>, where?: InsertPosition, attributes?: Record<string, string>, content?: string) => (host: Component<P>, target: Element, index?: number) => void | (() => void);
+declare const createElement: <P extends ComponentProps>(tag: string, s: SignalLike<boolean, P>, where?: InsertPosition, attributes?: Record<string, string>, content?: string | (() => string)) => (host: Component<P>, target: Element, index?: number) => void | (() => void);
 /**
  * Remove an element from the DOM
  *

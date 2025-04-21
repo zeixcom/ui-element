@@ -746,8 +746,9 @@ var insertTemplate = (template, s, where = "beforeend", content) => {
     create: () => {
       const clone = document.importNode(template.content, true);
       const slot = clone.querySelector("slot");
+      const text = isFunction2(content) ? content() : content;
       if (slot)
-        slot.replaceWith(document.createTextNode(content ? content : slot.textContent ?? ""));
+        slot.replaceWith(document.createTextNode(text ? text : slot.textContent ?? ""));
       return clone;
     }
   });
@@ -759,8 +760,9 @@ var createElement = (tag, s, where = "beforeend", attributes = {}, content) => i
     const child = document.createElement(tag);
     for (const [key, value] of Object.entries(attributes))
       safeSetAttribute(child, key, value);
-    if (content)
-      child.textContent = content;
+    const text = isFunction2(content) ? content() : content;
+    if (text)
+      child.textContent = text;
     return child;
   }
 });

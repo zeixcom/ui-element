@@ -2,74 +2,56 @@
 	<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 		
 		<url>
-			<loc>claude-introduction.html</loc>
-			<lastmod>2025-04-21T08:59:56.334Z</lastmod>
-			<priority>0.8</priority>
-		</url>
-
-		<url>
-			<loc>claude-getting-started.html</loc>
-			<lastmod>2025-04-21T08:59:56.334Z</lastmod>
-			<priority>0.8</priority>
-		</url>
-
-		<url>
-			<loc>claude-core-concepts.html</loc>
-			<lastmod>2025-04-21T08:59:56.334Z</lastmod>
-			<priority>0.8</priority>
-		</url>
-
-		<url>
 			<loc>index.html</loc>
-			<lastmod>2025-04-21T08:59:56.334Z</lastmod>
+			<lastmod>2025-04-21T23:20:56.830Z</lastmod>
 			<priority>1.0</priority>
 		</url>
 
 		<url>
 			<loc>getting-started.html</loc>
-			<lastmod>2025-04-21T08:59:56.334Z</lastmod>
+			<lastmod>2025-04-21T23:20:56.830Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 
 		<url>
 			<loc>building-components.html</loc>
-			<lastmod>2025-04-21T08:59:56.334Z</lastmod>
+			<lastmod>2025-04-21T23:20:56.830Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 
 		<url>
 			<loc>styling-components.html</loc>
-			<lastmod>2025-04-21T08:59:56.334Z</lastmod>
+			<lastmod>2025-04-21T23:20:56.830Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 
 		<url>
 			<loc>data-flow.html</loc>
-			<lastmod>2025-04-21T08:59:56.334Z</lastmod>
+			<lastmod>2025-04-21T23:20:56.830Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 
 		<url>
 			<loc>patterns-techniques.html</loc>
-			<lastmod>2025-04-21T08:59:56.334Z</lastmod>
+			<lastmod>2025-04-21T23:20:56.830Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 
 		<url>
 			<loc>examples-recipes.html</loc>
-			<lastmod>2025-04-21T08:59:56.334Z</lastmod>
+			<lastmod>2025-04-21T23:20:56.830Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 
 		<url>
 			<loc>api-reference.html</loc>
-			<lastmod>2025-04-21T08:59:56.334Z</lastmod>
+			<lastmod>2025-04-21T23:20:56.830Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 
 		<url>
 			<loc>about-community.html</loc>
-			<lastmod>2025-04-21T08:59:56.334Z</lastmod>
+			<lastmod>2025-04-21T23:20:56.830Z</lastmod>
 			<priority>0.8</priority>
 		</url>
 	</urlset>

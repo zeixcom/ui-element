@@ -354,7 +354,7 @@ const insertTemplate = <P extends ComponentProps>(
 	template: HTMLTemplateElement,
 	s: SignalLike<boolean, P>,
 	where: InsertPosition = 'beforeend',
-	content?: string
+	content?: string | (() => string)
 ) => {
 	if (!(template instanceof HTMLTemplateElement))
 		throw new TypeError('Expected template to be an HTMLTemplateElement')
@@ -364,7 +364,8 @@ const insertTemplate = <P extends ComponentProps>(
 		create: (): Node | undefined => {
 			const clone = document.importNode(template.content, true)
 			const slot = clone.querySelector('slot')
-			if (slot) slot.replaceWith(document.createTextNode(content ? content : slot.textContent ?? ''))
+			const text = isFunction(content) ? content() : content
+			if (slot) slot.replaceWith(document.createTextNode(text ? text : slot.textContent ?? ''))
 			return clone
 		}
 	})
@@ -385,7 +386,7 @@ const createElement = <P extends ComponentProps>(
     s: SignalLike<boolean, P>,
 	where: InsertPosition = 'beforeend',
 	attributes: Record<string, string> = {},
-	content?: string
+	content?: string | (() => string)
 ) => insertNode(s, {
 	type: 'new element',
 	where,
@@ -393,7 +394,8 @@ const createElement = <P extends ComponentProps>(
         const child = document.createElement(tag)
         for (const [key, value] of Object.entries(attributes))
 			safeSetAttribute(child, key, value)
-		if (content) child.textContent = content
+		const text = isFunction(content) ? content() : content
+		if (text) child.textContent = text
         return child
     }
 })

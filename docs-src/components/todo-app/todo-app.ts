@@ -1,4 +1,4 @@
-import { type ComponentProps, component, computed, first, insertTemplate, on, setAttribute, setProperty, setText, state } from '../../../'
+import { type ComponentProps, component, computed, effect, first, insertTemplate, on, setAttribute, setProperty, setText, state } from '../../../'
 import InputButton from '../input-button/input-button'
 import InputCheckbox from '../input-checkbox/input-checkbox'
 import InputField from '../input-field/input-field'
@@ -7,6 +7,9 @@ import InputField from '../input-field/input-field'
 
 const TodoApp = component('todo-app', {}, el => {
 	const tasks = state(Array.from(el.querySelectorAll<typeof InputCheckbox>('input-checkbox')))
+	const refreshTasks = () => {
+		tasks.set(Array.from(el.querySelectorAll<typeof InputCheckbox>('input-checkbox')))
+	}
 	const total = tasks.map(tasks => tasks.length)
 	const completed = tasks.map(tasks => tasks.filter(task => task.checked).length)
 	const active = computed({
@@ -30,24 +33,27 @@ const TodoApp = component('todo-app', {}, el => {
 			})
 		),
 		first<typeof InputButton, ComponentProps>('.submit',
-			setProperty('disabled', () => input.empty),
-			/* pass({
-				disabled: () => input.empty ?? true
-			}) */
+			setProperty('disabled', () => !input.length),
 		),
 		first('ol',
 			setAttribute('filter',
 				() => (el.querySelector('input-radiogroup')?.value ?? 'all')
 			),
-			insertTemplate(template, addTask, 'beforeend', String(input.value)),
+			insertTemplate(template, addTask, 'beforeend', () => String(input.value)),
 			on('click', (e: Event) => {
 				const target = e.target as HTMLElement
 				if (target.localName === 'button') {
 					target.closest('li')?.remove()
-					tasks.set(Array.from(el.querySelectorAll<typeof InputCheckbox>('input-checkbox')))
+					refreshTasks()
 				}
 			})
 		),
+		effect(() => {
+			if (!addTask.get()) {
+				input.value = ''
+				refreshTasks()
+			}
+		}),
 		first('.count',
 			setText(active.map(a => String(a)))
 		),
@@ -69,11 +75,8 @@ const TodoApp = component('todo-app', {}, el => {
 				tasks.get()
 					.filter(task => task.checked)
 					.forEach(task => task.parentElement?.remove())
-				tasks.set(Array.from(el.querySelectorAll<typeof InputCheckbox>('input-checkbox')))
-			}),
-			/* pass({
-				disabled: () => !el.completed
-			}) */
+				refreshTasks()
+			})
 		)
 	]
 

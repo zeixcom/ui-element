@@ -27,7 +27,7 @@ const RatingFeedback = component('rating-feedback', {}, el => {
 		if (feedback) feedback.hidden = true
 	})),
 
-	// Event listener for texteare
+	// Event listener for textarea
 	first('textarea', on('input', (e: Event) => {
 		empty.set((e.target as HTMLTextAreaElement)?.value.trim() === '')
 	})),

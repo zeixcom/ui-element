@@ -19,16 +19,16 @@ description: "Overview and key benefits of UIElement"
 
 It **works with your existing server-rendered HTML**, enhancing it with stateful, reusable components that hydrate automatically – even when inserted dynamically.
 
-* ✅ **Works with any backend** – No need for a JavaScript-first stack like Next.js.
-* ✅ **No build tools required** – Just drop in components and they work.
-* ✅ **Minimal JavaScript footprint** – Less code over the wire, less complexity.
-* ✅ **Future-proof** – Web Components don’t break with framework updates.
+* **Works with any backend** – No need for a JavaScript-first stack like Next.js.
+* **No build tools required** – Just drop in components and they work.
+* **Minimal JavaScript footprint** – Less code over the wire, less complexity.
+* **Future-proof** – Web Components don’t break with framework updates.
 
 </section>
 
 <section>
 
-## Why Use UIElement?
+## Why UIElement?
 
 If you’re looking for a simple, **framework-free way to add interactivity** to your web pages, UIElement is the perfect fit.
 

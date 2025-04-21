@@ -158,7 +158,7 @@ component('tab-list', {
 			on('toggle', (_, index) => () => {
 				el.active = el.active === index ? -1 : index
 			}),
-			setProperty('open', (_, index) => !!(el.active === index)),
+			setProperty('open', (_, index) => el.active === index),
 			setAttribute('aria-disabled', () => String(!el.accordion))
 		),
 
