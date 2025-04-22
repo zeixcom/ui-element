@@ -17,7 +17,9 @@ type ValidPropertyKey<T> = T extends keyof HTMLElement | ReservedWords ? never :
 
 type ComponentProps = { [K in string as ValidPropertyKey<K>]: {} }
 
-type Component<P extends ComponentProps> = HTMLElement & P & {
+type ComponentMethods = { [K in string as ValidPropertyKey<K>]: {} }
+
+type Component<P extends ComponentProps, M extends ComponentMethods> = HTMLElement & P & M & {
 
     // Common Web Component lifecycle properties
     adoptedCallback?(): void
@@ -48,11 +50,13 @@ type SignalInitializer<T extends {}, C extends HTMLElement> = T
 	| AttributeParser<T, C>
 	| SignalProducer<T, C>
 
-type FxFunction<P extends ComponentProps, E extends Element> = (
-	host: Component<P>,
-	target: E,
-	index?: number
-) => void | (() => void) | (() => void)[]
+type Cleanup = () => void
+
+type FxFunction<P extends ComponentProps, M extends ComponentMethods, E extends Element> = (
+	host: Component<P, M>,
+	element: E,
+	index: number
+) => Cleanup | void
 
 /* === Constants === */
 
@@ -87,15 +91,16 @@ const validatePropertyName = (prop: string): boolean =>
  * @param {FxFunction<S>[]} setup - setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
  * @returns {typeof HTMLElement & P} - constructor function for the custom element
  */
-const component = <P extends ComponentProps>(
+const component = <P extends ComponentProps, M extends ComponentMethods = {}>(
 	name: string,
 	init: {
-		[K in keyof P]: SignalInitializer<P[K], Component<P>>
+		[K in keyof P]: SignalInitializer<P[K], Component<P, M>>
 	} = {} as {
-		[K in keyof P]: SignalInitializer<P[K], Component<P>>
+		[K in keyof P]: SignalInitializer<P[K], Component<P, M>>
 	},
-	setup: (host: Component<P>) => FxFunction<P, Component<P>>[],
-): Component<P> => {
+	setup: (host: Component<P, M>) => FxFunction<P, M, Component<P, M>>[],
+	methods?: M
+): Component<P, M> => {
 	class CustomElement extends HTMLElement {
 		debug?: boolean
 		#signals: {
@@ -103,7 +108,7 @@ const component = <P extends ComponentProps>(
 		} = {} as {
 			[K in keyof P]: Signal<P[K]>
 		}
-		#cleanup: (() => void)[] = []
+		#cleanup: Cleanup | undefined
 	  
 		static observedAttributes = Object.entries(init)
 			?.filter(([, ini]) => isParser(ini))
@@ -116,10 +121,10 @@ const component = <P extends ComponentProps>(
 			super()
 			for (const [prop, ini] of Object.entries(init)) {
 				if (ini == null) continue
-				const result = isParser<P[keyof P], Component<P>>(ini)
-					? ini(this as unknown as Component<P>, null)
-					: isSignalProducer<P[keyof P], Component<P>>(ini)
-					? ini(this as unknown as Component<P>)
+				const result = isParser<P[keyof P], Component<P, M>>(ini)
+					? ini(this as unknown as Component<P, M>, null)
+					: isSignalProducer<P[keyof P], Component<P, M>>(ini)
+					? ini(this as unknown as Component<P, M>)
 					: ini
 				this.setSignal(prop, toSignal(result ?? RESET))
 			}
@@ -133,18 +138,17 @@ const component = <P extends ComponentProps>(
 				this.debug = this.hasAttribute('debug')
 				if (this.debug) log(this, 'Connected')
 			}
-			const fns = setup(this as unknown as Component<P>)
+			const fns = setup(this as unknown as Component<P, M>)
 			if (!Array.isArray(fns))
 				throw new TypeError(`Expected array of functions as return value of setup() in ${elementName(this)}`)
-			this.#cleanup = run(fns, this as unknown as Component<P>)
+			this.#cleanup = run(fns, this as unknown as Component<P, M>)
 		}
 		
 		/**
 		 * Native callback function when the custom element is disconnected from the document
 		 */
 		disconnectedCallback() {
-			for (const off of this.#cleanup) off()
-			this.#cleanup.length = 0
+			if (isFunction(this.#cleanup)) this.#cleanup()
 			if (DEV_MODE && this.debug) log(this, 'Disconnected')
 		}
 		
@@ -157,9 +161,9 @@ const component = <P extends ComponentProps>(
 		 */
 		attributeChangedCallback(attr: string, old: string | null, value: string | null) {
 			if (value === old || isComputed(this.#signals[attr])) return // unchanged or controlled by computed
-			const parse = init[attr] as AttributeParser<P[keyof P], Component<P>>
+			const parse = init[attr] as AttributeParser<P[keyof P], Component<P, M>>
 			if (!isParser(parse)) return
-			const parsed = parse(this as unknown as Component<P>, value, old)
+			const parsed = parse(this as unknown as Component<P, M>, value, old)
 			if (DEV_MODE && this.debug)
 				log(value, `Attribute "${attr}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`);
 			(this as unknown as P)[attr as keyof P] = parsed
@@ -208,13 +212,15 @@ const component = <P extends ComponentProps>(
 				log(signal, `Set ${typeString(signal)} "${String(key)} in ${elementName(this)}`)
 		}
 	}
+	if (methods) Object.assign(CustomElement.prototype, methods)
 	customElements.define(name, CustomElement)
-	return CustomElement as unknown as Component<P>
+	return CustomElement as unknown as Component<P, M>
 }
 
 export {
-	type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords,
+	type Component, type ComponentProps, type ComponentMethods,
+	type ValidPropertyKey, type ReservedWords,
 	type SignalInitializer, type AttributeParser, type SignalProducer,
-	type FxFunction,
+	type Cleanup, type FxFunction,
 	RESET, component
 }

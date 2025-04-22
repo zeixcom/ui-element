@@ -21,7 +21,7 @@ const TabList = component('tab-list', {
 				(_, index) => String(el.active === index)
 			)
 		),
-		all<HTMLDetailsElement, TabListProps>('details',
+		all('details',
 			setProperty('open', (_, index) => el.active === index),
 			setAttribute('aria-disabled', () => String(el.accordion)),
 		),

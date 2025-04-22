@@ -1,24 +1,24 @@
 import { type Signal } from "@zeix/cause-effect";
-import type { Component, ComponentProps, FxFunction } from "../component";
+import type { Cleanup, Component, ComponentProps, FxFunction } from "../component";
 type Provider<T> = <E extends Element>(element: E, index: number) => T;
 type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
     [K in keyof Q]?: Signal<Q[K]> | Provider<Q[K]> | (() => Q[K]) | keyof P;
 };
-declare const run: <P extends ComponentProps, E extends Element>(fns: FxFunction<P, E>[], host: Component<P>, target?: E, index?: number) => (() => void)[];
+declare const run: <P extends ComponentProps, E extends Element>(fns: FxFunction<P, E>[], host: Component<P>, selector?: string, all?: boolean) => Cleanup;
 /**
  * Apply effect functions to a first matching sub-element within the custom element
  *
  * @since 0.12.0
  * @param {string} selector - selector to match sub-element
  */
-declare const first: <E extends Element, P extends ComponentProps>(selector: string, ...fns: FxFunction<P, E>[]) => (host: Component<P>) => (() => void)[];
+declare const first: <E extends Element, P extends ComponentProps>(selector: string, ...fns: FxFunction<P, E>[]) => (host: Component<P>) => Cleanup;
 /**
  * Apply effect functions to all matching sub-elements within the custom element
  *
  * @since 0.12.0
  * @param {string} selector - selector to match sub-elements
  */
-declare const all: <E extends Element, P extends ComponentProps>(selector: string, ...fns: FxFunction<P, E>[]) => (host: Component<P>) => (() => void)[];
+declare const all: <E extends Element, P extends ComponentProps>(selector: string, ...fns: FxFunction<P, E>[]) => (host: Component<P>) => Cleanup;
 /**
  * Attach an event listener to an element
  *
@@ -27,7 +27,7 @@ declare const all: <E extends Element, P extends ComponentProps>(selector: strin
  * @param {EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>} handler - event listener or provider function
  * @throws {TypeError} - if the provided handler is not an event listener or a provider function
  */
-declare const on: (type: string, handler: EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>) => <P extends ComponentProps>(host: Component<P>, target?: Element, index?: number) => () => void;
+declare const on: (type: string, handler: EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>) => <P extends ComponentProps>(host: Component<P>, target?: Element, index?: number) => Cleanup;
 /**
  * Emit a custom event with the given detail
  *

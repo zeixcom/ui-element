@@ -10,7 +10,7 @@ const InputCheckbox = component('input-checkbox', {
 	label: asString(RESET)
 }, el => [
 	toggleAttribute('checked'),
-	first<HTMLInputElement, InputCheckboxProps>('input',
+	first('input',
 		setProperty('checked'),
 		on('change', (e: Event) => {
 			el.checked = (e.target as HTMLInputElement)?.checked

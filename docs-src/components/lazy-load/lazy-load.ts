@@ -55,7 +55,7 @@ const LazyLoad = component('lazy-load', {
 	content: fetchText
 }, el => [
 	dangerouslySetInnerHTML('content'),
-	first<HTMLElement, LazyLoadProps>('.error',
+	first('.error',
 		setText('error'),
 		setProperty('hidden', () => !el.error)
 	)

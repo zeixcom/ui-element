@@ -1,6 +1,6 @@
 import { toSignal, type MaybeSignal, type Signal } from "@zeix/cause-effect"
 
-import type { Component, ComponentProps, FxFunction } from "../component"
+import type { Cleanup, Component, ComponentMethods, ComponentProps, FxFunction } from "../component"
 import { elementName } from "./log"
 import { isDefinedObject, isFunction, isString } from "./util"
 
@@ -23,23 +23,34 @@ const isProvider = <T>(value: unknown): value is Provider<T> =>
 const isEventListener = (value: unknown): value is EventListenerOrEventListenerObject =>
 	isFunction(value) || (isDefinedObject(value) && isFunction(value.handleEvent))
 
-const isComponent = (value: unknown): value is Component<ComponentProps> =>
+const isComponent = (value: unknown): value is Component<ComponentProps, ComponentMethods> =>
 	value instanceof HTMLElement && value.localName.includes('-')
 
 /* === Exported Functions === */
 
-const run = <P extends ComponentProps, E extends Element>(
-	fns: FxFunction<P, E>[],
-	host: Component<P>,
-	target?: E,
-    index?: number
-): (() => void)[] =>
-	fns.flatMap(fn => {
-		const cleanup = isFunction(fn) ? fn(host, target ?? host, index) : []
-		return Array.isArray(cleanup) ? cleanup.filter(isFunction)
-			: isFunction(cleanup) ? [cleanup]
-			: []
-	})
+const run = <P extends ComponentProps, M extends ComponentMethods, E extends Element>(
+	fns: FxFunction<P, M, E>[],
+	host: Component<P, M>,
+	selector?: string,
+	all?: boolean
+): Cleanup => {
+	const query = () => {
+		if (!selector) return [host as unknown as E]
+		const root = host.shadowRoot || host
+		return all
+			? Array.from(root.querySelectorAll<E>(selector))
+			: [root.querySelector<E>(selector)].filter(v => v != null)
+	}
+	const cleanups = query().flatMap((target, index) =>
+		fns.filter(isFunction).map(fn =>
+			fn(host, target, index)
+		)
+	)
+	return () => {
+		cleanups.filter(isFunction).forEach(cleanup => cleanup())
+		cleanups.length = 0
+	}
+}
 	
 /**
  * Apply effect functions to a first matching sub-element within the custom element
@@ -47,13 +58,11 @@ const run = <P extends ComponentProps, E extends Element>(
  * @since 0.12.0
  * @param {string} selector - selector to match sub-element
  */
-const first = <E extends Element, P extends ComponentProps>(
+const first = <P extends ComponentProps, M extends ComponentMethods = {}, E extends Element = HTMLElement>(
 	selector: string,
-	...fns: FxFunction<P, E>[]
-) => (host: Component<P>): (() => void)[] => {
-		const target = (host.shadowRoot || host).querySelector<E>(selector)
-		return target ?  run(fns, host, target) : []
-	}
+	...fns: FxFunction<P, M, E>[]
+) => (host: Component<P, M>): Cleanup =>
+	run(fns, host, selector)
 
 /**
  * Apply effect functions to all matching sub-elements within the custom element
@@ -61,12 +70,11 @@ const first = <E extends Element, P extends ComponentProps>(
  * @since 0.12.0
  * @param {string} selector - selector to match sub-elements
  */
-const all = <E extends Element, P extends ComponentProps>(
+const all = <P extends ComponentProps, M extends ComponentMethods = {}, E extends Element = HTMLElement>(
 	selector: string,
-	...fns: FxFunction<P, E>[]
-) => (host: Component<P>): (() => void)[] =>
-	Array.from((host.shadowRoot || host).querySelectorAll<E>(selector))
-		.flatMap((target, index) => run(fns, host, target, index))
+	...fns: FxFunction<P, M, E>[]
+) => (host: Component<P, M>): Cleanup =>
+	run(fns, host, selector, true)
 
 /**
  * Attach an event listener to an element
@@ -79,11 +87,11 @@ const all = <E extends Element, P extends ComponentProps>(
 const on = (
 	type: string,
 	handler: EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>,
-) => <P extends ComponentProps>(
-	host: Component<P>,
+) => <P extends ComponentProps, M extends ComponentMethods>(
+	host: Component<P, M>,
 	target: Element = host,
 	index = 0
-): () => void => {
+): Cleanup => {
 	const listener = isProvider(handler) ? handler(target, index) : handler
 	if (!isEventListener(listener))
 		throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`)
@@ -101,8 +109,8 @@ const on = (
 const emit = <T>(
 	type: string,
 	detail: T | Provider<T>
-) => <P extends ComponentProps>(
-	host: Component<P>,
+) => <P extends ComponentProps, M extends ComponentMethods>(
+	host: Component<P, M>,
 	target: Element = host,
 	index = 0
 ): void => {
@@ -121,10 +129,10 @@ const emit = <T>(
  * @throws {TypeError} - if the provided signals are not an object or a provider function
  * @throws {Error} - if it fails to pass signals to the target element
  */
-const pass = <P extends ComponentProps, Q extends ComponentProps>(
+const pass = <P extends ComponentProps, Q extends ComponentProps, M extends ComponentMethods = {}>(
 	signals: PassedSignals<P, Q>
 ) => <E extends Element>(
-	host: Component<P>,
+	host: Component<P, M>,
 	target: E,
 	index = 0
 ): void => {

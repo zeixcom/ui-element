@@ -37,7 +37,7 @@ const InputText = component('input-text', {
 				() => el.description && descriptionId ? descriptionId : UNSET
 			),
 		),
-		first<HTMLElement, InputTextProps>('.clear',
+		first('.clear',
 			on('click', () => {
 				el.value = ''
 				el.length = 0

@@ -1,7 +1,7 @@
 import { type Signal, effect, enqueue, isSignal, isState, UNSET } from '@zeix/cause-effect'
 
 import { isFunction, isString } from '../core/util'
-import { type ComponentProps, type Component, RESET } from '../component'
+import { type ComponentProps, type ComponentMethods, type Component, RESET } from '../component'
 import { DEV_MODE, elementName, log, LOG_ERROR } from '../core/log'
 import type { Provider } from '../core/ui'
 
@@ -35,9 +35,9 @@ const ops: Record<string, string> = {
 	t: 'text content',
 }
 
-const resolveSignalLike = <T extends {}, P extends ComponentProps, E extends Element>(
+const resolveSignalLike = <T extends {}, P extends ComponentProps, M extends ComponentMethods = {}, E extends Element = HTMLElement>(
 	s: SignalLike<T, P>,
-	host: Component<P>,
+	host: Component<P, M>,
 	target: E,
 	index: number
 ): T => isString(s) ? host.getSignal(s).get() as unknown as T
@@ -79,10 +79,10 @@ const safeSetAttribute = /*#__PURE__*/ (
  * @param {SignalLike<T>} s - state bound to the element property
  * @param {ElementUpdater} updater - updater object containing key, read, update, and delete methods
  */
-const updateElement = <E extends Element, T extends {}, P extends ComponentProps>(
+const updateElement = <E extends Element, T extends {}, P extends ComponentProps, M extends ComponentMethods = {}>(
 	s: SignalLike<T, P>,
 	updater: ElementUpdater<E, T>
-) => (host: Component<P>, target: E, index: number = 0): () => void => {
+) => (host: Component<P, M>, target: E, index: number = 0): () => void => {
 	const { op, read, update } = updater
 	const fallback = read(target)
 
@@ -144,10 +144,10 @@ const updateElement = <E extends Element, T extends {}, P extends ComponentProps
  * @param {NodeInserter} inserter - inserter object containing type, where, and create methods
  * @throws {TypeError} if the insertPosition is invalid for the target element
  */
-const insertNode = <E extends Element, P extends ComponentProps>(
+const insertNode = <E extends Element, P extends ComponentProps, M extends ComponentMethods = {}>(
 	s: SignalLike<boolean, P>,
     { type, where, create }: NodeInserter
-) => (host: Component<P>, target: E, index: number = 0): void | (() => void) => {
+) => (host: Component<P, M>, target: E, index: number = 0): void | (() => void) => {
 	const methods: Record<InsertPosition, keyof Element> = {
 		beforebegin: 'before',
 		afterbegin: 'prepend',
@@ -406,9 +406,9 @@ const createElement = <P extends ComponentProps>(
  * @since 0.9.0
  * @param {SignalLike<string>} s - state bound to the element removal
  */
-const removeElement = <E extends Element, P extends ComponentProps>(
+const removeElement = <E extends Element, P extends ComponentProps, M extends ComponentMethods>(
 	s: SignalLike<boolean, P>
-) => (host: Component<P>, target: E, index: number = 0): () => void => {
+) => (host: Component<P, M>, target: E, index: number = 0): () => void => {
 	const err = (error: unknown) =>
 		log(error, `Failed to delete ${elementName(target)} from ${elementName(host)}:`, LOG_ERROR)
 

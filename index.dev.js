@@ -351,15 +351,21 @@ var log = (value, msg, level = LOG_DEBUG) => {
 var isProvider = (value) => isFunction2(value) && value.length == 2;
 var isEventListener = (value) => isFunction2(value) || isDefinedObject(value) && isFunction2(value.handleEvent);
 var isComponent = (value) => value instanceof HTMLElement && value.localName.includes("-");
-var run = (fns, host, target, index) => fns.flatMap((fn) => {
-  const cleanup = isFunction2(fn) ? fn(host, target ?? host, index) : [];
-  return Array.isArray(cleanup) ? cleanup.filter(isFunction2) : isFunction2(cleanup) ? [cleanup] : [];
-});
-var first = (selector, ...fns) => (host) => {
-  const target = (host.shadowRoot || host).querySelector(selector);
-  return target ? run(fns, host, target) : [];
+var run = (fns, host, selector, all) => {
+  const query = () => {
+    if (!selector)
+      return [host];
+    const root = host.shadowRoot || host;
+    return all ? Array.from(root.querySelectorAll(selector)) : [root.querySelector(selector)].filter((v) => v != null);
+  };
+  const cleanups = query().flatMap((target, index) => fns.filter(isFunction2).map((fn) => fn(host, target, index)));
+  return () => {
+    cleanups.filter(isFunction2).forEach((cleanup) => cleanup());
+    cleanups.length = 0;
+  };
 };
-var all = (selector, ...fns) => (host) => Array.from((host.shadowRoot || host).querySelectorAll(selector)).flatMap((target, index) => run(fns, host, target, index));
+var first = (selector, ...fns) => (host) => run(fns, host, selector);
+var all = (selector, ...fns) => (host) => run(fns, host, selector, true);
 var on = (type, handler) => (host, target = host, index = 0) => {
   const listener = isProvider(handler) ? handler(target, index) : handler;
   if (!isEventListener(listener))
@@ -412,7 +418,7 @@ var component = (name, init = {}, setup) => {
   class CustomElement extends HTMLElement {
     debug;
     #signals = {};
-    #cleanup = [];
+    #cleanup;
     static observedAttributes = Object.entries(init)?.filter(([, ini]) => isParser(ini)).map(([prop]) => prop) ?? [];
     constructor() {
       super();
@@ -435,9 +441,8 @@ var component = (name, init = {}, setup) => {
       this.#cleanup = run(fns, this);
     }
     disconnectedCallback() {
-      for (const off of this.#cleanup)
-        off();
-      this.#cleanup.length = 0;
+      if (isFunction2(this.#cleanup))
+        this.#cleanup();
       if (DEV_MODE && this.debug)
         log(this, "Disconnected");
     }

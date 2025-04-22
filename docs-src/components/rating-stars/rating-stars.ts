@@ -7,7 +7,7 @@ export type RatingStarsProps = {
 const RatingStars = component('rating-stars',{
 	value: asInteger(),
 }, el => [
-	all<HTMLInputElement, RatingStarsProps>('input',
+	all('input',
 		setProperty('checked',
 			(_, index) => el.value === index + 1,
 		),

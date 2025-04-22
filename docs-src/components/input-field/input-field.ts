@@ -12,6 +12,10 @@ export type InputFieldProps = {
     description: string,
 }
 
+export type InputFieldMethods = {
+	clear: () => void
+}
+
 /* === Pure Functions === */
 
 // Check if value is a number
@@ -36,9 +40,9 @@ const InputField = component('input-field', {
 	value: asNumberOrString,
 	length: 0,
 	error: '',
-	description: '',
+	description: ''
 }, el => {
-	const fns: FxFunction<InputFieldProps, HTMLElement>[] = []
+	const fns: FxFunction<InputFieldProps, InputFieldMethods, HTMLElement>[] = []
 	const input = el.querySelector('input')
 	if (!input)
 		throw new Error('No input element found')
@@ -132,7 +136,7 @@ const InputField = component('input-field', {
 		const spinButton = el.querySelector('.spinbutton') as HTMLElement | null
 		if (spinButton) {
 			fns.push(
-				first<HTMLButtonElement, InputFieldProps>('.decrement',
+				first('.decrement',
 					on('click', (e: Event) => {
 						triggerChange(v => nearestStep(v - ((e as MouseEvent).shiftKey ? step * 10 : step)))
 					}),
@@ -140,7 +144,7 @@ const InputField = component('input-field', {
 						() => (isNumber(min) ? el.value as number : 0) - step < min
 					)
 				),
-				first<HTMLButtonElement, InputFieldProps>('.increment',
+				first('.increment',
 					on('click', (e: Event) => {
 						triggerChange(v => nearestStep(v + ((e as MouseEvent).shiftKey ? step * 10 : step)))
 					}),
@@ -153,13 +157,11 @@ const InputField = component('input-field', {
 
 	} else {
 
-		// Setup clear button
+		// Setup clear button and method
 		fns.push(
-			first<HTMLElement, InputFieldProps>('.clear',
+			first('.clear',
 				on('click', () => {
-					el.value = ''
-					el.length = 0
-					input.focus()
+					el.clear()
 				}),
 				setProperty('hidden', () => !el.length)
 			)
@@ -201,6 +203,16 @@ const InputField = component('input-field', {
 	}
 
 	return fns
+}, {
+	clear(this: HTMLElement & InputFieldProps) {
+		this.value = ''
+		this.length = 0
+		const input = this.querySelector('input')
+		if (input) {
+			input.value = ''
+			input.focus()
+		}
+	}
 })
 
 declare global {

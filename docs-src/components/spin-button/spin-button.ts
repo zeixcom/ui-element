@@ -12,11 +12,11 @@ const SpinButton = component('spin-button', {
 	const max = asInteger(9)(el, el.getAttribute('max'))
 	const isZero = el.getSignal('value').map(v => v === 0)
 	return [
-		first<HTMLElement, SpinButtonProps>('.value',
+		first('.value',
 			setText('value'),
 			setProperty('hidden', isZero)
 		),
-		first<HTMLElement, SpinButtonProps>('.decrement',
+		first('.decrement',
 			setProperty('hidden', isZero),
 			on('click', () => { el.value-- })
 		),

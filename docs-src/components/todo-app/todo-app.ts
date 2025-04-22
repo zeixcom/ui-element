@@ -1,4 +1,4 @@
-import { type ComponentProps, component, computed, effect, first, insertTemplate, on, setAttribute, setProperty, setText, state } from '../../../'
+import { type ComponentProps, component, computed, enqueue, first, insertTemplate, on, setAttribute, setProperty, setText, state } from '../../../'
 import InputButton from '../input-button/input-button'
 import InputCheckbox from '../input-checkbox/input-checkbox'
 import InputField from '../input-field/input-field'
@@ -6,34 +6,41 @@ import InputField from '../input-field/input-field'
 /* === Component === */
 
 const TodoApp = component('todo-app', {}, el => {
-	const tasks = state(Array.from(el.querySelectorAll<typeof InputCheckbox>('input-checkbox')))
-	const refreshTasks = () => {
-		tasks.set(Array.from(el.querySelectorAll<typeof InputCheckbox>('input-checkbox')))
-	}
-	const total = tasks.map(tasks => tasks.length)
-	const completed = tasks.map(tasks => tasks.filter(task => task.checked).length)
-	const active = computed({
-		signals: [total, completed],
-		ok: (t, c) => t - c
-	})
-	const addTask = state(false)
 	const input = el.querySelector<typeof InputField>('input-field')
 	if (!input) throw new Error('No input field found')
 	const template = el.querySelector('template')
 	if (!template) throw new Error('No template found')
+	
+	let tasks = Array.from(el.querySelectorAll<typeof InputCheckbox>('input-checkbox'))
+	const total = state(tasks.length)
+	const completed = state(tasks.filter(task => task.checked).length)
+	const active = computed(() => total.get() - completed.get())
+	const addTask = state(false)
+	const refreshCompleted = () => {
+		completed.set(tasks.filter(task => task.checked).length)
+	}
+	const refreshTasks = () => {
+		tasks = Array.from(el.querySelectorAll<typeof InputCheckbox>('input-checkbox'))
+		total.set(tasks.length)
+		refreshCompleted()
+	}
 
 	return [
+		first('.submit',
+			setProperty('disabled', () => !input.length),
+		),
 		first('form',
 			on('submit', (e: Event) => {
 				e.preventDefault()
 				queueMicrotask(() => {
-					const value = input?.value.toString().trim()
+					const value = input.value.toString().trim()
 					if (value) addTask.set(true)
+					enqueue(() => {
+						refreshTasks()
+						input.value = ''
+					}, [input, 'p:value'])
 				})
 			})
-		),
-		first<typeof InputButton, ComponentProps>('.submit',
-			setProperty('disabled', () => !input.length),
 		),
 		first('ol',
 			setAttribute('filter',
@@ -46,34 +53,30 @@ const TodoApp = component('todo-app', {}, el => {
 					target.closest('li')?.remove()
 					refreshTasks()
 				}
+			}),
+			on('change', () => {
+				refreshCompleted()
 			})
 		),
-		effect(() => {
-			if (!addTask.get()) {
-				input.value = ''
-				refreshTasks()
-			}
-		}),
 		first('.count',
 			setText(active.map(a => String(a)))
 		),
-		first<HTMLElement, ComponentProps>('.singular',
+		first('.singular',
 			setProperty('hidden', active.map(a => a > 1))
 		),
-		first<HTMLElement, ComponentProps>('.plural',
+		first('.plural',
 			setProperty('hidden', active.map(a => a === 1))
 		),
-		first<HTMLElement, ComponentProps>('.remaining',
+		first('.remaining',
 			setProperty('hidden', active.map(a => !a))
 		),
-		first<HTMLElement, ComponentProps>('.all-done',
+		first('.all-done',
 			setProperty('hidden', active.map(a => !!a))
 		),
-		first<typeof InputButton, ComponentProps>('.clear-completed',
+		first('.clear-completed',
 			setProperty('disabled', completed.map(c => !c)),
 			on('click', () => {
-				tasks.get()
-					.filter(task => task.checked)
+				tasks.filter(task => task.checked)
 					.forEach(task => task.parentElement?.remove())
 				refreshTasks()
 			})
