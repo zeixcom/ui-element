@@ -1,5 +1,6 @@
 import {
 	type AttributeParser,
+	Component,
 	component, computed, effect, emit, first, FxFunction, on, setAttribute, setProperty, setText, UNSET
 } from '../../../'
 
@@ -10,10 +11,7 @@ export type InputFieldProps = {
 	length: number,
 	error: string,
     description: string,
-}
-
-export type InputFieldMethods = {
-	clear: () => void
+	clear(): void
 }
 
 /* === Pure Functions === */
@@ -29,7 +27,7 @@ const parseNumber = (v: any, int = false, fallback = 0): number => {
 
 /* === Attribute Parsers === */
 
-const asNumberOrString: AttributeParser<string | number, HTMLElement> = (el, v) => {
+const asNumberOrString: AttributeParser<HTMLElement, string | number> = (el, v) => {
 	const input = el.querySelector('input')
 	return input && input.type === 'number' ? parseNumber(v, el.hasAttribute('integer'), 0) : (v ?? '')
 }
@@ -40,9 +38,20 @@ const InputField = component('input-field', {
 	value: asNumberOrString,
 	length: 0,
 	error: '',
-	description: ''
-}, el => {
-	const fns: FxFunction<InputFieldProps, InputFieldMethods, HTMLElement>[] = []
+	description: '',
+	clear: (host: HTMLElement & InputFieldProps) => {
+		host.clear = () => {
+			host.value = ''
+			host.length = 0
+			const input = host.querySelector('input')
+			if (input) {
+				input.value = ''
+				input.focus()
+			}
+		}
+	}
+}, (el: Component<InputFieldProps>) => {
+	const fns: FxFunction<InputFieldProps, Component<InputFieldProps>>[] = []
 	const input = el.querySelector('input')
 	if (!input)
 		throw new Error('No input element found')
@@ -136,7 +145,7 @@ const InputField = component('input-field', {
 		const spinButton = el.querySelector('.spinbutton') as HTMLElement | null
 		if (spinButton) {
 			fns.push(
-				first('.decrement',
+				first<InputFieldProps, HTMLButtonElement>('.decrement',
 					on('click', (e: Event) => {
 						triggerChange(v => nearestStep(v - ((e as MouseEvent).shiftKey ? step * 10 : step)))
 					}),
@@ -144,7 +153,7 @@ const InputField = component('input-field', {
 						() => (isNumber(min) ? el.value as number : 0) - step < min
 					)
 				),
-				first('.increment',
+				first<InputFieldProps, HTMLButtonElement>('.increment',
 					on('click', (e: Event) => {
 						triggerChange(v => nearestStep(v + ((e as MouseEvent).shiftKey ? step * 10 : step)))
 					}),
@@ -159,7 +168,7 @@ const InputField = component('input-field', {
 
 		// Setup clear button and method
 		fns.push(
-			first('.clear',
+			first<InputFieldProps, HTMLButtonElement>('.clear',
 				on('click', () => {
 					el.clear()
 				}),
@@ -203,16 +212,6 @@ const InputField = component('input-field', {
 	}
 
 	return fns
-}, {
-	clear(this: HTMLElement & InputFieldProps) {
-		this.value = ''
-		this.length = 0
-		const input = this.querySelector('input')
-		if (input) {
-			input.value = ''
-			input.focus()
-		}
-	}
 })
 
 declare global {

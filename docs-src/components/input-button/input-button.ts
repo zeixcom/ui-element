@@ -11,7 +11,7 @@ const InputButton = component('input-button', {
 	label: asString(RESET),
 	badge: asString(RESET)
 }, () => [
-	first('button', setProperty('disabled')),
+	first<InputButtonProps, HTMLButtonElement>('button', setProperty('disabled')),
 	first('.label', setText('label')),
 	first('.badge', setText('badge'))
 ])

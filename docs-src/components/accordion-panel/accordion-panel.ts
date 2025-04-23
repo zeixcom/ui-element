@@ -12,7 +12,7 @@ const AccordionPanel = component('accordion-panel', {
 	toggleAttribute('open'),
 	toggleAttribute('collapsible'),
 	setProperty('hidden', () => !el.open && !el.collapsible),
-	first('details',
+	first<AccordionPanelProps, HTMLDetailsElement>('details',
 		setProperty('open'),
 		setProperty('ariaDisabled', () => String(!el.collapsible))
 	)

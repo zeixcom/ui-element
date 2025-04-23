@@ -14,9 +14,8 @@ export {
 
 // Core
 export {
-	type Component, type ComponentProps, type ComponentMethods,
-	type ValidPropertyKey, type ReservedWords,
-	type SignalInitializer, type AttributeParser, type SignalProducer,
+	type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords,
+	type Initializer, type AttributeParser, type SignalProducer, type MethodProducer,
 	type Cleanup, type FxFunction,
 	RESET, component
 } from './src/component'

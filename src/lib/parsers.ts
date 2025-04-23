@@ -18,7 +18,7 @@ const parseNumber = (parseFn: (v: string) => number, value: string | null): numb
  * @param {string} value - maybe string value
  * @returns {boolean}
  */
-const asBoolean: AttributeParser<boolean, HTMLElement> = (_: HTMLElement, value: string | null): boolean =>
+const asBoolean: AttributeParser<HTMLElement, boolean> = (_: HTMLElement, value: string | null): boolean =>
 	value !== 'false' && value != null
 
 /**
@@ -26,9 +26,9 @@ const asBoolean: AttributeParser<boolean, HTMLElement> = (_: HTMLElement, value:
  * 
  * @since 0.11.0
  * @param {number} [fallback=0] - fallback value
- * @returns {Parser<number, HTMLElement>} - parser function
+ * @returns {Parser<HTMLElement, number>} - parser function
  */
-const asInteger = (fallback: number = 0): AttributeParser<number, HTMLElement> =>
+const asInteger = (fallback: number = 0): AttributeParser<HTMLElement, number> =>
 	(_: HTMLElement, value: string | null): number =>
 		parseNumber(parseInt, value) ?? fallback
 
@@ -39,7 +39,7 @@ const asInteger = (fallback: number = 0): AttributeParser<number, HTMLElement> =
  * @param {number} [fallback=0] - fallback value
  * @returns {Parser<number, HTMLElement>} - parser function
  */
-const asNumber = (fallback: number = 0): AttributeParser<number, HTMLElement> =>
+const asNumber = (fallback: number = 0): AttributeParser<HTMLElement, number> =>
 	(_: HTMLElement, value: string | null): number =>
 		parseNumber(parseFloat, value) ?? fallback
 
@@ -50,7 +50,7 @@ const asNumber = (fallback: number = 0): AttributeParser<number, HTMLElement> =>
  * @param {string} [fallback=''] - fallback value
  * @returns {Parser<string, HTMLElement>} - parser function
  */
-const asString = (fallback: string = ''): AttributeParser<string, HTMLElement> =>
+const asString = (fallback: string = ''): AttributeParser<HTMLElement, string> =>
 	(_: HTMLElement, value: string | null): string =>
 		value ?? fallback
 
@@ -61,7 +61,7 @@ const asString = (fallback: string = ''): AttributeParser<string, HTMLElement> =
  * @param {string[]} valid - array of valid values
  * @returns {Parser<string, HTMLElement>} - parser function
  */
-const asEnum = (valid: [string, ...string[]]): AttributeParser<string, HTMLElement> =>
+const asEnum = (valid: [string, ...string[]]): AttributeParser<HTMLElement, string> =>
 	(_: HTMLElement, value: string | null): string =>
 		(value != null && valid.includes(value.toLowerCase()))
 			? value
@@ -76,7 +76,7 @@ const asEnum = (valid: [string, ...string[]]): AttributeParser<string, HTMLEleme
  * @throws {ReferenceError} - if the value and fallback are both null or undefined
  * @throws {SyntaxError} - if the value is not a valid JSON object
  */
-const asJSON = <T extends {}>(fallback: T): AttributeParser<T, HTMLElement> =>
+const asJSON = <T extends {}>(fallback: T): AttributeParser<HTMLElement, T> =>
 	(_: HTMLElement, value: string | null): T => {
 		if ((value ?? fallback) == null) throw new ReferenceError('Value and fallback are both null or undefined')
 		if (value == null) return fallback

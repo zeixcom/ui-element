@@ -4,10 +4,10 @@ export type RatingStarsProps = {
 	value: number
 }
 
-const RatingStars = component('rating-stars',{
+const RatingStars = component('rating-stars', {
 	value: asInteger(),
 }, el => [
-	all('input',
+	all<RatingStarsProps, HTMLInputElement>('input',
 		setProperty('checked',
 			(_, index) => el.value === index + 1,
 		),

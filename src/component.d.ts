@@ -14,9 +14,10 @@ type Component<P extends ComponentProps> = HTMLElement & P & {
     getSignal(prop: keyof P): Signal<P[keyof P]>;
     setSignal(prop: keyof P, signal: Signal<P[keyof P]>): void;
 };
-type AttributeParser<T extends {}, C extends HTMLElement> = (host: C, value: string | null, old?: string | null) => T;
-type SignalProducer<T extends {}, C extends HTMLElement> = (host: C) => MaybeSignal<T>;
-type SignalInitializer<T extends {}, C extends HTMLElement> = T | AttributeParser<T, C> | SignalProducer<T, C>;
+type AttributeParser<C extends HTMLElement, T extends {}> = (host: C, value: string | null, old?: string | null) => T;
+type SignalProducer<C extends HTMLElement, T extends {}> = (host: C) => MaybeSignal<T>;
+type MethodProducer<C extends HTMLElement> = (host: C) => void;
+type Initializer<C extends HTMLElement, T extends {}> = T | AttributeParser<C, T> | SignalProducer<C, T> | MethodProducer<C>;
 type Cleanup = () => void;
 type FxFunction<P extends ComponentProps, E extends Element> = (host: Component<P>, element: E, index: number) => Cleanup | void;
 declare const RESET: any;
@@ -29,5 +30,5 @@ declare const RESET: any;
  * @param {FxFunction<S>[]} setup - setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
  * @returns {typeof HTMLElement & P} - constructor function for the custom element
  */
-declare const component: <P extends ComponentProps>(name: string, init: { [K in keyof P]: SignalInitializer<P[K], Component<P>>; } | undefined, setup: (host: Component<P>) => FxFunction<P, Component<P>>[]) => Component<P>;
-export { type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords, type SignalInitializer, type AttributeParser, type SignalProducer, type Cleanup, type FxFunction, RESET, component };
+declare const component: <P extends ComponentProps>(name: string, init: { [K in keyof P]: Initializer<Component<P>, P[K]>; } | undefined, setup: (host: Component<P>) => FxFunction<P, Component<P>>[]) => Component<P>;
+export { type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords, type Initializer, type AttributeParser, type SignalProducer, type MethodProducer, type Cleanup, type FxFunction, RESET, component };

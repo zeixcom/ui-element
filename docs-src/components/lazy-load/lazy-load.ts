@@ -12,7 +12,7 @@ export type LazyLoadProps = {
 
 /* === Attribute Parser === */
 
-const asURL: AttributeParser<string, HTMLElement & { error: string }> = (el, v) => {
+const asURL: AttributeParser<HTMLElement & { error: string }, string> = (el, v) => {
 	if (!v) {
 		el.error = 'No URL provided in src attribute'
 		return ''
@@ -31,7 +31,7 @@ const asURL: AttributeParser<string, HTMLElement & { error: string }> = (el, v) 
 
 /* === Signal Producer === */
 
-const fetchText: SignalProducer<string, HTMLElement & { error: string, src: string }> = el =>
+const fetchText: SignalProducer<HTMLElement & { error: string, src: string }, string> = el =>
 	async abort => { // Async Computed callback
 		const url = el.src
 		if (!url) return ''
@@ -55,7 +55,7 @@ const LazyLoad = component('lazy-load', {
 	content: fetchText
 }, el => [
 	dangerouslySetInnerHTML('content'),
-	first('.error',
+	first<LazyLoadProps, HTMLElement>('.error',
 		setText('error'),
 		setProperty('hidden', () => !el.error)
 	)

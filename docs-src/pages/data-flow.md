@@ -270,7 +270,10 @@ Here's how everything comes together:
 					</fieldset>
 				</input-radiogroup>
 				<input-button class="clear-completed">
-					<button type="button" class="destructive">Clear Completed</button>
+					<button type="button" class="destructive">
+						<span class="label">Clear Completed</span>
+						<span class="badge"></span>
+					</button>
 				</input-button>
 			</footer>
 		</todo-app>

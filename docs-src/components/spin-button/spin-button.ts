@@ -1,4 +1,4 @@
-import { asInteger, component, first, on, setProperty, setText, toggleAttribute } from '../../../'
+import { all, asInteger, component, first, on, setProperty, setText, toggleAttribute } from '../../../'
 
 export type SpinButtonProps = {
 	value: number
@@ -10,19 +10,32 @@ const SpinButton = component('spin-button', {
 	const zeroLabel = el.getAttribute('zero-label') || 'Add to Cart'
 	const incrementLabel = el.getAttribute('increment-label') || 'Increment'
 	const max = asInteger(9)(el, el.getAttribute('max'))
-	const isZero = el.getSignal('value').map(v => v === 0)
+	const isZero = () => el.value === 0
 	return [
-		first('.value',
+		first<SpinButtonProps, HTMLButtonElement>('.value',
 			setText('value'),
 			setProperty('hidden', isZero)
 		),
-		first('.decrement',
+		first<SpinButtonProps, HTMLButtonElement>('.decrement',
 			setProperty('hidden', isZero),
 			on('click', () => { el.value-- })
 		),
+		all('button',
+			on('keydown', (e: Event) => {
+				const { key } = e as KeyboardEvent
+				if (['ArrowUp', 'ArrowDown', '-', '+'].includes(key)) {
+					e.stopPropagation()
+					e.preventDefault()
+					if (key === 'ArrowDown' || key === '-')
+						el.value--
+					if (key === 'ArrowUp' || key === '+')
+						el.value++
+				}
+			})
+		),
 		first('.increment',
-			setText(isZero.map(v => v ? zeroLabel : '+')),
-			setProperty('ariaLabel', isZero.map(v => v ? zeroLabel : incrementLabel)),
+			setText(() => isZero() ? zeroLabel : '+'),
+			setProperty('ariaLabel', () => isZero() ? zeroLabel : incrementLabel),
 			toggleAttribute('disabled', () => el.value >= max),
 			on('click', () => { el.value++ })
 		)

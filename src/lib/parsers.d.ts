@@ -7,15 +7,15 @@ import type { AttributeParser } from '../component';
  * @param {string} value - maybe string value
  * @returns {boolean}
  */
-declare const asBoolean: AttributeParser<boolean, HTMLElement>;
+declare const asBoolean: AttributeParser<HTMLElement, boolean>;
 /**
  * Parse an attribute as as number forced to integer with a fallback
  *
  * @since 0.11.0
  * @param {number} [fallback=0] - fallback value
- * @returns {Parser<number, HTMLElement>} - parser function
+ * @returns {Parser<HTMLElement, number>} - parser function
  */
-declare const asInteger: (fallback?: number) => AttributeParser<number, HTMLElement>;
+declare const asInteger: (fallback?: number) => AttributeParser<HTMLElement, number>;
 /**
  * Parse an attribute as as number with a fallback
  *
@@ -23,7 +23,7 @@ declare const asInteger: (fallback?: number) => AttributeParser<number, HTMLElem
  * @param {number} [fallback=0] - fallback value
  * @returns {Parser<number, HTMLElement>} - parser function
  */
-declare const asNumber: (fallback?: number) => AttributeParser<number, HTMLElement>;
+declare const asNumber: (fallback?: number) => AttributeParser<HTMLElement, number>;
 /**
  * Parse an attribute as a string with a fallback
  *
@@ -31,7 +31,7 @@ declare const asNumber: (fallback?: number) => AttributeParser<number, HTMLEleme
  * @param {string} [fallback=''] - fallback value
  * @returns {Parser<string, HTMLElement>} - parser function
  */
-declare const asString: (fallback?: string) => AttributeParser<string, HTMLElement>;
+declare const asString: (fallback?: string) => AttributeParser<HTMLElement, string>;
 /**
  * Parse an attribute as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option
  *
@@ -39,7 +39,7 @@ declare const asString: (fallback?: string) => AttributeParser<string, HTMLEleme
  * @param {string[]} valid - array of valid values
  * @returns {Parser<string, HTMLElement>} - parser function
  */
-declare const asEnum: (valid: [string, ...string[]]) => AttributeParser<string, HTMLElement>;
+declare const asEnum: (valid: [string, ...string[]]) => AttributeParser<HTMLElement, string>;
 /**
  * Parse an attribute as a JSON serialized object with a fallback
  *
@@ -49,5 +49,5 @@ declare const asEnum: (valid: [string, ...string[]]) => AttributeParser<string, 
  * @throws {ReferenceError} - if the value and fallback are both null or undefined
  * @throws {SyntaxError} - if the value is not a valid JSON object
  */
-declare const asJSON: <T extends {}>(fallback: T) => AttributeParser<T, HTMLElement>;
+declare const asJSON: <T extends {}>(fallback: T) => AttributeParser<HTMLElement, T>;
 export { asBoolean, asInteger, asNumber, asString, asEnum, asJSON };

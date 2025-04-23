@@ -1,12 +1,12 @@
 import { type SignalProducer, component, first, pass } from '../../../'
-import SpinButton from '../spin-button/spin-button'
 import { InputButtonProps } from '../input-button/input-button'
+import SpinButton from '../spin-button/spin-button'
 
 export type ProductCatalogProps = {
 	total: number
 }
 
-const calcTotal: SignalProducer<number, HTMLElement> = el =>
+const calcTotal: SignalProducer<HTMLElement, number> = el =>
 	() => Array.from(el.querySelectorAll<typeof SpinButton>('spin-button'))
 		.reduce((sum, item) => sum + item.value, 0)
 

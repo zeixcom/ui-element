@@ -1,4 +1,5 @@
-import { all, component, first, on, setProperty, state } from '../../../'
+import { type ComponentProps, all, component, first, on, setProperty, state } from '../../../'
+import InputButton from '../input-button/input-button'
 import RatingStars from '../rating-stars/rating-stars'
 
 const RatingFeedback = component('rating-feedback', {}, el => {
@@ -32,15 +33,15 @@ const RatingFeedback = component('rating-feedback', {}, el => {
 	})),
 
 	// Effects on rating changes
-	first('.feedback',
+	first<ComponentProps, HTMLElement>('.feedback',
 		setProperty('hidden', () => submitted.get() || !rating.get())
 	),
-	all('.feedback p',
+	all<ComponentProps, HTMLElement>('.feedback p',
 		setProperty('hidden', (_, index) => rating.get() !== index + 1)
 	),
 
 	// Effect on empty state
-	first('input-button',
+	first<ComponentProps, typeof InputButton>('input-button',
 		setProperty('disabled', empty)
 	)
 ]

@@ -9,7 +9,7 @@ export type ThemeContext = {
 
 /* === Signal Producers === */
 
-const matchMotion: SignalProducer<boolean, HTMLElement> = () => {
+const matchMotion: SignalProducer<HTMLElement, boolean> = () => {
 	const mql = matchMedia('(prefers-reduced-motion: reduce)')
 	const reducedMotion = state(mql.matches)
 	mql.addEventListener('change', e => {
@@ -18,7 +18,7 @@ const matchMotion: SignalProducer<boolean, HTMLElement> = () => {
 	return reducedMotion
 }
 
-const matchTheme: SignalProducer<string, HTMLElement> = () => {
+const matchTheme: SignalProducer<HTMLElement, string> = () => {
 	const mql = matchMedia('(prefers-color-scheme: dark)')
 	const colorScheme = state(mql.matches ? 'dark' : 'light')
 	mql.addEventListener('change', e => {
@@ -27,7 +27,7 @@ const matchTheme: SignalProducer<string, HTMLElement> = () => {
 	return colorScheme
 }
 
-const matchViewport: SignalProducer<string, HTMLElement> = el => {
+const matchViewport: SignalProducer<HTMLElement, string> = el => {
 	const getBreakpoint = (attr: string, fallback: string) => {
 		const value = el.getAttribute(attr)
 		const trimmed = value?.trim()
@@ -54,7 +54,7 @@ const matchViewport: SignalProducer<string, HTMLElement> = el => {
 	return viewport
 }
 
-const matchOrientation: SignalProducer<string, HTMLElement> = () => {
+const matchOrientation: SignalProducer<HTMLElement, string> = () => {
 	const mql = matchMedia('(orientation: landscape)')
 	const orientation = state(mql.matches? 'landscape' : 'portrait')
 	mql.addEventListener('change', e => {

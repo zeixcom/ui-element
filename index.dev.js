@@ -351,21 +351,15 @@ var log = (value, msg, level = LOG_DEBUG) => {
 var isProvider = (value) => isFunction2(value) && value.length == 2;
 var isEventListener = (value) => isFunction2(value) || isDefinedObject(value) && isFunction2(value.handleEvent);
 var isComponent = (value) => value instanceof HTMLElement && value.localName.includes("-");
-var run = (fns, host, selector, all) => {
-  const query = () => {
-    if (!selector)
-      return [host];
-    const root = host.shadowRoot || host;
-    return all ? Array.from(root.querySelectorAll(selector)) : [root.querySelector(selector)].filter((v) => v != null);
-  };
-  const cleanups = query().flatMap((target, index) => fns.filter(isFunction2).map((fn) => fn(host, target, index)));
+var run = (fns, host, elements) => {
+  const cleanups = elements.flatMap((target, index) => fns.filter(isFunction2).map((fn) => fn(host, target, index)));
   return () => {
     cleanups.filter(isFunction2).forEach((cleanup) => cleanup());
     cleanups.length = 0;
   };
 };
-var first = (selector, ...fns) => (host) => run(fns, host, selector);
-var all = (selector, ...fns) => (host) => run(fns, host, selector, true);
+var first = (selector, ...fns) => (host) => run(fns, host, [(host.shadowRoot || host).querySelector(selector)].filter((v) => v != null));
+var all = (selector, ...fns) => (host) => run(fns, host, Array.from((host.shadowRoot || host).querySelectorAll(selector)));
 var on = (type, handler) => (host, target = host, index = 0) => {
   const listener = isProvider(handler) ? handler(target, index) : handler;
   if (!isEventListener(listener))
@@ -411,7 +405,7 @@ var RESERVED_WORDS = new Set([
   "toLocaleString"
 ]);
 var isParser = (value) => isFunction2(value) && value.length >= 2;
-var isSignalProducer = (value) => isFunction2(value) && value.length < 2;
+var isProducer = (value) => isFunction2(value) && value.length < 2;
 var validatePropertyName = (prop) => !(HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop));
 var component = (name, init = {}, setup) => {
 
@@ -425,8 +419,9 @@ var component = (name, init = {}, setup) => {
       for (const [prop, ini] of Object.entries(init)) {
         if (ini == null)
           continue;
-        const result = isParser(ini) ? ini(this, null) : isSignalProducer(ini) ? ini(this) : ini;
-        this.setSignal(prop, toSignal(result ?? RESET));
+        const result = isParser(ini) ? ini(this, null) : isProducer(ini) ? ini(this) : ini;
+        if (result != null)
+          this.setSignal(prop, toSignal(result));
       }
     }
     connectedCallback() {
@@ -437,8 +432,8 @@ var component = (name, init = {}, setup) => {
       }
       const fns = setup(this);
       if (!Array.isArray(fns))
-        throw new TypeError(`Expected array of functions as return value of setup() in ${elementName(this)}`);
-      this.#cleanup = run(fns, this);
+        throw new TypeError(`Expected array of functions as return value of setup function in ${elementName(this)}`);
+      this.#cleanup = run(fns, this, [this]);
     }
     disconnectedCallback() {
       if (isFunction2(this.#cleanup))
