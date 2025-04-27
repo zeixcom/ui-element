@@ -1,4 +1,4 @@
-import { asBoolean, asString, component, first, RESET, setProperty, setText } from '../../../'
+import { type Component, asBoolean, asString, component, first, RESET, setProperty, setText } from '../../../'
 
 export type InputButtonProps = {
 	disabled: boolean
@@ -6,7 +6,7 @@ export type InputButtonProps = {
 	badge: string
 }
 
-const InputButton = component('input-button', {
+export default component('input-button', {
 	disabled: asBoolean,
 	label: asString(RESET),
 	badge: asString(RESET)
@@ -18,8 +18,6 @@ const InputButton = component('input-button', {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'input-button': typeof InputButton
+		'input-button': Component<InputButtonProps>
 	}
 }
-
-export default InputButton

@@ -1,12 +1,15 @@
-import { type ComponentProps, all, component, first, on, setProperty, state } from '../../../'
-import InputButton from '../input-button/input-button'
-import RatingStars from '../rating-stars/rating-stars'
+import {
+	type Component, type ComponentProps,
+	all, component, first, on, setProperty, state
+} from '../../../'
+import { InputButtonProps } from '../input-button/input-button'
+import { RatingStarsProps } from '../rating-stars/rating-stars'
 
-const RatingFeedback = component('rating-feedback', {}, el => {
+export default component('rating-feedback', {}, el => {
 	const rating = state(0)
 	const empty = state(true)
 	const submitted = state(false)
-	const stars = el.querySelector<typeof RatingStars>('rating-stars')
+	const stars = el.querySelector<Component<RatingStarsProps>>('rating-stars')
 	if (!stars)
 		throw new Error('No rating-stars component found')
 	return [
@@ -41,16 +44,8 @@ const RatingFeedback = component('rating-feedback', {}, el => {
 	),
 
 	// Effect on empty state
-	first<ComponentProps, typeof InputButton>('input-button',
+	first<ComponentProps, Component<InputButtonProps>>('input-button',
 		setProperty('disabled', empty)
 	)
 ]
 })
-
-declare global {
-	interface HTMLElementTagNameMap {
-		'rating-feedback': typeof RatingFeedback
-	}
-}
-
-export default RatingFeedback

@@ -1,4 +1,4 @@
-import { asString, component, first, on, setAttribute, setProperty, setText, UNSET } from '../../../'
+import { type Component, asString, component, first, on, setAttribute, setProperty, setText, UNSET } from '../../../'
 
 export type InputTextProps = {
 	value: string,
@@ -7,7 +7,7 @@ export type InputTextProps = {
     description: string,
 }
 
-const InputText = component('input-text', {
+export default component('input-text', {
 	value: asString(),
 	length: 0,
 	error: '',
@@ -52,8 +52,6 @@ const InputText = component('input-text', {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'input-text': typeof InputText
+		'input-text': Component<InputTextProps>
 	}
 }
-
-export default InputText

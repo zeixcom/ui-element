@@ -2,17 +2,23 @@
 
 Version 0.12.0
 
-**UIElement** - transform reusable markup, styles and behavior into powerful, reactive, and maintainable Web Components.
+**UIElement** - the HTML-first microframework bringing reactivity to Web Components.
 
-`UIElement` is a base class for Web Components with reactive states and UI effects. UIElement is tiny, around 4kB gzipped JS code, of which unused functions can be tree-shaken by build tools. It uses [Cause & Effect](https://github.com/zeixcom/cause-effect) internally for state management with signals and for scheduled DOM updates.
+UIElement is a set of functions to build reusable, loosely coupled Web Components with reactive properties. It provides structure through components and simplifies state management and DOM synchronization using declarative signals and effects, leading to more organized and maintainable code without a steep learning curve.
+
+Unlike SPA frameworks (React, Vue, Svelte, etc.) UIElement takes a HTML-first approach, progressively enhancing sever-rendered HTML rather than recreating (rendering) it using JavaScript. UIElement achieves the same result as SPA frameworks with SSR, but with a simpler, more efficient approach. It works with a backend written in any language or with any static site generator.
 
 ## Key Features
 
-* **Reusable Components**: Create highly modular and reusable components to encapsulate styles and behavior.
-* **Declarative States**: Bring static, server-rendered content to life with dynamic interactivity and state management.
-* **Signal-Based Reactivity**: Employ signals for efficient state propagation, ensuring your components react instantly to changes.
-* **Declarative Effects**: Use granular effects to automatically synchronize UI states with minimal code.
-* **Context Support**: Share global states across your component tree without tightly coupling logic.
+* 🧱 **HTML Web Components**: Build on standard HTML and enhance it with encapsulated, reusable Web Components. No virtual DOM – UIElement works directly with the real DOM.
+* 🚦 **Reactive Properties**: Define reactive properties for fine-grained, efficient state management (signals). Changes automatically propagate only to the parts of the DOM that need updating, avoiding unnecessary re-renders.
+* 🧩 **Function Composition**: Declare component behavior by composing small, reusable functions (attribute parsers and effects). This promotes cleaner code compared to spaghetti code problems that commonly occur when writing low-level imperative code.
+* 🛠️ **Customizable**: UIElement is designed to be easily customizable and extensible. You can create your own custom attribute parsers and effects to suit your specific needs.
+* 🌐 **Context Support**: Share global states across components without prop drilling or tightly coupling logic.
+* 🪶 **Tiny footprint**: Minimal core (~4kB gzipped) with tree-shaking support, adding only the necessary JavaScript to enhance your HTML.
+* 🛡️ **Type Safety**: Get early warnings when types don't match, improving code quality and reducing bugs.
+
+UIElement uses [Cause & Effect](https://github.com/zeixcom/cause-effect) internally for state management with signals and for scheduled DOM updates. But you could easily rewrite the `component()` function to use a signals library of your choice or to produce something else than Web Components.
 
 ## Installation
 

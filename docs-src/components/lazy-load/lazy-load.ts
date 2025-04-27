@@ -1,5 +1,5 @@
 import {
-	type AttributeParser, type SignalProducer,
+	type AttributeParser, type Component, type SignalProducer,
 	setProperty, setText, dangerouslySetInnerHTML, component,
 	first
 } from '../../../'
@@ -49,7 +49,7 @@ const fetchText: SignalProducer<HTMLElement & { error: string, src: string }, st
 
 /* === Component === */
 
-const LazyLoad = component('lazy-load', {
+export default component('lazy-load', {
 	error: '',
 	src: asURL,
 	content: fetchText
@@ -63,8 +63,6 @@ const LazyLoad = component('lazy-load', {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'lazy-load': typeof LazyLoad
+		'lazy-load': Component<LazyLoadProps>
 	}
 }
-
-export default LazyLoad

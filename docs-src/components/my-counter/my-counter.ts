@@ -1,10 +1,10 @@
-import { asInteger, component, first, on, setText } from '../../../'
+import { type Component, asInteger, component, first, on, setText } from '../../../'
 
 export type MyCounterProps = {
 	count: number
 }
 
-const MyCounter = component('my-counter', {
+export default component('my-counter', {
 	count: asInteger()
 }, el => [
 	first('.count', setText('count')),
@@ -15,8 +15,6 @@ const MyCounter = component('my-counter', {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'my-counter': typeof MyCounter
+		'my-counter': Component<MyCounterProps>
 	}
 }
-
-export default MyCounter

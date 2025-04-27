@@ -1,10 +1,10 @@
-import { all, asInteger, component, emit, on, setProperty, setText } from '../../../'
+import { type Component, all, asInteger, component, emit, on, setProperty, setText } from '../../../'
 
 export type RatingStarsProps = {
 	value: number
 }
 
-const RatingStars = component('rating-stars', {
+export default component('rating-stars', {
 	value: asInteger(),
 }, el => [
 	all<RatingStarsProps, HTMLInputElement>('input',
@@ -24,8 +24,6 @@ const RatingStars = component('rating-stars', {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'rating-stars': typeof RatingStars
+		'rating-stars': Component<RatingStarsProps>
 	}
 }
-
-export default RatingStars

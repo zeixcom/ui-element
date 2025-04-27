@@ -1,16 +1,19 @@
-import { type ComponentProps, batch, component, computed, enqueue, first, insertTemplate, on, setAttribute, setProperty, setText, state } from '../../../'
-import InputButton from '../input-button/input-button'
-import InputCheckbox from '../input-checkbox/input-checkbox'
-import InputField from '../input-field/input-field'
-import InputRadiogroup from '../input-radiogroup/input-radiogroup'
+import {
+	type Component, type ComponentProps,
+	batch, component, computed, enqueue, first, insertTemplate, on, setAttribute, setProperty, setText, state
+} from '../../../'
+import { InputButtonProps } from '../input-button/input-button'
+import { InputCheckboxProps } from '../input-checkbox/input-checkbox'
+import { InputFieldProps } from '../input-field/input-field'
+import { InputRadiogroupProps } from '../input-radiogroup/input-radiogroup'
 
-const TodoApp = component('todo-app', {}, el => {
-	const input = el.querySelector<typeof InputField>('input-field')
+export default component('todo-app', {}, el => {
+	const input = el.querySelector<Component<InputFieldProps>>('input-field')
 	if (!input) throw new Error('No input field found')
 	const template = el.querySelector('template')
 	if (!template) throw new Error('No template found')
 	
-	let tasks = Array.from(el.querySelectorAll<typeof InputCheckbox>('input-checkbox'))
+	let tasks = Array.from(el.querySelectorAll<Component<InputCheckboxProps>>('input-checkbox'))
 	const total = state(tasks.length)
 	const completed = state(tasks.filter(task => task.checked).length)
 	const active = computed(() => total.get() - completed.get())
@@ -19,7 +22,7 @@ const TodoApp = component('todo-app', {}, el => {
 		completed.set(tasks.filter(task => task.checked).length)
 	}
 	const refreshTasks = () => {
-		tasks = Array.from(el.querySelectorAll<typeof InputCheckbox>('input-checkbox'))
+		tasks = Array.from(el.querySelectorAll<Component<InputCheckboxProps>>('input-checkbox'))
 		batch(() => {
 			total.set(tasks.length)
 			refreshCompleted()
@@ -27,7 +30,7 @@ const TodoApp = component('todo-app', {}, el => {
 	}
 
 	return [
-		first<ComponentProps, typeof InputButton>('.submit',
+		first<ComponentProps, Component<InputButtonProps>>('.submit',
 			setProperty('disabled', () => !input.length),
 		),
 		first('form',
@@ -45,7 +48,7 @@ const TodoApp = component('todo-app', {}, el => {
 		),
 		first('ol',
 			setAttribute('filter',
-				() => (el.querySelector<typeof InputRadiogroup>('input-radiogroup')?.value ?? 'all')
+				() => (el.querySelector<Component<InputRadiogroupProps>>('input-radiogroup')?.value ?? 'all')
 			),
 			insertTemplate(template, addTask, 'beforeend', () => String(input.value)),
 			on('click', (e: Event) => {
@@ -74,7 +77,7 @@ const TodoApp = component('todo-app', {}, el => {
 		first<ComponentProps, HTMLElement>('.all-done',
 			setProperty('hidden', () => !!active.get())
 		),
-		first<ComponentProps, typeof InputButton>('.clear-completed',
+		first<ComponentProps, Component<InputButtonProps>>('.clear-completed',
 			setProperty('disabled', () => !completed.get()),
 			setProperty('badge', () => completed.get() > 0 ? String(completed.get()) : ''),
 			on('click', () => {
@@ -85,11 +88,3 @@ const TodoApp = component('todo-app', {}, el => {
 		)
 	]
 })
-
-declare global {
-	interface HTMLElementTagNameMap {
-		'todo-app': typeof TodoApp
-	}
-}
-
-export default TodoApp

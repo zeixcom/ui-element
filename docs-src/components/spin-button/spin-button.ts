@@ -1,10 +1,10 @@
-import { all, asInteger, component, first, on, setProperty, setText, toggleAttribute } from '../../../'
+import { type Component, all, asInteger, component, first, on, setProperty, setText, toggleAttribute } from '../../../'
 
 export type SpinButtonProps = {
 	value: number
 }
 
-const SpinButton = component('spin-button', {
+export default component('spin-button', {
 	value: asInteger(),
 }, el => {
 	const zeroLabel = el.getAttribute('zero-label') || 'Add to Cart'
@@ -44,8 +44,6 @@ const SpinButton = component('spin-button', {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'spin-button': typeof SpinButton
+		'spin-button': Component<SpinButtonProps>
 	}
 }
-
-export default SpinButton

@@ -1,11 +1,11 @@
-import { all, asBoolean, component, on, setAttribute, setProperty, toggleAttribute, toggleClass } from '../../../'
+import { type Component, all, asBoolean, component, on, setAttribute, setProperty, toggleAttribute, toggleClass } from '../../../'
 
 export type TabListProps = {
 	accordion: boolean
 	active: number
 }
 
-const TabList = component('tab-list', {
+export default component('tab-list', {
 	accordion: asBoolean,
 	active: 0,
 }, el => {
@@ -33,8 +33,6 @@ const TabList = component('tab-list', {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'tab-list': typeof TabList
+		'tab-list': Component<TabListProps>
 	}
 }
-
-export default TabList

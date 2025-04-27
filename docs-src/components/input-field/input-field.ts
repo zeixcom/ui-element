@@ -1,7 +1,6 @@
 import {
-	type AttributeParser,
-	Component,
-	component, computed, effect, emit, first, FxFunction, on, setAttribute, setProperty, setText, UNSET
+	type AttributeParser, type Component, type FxFunction,
+	component, computed, emit, first, on, setAttribute, setProperty, setText, UNSET
 } from '../../../'
 
 /* === Type === */
@@ -17,12 +16,19 @@ export type InputFieldProps = {
 /* === Pure Functions === */
 
 // Check if value is a number
-const isNumber = (num: any) => typeof num === 'number'
+const isNumber = (num: unknown) => typeof num === 'number'
 
 // Parse a value as a number with optional integer flag and fallback value
-const parseNumber = (v: any, int = false, fallback = 0): number => {
+const parseNumber = (v: string | null, int = false, fallback = 0): number => {
+	if (!v) return fallback
 	const temp = int ? parseInt(v, 10) : parseFloat(v)
 	return Number.isFinite(temp) ? temp : fallback
+}
+
+// Count decimal places in a number
+const countDecimals = (value: number): number => {
+	if (Math.floor(value) === value || String(value).indexOf('.') === -1) return 0;
+	return String(value).split('.')[1].length || 0;
 }
 
 /* === Attribute Parsers === */
@@ -34,18 +40,19 @@ const asNumberOrString: AttributeParser<HTMLElement, string | number> = (el, v) 
 
 /* === Component === */
 
-const InputField = component('input-field', {
+export default component('input-field', {
 	value: asNumberOrString,
 	length: 0,
 	error: '',
 	description: '',
-	clear: (host: HTMLElement & InputFieldProps) => {
+	clear: (host: Component<InputFieldProps>) => {
 		host.clear = () => {
 			host.value = ''
 			host.length = 0
 			const input = host.querySelector('input')
 			if (input) {
 				input.value = ''
+				input.checkValidity()
 				input.focus()
 			}
 		}
@@ -57,72 +64,62 @@ const InputField = component('input-field', {
 		throw new Error('No input element found')
 	const typeNumber = input.type === 'number'
 	const integer = el.hasAttribute('integer')
-	const step = parseNumber(input.step, integer, 1)
-	const min = parseNumber(input.min, integer, 0)
-	const max = parseNumber(input.max, integer, 100)
+	const validationEndpoint = el.getAttribute('validate')
 
 	// Trigger value-change event to commit the value change
 	const triggerChange = (value: string | number | ((v: any) => string | number))  => {
-		el.value = typeof value === 'function' ? value(el.value) : value
+		const newValue = typeof value === 'function' ? value(el.value)
+			: typeNumber && !isNumber(value) ? parseNumber(value, integer, 0)
+			: value
+		if (Object.is(el.value, newValue)) return
+
+		// Validate input value against a server-side endpoint
+		if (newValue !== null && validationEndpoint) {
+			fetch(`${validationEndpoint}?name=${input.name}value=${newValue}`)
+				.then(async response => {
+					const text = await response.text()
+					input.setCustomValidity(text)
+					el.error = text
+				})
+				.catch(err => {
+					el.error = err.message
+				})
+		}
+		input.checkValidity()
+		el.value = newValue
 		el.error = input.validationMessage ?? ''
 		if (input?.value !== String(value))
 		emit('value-change', value)(el)
 	}
-
-	// Round a value to the nearest step
-	const nearestStep = (v: number) => {
-		const steps = Math.round((max - min) / step)
-		// Bring to 0-1 range
-		let zerone = Math.round((v - min) * steps / (max - min)) / steps
-		// Keep in range in case value is off limits
-		zerone = Math.min(Math.max(zerone, 0), 1)
-		const value = zerone * (max - min) + min
-		return integer ? Math.round(value) : value
-	}
 	
 	// Handle input changes
-	const validationEndpoint = el.getAttribute('validate')
 	fns.push(
-		first('input',
+		first<InputFieldProps, HTMLInputElement>('input',
+			setProperty('value', () => String(el.value)),
 			on('change', () => {
 				triggerChange(typeNumber ? input.valueAsNumber ?? 0 : input.value ?? '')
 			}),
 			on('input', () => {
 				el.length = input.value.length ?? 0
 			})
-		),
-
-		// Validate and update value
-		effect(() => {
-			const value = el.value
-			if (value && validationEndpoint) {
-
-				// Validate input value against a server-side endpoint
-				fetch(`${validationEndpoint}?name=${input.name}value=${input.value}`)
-					.then(async response => {
-						const text = await response.text()
-						input.setCustomValidity(text)
-						el.error = text
-					})
-					.catch(err => {
-						el.error = err.message
-					})
-			}
-
-			// Ensure value is a number if it is not already a number
-			if (typeNumber && !isNumber(value)) {
-				// Effect will be called again with numeric value
-				el.value = parseNumber(value, integer, 0)
-				return
-			}
-
-			// Change value only if it is a valid number
-			if (input && typeNumber && Number.isFinite(value))
-				input.value = String(value)
-		})
+		)
 	)
 
 	if (typeNumber) {
+		const spinButton = el.querySelector('.spinbutton') as HTMLElement | null
+		const step = parseNumber(spinButton?.dataset['step'] || input.step, integer, 1)
+		const min = parseNumber(input.min, integer, 0)
+		const max = parseNumber(input.max, integer, 100)
+
+		// Round a value to the nearest step
+		const nearestStep = (v: number) => {
+			if (!Number.isFinite(v) || v < min) return min
+			if (v > max) return max
+			const value = min + Math.round((v - min) / step) * step
+			return integer
+				? Math.round(value)
+				: parseFloat(value.toFixed(countDecimals(step)))
+		}
 
 		// Handle arrow key events to increment / decrement value
 		fns.push(
@@ -132,22 +129,24 @@ const InputField = component('input-field', {
 					if (['ArrowUp', 'ArrowDown'].includes(key)) {
 						e.stopPropagation()
 						e.preventDefault()
-						if (key === 'ArrowDown')
-							triggerChange(v => nearestStep(v - (shiftKey ? step * 10 : step)))
-						if (key === 'ArrowUp')
-							triggerChange(v => nearestStep(v + (shiftKey ? step * 10 : step)))
+						const n = (shiftKey ? step * 10 : step)
+						const newValue = nearestStep(input.valueAsNumber + (key === 'ArrowUp' ? n : -n))
+						input.value = String(newValue)
+						triggerChange(newValue)
 					}
 				})
 			)
 		)
 
 		// Handle spin button clicks and update their disabled state
-		const spinButton = el.querySelector('.spinbutton') as HTMLElement | null
 		if (spinButton) {
 			fns.push(
 				first<InputFieldProps, HTMLButtonElement>('.decrement',
 					on('click', (e: Event) => {
-						triggerChange(v => nearestStep(v - ((e as MouseEvent).shiftKey ? step * 10 : step)))
+						const n = ((e as MouseEvent).shiftKey ? step * 10 : step)
+						const newValue = nearestStep(input.valueAsNumber - n)
+						input.value = String(newValue)
+						triggerChange(newValue)
 					}),
 					setProperty('disabled',
 						() => (isNumber(min) ? el.value as number : 0) - step < min
@@ -155,10 +154,13 @@ const InputField = component('input-field', {
 				),
 				first<InputFieldProps, HTMLButtonElement>('.increment',
 					on('click', (e: Event) => {
-						triggerChange(v => nearestStep(v + ((e as MouseEvent).shiftKey ? step * 10 : step)))
+						const n = ((e as MouseEvent).shiftKey ? step * 10 : step)
+						const newValue = nearestStep(input.valueAsNumber + n)
+						input.value = String(newValue)
+						triggerChange(newValue)
 					}),
 					setProperty('disabled',
-						() => (isNumber(max) ? el.value as number : 0) - step > max
+						() => (isNumber(max) ? el.value as number : 0) + step > max
 					)
 				)
 			)
@@ -171,6 +173,7 @@ const InputField = component('input-field', {
 			first<InputFieldProps, HTMLButtonElement>('.clear',
 				on('click', () => {
 					el.clear()
+					triggerChange('')
 				}),
 				setProperty('hidden', () => !el.length)
 			)
@@ -216,8 +219,6 @@ const InputField = component('input-field', {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'input-field': typeof InputField
+		'input-field': Component<InputFieldProps>
 	}
 }
-
-export default InputField

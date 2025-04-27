@@ -1,7 +1,6 @@
 import { type Provider, all, component, first, on, state, toggleClass } from '../../../'
 
-
-const MySlider = component('my-slider', {}, el => {
+export default component('my-slider', {}, el => {
 	const active = state(0)
 	const total = el.querySelectorAll('.slide').length
 	const isActiveProvider: Provider<boolean> = (_, index) => active.get() === index
@@ -16,11 +15,3 @@ const MySlider = component('my-slider', {}, el => {
 		all('.dots span', toggleClass('active', isActiveProvider))
 	]
 })
-
-declare global {
-	interface HTMLElementTagNameMap {
-		'my-slider': typeof MySlider
-	}
-}
-
-export default MySlider

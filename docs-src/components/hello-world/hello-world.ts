@@ -1,10 +1,10 @@
-import { component, first, on, RESET, setText } from '../../../'
+import { type Component, component, first, on, RESET, setText } from '../../../'
 
 export type HelloWorldProps = {
 	name: string
 }
 
-const HelloWorld = component('hello-world', {
+export default component('hello-world', {
 	name: RESET
 }, el => [
 	first('span', setText('name')),
@@ -15,8 +15,6 @@ const HelloWorld = component('hello-world', {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'hello-world': typeof HelloWorld
+		'hello-world': Component<HelloWorldProps>
 	}
 }
-
-export default HelloWorld

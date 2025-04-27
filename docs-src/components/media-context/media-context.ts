@@ -1,11 +1,21 @@
-import { type Context, type SignalProducer, type State, component, provide, state } from '../../../'
+import {
+	type Component, type Context, type SignalProducer, type State,
+	component, provide, state
+} from '../../../'
 
-export type ThemeContext = {
+export type MediaContextProps = {
 	'media-motion': boolean
-	'media-theme': string
-	'media-viewport': string
-	'media-orientation': string
+	'media-theme': 'light' | 'dark'
+	'media-viewport': 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+	'media-orientation': 'portrait' | 'landscape'
 }
+
+/* === Exported Contexts === */
+
+export const MEDIA_MOTION = 'media-motion' as Context<'media-motion', State<boolean>>
+export const MEDIA_THEME = 'media-theme' as Context<'media-theme', State<'light' | 'dark'>>
+export const MEDIA_VIEWPORT = 'media-viewport' as Context<'media-viewport', State<'xs' | 'sm' | 'md' | 'lg' | 'xl'>>
+export const MEDIA_ORIENTATION = 'media-orientation' as Context<'media-orientation', State<'portrait' | 'landscape'>>
 
 /* === Signal Producers === */
 
@@ -65,24 +75,17 @@ const matchOrientation: SignalProducer<HTMLElement, string> = () => {
 
 /* === Component === */
 
-const MediaContext = component('media-context', {
+export default component('media-context', {
 	'media-motion': matchMotion,
 	'media-theme': matchTheme,
 	'media-viewport': matchViewport,
     'media-orientation': matchOrientation
 }, () => [
-	provide([
-		'media-motion' as Context<'media-motion', State<boolean>>,
-		'media-theme' as Context<'media-theme', State<string>>,
-		'media-viewport' as Context<'media-viewport', State<string>>,
-		'media-orientation' as Context<'media-orientation', State<string>>
-	])
+	provide([MEDIA_MOTION, MEDIA_THEME, MEDIA_VIEWPORT, MEDIA_ORIENTATION])
 ])
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'media-context': typeof MediaContext
+		'media-context': Component<MediaContextProps>
 	}
 }
-
-export default MediaContext

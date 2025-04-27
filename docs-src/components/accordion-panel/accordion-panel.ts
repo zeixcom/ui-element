@@ -1,11 +1,11 @@
-import { asBoolean, component, first, setProperty, toggleAttribute } from '../../../'
+import { type Component, asBoolean, component, first, setProperty, toggleAttribute } from '../../../'
 
 export type AccordionPanelProps = {
 	open: boolean
 	collapsible: boolean
 }
 
-const AccordionPanel = component('accordion-panel', {
+export default component('accordion-panel', {
 	open: asBoolean,
 	collapsible: asBoolean
 }, el => [
@@ -20,8 +20,6 @@ const AccordionPanel = component('accordion-panel', {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'accordion-panel': typeof AccordionPanel
+		'accordion-panel': Component<AccordionPanelProps>
 	}
 }
-
-export default AccordionPanel

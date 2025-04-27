@@ -1,12 +1,12 @@
-import { asBoolean, component, first, on, toggleAttribute } from '../../../'
+import { type Component, asBoolean, component, first, on, toggleAttribute } from '../../../'
 
-import InputButton from '../input-button/input-button'
+import { InputButtonProps } from '../input-button/input-button'
 
 export type CodeBlockProps = {
     collapsed: boolean
 }
 
-const CodeBlock = component('code-block',{
+export default component('code-block',{
 	collapsed: asBoolean
 }, el => {
 	const code = el.querySelector('code')
@@ -14,7 +14,7 @@ const CodeBlock = component('code-block',{
 		toggleAttribute('collapsed'),
 		first('.overlay', on('click', () => { el.collapsed = false })),
 		first('.copy', on('click', async (e: Event) => {
-			const copyButton = e.currentTarget as typeof InputButton
+			const copyButton = e.currentTarget as Component<InputButtonProps>
 			const label = copyButton.textContent?.trim() ?? ''
 			let status = 'success'
 			try {
@@ -36,8 +36,6 @@ const CodeBlock = component('code-block',{
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'code-block': typeof CodeBlock
+		'code-block': Component<CodeBlockProps>
 	}
 }
-
-export default CodeBlock

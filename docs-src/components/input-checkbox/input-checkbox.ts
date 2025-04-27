@@ -1,11 +1,11 @@
-import { asBoolean, asString, component, first, on, RESET, setProperty, setText, toggleAttribute } from '../../../'
+import { type Component, asBoolean, asString, component, first, on, RESET, setProperty, setText, toggleAttribute } from '../../../'
 
 export type InputCheckboxProps = {
 	checked: boolean,
 	label: string
 }
 
-const InputCheckbox = component('input-checkbox', {
+export default component('input-checkbox', {
 	checked: asBoolean,
 	label: asString(RESET)
 }, el => [
@@ -21,8 +21,6 @@ const InputCheckbox = component('input-checkbox', {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'input-checkbox': typeof InputCheckbox
+		'input-checkbox': Component<InputCheckboxProps>
 	}
 }
-
-export default InputCheckbox
