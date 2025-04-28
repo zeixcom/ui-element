@@ -225,7 +225,7 @@ Here's how everything comes together:
 					</div>
 				</input-field>
 				<input-button class="submit">
-					<button type="submit" class="primary" disabled>Add Todo</button>
+					<button type="submit" class="constructive" disabled>Add Todo</button>
 				</input-button>
 			</form>
 			<ol filter="all"></ol>
@@ -234,11 +234,11 @@ Here's how everything comes together:
 					<input-checkbox class="todo">
 						<label>
 							<input type="checkbox" class="visually-hidden" />
-							<span></span>
+							<span class="label"><slot></slot></span>
 						</label>
 					</input-checkbox>
 					<input-button class="delete">
-						<button type="button">Delete</button>
+						<button type="button" class="destructive small">Delete</button>
 					</input-button>
 				</li>
 			</template>
@@ -270,7 +270,10 @@ Here's how everything comes together:
 					</fieldset>
 				</input-radiogroup>
 				<input-button class="clear-completed">
-					<button type="button">Clear Completed</button>
+					<button type="button" class="destructive">
+						<span class="label">Clear Completed</span>
+						<span class="badge"></span>
+					</button>
 				</input-button>
 			</footer>
 		</todo-app>

@@ -1,29 +1,27 @@
-import { type Signal, effect, enqueue, isComputed, isSignal, isState, UNSET } from '@zeix/cause-effect'
+import { type Signal, effect, enqueue, isSignal, isState, UNSET } from '@zeix/cause-effect'
 
 import { isFunction, isString } from '../core/util'
-import { type ComponentSignals, parse, UIElement, RESET } from '../ui-element'
-import { elementName, log, LOG_ERROR, valueString } from '../core/log'
+import { type ComponentProps, type Component, RESET } from '../component'
+import { DEV_MODE, elementName, log, LOG_ERROR } from '../core/log'
+import type { Provider } from '../core/ui'
 
 /* === Types === */
 
-type ValueProvider<T> = <E extends Element>(target: E, index: number) =>
-	T
-
-type SignalLike<T> = PropertyKey
+type SignalLike<P extends ComponentProps, T> = keyof P
 	| Signal<NonNullable<T>>
-	| ValueProvider<T>
+	| Provider<T>
 
 type ElementUpdater<E extends Element, T> = {
 	op: string,
     read: (element: E) => T | null,
     update: (element: E, value: T) => string,
-    delete?: (element: E) => string,
+    delete?: (element: E) => string
 }
 
-type NodeInserter<S extends ComponentSignals> = {
+type NodeInserter = {
 	type: string,
 	where: InsertPosition,
-	create: (host: UIElement<S>) => Node | undefined,
+	create: () => Node | undefined
 }
 
 /* === Internal === */
@@ -37,14 +35,14 @@ const ops: Record<string, string> = {
 	t: 'text content',
 }
 
-const resolveSignalLike = <T, S extends ComponentSignals, E extends Element>(
-	s: SignalLike<T>,
-	host: UIElement<S>,
+const resolveSignalLike = /*#__PURE__*/ <P extends ComponentProps, E extends Element, T extends {}>(
+	s: SignalLike<P, T>,
+	host: Component<P>,
 	target: E,
 	index: number
-): T => isString(s) ? host.get(s)
+): T => isString(s) ? host.getSignal(s).get() as unknown as T
 	: isSignal(s) ? s.get()
-	: isFunction(s) ? s(target, index)
+	: isFunction<T>(s) ? s(target, index)
 	: RESET
 
 const isSafeURL = /*#__PURE__*/ (value: string): boolean => {
@@ -54,7 +52,7 @@ const isSafeURL = /*#__PURE__*/ (value: string): boolean => {
 			const url = new URL(value, window.location.origin)
 			return ['http:', 'https:', 'ftp:'].includes(url.protocol)
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		} catch (error) {
+		} catch (_) {
 			return false
 		}
 	}
@@ -81,31 +79,22 @@ const safeSetAttribute = /*#__PURE__*/ (
  * @param {SignalLike<T>} s - state bound to the element property
  * @param {ElementUpdater} updater - updater object containing key, read, update, and delete methods
  */
-const updateElement = <
-	E extends Element,
-	T extends {},
-	S extends ComponentSignals = {},
-	K extends keyof S = never
->(
-	s: K | SignalLike<T>,
-	updater: ElementUpdater<E, S[K] | T>
-) => (host: UIElement<S>, target: E, index: number): void => {
+const updateElement = <P extends ComponentProps, E extends Element, T extends {}>(
+	s: SignalLike<P, T>,
+	updater: ElementUpdater<E, T>
+) => (host: Component<P>, target: E, index: number = 0): () => void => {
 	const { op, read, update } = updater
 	const fallback = read(target)
 
 	// If not yet set, set signal value to value read from DOM
-	if (isString(s) && !isComputed(host.signals[s as K])) {
-		const value = isString(fallback)
-			? parse(host, s, fallback)
-			: fallback
-		if (null != value) host.set(s as K, value as S[K], false)
-	}
+	if (isString(s) && isString(fallback) && host[s] === RESET)
+		host.attributeChangedCallback(s, null, fallback)
 
 	const err = (error: unknown, verb: string, prop: string = 'element') =>
 		log(error, `Failed to ${verb} ${prop} ${elementName(target)} in ${elementName(host)}`, LOG_ERROR)
 
     // Update the element's DOM state according to the signal value
-	effect(() => {
+	return effect(() => {
 		let value = RESET
 		try {
 			value = resolveSignalLike(s, host, target, index)
@@ -113,7 +102,7 @@ const updateElement = <
 			err(error, 'update')
 			return
 		}
-		if (value === RESET) value = fallback as T
+		if (value === RESET) value = fallback
 		if (value === UNSET) value = updater.delete ? null : fallback
 
 		// Nil path => delete the attribute or style property of the element
@@ -123,7 +112,8 @@ const updateElement = <
                 name = updater.delete!(target)
                 return true
             }, [target, op]).then(() => {
-				log(target, `Deleted ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
+				if (DEV_MODE && host.debug)
+					log(target, `Deleted ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
 			}).catch((error) => {
 				err(error, 'delete', `${ops[op] + name} of`)
 			})
@@ -137,7 +127,8 @@ const updateElement = <
 				name = update(target, value)
 				return true
 			}, [target, op]).then(() => {
-				log(target, `Updated ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
+				if (DEV_MODE && host.debug)
+					log(target, `Updated ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
 			}).catch((error) => {
 				err(error, 'update', `${ops[op] + name} of`)
 			})
@@ -147,29 +138,28 @@ const updateElement = <
 
 /**
  * Effect to insert a node relative to an element according to a given SignalLike
+ * 
+ * @since 0.9.0
+ * @param {SignalLike<string>} s - state bound to the node insertion
+ * @param {NodeInserter} inserter - inserter object containing type, where, and create methods
+ * @throws {TypeError} if the insertPosition is invalid for the target element
  */
-const insertNode = <
-	E extends Element,
-	S extends ComponentSignals = {},
-	K extends keyof S = never
->(
-	s: K | SignalLike<boolean>,
-    { type, where, create }: NodeInserter<S>
-) => (host: UIElement<S>, target: E, index: number): void => {
+const insertNode = <P extends ComponentProps, E extends Element>(
+	s: SignalLike<P, boolean>,
+    { type, where, create }: NodeInserter
+) => (host: Component<P>, target: E, index: number = 0): void | (() => void) => {
 	const methods: Record<InsertPosition, keyof Element> = {
 		beforebegin: 'before',
 		afterbegin: 'prepend',
         beforeend: 'append',
         afterend: 'after'
 	}
-	if (!isFunction(target[methods[where]])) {
-		log(`Invalid insertPosition ${valueString(where)} for ${elementName(host)}:`, LOG_ERROR)
-        return
-    }
+	if (!isFunction(target[methods[where]]))
+		throw new TypeError(`Invalid insertPosition "${where}" for ${elementName(host)}`)
 	const err = (error: unknown) =>
 		log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR)
 
-	effect(() => {
+	return effect(() => {
 		let really = false
 		try {
 			really = resolveSignalLike(s, host, target, index)
@@ -179,13 +169,14 @@ const insertNode = <
 		}
 		if (!really) return
         enqueue(() => {
-			const node = create(host)
+			const node = create()
 			if (!node) return
 			(target[methods[where]] as (...nodes: Node[]) => void)(node)
 		}, [target, 'i']).then(() => {
-			const maybeSignal = isString(s) ? host.signals[s] : s
-			if (isState<boolean>(maybeSignal)) maybeSignal.set(false)
-			log(target, `Inserted ${type} into ${elementName(host)}`)
+			const signal = isSignal(s) ? s : isString(s) ? host.getSignal(s) : undefined
+			if (isState<boolean>(signal)) signal.set(false)
+			if (DEV_MODE && host.debug)
+				log(target, `Inserted ${type} into ${elementName(host)}`)
 		}).catch((error) => {
 			err(error)
 		})
@@ -198,12 +189,12 @@ const insertNode = <
  * @since 0.8.0
  * @param {SignalLike<string>} s - state bound to the text content
  */
-const setText = <E extends Element>(
-	s: SignalLike<string>
+const setText = <P extends ComponentProps, E extends Element>(
+	s: SignalLike<P, string>
 ) => updateElement(s, {
 	op: 't',
-	read: (el: E) => el.textContent,
-	update: (el: E, value: string) => {
+	read: (el: E): string | null => el.textContent,
+	update: (el: E, value: string): string => {
 		Array.from(el.childNodes)
 			.filter(node => node.nodeType !== Node.COMMENT_NODE)
 			.forEach(node => node.remove())
@@ -219,13 +210,13 @@ const setText = <E extends Element>(
  * @param {string} key - name of property to be set
  * @param {SignalLike<E[K]>} s - state bound to the property value
  */
-const setProperty = <E extends Element, K extends keyof E>(
+const setProperty = <P extends ComponentProps, E extends Element, K extends keyof E>(
 	key: K,
-	s: SignalLike<E[K]> = key
+	s: SignalLike<P, E[K]> = key as SignalLike<P, E[K]>
 ) => updateElement(s, {
 	op: 'p',
 	read: (el: E) => key in el ? el[key] : UNSET,
-	update: (el: E, value: E[K]) => {
+	update: (el: E, value: E[K]): string => {
 		el[key] = value
 		return String(key)
 	}
@@ -238,17 +229,17 @@ const setProperty = <E extends Element, K extends keyof E>(
  * @param {string} name - name of attribute to be set
  * @param {SignalLike<string>} s - state bound to the attribute value
  */
-const setAttribute = <E extends Element>(
+const setAttribute = <P extends ComponentProps, E extends Element>(
 	name: string,
-	s: SignalLike<string> = name
+	s: SignalLike<P, string> = name
 ) => updateElement(s, {
 	op: 'a',
-	read: (el: E) => el.getAttribute(name),
-	update: (el: E, value: string) => {
+	read: (el: E): string | null => el.getAttribute(name),
+	update: (el: E, value: string): string => {
 		safeSetAttribute(el, name, value)
 		return name
 	},
-	delete: (el: E) => {
+	delete: (el: E): string => {
 		el.removeAttribute(name)
 		return name
 	}
@@ -261,13 +252,13 @@ const setAttribute = <E extends Element>(
  * @param {string} name - name of attribute to be toggled
  * @param {SignalLike<boolean>} s - state bound to the attribute existence
  */
-const toggleAttribute = <E extends Element>(
+const toggleAttribute = <P extends ComponentProps, E extends Element>(
 	name: string,
-	s: SignalLike<boolean> = name
+	s: SignalLike<P, boolean> = name
 ) => updateElement(s, {
 	op: 'a',
-	read: (el: E) => el.hasAttribute(name),
-	update: (el: E, value: boolean) => {
+	read: (el: E): boolean => el.hasAttribute(name),
+	update: (el: E, value: boolean): string => {
 		el.toggleAttribute(name, value)
 		return name
 	}
@@ -280,13 +271,13 @@ const toggleAttribute = <E extends Element>(
  * @param {string} token - class token to be toggled
  * @param {SignalLike<boolean>} s - state bound to the class existence
  */
-const toggleClass = <E extends Element>(
+const toggleClass = <P extends ComponentProps, E extends Element>(
 	token: string,
-	s: SignalLike<boolean> = token
+	s: SignalLike<P, boolean> = token
 ) => updateElement(s, {
 	op: 'c',
-	read: (el: E) => el.classList.contains(token),
-	update: (el: E, value: boolean) => {
+	read: (el: E): boolean => el.classList.contains(token),
+	update: (el: E, value: boolean): string => {
 		el.classList.toggle(token, value)
 		return token
 	}
@@ -299,17 +290,17 @@ const toggleClass = <E extends Element>(
  * @param {string} prop - name of style property to be set
  * @param {SignalLike<string>} s - state bound to the style property value
  */
-const setStyle = <E extends (HTMLElement | SVGElement | MathMLElement)>(
+const setStyle = <P extends ComponentProps, E extends (HTMLElement | SVGElement | MathMLElement)>(
 	prop: string,
-	s: SignalLike<string> = prop
+	s: SignalLike<P, string> = prop
 ) => updateElement(s, {
 	op: 's',
-	read: (el: E) => el.style.getPropertyValue(prop),
-	update: (el: E, value: string) => {
+	read: (el: E): string | null => el.style.getPropertyValue(prop),
+	update: (el: E, value: string): string => {
 		el.style.setProperty(prop, value)
 		return prop
 	},
-	delete: (el: E) => {
+	delete: (el: E): string => {
 		el.style.removeProperty(prop)
 		return prop
 	}
@@ -323,14 +314,14 @@ const setStyle = <E extends (HTMLElement | SVGElement | MathMLElement)>(
  * @param {'open' | 'closed'} [attachShadow] - whether to attach a shadow root to the element, expects mode 'open' or 'closed'
  * @param {boolean} [allowScripts] - whether to allow executable script tags in the HTML content, defaults to false
  */
-const dangerouslySetInnerHTML = <E extends Element>(
-    s: SignalLike<string>,
+const dangerouslySetInnerHTML = <P extends ComponentProps, E extends Element>(
+    s: SignalLike<P, string>,
 	attachShadow?: 'open' | 'closed',
 	allowScripts?: boolean,
 ) => updateElement(s, {
 	op: 'h',
-    read: (el: E) => (el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? '',
-    update: (el: E, html: string) => {
+    read: (el: E): string => (el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? '',
+    update: (el: E, html: string): string => {
 		if (!html) {
 			if (el.shadowRoot) el.shadowRoot.innerHTML = '<slot></slot>'
 			return ''
@@ -356,25 +347,29 @@ const dangerouslySetInnerHTML = <E extends Element>(
  * @param {HTMLTemplateElement} template - template element to clone or import from
  * @param {SignalLike<boolean>} s - insert if SignalLike evalutes to true, otherwise ignore
  * @param {InsertPosition} where - position to insert the template relative to the target element ('beforebegin', 'afterbegin', 'beforeend', 'afterend')
+ * @param {string} content - content to be inserted into the template's slot
+ * @throws {TypeError} if the template is not an HTMLTemplateElement
  */
-const insertTemplate = <S extends ComponentSignals>(
+const insertTemplate = <P extends ComponentProps>(
 	template: HTMLTemplateElement,
-	s: SignalLike<boolean>,
-	where: InsertPosition = 'beforeend'
-) => insertNode(s, {
-	type: 'template content',
-	where,
-	create: (host: UIElement<S>) => {
-		if (!(template instanceof HTMLTemplateElement)) {
-			log(`Invalid template to insert into ${elementName(host)}:`, LOG_ERROR)
-			return
+	s: SignalLike<P, boolean>,
+	where: InsertPosition = 'beforeend',
+	content?: string | (() => string)
+) => {
+	if (!(template instanceof HTMLTemplateElement))
+		throw new TypeError('Expected template to be an HTMLTemplateElement')
+	return insertNode(s, {
+		type: 'template content',
+		where,
+		create: (): Node | undefined => {
+			const clone = document.importNode(template.content, true)
+			const slot = clone.querySelector('slot')
+			const text = isFunction(content) ? content() : content
+			if (slot) slot.replaceWith(document.createTextNode(text ? text : slot.textContent ?? ''))
+			return clone
 		}
-		const clone = host.shadowRoot
-			? document.importNode(template.content, true)
-			: template.content.cloneNode(true)
-		return clone
-	}
-})
+	})
+}
 
 /**
  * Create an element with a given tag name and optionally set its attributes
@@ -382,25 +377,25 @@ const insertTemplate = <S extends ComponentSignals>(
  * @since 0.11.0
  * @param {string} tag - tag name of the element to create
  * @param {SignalLike<boolean>} s - insert if SignalLike evalutes to true, otherwise ignore
- * @param {InsertPosition} [where] - position to insert the template relative to the target element ('beforebegin', 'afterbegin', 'beforeend', 'afterend')
- * @param {Record<string, string>} [attributes] - attributes to set on the element
- * @param {string} [text] - text content to set on the element
+ * @param {InsertPosition} where - position to insert the template relative to the target element ('beforebegin', 'afterbegin', 'beforeend', 'afterend')
+ * @param {Record<string, string>} attributes - attributes to set on the element
+ * @param {string} content - text content to be inserted into the element
  */
-const createElement = (
+const createElement = <P extends ComponentProps>(
     tag: string,
-    s: SignalLike<boolean>,
+    s: SignalLike<P, boolean>,
 	where: InsertPosition = 'beforeend',
 	attributes: Record<string, string> = {},
-	text?: string,
+	content?: string | (() => string)
 ) => insertNode(s, {
 	type: 'new element',
 	where,
-	create: () => {
+	create: (): Node | undefined => {
         const child = document.createElement(tag)
         for (const [key, value] of Object.entries(attributes))
 			safeSetAttribute(child, key, value)
-		if (text)
-			child.textContent = text
+		const text = isFunction(content) ? content() : content
+		if (text) child.textContent = text
         return child
     }
 })
@@ -411,12 +406,13 @@ const createElement = (
  * @since 0.9.0
  * @param {SignalLike<string>} s - state bound to the element removal
  */
-const removeElement = <E extends Element, S extends ComponentSignals>(
-	s: SignalLike<boolean>
-) => (host: UIElement<S>, target: E, index: number): void => {
+const removeElement = <P extends ComponentProps, E extends Element>(
+	s: SignalLike<P, boolean>
+) => (host: Component<P>, target: E, index: number = 0): () => void => {
 	const err = (error: unknown) =>
 		log(error, `Failed to delete ${elementName(target)} from ${elementName(host)}:`, LOG_ERROR)
-	effect(() => {
+
+	return effect(() => {
 		let really = false
 		try {
 			really = resolveSignalLike(s, host, target, index)
@@ -429,7 +425,10 @@ const removeElement = <E extends Element, S extends ComponentSignals>(
 			target.remove()
 			return true
 		}, [target, 'r']).then(() => {
-			log(target, `Deleted ${elementName(target)} into ${elementName(host)}`)
+			const signal = isSignal(s) ? s : isString(s) ? host.getSignal(s) : undefined
+			if (isState<boolean>(signal)) signal.set(false)
+			if (DEV_MODE && host.debug)
+				log(target, `Deleted ${elementName(target)} into ${elementName(host)}`)
 		}).catch((error) => {
 			err(error)
 		})
@@ -439,7 +438,7 @@ const removeElement = <E extends Element, S extends ComponentSignals>(
 /* === Exported Types === */
 
 export {
-	type ValueProvider, type SignalLike, type ElementUpdater, type NodeInserter,
+	type SignalLike, type ElementUpdater, type NodeInserter,
 	updateElement, insertNode,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
 	insertTemplate, createElement, removeElement, dangerouslySetInnerHTML

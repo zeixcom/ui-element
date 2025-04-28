@@ -1,32 +1,35 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.11.0
+ * @version 0.12.0
  * @author Esther Brunner
  */
 
 // From Cause & Effect
 export {
 	type Signal, type MaybeSignal, type State, type Computed,
-	type ComputedCallbacks, type EffectCallbacks, type EnqueueDedupe,
+	type ComputedCallback, type EffectMatcher, type EnqueueDedupe,
 	UNSET, state, computed, effect, batch, watch, enqueue,
 	isState, isComputed, isSignal, toSignal
 } from '@zeix/cause-effect'
 
 // Core
 export {
-	type AttributeParser, type ComponentSignals, type SignalInitializer, type Root, type StateUpdater,
-	RESET, UIElement, parse
-} from './src/ui-element'
-export {
-	type UI, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
-} from './src/core/ui'
+	type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords,
+	type Initializer, type AttributeParser, type SignalProducer, type MethodProducer,
+	type Cleanup, type FxFunction,
+	RESET, component
+} from './src/component'
 export {
 	type LogLevel,
 	LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, log
 } from './src/core/log'
 export {
-	type Context, type UnknownContext,
-	useContext
+	type Provider, type PassedSignals,
+	first, all, on, emit, pass
+} from './src/core/ui'
+export {
+	type Context, type UnknownContext, type ContextType,
+	provide, consume
 } from './src/core/context'
 
 // Lib
@@ -34,7 +37,7 @@ export {
 	asBoolean, asInteger, asNumber, asString, asEnum, asJSON
 } from './src/lib/parsers'
 export {
-	type ValueProvider, type SignalLike, type ElementUpdater, type NodeInserter,
+	type SignalLike, type ElementUpdater, type NodeInserter,
 	updateElement, insertNode,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
 	dangerouslySetInnerHTML, insertTemplate, createElement, removeElement

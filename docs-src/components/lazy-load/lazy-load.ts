@@ -1,54 +1,68 @@
-import { UIElement, setProperty, setText, dangerouslySetInnerHTML } from '../../../'
+import {
+	type AttributeParser, type Component, type SignalProducer,
+	setProperty, setText, dangerouslySetInnerHTML, component,
+	first
+} from '../../../'
 
-export class LazyLoad extends UIElement<{
-    src: string,
-    content: string,
-    error: string,
-}> {
-	static localName = 'lazy-load'
+export type LazyLoadProps = {
+	error: string
+	src: string
+	content: string
+}
 
-	init = {
-		src: (v: string | null) => { // Custom attribute parser
-			if (!v) {
-				this.set('error', 'No URL provided in src attribute')
-				return ''
-			} else if ((this.parentElement || (this.getRootNode() as ShadowRoot).host)?.closest(`${this.localName}[src="${v}"]`)) {
-				this.set('error', 'Recursive loading detected')
-				return ''
-			}
-			const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
-			if (url.origin === location.origin) // Sanity check for cross-origin URLs
-				return url.toString()
-			this.set('error', 'Invalid URL origin')
-			return ''
-		},
-		content: async () => { // Async Computed callback
-			const url = this.get('src')
-			if (!url) return ''
-			try {
-				const response = await fetch(this.get('src'))
-				this.querySelector('.loading')?.remove()
-				if (response.ok) return response.text()
-				else this.set('error', response.statusText)
-			} catch (error) {
-				this.set('error', error.message)
-			}
-			return ''
-		},
-		error: '',
+/* === Attribute Parser === */
+
+const asURL: AttributeParser<HTMLElement & { error: string }, string> = (el, v) => {
+	if (!v) {
+		el.error = 'No URL provided in src attribute'
+		return ''
+	} else if ((el.parentElement || (el.getRootNode() as ShadowRoot).host)?.closest(`${el.localName}[src="${v}"]`)) {
+		el.error = 'Recursive loading detected'
+		return ''
+	}
+	const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
+	if (url.origin === location.origin) { // Sanity check for cross-origin URLs
+		el.error = '' // Success: wipe previous error if there was any
+		return String(url)
+	}
+	el.error = 'Invalid URL origin'
+	return ''
+}
+
+/* === Signal Producer === */
+
+const fetchText: SignalProducer<HTMLElement & { error: string, src: string }, string> = el =>
+	async abort => { // Async Computed callback
+		const url = el.src
+		if (!url) return ''
+		try {
+			const response = await fetch(url, { signal: abort })
+			el.querySelector('.loading')?.remove()
+			if (response.ok) return response.text()
+			else el.error = response.statusText
+		} catch (error) {
+			el.error = error.message
+		}
+		return ''
 	}
 
-	connectedCallback() {
-		super.connectedCallback()
 
-		// Effect to set error message
-		this.first('.error').sync(
-			setProperty('hidden', () => !this.get('error')),
-			setText('error'),
-		)
+/* === Component === */
 
-		// Effect to set innerHTML to result of Computed 'content'
-		this.self.sync(dangerouslySetInnerHTML('content'))
+export default component('lazy-load', {
+	error: '',
+	src: asURL,
+	content: fetchText
+}, el => [
+	dangerouslySetInnerHTML('content'),
+	first<LazyLoadProps, HTMLElement>('.error',
+		setText('error'),
+		setProperty('hidden', () => !el.error)
+	)
+])
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'lazy-load': Component<LazyLoadProps>
 	}
 }
-LazyLoad.define()

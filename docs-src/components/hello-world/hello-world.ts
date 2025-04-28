@@ -1,13 +1,20 @@
-import { setText, UIElement, RESET } from "../../../"
+import { type Component, component, first, on, RESET, setText } from '../../../'
 
-export class HelloWorld extends UIElement {
-	static localName = 'hello-world'
+export type HelloWorldProps = {
+	name: string
+}
 
-	connectedCallback() {
-        this.first('span').sync(setText('name'))
-		this.first('input').on('input', (e: Event) => {
-			this.set('name', (e.target as HTMLInputElement)?.value || RESET)
-		})
+export default component('hello-world', {
+	name: RESET
+}, el => [
+	first('span', setText('name')),
+	first('input', on('input', (e: Event) => {
+		el.name = (e.target as HTMLInputElement)?.value || RESET
+	}))
+])
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'hello-world': Component<HelloWorldProps>
 	}
 }
-HelloWorld.define()

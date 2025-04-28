@@ -1,32 +1,25 @@
-import { asBoolean, setProperty, toggleAttribute, UIElement } from "../../../"
+import { type Component, asBoolean, component, first, setProperty, toggleAttribute } from '../../../'
 
-export class AccordionPanel extends UIElement<{
-	open: boolean,
-    collapsible: boolean,
-}> {
-	static readonly localName = 'accordion-panel'
-	static observedAttributes = ['open', 'collapsible']
+export type AccordionPanelProps = {
+	open: boolean
+	collapsible: boolean
+}
 
-	init = {
-        open: asBoolean,
-        collapsible: asBoolean
-    }
+export default component('accordion-panel', {
+	open: asBoolean,
+	collapsible: asBoolean
+}, el => [
+	toggleAttribute('open'),
+	toggleAttribute('collapsible'),
+	setProperty('hidden', () => !el.open && !el.collapsible),
+	first<AccordionPanelProps, HTMLDetailsElement>('details',
+		setProperty('open'),
+		setProperty('ariaDisabled', () => String(!el.collapsible))
+	)
+])
 
-	connectedCallback() {
-		super.connectedCallback()
-
-		// Handle open and collapsible state changes
-		this.self.sync(
-			toggleAttribute('open'),
-			toggleAttribute('collapsible'),
-			setProperty('hidden', () => !this.get('open') && !this.get('collapsible'))
-		)
-
-		// Control inner details panel
-		this.first<HTMLDetailsElement>('details').sync(
-			setProperty('open'),
-			setProperty('ariaDisabled', () => String(!this.get('collapsible')))
-		)
+declare global {
+	interface HTMLElementTagNameMap {
+		'accordion-panel': Component<AccordionPanelProps>
 	}
 }
-AccordionPanel.define()

@@ -1,4 +1,4 @@
-import { log, LOG_ERROR } from '../core/log'
+import type { AttributeParser } from '../component'
 
 /* === Internal Function === */
 
@@ -8,19 +8,17 @@ const parseNumber = (parseFn: (v: string) => number, value: string | null): numb
 	return Number.isFinite(parsed) ? parsed : undefined
 }
 
-const getFallback = <T extends {}>(value: T | [T, ...T[]]): T =>
-	(Array.isArray(value) && value[0]) ? value[0] as T : value as T
-
 /* === Exported Functions === */
 
 /**
  * Parse a boolean attribute as an actual boolean value
  * 
  * @since 0.7.0
+ * @param {C} _ - host element
  * @param {string} value - maybe string value
  * @returns {boolean}
  */
-const asBoolean = (value: string | null): boolean =>
+const asBoolean: AttributeParser<HTMLElement, boolean> = (_: HTMLElement, value: string | null): boolean =>
 	value !== 'false' && value != null
 
 /**
@@ -28,10 +26,10 @@ const asBoolean = (value: string | null): boolean =>
  * 
  * @since 0.11.0
  * @param {number} [fallback=0] - fallback value
- * @returns {(value: string | null) => number} - parser function
+ * @returns {Parser<HTMLElement, number>} - parser function
  */
-const asInteger = (fallback: number = 0) =>
-	(value: string | null): number =>
+const asInteger = (fallback: number = 0): AttributeParser<HTMLElement, number> =>
+	(_: HTMLElement, value: string | null): number =>
 		parseNumber(parseInt, value) ?? fallback
 
 /**
@@ -39,10 +37,10 @@ const asInteger = (fallback: number = 0) =>
  * 
  * @since 0.11.0
  * @param {number} [fallback=0] - fallback value
- * @returns {(value: string | null) => number} - parser function
+ * @returns {Parser<number, HTMLElement>} - parser function
  */
-const asNumber = (fallback: number = 0) =>
-	(value: string | null): number =>
+const asNumber = (fallback: number = 0): AttributeParser<HTMLElement, number> =>
+	(_: HTMLElement, value: string | null): number =>
 		parseNumber(parseFloat, value) ?? fallback
 
 /**
@@ -50,10 +48,10 @@ const asNumber = (fallback: number = 0) =>
  * 
  * @since 0.11.0
  * @param {string} [fallback=''] - fallback value
- * @returns {(value: string | null) => string} - parser function
+ * @returns {Parser<string, HTMLElement>} - parser function
  */
-const asString = (fallback: string = '') =>
-	(value: string | null): string =>
+const asString = (fallback: string = ''): AttributeParser<HTMLElement, string> =>
+	(_: HTMLElement, value: string | null): string =>
 		value ?? fallback
 
 /**
@@ -61,29 +59,33 @@ const asString = (fallback: string = '') =>
  * 
  * @since 0.9.0
  * @param {string[]} valid - array of valid values
- * @returns {(value: string | null) => string} - parser function
+ * @returns {Parser<string, HTMLElement>} - parser function
  */
-const asEnum = (valid: [string, ...string[]]) =>
-	(value: string | null): string =>
+const asEnum = (valid: [string, ...string[]]): AttributeParser<HTMLElement, string> =>
+	(_: HTMLElement, value: string | null): string =>
 		(value != null && valid.includes(value.toLowerCase()))
 			? value
-			: getFallback<string>(valid)
+			: valid[0]
 
 /**
  * Parse an attribute as a JSON serialized object with a fallback
  * 
  * @since 0.11.0
  * @param {T} fallback - fallback value
- * @returns {(value: string | null) => T} - parser function
+ * @returns {Parser<T, HTMLElement>} - parser function
+ * @throws {ReferenceError} - if the value and fallback are both null or undefined
+ * @throws {SyntaxError} - if the value is not a valid JSON object
  */
-const asJSON = <T extends {}>(fallback: T) =>
-	(value: string | null): T => {
+const asJSON = <T extends {}>(fallback: T): AttributeParser<HTMLElement, T> =>
+	(_: HTMLElement, value: string | null): T => {
+		if ((value ?? fallback) == null) throw new ReferenceError('Value and fallback are both null or undefined')
 		if (value == null) return fallback
+		if (value === '') throw new SyntaxError('Empty string is not valid JSON')
 		let result: T | undefined
 		try {
 			result = JSON.parse(value)
 		} catch (error) {
-			log(error, 'Failed to parse JSON', LOG_ERROR)
+			throw new SyntaxError(`Failed to parse JSON: ${String(error)}`, { cause: error })
 		}
 		return result ?? fallback
 	}

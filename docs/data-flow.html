@@ -11,7 +11,7 @@
 </head>
 <body>
 	<header class="content-grid">
-		<h1 class="content">UIElement Docs <small>Version 0.11.0</small></h1>
+		<h1 class="content">UIElement Docs <small>Version 0.12.0</small></h1>
 		
 	<nav class="breakout">
 		<ol>
@@ -349,7 +349,7 @@
 					</div>
 				</input-field>
 				<input-button class="submit">
-					<button type="submit" class="primary" disabled>Add Todo</button>
+					<button type="submit" class="constructive" disabled>Add Todo</button>
 				</input-button>
 			</form>
 			<ol filter="all"></ol>
@@ -358,11 +358,11 @@
 					<input-checkbox class="todo">
 						<label>
 							<input type="checkbox" class="visually-hidden" />
-							<span></span>
+							<span class="label"><slot></slot></span>
 						</label>
 					</input-checkbox>
 					<input-button class="delete">
-						<button type="button">Delete</button>
+						<button type="button" class="destructive small">Delete</button>
 					</input-button>
 				</li>
 			</template>
@@ -394,7 +394,10 @@
 					</fieldset>
 				</input-radiogroup>
 				<input-button class="clear-completed">
-					<button type="button">Clear Completed</button>
+					<button type="button" class="destructive">
+						<span class="label">Clear Completed</span>
+						<span class="badge"></span>
+					</button>
 				</input-button>
 			</footer>
 		</todo-app>
@@ -456,7 +459,7 @@
     <footer class="content-grid">
 		<div class="content">
 			<h2 class="visually-hidden">Footer</h2>
-			<p>© 2025 Zeix AG</p>
+			<p>© 2024 – 2025 Zeix AG</p>
 		</div>
 	</footer>
 </body>

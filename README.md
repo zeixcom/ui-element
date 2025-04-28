@@ -1,18 +1,24 @@
 # UIElement
 
-Version 0.11.0
+Version 0.12.0
 
-**UIElement** - transform reusable markup, styles and behavior into powerful, reactive, and maintainable Web Components.
+**UIElement** - the HTML-first microframework bringing reactivity to Web Components.
 
-`UIElement` is a base class for Web Components with reactive states and UI effects. UIElement is tiny, around 4kB gzipped JS code, of which unused functions can be tree-shaken by build tools. It uses [Cause & Effect](https://github.com/zeixcom/cause-effect) internally for state management with signals and for scheduled DOM updates.
+UIElement is a set of functions to build reusable, loosely coupled Web Components with reactive properties. It provides structure through components and simplifies state management and DOM synchronization using declarative signals and effects, leading to more organized and maintainable code without a steep learning curve.
+
+Unlike SPA frameworks (React, Vue, Svelte, etc.) UIElement takes a HTML-first approach, progressively enhancing sever-rendered HTML rather than recreating (rendering) it using JavaScript. UIElement achieves the same result as SPA frameworks with SSR, but with a simpler, more efficient approach. It works with a backend written in any language or with any static site generator.
 
 ## Key Features
 
-* **Reusable Components**: Create highly modular and reusable components to encapsulate styles and behavior.
-* **Declarative States**: Bring static, server-rendered content to life with dynamic interactivity and state management.
-* **Signal-Based Reactivity**: Employ signals for efficient state propagation, ensuring your components react instantly to changes.
-* **Declarative Effects**: Use granular effects to automatically synchronize UI states with minimal code.
-* **Context Support**: Share global states across your component tree without tightly coupling logic.
+* 🧱 **HTML Web Components**: Build on standard HTML and enhance it with encapsulated, reusable Web Components. No virtual DOM – UIElement works directly with the real DOM.
+* 🚦 **Reactive Properties**: Define reactive properties for fine-grained, efficient state management (signals). Changes automatically propagate only to the parts of the DOM that need updating, avoiding unnecessary re-renders.
+* 🧩 **Function Composition**: Declare component behavior by composing small, reusable functions (attribute parsers and effects). This promotes cleaner code compared to spaghetti code problems that commonly occur when writing low-level imperative code.
+* 🛠️ **Customizable**: UIElement is designed to be easily customizable and extensible. You can create your own custom attribute parsers and effects to suit your specific needs.
+* 🌐 **Context Support**: Share global states across components without prop drilling or tightly coupling logic.
+* 🪶 **Tiny footprint**: Minimal core (~4kB gzipped) with tree-shaking support, adding only the necessary JavaScript to enhance your HTML.
+* 🛡️ **Type Safety**: Get early warnings when types don't match, improving code quality and reducing bugs.
+
+UIElement uses [Cause & Effect](https://github.com/zeixcom/cause-effect) internally for state management with signals and for scheduled DOM updates. But you could easily rewrite the `component()` function to use a signals library of your choice or to produce something else than Web Components.
 
 ## Installation
 
@@ -53,30 +59,18 @@ Server-rendered markup:
 UIElement component:
 
 ```js
-import { UIElement, asInteger, setText } from '@zeix/ui-element'
+import { component, asInteger, first, setText } from '@zeix/ui-element'
 
-class ShowAppreciation extends UIElement {
-    #count = Symbol() // Use a private Symbol as state key
+component('show-appreciation', {
+    count: asInteger(RESET) // Get initial value from .count element
+}, el => [
 
-    connectedCallback() {
-        // Initialize count state
-        this.set(this.#count, asInteger(0)(this.querySelector('.count').textContent))
+    // Bind click event to increment count
+    first('button', on('click', () => { el.count++ })),
 
-        // Bind click event to increment count
-        this.first('button').on('click', () => {
-            this.set(this.#count, v => ++v)
-        })
-
-        // Update .count text when count changes
-        this.first('.count').sync(setText(this.#count))
-    }
-
-    // Expose read-only property for count
-    get count() {
-        return this.get(this.#count)
-    }
-}
-ShowAppreciation.define('show-appreciation')
+    // Update.count text when count changes
+    first('.count', setText('count'))
+])
 ```
 
 Example styles:
@@ -143,63 +137,41 @@ An example demonstrating how to pass states from one component to another. Serve
 UIElement components:
 
 ```js
-import { UIElement, setAttribute, toggleAttribute } from '@zeix/ui-element'
+import { asBoolean, component, all, on, setAttribute, setProperty, toggleAttribute, toggleClass } from '@zeix/ui-element'
 
-class TabList extends UIElement {
-    static localName = 'tab-list'
-    static observedAttributes = ['accordion']
+component('tab-list', {
+	active: 0,
+	accordion: asBoolean,
+}, el => {
+	// Set inital active tab by querying details[open]
+	const panels = Array.from(el.querySelectorAll('details'))
+	el.active = panels.findIndex(panel => panel.hasAttribute('open'))
 
-    init = {
-        active: 0,
-        accordion: asBoolean,
-    }
+	return [
+		// Reflect accordion attribute (may be used for styling)
+		toggleAttribute('accordion'),
 
-    connectedCallback() {
-        super.connectedCallback()
+		// Update active tab state and bind click handlers
+		all('menu button',
+			on('click', (_, index) => () => {
+				el.active = index
+			}),
+			setProperty('ariaPressed', (_, index) => String(el.active === index))
+		),
 
-        // Set inital active tab by querying details[open]
-        const getInitialActive = () => { 
-            const panels = Array.from(this.querySelectorAll('details'))
-            for (let i = 0; i < panels.length; i++) {
-                if (panels[i].hasAttribute('open')) return i
-            }
-            return 0
-        }
-        this.set('active', getInitialActive())
+		// Update details panels open, hidden and disabled states
+		all('details',
+			on('toggle', (_, index) => () => {
+				el.active = el.active === index ? -1 : index
+			}),
+			setProperty('open', (_, index) => el.active === index),
+			setAttribute('aria-disabled', () => String(!el.accordion))
+		),
 
-        // Reflect accordion attribute (may be used for styling)
-        this.self.sync(toggleAttribute('accordion'))
-
-        // Update active tab state and bind click handlers
-        this.all('menu button')
-            .on('click', (_, index) => () => {
-                this.set('active', index)
-            })
-            .sync(setProperty(
-                'ariaPressed',
-                (_, index) => String(this.get('active') === index)
-            ))
-
-        // Update details panels open, hidden and disabled states
-        this.all('details').sync(
-            setProperty(
-                'open',
-                (_, index) => !!(this.get('active') === index)
-            ),
-            setAttribute(
-                'aria-disabled',
-                () => String(!this.get('accordion'))
-            )
-        )
-
-        // Update summary visibility
-        this.all('summary').sync(toggleClass(
-            'visually-hidden',
-            () => !this.get('accordion')
-        ))
-    }
-}
-TabList.define()
+		// Update summary visibility
+		all('summary', toggleClass('visually-hidden', () => !el.accordion))
+	]
+})
 ```
 
 Example styles:
@@ -254,58 +226,51 @@ A more complex component demonstrating async fetch from the server:
 ```
 
 ```js
-import { UIElement, setProperty, setText, dangerouslySetInnerHTML } from '@zeix/ui-element'
+import { component, first, dangerouslySetInnerHTML, setProperty, setText } from '@zeix/ui-element'
 
-class LazyLoad extends UIElement {
-    static localName = 'lazy-load'
-
-    // Remove the following line if you don't want to listen to changes in 'src' attribute
-    static observedAttributes = ['src']
-
-    init = {
-        src: v => { // Custom attribute parser
-            if (!v) {
-                this.set('error', 'No URL provided in src attribute')
-                return ''
-            } else if ((this.parentElement || this.getRootNode().host)?.closest(`${this.localName}[src="${v}"]`)) {
-                this.set('error', 'Recursive loading detected')
-                return ''
-            }
-            const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
-            if (url.origin === location.origin) // Sanity check for cross-origin URLs
-                return url.toString()
-            this.set('error', 'Invalid URL origin')
-            return ''
-        },
-        content: async () => { // Async Computed callback
-            const url = this.get('src')
-            if (!url) return ''
-            try {
-                const response = await fetch(this.get('src'))
-                this.querySelector('.loading')?.remove()
-                if (response.ok) return response.text()
-                else this.set('error', response.statusText)
-            } catch (error) {
-                this.set('error', error.message)
-            }
-            return ''
-        },
-        error: '',
-    }
-
-    connectedCallback() {
-        super.connectedCallback()
-
-        // Effect to set error message
-        this.first('.error').sync(
-            setProperty('hidden', () => !this.get('error')),
-            setText('error'),
-        )
-
-        // Effect to set content in shadow root
-        // Remove the second argument (for shadowrootmode) if you prefer light DOM
-        this.self.sync(dangerouslySetInnerHTML('content', 'open'))
-    }
+// Custom attribute parser
+const asURL = (el, v) => {
+	if (!v) {
+		el.error = 'No URL provided in src attribute'
+		return ''
+	} else if ((el.parentElement || (el.getRootNode() as ShadowRoot).host)?.closest(`${el.localName}[src="${v}"]`)) {
+		el.error = 'Recursive loading detected'
+		return ''
+	}
+	const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
+	if (url.origin === location.origin) { // Sanity check for cross-origin URLs
+		el.error = '' // Success: wipe previous error if there was any
+		return String(url)
+	}
+	el.error = 'Invalid URL origin'
+	return ''
 }
-LazyLoad.define()
+
+// Custom signal producer, needs src and error properties on element
+const fetchText = el =>
+	async abort => { // Async Computed callback
+		const url = el.src
+		if (!url) return ''
+		try {
+			const response = await fetch(url, { signal: abort })
+			el.querySelector('.loading')?.remove()
+			if (response.ok) return response.text()
+			else el.error = response.statusText
+		} catch (error) {
+			el.error = error.message
+		}
+		return ''
+	}
+
+component('lazy-load', {
+	error: '',
+	src: asURL,
+	content: fetchText
+}, el => [
+	dangerouslySetInnerHTML('content', 'open'),
+	first('.error',
+		setText('error'),
+		setProperty('hidden', () => !el.error)
+	)
+])
 ```

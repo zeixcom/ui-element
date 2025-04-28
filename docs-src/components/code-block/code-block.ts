@@ -1,66 +1,41 @@
-import { asBoolean, toggleAttribute, UIElement } from '../../../'
-// import Prism from 'prismjs'
-// import 'prismjs/components/prism-bash';
-// import 'prismjs/components/prism-json';
-// import 'prismjs/components/prism-typescript';
+import { type Component, asBoolean, component, first, on, toggleAttribute } from '../../../'
 
-import type { InputButton } from '../input-button/input-button'
+import { InputButtonProps } from '../input-button/input-button'
 
-export class CodeBlock extends UIElement<{ collapsed: boolean }> {
-	static readonly localName = 'code-block'
-	static observedAttributes = ['collapsed']
+export type CodeBlockProps = {
+    collapsed: boolean
+}
 
-	init = {
-		collapsed: asBoolean
-	}
+export default component('code-block',{
+	collapsed: asBoolean
+}, el => {
+	const code = el.querySelector('code')
+	return [
+		toggleAttribute('collapsed'),
+		first('.overlay', on('click', () => { el.collapsed = false })),
+		first('.copy', on('click', async (e: Event) => {
+			const copyButton = e.currentTarget as Component<InputButtonProps>
+			const label = copyButton.textContent?.trim() ?? ''
+			let status = 'success'
+			try {
+				await navigator.clipboard.writeText(code?.textContent?.trim() ?? '')
+			} catch (err) {
+				console.error('Error when trying to use navigator.clipboard.writeText()', err)
+				status = 'error'
+			}
+			copyButton.disabled = true
+			copyButton.label = el.getAttribute(`copy-${status}`) ?? label
+			setTimeout(() => {
+				copyButton.disabled = false
+				copyButton.label = label
+			}, status === 'success' ? 1000 : 3000)
+		}))
+	]
+	
+})
 
-  	connectedCallback() {
-
-		// Enhance code block with Prism.js
-		// const language = this.getAttribute('language') || 'html' 
-		const content = this.querySelector('code')
-		if (content) {
-			/* this.set('code', content.textContent?.trim(), false)
-			effect(() => {
-				// Apply syntax highlighting while preserving Lit's marker nodes in Storybook
-				const code = document.createElement('code')
-				code.innerHTML = Prism.highlight(
-					this.get('code') ?? '',
-					Prism.languages[language],
-					language
-				)
-				enqueue(() => {
-					Array.from(code.childNodes)
-						.filter(node => node.nodeType !== Node.COMMENT_NODE)
-						.forEach(node => node.remove())
-					Array.from(code.childNodes)
-						.forEach(node => code.appendChild(node))
-				}, [code, 'h'])
-			}) */
-
-			// Copy to clipboard
-			this.first('.copy').on('click', async (e: Event) => {
-				const copyButton = e.currentTarget as InputButton
-				const label = copyButton.textContent ?? ''
-				let status = 'success'
-				try {
-					await navigator.clipboard.writeText(content.textContent ?? '')
-				} catch (err) {
-					console.error('Error when trying to use navigator.clipboard.writeText()', err)
-					status = 'error'
-				}
-				copyButton.set('disabled', true)
-				copyButton.set('label', this.getAttribute(`copy-${status}`) ?? label)
-				setTimeout(() => {
-					copyButton.set('disabled', false)
-					copyButton.set('label', label)
-				}, status === 'success' ? 1000 : 3000)
-			})
-
-			// Expand
-			this.first('.overlay').on('click', () => this.set('collapsed', false))
-			this.self.sync(toggleAttribute('collapsed'))
-		}
+declare global {
+	interface HTMLElementTagNameMap {
+		'code-block': Component<CodeBlockProps>
 	}
 }
-CodeBlock.define()

@@ -1,169 +1,151 @@
-import { type MaybeSignal, toSignal } from '@zeix/cause-effect'
+import { toSignal, type MaybeSignal, type Signal } from "@zeix/cause-effect"
 
-import { UIElement, type ComponentSignals } from '../ui-element'
-import { elementName, log, LOG_ERROR, LOG_WARN, valueString } from './log'
-import { isDefinedObject, isFunction, isString } from './util'
+import type { Cleanup, Component, ComponentProps, FxFunction } from "../component"
+import { elementName } from "./log"
+import { isDefinedObject, isFunction, isString } from "./util"
 
 /* === Types === */
 
-type EventListenerProvider = (<E extends Element>(element: E, index: number) => EventListenerOrEventListenerObject)
+type Provider<T> = <E extends Element>(
+	element: E,
+	index: number
+) => T
 
-type PassedSignals<S extends ComponentSignals> = { [K in keyof S]: MaybeSignal<S[K]> }
-type PassedSignalsProvider<S extends ComponentSignals> = (<E extends Element>(element: E, index: number) => PassedSignals<S> | PassedSignalsProvider<S>)
-
-type UI<E extends Element, S extends ComponentSignals> = {
-	host: UIElement<S>,
-	targets: E[],
-	on: (
-        type: string,
-        listenerOrProvider: EventListenerOrEventListenerObject | EventListenerProvider
-    ) => UI<E, S>,
-    emit: <T>(
-		type: string,
-		detail?: T
-	) => UI<E, S>,
-	pass: <T extends ComponentSignals>(
-		passedSignalsOrProvider: PassedSignals<T> | PassedSignalsProvider<T>
-	) => UI<E, S>,
-	sync: (
-		...fns: ((host: UIElement<S>, target: E, index: number) => void)[]
-	) => UI<E, S>,
+type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
+	[K in keyof Q]?: Signal<Q[K]> | Provider<Q[K]> | (() => Q[K]) | keyof P
 }
 
-/* === Exported Function === */
+/* === Internal Function === */
+
+const isProvider = <T>(value: unknown): value is Provider<T> =>
+	isFunction(value) && value.length == 2
+
+const isEventListener = (value: unknown): value is EventListenerOrEventListenerObject =>
+	isFunction(value) || (isDefinedObject(value) && isFunction(value.handleEvent))
+
+const isComponent = (value: unknown): value is Component<ComponentProps> =>
+	value instanceof HTMLElement && value.localName.includes('-')
+
+/* === Exported Functions === */
+
+const run = <P extends ComponentProps, E extends Element>(
+	fns: FxFunction<P, E>[],
+	host: Component<P>,
+	elements: E[]
+): Cleanup => {
+	const cleanups = elements.flatMap((target, index) =>
+		fns.filter(isFunction).map(fn =>
+			fn(host, target, index)
+		)
+	)
+	return () => {
+		cleanups.filter(isFunction).forEach(cleanup => cleanup())
+		cleanups.length = 0
+	}
+}
+	
+/**
+ * Apply effect functions to a first matching sub-element within the custom element
+ * 
+ * @since 0.12.0
+ * @param {string} selector - selector to match sub-element
+ */
+const first = <P extends ComponentProps, E extends Element>(
+	selector: string,
+	...fns: FxFunction<P, E>[]
+) => (host: Component<P>): Cleanup =>
+	run(fns, host, [(host.shadowRoot || host).querySelector<E>(selector)].filter(v => v != null))
 
 /**
- * Create a new UI object for managing UI elements and their events, passed states and applied effects
+ * Apply effect functions to all matching sub-elements within the custom element
  * 
- * @since 0.11.0
- * @param {UIElement<S>} host
- * @param {E} targets
- * @returns {UI<E, S>} - new UI object
+ * @since 0.12.0
+ * @param {string} selector - selector to match sub-elements
  */
-const ui = <E extends Element, S extends ComponentSignals>(
-	host: UIElement<S>,
-	targets: E[] = [host as unknown as E]
-): UI<E, S> => {
-	const u = {
-		host,
-		targets,
+const all = <P extends ComponentProps, E extends Element>(
+	selector: string,
+	...fns: FxFunction<P, E>[]
+) => (host: Component<P>): Cleanup =>
+	run(fns, host, Array.from((host.shadowRoot || host).querySelectorAll<E>(selector)))
 
-		/**
-		 * Add event listener to target element(s)
-		 * 
-		 * @since 0.9.0
-		 * @param {string} type - event type
-		 * @param {EventListenerOrEventListenerObject | EventListenerProvider} listenerOrProvider - event listener or provider function
-		 * @returns {UI<E, S>} - self
-		 */
-		on: (
-			type: string,
-			listenerOrProvider: EventListenerOrEventListenerObject | EventListenerProvider
-		): UI<E, S> => {
-			targets.forEach((target, index) => {
-				let listener: EventListenerOrEventListenerObject
-				if (isFunction(listenerOrProvider)) {
-					listener = (listenerOrProvider.length === 2)
-						? (listenerOrProvider as EventListenerProvider)(target, index)
-						: listenerOrProvider
-				} else if (isDefinedObject(listenerOrProvider) && isFunction(listenerOrProvider.handleEvent)) {
-					listener = listenerOrProvider as EventListenerObject
-				} else {
-					log(listenerOrProvider, `Invalid listener provided for ${type} event on element ${elementName(target)}`, LOG_ERROR)
-					return
-				}
-				target.addEventListener(type, listener)
-				host.cleanup.push(() => target.removeEventListener(type, listener))
-			})
-			return u
-		},
+/**
+ * Attach an event listener to an element
+ * 
+ * @since 0.12.0
+ * @param {string} type - event type to listen for
+ * @param {EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>} handler - event listener or provider function
+ * @throws {TypeError} - if the provided handler is not an event listener or a provider function
+ */
+const on = (
+	type: string,
+	handler: EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>,
+) => <P extends ComponentProps>(
+	host: Component<P>,
+	target: Element = host,
+	index = 0
+): Cleanup => {
+	const listener = isProvider(handler) ? handler(target, index) : handler
+	if (!isEventListener(listener))
+		throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`)
+	target.addEventListener(type, listener)
+	return () => target.removeEventListener(type, listener)
+}
 
-			/**
-		 * Emit custom event to target element(s)
-		 * 
-		 * @since 0.10.0
-		 * @param {string} type - event type
-		 * @param {T} detail - event detail
-		 * @returns {UI<E, S>} - self
-		 */
-		emit: <T>(type: string, detail?: T): UI<E, S> => {
-			targets.forEach(target => {
-				target.dispatchEvent(new CustomEvent(type, {
-					detail,
-					bubbles: true
-				}))
-			})
-			return u
-		},
+/**
+ * Emit a custom event with the given detail
+ * 
+ * @since 0.12.0
+ * @param {string} type - event type to emit
+ * @param {T | Provider<T>} detail - event detail or provider function
+ */
+const emit = <T>(
+	type: string,
+	detail: T | Provider<T>
+) => <P extends ComponentProps>(
+	host: Component<P>,
+	target: Element = host,
+	index = 0
+): void => {
+	target.dispatchEvent(new CustomEvent(type, {
+		detail: isProvider(detail) ? detail(target, index) : detail,
+		bubbles: true
+	}))
+}
 
-		/**
-		 * Pass states to target element(s) of type UIElement using provided sources
-		 * 
-		 * @since 0.9.0
-		 * @param {PassedSignals<T> | PassedSignalsProvider<T>} passedSignalsOrProvider - object of signal sources or provider function
-		 * @returns {UI<E, S>} - self
-		 */
-		pass: <T extends ComponentSignals>(
-			passedSignalsOrProvider: PassedSignals<T> | PassedSignalsProvider<T>
-		): UI<E, S> => {
-			targets.forEach(async (target, index) => {
-				await UIElement.registry.whenDefined(target.localName)
-				if (target instanceof UIElement) {
-
-					// Get passed signals from provider function or object
-					let passedSignals: PassedSignals<T>
-					if (isFunction(passedSignalsOrProvider) && passedSignalsOrProvider.length === 2) {
-						passedSignals = passedSignalsOrProvider(target, index) as PassedSignals<T>
-					} else if (isDefinedObject(passedSignalsOrProvider)) {
-						passedSignals = passedSignalsOrProvider as PassedSignals<T>
-					} else {
-						log(passedSignalsOrProvider, `Invalid passed signals provided`, LOG_ERROR)
-						return
-					}
-
-					// Set states from passed signals or provider function or object to target UIElement instance
-					Object.entries(passedSignals).forEach(([key, source]) => {
-						if (isString(source)) {
-							if (source in host.signals) {
-								target.set(key, host.signals[source as keyof S])
-							} else {
-								log(source, `Invalid string key "${source}" for state ${valueString(key)}`, LOG_WARN)
-							}
-						} else {
-							try {
-								target.set(key, toSignal(source))
-							} catch (error) {
-								log(error, `Invalid source for state ${valueString(key)}`, LOG_WARN)
-							}
-						}
-					})
-				} else {
-					log(target, `Target is not a UIElement`, LOG_ERROR)
-				}
-			})
-			return u
-		},
-
-		/**
-		 * Sync state changes to target element(s) using provided functions
-		 * 
-		 * @since 0.9.0
-		 * @param {((host: UIElement<S>, target: E, index: number) => void)[]} fns - state sync functions
-		 * @returns {UI<E, S>} - self
-		 */
-		sync: (
-			...fns: ((host: UIElement<S>, target: E, index: number) => void)[]
-		): UI<E, S> => {
-			targets.forEach((target, index) =>
-				fns.forEach(fn => fn(host, target, index)))
-			return u
+/**
+ * Pass signals to a custom element
+ * 
+ * @since 0.12.0
+ * @param {PassedSignals<P, Q>} signals - signals to be passed to the custom element
+ * @throws {TypeError} - if the target element is not a custom element
+ * @throws {TypeError} - if the provided signals are not an object or a provider function
+ * @throws {Error} - if it fails to pass signals to the target element
+ */
+const pass = <P extends ComponentProps, Q extends ComponentProps>(
+	signals: PassedSignals<P, Q>
+) => <E extends Element>(
+	host: Component<P>,
+	target: E,
+	index = 0
+): void => {
+	const targetName = target.localName
+	if (!isComponent(target))
+		throw new TypeError(`Target element must be a custom element`)
+	const sources = isProvider(signals)
+		? signals(target, index) as PassedSignals<P, Q>
+		: signals
+	if (!isDefinedObject(sources))
+		throw new TypeError(`Passed signals must be an object or a provider function`)
+	customElements.whenDefined(targetName).then(() => {
+		for (const [prop, source] of Object.entries(sources)) {
+			const signal = isString(source)
+				? host.getSignal(prop)
+				: toSignal(source as MaybeSignal<Q[keyof Q]>)
+			target.setSignal(prop, signal)
 		}
-	}
-
-	return u
+	}).catch((error) => {
+		throw new Error(`Failed to pass signals to ${elementName(target)}}`, { cause: error })
+	})
 }
 
-export {
-	type UI, type PassedSignals, type PassedSignalsProvider, type EventListenerProvider,
-	ui
-}
+export { type Provider, type PassedSignals, run, all, first, on, emit, pass }

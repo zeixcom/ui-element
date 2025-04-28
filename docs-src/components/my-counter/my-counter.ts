@@ -1,27 +1,20 @@
-import { asInteger, setText, UIElement } from '../../../'
+import { type Component, asInteger, component, first, on, setText } from '../../../'
 
-export class MyCounter extends UIElement<{ count: number }> {
-	static localName ='my-counter'
-	static observedAttributes = ['count']
-
-	init = {
-        count: asInteger(),
-    }
-
-	connectedCallback() {
-        super.connectedCallback()
-
-		// Event handlers
-		this.first('.increment').on('click', () => {
-			this.set('count', v => ++v)
-		})
-		this.first('.decrement').on('click', () => {
-			this.set('count', v => --v)
-		})
-
-		// Effects
-		this.first('.count').sync(setText('count'))
-		this.first('.parity').sync(setText(() => this.get('count') % 2 ? 'odd' : 'even'))
-    }
+export type MyCounterProps = {
+	count: number
 }
-MyCounter.define()
+
+export default component('my-counter', {
+	count: asInteger()
+}, el => [
+	first('.count', setText('count')),
+	first('.parity', setText(() => el.count % 2 ? 'odd' : 'even')),
+	first('.increment', on('click', () => { el.count++ })),
+    first('.decrement', on('click', () => { el.count-- }))
+])
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'my-counter': Component<MyCounterProps>
+	}
+}

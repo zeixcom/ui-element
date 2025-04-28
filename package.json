@@ -1,6 +1,6 @@
 {
   "name": "@zeix/ui-element",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "UIElement - minimal reactive framework based on Web Components",
   "main": "index.js",
   "types": "index.d.ts",
@@ -11,7 +11,7 @@
     "build:docs-js": "bun build docs-src/main.ts --outdir ./docs/assets/ --minify --define process.env.DEV_MODE=false",
     "build:docs-css": "lightningcss --minify --bundle --targets \">= 0.25%\" docs-src/main.css -o ./docs/assets/main.css",
     "build:docs-html": "bun ./docs-src/server/generate-pages.ts & bun ./docs-src/server/generate-fragments.ts",
-	"build:docs-api": "typedoc --out ./docs/api/ index.ts --darkHighlightTheme monokai",
+    "build:docs-api": "typedoc --out ./docs/api/ index.ts --darkHighlightTheme monokai",
     "build:docs": "bun run build:docs-js & bun run build:docs-css & bun run build:docs-html & bun run build:docs-api",
     "serve:docs": "BUN_ENV=development bun run --hot ./docs-src/server/serve-docs.ts",
     "lint": "bunx eslint src/",
@@ -34,29 +34,29 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "@eslint/js": "^9.21.0",
+    "@eslint/js": "^9.23.0",
     "@esm-bundle/chai": "^4.3.4-fix.0",
-    "@types/bun": "^1.2.4",
+    "@types/bun": "^1.2.8",
     "@types/eslint__js": "^8.42.3",
-    "@types/node": "^22.13.9",
+    "@types/node": "^22.14.0",
     "@web/test-runner": "^0.19.0",
     "@web/test-runner-playwright": "^0.11.0",
     "dotenv": "^16.4.7",
-    "eslint": "^9.21.0",
+    "eslint": "^9.23.0",
     "globals": "^15.15.0",
     "gray-matter": "^4.0.3",
-    "lightningcss-cli": "^1.29.2",
+    "lightningcss-cli": "^1.29.3",
     "marked": "^15.0.7",
-    "playwright": "^1.51.0",
-    "prismjs": "^1.29.0",
+    "playwright": "^1.51.1",
+    "prismjs": "^1.30.0",
     "shiki": "^2.5.0",
     "typedoc": "^0.27.9",
-    "typescript-eslint": "^8.26.0"
+    "typescript-eslint": "^8.29.0"
   },
   "peerDependencies": {
     "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@zeix/cause-effect": "^0.12.4"
+    "@zeix/cause-effect": "^0.13.1"
   }
 }

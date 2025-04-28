@@ -1,4 +1,6 @@
-import { UIElement, RESET, type ComponentSignals } from "../ui-element"
+import type { Signal } from "@zeix/cause-effect"
+
+import { type Component, type ComponentProps } from "../component"
 import { isFunction } from "./util"
 
 /** @see https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md */
@@ -78,41 +80,31 @@ class ContextRequestEvent<T extends UnknownContext> extends Event {
 	}
 }
 
-/**
- * Initialize context provider / consumer for a UIElement instance
- * 
- * @since 0.9.0
- * @param {UIElement} host - UIElement instance to initialize context for
- * @return {boolean} - true if context provider was initialized successfully, false otherwise
- */
-const useContext = <S extends ComponentSignals>(host: UIElement<S>): boolean => {
-	const proto = host.constructor as typeof UIElement
+const provide = <P extends ComponentProps>(
+	provided: Context<keyof P, Signal<P[keyof P]>>[],
+) => (host: Component<P>) => {
+	const listener = (e: Event) => {
+		const { context, callback } = e as ContextRequestEvent<Context<keyof P, Signal<P[keyof P]>>>
+		if (provided.includes(context) && isFunction(callback)) {
+			e.stopPropagation()
+			callback(host.getSignal(String(context)))
+		}
+	}
+	host.addEventListener(CONTEXT_REQUEST, listener)
+	return () => host.removeEventListener(CONTEXT_REQUEST, listener)
+}
 
-	// Context consumers
-	const consumed = proto.consumedContexts || []
-	queueMicrotask(() => { // Wait for all custom elements to be defined
-		for (const context of consumed)
-			host.dispatchEvent(new ContextRequestEvent(
-				context,
-				(value: ContextType<typeof context>) =>
-					host.set(String(context), value ?? RESET)
-			))
-	})
-
-	// Context providers
-	const provided = proto.providedContexts || []
-	if (!provided.length) return false
-	host.addEventListener(CONTEXT_REQUEST, (e: ContextRequestEvent<UnknownContext>) => {
-		const { context, callback } = e
-		if (!provided.includes(context) || !isFunction(callback)) return
-		e.stopPropagation()
-		callback(host.signals[String(context)])
-	})
-
-	return true
+const consume = <T extends {}, C extends HTMLElement>(
+	context: Context<string, Signal<T>>
+) => (host: C) => {
+	let consumed
+	host.dispatchEvent(new ContextRequestEvent(context, (value: Signal<T>) => {
+		consumed = value
+	}))
+	return consumed
 }
 
 export {
-	type Context, type UnknownContext,
-	CONTEXT_REQUEST, ContextRequestEvent, useContext
+	type Context, type UnknownContext, type ContextType,
+	CONTEXT_REQUEST, ContextRequestEvent, provide, consume
 }

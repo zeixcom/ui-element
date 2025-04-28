@@ -11,7 +11,7 @@
 </head>
 <body>
 	<header class="content-grid">
-		<h1 class="content">UIElement Docs <small>Version 0.11.0</small></h1>
+		<h1 class="content">UIElement Docs <small>Version 0.12.0</small></h1>
 		
 	<nav class="breakout">
 		<ol>
@@ -249,23 +249,21 @@
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"module"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F92672">	import</span><span style="color:#F8F8F2"> { UIElement, setText, RESET } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'</span></span>
+<span class="line"><span style="color:#F92672">	import</span><span style="color:#F8F8F2"> { asString, component, setText, RESET } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HelloWorld</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F92672">		static</span><span style="color:#F8F8F2"> localName </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'hello-world'</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#A6E22E">	component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#88846F">		// Parse 'name' attribute, falling back to server-rendered content</span></span>
+<span class="line"><span style="color:#F8F8F2">		name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(RESET)</span></span>
+<span class="line"><span style="color:#F8F8F2">	}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#A6E22E">		connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#88846F">		// Update content dynamically based on the 'name' signal</span></span>
+<span class="line"><span style="color:#F8F8F2">		el.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">))</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#88846F">			// Update content dynamically based on the 'name' signal</span></span>
-<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">));</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">			// Handle user input to change the 'name'</span></span>
-<span class="line"><span style="color:#FD971F">			this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#FD971F">				this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">, e.target.value </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> RESET)</span></span>
-<span class="line"><span style="color:#F8F8F2">			});</span></span>
-<span class="line"><span style="color:#F8F8F2">		}</span></span>
-<span class="line"><span style="color:#F8F8F2">	}</span></span>
-<span class="line"><span style="color:#F8F8F2">	HelloWorld.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">();</span></span>
+<span class="line"><span style="color:#88846F">		// Handle user input to change the 'name'</span></span>
+<span class="line"><span style="color:#F8F8F2">		el.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">			el.name </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> RESET</span></span>
+<span class="line"><span style="color:#F8F8F2">		}))</span></span>
+<span class="line"><span style="color:#F8F8F2">	})</span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
@@ -277,8 +275,9 @@
 </code-block>
 <p><strong>What Happens Here?</strong></p>
 <ul>
+<li>✅ The <code>asString(RESET)</code> signal <strong>parses the &#39;name&#39; attribute</strong>, falling back to server-rendered value (constant <code>RESET</code>).</li>
 <li>✅ The <code>setText(&#39;name&#39;)</code> effect <strong>syncs the state</strong> with the <code>&lt;span&gt;</code>.</li>
-<li>✅ The <code>.on(&#39;input&#39;)</code> event <strong>updates the state</strong> whenever you type, falling back to the initial value if empty with (constant <code>RESET</code>).</li>
+<li>✅ The <code>on(&#39;input&#39;)</code> event <strong>updates the state</strong> whenever you type in the first <code>&lt;input&gt;</code> field, falling back to server-rendered value if empty.</li>
 <li>✅ The Web Component <strong>hydrates automatically</strong> when inserted into the page.</li>
 </ul>
 </section>
@@ -329,7 +328,7 @@
     <footer class="content-grid">
 		<div class="content">
 			<h2 class="visually-hidden">Footer</h2>
-			<p>© 2025 Zeix AG</p>
+			<p>© 2024 – 2025 Zeix AG</p>
 		</div>
 	</footer>
 </body>

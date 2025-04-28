@@ -1,19 +1,23 @@
-import { UIElement, asBoolean, setProperty, setText } from "../../../"
+import { type Component, asBoolean, asString, component, first, RESET, setProperty, setText } from '../../../'
 
-export class InputButton extends UIElement<{ disabled: boolean }> {
-	static localName = 'input-button'
-	static observedAttributes = ['disabled']
-
-	init = {
-        disabled: asBoolean,
-    }
-
-	connectedCallback() {
-        super.connectedCallback()
-
-		this.first<HTMLButtonElement>('button').sync(setProperty('disabled'))
-		this.first('.label').sync(setText('label'))
-		this.first('.badge').sync(setText('badge'))
-    }
+export type InputButtonProps = {
+	disabled: boolean
+	label: string
+	badge: string
 }
-InputButton.define()
+
+export default component('input-button', {
+	disabled: asBoolean,
+	label: asString(RESET),
+	badge: asString(RESET)
+}, () => [
+	first<InputButtonProps, HTMLButtonElement>('button', setProperty('disabled')),
+	first('.label', setText('label')),
+	first('.badge', setText('badge'))
+])
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'input-button': Component<InputButtonProps>
+	}
+}

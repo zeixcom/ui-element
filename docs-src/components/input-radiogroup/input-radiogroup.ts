@@ -1,27 +1,25 @@
-import {
-	type SignalValueProvider,
-	asString, setAttribute, toggleClass, UIElement
-} from '../../../'
+import { type Component, all, asString, component, on, setAttribute, toggleClass } from '../../../'
 
-export class InputRadiogroup extends UIElement<{ value: string }> {
-	static localName = 'input-radiogroup'
-	static observedAttributes = ['value']
-
-	init = {
-        value: asString()
-    }
-
-	connectedCallback() {
-        super.connectedCallback()
-
-		this.self.sync(setAttribute('value'))
-		this.all('input').on('change', (e: Event) => {
-			this.set('value', (e.target as HTMLInputElement)?.value)
-		})
-		const getSelectedByElement: SignalValueProvider<boolean> =
-			target => this.get('value') === target.querySelector('input')?.value
-		this.all('label')
-			.sync(toggleClass('selected', getSelectedByElement))
-    }
+export type InputRadiogroupProps = {
+    value: string
 }
-InputRadiogroup.define()
+
+export default component('input-radiogroup', {
+	value: asString()
+}, el => [
+	setAttribute('value'),
+	all('input', on('change', (e: Event) => {
+		el.value = (e.target as HTMLInputElement)?.value
+	})),
+	all('label',
+		toggleClass('selected',
+			target => el.value === target.querySelector('input')?.value
+		)
+	)
+])
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'input-radiogroup': Component<InputRadiogroupProps>
+	}
+}

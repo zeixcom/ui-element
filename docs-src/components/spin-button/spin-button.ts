@@ -1,42 +1,49 @@
-import { UIElement, asInteger, setProperty, setText, toggleAttribute } from '../../../'
+import { type Component, all, asInteger, component, first, on, setProperty, setText, toggleAttribute } from '../../../'
 
-export class SpinButton extends UIElement<{
-	value: number,
-	zero: boolean,
-}> {
-	static localName ='spin-button'
-	static observedAttributes = ['value']
-
-	init = {
-        value: asInteger(),
-		zero: () => this.get('value') === 0
-    }
-
-	connectedCallback() {
-        super.connectedCallback()
-
-		const zeroLabel = this.getAttribute('zero-label') || 'Add to Cart'
-		const incrementLabel = this.getAttribute('increment-label') || 'Increment'
-		const max = asInteger(9)(this.getAttribute('max'))
-
-		// Event handlers
-		const changeValue = (direction: number = 1) => () => {
-			this.set('value', v => v + direction)
-		}
-
-		// Effects
-		this.first('.value')
-			.sync(setText('value'), setProperty('hidden', 'zero'))
-		this.first('.decrement')
-			.on('click', changeValue(-1))
-			.sync(setProperty('hidden', 'zero'))
-		this.first('.increment')
-			.on('click', changeValue())
-			.sync(
-				setText(() => this.get('zero') ? zeroLabel : '+'),
-				setProperty('ariaLabel', () => this.get('zero') ? zeroLabel : incrementLabel),
-				toggleAttribute('disabled', () => this.get('value') >= max)
-			)
-    }
+export type SpinButtonProps = {
+	value: number
 }
-SpinButton.define()
+
+export default component('spin-button', {
+	value: asInteger(),
+}, el => {
+	const zeroLabel = el.getAttribute('zero-label') || 'Add to Cart'
+	const incrementLabel = el.getAttribute('increment-label') || 'Increment'
+	const max = asInteger(9)(el, el.getAttribute('max'))
+	const isZero = () => el.value === 0
+	return [
+		first<SpinButtonProps, HTMLButtonElement>('.value',
+			setText('value'),
+			setProperty('hidden', isZero)
+		),
+		first<SpinButtonProps, HTMLButtonElement>('.decrement',
+			setProperty('hidden', isZero),
+			on('click', () => { el.value-- })
+		),
+		all('button',
+			on('keydown', (e: Event) => {
+				const { key } = e as KeyboardEvent
+				if (['ArrowUp', 'ArrowDown', '-', '+'].includes(key)) {
+					e.stopPropagation()
+					e.preventDefault()
+					if (key === 'ArrowDown' || key === '-')
+						el.value--
+					if (key === 'ArrowUp' || key === '+')
+						el.value++
+				}
+			})
+		),
+		first('.increment',
+			setText(() => isZero() ? zeroLabel : '+'),
+			setProperty('ariaLabel', () => isZero() ? zeroLabel : incrementLabel),
+			toggleAttribute('disabled', () => el.value >= max),
+			on('click', () => { el.value++ })
+		)
+	]
+})
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'spin-button': Component<SpinButtonProps>
+	}
+}

@@ -1,234 +1,224 @@
-import { effect, setAttribute, setProperty, setText, UIElement, UNSET } from '../../../'
+import {
+	type AttributeParser, type Component, type FxFunction,
+	component, computed, emit, first, on, setAttribute, setProperty, setText, UNSET
+} from '../../../'
 
 /* === Type === */
 
-type InputFieldSignals = {
+export type InputFieldProps = {
 	value: string | number,
 	length: number,
-	empty: boolean,
 	error: string,
-	ariaInvalid: "true" | "false",
-	'aria-errormessage': string,
-    /* description?: string,
-    isInteger?: boolean,
-    min?: number,
-    max?: number,
-	'aria-describedby'?: string, */
+    description: string,
+	clear(): void
 }
 
-/* === Pure functions === */
+/* === Pure Functions === */
 
 // Check if value is a number
-const isNumber = (num: any) => typeof num === 'number'
-
-// Convert any value to a boolean string
-const toBooleanString = (value: any): "true" | "false" =>
-	!value || value === "false" ? "false" : "true"
+const isNumber = (num: unknown) => typeof num === 'number'
 
 // Parse a value as a number with optional integer flag and fallback value
-const parseNumber = (v: any, int = false, fallback = 0): number => {
+const parseNumber = (v: string | null, int = false, fallback = 0): number => {
+	if (!v) return fallback
 	const temp = int ? parseInt(v, 10) : parseFloat(v)
 	return Number.isFinite(temp) ? temp : fallback
 }
 
-/* === Class definition === */
+// Count decimal places in a number
+const countDecimals = (value: number): number => {
+	if (Math.floor(value) === value || String(value).indexOf('.') === -1) return 0;
+	return String(value).split('.')[1].length || 0;
+}
 
-export class InputField extends UIElement<InputFieldSignals> {
-	static observedAttributes = ['value', 'description']
+/* === Attribute Parsers === */
 
-	init = {
-		value: (v: string | null, el: UIElement<InputFieldSignals>): string | number =>
-			(el as InputField).isNumber
-				? parseNumber(v, (el as InputField).isInteger, 0)
-				: (v ?? ''),
-		length: 0,
-		empty: () => this.get('length') === 0,
-		error: '',
-		ariaInvalid: () => toBooleanString(this.get('error')),
-		'aria-errormessage': () =>
-			this.get('error') ? this.querySelector('.error')?.id : UNSET,
-	}
+const asNumberOrString: AttributeParser<HTMLElement, string | number> = (el, v) => {
+	const input = el.querySelector('input')
+	return input && input.type === 'number' ? parseNumber(v, el.hasAttribute('integer'), 0) : (v ?? '')
+}
 
-	isNumber = false
-	isInteger = false
-	input: HTMLInputElement | null = null
-	step = 1
-	min = 0
-	max = 100
+/* === Component === */
 
-	connectedCallback() {
-		super.connectedCallback()
-
-		// Set properties
-		this.input = this.querySelector('input')
-		this.isNumber = (this.input && this.input.type === 'number') ?? false
-		this.isInteger = this.hasAttribute('integer')
-		if (this.input && this.isNumber) {
-			this.step = parseNumber(this.input.step, this.isInteger, 1)
-			this.min = parseNumber(this.input.min, this.isInteger, 0)
-			this.max = parseNumber(this.input.max, this.isInteger, 100)
-		}
-		this.set('length', this.input?.value.length ?? 0)
-
-		// Handle input changes
-		this.first('input')
-			.on('change', () => {
-				this.#triggerChange(
-					this.isNumber
-						? (this.input?.valueAsNumber ?? 0)
-						: (this.input?.value ?? '')
-				)
-			})
-			.on('input', () => {
-				this.set('length', this.input?.value.length ?? 0)
-			})
-
-		// Handle arrow key events to increment / decrement value
-		if (this.isNumber) {
-			this.first('input').on('keydown', (e: Event) => {
-				const evt = e as KeyboardEvent
-				if (['ArrowUp', 'ArrowDown'].includes(evt.key)) {
-					e.stopPropagation()
-					e.preventDefault()
-					if (evt.key === 'ArrowDown')
-						this.stepDown(evt.shiftKey ? this.step * 10 : this.step)
-					if (evt.key === 'ArrowUp')
-						this.stepUp(evt.shiftKey ? this.step * 10 : this.step)
-				}
-			})
-		}
-
-		// Setup error message
-		this.first('.error').sync(setText('error'))
-		this.first('input').sync(
-			setProperty('ariaInvalid'),
-			setAttribute('aria-errormessage')
-		)
-
-		// Setup description
-		const description = this.querySelector<HTMLElement>('.description')
-		if (description) {
-			
-			// Derived states
-			const maxLength = this.input?.maxLength
-			const remainingMessage = maxLength && description.dataset.remaining
-			const defaultDescription = description.textContent ?? ''
-			this.set(
-				'description',
-				remainingMessage
-					? () => {
-						const length = this.get('length')
-						return length
-							? remainingMessage.replace('${x}', String(maxLength - length))
-							: defaultDescription
-					}
-					: defaultDescription
-			)
-			this.set(
-				'aria-describedby',
-				() => this.get('description') ? description.id : UNSET
-			)
-
-			// Effects
-			this.first('.description').sync(setText('description'))
-			this.first('input').sync(setAttribute('aria-describedby'))
-		}
-
-		// Handle spin button clicks and update their disabled state
-		const spinButton = this.querySelector('.spinbutton') as HTMLElement | null
-		if (this.isNumber && spinButton) {
-			this.first<HTMLButtonElement>('.decrement')
-				.on('click', (e: Event) => {
-					this.stepDown((e as MouseEvent).shiftKey ? this.step * 10 : this.step)
-				}).sync(setProperty(
-					'disabled',
-					() => isNumber(this.min) && (this.get('value') as number ?? 0) - this.step < this.min
-				))
-			this.first<HTMLButtonElement>('.increment')
-				.on('click', (e: Event) => {
-					this.stepUp((e as MouseEvent).shiftKey ? this.step * 10 : this.step)
-				})
-				.sync(setProperty(
-					'disabled',
-					() => isNumber(this.max) && (this.get('value') as number ?? 0) + this.step > this.max
-				))
-		}
-
-		// Setup clear button
-		this.first('.clear')
-			.on('click', () => {
-				this.clear()
-				this.input?.focus()
-			})
-			.sync(setProperty('hidden', 'empty'))
-
-		// Validate and update value
-		effect(() => {
-			const value = this.get('value')
-			const validate = this.getAttribute('validate')
-			if (value && validate) {
-
-				// Validate input value against a server-side endpoint
-				fetch(`${validate}?name=${this.input?.name}value=${this.input?.value}`)
-					.then(async response => {
-						const text = await response.text()
-						this.input?.setCustomValidity(text)
-						this.set('error', text)
-					})
-					.catch(err => this.set('error', err.message))
+export default component('input-field', {
+	value: asNumberOrString,
+	length: 0,
+	error: '',
+	description: '',
+	clear: (host: Component<InputFieldProps>) => {
+		host.clear = () => {
+			host.value = ''
+			host.length = 0
+			const input = host.querySelector('input')
+			if (input) {
+				input.value = ''
+				input.checkValidity()
+				input.focus()
 			}
-
-			// Ensure value is a number if it is not already a number
-			if (this.isNumber && !isNumber(value))
-				// Effect will be called again with numeric value
-				return this.set('value', parseNumber(value, this.isInteger, 0))
-
-			// Change value only if it is a valid number
-			if (this.input && this.isNumber && Number.isFinite(value))
-				this.input.value = String(value)
-		})
- 	}
-
-	// Clear the input field
-	clear() {
-		this.set('value', '')
-		this.set('length', 0)
-		if (this.input) {
-			this.input.value = ''
-			this.input.focus()
 		}
 	}
-
-	stepUp(stepIncrement: number = this.step) {
-		if (this.isNumber)
-			this.#triggerChange(v => this.#nearestStep(v + stepIncrement))
-	}
-
-	stepDown(stepDecrement: number = this.step) {
-		if (this.isNumber)
-			this.#triggerChange(v => this.#nearestStep(v - stepDecrement))
-    }
+}, (el: Component<InputFieldProps>) => {
+	const fns: FxFunction<InputFieldProps, Component<InputFieldProps>>[] = []
+	const input = el.querySelector('input')
+	if (!input)
+		throw new Error('No input element found')
+	const typeNumber = input.type === 'number'
+	const integer = el.hasAttribute('integer')
+	const validationEndpoint = el.getAttribute('validate')
 
 	// Trigger value-change event to commit the value change
-	#triggerChange = (value: string | number | ((v: any) => string | number))  => {
-		this.set('value', value)
-		this.set('error', this.input?.validationMessage ?? '')
-		if (typeof value === 'function')
-			value = this.get('value')
-		if (this.input?.value !== String(value))
-			this.self.emit('value-change', value)
+	const triggerChange = (value: string | number | ((v: any) => string | number))  => {
+		const newValue = typeof value === 'function' ? value(el.value)
+			: typeNumber && !isNumber(value) ? parseNumber(value, integer, 0)
+			: value
+		if (Object.is(el.value, newValue)) return
+
+		// Validate input value against a server-side endpoint
+		if (newValue !== null && validationEndpoint) {
+			fetch(`${validationEndpoint}?name=${input.name}value=${newValue}`)
+				.then(async response => {
+					const text = await response.text()
+					input.setCustomValidity(text)
+					el.error = text
+				})
+				.catch(err => {
+					el.error = err.message
+				})
+		}
+		input.checkValidity()
+		el.value = newValue
+		el.error = input.validationMessage ?? ''
+		if (input?.value !== String(value))
+		emit('value-change', value)(el)
+	}
+	
+	// Handle input changes
+	fns.push(
+		first<InputFieldProps, HTMLInputElement>('input',
+			setProperty('value', () => String(el.value)),
+			on('change', () => {
+				triggerChange(typeNumber ? input.valueAsNumber ?? 0 : input.value ?? '')
+			}),
+			on('input', () => {
+				el.length = input.value.length ?? 0
+			})
+		)
+	)
+
+	if (typeNumber) {
+		const spinButton = el.querySelector('.spinbutton') as HTMLElement | null
+		const step = parseNumber(spinButton?.dataset['step'] || input.step, integer, 1)
+		const min = parseNumber(input.min, integer, 0)
+		const max = parseNumber(input.max, integer, 100)
+
+		// Round a value to the nearest step
+		const nearestStep = (v: number) => {
+			if (!Number.isFinite(v) || v < min) return min
+			if (v > max) return max
+			const value = min + Math.round((v - min) / step) * step
+			return integer
+				? Math.round(value)
+				: parseFloat(value.toFixed(countDecimals(step)))
+		}
+
+		// Handle arrow key events to increment / decrement value
+		fns.push(
+			first('input',
+				on('keydown', (e: Event) => {
+					const { key, shiftKey } = e as KeyboardEvent
+					if (['ArrowUp', 'ArrowDown'].includes(key)) {
+						e.stopPropagation()
+						e.preventDefault()
+						const n = (shiftKey ? step * 10 : step)
+						const newValue = nearestStep(input.valueAsNumber + (key === 'ArrowUp' ? n : -n))
+						input.value = String(newValue)
+						triggerChange(newValue)
+					}
+				})
+			)
+		)
+
+		// Handle spin button clicks and update their disabled state
+		if (spinButton) {
+			fns.push(
+				first<InputFieldProps, HTMLButtonElement>('.decrement',
+					on('click', (e: Event) => {
+						const n = ((e as MouseEvent).shiftKey ? step * 10 : step)
+						const newValue = nearestStep(input.valueAsNumber - n)
+						input.value = String(newValue)
+						triggerChange(newValue)
+					}),
+					setProperty('disabled',
+						() => (isNumber(min) ? el.value as number : 0) - step < min
+					)
+				),
+				first<InputFieldProps, HTMLButtonElement>('.increment',
+					on('click', (e: Event) => {
+						const n = ((e as MouseEvent).shiftKey ? step * 10 : step)
+						const newValue = nearestStep(input.valueAsNumber + n)
+						input.value = String(newValue)
+						triggerChange(newValue)
+					}),
+					setProperty('disabled',
+						() => (isNumber(max) ? el.value as number : 0) + step > max
+					)
+				)
+			)
+		}
+
+	} else {
+
+		// Setup clear button and method
+		fns.push(
+			first<InputFieldProps, HTMLButtonElement>('.clear',
+				on('click', () => {
+					el.clear()
+					triggerChange('')
+				}),
+				setProperty('hidden', () => !el.length)
+			)
+		)
 	}
 
-	// Round a value to the nearest step
-	#nearestStep = (v: number) => {
-		const steps = Math.round((this.max - this.min) / this.step)
-		// Bring to 0-1 range
-		let zerone = Math.round((v - this.min) * steps / (this.max - this.min)) / steps
-		// Keep in range in case value is off limits
-		zerone = Math.min(Math.max(zerone, 0), 1)
-		const value = zerone * (this.max - this.min) + this.min
-		return this.isInteger ? Math.round(value) : value
+	// Setup error message
+	const errorId = el.querySelector('.error')?.id
+	fns.push(
+		first('.error', setText('error')),
+		first('input',
+			setProperty('ariaInvalid', () => el.error ? 'true' : 'false'),
+			setAttribute('aria-errormessage',
+				() => el.error && errorId ? errorId : UNSET
+			)
+		)
+	)
+
+	// Setup description
+	const description = el.querySelector<HTMLElement>('.description')
+	if (description) {
+		
+		// Derived state
+		const maxLength = input.maxLength
+		const remainingMessage = maxLength && description.dataset.remaining
+		if (remainingMessage) {
+			el.setSignal('description',
+				computed(() => remainingMessage.replace('${x}', String(maxLength - el.length)))
+			)
+		}
+
+		// Effects
+		fns.push(
+			first('.description', setText('description')),
+			first('input', setAttribute('aria-describedby',
+				() => el.description && description.id ? description.id : UNSET
+			))
+		)
 	}
 
+	return fns
+})
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'input-field': Component<InputFieldProps>
+	}
 }
-InputField.define('input-field')

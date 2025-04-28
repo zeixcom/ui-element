@@ -1,23 +1,28 @@
-import { UIElement } from "../../../"
-import type { SpinButton } from "../spin-button/spin-button"
+import {
+	type Component, type SignalProducer,
+	component, first, pass
+} from '../../../'
+import { InputButtonProps } from '../input-button/input-button'
+import { SpinButtonProps } from '../spin-button/spin-button'
 
-const asPositiveIntegerString = (value: unknown): string =>
-	typeof value ==='number' && Number.isInteger(value) && value > 0
-		? String(value)
-		: ''
+export type ProductCatalogProps = {
+	total: number
+}
 
-export class ProductCatalog extends UIElement {
-	static localName = 'product-catalog'
+const calcTotal: SignalProducer<HTMLElement, number> = el =>
+	() => Array.from(el.querySelectorAll<Component<SpinButtonProps>>('spin-button'))
+		.reduce((sum, item) => sum + item.value, 0)
 
-	connectedCallback() {
-        
-		// Pass the total to the badge button for display
-		this.first('input-button').pass({
-			badge: () => asPositiveIntegerString(
-				this.all<SpinButton>('spin-button').targets
-					.reduce((sum, item) => sum + item.get('value'), 0)
-			)
-		})
+export default component('product-catalog', {
+	total: calcTotal
+}, el => [
+	first('input-button', pass<ProductCatalogProps, InputButtonProps>({
+		badge: () => el.total > 0 ? String(el.total) : ''
+	}))
+])
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'product-catalog': Component<ProductCatalogProps>
 	}
 }
-ProductCatalog.define()

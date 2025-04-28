@@ -1,26 +1,29 @@
-import { UIElement, asInteger, setAttribute, setText } from '../../..'
+import { type Component, all, asInteger, component, emit, on, setProperty, setText } from '../../../'
 
-export class RatingStars extends UIElement<{ value: number }> {
-	static localName = 'rating-stars'
-	static observedAttributes = ['value']
-
-	init = {
-        value: asInteger(),
-    }
-
-	connectedCallback() {
-        super.connectedCallback()
-
-		this.all('input')
-			.on('change', (_, index) => (e: Event) => {
-				e.stopPropagation()
-				this.set('value', index + 1)
-				this.self.emit('change-rating', index + 1)
-			})
-			.sync(setAttribute('checked', (_, index) => String(this.get('value') === index + 1)))
-		
-		this.all('.label')
-			.sync(setText((_, index) => index < this.get('value') ? '★' : '☆'))
-    }
+export type RatingStarsProps = {
+	value: number
 }
-RatingStars.define()
+
+export default component('rating-stars', {
+	value: asInteger(),
+}, el => [
+	all<RatingStarsProps, HTMLInputElement>('input',
+		setProperty('checked',
+			(_, index) => el.value === index + 1,
+		),
+		on('change', (_, index) => (e: Event) => {
+			e.stopPropagation()
+			el.value = index + 1
+			emit('change-rating', index + 1)(el)
+		})
+	),
+	all('.label',
+		setText((_, index) => index < el.value ? '★' : '☆')
+	)
+])
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'rating-stars': Component<RatingStarsProps>
+	}
+}
