@@ -199,7 +199,7 @@
 			<span class="file">input-text.ts</span>
 			<span class="language">ts</span>
 		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asString, component, first, on, setAttribute, setProperty, setText, UNSET } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { </span><span style="color:#F92672">type</span><span style="color:#F8F8F2"> Component, asString, component, first, on, setAttribute, setProperty, setText, UNSET } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">InputTextProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">	value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">,</span></span>
@@ -208,7 +208,7 @@
 <span class="line"><span style="color:#F8F8F2">    description</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> InputText </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-text'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-text'</span><span style="color:#F8F8F2">, {</span></span>
 <span class="line"><span style="color:#F8F8F2">	value: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(),</span></span>
 <span class="line"><span style="color:#F8F8F2">	length: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	error: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
@@ -253,11 +253,10 @@
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#E6DB74">		'input-text'</span><span style="color:#F92672">:</span><span style="color:#F92672"> typeof</span><span style="color:#F8F8F2"> InputText</span></span>
+<span class="line"><span style="color:#E6DB74">		'input-text'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputTextProps</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#F8F8F2"> InputText</span></span></code></pre>
+<span class="line"></span></code></pre>
 		<input-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>

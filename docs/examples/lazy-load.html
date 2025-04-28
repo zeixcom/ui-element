@@ -36,7 +36,7 @@
 			<span class="language">ts</span>
 		</p>
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> AttributeParser, </span><span style="color:#F92672">type</span><span style="color:#F8F8F2"> SignalProducer,</span></span>
+<span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> AttributeParser, </span><span style="color:#F92672">type</span><span style="color:#F8F8F2"> Component, </span><span style="color:#F92672">type</span><span style="color:#F8F8F2"> SignalProducer,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setProperty, setText, dangerouslySetInnerHTML, component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	first</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
@@ -86,7 +86,7 @@
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">/* === Component === */</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> LazyLoad </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'lazy-load'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'lazy-load'</span><span style="color:#F8F8F2">, {</span></span>
 <span class="line"><span style="color:#F8F8F2">	error: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	src: asURL,</span></span>
 <span class="line"><span style="color:#F8F8F2">	content: fetchText</span></span>
@@ -100,11 +100,10 @@
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#E6DB74">		'lazy-load'</span><span style="color:#F92672">:</span><span style="color:#F92672"> typeof</span><span style="color:#F8F8F2"> LazyLoad</span></span>
+<span class="line"><span style="color:#E6DB74">		'lazy-load'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">LazyLoadProps</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#F8F8F2"> LazyLoad</span></span></code></pre>
+<span class="line"></span></code></pre>
 		<input-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>
