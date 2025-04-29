@@ -39,11 +39,10 @@
 	</button>
 </shake-hands>
 <script>
-  	customElements.get('shake-hands') || customElements.define('shake-hands', class extends HTMLElement {
+  	customElements.define('shake-hands', class extends HTMLElement {
 		connectedCallback() {
 			const countEl = this.querySelector('.count')
 			let count = parseInt(countEl.textContent, 10)
-			
 			this.querySelector('button').onclick = () => {
 				count++
 				countEl.textContent = count
