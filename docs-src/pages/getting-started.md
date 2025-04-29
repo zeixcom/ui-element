@@ -25,20 +25,6 @@ For the easiest setup, include <strong>UIElement</strong> via a CDN. This is ide
 <script src="https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"></script>
 ```
 
-Or use `<script type="module">` to import UIElement in your HTML:
-
-```html
-<script type="module">
-import { UIElement } from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
-
-// Your code here
-</script>
-```
-
-* ✅ **No build step** required
-* ✅ **Works with any server-rendered HTML**
-* ✅ **Automatic hydration** when components are dynamically inserted
-
 </section>
 
 <section>
@@ -66,22 +52,39 @@ Remember to keep the hosted file updated to use the latest features and bug fixe
 
 <section>
 
-### Installing via NPM
+### Installing via Package Managers
 
-If you’re using a **bundler** like **Vite, Webpack, or Rollup**, install UIElement via NPM:
+If you’re using a **bundler** like **Vite, Webpack, or Rollup**, install UIElement via NPM or Bun:
+
+
+<tab-list>
+<menu>
+<li><button type="button" aria-pressed="true">NPM</button></li>
+<li><button type="button">Bun</button></li>
+</menu>
+<details open>
+<summary>NPM</summary>
 
 ```bash
 npm install @zeix/ui-element
 ```
 
-Then import `UIElement` in your JavaScript:
+</details>
+<details>
+<summary>Bun</summary>
 
-```js
-import { UIElement } from '@zeix/ui-element'
+```bash
+bun add @zeix/ui-element
 ```
 
-* ✅ Best for **larger projects** using a build pipeline
-* ✅ Works with **modern JavaScript/TypeScript tooling**
+</details>
+</tab-list>
+
+Then import the needed functions in your JavaScript:
+
+```js
+import { asString, component, first, on, RESET, setText } from '@zeix/ui-element'
+```
 
 </section>
 
@@ -115,30 +118,30 @@ Save the following inside a `<script type="module">` tag or an external JavaScri
 
 ```html
 <script type="module">
-	import { asString, component, setText, RESET } from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
+	import { asString, component, first, on, RESET, setText } from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
 
 	component('hello-world', {
 		// Parse 'name' attribute, falling back to server-rendered content
 		name: asString(RESET)
-	}, el => {
+	}, el => [
 
 		// Update content dynamically based on the 'name' signal
-		el.first('span', setText('name'))
+		first('span', setText('name')),
 
 		// Handle user input to change the 'name'
-		el.first('input', on('input', e => {
+		first('input', on('input', e => {
 			el.name = e.target.value || RESET
 		}))
-	})
+	])
 </script>
 ```
 
 **What Happens Here?**
 
-* ✅ The `asString(RESET)` signal **parses the 'name' attribute**, falling back to server-rendered value (constant `RESET`).
-* ✅ The `setText('name')` effect **syncs the state** with the `<span>`.
-* ✅ The `on('input')` event **updates the state** whenever you type in the first `<input>` field, falling back to server-rendered value if empty.
-* ✅ The Web Component **hydrates automatically** when inserted into the page.
+* The `asString(RESET)` signal **parses the 'name' attribute**, falling back to server-rendered value (constant `RESET`).
+* The `setText('name')` effect **syncs the state** with the `<span>`.
+* The `on('input')` event **updates the state** whenever you type in the first `<input>` field, falling back to server-rendered value if empty.
+* The Web Component **hydrates automatically** when inserted into the page.
 
 </section>
 

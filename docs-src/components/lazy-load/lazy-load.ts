@@ -13,20 +13,19 @@ export type LazyLoadProps = {
 /* === Attribute Parser === */
 
 const asURL: AttributeParser<HTMLElement & { error: string }, string> = (el, v) => {
+	let value = ''
+	let error = ''
 	if (!v) {
-		el.error = 'No URL provided in src attribute'
-		return ''
+		error = 'No URL provided in src attribute'
 	} else if ((el.parentElement || (el.getRootNode() as ShadowRoot).host)?.closest(`${el.localName}[src="${v}"]`)) {
-		el.error = 'Recursive loading detected'
-		return ''
+		error = 'Recursive loading detected'
+	} else {
+		const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
+		if (url.origin === location.origin) value = String(url) // Sanity check for cross-origin URLs
+		else error = 'Invalid URL origin'
 	}
-	const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
-	if (url.origin === location.origin) { // Sanity check for cross-origin URLs
-		el.error = '' // Success: wipe previous error if there was any
-		return String(url)
-	}
-	el.error = 'Invalid URL origin'
-	return ''
+	el.error = error
+	return value
 }
 
 /* === Signal Producer === */

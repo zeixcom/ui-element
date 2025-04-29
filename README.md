@@ -59,17 +59,17 @@ Server-rendered markup:
 UIElement component:
 
 ```js
-import { component, asInteger, first, setText } from '@zeix/ui-element'
+import { asInteger, component, first, on, RESET, setText } from '@zeix/ui-element'
 
 component('show-appreciation', {
     count: asInteger(RESET) // Get initial value from .count element
 }, el => [
 
-    // Bind click event to increment count
-    first('button', on('click', () => { el.count++ })),
+	// Update count display when state changes
+    first('.count', setText('count')),
 
-    // Update.count text when count changes
-    first('.count', setText('count'))
+    // Handle click events to change state
+    first('button', on('click', () => { el.count++ }))
 ])
 ```
 
@@ -108,9 +108,11 @@ show-appreciation {
 }
 ```
 
-### Tab List and Panels
+### Tab List or Accordion
 
-An example demonstrating how to pass states from one component to another. Server-rendered markup:
+An example demonstrating how to use just semantic HTML to compose a component that can be either a tab list or an accordion. Add `accordion` attribute or set its `accordion` property to `true` from a parent component to make it an accordion.
+
+Server-rendered markup:
 
 ```html
 <tab-list>
@@ -134,7 +136,7 @@ An example demonstrating how to pass states from one component to another. Serve
 </tab-list>
 ```
 
-UIElement components:
+UIElement component:
 
 ```js
 import { asBoolean, component, all, on, setAttribute, setProperty, toggleAttribute, toggleClass } from '@zeix/ui-element'
@@ -216,7 +218,7 @@ tab-list {
 
 ### Lazy Load
 
-A more complex component demonstrating async fetch from the server:
+An example demonstrating how to use a custom attribute parser (sanitize an URL) and a signal producer (async fetch) to implement lazy loading.
 
 ```html
 <lazy-load src="/lazy-load/snippet.html">
@@ -230,20 +232,19 @@ import { component, first, dangerouslySetInnerHTML, setProperty, setText } from 
 
 // Custom attribute parser
 const asURL = (el, v) => {
+	let value = ''
+	let error = ''
 	if (!v) {
-		el.error = 'No URL provided in src attribute'
-		return ''
+		error = 'No URL provided in src attribute'
 	} else if ((el.parentElement || (el.getRootNode() as ShadowRoot).host)?.closest(`${el.localName}[src="${v}"]`)) {
-		el.error = 'Recursive loading detected'
-		return ''
+		error = 'Recursive loading detected'
+	} else {
+		const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
+		if (url.origin === location.origin) value = String(url) // Sanity check for cross-origin URLs
+		else error = 'Invalid URL origin'
 	}
-	const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
-	if (url.origin === location.origin) { // Sanity check for cross-origin URLs
-		el.error = '' // Success: wipe previous error if there was any
-		return String(url)
-	}
-	el.error = 'Invalid URL origin'
-	return ''
+	el.error = error
+	return value
 }
 
 // Custom signal producer, needs src and error properties on element

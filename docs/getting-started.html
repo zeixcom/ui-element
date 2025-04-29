@@ -118,30 +118,6 @@
 	</input-button>
 	
 </code-block>
-<p>Or use <code>&lt;script type=&quot;module&quot;&gt;</code> to import UIElement in your HTML:</p>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">html</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"module"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">// Your code here</span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
-<span class="line"></span></code></pre>
-	<input-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</input-button>
-	
-</code-block>
-<ul>
-<li>✅ <strong>No build step</strong> required</li>
-<li>✅ <strong>Works with any server-rendered HTML</strong></li>
-<li>✅ <strong>Automatic hydration</strong> when components are dynamically inserted</li>
-</ul>
 </section>
 
 <section>
@@ -174,8 +150,16 @@
 
 <section>
 
-<h3>Installing via NPM</h3>
-<p>If you’re using a <strong>bundler</strong> like <strong>Vite, Webpack, or Rollup</strong>, install UIElement via NPM:</p>
+<h3>Installing via Package Managers</h3>
+<p>If you’re using a <strong>bundler</strong> like <strong>Vite, Webpack, or Rollup</strong>, install UIElement via NPM or Bun:</p>
+<tab-list>
+<menu>
+<li><button type="button" aria-pressed="true">NPM</button></li>
+<li><button type="button">Bun</button></li>
+</menu>
+<details open>
+<summary>NPM</summary>
+
 <code-block language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -190,13 +174,16 @@
 	</input-button>
 	
 </code-block>
-<p>Then import <code>UIElement</code> in your JavaScript:</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+</details>
+<details>
+<summary>Bun</summary>
+
+<code-block language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
-		<span class="language">js</span>
+		<span class="language">bash</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { UIElement } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">bun</span><span style="color:#E6DB74"> add</span><span style="color:#E6DB74"> @zeix/ui-element</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -205,10 +192,24 @@
 	</input-button>
 	
 </code-block>
-<ul>
-<li>✅ Best for <strong>larger projects</strong> using a build pipeline</li>
-<li>✅ Works with <strong>modern JavaScript/TypeScript tooling</strong></li>
-</ul>
+</details>
+</tab-list>
+
+<p>Then import the needed functions in your JavaScript:</p>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asString, component, first, on, RESET, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
 </section>
 
 <section>
@@ -249,21 +250,21 @@
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"module"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F92672">	import</span><span style="color:#F8F8F2"> { asString, component, setText, RESET } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'</span></span>
+<span class="line"><span style="color:#F92672">	import</span><span style="color:#F8F8F2"> { asString, component, first, on, RESET, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#A6E22E">	component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">, {</span></span>
 <span class="line"><span style="color:#88846F">		// Parse 'name' attribute, falling back to server-rendered content</span></span>
 <span class="line"><span style="color:#F8F8F2">		name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(RESET)</span></span>
-<span class="line"><span style="color:#F8F8F2">	}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Update content dynamically based on the 'name' signal</span></span>
-<span class="line"><span style="color:#F8F8F2">		el.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Handle user input to change the 'name'</span></span>
-<span class="line"><span style="color:#F8F8F2">		el.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">			el.name </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> RESET</span></span>
 <span class="line"><span style="color:#F8F8F2">		}))</span></span>
-<span class="line"><span style="color:#F8F8F2">	})</span></span>
+<span class="line"><span style="color:#F8F8F2">	])</span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
@@ -275,10 +276,10 @@
 </code-block>
 <p><strong>What Happens Here?</strong></p>
 <ul>
-<li>✅ The <code>asString(RESET)</code> signal <strong>parses the &#39;name&#39; attribute</strong>, falling back to server-rendered value (constant <code>RESET</code>).</li>
-<li>✅ The <code>setText(&#39;name&#39;)</code> effect <strong>syncs the state</strong> with the <code>&lt;span&gt;</code>.</li>
-<li>✅ The <code>on(&#39;input&#39;)</code> event <strong>updates the state</strong> whenever you type in the first <code>&lt;input&gt;</code> field, falling back to server-rendered value if empty.</li>
-<li>✅ The Web Component <strong>hydrates automatically</strong> when inserted into the page.</li>
+<li>The <code>asString(RESET)</code> signal <strong>parses the &#39;name&#39; attribute</strong>, falling back to server-rendered value (constant <code>RESET</code>).</li>
+<li>The <code>setText(&#39;name&#39;)</code> effect <strong>syncs the state</strong> with the <code>&lt;span&gt;</code>.</li>
+<li>The <code>on(&#39;input&#39;)</code> event <strong>updates the state</strong> whenever you type in the first <code>&lt;input&gt;</code> field, falling back to server-rendered value if empty.</li>
+<li>The Web Component <strong>hydrates automatically</strong> when inserted into the page.</li>
 </ul>
 </section>
 

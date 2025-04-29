@@ -8,21 +8,80 @@ description: "Overview and key benefits of UIElement"
 
 # 📖 Introduction
 
-<p class="lead">Enhance server-rendered pages with lightweight, self-contained Web Components. No framework, no hydration issues, no unnecessary complexity.</p>
+<p class="lead">Web development doesn't need to be complicated. UIElement offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
 </section>
 
 <section>
 
 ## What is UIElement?
 
-**UIElement** is a lightweight JavaScript library that lets you build interactive Web Components without requiring a full JavaScript framework like React or Vue.
+UIElement is a lightweight TypeScript library (approximately 4kB gzipped) that brings signal-based reactivity to Web Components. It serves as a thin layer between standard web technologies and modern reactivity patterns, empowering you to:
 
-It **works with your existing server-rendered HTML**, enhancing it with stateful, reusable components that hydrate automatically – even when inserted dynamically.
+* Transform ordinary HTML elements into reactive components
+* Bind UI updates directly to state changes with minimal boilerplate
+* Create reusable component patterns without complex abstractions
+* Progressively enhance server-rendered content with client-side interactivity
 
-* **Works with any backend** – No need for a JavaScript-first stack like Next.js.
-* **No build tools required** – Just drop in components and they work.
-* **Minimal JavaScript footprint** – Less code over the wire, less complexity.
-* **Future-proof** – Web Components don’t break with framework updates.
+```js
+import { asInteger, component, first, on, RESET, setText } from '@zeix/ui-element'
+
+component('show-appreciation', {
+    count: asInteger(RESET) // Get initial value from .count element
+}, el => [
+
+	// Update count display when state changes
+    first('.count', setText('count')),
+
+    // Handle click events to change state
+    first('button', on('click', () => { el.count++ }))
+])
+```
+
+UIElement augments what the platform already provides. It leverages the Web Components standard while adding just enough convenience functions to make reactive UI behaviors easy to implement.
+
+</section>
+
+<section>
+
+## Philosophy & Design Goals
+
+### HTML-First Approach
+
+While many frameworks start with JavaScript and generate HTML, UIElement takes the opposite approach. It assumes you already have HTML (whether server-rendered or manually created) and want to enhance it with behavior:
+
+```html
+<!-- Start with semantic HTML -->
+<show-appreciation aria-label="Show appreciation">
+    <button type="button">
+        <span class="emoji">💐</span>
+        <span class="count">5</span>
+    </button>
+</show-appreciation>
+```
+
+This philosophy means:
+
+* Better SEO and initial page load performance
+* Progressive enhancement for resilient UIs
+* Less client-side rendering overhead
+* Simpler accessibility implementation
+
+### Performance By Design
+
+UIElement avoids the overhead of virtual DOM diffing, instead using precise, targeted DOM updates through a fine-grained reactivity system:
+
+* Efficient signal propagation that updates only what changed
+* Batch processing and scheduling of updates to minimize browser reflows
+* Minimal abstraction layers between your code and the browser
+
+### Developer Experience Without Compromise
+
+UIElement is designed to be intuitive and easy to use. It's built with type safety in mind, ensuring that your code is correct and that you don't miss any potential bugs.
+
+* **Type Safety**: Get early warnings when types don't match, improving code quality and reducing bugs.
+* **Minimal Boilerplate**: Write less code to achieve the same result.
+* **Declarative Syntax**: Define component behavior by composing small, reusable functions (attribute parsers and effects).
+* **Customizable**: UIElement is designed to be easily customizable and extensible. You can create your own custom attribute parsers and effects to suit your specific needs.
 
 </section>
 
@@ -30,56 +89,21 @@ It **works with your existing server-rendered HTML**, enhancing it with stateful
 
 ## Why UIElement?
 
-If you’re looking for a simple, **framework-free way to add interactivity** to your web pages, UIElement is the perfect fit.
+While there are many excellent JavaScript frameworks out there, UIElement embraces web standards without proprietary extensions. It deliberately eschews abstractions like HTML-in-JS (client-side rendering) or JS-in-HTML (logic in framework-specific attributes) in favor of directness. It does JavaScript state management and view updates the hard way, while still providing the benefits of declarative reactivity with a few functions to compose complex behavior.
 
-* **Enhancing Server-Rendered Pages**: Add client-side behavior to static HTML without worrying about hydration mismatches.
-* **Creating Standalone Web Components**: Build self-contained UI elements that work anywhere — inside any CMS, e-commerce site, or dashboard.
-* **Adding Lightweight Interactivity**: Skip the complexity of React or Vue for simple UI elements like tabs, counters, and interactive lists.
-* **Long-Term Stability**: Web Components outlive JavaScript frameworks release cycles – your components won’t break with each major update.
+UIElement differentiates itself through:
 
-</section>
+* **Simplicity**: Few, clear concepts (components, signals, element selectors, effects) allow developers to quickly build interactive components.
+* **Performance**: Fine-grained, direct DOM manipulation outperforms virtual DOM approaches with re-rendering.
+* **Minimalism**: As a thin layer over native web standards, it has no dependencies and minimal footprint with tree-shakable functions.
 
-<section>
+UIElement shines when:
 
-## How UIElement Works
-
-UIElement extends the native `HTMLElement` class, letting you define **custom Web Components** that manage state with minimal code.
-
-Unlike traditional frameworks that rely on a virtual DOM or dirty-checking, UIElement synchronizes automic pieces of state (signals) directly with the DOM, making fine-grained updates **fast and efficient**.
-
-### Example: Counter Component
-
-<component-demo>
-	<div class="preview">
-		<my-counter count="42">
-			<p>
-				Count: <span class="count"></span><br>
-				Parity: <span class="parity"></span>
-			</p>
-			<button type="button" class="decrement">−</button>
-			<button type="button" class="increment">+</button>
-		</my-counter>
-	</div>
-	<details>
-		<summary>Source Code</summary>
-		<lazy-load src="./examples/my-counter.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
-		</lazy-load>
-	</details>
-</component-demo>
-
-* ✅ **Zero renders** – Only updates what changes.
-* ✅ **No abstraction over the DOM** – Works with plain HTML.
-* ✅ **Fully self-contained** – Can be used anywhere, even inside CMS templates.
-
-<section>
-
-## How UIElement Compares
-
-* **No Virtual DOM**: Builds upon server-rendered HTML and does only atomic DOM updates, avoiding unnecessary renders.
-* **Minimal Overhead**: Since it adds only a thin layer over native Web Standards, it has minimal bundle size and high performance.
-* **Simple API**: Few, clear concepts (signals, effects, context) allow developers to quickly build interactive components.
+* You're working with server-rendered content that needs client-side enhancements
+* Performance is critical, especially on lower-powered devices
+* You want component reusability without framework lock-in
+* You prefer working with future-proof standard web technologies
+* You need to integrate with diverse tech stacks and existing codebases
 
 </section>
 		  
@@ -87,6 +111,10 @@ Unlike traditional frameworks that rely on a virtual DOM or dirty-checking, UIEl
 
 ## Next Steps
 
-Continue to [Getting Started](getting-started.html), or dive into [Building Components](building-components.html) to learn more about signals and reactivity.
+Now that you understand what UIElement is and its core philosophy, you're ready to:
+
+* Move on to [Getting Started](getting-started.html) to install the library and build your first component
+* Learn more about [Building Components](building-components.html) to create reusable UI patterns
+* Explore [Data Flow](data-flow.html) to understand how to manage component communication
 
 </section>
