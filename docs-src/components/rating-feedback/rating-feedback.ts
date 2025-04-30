@@ -12,13 +12,16 @@ export default component('rating-feedback', {}, el => {
 	const stars = el.querySelector<Component<RatingStarsProps>>('rating-stars')
 	if (!stars)
 		throw new Error('No rating-stars component found')
+	const hasDifferentKey = (element: HTMLElement): boolean =>
+		rating.get() !== parseInt(element.dataset['key'] || '0')
+
 	return [
 
 	// Event listeners for rating changes and form submission
-	on('change-rating', (e: Event) => {
-		rating.set((e as CustomEvent<number>).detail)
+	on<CustomEvent<number>>('change-rating', e => {
+		rating.set(e.detail)
 	}),
-	on('submit', (e: Event) => {
+	on('submit', e => {
 		e.preventDefault()
 		submitted.set(true)
 		console.log('Feedback submitted')
@@ -40,7 +43,7 @@ export default component('rating-feedback', {}, el => {
 		setProperty('hidden', () => submitted.get() || !rating.get())
 	),
 	all<ComponentProps, HTMLElement>('.feedback p',
-		setProperty('hidden', (_, index) => rating.get() !== index + 1)
+		setProperty('hidden', hasDifferentKey)
 	),
 
 	// Effect on empty state

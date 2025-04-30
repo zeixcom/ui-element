@@ -55,7 +55,6 @@ type Cleanup = () => void
 type FxFunction<P extends ComponentProps, E extends Element> = (
 	host: Component<P>,
 	element: E,
-	index: number
 ) => Cleanup | void
 
 /* === Constants === */
@@ -140,7 +139,7 @@ const component = <P extends ComponentProps>(
 			const fns = setup(this as unknown as Component<P>)
 			if (!Array.isArray(fns))
 				throw new TypeError(`Expected array of functions as return value of setup function in ${elementName(this)}`)
-			this.#cleanup = run(fns, this as unknown as Component<P>, [this as unknown as Component<P>])
+			this.#cleanup = run(fns, this as unknown as Component<P>, this as unknown as Component<P>)
 		}
 		
 		/**

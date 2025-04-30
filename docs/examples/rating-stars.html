@@ -1,15 +1,12 @@
 
-<tab-list>
-	<menu>
-		<li><button type="button" aria-pressed="false">HTML</button></li>
-		<li><button type="button" aria-pressed="false">CSS</button></li>
-		<li><button type="button" aria-pressed="true">TypeScript</button></li>
-	</menu>
+<tab-group>
+	<div role="tablist">
+		<button type="button" role="tab" id="trigger_rating-stars.html" aria-controls="panel_rating-stars.html" aria-selected="false" tabindex="-1">HTML</button>
+		<button type="button" role="tab" id="trigger_rating-stars.css" aria-controls="panel_rating-stars.css" aria-selected="false" tabindex="-1">CSS</button>
+		<button type="button" role="tab" id="trigger_rating-stars.ts" aria-controls="panel_rating-stars.ts" aria-selected="true" tabindex="0">TypeScript</button>
+	</div>
 	
-<details>
-	<summary>
-		<div class="summary">HTML</div>
-	</summary>
+<div role="tabpanel" id="panel_rating-stars.html" aria-labelledby="trigger_rating-stars.html" hidden>
 	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">rating-stars.html</span>
@@ -18,23 +15,23 @@
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">rating-stars</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">fieldset</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">legend</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#F8F8F2">>Rate&#x3C;/</span><span style="color:#F92672">legend</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> data-key</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"1"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"1"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>☆&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> data-key</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"2"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"2"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>☆&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> data-key</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>☆&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> data-key</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"4"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"4"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>☆&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> data-key</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"5"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"5"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>☆&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
@@ -46,12 +43,9 @@
 			</button>
 		</input-button>
 	</code-block>
-</details>
+</div>
 
-<details>
-	<summary>
-		<div class="summary">CSS</div>
-	</summary>
+<div role="tabpanel" id="panel_rating-stars.css" aria-labelledby="trigger_rating-stars.css" hidden>
 	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">rating-stars.css</span>
@@ -96,12 +90,9 @@
 			</button>
 		</input-button>
 	</code-block>
-</details>
+</div>
 
-<details open>
-	<summary>
-		<div class="summary">TS</div>
-	</summary>
+<div role="tabpanel" id="panel_rating-stars.ts" aria-labelledby="trigger_rating-stars.ts">
 	<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">rating-stars.ts</span>
@@ -115,21 +106,27 @@
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'rating-stars'</span><span style="color:#F8F8F2">, {</span></span>
 <span class="line"><span style="color:#F8F8F2">	value: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(),</span></span>
-<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">	all</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">RatingStarsProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">HTMLInputElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">		setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'checked'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">			(</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> index </span><span style="color:#F92672">+</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#A6E22E"> getKey</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">element</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">)</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
+<span class="line"><span style="color:#A6E22E">		parseInt</span><span style="color:#F8F8F2">(element.dataset[</span><span style="color:#E6DB74">'key'</span><span style="color:#F8F8F2">] </span><span style="color:#F92672">||</span><span style="color:#E6DB74"> '0'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">		all</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">RatingStarsProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">HTMLInputElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'checked'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">				target</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">===</span><span style="color:#A6E22E"> getKey</span><span style="color:#F8F8F2">(target),</span></span>
+<span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">				e.</span><span style="color:#A6E22E">stopPropagation</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> parseInt</span><span style="color:#F8F8F2">((e.currentTarget </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLInputElement</span><span style="color:#F8F8F2">)?.value) </span><span style="color:#F92672">+</span><span style="color:#AE81FF"> 1</span></span>
+<span class="line"><span style="color:#F8F8F2">				el.value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> value</span></span>
+<span class="line"><span style="color:#A6E22E">				emit</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change-rating'</span><span style="color:#F8F8F2">, value)(el)</span></span>
+<span class="line"><span style="color:#F8F8F2">			})</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
-<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">			e.</span><span style="color:#A6E22E">stopPropagation</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">			el.value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> index </span><span style="color:#F92672">+</span><span style="color:#AE81FF"> 1</span></span>
-<span class="line"><span style="color:#A6E22E">			emit</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change-rating'</span><span style="color:#F8F8F2">, index </span><span style="color:#F92672">+</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">)(el)</span></span>
-<span class="line"><span style="color:#F8F8F2">		})</span></span>
-<span class="line"><span style="color:#F8F8F2">	),</span></span>
-<span class="line"><span style="color:#A6E22E">	all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.label'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">		setText</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> index </span><span style="color:#F92672">&#x3C;</span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> '★'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> '☆'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">	)</span></span>
-<span class="line"><span style="color:#F8F8F2">])</span></span>
+<span class="line"><span style="color:#A6E22E">		all</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">RatingStarsProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'.label'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			setText</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> getKey</span><span style="color:#F8F8F2">(target) </span><span style="color:#F92672">&#x3C;=</span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> '★'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> '☆'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">		)</span></span>
+<span class="line"><span style="color:#F8F8F2">	]</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>
@@ -143,5 +140,5 @@
 			</button>
 		</input-button>
 	</code-block>
-</details>
-</tab-list>
+</div>
+</tab-group>

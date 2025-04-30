@@ -6,21 +6,27 @@ export type RatingStarsProps = {
 
 export default component('rating-stars', {
 	value: asInteger(),
-}, el => [
-	all<RatingStarsProps, HTMLInputElement>('input',
-		setProperty('checked',
-			(_, index) => el.value === index + 1,
+}, el => {
+	const getKey = (element: HTMLElement): number =>
+		parseInt(element.dataset['key'] || '0')
+
+	return [
+		all<RatingStarsProps, HTMLInputElement>('input',
+			setProperty('checked',
+				target => el.value === getKey(target),
+			),
+			on('change', e => {
+				e.stopPropagation()
+				const value = parseInt((e.currentTarget as HTMLInputElement)?.value) + 1
+				el.value = value
+				emit('change-rating', value)(el)
+			})
 		),
-		on('change', (_, index) => (e: Event) => {
-			e.stopPropagation()
-			el.value = index + 1
-			emit('change-rating', index + 1)(el)
-		})
-	),
-	all('.label',
-		setText((_, index) => index < el.value ? '★' : '☆')
-	)
-])
+		all<RatingStarsProps, HTMLElement>('.label',
+			setText(target => getKey(target) <= el.value ? '★' : '☆')
+		)
+	]
+})
 
 declare global {
 	interface HTMLElementTagNameMap {

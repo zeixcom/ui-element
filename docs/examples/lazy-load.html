@@ -1,14 +1,11 @@
 
-<tab-list>
-	<menu>
-		<li><button type="button" aria-pressed="false">HTML</button></li>
-		<li><button type="button" aria-pressed="true">TypeScript</button></li>
-	</menu>
+<tab-group>
+	<div role="tablist">
+		<button type="button" role="tab" id="trigger_lazy-load.html" aria-controls="panel_lazy-load.html" aria-selected="false" tabindex="-1">HTML</button>
+		<button type="button" role="tab" id="trigger_lazy-load.ts" aria-controls="panel_lazy-load.ts" aria-selected="true" tabindex="0">TypeScript</button>
+	</div>
 	
-<details>
-	<summary>
-		<div class="summary">HTML</div>
-	</summary>
+<div role="tabpanel" id="panel_lazy-load.html" aria-labelledby="trigger_lazy-load.html" hidden>
 	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">lazy-load.html</span>
@@ -24,12 +21,9 @@
 			</button>
 		</input-button>
 	</code-block>
-</details>
+</div>
 
-<details open>
-	<summary>
-		<div class="summary">TS</div>
-	</summary>
+<div role="tabpanel" id="panel_lazy-load.ts" aria-labelledby="trigger_lazy-load.ts">
 	<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">lazy-load.ts</span>
@@ -109,5 +103,5 @@
 			</button>
 		</input-button>
 	</code-block>
-</details>
-</tab-list>
+</div>
+</tab-group>

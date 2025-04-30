@@ -1,15 +1,14 @@
 import { type Signal, effect, enqueue, isSignal, isState, UNSET } from '@zeix/cause-effect'
 
 import { isFunction, isString } from '../core/util'
-import { type ComponentProps, type Component, RESET } from '../component'
+import { type ComponentProps, type Component, RESET, type Cleanup } from '../component'
 import { DEV_MODE, elementName, log, LOG_ERROR } from '../core/log'
-import type { Provider } from '../core/ui'
 
 /* === Types === */
 
-type SignalLike<P extends ComponentProps, T> = keyof P
+type SignalLike<P extends ComponentProps, E extends Element, T> = keyof P
 	| Signal<NonNullable<T>>
-	| Provider<T>
+	| ((element: E) => T | null | undefined)
 
 type ElementUpdater<E extends Element, T> = {
 	op: string,
@@ -36,13 +35,12 @@ const ops: Record<string, string> = {
 }
 
 const resolveSignalLike = /*#__PURE__*/ <P extends ComponentProps, E extends Element, T extends {}>(
-	s: SignalLike<P, T>,
+	s: SignalLike<P, E, T>,
 	host: Component<P>,
-	target: E,
-	index: number
+	target: E
 ): T => isString(s) ? host.getSignal(s).get() as unknown as T
 	: isSignal(s) ? s.get()
-	: isFunction<T>(s) ? s(target, index)
+	: isFunction<T>(s) ? s(target)
 	: RESET
 
 const isSafeURL = /*#__PURE__*/ (value: string): boolean => {
@@ -80,9 +78,9 @@ const safeSetAttribute = /*#__PURE__*/ (
  * @param {ElementUpdater} updater - updater object containing key, read, update, and delete methods
  */
 const updateElement = <P extends ComponentProps, E extends Element, T extends {}>(
-	s: SignalLike<P, T>,
+	s: SignalLike<P, E, T>,
 	updater: ElementUpdater<E, T>
-) => (host: Component<P>, target: E, index: number = 0): () => void => {
+) => (host: Component<P>, target: E): Cleanup => {
 	const { op, read, update } = updater
 	const fallback = read(target)
 
@@ -97,7 +95,7 @@ const updateElement = <P extends ComponentProps, E extends Element, T extends {}
 	return effect(() => {
 		let value = RESET
 		try {
-			value = resolveSignalLike(s, host, target, index)
+			value = resolveSignalLike(s, host, target)
 		} catch (error) {
 			err(error, 'update')
 			return
@@ -145,9 +143,9 @@ const updateElement = <P extends ComponentProps, E extends Element, T extends {}
  * @throws {TypeError} if the insertPosition is invalid for the target element
  */
 const insertNode = <P extends ComponentProps, E extends Element>(
-	s: SignalLike<P, boolean>,
+	s: SignalLike<P, E, boolean>,
     { type, where, create }: NodeInserter
-) => (host: Component<P>, target: E, index: number = 0): void | (() => void) => {
+) => (host: Component<P>, target: E): void | (() => void) => {
 	const methods: Record<InsertPosition, keyof Element> = {
 		beforebegin: 'before',
 		afterbegin: 'prepend',
@@ -162,7 +160,7 @@ const insertNode = <P extends ComponentProps, E extends Element>(
 	return effect(() => {
 		let really = false
 		try {
-			really = resolveSignalLike(s, host, target, index)
+			really = resolveSignalLike(s, host, target)
 		} catch (error) {
 			err(error)
 			return
@@ -190,7 +188,7 @@ const insertNode = <P extends ComponentProps, E extends Element>(
  * @param {SignalLike<string>} s - state bound to the text content
  */
 const setText = <P extends ComponentProps, E extends Element>(
-	s: SignalLike<P, string>
+	s: SignalLike<P, E, string>
 ) => updateElement(s, {
 	op: 't',
 	read: (el: E): string | null => el.textContent,
@@ -212,7 +210,7 @@ const setText = <P extends ComponentProps, E extends Element>(
  */
 const setProperty = <P extends ComponentProps, E extends Element, K extends keyof E>(
 	key: K,
-	s: SignalLike<P, E[K]> = key as SignalLike<P, E[K]>
+	s: SignalLike<P, E, E[K]> = key as SignalLike<P, E, E[K]>
 ) => updateElement(s, {
 	op: 'p',
 	read: (el: E) => key in el ? el[key] : UNSET,
@@ -231,7 +229,7 @@ const setProperty = <P extends ComponentProps, E extends Element, K extends keyo
  */
 const setAttribute = <P extends ComponentProps, E extends Element>(
 	name: string,
-	s: SignalLike<P, string> = name
+	s: SignalLike<P, E, string> = name
 ) => updateElement(s, {
 	op: 'a',
 	read: (el: E): string | null => el.getAttribute(name),
@@ -254,7 +252,7 @@ const setAttribute = <P extends ComponentProps, E extends Element>(
  */
 const toggleAttribute = <P extends ComponentProps, E extends Element>(
 	name: string,
-	s: SignalLike<P, boolean> = name
+	s: SignalLike<P, E, boolean> = name
 ) => updateElement(s, {
 	op: 'a',
 	read: (el: E): boolean => el.hasAttribute(name),
@@ -273,7 +271,7 @@ const toggleAttribute = <P extends ComponentProps, E extends Element>(
  */
 const toggleClass = <P extends ComponentProps, E extends Element>(
 	token: string,
-	s: SignalLike<P, boolean> = token
+	s: SignalLike<P, E, boolean> = token
 ) => updateElement(s, {
 	op: 'c',
 	read: (el: E): boolean => el.classList.contains(token),
@@ -292,7 +290,7 @@ const toggleClass = <P extends ComponentProps, E extends Element>(
  */
 const setStyle = <P extends ComponentProps, E extends (HTMLElement | SVGElement | MathMLElement)>(
 	prop: string,
-	s: SignalLike<P, string> = prop
+	s: SignalLike<P, E, string> = prop
 ) => updateElement(s, {
 	op: 's',
 	read: (el: E): string | null => el.style.getPropertyValue(prop),
@@ -315,7 +313,7 @@ const setStyle = <P extends ComponentProps, E extends (HTMLElement | SVGElement 
  * @param {boolean} [allowScripts] - whether to allow executable script tags in the HTML content, defaults to false
  */
 const dangerouslySetInnerHTML = <P extends ComponentProps, E extends Element>(
-    s: SignalLike<P, string>,
+    s: SignalLike<P, E, string>,
 	attachShadow?: 'open' | 'closed',
 	allowScripts?: boolean,
 ) => updateElement(s, {
@@ -352,7 +350,7 @@ const dangerouslySetInnerHTML = <P extends ComponentProps, E extends Element>(
  */
 const insertTemplate = <P extends ComponentProps>(
 	template: HTMLTemplateElement,
-	s: SignalLike<P, boolean>,
+	s: SignalLike<P, Element, boolean>,
 	where: InsertPosition = 'beforeend',
 	content?: string | (() => string)
 ) => {
@@ -383,7 +381,7 @@ const insertTemplate = <P extends ComponentProps>(
  */
 const createElement = <P extends ComponentProps>(
     tag: string,
-    s: SignalLike<P, boolean>,
+    s: SignalLike<P, Element, boolean>,
 	where: InsertPosition = 'beforeend',
 	attributes: Record<string, string> = {},
 	content?: string | (() => string)
@@ -407,15 +405,15 @@ const createElement = <P extends ComponentProps>(
  * @param {SignalLike<string>} s - state bound to the element removal
  */
 const removeElement = <P extends ComponentProps, E extends Element>(
-	s: SignalLike<P, boolean>
-) => (host: Component<P>, target: E, index: number = 0): () => void => {
+	s: SignalLike<P, E, boolean>
+) => (host: Component<P>, target: E): () => void => {
 	const err = (error: unknown) =>
 		log(error, `Failed to delete ${elementName(target)} from ${elementName(host)}:`, LOG_ERROR)
 
 	return effect(() => {
 		let really = false
 		try {
-			really = resolveSignalLike(s, host, target, index)
+			really = resolveSignalLike(s, host, target)
 		} catch (error) {
 			err(error)
 			return

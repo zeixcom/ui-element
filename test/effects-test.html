@@ -17,9 +17,9 @@
 	</update-attribute>
 	<update-class active="0">
 		<ul>
-			<li>Item 1</li>
-            <li>Item 2</li>
-            <li class="selected">Item 3</li>
+			<li data-index="0">Item 1</li>
+            <li data-index="1">Item 2</li>
+            <li class="selected" data-index="2">Item 3</li>
 		</ul>
 	</update-class>
 	<update-style color="red">
@@ -107,7 +107,7 @@
 		}, el => [
 			all('li',
 				toggleClass('selected',
-					(_, index) => el.active === index
+					target => el.active === parseInt(target.dataset.index)
 				)
 			)
 		])

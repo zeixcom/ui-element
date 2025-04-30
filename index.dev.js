@@ -348,36 +348,74 @@ var log = (value, msg, level = LOG_DEBUG) => {
 };
 
 // src/core/ui.ts
-var isProvider = (value) => isFunction2(value) && value.length == 2;
-var isEventListener = (value) => isFunction2(value) || isDefinedObject(value) && isFunction2(value.handleEvent);
+var isElement = (node) => node.nodeType === Node.ELEMENT_NODE;
 var isComponent = (value) => value instanceof HTMLElement && value.localName.includes("-");
-var run = (fns, host, elements) => {
-  const cleanups = elements.flatMap((target, index) => fns.filter(isFunction2).map((fn) => fn(host, target, index)));
+var run = (fns, host, element) => {
+  const cleanups = fns.filter(isFunction2).map((fn) => fn(host, element));
   return () => {
     cleanups.filter(isFunction2).forEach((cleanup) => cleanup());
     cleanups.length = 0;
   };
 };
-var first = (selector, ...fns) => (host) => run(fns, host, [(host.shadowRoot || host).querySelector(selector)].filter((v) => v != null));
-var all = (selector, ...fns) => (host) => run(fns, host, Array.from((host.shadowRoot || host).querySelectorAll(selector)));
-var on = (type, handler) => (host, target = host, index = 0) => {
-  const listener = isProvider(handler) ? handler(target, index) : handler;
-  if (!isEventListener(listener))
+var first = (selector, ...fns) => (host) => {
+  const el = (host.shadowRoot || host).querySelector(selector);
+  if (el)
+    run(fns, host, el);
+};
+var all = (selector, ...fns) => (host) => {
+  const cleanups = new Map;
+  const root = host.shadowRoot || host;
+  const attach = (el) => {
+    if (!cleanups.has(el))
+      cleanups.set(el, run(fns, host, el));
+  };
+  const detach = (el) => {
+    const cleanup = cleanups.get(el);
+    if (isFunction2(cleanup))
+      cleanup();
+    cleanups.delete(el);
+  };
+  const applyToMatching = (fn) => (node) => {
+    if (isElement(node)) {
+      if (node.matches(selector))
+        fn(node);
+      node.querySelectorAll(selector).forEach(fn);
+    }
+  };
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach(applyToMatching(attach));
+      mutation.removedNodes.forEach(applyToMatching(detach));
+    }
+  });
+  observer.observe(root, {
+    childList: true,
+    subtree: true
+  });
+  root.querySelectorAll(selector).forEach(attach);
+  return () => {
+    observer.disconnect();
+    cleanups.forEach((cleanup) => cleanup());
+    cleanups.clear();
+  };
+};
+var on = (type, listener) => (host, target = host) => {
+  if (!isFunction2(listener))
     throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
   target.addEventListener(type, listener);
   return () => target.removeEventListener(type, listener);
 };
-var emit = (type, detail) => (host, target = host, index = 0) => {
+var emit = (type, detail) => (host, target = host) => {
   target.dispatchEvent(new CustomEvent(type, {
-    detail: isProvider(detail) ? detail(target, index) : detail,
+    detail: isFunction2(detail) ? detail(target) : detail,
     bubbles: true
   }));
 };
-var pass = (signals) => (host, target, index = 0) => {
+var pass = (signals) => (host, target) => {
   const targetName = target.localName;
   if (!isComponent(target))
     throw new TypeError(`Target element must be a custom element`);
-  const sources = isProvider(signals) ? signals(target, index) : signals;
+  const sources = isFunction2(signals) ? signals(target) : signals;
   if (!isDefinedObject(sources))
     throw new TypeError(`Passed signals must be an object or a provider function`);
   customElements.whenDefined(targetName).then(() => {
@@ -433,7 +471,7 @@ var component = (name, init = {}, setup) => {
       const fns = setup(this);
       if (!Array.isArray(fns))
         throw new TypeError(`Expected array of functions as return value of setup function in ${elementName(this)}`);
-      this.#cleanup = run(fns, this, [this]);
+      this.#cleanup = run(fns, this, this);
     }
     disconnectedCallback() {
       if (isFunction2(this.#cleanup))
@@ -552,7 +590,7 @@ var ops = {
   s: "style property ",
   t: "text content"
 };
-var resolveSignalLike = (s, host, target, index) => isString(s) ? host.getSignal(s).get() : isSignal(s) ? s.get() : isFunction2(s) ? s(target, index) : RESET;
+var resolveSignalLike = (s, host, target) => isString(s) ? host.getSignal(s).get() : isSignal(s) ? s.get() : isFunction2(s) ? s(target) : RESET;
 var isSafeURL = (value) => {
   if (/^(mailto|tel):/i.test(value))
     return true;
@@ -574,7 +612,7 @@ var safeSetAttribute = (element, attr, value) => {
     throw new Error(`Unsafe URL for ${attr}: ${value}`);
   element.setAttribute(attr, value);
 };
-var updateElement = (s, updater) => (host, target, index = 0) => {
+var updateElement = (s, updater) => (host, target) => {
   const { op, read, update } = updater;
   const fallback = read(target);
   if (isString(s) && isString(fallback) && host[s] === RESET)
@@ -583,7 +621,7 @@ var updateElement = (s, updater) => (host, target, index = 0) => {
   return effect(() => {
     let value = RESET;
     try {
-      value = resolveSignalLike(s, host, target, index);
+      value = resolveSignalLike(s, host, target);
     } catch (error) {
       err(error, "update");
       return;
@@ -620,7 +658,7 @@ var updateElement = (s, updater) => (host, target, index = 0) => {
     }
   });
 };
-var insertNode = (s, { type, where, create }) => (host, target, index = 0) => {
+var insertNode = (s, { type, where, create }) => (host, target) => {
   const methods = {
     beforebegin: "before",
     afterbegin: "prepend",
@@ -633,7 +671,7 @@ var insertNode = (s, { type, where, create }) => (host, target, index = 0) => {
   return effect(() => {
     let really = false;
     try {
-      really = resolveSignalLike(s, host, target, index);
+      really = resolveSignalLike(s, host, target);
     } catch (error) {
       err(error);
       return;
@@ -766,12 +804,12 @@ var createElement = (tag, s, where = "beforeend", attributes = {}, content) => i
     return child;
   }
 });
-var removeElement = (s) => (host, target, index = 0) => {
+var removeElement = (s) => (host, target) => {
   const err = (error) => log(error, `Failed to delete ${elementName(target)} from ${elementName(host)}:`, LOG_ERROR);
   return effect(() => {
     let really = false;
     try {
-      really = resolveSignalLike(s, host, target, index);
+      really = resolveSignalLike(s, host, target);
     } catch (error) {
       err(error);
       return;

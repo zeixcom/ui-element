@@ -26,39 +26,13 @@
 			}
 		}
 
-		tab-list {
+		tab-group > [role="tablist"] {
+			display: flex;
+			gap: 0.2rem;
+			padding: 0;
 
-			> menu {
-				list-style: none;
-				display: flex;
-				gap: 0.2rem;
-				padding: 0;
-
-				& button[aria-pressed="true"] {
-					color: purple;
-				}
-			}
-
-			> details {
-
-				&:not([open]) {
-					display: none;
-				}
-
-				&[aria-disabled] {
-					pointer-events: none;
-				}
-			}
-
-			&[accordion] {
-
-				> menu {
-					display: none;
-				}
-
-				> details:not([open]) {
-					display: block;
-				}
+			& button[aria-selected="true"] {
+				color: purple;
 			}
 		}
 
@@ -138,25 +112,22 @@
 		<p class="loading" role="status">Loading...</p>
         <p class="error" role="alert" aria-live="polite" hidden></p>
 	</lazy-load>
-	<tab-list>
-		<menu>
-			<li><button type="button">Tab 1</button></li>
-			<li><button type="button">Tab 2</button></li>
-			<li><button type="button">Tab 3</button></li>
-		</menu>
-		<details open>
-			<summary>Tab 1</summary>
-			<p>Content of tab panel 1</p>
-		</details>
-		<details>
-			<summary>Tab 2</summary>
-			<p>Content of tab panel 2</p>
-		</details>
-		<details>
-			<summary>Tab 3</summary>
-			<p>Content of tab panel 3</p>
-		</details>
-	</tab-list>
+	<tab-group>
+		<div role="tablist">
+			<button type="button" role="tab" id="trigger1" aria-controls="panel1" aria-selected="true" tabindex="0">Tab 1</button>
+			<button type="button" role="tab" id="trigger2" aria-controls="panel2" aria-selected="false" tabindex="-1">Tab 2</button>
+			<button type="button" role="tab" id="trigger3" aria-controls="panel3" aria-selected="false" tabindex="-1">Tab 3</button>
+		</div>
+		<div role="tabpanel" id="panel1" aria-labelledby="trigger1">
+			Tab 1 content
+		</div>
+		<div role="tabpanel" id="panel2" aria-labelledby="trigger2" hidden>
+			Tab 2 content
+		</div>
+		<div role="tabpanel" id="panel3" aria-labelledby="trigger3" hidden>
+			Tab 3 content
+		</div>
+	</tab-group>
 	<template id="post-reply-template">
 		<div>
             <p></p>
@@ -314,29 +285,32 @@
 			dangerouslySetInnerHTML('content', 'open')
 		])
 
-		component('tab-list', {
-			accordion: asBoolean,
-			active: el => { 
-				const panels = Array.from(el.querySelectorAll('details'))
-				for (let i = 0; i < panels.length; i++) {
-					if (panels[i].hasAttribute('open')) return i
-				}
-				return 0
-			},
-		}, el => [
-			toggleAttribute('accordion'),
-			all('menu button',
-				on('click', (_, index) => () => { el.active = index }),
-				setProperty('ariaPressed', (_, index) => String(el.active === index))
-			),
-			all('details',
-				setProperty('open', (_, index) => el.active === index),
-				setAttribute('aria-disabled', () => String(!el.accordion))
-			),
-			all('summary',
-				toggleClass('visually-hidden', () => !el.accordion)
-			)
-		])
+		component('tab-group', {
+			selected: '',
+		}, el => {
+			el.selected = el.querySelector('[role="tab"][aria-selected="true"]').getAttribute('aria-controls') ?? ''
+			const isSelected = target =>
+				el.selected === target.getAttribute('aria-controls')
+			const tabs = Array.from(el.querySelectorAll('[role="tab"]'))
+			let focusIndex = 0
+
+			return [
+				first('[role="tablist"]', 
+					on('keydown', () => {}),
+				),
+				all('[role="tab"]',
+					on('click', e => {
+						el.selected = e.currentTarget.getAttribute('aria-controls') ?? ''
+						focusIndex = tabs.findIndex(tab => isSelected(tab))
+					}),
+					setProperty('ariaSelected', target => String(isSelected(target))),
+					setProperty('tabIndex', target => isSelected(target) ? 0 : -1)
+				),
+				all('[role="tabpanel"]',
+					setProperty('hidden', target => el.selected !== target.id)
+				)
+			]
+		})
 
 		component('post-reply', {}, el => {
 			const message = state('')
@@ -640,33 +614,33 @@
 
 			})
 
-			describe('Tab List', function () {
+			describe('Tab Group', function () {
 
 				it('should mark the first button as active', async function() {
-					const tabList = document.querySelector('tab-list')
-                    const buttons = tabList.querySelectorAll('button')
+					const tabGroup = document.querySelector('tab-group')
+                    const buttons = tabGroup.querySelectorAll('button')
 					await animationFrame()
-                    assert.equal(buttons[0].ariaPressed, 'true', 'Should have the first button marked as active')
+                    assert.equal(buttons[0].ariaSelected, 'true', 'Should have the first button marked as active')
 				})
 
 				it('should change the active tab when a button is clicked', async function() {
-					const tabList = document.querySelector('tab-list')
-                    const buttons = tabList.querySelectorAll('button')
+					const tabGroup = document.querySelector('tab-group')
+                    const buttons = tabGroup.querySelectorAll('button')
                     buttons[1].click()
                     await animationFrame()
-                    assert.equal(buttons[0].ariaPressed, 'false', 'Should have the first button marked as inactive')
-                    assert.equal(buttons[1].ariaPressed, 'true', 'Should have the second button marked as active')
+                    assert.equal(buttons[0].ariaSelected, 'false', 'Should have the first button marked as inactive')
+                    assert.equal(buttons[1].ariaSelected, 'true', 'Should have the second button marked as active')
                 })
 
 				it('should display the content of the active tab', async function() {
-					const tabList = document.querySelector('tab-list')
-                    const buttons = tabList.querySelectorAll('button')
+					const tabGroup = document.querySelector('tab-group')
+                    const buttons = tabGroup.querySelectorAll('button')
                     await animationFrame()
-                    assert.equal(tabList.querySelectorAll('details')[1].hasAttribute('open'), true, 'Should mark the second details as open')
+                    assert.equal(tabGroup.querySelectorAll('[role="tabpanel"]')[1].hasAttribute('hidden'), false, 'Should mark the second tabpanel as visible')
                     buttons[0].click()
                     await animationFrame()
-                    assert.equal(tabList.querySelectorAll('details')[0].hasAttribute('open'), true, 'Should mark the second details as not open')
-                    assert.equal(tabList.querySelectorAll('details')[0].hasAttribute('open'), true, 'Should mark the first details as open')
+                    assert.equal(tabGroup.querySelectorAll('[role="tabpanel"]')[1].hasAttribute('hidden'), true, 'Should mark the second tabpanel as hidden')
+                    assert.equal(tabGroup.querySelectorAll('[role="tabpanel"]')[0].hasAttribute('hidden'), false, 'Should mark the first tabpanel as visible')
 				})
 
 			})

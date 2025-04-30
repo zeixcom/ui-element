@@ -57,12 +57,12 @@ Remember to keep the hosted file updated to use the latest features and bug fixe
 If you’re using a **bundler** like **Vite, Webpack, or Rollup**, install UIElement via NPM or Bun:
 
 
-<tab-list>
-<menu>
-<li><button type="button" aria-pressed="true">NPM</button></li>
-<li><button type="button">Bun</button></li>
-</menu>
-<details open>
+<tab-group>
+<div role="tablist">
+<button role="tab" aria-controls="panel_installation-npm" aria-selected="true" tabindex="0">NPM</button>
+<button role="tab" aria-controls="panel_installation-bun" aria-selected="false" tabindex="-1">Bun</button>
+</div>
+<details role="tabpanel" id="panel_installation-npm" open>
 <summary>NPM</summary>
 
 ```bash
@@ -70,7 +70,7 @@ npm install @zeix/ui-element
 ```
 
 </details>
-<details>
+<details role="tabpanel" id="panel_installation-bun">
 <summary>Bun</summary>
 
 ```bash

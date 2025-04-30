@@ -152,12 +152,12 @@
 
 <h3>Installing via Package Managers</h3>
 <p>If you’re using a <strong>bundler</strong> like <strong>Vite, Webpack, or Rollup</strong>, install UIElement via NPM or Bun:</p>
-<tab-list>
-<menu>
-<li><button type="button" aria-pressed="true">NPM</button></li>
-<li><button type="button">Bun</button></li>
-</menu>
-<details open>
+<tab-group>
+<div role="tablist">
+<button role="tab" aria-controls="panel_installation-npm" aria-selected="true" tabindex="0">NPM</button>
+<button role="tab" aria-controls="panel_installation-bun" aria-selected="false" tabindex="-1">Bun</button>
+</div>
+<details role="tabpanel" id="panel_installation-npm" open>
 <summary>NPM</summary>
 
 <code-block language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -175,7 +175,7 @@
 	
 </code-block>
 </details>
-<details>
+<details role="tabpanel" id="panel_installation-bun">
 <summary>Bun</summary>
 
 <code-block language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">

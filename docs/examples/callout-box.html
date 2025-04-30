@@ -1,14 +1,11 @@
 
-<tab-list>
-	<menu>
-		<li><button type="button" aria-pressed="false">HTML</button></li>
-		<li><button type="button" aria-pressed="false">CSS</button></li>
-	</menu>
+<tab-group>
+	<div role="tablist">
+		<button type="button" role="tab" id="trigger_callout-box.html" aria-controls="panel_callout-box.html" aria-selected="false" tabindex="-1">HTML</button>
+		<button type="button" role="tab" id="trigger_callout-box.css" aria-controls="panel_callout-box.css" aria-selected="false" tabindex="-1">CSS</button>
+	</div>
 	
-<details>
-	<summary>
-		<div class="summary">HTML</div>
-	</summary>
+<div role="tabpanel" id="panel_callout-box.html" aria-labelledby="trigger_callout-box.html" hidden>
 	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">callout-box.html</span>
@@ -25,12 +22,9 @@
 			</button>
 		</input-button>
 	</code-block>
-</details>
+</div>
 
-<details>
-	<summary>
-		<div class="summary">CSS</div>
-	</summary>
+<div role="tabpanel" id="panel_callout-box.css" aria-labelledby="trigger_callout-box.css" hidden>
 	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">callout-box.css</span>
@@ -127,5 +121,5 @@
 			</button>
 		</input-button>
 	</code-block>
-</details>
-</tab-list>
+</div>
+</tab-group>

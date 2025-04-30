@@ -1,13 +1,10 @@
 
-<tab-list>
-	<menu>
-		<li><button type="button" aria-pressed="true">TypeScript</button></li>
-	</menu>
+<tab-group>
+	<div role="tablist">
+		<button type="button" role="tab" id="trigger_media-context.ts" aria-controls="panel_media-context.ts" aria-selected="true" tabindex="0">TypeScript</button>
+	</div>
 	
-<details open>
-	<summary>
-		<div class="summary">TS</div>
-	</summary>
+<div role="tabpanel" id="panel_media-context.ts" aria-labelledby="trigger_media-context.ts">
 	<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">media-context.ts</span>
@@ -111,5 +108,5 @@
 			</button>
 		</input-button>
 	</code-block>
-</details>
-</tab-list>
+</div>
+</tab-group>

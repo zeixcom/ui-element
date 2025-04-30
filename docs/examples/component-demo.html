@@ -1,13 +1,10 @@
 
-<tab-list>
-	<menu>
-		<li><button type="button" aria-pressed="false">CSS</button></li>
-	</menu>
+<tab-group>
+	<div role="tablist">
+		<button type="button" role="tab" id="trigger_component-demo.css" aria-controls="panel_component-demo.css" aria-selected="false" tabindex="-1">CSS</button>
+	</div>
 	
-<details>
-	<summary>
-		<div class="summary">CSS</div>
-	</summary>
+<div role="tabpanel" id="panel_component-demo.css" aria-labelledby="trigger_component-demo.css" hidden>
 	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">component-demo.css</span>
@@ -31,5 +28,5 @@
 			</button>
 		</input-button>
 	</code-block>
-</details>
-</tab-list>
+</div>
+</tab-group>

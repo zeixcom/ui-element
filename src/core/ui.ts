@@ -6,22 +6,14 @@ import { isDefinedObject, isFunction, isString } from "./util"
 
 /* === Types === */
 
-type Provider<T> = <E extends Element>(
-	element: E,
-	index: number
-) => T
-
 type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
-	[K in keyof Q]?: Signal<Q[K]> | Provider<Q[K]> | (() => Q[K]) | keyof P
+	[K in keyof Q]?: Signal<Q[K]> | ((element: Component<Q>) => Q[K]) | keyof P
 }
 
 /* === Internal Function === */
 
-const isProvider = <T>(value: unknown): value is Provider<T> =>
-	isFunction(value) && value.length == 2
-
-const isEventListener = (value: unknown): value is EventListenerOrEventListenerObject =>
-	isFunction(value) || (isDefinedObject(value) && isFunction(value.handleEvent))
+const isElement = (node: Node): node is Element =>
+	node.nodeType === Node.ELEMENT_NODE
 
 const isComponent = (value: unknown): value is Component<ComponentProps> =>
 	value instanceof HTMLElement && value.localName.includes('-')
@@ -31,13 +23,9 @@ const isComponent = (value: unknown): value is Component<ComponentProps> =>
 const run = <P extends ComponentProps, E extends Element>(
 	fns: FxFunction<P, E>[],
 	host: Component<P>,
-	elements: E[]
+	element: E
 ): Cleanup => {
-	const cleanups = elements.flatMap((target, index) =>
-		fns.filter(isFunction).map(fn =>
-			fn(host, target, index)
-		)
-	)
+	const cleanups = fns.filter(isFunction).map(fn => fn(host, element))
 	return () => {
 		cleanups.filter(isFunction).forEach(cleanup => cleanup())
 		cleanups.length = 0
@@ -53,8 +41,10 @@ const run = <P extends ComponentProps, E extends Element>(
 const first = <P extends ComponentProps, E extends Element>(
 	selector: string,
 	...fns: FxFunction<P, E>[]
-) => (host: Component<P>): Cleanup =>
-	run(fns, host, [(host.shadowRoot || host).querySelector<E>(selector)].filter(v => v != null))
+) => (host: Component<P>): Cleanup | void => {
+	const el = (host.shadowRoot || host).querySelector<E>(selector)
+	if (el) run(fns, host, el)
+}
 
 /**
  * Apply effect functions to all matching sub-elements within the custom element
@@ -65,27 +55,63 @@ const first = <P extends ComponentProps, E extends Element>(
 const all = <P extends ComponentProps, E extends Element>(
 	selector: string,
 	...fns: FxFunction<P, E>[]
-) => (host: Component<P>): Cleanup =>
-	run(fns, host, Array.from((host.shadowRoot || host).querySelectorAll<E>(selector)))
+) => (host: Component<P>): Cleanup => {
+	const cleanups = new Map<E, Cleanup>()
+	const root = host.shadowRoot || host
+
+	const attach = (el: E) => {
+		if (!cleanups.has(el)) cleanups.set(el, run(fns, host, el))
+	}
+
+	const detach = (el: E) => {
+		const cleanup = cleanups.get(el)
+		if (isFunction(cleanup)) cleanup()
+		cleanups.delete(el)
+	}
+
+	const applyToMatching = (fn: (el: E) => void) => (node: Node) => {
+		if (isElement(node)) {
+			if (node.matches(selector)) fn(node as E)
+			node.querySelectorAll<E>(selector).forEach(fn)
+		}
+	}
+
+	const observer = new MutationObserver(mutations => {
+		for (const mutation of mutations) {
+			mutation.addedNodes.forEach(applyToMatching(attach))
+			mutation.removedNodes.forEach(applyToMatching(detach))
+		}
+	})
+	observer.observe(root, {
+		childList: true,
+		subtree: true
+	})
+
+	root.querySelectorAll<E>(selector).forEach(attach)
+
+	return () => {
+		observer.disconnect()
+		cleanups.forEach(cleanup => cleanup())
+		cleanups.clear()
+	}
+}
 
 /**
  * Attach an event listener to an element
  * 
  * @since 0.12.0
  * @param {string} type - event type to listen for
- * @param {EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>} handler - event listener or provider function
+ * @param {EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>} listener - event listener or provider function
  * @throws {TypeError} - if the provided handler is not an event listener or a provider function
  */
-const on = (
+const on = <E extends Event>(
 	type: string,
-	handler: EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>,
+	listener: (evt: E) => void,
 ) => <P extends ComponentProps>(
 	host: Component<P>,
-	target: Element = host,
-	index = 0
+	target: Element = host
 ): Cleanup => {
-	const listener = isProvider(handler) ? handler(target, index) : handler
-	if (!isEventListener(listener))
+	if (!isFunction(listener))
 		throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`)
 	target.addEventListener(type, listener)
 	return () => target.removeEventListener(type, listener)
@@ -100,14 +126,13 @@ const on = (
  */
 const emit = <T>(
 	type: string,
-	detail: T | Provider<T>
+	detail: T | ((element: Element) => T),
 ) => <P extends ComponentProps>(
 	host: Component<P>,
-	target: Element = host,
-	index = 0
+	target: Element = host
 ): void => {
 	target.dispatchEvent(new CustomEvent(type, {
-		detail: isProvider(detail) ? detail(target, index) : detail,
+		detail: isFunction(detail) ? detail(target) : detail,
 		bubbles: true
 	}))
 }
@@ -125,15 +150,12 @@ const pass = <P extends ComponentProps, Q extends ComponentProps>(
 	signals: PassedSignals<P, Q>
 ) => <E extends Element>(
 	host: Component<P>,
-	target: E,
-	index = 0
+	target: E
 ): void => {
 	const targetName = target.localName
 	if (!isComponent(target))
 		throw new TypeError(`Target element must be a custom element`)
-	const sources = isProvider(signals)
-		? signals(target, index) as PassedSignals<P, Q>
-		: signals
+	const sources = isFunction(signals) ? signals(target) : signals
 	if (!isDefinedObject(sources))
 		throw new TypeError(`Passed signals must be an object or a provider function`)
 	customElements.whenDefined(targetName).then(() => {
@@ -148,4 +170,7 @@ const pass = <P extends ComponentProps, Q extends ComponentProps>(
 	})
 }
 
-export { type Provider, type PassedSignals, run, all, first, on, emit, pass }
+export {
+	type PassedSignals,
+	run, all, first, on, emit, pass
+}
