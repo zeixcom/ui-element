@@ -365,15 +365,15 @@ var first = (selector, ...fns) => (host) => {
 var all = (selector, ...fns) => (host) => {
   const cleanups = new Map;
   const root = host.shadowRoot || host;
-  const attach = (el) => {
-    if (!cleanups.has(el))
-      cleanups.set(el, run(fns, host, el));
+  const attach = (target) => {
+    if (!cleanups.has(target))
+      cleanups.set(target, run(fns, host, target));
   };
-  const detach = (el) => {
-    const cleanup = cleanups.get(el);
+  const detach = (target) => {
+    const cleanup = cleanups.get(target);
     if (isFunction2(cleanup))
       cleanup();
-    cleanups.delete(el);
+    cleanups.delete(target);
   };
   const applyToMatching = (fn) => (node) => {
     if (isElement(node)) {
@@ -442,8 +442,7 @@ var RESERVED_WORDS = new Set([
   "propertyIsEnumerable",
   "toLocaleString"
 ]);
-var isParser = (value) => isFunction2(value) && value.length >= 2;
-var isProducer = (value) => isFunction2(value) && value.length < 2;
+var isAttributeParser = (value) => isFunction2(value) && value.length >= 2;
 var validatePropertyName = (prop) => !(HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop));
 var component = (name, init = {}, setup) => {
 
@@ -451,13 +450,13 @@ var component = (name, init = {}, setup) => {
     debug;
     #signals = {};
     #cleanup;
-    static observedAttributes = Object.entries(init)?.filter(([, ini]) => isParser(ini)).map(([prop]) => prop) ?? [];
+    static observedAttributes = Object.entries(init)?.filter(([, ini]) => isAttributeParser(ini)).map(([prop]) => prop) ?? [];
     constructor() {
       super();
       for (const [prop, ini] of Object.entries(init)) {
         if (ini == null)
           continue;
-        const result = isParser(ini) ? ini(this, null) : isProducer(ini) ? ini(this) : ini;
+        const result = isAttributeParser(ini) ? ini(this, null) : isFunction2(ini) ? ini(this) : ini;
         if (result != null)
           this.setSignal(prop, toSignal(result));
       }
@@ -483,7 +482,7 @@ var component = (name, init = {}, setup) => {
       if (value === old || isComputed(this.#signals[attr]))
         return;
       const parse = init[attr];
-      if (!isParser(parse))
+      if (!isAttributeParser(parse))
         return;
       const parsed = parse(this, value, old);
       if (DEV_MODE && this.debug)
@@ -582,14 +581,6 @@ var asJSON = (fallback) => (_, value) => {
   return result ?? fallback;
 };
 // src/lib/effects.ts
-var ops = {
-  a: "attribute ",
-  c: "class ",
-  h: "inner HTML",
-  p: "property ",
-  s: "style property ",
-  t: "text content"
-};
 var resolveSignalLike = (s, host, target) => isString(s) ? host.getSignal(s).get() : isSignal(s) ? s.get() : isFunction2(s) ? s(target) : RESET;
 var isSafeURL = (value) => {
   if (/^(mailto|tel):/i.test(value))
@@ -615,83 +606,99 @@ var safeSetAttribute = (element, attr, value) => {
 var updateElement = (s, updater) => (host, target) => {
   const { op, read, update } = updater;
   const fallback = read(target);
+  const ops = {
+    a: "attribute ",
+    c: "class ",
+    h: "inner HTML",
+    p: "property ",
+    s: "style property ",
+    t: "text content"
+  };
+  let name = "";
   if (isString(s) && isString(fallback) && host[s] === RESET)
     host.attributeChangedCallback(s, null, fallback);
-  const err = (error, verb, prop = "element") => log(error, `Failed to ${verb} ${prop} ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
+  const ok = (verb) => () => {
+    if (DEV_MODE && host.debug)
+      log(target, `${verb} ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`);
+    updater.resolve?.(target);
+  };
+  const err = (verb) => (error) => {
+    log(error, `Failed to ${verb} ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
+    updater.reject?.(error);
+  };
   return effect(() => {
     let value = RESET;
     try {
       value = resolveSignalLike(s, host, target);
     } catch (error) {
-      err(error, "update");
+      log(error, `Failed to resolve value of ${valueString(s)} for ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
       return;
     }
     if (value === RESET)
       value = fallback;
-    if (value === UNSET)
+    else if (value === UNSET)
       value = updater.delete ? null : fallback;
     if (updater.delete && value === null) {
-      let name = "";
       enqueue(() => {
         name = updater.delete(target);
         return true;
-      }, [target, op]).then(() => {
-        if (DEV_MODE && host.debug)
-          log(target, `Deleted ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`);
-      }).catch((error) => {
-        err(error, "delete", `${ops[op] + name} of`);
-      });
+      }, [target, op]).then(ok("Deleted")).catch(err("delete"));
     } else if (value != null) {
       const current = read(target);
       if (Object.is(value, current))
         return;
-      let name = "";
       enqueue(() => {
         name = update(target, value);
         return true;
-      }, [target, op]).then(() => {
-        if (DEV_MODE && host.debug)
-          log(target, `Updated ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`);
-      }).catch((error) => {
-        err(error, "update", `${ops[op] + name} of`);
-      });
+      }, [target, op]).then(ok("Updated")).catch(err("update"));
     }
   });
 };
-var insertNode = (s, { type, where, create }) => (host, target) => {
-  const methods = {
-    beforebegin: "before",
-    afterbegin: "prepend",
-    beforeend: "append",
-    afterend: "after"
+var insertOrRemoveElement = (s, inserter) => (host, target) => {
+  const { position = "beforeend", create } = inserter;
+  const ok = (verb) => () => {
+    if (DEV_MODE && host.debug)
+      log(target, `${verb} element in ${elementName(target)} in ${elementName(host)}`);
+    inserter.resolve?.(target);
   };
-  if (!isFunction2(target[methods[where]]))
-    throw new TypeError(`Invalid insertPosition "${where}" for ${elementName(host)}`);
-  const err = (error) => log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR);
+  const err = (verb) => (error) => {
+    log(error, `Failed to ${verb} element in ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
+    inserter.reject?.(error);
+  };
   return effect(() => {
-    let really = false;
+    let diff = 0;
     try {
-      really = resolveSignalLike(s, host, target);
+      diff = resolveSignalLike(s, host, target);
     } catch (error) {
-      err(error);
+      log(error, `Failed to resolve value of ${valueString(s)} for insertion or deletion in ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
       return;
     }
-    if (!really)
-      return;
-    enqueue(() => {
-      const node = create();
-      if (!node)
-        return;
-      target[methods[where]](node);
-    }, [target, "i"]).then(() => {
-      const signal = isSignal(s) ? s : isString(s) ? host.getSignal(s) : undefined;
-      if (isState(signal))
-        signal.set(false);
-      if (DEV_MODE && host.debug)
-        log(target, `Inserted ${type} into ${elementName(host)}`);
-    }).catch((error) => {
-      err(error);
-    });
+    if (diff === RESET)
+      diff = 0;
+    if (diff > 0) {
+      enqueue(() => {
+        for (let i = 0;i < diff; i++) {
+          const element = create(target);
+          if (!element)
+            continue;
+          target.insertAdjacentElement(position, element);
+        }
+        return true;
+      }, [target, "i"]).then(ok("Inserted")).catch(err("insert"));
+    } else if (diff < 0) {
+      const prop = {
+        beforebegin: "previousElementSibling",
+        afterbegin: "firstElementChild",
+        beforeend: "lastElementChild",
+        afterend: "nextElementSibling"
+      };
+      enqueue(() => {
+        for (let i = 0;i > diff; i--) {
+          target[prop[position]]?.remove();
+        }
+        return true;
+      }, [target, "r"]).then(ok("Removed")).catch(err("remove"));
+    }
   });
 };
 var setText = (s) => updateElement(s, {
@@ -775,61 +782,6 @@ var dangerouslySetInnerHTML = (s, attachShadow, allowScripts) => updateElement(s
     return " with scripts";
   }
 });
-var insertTemplate = (template, s, where = "beforeend", content) => {
-  if (!(template instanceof HTMLTemplateElement))
-    throw new TypeError("Expected template to be an HTMLTemplateElement");
-  return insertNode(s, {
-    type: "template content",
-    where,
-    create: () => {
-      const clone = document.importNode(template.content, true);
-      const slot = clone.querySelector("slot");
-      const text = isFunction2(content) ? content() : content;
-      if (slot)
-        slot.replaceWith(document.createTextNode(text ? text : slot.textContent ?? ""));
-      return clone;
-    }
-  });
-};
-var createElement = (tag, s, where = "beforeend", attributes = {}, content) => insertNode(s, {
-  type: "new element",
-  where,
-  create: () => {
-    const child = document.createElement(tag);
-    for (const [key, value] of Object.entries(attributes))
-      safeSetAttribute(child, key, value);
-    const text = isFunction2(content) ? content() : content;
-    if (text)
-      child.textContent = text;
-    return child;
-  }
-});
-var removeElement = (s) => (host, target) => {
-  const err = (error) => log(error, `Failed to delete ${elementName(target)} from ${elementName(host)}:`, LOG_ERROR);
-  return effect(() => {
-    let really = false;
-    try {
-      really = resolveSignalLike(s, host, target);
-    } catch (error) {
-      err(error);
-      return;
-    }
-    if (!really)
-      return;
-    enqueue(() => {
-      target.remove();
-      return true;
-    }, [target, "r"]).then(() => {
-      const signal = isSignal(s) ? s : isString(s) ? host.getSignal(s) : undefined;
-      if (isState(signal))
-        signal.set(false);
-      if (DEV_MODE && host.debug)
-        log(target, `Deleted ${elementName(target)} into ${elementName(host)}`);
-    }).catch((error) => {
-      err(error);
-    });
-  });
-};
 export {
   watch,
   updateElement,
@@ -841,7 +793,6 @@ export {
   setStyle,
   setProperty,
   setAttribute,
-  removeElement,
   provide,
   pass,
   on,
@@ -849,14 +800,12 @@ export {
   isState,
   isSignal,
   isComputed,
-  insertTemplate,
-  insertNode,
+  insertOrRemoveElement,
   first,
   enqueue,
   emit,
   effect,
   dangerouslySetInnerHTML,
-  createElement,
   consume,
   computed,
   component,

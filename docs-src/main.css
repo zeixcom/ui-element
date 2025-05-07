@@ -15,4 +15,5 @@
 @import './components/spin-button/spin-button.css';
 @import './components/rating-stars/rating-stars.css';
 @import './components/rating-feedback/rating-feedback.css';
+@import './components/calc-table/calc-table.css';
 /* Import more custom elements here... */

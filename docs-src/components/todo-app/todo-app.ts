@@ -1,6 +1,6 @@
 import {
 	type Component, type ComponentProps,
-	batch, component, computed, enqueue, first, insertTemplate, on, setAttribute, setProperty, setText, state
+	batch, component, computed, enqueue, first, insertOrRemoveElement, on, setAttribute, setProperty, setText, state
 } from '../../../'
 import { InputButtonProps } from '../input-button/input-button'
 import { InputCheckboxProps } from '../input-checkbox/input-checkbox'
@@ -30,6 +30,8 @@ export default component('todo-app', {}, el => {
 	}
 
 	return [
+
+		// Control todo input form
 		first<ComponentProps, Component<InputButtonProps>>('.submit',
 			setProperty('disabled', () => !input.length),
 		),
@@ -46,11 +48,23 @@ export default component('todo-app', {}, el => {
 				})
 			})
 		),
+
+		// Control todo list
 		first('ol',
 			setAttribute('filter',
 				() => (el.querySelector<Component<InputRadiogroupProps>>('input-radiogroup')?.value ?? 'all')
 			),
-			insertTemplate(template, addTask, 'beforeend', () => String(input.value)),
+			insertOrRemoveElement(() => addTask.get() ? 1 : 0, {
+				create: () => {
+					const li = document.importNode(template.content, true).firstElementChild
+					li?.querySelector('slot')?.replaceWith(String(input.value))
+					return li
+				},
+				resolve: () => {
+					refreshTasks()
+					addTask.set(false)
+				}
+			}),
 			on('click', (e: Event) => {
 				const target = e.target as HTMLElement
 				if (target.localName === 'button') {
@@ -62,6 +76,8 @@ export default component('todo-app', {}, el => {
 				refreshCompleted()
 			})
 		),
+
+		// Update count elements
 		first('.count',
 			setText(() => String(active.get()))
 		),
@@ -77,6 +93,8 @@ export default component('todo-app', {}, el => {
 		first<ComponentProps, HTMLElement>('.all-done',
 			setProperty('hidden', () => !!active.get())
 		),
+
+		// Control clear-completed button
 		first<ComponentProps, Component<InputButtonProps>>('.clear-completed',
 			setProperty('disabled', () => !completed.get()),
 			setProperty('badge', () => completed.get() > 0 ? String(completed.get()) : ''),

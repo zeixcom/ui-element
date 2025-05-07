@@ -37,8 +37,8 @@ export {
 	asBoolean, asInteger, asNumber, asString, asEnum, asJSON
 } from './src/lib/parsers'
 export {
-	type SignalLike, type ElementUpdater, type NodeInserter,
-	updateElement, insertNode,
+	type SignalLike, type UpdateOperation, type ElementUpdater, type ElementInserterOrRemover,
+	updateElement, insertOrRemoveElement,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
-	dangerouslySetInnerHTML, insertTemplate, createElement, removeElement
+	dangerouslySetInnerHTML
 } from './src/lib/effects'

@@ -1,8 +1,8 @@
-import { type Signal, effect, enqueue, isSignal, isState, UNSET } from '@zeix/cause-effect'
+import { type Signal, effect, enqueue, isSignal, UNSET } from '@zeix/cause-effect'
 
 import { isFunction, isString } from '../core/util'
 import { type ComponentProps, type Component, RESET, type Cleanup } from '../component'
-import { DEV_MODE, elementName, log, LOG_ERROR } from '../core/log'
+import { DEV_MODE, elementName, log, LOG_ERROR, valueString } from '../core/log'
 
 /* === Types === */
 
@@ -10,29 +10,25 @@ type SignalLike<P extends ComponentProps, E extends Element, T> = keyof P
 	| Signal<NonNullable<T>>
 	| ((element: E) => T | null | undefined)
 
+type UpdateOperation = 'a' | 'c' | 'h' | 'p' | 's' | 't'
+
 type ElementUpdater<E extends Element, T> = {
-	op: string,
+	op: UpdateOperation,
     read: (element: E) => T | null,
     update: (element: E, value: T) => string,
-    delete?: (element: E) => string
+    delete?: (element: E) => string,
+	resolve?: (element: E) => void,
+	reject?: (error: unknown) => void
 }
 
-type NodeInserter = {
-	type: string,
-	where: InsertPosition,
-	create: () => Node | undefined
+type ElementInserterOrRemover<E extends Element> = {
+	position?: InsertPosition,
+	create: (parent: E) => Element | null,
+	resolve?: (parent: E) => void,
+	reject?: (error: unknown) => void
 }
 
 /* === Internal === */
-
-const ops: Record<string, string> = {
-	a: 'attribute ',
-    c: 'class ',
-    h: 'inner HTML',
-    p: 'property ',
-	s: 'style property ',
-	t: 'text content',
-}
 
 const resolveSignalLike = /*#__PURE__*/ <P extends ComponentProps, E extends Element, T extends {}>(
 	s: SignalLike<P, E, T>,
@@ -83,13 +79,29 @@ const updateElement = <P extends ComponentProps, E extends Element, T extends {}
 ) => (host: Component<P>, target: E): Cleanup => {
 	const { op, read, update } = updater
 	const fallback = read(target)
+	const ops: Record<string, string> = {
+		a: 'attribute ',
+		c: 'class ',
+		h: 'inner HTML',
+		p: 'property ',
+		s: 'style property ',
+		t: 'text content',
+	}
+	let name: string = ''
 
 	// If not yet set, set signal value to value read from DOM
 	if (isString(s) && isString(fallback) && host[s] === RESET)
 		host.attributeChangedCallback(s, null, fallback)
 
-	const err = (error: unknown, verb: string, prop: string = 'element') =>
-		log(error, `Failed to ${verb} ${prop} ${elementName(target)} in ${elementName(host)}`, LOG_ERROR)
+	const ok = (verb: string) => () => {
+		if (DEV_MODE && host.debug)
+			log(target, `${verb} ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
+		updater.resolve?.(target)
+	}
+	const err = (verb: string) => (error: unknown) => {
+		log(error, `Failed to ${verb} ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR)
+		updater.reject?.(error)
+	}
 
     // Update the element's DOM state according to the signal value
 	return effect(() => {
@@ -97,39 +109,97 @@ const updateElement = <P extends ComponentProps, E extends Element, T extends {}
 		try {
 			value = resolveSignalLike(s, host, target)
 		} catch (error) {
-			err(error, 'update')
+			log(error, `Failed to resolve value of ${valueString(s)} for ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR)
 			return
 		}
 		if (value === RESET) value = fallback
-		if (value === UNSET) value = updater.delete ? null : fallback
+		else if (value === UNSET) value = updater.delete ? null : fallback
 
 		// Nil path => delete the attribute or style property of the element
 		if (updater.delete && value === null) {
-			let name: string = ''
 			enqueue(() => {
                 name = updater.delete!(target)
                 return true
-            }, [target, op]).then(() => {
-				if (DEV_MODE && host.debug)
-					log(target, `Deleted ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
-			}).catch((error) => {
-				err(error, 'delete', `${ops[op] + name} of`)
-			})
+            }, [target, op])
+				.then(ok('Deleted'))
+				.catch(err('delete'))
 
 		// Ok path => update the element
 		} else if (value != null) {
 			const current = read(target)
 			if (Object.is(value, current)) return
-			let name: string = ''
 			enqueue(() => {
 				name = update(target, value)
 				return true
-			}, [target, op]).then(() => {
-				if (DEV_MODE && host.debug)
-					log(target, `Updated ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`)
-			}).catch((error) => {
-				err(error, 'update', `${ops[op] + name} of`)
-			})
+			}, [target, op])
+				.then(ok('Updated'))
+				.catch(err('update'))
+		}
+	})
+}
+
+/**
+ * Effect for inserting or removing elements according to a given SignalLike
+ * 
+ * @since 0.12.1
+ * @param {SignalLike<P, E, number>} s - state bound to the number of elements to insert (positive) or remove (negative)
+ * @param {ElementInserterOrRemover} inserter - inserter object containing position, insert, and remove methods
+ */
+const insertOrRemoveElement = <P extends ComponentProps, E extends Element>(
+	s: SignalLike<P, E, number>,
+	inserter: ElementInserterOrRemover<E>
+) => (host: Component<P>, target: E) => {
+	const { position = 'beforeend', create } = inserter
+
+	const ok = (verb: string) => () => {
+		if (DEV_MODE && host.debug)
+			log(target, `${verb} element in ${elementName(target)} in ${elementName(host)}`)
+		inserter.resolve?.(target)
+	}
+	const err = (verb: string) => (error: unknown) => {
+		log(error, `Failed to ${verb} element in ${elementName(target)} in ${elementName(host)}`, LOG_ERROR)
+		inserter.reject?.(error)
+	}
+
+	return effect(() => {
+		let diff = 0
+		try {
+			diff = resolveSignalLike(s, host, target)
+		} catch (error) {
+			log(error, `Failed to resolve value of ${valueString(s)} for insertion or deletion in ${elementName(target)} in ${elementName(host)}`, LOG_ERROR)
+			return
+		}
+		if (diff === RESET) diff = 0
+
+		// Positive diff => insert element
+		if (diff > 0) {
+			enqueue(() => {
+				for (let i = 0; i < diff; i++) {
+					const element = create(target)
+					if (!element) continue
+					target.insertAdjacentElement(position, element)
+				}
+				return true
+			}, [target, 'i'])
+				.then(ok('Inserted'))
+				.catch(err('insert'))
+
+		// Negative diff => remove element
+		} else if (diff < 0) {
+			const prop: Record<InsertPosition, keyof Element> = {
+				beforebegin: 'previousElementSibling',
+				afterbegin: 'firstElementChild',
+				beforeend: 'lastElementChild',
+				afterend: 'nextElementSibling',
+			}
+			enqueue(() => {
+				for (let i = 0; i > diff; i--) {
+					(target[prop[position]] as Element | null)?.remove()
+				}
+				return true
+			}, [target, 'r'])
+				.then(ok('Removed'))
+				.catch(err('remove'))
 		}
 	})
 }
@@ -141,7 +211,7 @@ const updateElement = <P extends ComponentProps, E extends Element, T extends {}
  * @param {SignalLike<string>} s - state bound to the node insertion
  * @param {NodeInserter} inserter - inserter object containing type, where, and create methods
  * @throws {TypeError} if the insertPosition is invalid for the target element
- */
+ * /
 const insertNode = <P extends ComponentProps, E extends Element>(
 	s: SignalLike<P, E, boolean>,
     { type, where, create }: NodeInserter
@@ -153,7 +223,7 @@ const insertNode = <P extends ComponentProps, E extends Element>(
         afterend: 'after'
 	}
 	if (!isFunction(target[methods[where]]))
-		throw new TypeError(`Invalid insertPosition "${where}" for ${elementName(host)}`)
+		throw new TypeError(`Invalid InsertPosition "${where}" for ${elementName(host)}`)
 	const err = (error: unknown) =>
 		log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR)
 
@@ -179,7 +249,7 @@ const insertNode = <P extends ComponentProps, E extends Element>(
 			err(error)
 		})
 	})
-}
+} */
 
 /**
  * Set text content of an element
@@ -347,7 +417,7 @@ const dangerouslySetInnerHTML = <P extends ComponentProps, E extends Element>(
  * @param {InsertPosition} where - position to insert the template relative to the target element ('beforebegin', 'afterbegin', 'beforeend', 'afterend')
  * @param {string} content - content to be inserted into the template's slot
  * @throws {TypeError} if the template is not an HTMLTemplateElement
- */
+ * /
 const insertTemplate = <P extends ComponentProps>(
 	template: HTMLTemplateElement,
 	s: SignalLike<P, Element, boolean>,
@@ -378,7 +448,7 @@ const insertTemplate = <P extends ComponentProps>(
  * @param {InsertPosition} where - position to insert the template relative to the target element ('beforebegin', 'afterbegin', 'beforeend', 'afterend')
  * @param {Record<string, string>} attributes - attributes to set on the element
  * @param {string} content - text content to be inserted into the element
- */
+ * /
 const createElement = <P extends ComponentProps>(
     tag: string,
     s: SignalLike<P, Element, boolean>,
@@ -403,7 +473,7 @@ const createElement = <P extends ComponentProps>(
  * 
  * @since 0.9.0
  * @param {SignalLike<string>} s - state bound to the element removal
- */
+ * /
 const removeElement = <P extends ComponentProps, E extends Element>(
 	s: SignalLike<P, E, boolean>
 ) => (host: Component<P>, target: E): () => void => {
@@ -431,13 +501,13 @@ const removeElement = <P extends ComponentProps, E extends Element>(
 			err(error)
 		})
 	})
-}
+} */
 
 /* === Exported Types === */
 
 export {
-	type SignalLike, type ElementUpdater, type NodeInserter,
-	updateElement, insertNode,
+	type SignalLike, type UpdateOperation, type ElementUpdater, type ElementInserterOrRemover,
+	updateElement, insertOrRemoveElement,
 	setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle,
-	insertTemplate, createElement, removeElement, dangerouslySetInnerHTML
+	dangerouslySetInnerHTML
 }

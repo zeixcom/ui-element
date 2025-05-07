@@ -621,7 +621,7 @@
 		<my-slider>
 			<h2 class="visually-hidden">Slides</h2>
 			<div class="slides">
-				<div class="slide active">
+				<div class="slide active" data-index="0">
 					<h3>Slide 1</h3>
 					<hello-world>
 						<label>Your name<br>
@@ -630,15 +630,40 @@
 						<p>Hello, <span>World</span>!</p>
 					</hello-world>
 				</div>
-				<div class="slide">
+				<div class="slide" data-index="1">
 					<h3>Slide 2</h3>
-					<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
-						<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
-						<p class="value" hidden>0</p>
-						<button type="button" class="increment primary">Add to Cart</button>
-					</spin-button>
+					<calc-table rows="3" columns="3">
+						<table>
+							<thead>
+								<tr>
+									<th scope="col">Row</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th scope="row">Sum</th>
+								</tr>
+							</tfoot>
+						</table>
+						<template class="calc-table-row">
+							<tr><th scope="row"><slot></slot></th></tr>
+						</template>
+						<template class="calc-table-colhead">
+							<th scope="col"><slot></slot></th>
+						</template>
+						<template class="calc-table-cell">
+							<td>
+								<label>
+									<span class="visually-hidden"><slot></slot></span>
+									<input type="number" min="0" max="100" step="1" value="" />
+								</label>
+							</td>
+						</template>
+					</calc-table>
 				</div>
-				<div class="slide">
+				<div class="slide" data-index="2">
 					<h3>Slide 3</h3>
 					<rating-feedback>
 						<form>
@@ -691,9 +716,9 @@
 			<button type="button" class="prev" aria-label="Previous">‹</button>
 			<button type="button" class="next" aria-label="Next">›</button>
 			<div class="dots">
-				<span class="active"></span>
-				<span></span>
-				<span></span>
+				<span class="active" data-index="0"></span>
+				<span data-index="1"></span>
+				<span data-index="2"></span>
 			</div>
 		</my-slider>
 	</div>

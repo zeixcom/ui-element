@@ -14,4 +14,5 @@ import './components/product-catalog/product-catalog.ts'
 import './components/spin-button/spin-button.ts'
 import './components/rating-stars/rating-stars.ts'
 import './components/rating-feedback/rating-feedback.ts'
+import './components/calc-table/calc-table.ts'
 // Import more custom elements here...

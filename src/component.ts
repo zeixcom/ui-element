@@ -70,16 +70,13 @@ const RESERVED_WORDS = new Set(['constructor', 'prototype', '__proto__', 'toStri
 
 /* === Internal Functions === */
 
-const isParser = <C extends HTMLElement, T extends {}>(value: unknown): value is AttributeParser<C, T> =>
+const isAttributeParser = <C extends HTMLElement, T extends {}>(value: unknown): value is AttributeParser<C, T> =>
 	isFunction(value) && value.length >= 2
-
-const isProducer = <C extends HTMLElement>(value: unknown): value is SignalProducer<C, {}> | MethodProducer<C> =>
-	isFunction(value) && value.length < 2
 
 const validatePropertyName = (prop: string): boolean =>
 	!((HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop)))
 
-/* === Exported Functions === */
+/* === Exported Function === */
 
 /**
  * Define a component with its states and setup function (connectedCallback)
@@ -109,7 +106,7 @@ const component = <P extends ComponentProps>(
 		#cleanup: Cleanup | undefined
 	  
 		static observedAttributes = Object.entries(init)
-			?.filter(([, ini]) => isParser(ini))
+			?.filter(([, ini]) => isAttributeParser(ini))
 			.map(([prop]) => prop)?? []
 	  
 		/**
@@ -119,9 +116,9 @@ const component = <P extends ComponentProps>(
 			super()
 			for (const [prop, ini] of Object.entries(init)) {
 				if (ini == null) continue
-				const result = isParser<Component<P>, Signal<P[keyof P]>>(ini)
+				const result = isAttributeParser<Component<P>, Signal<P[keyof P]>>(ini)
 					? ini(this as unknown as Component<P>, null)
-					: isProducer<Component<P>>(ini)
+					: isFunction<Component<P>>(ini)
 					? ini(this as unknown as Component<P>)
 					: ini
 				if (result != null) this.setSignal(prop, toSignal(result))
@@ -160,7 +157,7 @@ const component = <P extends ComponentProps>(
 		attributeChangedCallback(attr: string, old: string | null, value: string | null) {
 			if (value === old || isComputed(this.#signals[attr])) return // unchanged or controlled by computed
 			const parse = init[attr] as AttributeParser<Component<P>, P[keyof P]>
-			if (!isParser(parse)) return
+			if (!isAttributeParser(parse)) return
 			const parsed = parse(this as unknown as Component<P>, value, old)
 			if (DEV_MODE && this.debug)
 				log(value, `Attribute "${attr}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`);

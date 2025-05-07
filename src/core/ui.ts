@@ -59,17 +59,17 @@ const all = <P extends ComponentProps, E extends Element>(
 	const cleanups = new Map<E, Cleanup>()
 	const root = host.shadowRoot || host
 
-	const attach = (el: E) => {
-		if (!cleanups.has(el)) cleanups.set(el, run(fns, host, el))
+	const attach = (target: E) => {
+		if (!cleanups.has(target)) cleanups.set(target, run(fns, host, target))
 	}
 
-	const detach = (el: E) => {
-		const cleanup = cleanups.get(el)
+	const detach = (target: E) => {
+		const cleanup = cleanups.get(target)
 		if (isFunction(cleanup)) cleanup()
-		cleanups.delete(el)
+		cleanups.delete(target)
 	}
 
-	const applyToMatching = (fn: (el: E) => void) => (node: Node) => {
+	const applyToMatching = (fn: (target: E) => void) => (node: Node) => {
 		if (isElement(node)) {
 			if (node.matches(selector)) fn(node as E)
 			node.querySelectorAll<E>(selector).forEach(fn)
