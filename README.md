@@ -1,6 +1,6 @@
 # UIElement
 
-Version 0.12.0
+Version 0.12.1
 
 **UIElement** - the HTML-first microframework bringing reactivity to Web Components.
 

@@ -589,7 +589,7 @@ var isSafeURL = (value) => {
     try {
       const url = new URL(value, window.location.origin);
       return ["http:", "https:", "ftp:"].includes(url.protocol);
-    } catch (_) {
+    } catch (_error) {
       return false;
     }
   }
@@ -655,15 +655,20 @@ var updateElement = (s, updater) => (host, target) => {
   });
 };
 var insertOrRemoveElement = (s, inserter) => (host, target) => {
-  const { position = "beforeend", create } = inserter;
   const ok = (verb) => () => {
     if (DEV_MODE && host.debug)
       log(target, `${verb} element in ${elementName(target)} in ${elementName(host)}`);
-    inserter.resolve?.(target);
+    if (isFunction2(inserter?.resolve)) {
+      inserter.resolve(target);
+    } else {
+      const signal = isSignal(s) ? s : isString(s) ? host.getSignal(s) : undefined;
+      if (isState(signal))
+        signal.set(0);
+    }
   };
   const err = (verb) => (error) => {
     log(error, `Failed to ${verb} element in ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
-    inserter.reject?.(error);
+    inserter?.reject?.(error);
   };
   return effect(() => {
     let diff = 0;
@@ -676,25 +681,28 @@ var insertOrRemoveElement = (s, inserter) => (host, target) => {
     if (diff === RESET)
       diff = 0;
     if (diff > 0) {
+      if (!inserter)
+        throw new TypeError(`No inserter provided`);
       enqueue(() => {
         for (let i = 0;i < diff; i++) {
-          const element = create(target);
+          const element = inserter.create(target);
           if (!element)
             continue;
-          target.insertAdjacentElement(position, element);
+          target.insertAdjacentElement(inserter.position ?? "beforeend", element);
         }
         return true;
       }, [target, "i"]).then(ok("Inserted")).catch(err("insert"));
     } else if (diff < 0) {
-      const prop = {
-        beforebegin: "previousElementSibling",
-        afterbegin: "firstElementChild",
-        beforeend: "lastElementChild",
-        afterend: "nextElementSibling"
-      };
       enqueue(() => {
-        for (let i = 0;i > diff; i--) {
-          target[prop[position]]?.remove();
+        if (inserter && (inserter.position === "afterbegin" || inserter.position === "beforeend")) {
+          for (let i = 0;i > diff; i--) {
+            if (inserter.position === "afterbegin")
+              target.firstElementChild?.remove();
+            else
+              target.lastElementChild?.remove();
+          }
+        } else {
+          target.remove();
         }
         return true;
       }, [target, "r"]).then(ok("Removed")).catch(err("remove"));

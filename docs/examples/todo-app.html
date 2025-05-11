@@ -202,6 +202,8 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Control todo input form</span></span>
 <span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">ComponentProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputButtonProps</span><span style="color:#F8F8F2">>>(</span><span style="color:#E6DB74">'.submit'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">input.length),</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
@@ -218,6 +220,8 @@
 <span class="line"><span style="color:#F8F8F2">				})</span></span>
 <span class="line"><span style="color:#F8F8F2">			})</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Control todo list</span></span>
 <span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ol'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">			setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'filter'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">				() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputRadiogroupProps</span><span style="color:#F8F8F2">>>(</span><span style="color:#E6DB74">'input-radiogroup'</span><span style="color:#F8F8F2">)?.value </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> 'all'</span><span style="color:#F8F8F2">)</span></span>
@@ -244,6 +248,8 @@
 <span class="line"><span style="color:#A6E22E">				refreshCompleted</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">			})</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Update count elements</span></span>
 <span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">			setText</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(active.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()))</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
@@ -259,6 +265,8 @@
 <span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">ComponentProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'.all-done'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !!</span><span style="color:#F8F8F2">active.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">())</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Control clear-completed button</span></span>
 <span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">ComponentProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputButtonProps</span><span style="color:#F8F8F2">>>(</span><span style="color:#E6DB74">'.clear-completed'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">completed.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()),</span></span>
 <span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'badge'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> completed.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">></span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> ?</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(completed.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()) </span><span style="color:#F92672">:</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">),</span></span>
