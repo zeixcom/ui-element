@@ -1,49 +1,72 @@
-import { type Component, all, asInteger, component, first, on, setProperty, setText, toggleAttribute } from '../../../'
+import {
+	type Component,
+	all,
+	asInteger,
+	component,
+	first,
+	on,
+	setProperty,
+	setText,
+	toggleAttribute,
+} from "../../../";
 
 export type SpinButtonProps = {
-	value: number
-}
+	value: number;
+};
 
-export default component('spin-button', {
-	value: asInteger(),
-}, el => {
-	const zeroLabel = el.getAttribute('zero-label') || 'Add to Cart'
-	const incrementLabel = el.getAttribute('increment-label') || 'Increment'
-	const max = asInteger(9)(el, el.getAttribute('max'))
-	const isZero = () => el.value === 0
-	return [
-		first<SpinButtonProps, HTMLButtonElement>('.value',
-			setText('value'),
-			setProperty('hidden', isZero)
-		),
-		first<SpinButtonProps, HTMLButtonElement>('.decrement',
-			setProperty('hidden', isZero),
-			on('click', () => { el.value-- })
-		),
-		all('button',
-			on('keydown', (e: Event) => {
-				const { key } = e as KeyboardEvent
-				if (['ArrowUp', 'ArrowDown', '-', '+'].includes(key)) {
-					e.stopPropagation()
-					e.preventDefault()
-					if (key === 'ArrowDown' || key === '-')
-						el.value--
-					if (key === 'ArrowUp' || key === '+')
-						el.value++
-				}
-			})
-		),
-		first('.increment',
-			setText(() => isZero() ? zeroLabel : '+'),
-			setProperty('ariaLabel', () => isZero() ? zeroLabel : incrementLabel),
-			toggleAttribute('disabled', () => el.value >= max),
-			on('click', () => { el.value++ })
-		)
-	]
-})
+export default component(
+	"spin-button",
+	{
+		value: asInteger(),
+	},
+	(el) => {
+		const zeroLabel = el.getAttribute("zero-label") || "Add to Cart";
+		const incrementLabel =
+			el.getAttribute("increment-label") || "Increment";
+		const max = asInteger(9)(el, el.getAttribute("max"));
+		const isZero = () => el.value === 0;
+		return [
+			first<SpinButtonProps, HTMLButtonElement>(
+				".value",
+				setText("value"),
+				setProperty("hidden", isZero),
+			),
+			first<SpinButtonProps, HTMLButtonElement>(
+				".decrement",
+				setProperty("hidden", isZero),
+				on("click", () => {
+					el.value--;
+				}),
+			),
+			all(
+				"button",
+				on("keydown", (e: Event) => {
+					const { key } = e as KeyboardEvent;
+					if (["ArrowUp", "ArrowDown", "-", "+"].includes(key)) {
+						e.stopPropagation();
+						e.preventDefault();
+						if (key === "ArrowDown" || key === "-") el.value--;
+						if (key === "ArrowUp" || key === "+") el.value++;
+					}
+				}),
+			),
+			first(
+				".increment",
+				setText(() => (isZero() ? zeroLabel : "+")),
+				setProperty("ariaLabel", () =>
+					isZero() ? zeroLabel : incrementLabel,
+				),
+				toggleAttribute("disabled", () => el.value >= max),
+				on("click", () => {
+					el.value++;
+				}),
+			),
+		];
+	},
+);
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'spin-button': Component<SpinButtonProps>
+		"spin-button": Component<SpinButtonProps>;
 	}
 }

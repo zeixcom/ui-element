@@ -59,18 +59,18 @@ Server-rendered markup:
 UIElement component:
 
 ```js
-import { asInteger, component, first, on, RESET, setText } from '@zeix/ui-element'
+import { asInteger, component, first, on, RESET, setText } from "@zeix/ui-element";
 
-component('show-appreciation', {
+component("show-appreciation", {
     count: asInteger(RESET) // Get initial value from .count element
 }, el => [
 
-	// Update count display when state changes
-    first('.count', setText('count')),
+    // Update count display when state changes
+    first(".count", setText("count")),
 
     // Handle click events to change state
-    first('button', on('click', () => { el.count++ }))
-])
+    first("button", on("click", () => { el.count++ }))
+]);
 ```
 
 Example styles:
@@ -108,110 +108,170 @@ show-appreciation {
 }
 ```
 
-### Tab List or Accordion
+### Tab Group
 
-An example demonstrating how to use just semantic HTML to compose a component that can be either a tab list or an accordion. Add `accordion` attribute or set its `accordion` property to `true` from a parent component to make it an accordion.
+An example demonstrating how to create a fully accessible tab navigation.
 
 Server-rendered markup:
 
 ```html
-<tab-list>
-    <menu>
-        <li><button type="button" aria-pressed="true">Tab 1</button></li>
-        <li><button type="button">Tab 2</button></li>
-        <li><button type="button">Tab 3</button></li>
-    </menu>
-    <details open>
-        <summary>Tab 1</summary>
-        <p>Content of tab panel 1</p>
-    </details>
-    <details>
-        <summary>Tab 2</summary>
-        <p>Content of tab panel 2</p>
-    </details>
-    <details>
-        <summary>Tab 3</summary>
-        <p>Content of tab panel 3</p>
-    </details>
-</tab-list>
+<tab-group>
+    <div role="tablist">
+        <button
+            type="button"
+            role="tab"
+            id="trigger1"
+            aria-controls="panel1"
+            aria-selected="true"
+            tabindex="0"
+        >
+            Tab 1
+        </button>
+        <button
+            type="button"
+            role="tab"
+            id="trigger2"
+            aria-controls="panel2"
+            aria-selected="false"
+            tabindex="-1"
+        >
+            Tab 2
+        </button>
+        <button
+            type="button"
+            role="tab"
+            id="trigger3"
+            aria-controls="panel3"
+            aria-selected="false"
+            tabindex="-1"
+        >
+            Tab 3
+        </button>
+    </div>
+    <div role="tabpanel" id="panel1" aria-labelledby="trigger1">
+        Tab 1 content
+    </div>
+    <div role="tabpanel" id="panel2" aria-labelledby="trigger2" hidden>
+        Tab 2 content
+    </div>
+    <div role="tabpanel" id="panel3" aria-labelledby="trigger3" hidden>
+        Tab 3 content
+    </div>
+</tab-group>
 ```
 
 UIElement component:
 
 ```js
-import { asBoolean, component, all, on, setAttribute, setProperty, toggleAttribute, toggleClass } from '@zeix/ui-element'
+import { all, component, first, on, setProperty } from "@zeix/ui-element"
 
-component('tab-list', {
-	active: 0,
-	accordion: asBoolean,
+// Function to create event handler for arrow key focus management
+const manageArrowKeyFocus = (elements, index) => e => {
+    if (!(e instanceof KeyboardEvent))
+        throw new TypeError("Event is not a KeyboardEvent")
+    const handledKeys = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"]
+    if (handledKeys.includes(e.key)) {
+        e.preventDefault()
+        switch (e.key) {
+            case "ArrowLeft":
+            case "ArrowUp":
+                index = index < 1 ? elements.length - 1 : index - 1
+                break
+            case "ArrowRight":
+            case "ArrowDown":
+                index = index >= elements.length - 1 ? 0 : index + 1
+                break
+            case "Home":
+                index = 0
+                break
+            case "End":
+                index = elements.length - 1
+                break
+        }
+        if (elements[index]) elements[index].focus()
+    }
+}
+
+// Component
+component("tab-group", {
+    selected: ""
 }, el => {
-	// Set inital active tab by querying details[open]
-	const panels = Array.from(el.querySelectorAll('details'))
-	el.active = panels.findIndex(panel => panel.hasAttribute('open'))
+    el.selected = el.querySelector("[role=tab][aria-selected=true]")?.getAttribute("aria-controls") ?? "";
+    const isSelected = target =>
+        el.selected === target.getAttribute("aria-controls");
+    const tabs = Array.from(el.querySelectorAll("[role=tab]"));
+    let focusIndex = 0;
 
-	return [
-		// Reflect accordion attribute (may be used for styling)
-		toggleAttribute('accordion'),
-
-		// Update active tab state and bind click handlers
-		all('menu button',
-			on('click', (_, index) => () => {
-				el.active = index
-			}),
-			setProperty('ariaPressed', (_, index) => String(el.active === index))
-		),
-
-		// Update details panels open, hidden and disabled states
-		all('details',
-			on('toggle', (_, index) => () => {
-				el.active = el.active === index ? -1 : index
-			}),
-			setProperty('open', (_, index) => el.active === index),
-			setAttribute('aria-disabled', () => String(!el.accordion))
-		),
-
-		// Update summary visibility
-		all('summary', toggleClass('visually-hidden', () => !el.accordion))
-	]
-})
+    return [
+        first("[role=tablist]",
+            on("keydown", manageArrowKeyFocus(tabs, focusIndex)),
+        ),
+        all("[role=tab]",
+            on("click", e => {
+                el.selected = e.currentTarget.getAttribute("aria-controls") ?? "";
+                focusIndex = tabs.findIndex(tab => isSelected(tab));
+            }),
+            setProperty("ariaSelected", target => String(isSelected(target))),
+            setProperty("tabIndex", target => isSelected(target) ? 0 : -1),
+        ),
+        all("[role=tabpanel]",
+            setProperty("hidden", target => el.selected !== target.id),
+        )
+    ];
+});
 ```
 
 Example styles:
 
 ```css
-tab-list {
+tab-group {
+    display: block;
+    margin-bottom: var(--space-l);
 
-    > menu {
-        list-style: none;
+    > [role="tablist"] {
         display: flex;
-        gap: 0.2rem;
+        border-bottom: 1px solid var(--color-gray-50);
         padding: 0;
+        margin-bottom: 0;
 
-        & button[aria-pressed="true"] {
-            color: purple;
+        & button {
+            border: 0;
+            border-top: 2px solid transparent;
+            border-bottom-width: 0;
+            font-family: var(--font-family-sans);
+            font-size: var(--font-size-s);
+            font-weight: var(--font-weight-bold);
+            padding: var(--space-s) var(--space-m);
+            color: var(--color-text-soft);
+            background-color: var(--color-secondary);
+            cursor: pointer;
+            transition: all var(--transition-short) var(--easing-inout);
+
+            &:hover,
+            &:focus {
+                color: var(--color-text);
+                background-color: var(--color-secondary-hover);
+            }
+
+            &:active {
+                color: var(--color-text);
+                background-color: var(--color-secondary-active);
+            }
+
+            &[aria-selected="true"] {
+                color: var(--color-primary-active);
+                border-top: 3px solid var(--color-primary);
+                background-color: var(--color-background);
+                margin-bottom: -1px;
+            }
         }
     }
 
-    > details {
-
-        &:not([open]) {
-            display: none;
-        }
-
-        &[aria-disabled] {
-            pointer-events: none;
-        }
-    }
-
-    &[accordion] {
-
-        > menu {
-            display: none;
-        }
-
-        > details:not([open]) {
-            display: block;
-        }
+    > [role="tabpanel"] {
+        font-family: sans-serif;
+        font-size: var(--font-size-m);
+        background: var(--color-background);
+        margin-block: var(--space-l);
     }
 }
 ```
@@ -228,50 +288,56 @@ An example demonstrating how to use a custom attribute parser (sanitize an URL) 
 ```
 
 ```js
-import { component, first, dangerouslySetInnerHTML, setProperty, setText } from '@zeix/ui-element'
+import { setProperty, setText, dangerouslySetInnerHTML, component, first } from "@zeix/ui-element";
 
-// Custom attribute parser
+// Attribute Parser uses current element to detect recursion and set error message
 const asURL = (el, v) => {
-	let value = ''
-	let error = ''
-	if (!v) {
-		error = 'No URL provided in src attribute'
-	} else if ((el.parentElement || (el.getRootNode() as ShadowRoot).host)?.closest(`${el.localName}[src="${v}"]`)) {
-		error = 'Recursive loading detected'
-	} else {
-		const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
-		if (url.origin === location.origin) value = String(url) // Sanity check for cross-origin URLs
-		else error = 'Invalid URL origin'
-	}
-	el.error = error
-	return value
-}
+    let value = "";
+    let error = "";
+    if (!v) {
+        error = "No URL provided in src attribute";
+    } else if (
+        (el.parentElement || (el.getRootNode() as ShadowRoot).host)?.closest(
+            `${el.localName}[src="${v}"]`,
+        )
+    ) {
+        error = "Recursive loading detected";
+    } else {
+        const url = new URL(v, location.href); // Ensure "src" attribute is a valid URL
+        if (url.origin === location.origin)
+            value = String(url); // Sanity check for cross-origin URLs
+        else error = "Invalid URL origin";
+    }
+    el.error = error;
+    return value;
+};
 
-// Custom signal producer, needs src and error properties on element
-const fetchText = el =>
-	async abort => { // Async Computed callback
-		const url = el.src
-		if (!url) return ''
-		try {
-			const response = await fetch(url, { signal: abort })
-			el.querySelector('.loading')?.remove()
-			if (response.ok) return response.text()
-			else el.error = response.statusText
-		} catch (error) {
-			el.error = error.message
-		}
-		return ''
-	}
+// Signal Producer fetches inner HTML
+const fetchText = el => async abort => {
+    // Async Computed callback
+    const url = el.src;
+    if (!url) return "";
+    try {
+        const response = await fetch(url, { signal: abort });
+        el.querySelector(".loading")?.remove();
+        if (response.ok) return response.text();
+        else el.error = response.statusText;
+    } catch (error) {
+        el.error = error.message;
+    }
+    return "";
+};
 
-component('lazy-load', {
-	error: '',
-	src: asURL,
-	content: fetchText
+// Component
+component("lazy-load", {
+    error: "",
+    src: asURL,
+    content: fetchText,
 }, el => [
-	dangerouslySetInnerHTML('content', 'open'),
-	first('.error',
-		setText('error'),
-		setProperty('hidden', () => !el.error)
-	)
-])
+    dangerouslySetInnerHTML("content"),
+    first(".error",
+        setText("error"),
+        setProperty("hidden", () => !el.error),
+    ),
+]);
 ```

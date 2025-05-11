@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Introduction – UIElement Docs</title>
 		<meta name="description" content="Overview and key benefits of UIElement" />
-		<base href="./" />
+		<base href="./index.html" />
 		<link rel="stylesheet" href="assets/main.css" />
 		<script type="module" src="assets/main.js"></script>
 	</head>
@@ -94,14 +94,24 @@
 		</header>
 		<main><section class="hero">
 
-<h1>📖 Introduction</h1>
-<p class="lead">Web development doesn't need to be complicated. UIElement offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
+
+	            <h1 id="introduction">
+	                <a name="introduction" class="anchor" href="#introduction">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                📖 Introduction
+	            </h1><p class="lead">Web development doesn't need to be complicated. UIElement offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
 </section>
 
 <section>
 
-<h2>What is UIElement?</h2>
-<p>UIElement is a lightweight TypeScript library (approximately 4kB gzipped) that brings signal-based reactivity to Web Components. It serves as a thin layer between standard web technologies and modern reactivity patterns, empowering you to:</p>
+
+	            <h2 id="what-is-uielement">
+	                <a name="what-is-uielement" class="anchor" href="#what-is-uielement">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                What is UIElement?
+	            </h2><p>UIElement is a lightweight TypeScript library (approximately 4kB gzipped) that brings signal-based reactivity to Web Components. It serves as a thin layer between standard web technologies and modern reactivity patterns, empowering you to:</p>
 <ul>
 <li>Transform ordinary HTML elements into reactive components</li>
 <li>Bind UI updates directly to state changes with minimal boilerplate</li>
@@ -113,18 +123,18 @@
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asInteger, component, first, on, RESET, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asInteger, component, first, on, RESET, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "@zeix/ui-element"</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'show-appreciation'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"show-appreciation"</span><span style="color:#F8F8F2">, {</span></span>
 <span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(RESET) </span><span style="color:#88846F">// Get initial value from .count element</span></span>
 <span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#88846F">	// Update count display when state changes</span></span>
-<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#88846F">    // Update count display when state changes</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".count"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"count"</span><span style="color:#F8F8F2">)),</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">    // Handle click events to change state</span></span>
-<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'button'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> { el.count</span><span style="color:#F92672">++</span><span style="color:#F8F8F2"> }))</span></span>
-<span class="line"><span style="color:#F8F8F2">])</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> { el.count</span><span style="color:#F92672">++</span><span style="color:#F8F8F2"> }))</span></span>
+<span class="line"><span style="color:#F8F8F2">]);</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -138,9 +148,19 @@
 
 <section>
 
-<h2>Philosophy &amp; Design Goals</h2>
-<h3>HTML-First Approach</h3>
-<p>While many frameworks start with JavaScript and generate HTML, UIElement takes the opposite approach. It assumes you already have HTML (whether server-rendered or manually created) and want to enhance it with behavior:</p>
+
+	            <h2 id="philosophy-amp-design-goals">
+	                <a name="philosophy-amp-design-goals" class="anchor" href="#philosophy-amp-design-goals">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Philosophy &amp; Design Goals
+	            </h2>
+	            <h3 id="html-first-approach">
+	                <a name="html-first-approach" class="anchor" href="#html-first-approach">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                HTML-First Approach
+	            </h3><p>While many frameworks start with JavaScript and generate HTML, UIElement takes the opposite approach. It assumes you already have HTML (usually server-rendered) and want to enhance it with behavior:</p>
 <code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -168,15 +188,25 @@
 <li>Less client-side rendering overhead</li>
 <li>Simpler accessibility implementation</li>
 </ul>
-<h3>Performance By Design</h3>
-<p>UIElement avoids the overhead of virtual DOM diffing, instead using precise, targeted DOM updates through a fine-grained reactivity system:</p>
+
+	            <h3 id="performance-by-design">
+	                <a name="performance-by-design" class="anchor" href="#performance-by-design">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Performance By Design
+	            </h3><p>UIElement avoids the overhead of virtual DOM diffing, instead using precise, targeted DOM updates through a fine-grained reactivity system:</p>
 <ul>
 <li>Efficient signal propagation that updates only what changed</li>
 <li>Batch processing and scheduling of updates to minimize browser reflows</li>
 <li>Minimal abstraction layers between your code and the browser</li>
 </ul>
-<h3>Developer Experience Without Compromise</h3>
-<p>UIElement is designed to be intuitive and easy to use. It&#39;s built with type safety in mind, ensuring that your code is correct and that you don&#39;t miss any potential bugs.</p>
+
+	            <h3 id="developer-experience-without-compromise">
+	                <a name="developer-experience-without-compromise" class="anchor" href="#developer-experience-without-compromise">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Developer Experience Without Compromise
+	            </h3><p>UIElement is designed to be intuitive and easy to use. It&#39;s built with type safety in mind, ensuring that your code is correct and that you don&#39;t miss any potential bugs.</p>
 <ul>
 <li><strong>Type Safety</strong>: Get early warnings when types don&#39;t match, improving code quality and reducing bugs.</li>
 <li><strong>Minimal Boilerplate</strong>: Write less code to achieve the same result.</li>
@@ -187,8 +217,13 @@
 
 <section>
 
-<h2>Why UIElement?</h2>
-<p>While there are many excellent JavaScript frameworks out there, UIElement embraces web standards without proprietary extensions. It deliberately eschews abstractions like HTML-in-JS (client-side rendering) or JS-in-HTML (logic in framework-specific attributes) in favor of directness. It does JavaScript state management and view updates the hard way, while still providing the benefits of declarative reactivity with a few functions to compose complex behavior.</p>
+
+	            <h2 id="why-uielement">
+	                <a name="why-uielement" class="anchor" href="#why-uielement">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Why UIElement?
+	            </h2><p>While there are many excellent JavaScript frameworks out there, UIElement embraces web standards without proprietary extensions. It deliberately eschews abstractions like HTML-in-JS (client-side rendering) or JS-in-HTML (logic in framework-specific attributes) in favor of directness. While it does state management and view updates the hard way internally, it provides the benefits of declarative reactivity with only a few functions to compose complex behavior for developers.</p>
 <p>UIElement differentiates itself through:</p>
 <ul>
 <li><strong>Simplicity</strong>: Few, clear concepts (components, signals, element selectors, effects) allow developers to quickly build interactive components.</li>
@@ -204,17 +239,23 @@
 <li>You need to integrate with diverse tech stacks and existing codebases</li>
 </ul>
 </section>
-		  
+
 <section>
 
-<h2>Next Steps</h2>
-<p>Now that you understand what UIElement is and its core philosophy, you&#39;re ready to:</p>
+
+	            <h2 id="next-steps">
+	                <a name="next-steps" class="anchor" href="#next-steps">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Next Steps
+	            </h2><p>Now that you understand what UIElement is and its core philosophy, you&#39;re ready to:</p>
 <ul>
 <li>Move on to <a href="getting-started.html">Getting Started</a> to install the library and build your first component</li>
 <li>Learn more about <a href="building-components.html">Building Components</a> to create reusable UI patterns</li>
 <li>Explore <a href="data-flow.html">Data Flow</a> to understand how to manage component communication</li>
 </ul>
-</section></main>
+</section>
+</main>
 		<footer class="content-grid">
 			<div class="content">
 				<h2 class="visually-hidden">Footer</h2>

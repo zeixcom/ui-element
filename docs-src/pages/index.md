@@ -23,18 +23,18 @@ UIElement is a lightweight TypeScript library (approximately 4kB gzipped) that b
 * Progressively enhance server-rendered content with client-side interactivity
 
 ```js
-import { asInteger, component, first, on, RESET, setText } from '@zeix/ui-element'
+import { asInteger, component, first, on, RESET, setText } from "@zeix/ui-element";
 
-component('show-appreciation', {
+component("show-appreciation", {
     count: asInteger(RESET) // Get initial value from .count element
 }, el => [
 
-	// Update count display when state changes
-    first('.count', setText('count')),
+    // Update count display when state changes
+    first(".count", setText("count")),
 
     // Handle click events to change state
-    first('button', on('click', () => { el.count++ }))
-])
+    first("button", on("click", () => { el.count++ }))
+]);
 ```
 
 UIElement augments what the platform already provides. It leverages the Web Components standard while adding just enough convenience functions to make reactive UI behaviors easy to implement.
@@ -47,7 +47,7 @@ UIElement augments what the platform already provides. It leverages the Web Comp
 
 ### HTML-First Approach
 
-While many frameworks start with JavaScript and generate HTML, UIElement takes the opposite approach. It assumes you already have HTML (whether server-rendered or manually created) and want to enhance it with behavior:
+While many frameworks start with JavaScript and generate HTML, UIElement takes the opposite approach. It assumes you already have HTML (usually server-rendered) and want to enhance it with behavior:
 
 ```html
 <!-- Start with semantic HTML -->
@@ -89,7 +89,7 @@ UIElement is designed to be intuitive and easy to use. It's built with type safe
 
 ## Why UIElement?
 
-While there are many excellent JavaScript frameworks out there, UIElement embraces web standards without proprietary extensions. It deliberately eschews abstractions like HTML-in-JS (client-side rendering) or JS-in-HTML (logic in framework-specific attributes) in favor of directness. It does JavaScript state management and view updates the hard way, while still providing the benefits of declarative reactivity with a few functions to compose complex behavior.
+While there are many excellent JavaScript frameworks out there, UIElement embraces web standards without proprietary extensions. It deliberately eschews abstractions like HTML-in-JS (client-side rendering) or JS-in-HTML (logic in framework-specific attributes) in favor of directness. While it does state management and view updates the hard way internally, it provides the benefits of declarative reactivity with only a few functions to compose complex behavior for developers.
 
 UIElement differentiates itself through:
 
@@ -106,7 +106,7 @@ UIElement shines when:
 * You need to integrate with diverse tech stacks and existing codebases
 
 </section>
-		  
+
 <section>
 
 ## Next Steps

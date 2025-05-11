@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Building Components – UIElement Docs</title>
 		<meta name="description" content="Anatomy, lifecycle, signals, effects" />
-		<base href="./" />
+		<base href="./building-components.html" />
 		<link rel="stylesheet" href="assets/main.css" />
 		<script type="module" src="assets/main.js"></script>
 	</head>
@@ -94,24 +94,33 @@
 		</header>
 		<main><section class="hero">
 
-<h1>🏗️ Building Components</h1>
-<p class="lead"><strong>Create lightweight, self-contained Web Components with built-in reactivity</strong>. UIElement lets you define custom elements that manage state efficiently, update the DOM automatically, and enhance server-rendered pages without a framework.</p>
+
+	            <h1 id="building-components">
+	                <a name="building-components" class="anchor" href="#building-components">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                🏗️ Building Components
+	            </h1><p class="lead"><strong>Create lightweight, self-contained Web Components with built-in reactivity</strong>. UIElement lets you define custom elements that manage state efficiently, update the DOM automatically, and enhance server-rendered pages without an SPA framework.</p>
 </section>
 
 <section>
 
-<h2>Anatomy of Components</h2>
-<p>UIElement builds on <strong>Web Components</strong>, extending <code>HTMLElement</code> to provide <strong>built-in state management and reactive updates</strong>.</p>
-<h3>Defining a Component</h3>
+
+	            <h2 id="defining-a-component">
+	                <a name="defining-a-component" class="anchor" href="#defining-a-component">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Defining a Component
+	            </h2><p>UIElement builds on <strong>Web Components</strong>, extending <code>HTMLElement</code> to provide <strong>built-in state management and reactive updates</strong>.</p>
 <p>A UIElement creates components using the <code>component()</code> function:</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">	// Component setup</span></span>
-<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"><span style="color:#F8F8F2">]);</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -121,8 +130,13 @@
 	
 </code-block>
 <p>Every UIElement component must be registered with a valid custom element tag name (two or more words joined with <code>-</code>) as the first parameter.</p>
-<h3>Using the Custom Element in HTML</h3>
-<p>Once registered, the component can be used like any native HTML element:</p>
+
+	            <h3 id="using-the-custom-element-in-html">
+	                <a name="using-the-custom-element-in-html" class="anchor" href="#using-the-custom-element-in-html">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Using the Custom Element in HTML
+	            </h3><p>Once registered, the component can be used like any native HTML element:</p>
 <code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -141,23 +155,33 @@
 
 <section>
 
-<h2>Web Component Lifecycle in UIElement</h2>
-<p>UIElement manages the <strong>Web Component lifecycle</strong> from creation to removal. Here&#39;s what happens.</p>
-<h3>Component Creation (constructor())</h3>
-<p>This is when reactive properties are initialized. You pass a second argument to the <code>component()</code> function to defines initial values for <strong>component states</strong>.</p>
+
+	            <h2 id="component-lifecycle">
+	                <a name="component-lifecycle" class="anchor" href="#component-lifecycle">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Component Lifecycle
+	            </h2><p>UIElement manages the <strong>Web Component lifecycle</strong> from creation to removal. Here&#39;s what happens.</p>
+
+	            <h3 id="component-creation">
+	                <a name="component-creation" class="anchor" href="#component-creation">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Component Creation
+	            </h3><p>In the <code>constructor()</code> reactive properties are initialized. You pass a second argument to the <code>component()</code> function to defines initial values for <strong>component states</strong>.</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {</span></span>
-<span class="line"><span style="color:#F8F8F2">	count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#88846F">// Initial value of 'count' signal</span></span>
-<span class="line"><span style="color:#A6E22E">	isEven</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">(el.count </span><span style="color:#F92672">%</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">) </span><span style="color:#88846F">// Computed signal based on 'count'</span></span>
-<span class="line"><span style="color:#F8F8F2">	value: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">5</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Parse 'value' attribute as integer</span></span>
-<span class="line"><span style="color:#F8F8F2">	name: </span><span style="color:#A6E22E">consume</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display-name'</span><span style="color:#F8F8F2">) </span><span style="color:#88846F">// Consume 'display-name' signal from closest context provider</span></span>
-<span class="line"><span style="color:#F8F8F2">}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">	count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#88846F">// Initial value of "count" signal</span></span>
+<span class="line"><span style="color:#A6E22E">	isEven</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">(el.count </span><span style="color:#F92672">%</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Computed signal based on "count" signal</span></span>
+<span class="line"><span style="color:#F8F8F2">	value: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">5</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Parse "value" attribute as integer defaulting to 5</span></span>
+<span class="line"><span style="color:#F8F8F2">	name: </span><span style="color:#A6E22E">consume</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"display-name"</span><span style="color:#F8F8F2">) </span><span style="color:#88846F">// Consume "display-name" signal from closest context provider</span></span>
+<span class="line"><span style="color:#F8F8F2">}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">	// Component setup</span></span>
-<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"><span style="color:#F8F8F2">]);</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -166,20 +190,25 @@
 	</input-button>
 	
 </code-block>
-<p>In this example you see all 4 ways to define a reactive property:</p>
+<p>In this example you see all four ways to define a reactive property:</p>
 <ul>
 <li>A <strong>static initial value</strong> for a <code>State</code> signal (e.g., <code>count: 0</code>)</li>
 <li>A <strong>signal producer</strong> that derives an initial value or a callback function from other properties of the element (e.g., <code>isEven: el =&gt; () =&gt; !(el.count % 2)</code>)</li>
 <li>An <strong>attribute parser</strong> that may provide a fallback value (e.g., <code>value: asInteger(5)</code>)</li>
-<li>A <strong>context consumer</strong> that emits a <code>ContextRequestEvent</code> (e.g., <code>name: consume(&#39;display-name&#39;)</code>)</li>
+<li>A <strong>context consumer</strong> that emits a <code>ContextRequestEvent</code> (e.g., <code>name: consume(&quot;display-name&quot;)</code>)</li>
 </ul>
 <callout-box class="caution">
 
-<p><strong>Note</strong>: Property initialization runs <strong>before the element is attached to the DOM</strong>. You can&#39;t access other properties or child elements here.</p>
+<p><strong>Note</strong>: Property initialization runs <strong>before the element is attached to the DOM</strong>. You can&#39;t access not yet defined properties or child elements here.</p>
 </callout-box>
 
-<h3>Mounted in the DOM (connectedCallback())</h3>
-<p>Runs when the component is added to the page. This is where you:</p>
+
+	            <h3 id="mounted-in-the-dom">
+	                <a name="mounted-in-the-dom" class="anchor" href="#mounted-in-the-dom">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Mounted in the DOM
+	            </h3><p>Runs when the component is added to the page (<code>connectedCallback()</code>). This is where you:</p>
 <ul>
 <li><strong>Access sub-elements</strong></li>
 <li><strong>Set up event listeners</strong></li>
@@ -187,21 +216,25 @@
 <li><strong>Emit custom events</strong></li>
 <li><strong>Provide context</strong></li>
 </ul>
+<p>UIElement expects you to return an array of partially applied functions to be executed during the setup phase. The order doesn&#39;t matter, as each function targets a specific element or event. So feel free to organize your code in a way that makes sense to you.</p>
+<p>Each of these functions will return a cleanup function that will be executed during the <code>disconnectedCallback()</code> lifecycle method.</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {</span></span>
 <span class="line"><span style="color:#F8F8F2">	count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">	el.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.increment'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> { el.count</span><span style="color:#F92672">++</span><span style="color:#F8F8F2"> })) </span><span style="color:#88846F">// Add click event listener</span></span>
-<span class="line"><span style="color:#F8F8F2">	el.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">)) </span><span style="color:#88846F">// Apply effect to update text</span></span>
-<span class="line"><span style="color:#F8F8F2">	el.</span><span style="color:#A6E22E">self</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#A6E22E">		emit</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'update-count'</span><span style="color:#F8F8F2">, el.count) </span><span style="color:#88846F">// Emit custom event</span></span>
-<span class="line"><span style="color:#A6E22E">		provide</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">) </span><span style="color:#88846F">// Provide context</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">	emit</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"update-count"</span><span style="color:#F8F8F2">, el.count), </span><span style="color:#88846F">// Emit custom event</span></span>
+<span class="line"><span style="color:#A6E22E">	provide</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"count"</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Provide context</span></span>
+<span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".increment"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> { el.count</span><span style="color:#F92672">++</span><span style="color:#F8F8F2"> }) </span><span style="color:#88846F">// Add click event listener</span></span>
+<span class="line"><span style="color:#F8F8F2">	),</span></span>
+<span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".count"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">		setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"count"</span><span style="color:#F8F8F2">) </span><span style="color:#88846F">// Apply effect to update text</span></span>
 <span class="line"><span style="color:#F8F8F2">	)</span></span>
-<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"><span style="color:#F8F8F2">]);</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -210,24 +243,31 @@
 	</input-button>
 	<button type="button" class="overlay">Expand</button>
 </code-block>
-<h3>Removed from the DOM (disconnectedCallback())</h3>
-<p>Runs when the component is removed. Event listeners bound with <code>on()</code> and signal subscriptions of effects are automatically removed by UIElement.</p>
-<p>If you added <strong>event listeners</strong> outside the scope of your component or <strong>external subscriptions</strong>, you need to return a cleanup function:</p>
+
+	            <h3 id="removed-from-the-dom">
+	                <a name="removed-from-the-dom" class="anchor" href="#removed-from-the-dom">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Removed from the DOM
+	            </h3><p>Runs when the component is removed (<code>disconnectedCallback()</code>). UIElement will run all cleanup functions returned by event listeners and effects during the setup phase (<code>connectedCallback()</code>). This will unsubscribe all signals the component is subscribed to, so you don&#39;t need to worry about memory leaks.</p>
+<p>If you added <strong>event listeners</strong> outside the scope of your component or <strong>subscribed manually to external APIs</strong>, you need to return a cleanup function:</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> intersectionObserver </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> IntersectionObserver</span><span style="color:#F8F8F2">(([</span><span style="color:#FD971F;font-style:italic">entry</span><span style="color:#F8F8F2">]) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#88846F">		// Do something</span></span>
-<span class="line"><span style="color:#F8F8F2">	}).</span><span style="color:#A6E22E">observe</span><span style="color:#F8F8F2">(el)</span></span>
+<span class="line"><span style="color:#F8F8F2">	}).</span><span style="color:#A6E22E">observe</span><span style="color:#F8F8F2">(el);</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#88846F">		// Cleanup logic</span></span>
-<span class="line"><span style="color:#F8F8F2">		intersectionObserver.</span><span style="color:#A6E22E">disconnect</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">	}</span></span>
-<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#88846F">		// Component setup: effects and event listeners</span></span>
+<span class="line"><span style="color:#F8F8F2">		() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">			intersectionObserver.</span><span style="color:#A6E22E">disconnect</span><span style="color:#F8F8F2">(); </span><span style="color:#88846F">// Cleanup logic</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	]</span></span>
+<span class="line"><span style="color:#F8F8F2">});</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -236,21 +276,30 @@
 	</input-button>
 	<button type="button" class="overlay">Expand</button>
 </code-block>
-<h3>Observed Attributes (attributeChangedCallback())</h3>
-<p>UIElement <strong>automatically converts attributes to signals</strong>. Usually, you don’t need to override this method manually.</p>
+
+	            <h3 id="observed-attributes">
+	                <a name="observed-attributes" class="anchor" href="#observed-attributes">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Observed Attributes
+	            </h3><p>UIElement automatically observes and converts attributes with an associated <strong>parser function</strong> in the init block and updates them whenever the attribute changes (<code>attributeChangedCallback()</code>).</p>
 </section>
 
 <section>
 
-<h2>State Management with UIElement</h2>
-<p>UIElement manages state using <strong>signals</strong>, which are atomic reactive states that trigger updates when they change. We use regular properties to access or update them.</p>
-<h3>Accessing and Updating Signal Values</h3>
+
+	            <h2 id="managing-state-with-signals">
+	                <a name="managing-state-with-signals" class="anchor" href="#managing-state-with-signals">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Managing State with Signals
+	            </h2><p>UIElement manages state using <strong>signals</strong>, which are atomic reactive states that trigger updates when they change. We use regular properties to access or update them:</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F92672"> in</span><span style="color:#F8F8F2"> el); </span><span style="color:#88846F">// Check if the signal exists</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"count"</span><span style="color:#F92672"> in</span><span style="color:#F8F8F2"> el); </span><span style="color:#88846F">// Check if the signal exists</span></span>
 <span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(el.count); </span><span style="color:#88846F">// Read the signal value</span></span>
 <span class="line"><span style="color:#F8F8F2">el.count </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 42</span><span style="color:#F8F8F2">; </span><span style="color:#88846F">// Update the signal value</span></span>
 <span class="line"></span></code></pre>
@@ -261,26 +310,13 @@
 	</input-button>
 	
 </code-block>
-<h3>Accessing &amp; Setting Signals Directly</h3>
-<p>If you need to access the signals for a property key directly, you can use the <code>getSignal()</code> and <code>setSignal()</code> methods:</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> doubleString </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">getSignal</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">map</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(v </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">)); </span><span style="color:#88846F">// Derive a new Computed signal from 'count' signal</span></span>
-<span class="line"><span style="color:#F8F8F2">el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-field'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">setSignal</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'description'</span><span style="color:#F8F8F2">, doubleString); </span><span style="color:#88846F">// Replace the signal on another element with a new one</span></span>
-<span class="line"></span></code></pre>
-	<input-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</input-button>
-	
-</code-block>
-<p>However, you should <strong>avoid manipulating signals directly</strong> unless you have a <strong>specific reason</strong> to do so. Use the <code>pass()</code>function to pass a signal or a derivation thereof to other elements.</p>
-<h3>Characteristics and Special Values</h3>
-<p>Signals in UIElement are of a <strong>fixed type</strong> and <strong>non-nullable</strong>. This allows to <strong>simplify the logic</strong> as you will never have to check the type or perform null-checks.</p>
+
+	            <h3 id="characteristics-and-special-values">
+	                <a name="characteristics-and-special-values" class="anchor" href="#characteristics-and-special-values">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Characteristics and Special Values
+	            </h3><p>Signals in UIElement are of a <strong>static type</strong> and <strong>non-nullable</strong>. This allows to <strong>simplify the logic</strong> as you will never have to check the type or perform null-checks.</p>
 <ul>
 <li>If you use <strong>TypeScript</strong> (recommended), <strong>you will be warned</strong> that <code>null</code> or <code>undefined</code> cannot be assigned to a signal or if you try to assign a value of a wrong type.</li>
 <li>If you use vanilla <strong>JavaScript</strong> without a build step, setting a signal to <code>null</code> or <code>undefined</code> <strong>will log an error to the console and abort</strong>. However, strict type checking is not enforced at runtime.</li>
@@ -290,50 +326,24 @@
 <li><strong><code>RESET</code></strong>: Will <strong>reset to the server-rendered version</strong> that was there before UIElement took control. This is what you want to do most of the times when a signal lacks a specific value.</li>
 <li><strong><code>UNSET</code></strong>: Will <strong>delete the signal</strong>, <strong>unsubscribe its watchers</strong> and also <strong>delete related attributes or style properties</strong> in effects. Use this with special care!</li>
 </ul>
-<h3>Why Signals with a Map Interface?</h3>
-<p>UIElement <strong>uses signals</strong> instead of standard properties or attributes because it <strong>ensures reactivity, loose coupling, and avoids common pitfalls with the DOM API</strong>.</p>
-<ul>
-<li>✅ <strong>Signals enable loose coupling between components</strong>: A component that modifies state doesn’t need to know which or how many elements depend on that state. Any UI updates happen automatically wherever that signal is used.</li>
-<li>✅ <strong>Signals trigger automatic updates</strong>: Any DOM element or effect that depends on a signal updates itself when the signal changes. The source doesn&#39;t need to know how the updated state should change the DOM.</li>
-<li>✅ <strong>Standard JavaScript properties are not reactive</strong>: JavaScript properties don’t automatically trigger updates when changed. The distinct <code>Map</code>-like interface avoids confusion.</li>
-<li>✅ <strong>Attributes can only store strings</strong>: Attributes in HTML are always strings. If you store numbers, booleans, or objects, you must manually convert them between string format and usable values. Signals avoid this extra conversion step.</li>
-<li>✅ <strong>The Map interface avoids name conflicts</strong>:<ul>
-<li>The <code>HTMLElement</code> <strong>namespace is crowded</strong>, meaning using direct properties can accidentally override existing methods or properties.</li>
-<li>HTML attributes are <strong>kebab-case</strong> (<code>data-user-id</code>), but JavaScript properties are <strong>camelCase</strong> (<code>dataUserId</code>), which can cause inconsistencies.</li>
-<li>With a Map, we can <strong>use attributes names directly</strong> as state keys (e.g., <code>&quot;count&quot;</code> or <code>&quot;is-active&quot;</code>) without conversion or worrying about naming conflicts.</li>
-</ul>
-</li>
-</ul>
-</section>
 
-<section>
-
-<h2>Initializing State from Attributes</h2>
-<h3>Declaring Observed Attributes</h3>
+	            <h3 id="initializing-state-from-attributes">
+	                <a name="initializing-state-from-attributes" class="anchor" href="#initializing-state-from-attributes">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Initializing State from Attributes
+	            </h3><p>The standard way to set initial state in UIElement is via <strong>server-rendered attributes</strong> on the component that needs it. No props drilling as in other frameworks. UIElements provides some bundled attribute parsers to convert attribute values to the desired type. And you can also define your own custom parsers.</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">static observedAttributes </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">]; </span><span style="color:#88846F">// Automatically becomes a signal</span></span>
-<span class="line"></span></code></pre>
-	<input-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</input-button>
-	
-</code-block>
-<h3>Parsing Attribute Values</h3>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">init </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">	count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(), </span><span style="color:#88846F">// Convert '42' -> 42</span></span>
-<span class="line"><span style="color:#A6E22E">	date</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Date</span><span style="color:#F8F8F2">(v), </span><span style="color:#88846F">// Custom parser: '2025-02-14' -> Date object</span></span>
-<span class="line"><span style="color:#F8F8F2">};</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">	count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(), </span><span style="color:#88846F">// Bundled parser: Convert '42' -> 42</span></span>
+<span class="line"><span style="color:#A6E22E">	date</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Date</span><span style="color:#F8F8F2">(v), </span><span style="color:#88846F">// Custom parser: '2025-02-14' -> Date object</span></span>
+<span class="line"><span style="color:#F8F8F2">}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#88846F">	// Component setup</span></span>
+<span class="line"><span style="color:#F8F8F2">]);</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -346,14 +356,19 @@
 
 <p><strong>Careful</strong>: Attributes <strong>may not be present</strong> on the element or <strong>parsing to the desired type may fail</strong>. To ensure <strong>non-nullability</strong> of signals, UIElement falls back to neutral defaults:</p>
 <ul>
-<li><code>&#39;&#39;</code> (empty string) for <code>string</code></li>
+<li><code>&quot;&quot;</code> (empty string) for <code>string</code></li>
 <li><code>0</code> for <code>number</code></li>
 <li><code>{}</code> (empty object) for objects of any kind</li>
 </ul>
 </callout-box>
 
-<h3>Pre-defined Parsers in UIElement</h3>
-<table>
+
+	            <h3 id="bundled-attribute-parsers">
+	                <a name="bundled-attribute-parsers" class="anchor" href="#bundled-attribute-parsers">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Bundled Attribute Parsers
+	            </h3><table>
 <thead>
 <tr>
 <th>Function</th>
@@ -378,7 +393,7 @@
 </tr>
 <tr>
 <td><code>asEnum([...])</code></td>
-<td>Ensures the string matches <strong>one of the allowed values</strong>. Example: <code>asEnum([&#39;small&#39;, &#39;medium&#39;, &#39;large&#39;])</code>. If the value is not in the list, it defaults to the first option.</td>
+<td>Ensures the string matches <strong>one of the allowed values</strong>. Example: <code>asEnum([&quot;small&quot;, &quot;medium&quot;, &quot;large&quot;])</code>. If the value is not in the list, it defaults to the first option.</td>
 </tr>
 <tr>
 <td><code>asJSON({...})</code></td>
@@ -392,44 +407,88 @@
 
 <section>
 
-<h2>Accessing Sub-elements within the Component</h2>
-<p>Before adding <strong>event listeners</strong>, <strong>applying effects</strong>, or <strong>passing states</strong>, you need to select elements inside the component.</p>
-<p>UIElement provides the following methods for <strong>element selection</strong>:</p>
+
+	            <h2 id="accessing-sub-elements">
+	                <a name="accessing-sub-elements" class="anchor" href="#accessing-sub-elements">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Accessing Sub-elements
+	            </h2><p>Before adding <strong>event listeners</strong>, <strong>applying effects</strong>, or <strong>passing states</strong> to sub-elements, you need to select them using a function for <strong>element selection</strong>:</p>
 <table>
 <thead>
 <tr>
-<th>Method</th>
+<th>Function</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><code>this.self</code></td>
-<td>Selects <strong>the component itself</strong>.</td>
+<td><code>first(selector, ...fns)</code></td>
+<td>Selects <strong>the first matching element</strong> inside the component and applies the given setup functions.</td>
 </tr>
 <tr>
-<td><code>this.first(selector)</code></td>
-<td>Selects <strong>the first matching element</strong> inside the component.</td>
-</tr>
-<tr>
-<td><code>this.all(selector)</code></td>
-<td>Selects <strong>all matching elements</strong> inside the component.</td>
+<td><code>all(selector, ...fns)</code></td>
+<td>Selects <strong>all matching elements</strong> inside the component and applies the given setup functions.</td>
 </tr>
 </tbody></table>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Select the first ".increment" button and apply effects on it</span></span>
+<span class="line"><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".increment"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#88846F">	// Fx functions</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// Select all &#x3C;button> elements and apply effects on them</span></span>
+<span class="line"><span style="color:#A6E22E">all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#88846F">	// Fx functions</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
+<p>The <code>first()</code> function expects the matched element to be present at connection time. If not, it will silently ignore the call.</p>
+<p>On the other hand, the <code>all()</code> function creates a dynamic array of elements that will be updated whenever the matching elements are added or removed from the component&#39;s DOM branch. UIElement will apply the given setup functions to added elements and run the cleanup functions on removed elements.</p>
+<callout-box class="tip">
+
+<p><strong>Tip</strong>: The <code>all()</code> function is more flexible but also more resource-intensive than <code>first()</code>. Prefer <code>first()</code> when targeting a single element known to be present at connection time.</p>
+</callout-box>
+
+
+	            <h3 id="adding-event-listeners">
+	                <a name="adding-event-listeners" class="anchor" href="#adding-event-listeners">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Adding Event Listeners
+	            </h3><p>Event listeners allow to respond to user interactions. They are the cause of changes in the component&#39;s state.</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Select the component itself</span></span>
-<span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.self.</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">));</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">// Select the first '.increment' button &#x26; add a click event</span></span>
-<span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.increment'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#FD971F">	this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#AE81FF"> null</span><span style="color:#F92672"> !=</span><span style="color:#F8F8F2"> v </span><span style="color:#F92672">?</span><span style="color:#F92672"> ++</span><span style="color:#F8F8F2">v </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">);</span></span>
-<span class="line"><span style="color:#F8F8F2">});</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">// Select all &#x3C;button> elements &#x26; sync their 'disabled' properties</span></span>
-<span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'button'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">));</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">	active: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	value: </span><span style="color:#E6DB74">''</span></span>
+<span class="line"><span style="color:#F8F8F2">}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">	all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">			// Set "active" signal to value of data-index attribute of button</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> index </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> parseInt</span><span style="color:#F8F8F2">(e.target.dataset[</span><span style="color:#E6DB74">'index'</span><span style="color:#F8F8F2">], </span><span style="color:#AE81FF">10</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#F8F8F2">			el.active </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> Number.</span><span style="color:#A6E22E">isInteger</span><span style="color:#F8F8F2">(index) </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> index </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#F8F8F2">	),</span></span>
+<span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"input"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"change"</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">			// Set "value" signal to value of input element</span></span>
+<span class="line"><span style="color:#F8F8F2">			el.value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value;</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#F8F8F2">	)</span></span>
+<span class="line"><span style="color:#F8F8F2">]</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -442,55 +501,51 @@
 
 <section>
 
-<h2>Updating State with Events</h2>
-<p>User interactions should <strong>update signals</strong>, not the DOM directly. This keeps the components loosly coupled.</p>
-<p>Bind event handlers to one or many elements using the <code>.on()</code> method:</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+
+	            <h2 id="synchronizing-state-with-effects">
+	                <a name="synchronizing-state-with-effects" class="anchor" href="#synchronizing-state-with-effects">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Synchronizing State with Effects
+	            </h2><p>Effects <strong>automatically update the DOM</strong> when signals change, avoiding manual DOM manipulation.</p>
+
+	            <h3 id="applying-effects">
+	                <a name="applying-effects" class="anchor" href="#applying-effects">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Applying Effects
+	            </h3><p>Apply one or multiple effects in the setup function (for component itself) or in element selector functions:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.increment'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#FD971F">	this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#AE81FF"> null</span><span style="color:#F92672"> !=</span><span style="color:#F8F8F2"> v </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> v</span><span style="color:#F92672">++</span><span style="color:#F92672"> :</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">});</span></span>
-<span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#FD971F">	this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">, e.target.value </span><span style="color:#F92672">||</span><span style="color:#AE81FF"> undefined</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">});</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#88846F">	// On the component itself</span></span>
+<span class="line"><span style="color:#A6E22E">	setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"open"</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">"isOpen"</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Set "open" attribute according to "isOpen" signal</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">	// On first element matching ".count"</span></span>
+<span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".count"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">		setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"count"</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Update text content according to "count" signal</span></span>
+<span class="line"><span style="color:#A6E22E">		toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"even"</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">"isEven"</span><span style="color:#F8F8F2">) </span><span style="color:#88846F">// Toggle "even" class according to "isEven" signal</span></span>
+<span class="line"><span style="color:#F8F8F2">	)</span></span>
+<span class="line"><span style="color:#F8F8F2">];</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
 	</input-button>
-	
+	<button type="button" class="overlay">Expand</button>
 </code-block>
-</section>
+<p>Again, the order of effects is not important. Feel free to apply them in any order that suits your needs.</p>
 
-<section>
-
-<h2>Synchronizing State with Effects</h2>
-<p>Effects <strong>automatically update the DOM</strong> when signals change, avoiding manual DOM manipulation.</p>
-<h3>Applying Effects with .sync()</h3>
-<p>Apply one or multiple effects to elements using <code>.sync()</code>:</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#A6E22E">	setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Update text content according to 'count' signal</span></span>
-<span class="line"><span style="color:#A6E22E">	toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'even'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'isEven'</span><span style="color:#F8F8F2">) </span><span style="color:#88846F">// Toggle 'even' class according to 'isEven' signal</span></span>
-<span class="line"><span style="color:#F8F8F2">);</span></span>
-<span class="line"></span></code></pre>
-	<input-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</input-button>
-	
-</code-block>
-<h3>Pre-defined Effects in UIElement</h3>
-<table>
+	            <h3 id="bundled-effects">
+	                <a name="bundled-effects" class="anchor" href="#bundled-effects">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Bundled Effects
+	            </h3><table>
 <thead>
 <tr>
 <th>Function</th>
@@ -522,28 +577,33 @@
 <td>Updates a given <strong>CSS property</strong> with a <code>string</code> signal value.</td>
 </tr>
 <tr>
-<td><code>createElement()</code></td>
-<td>Inserts a <strong>new element</strong> with a given tag name with a <code>Record&lt;string, string&gt;</code> signal value for attributes.</td>
+<td><code>dangerouslySetInnerHTML()</code></td>
+<td>Sets <strong>HTML content</strong> with a <code>string</code> signal value.</td>
 </tr>
 <tr>
-<td><code>removeElement()</code></td>
-<td>Removes an element if the <code>boolean</code> signal value is <code>true</code>.</td>
+<td><code>insertOrRemoveElement()</code></td>
+<td>Inserts (positive integer) or removes (negative integer) elements with a <code>number</code> signal value.</td>
 </tr>
 </tbody></table>
 <callout-box class="tip">
 
-<p><strong>Tip</strong>: TypeScript will check whether a value of a given type is assignable to a certain element type. You might have to specify a type hint for the queried element type. Prefer <code>setProperty()</code> over <code>setAttribute()</code> for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.</p>
+<p><strong>Tip</strong>: TypeScript will check whether a value of a given type is assignable to a certain element type. You might have to pass a type hint for the queried element type. Prefer <code>setProperty()</code> over <code>setAttribute()</code> for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.</p>
 </callout-box>
 
-<h3>Simplifying Effect Notation</h3>
-<p>For effects that take two arguments, <strong>the second argument can be omitted</strong> if the signal key matches the targeted property name, attribute, class, or style property.</p>
+
+	            <h3 id="simplifying-effect-notation">
+	                <a name="simplifying-effect-notation" class="anchor" href="#simplifying-effect-notation">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Simplifying Effect Notation
+	            </h3><p>For effects that take two arguments, <strong>the second argument can be omitted</strong> if the signal key matches the targeted property name, attribute, class, or style property.</p>
 <p>When signal key matches property name:</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'even'</span><span style="color:#F8F8F2">));</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".count"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"even"</span><span style="color:#F8F8F2">))</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -552,15 +612,60 @@
 	</input-button>
 	
 </code-block>
-<p>Here, <code>toggleClass(&#39;even&#39;)</code> automatically uses the <code>&quot;even&quot;</code> signal.</p>
-<h3>Using Functions for Ad-hoc Derived State</h3>
-<p>Instead of a signal key, you can <strong>pass a function</strong> that derives a value dynamically:</p>
+<p>Here, <code>toggleClass(&quot;even&quot;)</code> automatically uses the <code>&quot;even&quot;</code> signal.</p>
+
+	            <h3 id="using-local-signals-for-protected-state">
+	                <a name="using-local-signals-for-protected-state" class="anchor" href="#using-local-signals-for-protected-state">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Using Local Signals for Protected State
+	            </h3><p>Local signals are useful for storing state that should not be exposed to the outside world. They can be used to manage internal state within a component:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> count </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> double </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> count.</span><span style="color:#A6E22E">map</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> v </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".increment"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">			count.</span><span style="color:#A6E22E">update</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F92672"> ++</span><span style="color:#F8F8F2">v);</span></span>
+<span class="line"><span style="color:#F8F8F2">		})),</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".count"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(count)),</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".double"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(double))</span></span>
+<span class="line"><span style="color:#F8F8F2">	];</span></span>
+<span class="line"><span style="color:#F8F8F2">});</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<p>Outside components cannot access the <code>count</code> or <code>double</code> signals.</p>
+
+	            <h3 id="using-functions-for-ad-hoc-derived-state">
+	                <a name="using-functions-for-ad-hoc-derived-state" class="anchor" href="#using-functions-for-ad-hoc-derived-state">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Using Functions for Ad-hoc Derived State
+	            </h3><p>Instead of a signal key or a local signal, you can <strong>pass a function</strong> that derives a value dynamically:</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'even'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">%</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">)));</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">	count: </span><span style="color:#AE81FF">0</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> double </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> computed</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.count </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".count"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"even"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">(el.count </span><span style="color:#F92672">%</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">)))),</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".double"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(double.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">())))</span></span>
+<span class="line"><span style="color:#F8F8F2">	];</span></span>
+<span class="line"><span style="color:#F8F8F2">});</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -573,49 +678,35 @@
 
 <p><strong>When to use</strong></p>
 <ul>
-<li><strong>Use a signal key</strong> when the state is already <strong>stored as a signal</strong>.</li>
-<li><strong>Use a function</strong> when you <strong>derive a value on the fly</strong> needed only in this one place and you don&#39;t want to expose it as a signal on the element.</li>
+<li><strong>Use a signal key or a local signal</strong> when the state is part of the component&#39;s public interface or internally reused.</li>
+<li><strong>Use a function</strong> to <strong>derive a value on the fly</strong> when it is needed only in this one place.</li>
 </ul>
+<p>Ad-hoc derived state is more efficient than the overhead of a memoized computed signal for simple functions like converting to a string or boolean, formatting a value or performing a calculation.</p>
 </callout-box>
 
-<h3>Custom Effects</h3>
-<p>For complex DOM manipulations, <strong>define your own effect</strong> using <code>effect()</code>.</p>
-<p>Here&#39;s an example effect that attaches a Shadow DOM and updates its content:</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Update the shadow DOM when content changes</span></span>
-<span class="line"><span style="color:#A6E22E">effect</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> content </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'content'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">	if</span><span style="color:#F8F8F2"> (content) {</span></span>
-<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.root </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.shadowRoot </span><span style="color:#F92672">||</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">attachShadow</span><span style="color:#F8F8F2">({ mode: </span><span style="color:#E6DB74">'open'</span><span style="color:#F8F8F2"> })</span></span>
-<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.root.innerHTML </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> content</span></span>
-<span class="line"><span style="color:#F8F8F2">	}</span></span>
-<span class="line"><span style="color:#F8F8F2">});</span></span>
-<span class="line"></span></code></pre>
-	<input-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</input-button>
-	
-</code-block>
-<h3>Efficient &amp; Fine-Grained Updates</h3>
-<p>Unlike some frameworks that <strong>re-render entire components</strong>, UIElement updates only what changes:</p>
+
+	            <h3 id="efficient-amp-fine-grained-updates">
+	                <a name="efficient-amp-fine-grained-updates" class="anchor" href="#efficient-amp-fine-grained-updates">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Efficient &amp; Fine-Grained Updates
+	            </h3><p>Unlike some frameworks that <strong>re-render entire components</strong>, UIElement updates only what changes:</p>
 <ul>
-<li>✅ <strong>No virtual DOM</strong> – UIElement modifies the DOM directly.</li>
-<li>✅ <strong>Signals propagate automatically</strong> – No need to track dependencies manually.</li>
-<li>✅ <strong>Optimized with a scheduler</strong> – Multiple updates are batched efficiently.</li>
+<li><strong>No virtual DOM</strong> – UIElement modifies the DOM directly.</li>
+<li><strong>Signals propagate automatically</strong> – No need to track dependencies manually.</li>
+<li><strong>Optimized with a scheduler</strong> – Multiple updates are batched efficiently.</li>
 </ul>
-<p><strong>In practical terms</strong>: UIElement is as easy as React but without re-renders.</p>
 </section>
 
 <section>
 
-<h2>Single Component Example: MySlider</h2>
-<p>Bringing all of the above together, you are now ready to build your own components like this slider with prev / next buttons and dot indicators, demonstrating single-component reactivity.</p>
+
+	            <h2 id="single-component-example-myslider">
+	                <a name="single-component-example-myslider" class="anchor" href="#single-component-example-myslider">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Single Component Example: MySlider
+	            </h2><p>Bringing all of the above together, you are now ready to build your own components like this slider with prev / next buttons and dot indicators, demonstrating single-component reactivity.</p>
 <component-demo>
 	<div class="preview">
 		<my-slider>
@@ -735,13 +826,19 @@
 
 <section>
 
-<h2>Next Steps</h2>
-<p>Now that you understand the basics, explore:</p>
+
+	            <h2 id="next-steps">
+	                <a name="next-steps" class="anchor" href="#next-steps">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Next Steps
+	            </h2><p>Now that you understand the basics, explore:</p>
 <ul>
 <li><a href="styling-components.html">Styling Components</a> – Learn techniques to apply styles to components.</li>
 <li><a href="data-flow.html">Data Flow</a> – Learn about passing state between components.</li>
 </ul>
-</section></main>
+</section>
+</main>
 		<footer class="content-grid">
 			<div class="content">
 				<h2 class="visually-hidden">Footer</h2>

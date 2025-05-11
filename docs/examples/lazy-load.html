@@ -14,7 +14,8 @@
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">lazy-load</span><span style="color:#A6E22E"> src</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"./examples/snippets/snippet.html"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"loading"</span><span style="color:#F8F8F2">>Loading...&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"error"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">lazy-load</span><span style="color:#F8F8F2">></span></span></code></pre>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">lazy-load</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
 		<input-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>
@@ -30,70 +31,90 @@
 			<span class="language">ts</span>
 		</p>
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> AttributeParser, </span><span style="color:#F92672">type</span><span style="color:#F8F8F2"> Component, </span><span style="color:#F92672">type</span><span style="color:#F8F8F2"> SignalProducer,</span></span>
-<span class="line"><span style="color:#F8F8F2">	setProperty, setText, dangerouslySetInnerHTML, component,</span></span>
-<span class="line"><span style="color:#F8F8F2">	first</span></span>
-<span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
+<span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> AttributeParser,</span></span>
+<span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
+<span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> SignalProducer,</span></span>
+<span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
+<span class="line"><span style="color:#F8F8F2">	setText,</span></span>
+<span class="line"><span style="color:#F8F8F2">	dangerouslySetInnerHTML,</span></span>
+<span class="line"><span style="color:#F8F8F2">	component,</span></span>
+<span class="line"><span style="color:#F8F8F2">	first,</span></span>
+<span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../../../"</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">LazyLoadProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">	error</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
-<span class="line"><span style="color:#F8F8F2">	src</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
-<span class="line"><span style="color:#F8F8F2">	content</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
-<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">	error</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	src</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	content</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">};</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">/* === Attribute Parser === */</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> asURL</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">AttributeParser</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F92672"> &#x26;</span><span style="color:#F8F8F2"> { error</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2"> }, </span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">> </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	let</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> ''</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	let</span><span style="color:#F8F8F2"> error </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> asURL</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">AttributeParser</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F92672"> &#x26;</span><span style="color:#F8F8F2"> { error</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2"> }, </span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">> </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">	el</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">	v</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	let</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> ""</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	let</span><span style="color:#F8F8F2"> error </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> ""</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#F92672">	if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">v) {</span></span>
-<span class="line"><span style="color:#F8F8F2">		error </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'No URL provided in src attribute'</span></span>
-<span class="line"><span style="color:#F8F8F2">	} </span><span style="color:#F92672">else</span><span style="color:#F92672"> if</span><span style="color:#F8F8F2"> ((el.parentElement </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> (el.</span><span style="color:#A6E22E">getRootNode</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">ShadowRoot</span><span style="color:#F8F8F2">).host)?.</span><span style="color:#A6E22E">closest</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">`</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">el.localName</span><span style="color:#F92672">}</span><span style="color:#E6DB74">[src="</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">v</span><span style="color:#F92672">}</span><span style="color:#E6DB74">"]`</span><span style="color:#F8F8F2">)) {</span></span>
-<span class="line"><span style="color:#F8F8F2">		error </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'Recursive loading detected'</span></span>
+<span class="line"><span style="color:#F8F8F2">		error </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> "No URL provided in src attribute"</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	} </span><span style="color:#F92672">else</span><span style="color:#F92672"> if</span><span style="color:#F8F8F2"> (</span></span>
+<span class="line"><span style="color:#F8F8F2">		(el.parentElement </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> (el.</span><span style="color:#A6E22E">getRootNode</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">ShadowRoot</span><span style="color:#F8F8F2">).host)?.</span><span style="color:#A6E22E">closest</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			`</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">el.localName</span><span style="color:#F92672">}</span><span style="color:#E6DB74">[src="</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">v</span><span style="color:#F92672">}</span><span style="color:#E6DB74">"]`</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">		)</span></span>
+<span class="line"><span style="color:#F8F8F2">	) {</span></span>
+<span class="line"><span style="color:#F8F8F2">		error </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> "Recursive loading detected"</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#F8F8F2">	} </span><span style="color:#F92672">else</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> url </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> URL</span><span style="color:#F8F8F2">(v, location.href) </span><span style="color:#88846F">// Ensure 'src' attribute is a valid URL</span></span>
-<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (url.origin </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> location.origin) value </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(url) </span><span style="color:#88846F">// Sanity check for cross-origin URLs</span></span>
-<span class="line"><span style="color:#F92672">		else</span><span style="color:#F8F8F2"> error </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'Invalid URL origin'</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> url </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> URL</span><span style="color:#F8F8F2">(v, location.href); </span><span style="color:#88846F">// Ensure 'src' attribute is a valid URL</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (url.origin </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> location.origin)</span></span>
+<span class="line"><span style="color:#F8F8F2">			value </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(url); </span><span style="color:#88846F">// Sanity check for cross-origin URLs</span></span>
+<span class="line"><span style="color:#F92672">		else</span><span style="color:#F8F8F2"> error </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> "Invalid URL origin"</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
-<span class="line"><span style="color:#F8F8F2">	el.error </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> error</span></span>
-<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> value</span></span>
-<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">	el.error </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> error;</span></span>
+<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> value;</span></span>
+<span class="line"><span style="color:#F8F8F2">};</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">/* === Signal Producer === */</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> fetchText</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">SignalProducer</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F92672"> &#x26;</span><span style="color:#F8F8F2"> { error</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">, src</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2"> }, </span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">> </span><span style="color:#F92672">=</span><span style="color:#FD971F;font-style:italic"> el</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
-<span class="line"><span style="color:#F92672">	async</span><span style="color:#FD971F;font-style:italic"> abort</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> { </span><span style="color:#88846F">// Async Computed callback</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> url </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.src</span></span>
-<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">url) </span><span style="color:#F92672">return</span><span style="color:#E6DB74"> ''</span></span>
-<span class="line"><span style="color:#F92672">		try</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> response </span><span style="color:#F92672">=</span><span style="color:#F92672"> await</span><span style="color:#A6E22E"> fetch</span><span style="color:#F8F8F2">(url, { signal: abort })</span></span>
-<span class="line"><span style="color:#F8F8F2">			el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.loading'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">remove</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (response.ok) </span><span style="color:#F92672">return</span><span style="color:#F8F8F2"> response.</span><span style="color:#A6E22E">text</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F92672">			else</span><span style="color:#F8F8F2"> el.error </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> response.statusText</span></span>
-<span class="line"><span style="color:#F8F8F2">		} </span><span style="color:#F92672">catch</span><span style="color:#F8F8F2"> (error) {</span></span>
-<span class="line"><span style="color:#F8F8F2">			el.error </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> error.message</span></span>
-<span class="line"><span style="color:#F8F8F2">		}</span></span>
-<span class="line"><span style="color:#F92672">		return</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> fetchText</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">SignalProducer</span><span style="color:#F8F8F2">&#x3C;</span></span>
+<span class="line"><span>	</span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F92672"> &#x26;</span><span style="color:#F8F8F2"> { error</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">; src</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2"> },</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	string</span></span>
+<span class="line"><span style="color:#F8F8F2">> </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> async</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">abort</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">	// Async Computed callback</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> url </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.src;</span></span>
+<span class="line"><span style="color:#F92672">	if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">url) </span><span style="color:#F92672">return</span><span style="color:#E6DB74"> ""</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F92672">	try</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> response </span><span style="color:#F92672">=</span><span style="color:#F92672"> await</span><span style="color:#A6E22E"> fetch</span><span style="color:#F8F8F2">(url, { signal: abort });</span></span>
+<span class="line"><span style="color:#F8F8F2">		el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".loading"</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">remove</span><span style="color:#F8F8F2">();</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (response.ok) </span><span style="color:#F92672">return</span><span style="color:#F8F8F2"> response.</span><span style="color:#A6E22E">text</span><span style="color:#F8F8F2">();</span></span>
+<span class="line"><span style="color:#F92672">		else</span><span style="color:#F8F8F2"> el.error </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> response.statusText;</span></span>
+<span class="line"><span style="color:#F8F8F2">	} </span><span style="color:#F92672">catch</span><span style="color:#F8F8F2"> (error) {</span></span>
+<span class="line"><span style="color:#F8F8F2">		el.error </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> error.message;</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
-<span class="line"></span>
+<span class="line"><span style="color:#F92672">	return</span><span style="color:#E6DB74"> ""</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">};</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">/* === Component === */</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'lazy-load'</span><span style="color:#F8F8F2">, {</span></span>
-<span class="line"><span style="color:#F8F8F2">	error: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">	src: asURL,</span></span>
-<span class="line"><span style="color:#F8F8F2">	content: fetchText</span></span>
-<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">	dangerouslySetInnerHTML</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'content'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">LazyLoadProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'.error'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">		setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'error'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">		setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.error)</span></span>
-<span class="line"><span style="color:#F8F8F2">	)</span></span>
-<span class="line"><span style="color:#F8F8F2">])</span></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">	"lazy-load"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	{</span></span>
+<span class="line"><span style="color:#F8F8F2">		error: </span><span style="color:#E6DB74">""</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">		src: asURL,</span></span>
+<span class="line"><span style="color:#F8F8F2">		content: fetchText,</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
+<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">		dangerouslySetInnerHTML</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"content"</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">LazyLoadProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">>(</span></span>
+<span class="line"><span style="color:#E6DB74">			".error"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"error"</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"hidden"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.error),</span></span>
+<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"><span style="color:#F8F8F2">	],</span></span>
+<span class="line"><span style="color:#F8F8F2">);</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#E6DB74">		'lazy-load'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">LazyLoadProps</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#E6DB74">		"lazy-load"</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">LazyLoadProps</span><span style="color:#F8F8F2">>;</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>

@@ -8,23 +8,21 @@ description: "Anatomy, lifecycle, signals, effects"
 
 # 🏗️ Building Components
 
-<p class="lead"><strong>Create lightweight, self-contained Web Components with built-in reactivity</strong>. UIElement lets you define custom elements that manage state efficiently, update the DOM automatically, and enhance server-rendered pages without a framework.</p>
+<p class="lead"><strong>Create lightweight, self-contained Web Components with built-in reactivity</strong>. UIElement lets you define custom elements that manage state efficiently, update the DOM automatically, and enhance server-rendered pages without an SPA framework.</p>
 </section>
 
 <section>
 
-## Anatomy of Components
+## Defining a Component
 
 UIElement builds on **Web Components**, extending `HTMLElement` to provide **built-in state management and reactive updates**.
-
-### Defining a Component
 
 A UIElement creates components using the `component()` function:
 
 ```js
-component('my-component', {}, () => {
+component("my-component", {}, () => [
 	// Component setup
-})
+]);
 ```
 
 Every UIElement component must be registered with a valid custom element tag name (two or more words joined with `-`) as the first parameter.
@@ -41,41 +39,41 @@ Once registered, the component can be used like any native HTML element:
 
 <section>
 
-## Web Component Lifecycle in UIElement
+## Component Lifecycle
 
 UIElement manages the **Web Component lifecycle** from creation to removal. Here's what happens.
 
-### Component Creation (constructor())
+### Component Creation
 
-This is when reactive properties are initialized. You pass a second argument to the `component()` function to defines initial values for **component states**.
+In the `constructor()` reactive properties are initialized. You pass a second argument to the `component()` function to defines initial values for **component states**.
 
 ```js
-component('my-component', {
-	count: 0, // Initial value of 'count' signal
-	isEven: el => () => !(el.count % 2) // Computed signal based on 'count'
-	value: asInteger(5), // Parse 'value' attribute as integer
-	name: consume('display-name') // Consume 'display-name' signal from closest context provider
-}, () => {
+component("my-component", {
+	count: 0, // Initial value of "count" signal
+	isEven: el => () => !(el.count % 2), // Computed signal based on "count" signal
+	value: asInteger(5), // Parse "value" attribute as integer defaulting to 5
+	name: consume("display-name") // Consume "display-name" signal from closest context provider
+}, () => [
 	// Component setup
-})
+]);
 ```
 
-In this example you see all 4 ways to define a reactive property:
+In this example you see all four ways to define a reactive property:
 
 * A **static initial value** for a `State` signal (e.g., `count: 0`)
 * A **signal producer** that derives an initial value or a callback function from other properties of the element (e.g., `isEven: el => () => !(el.count % 2)`)
 * An **attribute parser** that may provide a fallback value (e.g., `value: asInteger(5)`)
-* A **context consumer** that emits a `ContextRequestEvent` (e.g., `name: consume('display-name')`)
+* A **context consumer** that emits a `ContextRequestEvent` (e.g., `name: consume("display-name")`)
 
 <callout-box class="caution">
 
-**Note**: Property initialization runs **before the element is attached to the DOM**. You can't access other properties or child elements here.
+**Note**: Property initialization runs **before the element is attached to the DOM**. You can't access not yet defined properties or child elements here.
 
 </callout-box>
 
-### Mounted in the DOM (connectedCallback())
+### Mounted in the DOM
 
-Runs when the component is added to the page. This is where you:
+Runs when the component is added to the page (`connectedCallback()`). This is where you:
 
 * **Access sub-elements**
 * **Set up event listeners**
@@ -83,72 +81,67 @@ Runs when the component is added to the page. This is where you:
 * **Emit custom events**
 * **Provide context**
 
+UIElement expects you to return an array of partially applied functions to be executed during the setup phase. The order doesn't matter, as each function targets a specific element or event. So feel free to organize your code in a way that makes sense to you.
+
+Each of these functions will return a cleanup function that will be executed during the `disconnectedCallback()` lifecycle method.
+
 ```js
-component('my-component', {
+component("my-component", {
 	count: 0,
-}, el => {
-	el.first('.increment', on('click', () => { el.count++ })) // Add click event listener
-	el.first('.count', setText('count')) // Apply effect to update text
-	el.self(
-		emit('update-count', el.count) // Emit custom event
-		provide('count') // Provide context
+}, el => [
+	emit("update-count", el.count), // Emit custom event
+	provide("count"), // Provide context
+	first(".increment",
+		on("click", () => { el.count++ }) // Add click event listener
+	),
+	first(".count",
+		setText("count") // Apply effect to update text
 	)
-})
+]);
 ```
 
-### Removed from the DOM (disconnectedCallback())
+### Removed from the DOM
 
-Runs when the component is removed. Event listeners bound with `on()` and signal subscriptions of effects are automatically removed by UIElement.
+Runs when the component is removed (`disconnectedCallback()`). UIElement will run all cleanup functions returned by event listeners and effects during the setup phase (`connectedCallback()`). This will unsubscribe all signals the component is subscribed to, so you don't need to worry about memory leaks.
 
-If you added **event listeners** outside the scope of your component or **external subscriptions**, you need to return a cleanup function:
+If you added **event listeners** outside the scope of your component or **subscribed manually to external APIs**, you need to return a cleanup function:
 
 ```js
-component('my-component', {}, el => {
+component("my-component", {}, el => {
 	const intersectionObserver = new IntersectionObserver(([entry]) => {
 		// Do something
-	}).observe(el)
+	}).observe(el);
 
-	return () => {
-		// Cleanup logic
-		intersectionObserver.disconnect()
-	}
-})
+	return [
+		// Component setup: effects and event listeners
+		() => {
+			intersectionObserver.disconnect(); // Cleanup logic
+		}
+	]
+});
 ```
 
-### Observed Attributes (attributeChangedCallback())
+### Observed Attributes
 
-UIElement **automatically converts attributes to signals**. Usually, you don’t need to override this method manually.
+UIElement automatically observes and converts attributes with an associated **parser function** in the init block and updates them whenever the attribute changes (`attributeChangedCallback()`).
 
 </section>
 
 <section>
 
-## State Management with UIElement
+## Managing State with Signals
 
-UIElement manages state using **signals**, which are atomic reactive states that trigger updates when they change. We use regular properties to access or update them.
-
-### Accessing and Updating Signal Values
+UIElement manages state using **signals**, which are atomic reactive states that trigger updates when they change. We use regular properties to access or update them:
 
 ```js
-console.log('count' in el); // Check if the signal exists
+console.log("count" in el); // Check if the signal exists
 console.log(el.count); // Read the signal value
 el.count = 42; // Update the signal value
 ```
 
-### Accessing & Setting Signals Directly
-
-If you need to access the signals for a property key directly, you can use the `getSignal()` and `setSignal()` methods:
-
-```js
-const doubleString = el.getSignal('count').map(v => String(v * 2)); // Derive a new Computed signal from 'count' signal
-el.querySelector('input-field').setSignal('description', doubleString); // Replace the signal on another element with a new one
-```
-
-However, you should **avoid manipulating signals directly** unless you have a **specific reason** to do so. Use the `pass()`function to pass a signal or a derivation thereof to other elements.
-
 ### Characteristics and Special Values
 
-Signals in UIElement are of a **fixed type** and **non-nullable**. This allows to **simplify the logic** as you will never have to check the type or perform null-checks.
+Signals in UIElement are of a **static type** and **non-nullable**. This allows to **simplify the logic** as you will never have to check the type or perform null-checks.
 
 * If you use **TypeScript** (recommended), **you will be warned** that `null` or `undefined` cannot be assigned to a signal or if you try to assign a value of a wrong type.
 * If you use vanilla **JavaScript** without a build step, setting a signal to `null` or `undefined` **will log an error to the console and abort**. However, strict type checking is not enforced at runtime.
@@ -158,51 +151,30 @@ Because of the **non-nullable nature of signals** in UIElement, we need two spec
 * **`RESET`**: Will **reset to the server-rendered version** that was there before UIElement took control. This is what you want to do most of the times when a signal lacks a specific value.
 * **`UNSET`**: Will **delete the signal**, **unsubscribe its watchers** and also **delete related attributes or style properties** in effects. Use this with special care!
 
-### Why Signals with a Map Interface?
+### Initializing State from Attributes
 
-UIElement **uses signals** instead of standard properties or attributes because it **ensures reactivity, loose coupling, and avoids common pitfalls with the DOM API**.
-
-* ✅ **Signals enable loose coupling between components**: A component that modifies state doesn’t need to know which or how many elements depend on that state. Any UI updates happen automatically wherever that signal is used.
-* ✅ **Signals trigger automatic updates**: Any DOM element or effect that depends on a signal updates itself when the signal changes. The source doesn't need to know how the updated state should change the DOM.
-* ✅ **Standard JavaScript properties are not reactive**: JavaScript properties don’t automatically trigger updates when changed. The distinct `Map`-like interface avoids confusion.
-* ✅ **Attributes can only store strings**: Attributes in HTML are always strings. If you store numbers, booleans, or objects, you must manually convert them between string format and usable values. Signals avoid this extra conversion step.
-* ✅ **The Map interface avoids name conflicts**:
-  * The `HTMLElement` **namespace is crowded**, meaning using direct properties can accidentally override existing methods or properties.
-  * HTML attributes are **kebab-case** (`data-user-id`), but JavaScript properties are **camelCase** (`dataUserId`), which can cause inconsistencies.
-  * With a Map, we can **use attributes names directly** as state keys (e.g., `"count"` or `"is-active"`) without conversion or worrying about naming conflicts.
-
-</section>
-
-<section>
-
-## Initializing State from Attributes
-
-### Declaring Observed Attributes
+The standard way to set initial state in UIElement is via **server-rendered attributes** on the component that needs it. No props drilling as in other frameworks. UIElements provides some bundled attribute parsers to convert attribute values to the desired type. And you can also define your own custom parsers.
 
 ```js
-static observedAttributes = ['count']; // Automatically becomes a signal
-```
-
-### Parsing Attribute Values
-
-```js
-init = {
-	count: asInteger(), // Convert '42' -> 42
-	date: v => new Date(v), // Custom parser: '2025-02-14' -> Date object
-};
+component("my-component", {
+	count: asInteger(), // Bundled parser: Convert '42' -> 42
+	date: (_, v) => new Date(v), // Custom parser: '2025-02-14' -> Date object
+}, () => [
+	// Component setup
+]);
 ```
 
 <callout-box class="caution">
 
 **Careful**: Attributes **may not be present** on the element or **parsing to the desired type may fail**. To ensure **non-nullability** of signals, UIElement falls back to neutral defaults:
 
-* `''` (empty string) for `string`
+* `""` (empty string) for `string`
 * `0` for `number`
 * `{}` (empty object) for objects of any kind
 
 </callout-box>
 
-### Pre-defined Parsers in UIElement
+### Bundled Attribute Parsers
 
 | Function        | Description |
 | --------------- | ----------- |
@@ -210,7 +182,7 @@ init = {
 | `asInteger()`   | Converts a numeric string (e.g., `"42"`) to an **integer** (`42`). |
 | `asNumber()`    | Converts a numeric string (e.g., `"3.14"`) to a **floating-point number** (`3.14`). |
 | `asString()`    | Returns the attribute value as a **string** (unchanged). |
-| `asEnum([...])` | Ensures the string matches **one of the allowed values**. Example: `asEnum(['small', 'medium', 'large'])`. If the value is not in the list, it defaults to the first option. |
+| `asEnum([...])` | Ensures the string matches **one of the allowed values**. Example: `asEnum(["small", "medium", "large"])`. If the value is not in the list, it defaults to the first option. |
 | `asJSON({...})` | Parses a JSON string (e.g., `'["a", "b", "c"]'`) into an **array** or **object**. If invalid, returns the fallback object. |
 
 The pre-defined parsers `asInteger()`, `asNumber()` and `asString()` allow to set a custom fallback value as parameter.
@@ -223,48 +195,60 @@ The `asJSON()` parser requires a fallback object as parameter as `{}` probably w
 
 <section>
 
-## Accessing Sub-elements within the Component
+## Accessing Sub-elements
 
-Before adding **event listeners**, **applying effects**, or **passing states**, you need to select elements inside the component.
+Before adding **event listeners**, **applying effects**, or **passing states** to sub-elements, you need to select them using a function for **element selection**:
 
-UIElement provides the following methods for **element selection**:
-
-| Method                 | Description |
-| -----------------------| ----------- |
-| `this.self`            | Selects **the component itself**. |
-| `this.first(selector)` | Selects **the first matching element** inside the component. |
-| `this.all(selector)`   | Selects **all matching elements** inside the component. |
+| Function                  | Description |
+| --------------------------| ----------- |
+| `first(selector, ...fns)` | Selects **the first matching element** inside the component and applies the given setup functions. |
+| `all(selector, ...fns)`   | Selects **all matching elements** inside the component and applies the given setup functions. |
 
 ```js
-// Select the component itself
-this.self.sync(setProperty('hidden'));
+// Select the first ".increment" button and apply effects on it
+first(".increment",
+	// Fx functions
+)
 
-// Select the first '.increment' button & add a click event
-this.first('.increment').on('click', () => {
-	this.set('count', v => null != v ? ++v : 1);
-});
-
-// Select all <button> elements & sync their 'disabled' properties
-this.all('button').sync(setProperty('disabled', 'hidden'));
+// Select all <button> elements and apply effects on them
+all("button",
+	// Fx functions
+)
 ```
 
-</section>
+The `first()` function expects the matched element to be present at connection time. If not, it will silently ignore the call.
 
-<section>
+On the other hand, the `all()` function creates a dynamic array of elements that will be updated whenever the matching elements are added or removed from the component's DOM branch. UIElement will apply the given setup functions to added elements and run the cleanup functions on removed elements.
 
-## Updating State with Events
+<callout-box class="tip">
 
-User interactions should **update signals**, not the DOM directly. This keeps the components loosly coupled.
+**Tip**: The `all()` function is more flexible but also more resource-intensive than `first()`. Prefer `first()` when targeting a single element known to be present at connection time.
 
-Bind event handlers to one or many elements using the `.on()` method:
+</callout-box>
+
+### Adding Event Listeners
+
+Event listeners allow to respond to user interactions. They are the cause of changes in the component's state.
 
 ```js
-this.first('.increment').on('click', () => {
-	this.set('count', v => null != v ? v++ : 1)
-});
-this.first('input').on('input', e => {
-	this.set('name', e.target.value || undefined)
-});
+component("my-component", {
+	active: 0,
+	value: ''
+}, (el) => [
+	all("button",
+		on("click", (e) => {
+			// Set "active" signal to value of data-index attribute of button
+			const index = parseInt(e.target.dataset['index'], 10);
+			el.active = Number.isInteger(index) ? index : 0;
+		})
+	),
+	first("input",
+		on("change", (e) => {
+			// Set "value" signal to value of input element
+			el.value = e.target.value;
+		})
+	)
+]
 ```
 
 </section>
@@ -275,33 +259,41 @@ this.first('input').on('input', e => {
 
 Effects **automatically update the DOM** when signals change, avoiding manual DOM manipulation.
 
-### Applying Effects with .sync()
+### Applying Effects
 
-Apply one or multiple effects to elements using `.sync()`:
+Apply one or multiple effects in the setup function (for component itself) or in element selector functions:
 
 ```js
-this.first('.count').sync(
-	setText('count'), // Update text content according to 'count' signal
-	toggleClass('even', 'isEven') // Toggle 'even' class according to 'isEven' signal
-);
+() => [
+	// On the component itself
+	setAttribute("open", "isOpen"), // Set "open" attribute according to "isOpen" signal
+
+	// On first element matching ".count"
+	first(".count",
+		setText("count"), // Update text content according to "count" signal
+		toggleClass("even", "isEven") // Toggle "even" class according to "isEven" signal
+	)
+];
 ```
 
-### Pre-defined Effects in UIElement
+Again, the order of effects is not important. Feel free to apply them in any order that suits your needs.
 
-| Function            | Description |
-| ------------------- | ----------- |
-| `setText()`         | Updates **text content** with a `string` signal value (while preserving comment nodes). |
-| `setProperty()`     | Updates a given **property** with any signal value.* |
-| `setAttribute()`    | Updates a given **attribute** with a `string` signal value. |
-| `toggleAttribute()` | Toggles a given **boolean attribute** with a `boolean` signal value. |
-| `toggleClass()`     | Toggles a given **CSS class** with a `boolean` signal value. |
-| `setStyle()`        | Updates a given **CSS property** with a `string` signal value. |
-| `createElement()`   | Inserts a **new element** with a given tag name with a `Record<string, string>` signal value for attributes. |
-| `removeElement()`   | Removes an element if the `boolean` signal value is `true`. |
+### Bundled Effects
+
+| Function                    | Description |
+| --------------------------- | ----------- |
+| `setText()`                 | Updates **text content** with a `string` signal value (while preserving comment nodes). |
+| `setProperty()`             | Updates a given **property** with any signal value.* |
+| `setAttribute()`            | Updates a given **attribute** with a `string` signal value. |
+| `toggleAttribute()`         | Toggles a given **boolean attribute** with a `boolean` signal value. |
+| `toggleClass()`             | Toggles a given **CSS class** with a `boolean` signal value. |
+| `setStyle()`                | Updates a given **CSS property** with a `string` signal value. |
+| `dangerouslySetInnerHTML()` | Sets **HTML content** with a `string` signal value. |
+| `insertOrRemoveElement()`   | Inserts (positive integer) or removes (negative integer) elements with a `number` signal value. |
 
 <callout-box class="tip">
 
-**Tip**: TypeScript will check whether a value of a given type is assignable to a certain element type. You might have to specify a type hint for the queried element type. Prefer `setProperty()` over `setAttribute()` for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.
+**Tip**: TypeScript will check whether a value of a given type is assignable to a certain element type. You might have to pass a type hint for the queried element type. Prefer `setProperty()` over `setAttribute()` for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.
 
 </callout-box>
 
@@ -312,54 +304,65 @@ For effects that take two arguments, **the second argument can be omitted** if t
 When signal key matches property name:
 
 ```js
-this.first('.count').sync(toggleClass('even'));
+first(".count", toggleClass("even"))
 ```
 
-Here, `toggleClass('even')` automatically uses the `"even"` signal.
+Here, `toggleClass("even")` automatically uses the `"even"` signal.
+
+### Using Local Signals for Protected State
+
+Local signals are useful for storing state that should not be exposed to the outside world. They can be used to manage internal state within a component:
+
+```js
+component("my-component", {}, () => {
+	const count = state(0);
+	const double = count.map(v => v * 2);
+	return [
+		first(".increment", on("click", () => {
+			count.update(v => ++v);
+		})),
+		first(".count", setText(count)),
+		first(".double", setText(double))
+	];
+});
+```
+
+Outside components cannot access the `count` or `double` signals.
 
 ### Using Functions for Ad-hoc Derived State
 
-Instead of a signal key, you can **pass a function** that derives a value dynamically:
+Instead of a signal key or a local signal, you can **pass a function** that derives a value dynamically:
 
 ```js
-this.first('.count').sync(toggleClass('even', () => !((this.get('count') ?? 0) % 2)));
+component("my-component", {
+	count: 0
+}, el => {
+	const double = computed(() => el.count * 2);
+	return [
+		first(".count", toggleClass("even", () => !(el.count % 2)))),
+		first(".double", setText(() => String(double.get())))
+	];
+});
 ```
 
 <callout-box class="tip">
 
 **When to use**
 
-* **Use a signal key** when the state is already **stored as a signal**.
-* **Use a function** when you **derive a value on the fly** needed only in this one place and you don't want to expose it as a signal on the element.
+* **Use a signal key or a local signal** when the state is part of the component's public interface or internally reused.
+* **Use a function** to **derive a value on the fly** when it is needed only in this one place.
+
+Ad-hoc derived state is more efficient than the overhead of a memoized computed signal for simple functions like converting to a string or boolean, formatting a value or performing a calculation.
 
 </callout-box>
-
-### Custom Effects
-
-For complex DOM manipulations, **define your own effect** using `effect()`.
-
-Here's an example effect that attaches a Shadow DOM and updates its content:
-
-```js
-// Update the shadow DOM when content changes
-effect(() => {
-	const content = this.get('content')
-	if (content) {
-		this.root = this.shadowRoot || this.attachShadow({ mode: 'open' })
-		this.root.innerHTML = content
-	}
-});
-```
 
 ### Efficient & Fine-Grained Updates
 
 Unlike some frameworks that **re-render entire components**, UIElement updates only what changes:
 
-* ✅ **No virtual DOM** – UIElement modifies the DOM directly.
-* ✅ **Signals propagate automatically** – No need to track dependencies manually.
-* ✅ **Optimized with a scheduler** – Multiple updates are batched efficiently.
-
-**In practical terms**: UIElement is as easy as React but without re-renders.
+* **No virtual DOM** – UIElement modifies the DOM directly.
+* **Signals propagate automatically** – No need to track dependencies manually.
+* **Optimized with a scheduler** – Multiple updates are batched efficiently.
 
 </section>
 

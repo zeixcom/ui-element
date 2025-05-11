@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Examples & Recipes – UIElement Docs</title>
 		<meta name="description" content="Common use cases and demos" />
-		<base href="./" />
+		<base href="./examples-recipes.html" />
 		<link rel="stylesheet" href="assets/main.css" />
 		<script type="module" src="assets/main.js"></script>
 	</head>
@@ -94,14 +94,24 @@
 		</header>
 		<main><section class="hero">
 
-<h1>🍽️ Examples &amp; Recipes</h1>
-<p class="lead">Discover practical examples and patterns for building reactive, modular components with UIElement. Each example focuses on showcasing a specific feature or best practice, guiding you through real-world use cases.</p>
+
+	            <h1 id="examples-amp-recipes">
+	                <a name="examples-amp-recipes" class="anchor" href="#examples-amp-recipes">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                🍽️ Examples &amp; Recipes
+	            </h1><p class="lead">Discover practical examples and patterns for building reactive, modular components with UIElement. Each example focuses on showcasing a specific feature or best practice, guiding you through real-world use cases.</p>
 </section>
 
 <section>
 
-<h2>What You&#39;ll Learn</h2>
-<p>This collection of examples demonstrates a range of scenarios, from simple state updates in a single component to managing complex interactions across multiple components. Here&#39;s an overview of what you&#39;ll find:</p>
+
+	            <h2 id="what-you39ll-learn">
+	                <a name="what-you39ll-learn" class="anchor" href="#what-you39ll-learn">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                What You&#39;ll Learn
+	            </h2><p>This collection of examples demonstrates a range of scenarios, from simple state updates in a single component to managing complex interactions across multiple components. Here&#39;s an overview of what you&#39;ll find:</p>
 <ul>
 <li><strong>Basic Composition</strong>: <code>TabList</code> and <code>AccordionPanel</code> - See how a parent component can control the visibility of multiple child components, showcasing state sharing and communication between components.</li>
 <li><strong>Syntax Highlighting</strong>: - See how wrapping content in a <code>CodeBlock</code> component enables syntax highlighting on the client, demonstrating integration with third-party libraries.</li>
@@ -114,8 +124,13 @@
 
 <section>
 
-<h2>TabList and AccordionPanel Example</h2>
-<component-demo>
+
+	            <h2 id="tablist-and-accordionpanel-example">
+	                <a name="tablist-and-accordionpanel-example" class="anchor" href="#tablist-and-accordionpanel-example">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                TabList and AccordionPanel Example
+	            </h2><component-demo>
 <div class="preview">
 <tab-list>
 <menu>
@@ -170,8 +185,13 @@ Content for Tab 3
 
 <section>
 
-<h2>CodeBlock Example</h2>
-<component-demo>
+
+	            <h2 id="codeblock-example">
+	                <a name="codeblock-example" class="anchor" href="#codeblock-example">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                CodeBlock Example
+	            </h2><component-demo>
 <div class="preview">
 <code-block collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 <p class="meta">
@@ -226,8 +246,13 @@ Content for Tab 3
 
 <section>
 
-<h2>LazyLoad Example</h2>
-<component-demo>
+
+	            <h2 id="lazyload-example">
+	                <a name="lazyload-example" class="anchor" href="#lazyload-example">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                LazyLoad Example
+	            </h2><component-demo>
 <div class="preview">
 <lazy-load src="./examples/snippets/snippet.html">
 <p class="loading">Loading...</p>
@@ -247,8 +272,13 @@ Content for Tab 3
 
 <section>
 
-<h2>InputField Example</h2>
-<component-demo>
+
+	            <h2 id="inputfield-example">
+	                <a name="inputfield-example" class="anchor" href="#inputfield-example">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                InputField Example
+	            </h2><component-demo>
 <div class="preview">
 <input-field>
 <label for="name-input">Name</label>
@@ -299,8 +329,13 @@ Content for Tab 3
 			
 <section>
 
-<h2>MediaContext Example</h2>
-<p>The <code>MediaContext</code> component provides global state to any sub-components in its DOM tree by exposing context for responsive and adaptive features. It tracks the following:
+
+	            <h2 id="mediacontext-example">
+	                <a name="mediacontext-example" class="anchor" href="#mediacontext-example">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                MediaContext Example
+	            </h2><p>The <code>MediaContext</code> component provides global state to any sub-components in its DOM tree by exposing context for responsive and adaptive features. It tracks the following:
 			  </p>
 <ul>
 <li><strong>Media Motion</strong> (<code>media-motion</code>): Indicates whether the user prefers reduced motion based on the <code>(prefers-reduced-motion)</code> media query.</li>
@@ -308,8 +343,13 @@ Content for Tab 3
 <li><strong>Media Viewport</strong> (<code>media-viewport</code>): Indicates the current viewport size and is classified into different sizes (e.g., <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code>, <code>xl</code>). Custom breakpoints can be configured by setting attributes on the <code>&lt;media-context&gt;</code> element.</li>
 <li><strong>Media Orientation</strong> (<code>media-orientation</code>): Tracks the device&#39;s screen orientation, switching between <code>landscape</code> and <code>portrait</code>.</li>
 </ul>
-<h3>Configuring Breakpoints</h3>
-<p>The viewport sizes can be customized by providing attributes on the <code>&lt;media-context&gt;</code> element:</p>
+
+	            <h3 id="configuring-breakpoints">
+	                <a name="configuring-breakpoints" class="anchor" href="#configuring-breakpoints">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Configuring Breakpoints
+	            </h3><p>The viewport sizes can be customized by providing attributes on the <code>&lt;media-context&gt;</code> element:</p>
 <ul>
 <li><code>sm</code>: Small screen breakpoint (default: <code>32em</code>).</li>
 <li><code>md</code>: Medium screen breakpoint (default: <code>48em</code>).</li>
@@ -413,8 +453,13 @@ Content for Tab 3
 			
 <section>
 
-<h2>ThemedComponent Example</h2>
-<!-- Live component preview wrapped in media-context -->
+
+	            <h2 id="themedcomponent-example">
+	                <a name="themedcomponent-example" class="anchor" href="#themedcomponent-example">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                ThemedComponent Example
+	            </h2><!-- Live component preview wrapped in media-context -->
 <media-context>
 <themed-component>
 This component changes its background based on the theme!
@@ -430,8 +475,13 @@ This component changes its background based on the theme!
 <!-- HTML Tab Panel -->
 <tab-panel label="HTML">
 
-<h3>HTML</h3>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+
+	            <h3 id="html">
+	                <a name="html" class="anchor" href="#html">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                HTML
+	            </h3><code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
@@ -454,8 +504,13 @@ This component changes its background based on the theme!
 <!-- CSS Tab Panel -->
 <tab-panel label="CSS">
 
-<h3>CSS</h3>
-<code-block collapsed language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+
+	            <h3 id="css">
+	                <a name="css" class="anchor" href="#css">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                CSS
+	            </h3><code-block collapsed language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">css</span>
@@ -487,8 +542,13 @@ This component changes its background based on the theme!
 <!-- JavaScript Tab Panel -->
 <tab-panel label="JavaScript">
 
-<h3>JavaScript</h3>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+
+	            <h3 id="javascript">
+	                <a name="javascript" class="anchor" href="#javascript">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                JavaScript
+	            </h3><code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -520,8 +580,13 @@ This component changes its background based on the theme!
 			
 <section>
 
-<h2>AnimatedComponent Example</h2>
-<!-- Live component preview wrapped in media-context -->
+
+	            <h2 id="animatedcomponent-example">
+	                <a name="animatedcomponent-example" class="anchor" href="#animatedcomponent-example">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                AnimatedComponent Example
+	            </h2><!-- Live component preview wrapped in media-context -->
 <media-context>
 <animated-component>
 <div class="animated-box">Box 1</div>
@@ -539,8 +604,13 @@ This component changes its background based on the theme!
 <!-- HTML Tab Panel -->
 <tab-panel label="HTML">
 
-<h3>HTML</h3>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+
+	            <h3 id="html">
+	                <a name="html" class="anchor" href="#html">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                HTML
+	            </h3><code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
@@ -565,8 +635,13 @@ This component changes its background based on the theme!
 <!-- CSS Tab Panel -->
 <tab-panel label="CSS">
 
-<h3>CSS</h3>
-<code-block collapsed language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+
+	            <h3 id="css">
+	                <a name="css" class="anchor" href="#css">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                CSS
+	            </h3><code-block collapsed language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">css</span>
@@ -620,8 +695,13 @@ This component changes its background based on the theme!
 <!-- JavaScript Tab Panel -->
 <tab-panel label="JavaScript">
 
-<h3>JavaScript</h3>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+
+	            <h3 id="javascript">
+	                <a name="javascript" class="anchor" href="#javascript">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                JavaScript
+	            </h3><code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -654,8 +734,13 @@ This component changes its background based on the theme!
 
 <section>
 
-<h2>Responsive TabList Example</h2>
-<!-- Live component preview wrapped in media-context -->
+
+	            <h2 id="responsive-tablist-example">
+	                <a name="responsive-tablist-example" class="anchor" href="#responsive-tablist-example">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Responsive TabList Example
+	            </h2><!-- Live component preview wrapped in media-context -->
 <media-context>
 <tab-list>
 <menu>
@@ -687,14 +772,24 @@ This component changes its background based on the theme!
 <!-- HTML Tab Panel -->
 <tab-panel label="HTML">
 
-<h3>HTML</h3>
-<p><br></tab-panel>
+
+	            <h3 id="html">
+	                <a name="html" class="anchor" href="#html">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                HTML
+	            </h3><p><br></tab-panel>
 			  </p>
 <!-- CSS Tab Panel -->
 <tab-panel label="CSS">
 
-<h3>CSS</h3>
-<code-block collapsed language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+
+	            <h3 id="css">
+	                <a name="css" class="anchor" href="#css">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                CSS
+	            </h3><code-block collapsed language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">css</span>
@@ -767,8 +862,13 @@ This component changes its background based on the theme!
 <!-- JavaScript Tab Panel -->
 <tab-panel label="JavaScript">
 
-<h3>JavaScript</h3>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+
+	            <h3 id="javascript">
+	                <a name="javascript" class="anchor" href="#javascript">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                JavaScript
+	            </h3><code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -843,8 +943,13 @@ This component changes its background based on the theme!
 
 <section>
 
-<h2>Responsive Image Gallery Example</h2>
-<!-- Live component preview wrapped in media-context -->
+
+	            <h2 id="responsive-image-gallery-example">
+	                <a name="responsive-image-gallery-example" class="anchor" href="#responsive-image-gallery-example">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Responsive Image Gallery Example
+	            </h2><!-- Live component preview wrapped in media-context -->
 <media-context>
 	<responsive-image-gallery>
 	<img src="image1.jpg" alt="Image 1">
@@ -864,8 +969,13 @@ This component changes its background based on the theme!
 <!-- HTML Tab Panel -->
 <tab-panel label="HTML">
 
-<h3>HTML</h3>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+
+	            <h3 id="html">
+	                <a name="html" class="anchor" href="#html">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                HTML
+	            </h3><code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
@@ -892,8 +1002,13 @@ This component changes its background based on the theme!
 <!-- CSS Tab Panel -->
 <tab-panel label="CSS">
 
-<h3>CSS</h3>
-<code-block collapsed language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+
+	            <h3 id="css">
+	                <a name="css" class="anchor" href="#css">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                CSS
+	            </h3><code-block collapsed language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">css</span>
@@ -942,8 +1057,13 @@ This component changes its background based on the theme!
 <!-- JavaScript Tab Panel -->
 <tab-panel label="JavaScript">
 
-<h3>JavaScript</h3>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+
+	            <h3 id="javascript">
+	                <a name="javascript" class="anchor" href="#javascript">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                JavaScript
+	            </h3><code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>

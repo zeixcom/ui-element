@@ -59,26 +59,24 @@ If you’re using a **bundler** like **Vite, Webpack, or Rollup**, install UIEle
 
 <tab-group>
 <div role="tablist">
-<button role="tab" aria-controls="panel_installation-npm" aria-selected="true" tabindex="0">NPM</button>
-<button role="tab" aria-controls="panel_installation-bun" aria-selected="false" tabindex="-1">Bun</button>
+<button role="tab" id="trigger_installation-npm" aria-controls="panel_installation-npm" aria-selected="true" tabindex="0">NPM</button>
+<button role="tab" id="trigger_installation-bun" aria-controls="panel_installation-bun" aria-selected="false" tabindex="-1">Bun</button>
 </div>
-<details role="tabpanel" id="panel_installation-npm" open>
-<summary>NPM</summary>
+<div role="tabpanel" id="panel_installation-npm" aria-labelledby="trigger_installation-npm">
 
 ```bash
 npm install @zeix/ui-element
 ```
 
-</details>
-<details role="tabpanel" id="panel_installation-bun">
-<summary>Bun</summary>
+</div>
+<div role="tabpanel" id="panel_installation-bun" aria-labelledby="trigger_installation-bun">
 
 ```bash
 bun add @zeix/ui-element
 ```
 
-</details>
-</tab-list>
+</div>
+</tab-group>
 
 Then import the needed functions in your JavaScript:
 
@@ -118,18 +116,18 @@ Save the following inside a `<script type="module">` tag or an external JavaScri
 
 ```html
 <script type="module">
-	import { asString, component, first, on, RESET, setText } from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
+	import { asString, component, first, on, RESET, setText } from "https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"
 
-	component('hello-world', {
-		// Parse 'name' attribute, falling back to server-rendered content
+	component("hello-world", {
+		// Parse "name" attribute, falling back to server-rendered content
 		name: asString(RESET)
 	}, el => [
 
-		// Update content dynamically based on the 'name' signal
-		first('span', setText('name')),
+		// Update content dynamically based on the "name" signal
+		first("span", setText("name")),
 
-		// Handle user input to change the 'name'
-		first('input', on('input', e => {
+		// Handle user input to change the "name"
+		first("input", on("input", e => {
 			el.name = e.target.value || RESET
 		}))
 	])
@@ -138,7 +136,7 @@ Save the following inside a `<script type="module">` tag or an external JavaScri
 
 **What Happens Here?**
 
-* The `asString(RESET)` signal **parses the 'name' attribute**, falling back to server-rendered value (constant `RESET`).
+* The `asString(RESET)` signal **parses the "name" attribute**, falling back to server-rendered value (constant `RESET`).
 * The `setText('name')` effect **syncs the state** with the `<span>`.
 * The `on('input')` event **updates the state** whenever you type in the first `<input>` field, falling back to server-rendered value if empty.
 * The Web Component **hydrates automatically** when inserted into the page.
