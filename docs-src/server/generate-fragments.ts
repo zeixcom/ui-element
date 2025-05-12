@@ -14,21 +14,18 @@ const fileExists = async (path: string) => {
 };
 
 // Function to generate accordion panels dynamically
-const generatePanel = async (name: string, type: string, label: string) => {
+const generatePanel = async (name: string, type: string, selected: boolean) => {
 	const filePath = join(COMPONENTS_DIR, name, `${name}.${type}`);
 	if (!(await fileExists(filePath))) return '';
 
-	const open = type === 'ts' ? ' open' : '';
+	const hidden = selected ? '' : ' hidden';
 	const content = await readFile(filePath, 'utf8');
 
 	// Apply syntax highlighting
 	const highlighted = await highlightedCode(content, type);
 
 	return `
-<details${open}>
-	<summary>
-		<div class="summary">${label}</div>
-	</summary>
+<div role="tabpanel" id="panel_${name}.${type}" aria-labelledby="trigger_${name}.${type}"${hidden}>
 	<code-block language="${type}" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">${name}.${type}</span>
@@ -41,19 +38,19 @@ const generatePanel = async (name: string, type: string, label: string) => {
 			</button>
 		</input-button>
 	</code-block>
-</details>`;
+</div>`;
 };
 
 // Function to process each component
 const processComponent = async (name: string) => {
 	const panelTypes = [
-		{ type: 'html', label: 'HTML' },
-		{ type: 'css', label: 'CSS' },
-		{ type: 'ts', label: 'TypeScript' }
+		{ type: 'html', label: 'HTML', selected: false },
+		{ type: 'css', label: 'CSS', selected: false },
+		{ type: 'ts', label: 'TypeScript', selected: true }
 	];
 
 	// Generate only existing panels
-	const panels = await Promise.all(panelTypes.map(({ type }) => generatePanel(name, type, type.toUpperCase())));
+	const panels = await Promise.all(panelTypes.map(({ type, selected }) => generatePanel(name, type, selected)));
 	const validPanels = panels.filter(Boolean);
 	const validLabels = panelTypes
 		.map((panel, i) => panels[i] ? panel : null)
@@ -62,12 +59,12 @@ const processComponent = async (name: string) => {
 	if (validPanels.length === 0) return; // Skip if no valid content
 
 	const fragment = `
-<tab-list>
-	<menu>
-		${validLabels.map(panel => `<li><button type="button" aria-pressed="${panel!.type === 'ts'}">${panel!.label}</button></li>`).join('\n\t\t')}
-	</menu>
+<tab-group>
+	<div role="tablist">
+		${validLabels.map(panel => `<button type="button" role="tab" id="trigger_${name}.${panel!.type}" aria-controls="panel_${name}.${panel!.type}" aria-selected="${String(panel!.selected)}" tabindex="${panel!.selected ? '0' : '-1'}">${panel!.label}</button>`).join('\n\t\t')}
+	</div>
 	${validPanels.join('\n')}
-</tab-list>`;
+</tab-group>`;
 
 	await writeFile(join(FRAGMENTS_DIR, `${name}.html`), fragment, 'utf8');
 	console.log(`✅ Generated: ${name}.html`);

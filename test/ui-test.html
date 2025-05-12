@@ -78,27 +78,6 @@
                     assert.equal(called, false);
                 });
 
-                it('should work with a provider function as the handler', async () => {
-                    const div = document.getElementById('test-on-provider');
-                    let called = false;
-
-                    const provider = (element, index) => () => {
-                        called = true;
-                    };
-
-                    const off = on('click', provider)({}, div);
-
-                    div.click();
-                    const wasCalled = called;
-
-                    off(); // Remove the event listener
-                    called = false;
-                    div.click();
-
-                    assert.equal(wasCalled, true);
-                    assert.equal(called, false);
-                });
-
                 it('should throw TypeError for invalid handler', async () => {
                     const div = document.getElementById('test-on-invalid');
                     assert.throws(() => on('click', {})({}, div), TypeError);

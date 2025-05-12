@@ -1,18 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Flow – UIElement Docs</title>
-    <meta name="description" content="Passing state, events, context">
-	<base href="./">
-    <link rel="stylesheet" href="assets/main.css">
-	<script type="module" src="assets/main.js"></script>
-</head>
-<body>
-	<header class="content-grid">
-		<h1 class="content">UIElement Docs <small>Version 0.12.0</small></h1>
-		
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Data Flow – UIElement Docs</title>
+		<meta name="description" content="Passing state, events, context" />
+		<base href="./data-flow.html" />
+		<link rel="stylesheet" href="assets/main.css" />
+		<script type="module" src="assets/main.js"></script>
+	</head>
+	<body>
+		<header class="content-grid">
+			<h1 class="content">
+				UIElement Docs <small>Version 0.12.1</small>
+			</h1>
+			
 	<nav class="breakout">
 		<ol>
 			
@@ -89,19 +91,27 @@
 				</li>
 		</ol>
 	</nav>
-	</header>
-    
-    <main>
-        <section class="hero">
+		</header>
+		<main><section class="hero">
 
-<h1>🔄 Data Flow</h1>
-<p class="lead"><strong>UIElement enables smooth data flow between components using signals, events, and context.</strong> State can be <strong>passed down</strong> to child components, events can <strong>bubble up</strong> to notify parents of changes, and context can propagate across the component tree to <strong>share global state</strong> efficiently. This page explores different patterns for structuring data flow, helping you create modular, loosely coupled components that work seamlessly together.</p>
+
+	            <h1 id="data-flow">
+	                <a name="data-flow" class="anchor" href="#data-flow">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                🔄 Data Flow
+	            </h1><p class="lead"><strong>UIElement enables smooth data flow between components using signals, events, and context.</strong> State can be <strong>passed down</strong> to child components, events can <strong>bubble up</strong> to notify parents of changes, and context can propagate across the component tree to <strong>share global state</strong> efficiently. This page explores different patterns for structuring data flow, helping you create modular, loosely coupled components that work seamlessly together.</p>
 </section>
 
 <section>
 
-<h2>Passing State Down</h2>
-<p>Let&#39;s consider a <strong>product catalog</strong> where users can add items to a shopping cart. We have <strong>three independent components</strong> that work together:</p>
+
+	            <h2 id="passing-state-down">
+	                <a name="passing-state-down" class="anchor" href="#passing-state-down">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Passing State Down
+	            </h2><p>Let&#39;s consider a <strong>product catalog</strong> where users can add items to a shopping cart. We have <strong>three independent components</strong> that work together:</p>
 <ul>
 <li><code>ProductCatalog</code> <strong>(Parent)</strong>:<ul>
 <li><strong>Tracks all <code>SpinButton</code> components</strong> in its subtree and calculates the <strong>total count</strong> of items in the shopping cart.</li>
@@ -120,9 +130,14 @@
 </li>
 </ul>
 <p>Although <code>InputButton</code> <strong>and</strong> <code>SpinButton</code> are completely independent, they need to work together.<br>So <code>ProductCatalog</code> <strong>coordinates the data flow between them</strong>.</p>
-<h3>Parent Component: ProductCatalog</h3>
-<p>The <strong>parent component (<code>ProductCatalog</code>) knows about its children</strong>, meaning it can <strong>observe and pass state</strong> to them.</p>
-<p>Use the <code>.pass()</code> method to send values to child components. It takes an object where:</p>
+
+	            <h3 id="parent-component-productcatalog">
+	                <a name="parent-component-productcatalog" class="anchor" href="#parent-component-productcatalog">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Parent Component: ProductCatalog
+	            </h3><p>The <strong>parent component (<code>ProductCatalog</code>) knows about its children</strong>, meaning it can <strong>observe and pass state</strong> to them.</p>
+<p>Use the <code>pass()</code> method to send values to child components. It takes an object where:</p>
 <ul>
 <li><strong>Keys</strong> = Signal names in the <strong>child</strong> (<code>InputButton</code>)</li>
 <li><strong>Values</strong> = Signal names in the parent (<code>ProductCatalog</code>) or functions returning computed values</li>
@@ -150,8 +165,13 @@
 <li>✅ <strong>Whenever one of the <code>value</code> signals of a <code>&lt;spin-button&gt;</code> updates, the total in the badge of <code>&lt;input-button&gt;</code> automatically updates.</strong></li>
 <li>✅ <strong>No need for event listeners or manual updates!</strong></li>
 </ul>
-<h3>Child Component: InputButton</h3>
-<p>The <code>InputButton</code> component <strong>displays a badge when needed</strong> – it does not track state itself.</p>
+
+	            <h3 id="child-component-inputbutton">
+	                <a name="child-component-inputbutton" class="anchor" href="#child-component-inputbutton">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Child Component: InputButton
+	            </h3><p>The <code>InputButton</code> component <strong>displays a badge when needed</strong> – it does not track state itself.</p>
 <p>Whenever the <code>&#39;badge&#39;</code> <strong>signal assigned by a parent component</strong> updates, the badge text updates.</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
@@ -176,8 +196,13 @@
 <li>✅ If badge is an <strong>empty string</strong>, the badge is <strong>hidden</strong>.</li>
 </ul>
 <p>The <code>InputButton</code> <strong>doesn&#39;t care how the badge value is calculated</strong> – just that it gets one!</p>
-<h3>Full Example</h3>
-<p>Here&#39;s how everything comes together:</p>
+
+	            <h3 id="full-example">
+	                <a name="full-example" class="anchor" href="#full-example">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Full Example
+	            </h3><p>Here&#39;s how everything comes together:</p>
 <ul>
 <li>Each <code>SpinButton</code> <strong>tracks its own count</strong>.</li>
 <li>The <code>ProductCatalog</code> <strong>sums all counts and passes the total to <code>InputButton</code></strong>.</li>
@@ -251,8 +276,13 @@
 
 <section>
 
-<h2>Events Bubbling Up</h2>
-<p>Passing state down works well when a <strong>parent component can directly observe child state</strong>, but sometimes a <strong>child needs to notify its parent</strong> about an action <strong>without managing shared state itself</strong>.</p>
+
+	            <h2 id="events-bubbling-up">
+	                <a name="events-bubbling-up" class="anchor" href="#events-bubbling-up">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Events Bubbling Up
+	            </h2><p>Passing state down works well when a <strong>parent component can directly observe child state</strong>, but sometimes a <strong>child needs to notify its parent</strong> about an action <strong>without managing shared state itself</strong>.</p>
 <p>Let&#39;s consider a Todo App, where users can add tasks:</p>
 <ul>
 <li><code>TodoApp</code> <strong>(Parent)</strong>:<ul>
@@ -268,14 +298,24 @@
 </ul>
 </li>
 </ul>
-<h3>Why use events here?</h3>
-<ul>
+
+	            <h3 id="why-use-events-here">
+	                <a name="why-use-events-here" class="anchor" href="#why-use-events-here">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Why use events here?
+	            </h3><ul>
 <li>The child <strong>doesn’t need to know where the data goes</strong> – it just <strong>emits an event</strong>.</li>
 <li>The parent <strong>decides what to do</strong> with the new todo (e.g., adding it to a list).</li>
 <li>This keeps <code>TodoForm</code> <strong>reusable</strong> – it could work in different apps without modification.</li>
 </ul>
-<h3>Parent Component: TodoApp</h3>
-<p>The parent (<code>TodoApp</code>) <strong>listens for events</strong> and calls the <code>.addItem()</code> method on <code>TodoList</code> when a new todo is added:</p>
+
+	            <h3 id="parent-component-todoapp">
+	                <a name="parent-component-todoapp" class="anchor" href="#parent-component-todoapp">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Parent Component: TodoApp
+	            </h3><p>The parent (<code>TodoApp</code>) <strong>listens for events</strong> and calls the <code>.addItem()</code> method on <code>TodoList</code> when a new todo is added:</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -296,8 +336,13 @@
 <li>✅ <strong>Whenever <code>TodoForm</code> emits an <code>&#39;add-todo&#39;</code> event</strong>, a new task is appended to the todo list.</li>
 <li>✅ The <strong>event carries data</strong> (<code>e.detail</code>), so the parent knows what was submitted.</li>
 </ul>
-<h3>Child Component: TodoForm</h3>
-<p>The child (<code>TodoForm</code>) <strong>collects user input</strong> and emits an event when the form is submitted:</p>
+
+	            <h3 id="child-component-todoform">
+	                <a name="child-component-todoform" class="anchor" href="#child-component-todoform">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Child Component: TodoForm
+	            </h3><p>The child (<code>TodoForm</code>) <strong>collects user input</strong> and emits an event when the form is submitted:</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -329,8 +374,13 @@
 <li>✅ The parent (<code>TodoApp</code>) <strong>decides what happens next</strong>.</li>
 <li>✅ The <strong>event includes data</strong> (value), making it easy to handle.</li>
 </ul>
-<h3>Full Example</h3>
-<p>Here&#39;s how everything comes together:</p>
+
+	            <h3 id="full-example">
+	                <a name="full-example" class="anchor" href="#full-example">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Full Example
+	            </h3><p>Here&#39;s how everything comes together:</p>
 <ul>
 <li><strong>User types a task</strong> into input field in <code>TodoForm</code>.</li>
 <li><strong>On submit, <code>TodoForm</code> emits <code>&#39;add-todo&#39;</code></strong> with the new task as event detail.</li>
@@ -443,24 +493,39 @@
 
 <section>
 
-<h2>Providing Context</h2>
-</section>
+
+	            <h2 id="providing-context">
+	                <a name="providing-context" class="anchor" href="#providing-context">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Providing Context
+	            </h2></section>
 
 <section>
 
-<h2>Consuming Context</h2>
-</section>
+
+	            <h2 id="consuming-context">
+	                <a name="consuming-context" class="anchor" href="#consuming-context">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Consuming Context
+	            </h2></section>
 
 <section>
 
-<h2>Next Steps</h2>
-</section>
-    </main>
-    <footer class="content-grid">
-		<div class="content">
-			<h2 class="visually-hidden">Footer</h2>
-			<p>© 2024 – 2025 Zeix AG</p>
-		</div>
-	</footer>
-</body>
+
+	            <h2 id="next-steps">
+	                <a name="next-steps" class="anchor" href="#next-steps">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Next Steps
+	            </h2></section>
+</main>
+		<footer class="content-grid">
+			<div class="content">
+				<h2 class="visually-hidden">Footer</h2>
+				<p>© 2024 – 2025 Zeix AG</p>
+			</div>
+		</footer>
+	</body>
 </html>

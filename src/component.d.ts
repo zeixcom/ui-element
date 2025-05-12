@@ -19,7 +19,7 @@ type SignalProducer<C extends HTMLElement, T extends {}> = (host: C) => MaybeSig
 type MethodProducer<C extends HTMLElement> = (host: C) => void;
 type Initializer<C extends HTMLElement, T extends {}> = T | AttributeParser<C, T> | SignalProducer<C, T> | MethodProducer<C>;
 type Cleanup = () => void;
-type FxFunction<P extends ComponentProps, E extends Element> = (host: Component<P>, element: E, index: number) => Cleanup | void;
+type FxFunction<P extends ComponentProps, E extends Element> = (host: Component<P>, element: E) => Cleanup | void;
 declare const RESET: any;
 /**
  * Define a component with its states and setup function (connectedCallback)

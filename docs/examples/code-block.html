@@ -1,15 +1,12 @@
 
-<tab-list>
-	<menu>
-		<li><button type="button" aria-pressed="false">HTML</button></li>
-		<li><button type="button" aria-pressed="false">CSS</button></li>
-		<li><button type="button" aria-pressed="true">TypeScript</button></li>
-	</menu>
+<tab-group>
+	<div role="tablist">
+		<button type="button" role="tab" id="trigger_code-block.html" aria-controls="panel_code-block.html" aria-selected="false" tabindex="-1">HTML</button>
+		<button type="button" role="tab" id="trigger_code-block.css" aria-controls="panel_code-block.css" aria-selected="false" tabindex="-1">CSS</button>
+		<button type="button" role="tab" id="trigger_code-block.ts" aria-controls="panel_code-block.ts" aria-selected="true" tabindex="0">TypeScript</button>
+	</div>
 	
-<details>
-	<summary>
-		<div class="summary">HTML</div>
-	</summary>
+<div role="tabpanel" id="panel_code-block.html" aria-labelledby="trigger_code-block.html" hidden>
 	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">code-block.html</span>
@@ -46,12 +43,9 @@
 			</button>
 		</input-button>
 	</code-block>
-</details>
+</div>
 
-<details>
-	<summary>
-		<div class="summary">CSS</div>
-	</summary>
+<div role="tabpanel" id="panel_code-block.css" aria-labelledby="trigger_code-block.css" hidden>
 	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">code-block.css</span>
@@ -151,63 +145,89 @@
 			</button>
 		</input-button>
 	</code-block>
-</details>
+</div>
 
-<details open>
-	<summary>
-		<div class="summary">TS</div>
-	</summary>
+<div role="tabpanel" id="panel_code-block.ts" aria-labelledby="trigger_code-block.ts">
 	<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">code-block.ts</span>
 			<span class="language">ts</span>
 		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { </span><span style="color:#F92672">type</span><span style="color:#F8F8F2"> Component, asBoolean, component, first, on, toggleAttribute } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
+<span class="line"><span style="color:#F8F8F2">	asBoolean,</span></span>
+<span class="line"><span style="color:#F8F8F2">	component,</span></span>
+<span class="line"><span style="color:#F8F8F2">	first,</span></span>
+<span class="line"><span style="color:#F8F8F2">	on,</span></span>
+<span class="line"><span style="color:#F8F8F2">	toggleAttribute,</span></span>
+<span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../../../"</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { InputButtonProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../input-button/input-button'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { InputButtonProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../input-button/input-button"</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">CodeBlockProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">    collapsed</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> boolean</span></span>
-<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">	collapsed</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> boolean</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">};</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'code-block'</span><span style="color:#F8F8F2">,{</span></span>
-<span class="line"><span style="color:#F8F8F2">	collapsed: asBoolean</span></span>
-<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> code </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'code'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">		toggleAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'collapsed'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.overlay'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> { el.collapsed </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> false</span><span style="color:#F8F8F2"> })),</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.copy'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, </span><span style="color:#F92672">async</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> copyButton </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.currentTarget </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputButtonProps</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> label </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> copyButton.textContent?.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			let</span><span style="color:#F8F8F2"> status </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'success'</span></span>
-<span class="line"><span style="color:#F92672">			try</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F92672">				await</span><span style="color:#F8F8F2"> navigator.clipboard.</span><span style="color:#A6E22E">writeText</span><span style="color:#F8F8F2">(code?.textContent?.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">			} </span><span style="color:#F92672">catch</span><span style="color:#F8F8F2"> (err) {</span></span>
-<span class="line"><span style="color:#F8F8F2">				console.</span><span style="color:#A6E22E">error</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Error when trying to use navigator.clipboard.writeText()'</span><span style="color:#F8F8F2">, err)</span></span>
-<span class="line"><span style="color:#F8F8F2">				status </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'error'</span></span>
-<span class="line"><span style="color:#F8F8F2">			}</span></span>
-<span class="line"><span style="color:#F8F8F2">			copyButton.disabled </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> true</span></span>
-<span class="line"><span style="color:#F8F8F2">			copyButton.label </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">`copy-</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">status</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#F8F8F2"> label</span></span>
-<span class="line"><span style="color:#A6E22E">			setTimeout</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">				copyButton.disabled </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> false</span></span>
-<span class="line"><span style="color:#F8F8F2">				copyButton.label </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> label</span></span>
-<span class="line"><span style="color:#F8F8F2">			}, status </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'success'</span><span style="color:#F92672"> ?</span><span style="color:#AE81FF"> 1000</span><span style="color:#F92672"> :</span><span style="color:#AE81FF"> 3000</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">		}))</span></span>
-<span class="line"><span style="color:#F8F8F2">	]</span></span>
-<span class="line"><span style="color:#F8F8F2">	</span></span>
-<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">	"code-block"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	{</span></span>
+<span class="line"><span style="color:#F8F8F2">		collapsed: asBoolean,</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
+<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> code </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"code"</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">			toggleAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"collapsed"</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">				".overlay"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">					el.collapsed </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> false</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">				}),</span></span>
+<span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">				".copy"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, </span><span style="color:#F92672">async</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> copyButton </span><span style="color:#F92672">=</span></span>
+<span class="line"><span style="color:#F8F8F2">						e.currentTarget </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputButtonProps</span><span style="color:#F8F8F2">>;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> label </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> copyButton.textContent?.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ""</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					let</span><span style="color:#F8F8F2"> status </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> "success"</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F92672">					try</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">						await</span><span style="color:#F8F8F2"> navigator.clipboard.</span><span style="color:#A6E22E">writeText</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">							code?.textContent?.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ""</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">						);</span></span>
+<span class="line"><span style="color:#F8F8F2">					} </span><span style="color:#F92672">catch</span><span style="color:#F8F8F2"> (err) {</span></span>
+<span class="line"><span style="color:#F8F8F2">						console.</span><span style="color:#A6E22E">error</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">							"Error when trying to use navigator.clipboard.writeText()"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">							err,</span></span>
+<span class="line"><span style="color:#F8F8F2">						);</span></span>
+<span class="line"><span style="color:#F8F8F2">						status </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> "error"</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">					}</span></span>
+<span class="line"><span style="color:#F8F8F2">					copyButton.disabled </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> true</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">					copyButton.label </span><span style="color:#F92672">=</span></span>
+<span class="line"><span style="color:#F8F8F2">						el.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">`copy-</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">status</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#F8F8F2"> label;</span></span>
+<span class="line"><span style="color:#A6E22E">					setTimeout</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">						() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">							copyButton.disabled </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> false</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">							copyButton.label </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> label;</span></span>
+<span class="line"><span style="color:#F8F8F2">						},</span></span>
+<span class="line"><span style="color:#F8F8F2">						status </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> "success"</span><span style="color:#F92672"> ?</span><span style="color:#AE81FF"> 1000</span><span style="color:#F92672"> :</span><span style="color:#AE81FF"> 3000</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">					);</span></span>
+<span class="line"><span style="color:#F8F8F2">				}),</span></span>
+<span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"><span style="color:#F8F8F2">		];</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
+<span class="line"><span style="color:#F8F8F2">);</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#E6DB74">		'code-block'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">CodeBlockProps</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#E6DB74">		"code-block"</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">CodeBlockProps</span><span style="color:#F8F8F2">>;</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
-<span class="line"><span style="color:#F8F8F2">}</span></span></code></pre>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
 		<input-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>
 			</button>
 		</input-button>
 	</code-block>
-</details>
-</tab-list>
+</div>
+</tab-group>

@@ -34,7 +34,7 @@ So `ProductCatalog` **coordinates the data flow between them**.
 
 The **parent component (`ProductCatalog`) knows about its children**, meaning it can **observe and pass state** to them.
 
-Use the `.pass()` method to send values to child components. It takes an object where:
+Use the `pass()` method to send values to child components. It takes an object where:
 
 * **Keys** = Signal names in the **child** (`InputButton`)
 * **Values** = Signal names in the parent (`ProductCatalog`) or functions returning computed values

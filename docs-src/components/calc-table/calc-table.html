@@ -1,0 +1,30 @@
+<calc-table rows="3" columns="3">
+	<table>
+		<thead>
+			<tr>
+				<th scope="col">Row</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th scope="row">Sum</th>
+			</tr>
+		</tfoot>
+	</table>
+	<template class="calc-table-row">
+		<tr><th scope="row"><slot></slot></th></tr>
+	</template>
+	<template class="calc-table-colhead">
+		<th scope="col"><slot></slot></th>
+	</template>
+	<template class="calc-table-cell">
+		<td>
+			<label>
+				<span class="visually-hidden"><slot></slot></span>
+				<input type="number" min="0" max="100" step="1" value="" />
+			</label>
+		</td>
+	</template>
+</calc-table>

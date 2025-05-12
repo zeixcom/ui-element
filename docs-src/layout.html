@@ -1,28 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }} – UIElement Docs</title>
-    <meta name="description" content="{{ description }}">
-	<base href="./">
-    <link rel="stylesheet" href="assets/main.css">
-	<script type="module" src="assets/main.js"></script>
-</head>
-<body>
-	<header class="content-grid">
-		<h1 class="content">UIElement Docs <small>Version 0.12.0</small></h1>
-		{{ include 'menu.html' }}
-	</header>
-    
-    <main>
-        {{ content }}
-    </main>
-    <footer class="content-grid">
-		<div class="content">
-			<h2 class="visually-hidden">Footer</h2>
-			{{ include 'footer.html' }}
-		</div>
-	</footer>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{{ title }} – UIElement Docs</title>
+		<meta name="description" content="{{ description }}" />
+		<base href="./{{ url }}" />
+		<link rel="stylesheet" href="assets/main.css" />
+		<script type="module" src="assets/main.js"></script>
+	</head>
+	<body>
+		<header class="content-grid">
+			<h1 class="content">
+				UIElement Docs <small>Version 0.12.1</small>
+			</h1>
+			{{ include 'menu.html' }}
+		</header>
+		<main>{{ content }}</main>
+		<footer class="content-grid">
+			<div class="content">
+				<h2 class="visually-hidden">Footer</h2>
+				{{ include 'footer.html' }}
+			</div>
+		</footer>
+	</body>
 </html>

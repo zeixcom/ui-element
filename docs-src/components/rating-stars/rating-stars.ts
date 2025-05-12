@@ -1,29 +1,50 @@
-import { type Component, all, asInteger, component, emit, on, setProperty, setText } from '../../../'
+import {
+	type Component,
+	all,
+	asInteger,
+	component,
+	emit,
+	on,
+	setProperty,
+	setText,
+} from "../../../";
 
 export type RatingStarsProps = {
-	value: number
-}
+	value: number;
+};
 
-export default component('rating-stars', {
-	value: asInteger(),
-}, el => [
-	all<RatingStarsProps, HTMLInputElement>('input',
-		setProperty('checked',
-			(_, index) => el.value === index + 1,
-		),
-		on('change', (_, index) => (e: Event) => {
-			e.stopPropagation()
-			el.value = index + 1
-			emit('change-rating', index + 1)(el)
-		})
-	),
-	all('.label',
-		setText((_, index) => index < el.value ? '★' : '☆')
-	)
-])
+export default component(
+	"rating-stars",
+	{
+		value: asInteger(),
+	},
+	(el) => {
+		const getKey = (element: HTMLElement): number =>
+			parseInt(element.dataset["key"] || "0");
+
+		return [
+			all<RatingStarsProps, HTMLInputElement>(
+				"input",
+				setProperty("checked", (target) => el.value === getKey(target)),
+				on("change", (e) => {
+					e.stopPropagation();
+					const value =
+						parseInt((e.currentTarget as HTMLInputElement)?.value) +
+						1;
+					el.value = value;
+					emit("change-rating", value)(el);
+				}),
+			),
+			all<RatingStarsProps, HTMLElement>(
+				".label",
+				setText((target) => (getKey(target) <= el.value ? "★" : "☆")),
+			),
+		];
+	},
+);
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'rating-stars': Component<RatingStarsProps>
+		"rating-stars": Component<RatingStarsProps>;
 	}
 }

@@ -3,8 +3,7 @@
 @import './components/my-counter/my-counter.css';
 @import './components/my-slider/my-slider.css';
 @import './components/code-block/code-block.css';
-@import './components/tab-list/tab-list.css';
-/* @import './components/accordion-panel/accordion-panel.css'; */
+@import './components/tab-group/tab-group.css';
 @import './components/input-button/input-button.css';
 @import './components/input-field/input-field.css';
 @import './components/input-checkbox/input-checkbox.css';
@@ -16,4 +15,5 @@
 @import './components/spin-button/spin-button.css';
 @import './components/rating-stars/rating-stars.css';
 @import './components/rating-feedback/rating-feedback.css';
+@import './components/calc-table/calc-table.css';
 /* Import more custom elements here... */
