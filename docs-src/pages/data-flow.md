@@ -13,70 +13,124 @@ description: "Passing state, events, context"
 
 <section>
 
-## Passing State Down
+## Component Coordination
 
 Let's consider a **product catalog** where users can add items to a shopping cart. We have **three independent components** that work together:
 
 * `ProductCatalog` **(Parent)**:
-	- **Tracks all `SpinButton` components** in its subtree and calculates the **total count** of items in the shopping cart.
-	- **Passes that total** to a `InputButton`, which displays the number of items in the cart.
+	- **Tracks all `SpinButton` components** in its subtree and calculates the total count of items in the shopping cart.
+	- **Passes that total** to a `InputButton`.
 * `InputButton` **(Child)**:
-	- Displays a **cart badge** when the `'badge'` signal is set.
-	- **Does not track any state** – it simply renders whatever value is passed down.
+	- Displays a **badge** in the top-right corner when the `'badge'` signal is set.
+	- **Does not track any state** – it simply renders whatever value is passed to it.
 * `SpinButton` **(Child)**:
-	- Displays an **“Add to Cart”** button initially.
+	- Displays an **Add to Cart** button initially.
 	- When an item is added, it transforms into a **stepper** (increment/decrement buttons).
 
-Although `InputButton` **and** `SpinButton` are completely independent, they need to work together.
+Although `InputButton` and `SpinButton` are completely independent, they need to work together.
 So `ProductCatalog` **coordinates the data flow between them**.
 
 ### Parent Component: ProductCatalog
 
 The **parent component (`ProductCatalog`) knows about its children**, meaning it can **observe and pass state** to them.
 
-Use the `pass()` method to send values to child components. It takes an object where:
-
-* **Keys** = Signal names in the **child** (`InputButton`)
-* **Values** = Signal names in the parent (`ProductCatalog`) or functions returning computed values
+First, we need to observe the quantities of all `SpinButton` components. For this, we create a signal of all children matching the `spin-button` selector:
 
 ```js
-this.first('input-button').pass({
-	badge: () => asPositiveIntegerString(
-		this.all('spin-button').targets
-			.reduce((sum, item) => sum + item.get('value'), 0)
-	)
-});
+component("product-catalog", {
+	quantities: (el) => selection(el, "spin-button"),
+}, () => []);
 ```
 
-* ✅ **Whenever one of the `value` signals of a `<spin-button>` updates, the total in the badge of `<input-button>` automatically updates.**
-* ✅ **No need for event listeners or manual updates!**
+The `selection()` function returns a signal that emits an array of all matching elements. In contrast to a static `querySelectorAll()` call, the `selection()` function is reactive and updates whenever new elements are added or removed from the DOM.
+
+Then, we need to calculate the total of all product quantities and pass it on to the `InputButton` component. As states in UIElement are accessed through normal properties we use the `setProperty()` effect to send values to child components:
+
+```js
+component("product-catalog", {
+	quantities: (el) => selection(el, "spin-button"),
+}, (el) => [
+	first("input-button",
+		setProperty("badge", () => {
+			const total = el.quantities.reduce((sum, item) => sum + item.value, 0);
+			return total > 0 ? String(total) : "";
+		}),
+	),
+]);
+```
+
+Allright, that's it!
+
+* ✅ Whenever one of the `value` signals of a `<spin-button>` updates, the total in the badge of `<input-button>` automatically updates.
+* ✅ No need for event listeners or manual updates!
 
 ### Child Component: InputButton
 
-The `InputButton` component **displays a badge when needed** – it does not track state itself.
-
-Whenever the `'badge'` **signal assigned by a parent component** updates, the badge text updates.
+The `InputButton` component **displays a badge when needed** – it does not know about any other component nor track state itself. It just exposes a reactive property `badge` of type `string` and has an effect to react to state changes that updates the DOM subtree.
 
 ```js
-class InputButton extends UIElement {
-	connectedCallback() {
-		this.first('.badge').sync(setText('badge'));
-	}
-}
+component("input-button", {
+	badge: asString(RESET),
+}, () => [
+	first(".badge", setText("badge")),
+])
 ```
 
-* ✅ The `setText('badge')` effect **keeps the badge in sync** with the `'badge'` signal.
-* ✅ If badge is an **empty string**, the badge is **hidden**.
+* ✅ Whenever the `badge` property is updated by a parent component, the badge text updates.
+* ✅ If badge is an empty string, the badge is hidden (via CSS).
 
-The `InputButton` **doesn't care how the badge value is calculated** – just that it gets one!
+### ChildComponent: SpinButton
+
+The `SpinButton` component reacts to user interactions and exposes a reactive property `value` of type `number`. It updates its own internal DOM subtree, but doesn't know about any other component nor where the value is used.
+
+```js
+component("spin-button", {
+	value: asInteger(),
+}, (el) => {
+	const max = asInteger(9)(el, el.getAttribute("max"));
+	const isZero = () => el.value === 0;
+	return [
+		first(".value",
+			setText("value"),
+			setProperty("hidden", isZero),
+		),
+		first(".decrement",
+			setProperty("hidden", isZero),
+			on("click", () => {
+				el.value--;
+			}),
+		),
+		first(".increment",
+			setProperty("disabled", () => el.value >= max),
+			on("click", () => {
+				el.value++;
+			}),
+		),
+		all("button",
+			on("keydown", (e) => {
+				const { key } = e;
+				if (["ArrowUp", "ArrowDown", "-", "+"].includes(key)) {
+					e.stopPropagation();
+					e.preventDefault();
+					if (key === "ArrowDown" || key === "-") el.value--;
+					if (key === "ArrowUp" || key === "+") el.value++;
+				}
+			}),
+		),
+	];
+});
+```
+
+* ✅ Whenever the user clicks a button or presses a handled key, the value property is updated.
+* ✅ The component sets hidden and disabled states of buttons and updates the text of the `.value` element.
 
 ### Full Example
 
 Here's how everything comes together:
 
-* Each `SpinButton` **tracks its own count**.
-* The `ProductCatalog` **sums all counts and passes the total to `InputButton`**.
-* The `InputButton` **displays the total** if it's greater than zero.
+* Each `SpinButton` tracks its own value.
+* The `ProductCatalog` sums all quantities and passes the total to `InputButton`.
+* The `InputButton` displays the total if it's greater than zero.
 
 **No custom events are needed – state flows naturally!**
 
@@ -147,7 +201,7 @@ Here's how everything comes together:
 
 <section>
 
-## Events Bubbling Up
+## Custom Events
 
 Passing state down works well when a **parent component can directly observe child state**, but sometimes a **child needs to notify its parent** about an action **without managing shared state itself**.
 

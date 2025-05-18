@@ -107,18 +107,18 @@ Runs when the component is removed (`disconnectedCallback()`). UIElement will ru
 If you added **event listeners** outside the scope of your component or **subscribed manually to external APIs**, you need to return a cleanup function:
 
 ```js
-component("my-component", {}, el => {
-	const intersectionObserver = new IntersectionObserver(([entry]) => {
-		// Do something
-	}).observe(el);
+component("my-component", {}, el => [
+	// Setup logic
+	() => {
+		const observer = new IntersectionObserver(([entry]) => {
+			// Do something
+		})
+		observer.observe(el);
 
-	return [
-		// Component setup: effects and event listeners
-		() => {
-			intersectionObserver.disconnect(); // Cleanup logic
-		}
-	]
-});
+		// Cleanup logic
+		return () => observer.disconnect();
+	}
+]);
 ```
 
 ### Observed Attributes

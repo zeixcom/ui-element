@@ -17,10 +17,10 @@ export default component(
 	"product-catalog",
 	{
 		quantities: ((el) =>
-			selection<Component<{ value: number }>>(
+			selection<Component<SpinButtonProps>>(
 				el,
 				"spin-button",
-			)) as SignalProducer<HTMLElement, Component<{ value: number }>[]>,
+			)) as SignalProducer<HTMLElement, Component<SpinButtonProps>[]>,
 	},
 	(el) => [
 		first<ProductCatalogProps, Component<InputButtonProps>>(
