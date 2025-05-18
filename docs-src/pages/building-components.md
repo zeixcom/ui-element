@@ -389,6 +389,34 @@ Bringing all of the above together, you are now ready to build your own componen
 				<div class="slide" data-index="1">
 					<h3>Slide 2</h3>
 					<calc-table rows="3" columns="3">
+						<div class="rows">
+							<p>Number of rows:</p>
+							<spin-button value="3" zero-label="Add Row" increment-label="Increment">
+								<button type="button" class="decrement" aria-label="Decrement">
+									−
+								</button>
+								<p class="value">3</p>
+								<button type="button" class="increment" aria-label="Increment">
+									+
+								</button>
+							</spin-button>
+						</div>
+						<div class="columns">
+							<p>Number of columns:</p>
+							<spin-button
+								value="3"
+								zero-label="Add Column"
+								increment-label="Increment"
+							>
+								<button type="button" class="decrement" aria-label="Decrement">
+									−
+								</button>
+								<p class="value">3</p>
+								<button type="button" class="increment" aria-label="Increment">
+									+
+								</button>
+							</spin-button>
+						</div>
 						<table>
 							<thead>
 								<tr>

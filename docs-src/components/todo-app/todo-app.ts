@@ -1,143 +1,131 @@
 import {
 	type Component,
-	type ComponentProps,
-	batch,
+	type SignalProducer,
 	component,
-	computed,
-	enqueue,
 	first,
-	insertOrRemoveElement,
 	on,
+	selection,
 	setAttribute,
 	setProperty,
 	setText,
-	state,
 } from "../../../";
 import type { InputButtonProps } from "../input-button/input-button";
 import type { InputCheckboxProps } from "../input-checkbox/input-checkbox";
 import type { InputFieldProps } from "../input-field/input-field";
 import type { InputRadiogroupProps } from "../input-radiogroup/input-radiogroup";
 
-export default component("todo-app", {}, (el) => {
-	const input = el.querySelector<Component<InputFieldProps>>("input-field");
-	if (!input) throw new Error("No input field found");
-	const template = el.querySelector("template");
-	if (!template) throw new Error("No template found");
+export type TodoAppProps = {
+	active: Component<InputCheckboxProps>[];
+	completed: Component<InputCheckboxProps>[];
+};
 
-	let tasks = Array.from(
-		el.querySelectorAll<Component<InputCheckboxProps>>("input-checkbox"),
-	);
-	const total = state(tasks.length);
-	const completed = state(tasks.filter((task) => task.checked).length);
-	const active = computed(() => total.get() - completed.get());
-	const addTask = state(false);
-	const refreshCompleted = () => {
-		completed.set(tasks.filter((task) => task.checked).length);
-	};
-	const refreshTasks = () => {
-		tasks = Array.from(
-			el.querySelectorAll<Component<InputCheckboxProps>>(
-				"input-checkbox",
+export default component(
+	"todo-app",
+	{
+		active: ((el) =>
+			selection<Component<InputCheckboxProps>>(
+				el,
+				"input-checkbox:not([checked])",
+			)) as SignalProducer<HTMLElement, Component<InputCheckboxProps>[]>,
+		completed: ((el) =>
+			selection<Component<InputCheckboxProps>>(
+				el,
+				"input-checkbox[checked]",
+			)) as SignalProducer<HTMLElement, Component<InputCheckboxProps>[]>,
+	},
+	(el) => {
+		const input =
+			el.querySelector<Component<InputFieldProps>>("input-field");
+		if (!input) throw new Error("No input field found");
+		const template = el.querySelector("template");
+		if (!template) throw new Error("No template found");
+		const list = el.querySelector("ol");
+		if (!list) throw new Error("No list found");
+
+		return [
+			// Control todo input form
+			first<TodoAppProps, Component<InputButtonProps>>(
+				".submit",
+				setProperty("disabled", () => !input.length),
 			),
-		);
-		batch(() => {
-			total.set(tasks.length);
-			refreshCompleted();
-		});
-	};
-
-	return [
-		// Control todo input form
-		first<ComponentProps, Component<InputButtonProps>>(
-			".submit",
-			setProperty("disabled", () => !input.length),
-		),
-		first(
-			"form",
-			on("submit", (e: Event) => {
-				e.preventDefault();
-				queueMicrotask(() => {
-					const value = input.value.toString().trim();
-					if (value) addTask.set(true);
-					enqueue(() => {
-						refreshTasks();
+			first(
+				"form",
+				on("submit", (e: Event) => {
+					e.preventDefault();
+					queueMicrotask(() => {
+						const value = input.value.toString().trim();
+						if (!value) return;
+						const li = document.importNode(
+							template.content,
+							true,
+						).firstElementChild;
+						if (!(li instanceof HTMLLIElement))
+							throw new Error(
+								"Invalid template for list item; expected <li>",
+							);
+						li
+							.querySelector("slot")
+							?.replaceWith(String(input.value));
+						list.append(li);
 						input.clear();
-					}, [input, "p:value"]);
-				});
-			}),
-		),
-
-		// Control todo list
-		first(
-			"ol",
-			setAttribute(
-				"filter",
-				() =>
-					el.querySelector<Component<InputRadiogroupProps>>(
-						"input-radiogroup",
-					)?.value ?? "all",
+					});
+				}),
 			),
-			insertOrRemoveElement(() => (addTask.get() ? 1 : 0), {
-				create: () => {
-					const li = document.importNode(
-						template.content,
-						true,
-					).firstElementChild;
-					li?.querySelector("slot")?.replaceWith(String(input.value));
-					return li;
-				},
-				resolve: () => {
-					refreshTasks();
-					addTask.set(false);
-				},
-			}),
-			on("click", (e: Event) => {
-				const target = e.target as HTMLElement;
-				if (target.localName === "button") {
-					target.closest("li")?.remove();
-					refreshTasks();
-				}
-			}),
-			on("change", () => {
-				refreshCompleted();
-			}),
-		),
 
-		// Update count elements
-		first(
-			".count",
-			setText(() => String(active.get())),
-		),
-		first<ComponentProps, HTMLElement>(
-			".singular",
-			setProperty("hidden", () => active.get() > 1),
-		),
-		first<ComponentProps, HTMLElement>(
-			".plural",
-			setProperty("hidden", () => active.get() === 1),
-		),
-		first<ComponentProps, HTMLElement>(
-			".remaining",
-			setProperty("hidden", () => !active.get()),
-		),
-		first<ComponentProps, HTMLElement>(
-			".all-done",
-			setProperty("hidden", () => !!active.get()),
-		),
-
-		// Control clear-completed button
-		first<ComponentProps, Component<InputButtonProps>>(
-			".clear-completed",
-			setProperty("disabled", () => !completed.get()),
-			setProperty("badge", () =>
-				completed.get() > 0 ? String(completed.get()) : "",
+			// Control todo list
+			first(
+				"ol",
+				setAttribute(
+					"filter",
+					() =>
+						el.querySelector<Component<InputRadiogroupProps>>(
+							"input-radiogroup",
+						)?.value ?? "all",
+				),
+				on("click", (e: Event) => {
+					const target = e.target as HTMLElement;
+					if (target.localName === "button")
+						target.closest("li")!.remove();
+				}),
 			),
-			on("click", () => {
-				tasks
-					.filter((task) => task.checked)
-					.forEach((task) => task.parentElement?.remove());
-				refreshTasks();
-			}),
-		),
-	];
-});
+
+			// Update count elements
+			first(
+				".count",
+				setText(() => String(el.active.length)),
+			),
+			first<TodoAppProps, HTMLElement>(
+				".singular",
+				setProperty("hidden", () => el.active.length > 1),
+			),
+			first<TodoAppProps, HTMLElement>(
+				".plural",
+				setProperty("hidden", () => el.active.length === 1),
+			),
+			first<TodoAppProps, HTMLElement>(
+				".remaining",
+				setProperty("hidden", () => !el.active.length),
+			),
+			first<TodoAppProps, HTMLElement>(
+				".all-done",
+				setProperty("hidden", () => !!el.active.length),
+			),
+
+			// Control clear-completed button
+			first<TodoAppProps, Component<InputButtonProps>>(
+				".clear-completed",
+				setProperty("disabled", () => !el.completed.length),
+				setProperty("badge", () =>
+					el.completed.length > 0 ? String(el.completed.length) : "",
+				),
+				on("click", () => {
+					const items = Array.from(el.querySelectorAll("ol li"));
+					for (let i = items.length - 1; i >= 0; i--) {
+						const task = items[i].querySelector("input-checkbox");
+						if (task?.checked) items[i].remove();
+					}
+				}),
+			),
+		];
+	},
+);

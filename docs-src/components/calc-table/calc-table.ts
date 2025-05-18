@@ -1,4 +1,5 @@
 import {
+	type Component,
 	type State,
 	all,
 	asInteger,
@@ -6,9 +7,17 @@ import {
 	first,
 	insertOrRemoveElement,
 	on,
+	setProperty,
 	setText,
 	state,
 } from "../../../";
+
+import { SpinButtonProps } from "../spin-button/spin-button";
+
+export type CalcTableProps = {
+	columns: number;
+	rows: number;
+};
 
 export default component(
 	"calc-table",
@@ -28,31 +37,49 @@ export default component(
 		if (!rowTemplate || !colheadTemplate || !cellTemplate)
 			throw new Error("Missing template elements");
 
-		const columns = new Map<string, State<number[]>>();
+		const colSums = new Map<string, State<number>>();
 		for (let i = 0; i < el.columns; i++) {
-			columns.set(
-				colHeads[i],
-				state(Array.from({ length: el.rows }).map(() => 0)),
-			);
+			colSums.set(colHeads[i], state(0));
 		}
 
-		const getColumnArray = (rowKey: string): number[] => {
+		const calcColumnSum = (rowKey: string): number => {
 			return Array.from(
 				el.querySelectorAll<HTMLInputElement>(
 					`tbody input[data-key="${rowKey}"]`,
 				),
-			).map((input) =>
-				Number.isFinite(input.valueAsNumber) ? input.valueAsNumber : 0,
-			);
+			)
+				.map((input) =>
+					Number.isFinite(input.valueAsNumber)
+						? input.valueAsNumber
+						: 0,
+				)
+				.reduce((acc, val) => acc + val, 0);
 		};
 
 		return [
+			/* Control number of rows / columns */
+			setProperty(
+				"rows",
+				() =>
+					el.querySelector<Component<SpinButtonProps>>(
+						".rows spin-button",
+					)?.value,
+			),
+			setProperty(
+				"columns",
+				() =>
+					el.querySelector<Component<SpinButtonProps>>(
+						".columns spin-button",
+					)?.value,
+			),
+
 			/* Create rows */
 			first(
 				"tbody",
 				insertOrRemoveElement(
 					(target) => el.rows - target.querySelectorAll("tr").length,
 					{
+						position: "beforeend",
 						create: (parent) => {
 							const row = document.importNode(
 								rowTemplate.content,
@@ -72,8 +99,8 @@ export default component(
 							return row;
 						},
 						resolve: () => {
-							for (const [colKey, col] of columns) {
-								col.set(getColumnArray(colKey));
+							for (const [colKey, colSum] of colSums) {
+								colSum.set(calcColumnSum(colKey));
 							}
 						},
 					},
@@ -87,6 +114,7 @@ export default component(
 					(target) =>
 						el.columns - (target.querySelectorAll("th").length - 1),
 					{
+						position: "beforeend",
 						create: (parent) => {
 							const cell = document.importNode(
 								colheadTemplate.content,
@@ -100,14 +128,7 @@ export default component(
 								colHeads[
 									parent.querySelectorAll("th").length - 1
 								];
-							columns.set(
-								colKey,
-								state(
-									Array.from({ length: el.rows }).map(
-										() => 0,
-									),
-								),
-							);
+							colSums.set(colKey, state(0));
 							cell
 								.querySelector("slot")
 								?.replaceWith(document.createTextNode(colKey));
@@ -124,6 +145,7 @@ export default component(
 					(target) =>
 						el.columns - target.querySelectorAll("td").length,
 					{
+						position: "beforeend",
 						create: (parent: HTMLElement) => {
 							const cell = document.importNode(
 								cellTemplate.content,
@@ -162,6 +184,7 @@ export default component(
 					(target) =>
 						el.columns - target.querySelectorAll("td").length,
 					{
+						position: "beforeend",
 						create: (parent) => {
 							const cell = document.createElement("td");
 							const colKey =
@@ -176,26 +199,27 @@ export default component(
 			/* Update column values when cells change */
 			all(
 				"tbody input",
-				on("change", (e) => {
+				on("change", (e: Event) => {
 					const colKey = (e.target as HTMLInputElement)?.dataset[
 						"key"
 					];
-					columns.get(colKey!)?.set(getColumnArray(colKey!));
+					colSums.get(colKey!)?.set(calcColumnSum(colKey!));
 				}),
 			),
 
-			/* Calculate sums for each column */
+			/* Update sums for each column */
 			all(
 				"tfoot td",
 				setText((target: HTMLTableCellElement) =>
-					String(
-						columns
-							.get(target.dataset["key"]!)
-							?.get()
-							.reduce((a, b) => a + b, 0) ?? 0,
-					),
+					String(colSums.get(target.dataset["key"]!)!.get()),
 				),
 			),
 		];
 	},
 );
+
+declare global {
+	interface HTMLElementTagNameMap {
+		"calc-table": Component<CalcTableProps>;
+	}
+}

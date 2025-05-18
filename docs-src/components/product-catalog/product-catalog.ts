@@ -3,30 +3,34 @@ import {
 	type SignalProducer,
 	component,
 	first,
-	pass,
+	selection,
+	setProperty,
 } from "../../../";
-import { InputButtonProps } from "../input-button/input-button";
 import { SpinButtonProps } from "../spin-button/spin-button";
+import { InputButtonProps } from "../input-button/input-button";
 
 export type ProductCatalogProps = {
-	total: number;
+	quantities: Component<SpinButtonProps>[];
 };
-
-const calcTotal: SignalProducer<HTMLElement, number> = (el) => () =>
-	Array.from(
-		el.querySelectorAll<Component<SpinButtonProps>>("spin-button"),
-	).reduce((sum, item) => sum + item.value, 0);
 
 export default component(
 	"product-catalog",
 	{
-		total: calcTotal,
+		quantities: ((el) =>
+			selection<Component<{ value: number }>>(
+				el,
+				"spin-button",
+			)) as SignalProducer<HTMLElement, Component<{ value: number }>[]>,
 	},
 	(el) => [
-		first(
+		first<ProductCatalogProps, Component<InputButtonProps>>(
 			"input-button",
-			pass<ProductCatalogProps, InputButtonProps>({
-				badge: () => (el.total > 0 ? String(el.total) : ""),
+			setProperty("badge", () => {
+				const total = el.quantities.reduce(
+					(sum, item) => sum + item.value,
+					0,
+				);
+				return total > 0 ? String(total) : "";
 			}),
 		),
 	],

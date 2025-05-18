@@ -1,6 +1,6 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.12.1
+ * @version 0.12.2
  * @author Esther Brunner
  */
 
@@ -82,3 +82,4 @@ export {
 	setStyle,
 	dangerouslySetInnerHTML,
 } from "./src/lib/effects";
+export { selection } from "./src/lib/selection";

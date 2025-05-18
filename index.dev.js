@@ -790,6 +790,57 @@ var dangerouslySetInnerHTML = (s, attachShadow, allowScripts) => updateElement(s
     return " with scripts";
   }
 });
+// src/lib/selection.ts
+var extractAttributesFromSelector = (selector) => {
+  const attributeRegex = /\[\s*([a-zA-Z0-9_-]+)(?:[~|^$*]?=(?:"[^"]*"|'[^']*'|[^\]]*))?\s*\]/g;
+  const attributes = new Set;
+  let match2;
+  while ((match2 = attributeRegex.exec(selector)) !== null) {
+    if (match2[1])
+      attributes.add(match2[1]);
+  }
+  return Array.from(attributes);
+};
+var selection = (parent, selectors) => {
+  const watchers = new Set;
+  let value = Array.from(parent.querySelectorAll(selectors));
+  let observing = false;
+  const observedAttributes = extractAttributesFromSelector(selectors);
+  const observer = new MutationObserver(() => {
+    value = Array.from(parent.querySelectorAll(selectors));
+    if (watchers.size) {
+      notify(watchers);
+    } else {
+      observer.disconnect();
+      observing = false;
+    }
+  });
+  const s = {
+    [Symbol.toStringTag]: "Computed",
+    get: () => {
+      if (!observing) {
+        observing = true;
+        const observerConfig = {
+          childList: true,
+          subtree: true
+        };
+        if (observedAttributes.length > 0) {
+          observerConfig.attributes = true;
+          observerConfig.attributeFilter = observedAttributes;
+        }
+        observer.observe(parent, observerConfig);
+      }
+      subscribe(watchers);
+      return value;
+    },
+    map: (fn) => computed(() => fn(s.get())),
+    tap: (matcher) => effect({
+      signals: [s],
+      ...isFunction2(matcher) ? { ok: matcher } : matcher
+    })
+  };
+  return s;
+};
 export {
   watch,
   updateElement,
@@ -801,6 +852,7 @@ export {
   setStyle,
   setProperty,
   setAttribute,
+  selection,
   provide,
   pass,
   on,
