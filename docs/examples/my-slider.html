@@ -18,8 +18,9 @@
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"slide active"</span><span style="color:#A6E22E"> data-index</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"0"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">h3</span><span style="color:#F8F8F2">>Slide 1&#x3C;/</span><span style="color:#F92672">h3</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">>Your name&#x3C;</span><span style="color:#F92672">br</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">label</span></span>
+<span class="line"><span style="color:#F8F8F2">					>Your name&#x3C;</span><span style="color:#F92672">br</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#F8F8F2"> /></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>World&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
@@ -27,14 +28,61 @@
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"slide"</span><span style="color:#A6E22E"> data-index</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"1"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">h3</span><span style="color:#F8F8F2">>Slide 2&#x3C;/</span><span style="color:#F92672">h3</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">calc-table</span><span style="color:#A6E22E"> rows</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span><span style="color:#A6E22E"> columns</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rows"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Number of rows:&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">spin-button</span></span>
+<span class="line"><span style="color:#A6E22E">						value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span></span>
+<span class="line"><span style="color:#A6E22E">						zero-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Add Row"</span></span>
+<span class="line"><span style="color:#A6E22E">						increment-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Increment"</span></span>
+<span class="line"><span style="color:#F8F8F2">					></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">button</span></span>
+<span class="line"><span style="color:#A6E22E">							type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span></span>
+<span class="line"><span style="color:#A6E22E">							class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"decrement"</span></span>
+<span class="line"><span style="color:#A6E22E">							aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Decrement"</span></span>
+<span class="line"><span style="color:#F8F8F2">						></span></span>
+<span class="line"><span style="color:#F8F8F2">							−</span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"value"</span><span style="color:#F8F8F2">>3&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">button</span></span>
+<span class="line"><span style="color:#A6E22E">							type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span></span>
+<span class="line"><span style="color:#A6E22E">							class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"increment"</span></span>
+<span class="line"><span style="color:#A6E22E">							aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Increment"</span></span>
+<span class="line"><span style="color:#F8F8F2">						></span></span>
+<span class="line"><span style="color:#F8F8F2">							+</span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">spin-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"columns"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Number of columns:&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">spin-button</span></span>
+<span class="line"><span style="color:#A6E22E">						value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span></span>
+<span class="line"><span style="color:#A6E22E">						zero-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Add Column"</span></span>
+<span class="line"><span style="color:#A6E22E">						increment-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Increment"</span></span>
+<span class="line"><span style="color:#F8F8F2">					></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">button</span></span>
+<span class="line"><span style="color:#A6E22E">							type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span></span>
+<span class="line"><span style="color:#A6E22E">							class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"decrement"</span></span>
+<span class="line"><span style="color:#A6E22E">							aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Decrement"</span></span>
+<span class="line"><span style="color:#F8F8F2">						></span></span>
+<span class="line"><span style="color:#F8F8F2">							−</span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"value"</span><span style="color:#F8F8F2">>3&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">button</span></span>
+<span class="line"><span style="color:#A6E22E">							type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span></span>
+<span class="line"><span style="color:#A6E22E">							class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"increment"</span></span>
+<span class="line"><span style="color:#A6E22E">							aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Increment"</span></span>
+<span class="line"><span style="color:#F8F8F2">						></span></span>
+<span class="line"><span style="color:#F8F8F2">							+</span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">spin-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">table</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">thead</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">tr</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">th</span><span style="color:#A6E22E"> scope</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"col"</span><span style="color:#F8F8F2">>Row&#x3C;/</span><span style="color:#F92672">th</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">						&#x3C;/</span><span style="color:#F92672">tr</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">thead</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">tbody</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">tbody</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">tbody</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">tbody</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">tfoot</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">tr</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">th</span><span style="color:#A6E22E"> scope</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"row"</span><span style="color:#F8F8F2">>Sum&#x3C;/</span><span style="color:#F92672">th</span><span style="color:#F8F8F2">></span></span>
@@ -42,7 +90,9 @@
 <span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">tfoot</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">table</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">template</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"calc-table-row"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">tr</span><span style="color:#F8F8F2">>&#x3C;</span><span style="color:#F92672">th</span><span style="color:#A6E22E"> scope</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"row"</span><span style="color:#F8F8F2">>&#x3C;</span><span style="color:#F92672">slot</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">slot</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">th</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">tr</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">tr</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">th</span><span style="color:#A6E22E"> scope</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"row"</span><span style="color:#F8F8F2">>&#x3C;</span><span style="color:#F92672">slot</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">slot</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">th</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">tr</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">template</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">template</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"calc-table-colhead"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">th</span><span style="color:#A6E22E"> scope</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"col"</span><span style="color:#F8F8F2">>&#x3C;</span><span style="color:#F92672">slot</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">slot</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">th</span><span style="color:#F8F8F2">></span></span>
@@ -51,7 +101,13 @@
 <span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">td</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#F8F8F2">>&#x3C;</span><span style="color:#F92672">slot</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">slot</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"number"</span><span style="color:#A6E22E"> min</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"0"</span><span style="color:#A6E22E"> max</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"100"</span><span style="color:#A6E22E"> step</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"1"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">""</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">input</span></span>
+<span class="line"><span style="color:#A6E22E">								type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"number"</span></span>
+<span class="line"><span style="color:#A6E22E">								min</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"0"</span></span>
+<span class="line"><span style="color:#A6E22E">								max</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"100"</span></span>
+<span class="line"><span style="color:#A6E22E">								step</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"1"</span></span>
+<span class="line"><span style="color:#A6E22E">								value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">""</span></span>
+<span class="line"><span style="color:#F8F8F2">							/></span></span>
 <span class="line"><span style="color:#F8F8F2">						&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">td</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">template</span><span style="color:#F8F8F2">></span></span>
@@ -65,41 +121,94 @@
 <span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">fieldset</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">legend</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#F8F8F2">>Rate&#x3C;/</span><span style="color:#F92672">legend</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"1"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">input</span></span>
+<span class="line"><span style="color:#A6E22E">									type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span></span>
+<span class="line"><span style="color:#A6E22E">									class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span></span>
+<span class="line"><span style="color:#A6E22E">									name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span></span>
+<span class="line"><span style="color:#A6E22E">									value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"1"</span></span>
+<span class="line"><span style="color:#F8F8F2">								/></span></span>
 <span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>☆&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"2"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">input</span></span>
+<span class="line"><span style="color:#A6E22E">									type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span></span>
+<span class="line"><span style="color:#A6E22E">									class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span></span>
+<span class="line"><span style="color:#A6E22E">									name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span></span>
+<span class="line"><span style="color:#A6E22E">									value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"2"</span></span>
+<span class="line"><span style="color:#F8F8F2">								/></span></span>
 <span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>☆&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">input</span></span>
+<span class="line"><span style="color:#A6E22E">									type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span></span>
+<span class="line"><span style="color:#A6E22E">									class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span></span>
+<span class="line"><span style="color:#A6E22E">									name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span></span>
+<span class="line"><span style="color:#A6E22E">									value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span></span>
+<span class="line"><span style="color:#F8F8F2">								/></span></span>
 <span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>☆&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"4"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">input</span></span>
+<span class="line"><span style="color:#A6E22E">									type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span></span>
+<span class="line"><span style="color:#A6E22E">									class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span></span>
+<span class="line"><span style="color:#A6E22E">									name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span></span>
+<span class="line"><span style="color:#A6E22E">									value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"4"</span></span>
+<span class="line"><span style="color:#F8F8F2">								/></span></span>
 <span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>☆&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"5"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">input</span></span>
+<span class="line"><span style="color:#A6E22E">									type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"radio"</span></span>
+<span class="line"><span style="color:#A6E22E">									class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span></span>
+<span class="line"><span style="color:#A6E22E">									name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating"</span></span>
+<span class="line"><span style="color:#A6E22E">									value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"5"</span></span>
+<span class="line"><span style="color:#F8F8F2">								/></span></span>
 <span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>☆&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">						&#x3C;/</span><span style="color:#F92672">fieldset</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">rating-stars</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"feedback"</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">header</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> button</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"hide"</span><span style="color:#A6E22E"> aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Hide"</span><span style="color:#F8F8F2">>×&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">>We're sorry to hear that! Your feedback is important, and we'd love to improve. Let us know how we can do better.&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">>Thank you for your honesty. We appreciate your feedback and will work on making things better.&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">>Thanks for your rating! If there's anything we can improve, we'd love to hear your thoughts.&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">>We're glad you had a good experience! If there's anything that could make it even better, let us know.&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">>Thank you for your support! We're thrilled you had a great experience. Your feedback keeps us motivated!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">button</span></span>
+<span class="line"><span style="color:#A6E22E">								button</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span></span>
+<span class="line"><span style="color:#A6E22E">								class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"hide"</span></span>
+<span class="line"><span style="color:#A6E22E">								aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Hide"</span></span>
+<span class="line"><span style="color:#F8F8F2">							></span></span>
+<span class="line"><span style="color:#F8F8F2">								×</span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">								We're sorry to hear that! Your feedback is</span></span>
+<span class="line"><span style="color:#F8F8F2">								important, and we'd love to improve. Let us know</span></span>
+<span class="line"><span style="color:#F8F8F2">								how we can do better.</span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">								Thank you for your honesty. We appreciate your</span></span>
+<span class="line"><span style="color:#F8F8F2">								feedback and will work on making things better.</span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">								Thanks for your rating! If there's anything we</span></span>
+<span class="line"><span style="color:#F8F8F2">								can improve, we'd love to hear your thoughts.</span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">								We're glad you had a good experience! If there's</span></span>
+<span class="line"><span style="color:#F8F8F2">								anything that could make it even better, let us</span></span>
+<span class="line"><span style="color:#F8F8F2">								know.</span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">								Thank you for your support! We're thrilled you</span></span>
+<span class="line"><span style="color:#F8F8F2">								had a great experience. Your feedback keeps us</span></span>
+<span class="line"><span style="color:#F8F8F2">								motivated!</span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">						&#x3C;/</span><span style="color:#F92672">header</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">fieldset</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> for</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating-feedback"</span><span style="color:#F8F8F2">>Describe your experience (optional)&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> for</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating-feedback"</span></span>
+<span class="line"><span style="color:#F8F8F2">								>Describe your experience (optional)&#x3C;/</span><span style="color:#F92672">label</span></span>
+<span class="line"><span style="color:#F8F8F2">							></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">textarea</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating-feedback"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">textarea</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">input-button</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"submit"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"primary"</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">>Submit&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"submit"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"primary"</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">									Submit</span></span>
+<span class="line"><span style="color:#F8F8F2">								&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;/</span><span style="color:#F92672">input-button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">						&#x3C;/</span><span style="color:#F92672">fieldset</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
@@ -114,7 +223,8 @@
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">my-slider</span><span style="color:#F8F8F2">></span></span></code></pre>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">my-slider</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
 		<input-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>

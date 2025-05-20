@@ -1,3 +1,15 @@
 calc-table {
 	display: inline-block;
+
+	.rows,
+	.columns {
+		display: flex;
+		gap: var(--space-m);
+		justify-content: space-between;
+		margin-block-end: var(--space-m);
+
+		& p {
+			margin: 0;
+		}
+	}
 }

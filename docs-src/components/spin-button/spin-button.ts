@@ -7,7 +7,6 @@ import {
 	on,
 	setProperty,
 	setText,
-	toggleAttribute,
 } from "../../../";
 
 export type SpinButtonProps = {
@@ -38,6 +37,17 @@ export default component(
 					el.value--;
 				}),
 			),
+			first<SpinButtonProps, HTMLButtonElement>(
+				".increment",
+				setText(() => (isZero() ? zeroLabel : "+")),
+				setProperty("ariaLabel", () =>
+					isZero() ? zeroLabel : incrementLabel,
+				),
+				setProperty("disabled", () => el.value >= max),
+				on("click", () => {
+					el.value++;
+				}),
+			),
 			all(
 				"button",
 				on("keydown", (e: Event) => {
@@ -48,17 +58,6 @@ export default component(
 						if (key === "ArrowDown" || key === "-") el.value--;
 						if (key === "ArrowUp" || key === "+") el.value++;
 					}
-				}),
-			),
-			first(
-				".increment",
-				setText(() => (isZero() ? zeroLabel : "+")),
-				setProperty("ariaLabel", () =>
-					isZero() ? zeroLabel : incrementLabel,
-				),
-				toggleAttribute("disabled", () => el.value >= max),
-				on("click", () => {
-					el.value++;
 				}),
 			),
 		];

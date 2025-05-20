@@ -33,52 +33,6 @@ declare const updateElement: <P extends ComponentProps, E extends Element, T ext
  */
 declare const insertOrRemoveElement: <P extends ComponentProps, E extends Element>(s: SignalLike<P, E, number>, inserter?: ElementInserter<E>) => (host: Component<P>, target: E) => () => void;
 /**
- * Effect to insert a node relative to an element according to a given SignalLike
- *
- * @since 0.9.0
- * @param {SignalLike<string>} s - state bound to the node insertion
- * @param {NodeInserter} inserter - inserter object containing type, where, and create methods
- * @throws {TypeError} if the insertPosition is invalid for the target element
- * /
-const insertNode = <P extends ComponentProps, E extends Element>(
-    s: SignalLike<P, E, boolean>,
-    { type, where, create }: NodeInserter
-) => (host: Component<P>, target: E): void | (() => void) => {
-    const methods: Record<InsertPosition, keyof Element> = {
-        beforebegin: 'before',
-        afterbegin: 'prepend',
-        beforeend: 'append',
-        afterend: 'after'
-    }
-    if (!isFunction(target[methods[where]]))
-        throw new TypeError(`Invalid InsertPosition "${where}" for ${elementName(host)}`)
-    const err = (error: unknown) =>
-        log(error, `Failed to insert ${type} into ${elementName(host)}:`, LOG_ERROR)
-
-    return effect(() => {
-        let really = false
-        try {
-            really = resolveSignalLike(s, host, target)
-        } catch (error) {
-            err(error)
-            return
-        }
-        if (!really) return
-        enqueue(() => {
-            const node = create()
-            if (!node) return
-            (target[methods[where]] as (...nodes: Node[]) => void)(node)
-        }, [target, 'i']).then(() => {
-            const signal = isSignal(s) ? s : isString(s) ? host.getSignal(s) : undefined
-            if (isState<boolean>(signal)) signal.set(false)
-            if (DEV_MODE && host.debug)
-                log(target, `Inserted ${type} into ${elementName(host)}`)
-        }).catch((error) => {
-            err(error)
-        })
-    })
-} */
-/**
  * Set text content of an element
  *
  * @since 0.8.0

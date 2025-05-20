@@ -12,7 +12,7 @@
 	<body>
 		<header class="content-grid">
 			<h1 class="content">
-				UIElement Docs <small>Version 0.12.1</small>
+				UIElement Docs <small>Version 0.12.2</small>
 			</h1>
 			
 	<nav class="breakout">
@@ -106,30 +106,30 @@
 <section>
 
 
-	            <h2 id="passing-state-down">
-	                <a name="passing-state-down" class="anchor" href="#passing-state-down">
+	            <h2 id="component-coordination">
+	                <a name="component-coordination" class="anchor" href="#component-coordination">
 		                <span class="permalink">🔗</span>
 	                </a>
-	                Passing State Down
+	                Component Coordination
 	            </h2><p>Let&#39;s consider a <strong>product catalog</strong> where users can add items to a shopping cart. We have <strong>three independent components</strong> that work together:</p>
 <ul>
 <li><code>ProductCatalog</code> <strong>(Parent)</strong>:<ul>
-<li><strong>Tracks all <code>SpinButton</code> components</strong> in its subtree and calculates the <strong>total count</strong> of items in the shopping cart.</li>
-<li><strong>Passes that total</strong> to a <code>InputButton</code>, which displays the number of items in the cart.</li>
+<li><strong>Tracks all <code>SpinButton</code> components</strong> in its subtree and calculates the total count of items in the shopping cart.</li>
+<li><strong>Passes that total</strong> to a <code>InputButton</code>.</li>
 </ul>
 </li>
 <li><code>InputButton</code> <strong>(Child)</strong>:<ul>
-<li>Displays a <strong>cart badge</strong> when the <code>&#39;badge&#39;</code> signal is set.</li>
-<li><strong>Does not track any state</strong> – it simply renders whatever value is passed down.</li>
+<li>Displays a <strong>badge</strong> in the top-right corner when the <code>&#39;badge&#39;</code> signal is set.</li>
+<li><strong>Does not track any state</strong> – it simply renders whatever value is passed to it.</li>
 </ul>
 </li>
 <li><code>SpinButton</code> <strong>(Child)</strong>:<ul>
-<li>Displays an <strong>“Add to Cart”</strong> button initially.</li>
+<li>Displays an <strong>Add to Cart</strong> button initially.</li>
 <li>When an item is added, it transforms into a <strong>stepper</strong> (increment/decrement buttons).</li>
 </ul>
 </li>
 </ul>
-<p>Although <code>InputButton</code> <strong>and</strong> <code>SpinButton</code> are completely independent, they need to work together.<br>So <code>ProductCatalog</code> <strong>coordinates the data flow between them</strong>.</p>
+<p>Although <code>InputButton</code> and <code>SpinButton</code> are completely independent, they need to work together.<br>So <code>ProductCatalog</code> <strong>coordinates the data flow between them</strong>.</p>
 
 	            <h3 id="parent-component-productcatalog">
 	                <a name="parent-component-productcatalog" class="anchor" href="#parent-component-productcatalog">
@@ -137,22 +137,15 @@
 	                </a>
 	                Parent Component: ProductCatalog
 	            </h3><p>The <strong>parent component (<code>ProductCatalog</code>) knows about its children</strong>, meaning it can <strong>observe and pass state</strong> to them.</p>
-<p>Use the <code>pass()</code> method to send values to child components. It takes an object where:</p>
-<ul>
-<li><strong>Keys</strong> = Signal names in the <strong>child</strong> (<code>InputButton</code>)</li>
-<li><strong>Values</strong> = Signal names in the parent (<code>ProductCatalog</code>) or functions returning computed values</li>
-</ul>
+<p>First, we need to observe the quantities of all <code>SpinButton</code> components. For this, we create a signal of all children matching the <code>spin-button</code> selector:</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-button'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">pass</span><span style="color:#F8F8F2">({</span></span>
-<span class="line"><span style="color:#A6E22E">	badge</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> asPositiveIntegerString</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'spin-button'</span><span style="color:#F8F8F2">).targets</span></span>
-<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">reduce</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F;font-style:italic">sum</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">item</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> sum </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> item.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">), </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">	)</span></span>
-<span class="line"><span style="color:#F8F8F2">});</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"product-catalog"</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#A6E22E">	quantities</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> selection</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">"spin-button"</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> []);</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -161,9 +154,35 @@
 	</input-button>
 	
 </code-block>
+<p>The <code>selection()</code> function returns a signal that emits an array of all matching elements. In contrast to a static <code>querySelectorAll()</code> call, the <code>selection()</code> function is reactive and updates whenever new elements are added or removed from the DOM.</p>
+<p>Then, we need to calculate the total of all product quantities and pass it on to the <code>InputButton</code> component. As states in UIElement are accessed through normal properties we use the <code>setProperty()</code> effect to send values to child components:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"product-catalog"</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#A6E22E">	quantities</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> selection</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">"spin-button"</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"input-button"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">		setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"badge"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.quantities.</span><span style="color:#A6E22E">reduce</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F;font-style:italic">sum</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">item</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> sum </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> item.value, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#F92672">			return</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">></span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> ?</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(total) </span><span style="color:#F92672">:</span><span style="color:#E6DB74"> ""</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}),</span></span>
+<span class="line"><span style="color:#F8F8F2">	),</span></span>
+<span class="line"><span style="color:#F8F8F2">]);</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<p>Allright, that&#39;s it!</p>
 <ul>
-<li>✅ <strong>Whenever one of the <code>value</code> signals of a <code>&lt;spin-button&gt;</code> updates, the total in the badge of <code>&lt;input-button&gt;</code> automatically updates.</strong></li>
-<li>✅ <strong>No need for event listeners or manual updates!</strong></li>
+<li>✅ Whenever one of the <code>value</code> signals of a <code>&lt;spin-button&gt;</code> updates, the total in the badge of <code>&lt;input-button&gt;</code> automatically updates.</li>
+<li>✅ No need for event listeners or manual updates!</li>
 </ul>
 
 	            <h3 id="child-component-inputbutton">
@@ -171,18 +190,17 @@
 		                <span class="permalink">🔗</span>
 	                </a>
 	                Child Component: InputButton
-	            </h3><p>The <code>InputButton</code> component <strong>displays a badge when needed</strong> – it does not track state itself.</p>
-<p>Whenever the <code>&#39;badge&#39;</code> <strong>signal assigned by a parent component</strong> updates, the badge text updates.</p>
+	            </h3><p>The <code>InputButton</code> component <strong>displays a badge when needed</strong> – it does not know about any other component nor track state itself. It just exposes a reactive property <code>badge</code> of type <code>string</code> and has an effect to react to state changes that updates the DOM subtree.</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">InputButton</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">UIElement</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#A6E22E">	connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
-<span class="line"><span style="color:#FD971F">		this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.badge'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">sync</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'badge'</span><span style="color:#F8F8F2">));</span></span>
-<span class="line"><span style="color:#F8F8F2">	}</span></span>
-<span class="line"><span style="color:#F8F8F2">}</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"input-button"</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">	badge: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(RESET),</span></span>
+<span class="line"><span style="color:#F8F8F2">}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".badge"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"badge"</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#F8F8F2">])</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -192,10 +210,68 @@
 	
 </code-block>
 <ul>
-<li>✅ The <code>setText(&#39;badge&#39;)</code> effect <strong>keeps the badge in sync</strong> with the <code>&#39;badge&#39;</code> signal.</li>
-<li>✅ If badge is an <strong>empty string</strong>, the badge is <strong>hidden</strong>.</li>
+<li>✅ Whenever the <code>badge</code> property is updated by a parent component, the badge text updates.</li>
+<li>✅ If badge is an empty string, the badge is hidden (via CSS).</li>
 </ul>
-<p>The <code>InputButton</code> <strong>doesn&#39;t care how the badge value is calculated</strong> – just that it gets one!</p>
+
+	            <h3 id="childcomponent-spinbutton">
+	                <a name="childcomponent-spinbutton" class="anchor" href="#childcomponent-spinbutton">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                ChildComponent: SpinButton
+	            </h3><p>The <code>SpinButton</code> component reacts to user interactions and exposes a reactive property <code>value</code> of type <code>number</code>. It updates its own internal DOM subtree, but doesn&#39;t know about any other component nor where the value is used.</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"spin-button"</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">	value: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(),</span></span>
+<span class="line"><span style="color:#F8F8F2">}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> max </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">9</span><span style="color:#F8F8F2">)(el, el.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"max"</span><span style="color:#F8F8F2">));</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#A6E22E"> isZero</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">===</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".value"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"value"</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"hidden"</span><span style="color:#F8F8F2">, isZero),</span></span>
+<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".decrement"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"hidden"</span><span style="color:#F8F8F2">, isZero),</span></span>
+<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">				el.value</span><span style="color:#F92672">--</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">			}),</span></span>
+<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".increment"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"disabled"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">>=</span><span style="color:#F8F8F2"> max),</span></span>
+<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">				el.value</span><span style="color:#F92672">++</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">			}),</span></span>
+<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"><span style="color:#A6E22E">		all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"keydown"</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> { key } </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e;</span></span>
+<span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> ([</span><span style="color:#E6DB74">"ArrowUp"</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">"ArrowDown"</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">"-"</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">"+"</span><span style="color:#F8F8F2">].</span><span style="color:#A6E22E">includes</span><span style="color:#F8F8F2">(key)) {</span></span>
+<span class="line"><span style="color:#F8F8F2">					e.</span><span style="color:#A6E22E">stopPropagation</span><span style="color:#F8F8F2">();</span></span>
+<span class="line"><span style="color:#F8F8F2">					e.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">();</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> "ArrowDown"</span><span style="color:#F92672"> ||</span><span style="color:#F8F8F2"> key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> "-"</span><span style="color:#F8F8F2">) el.value</span><span style="color:#F92672">--</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> "ArrowUp"</span><span style="color:#F92672"> ||</span><span style="color:#F8F8F2"> key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> "+"</span><span style="color:#F8F8F2">) el.value</span><span style="color:#F92672">++</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">				}</span></span>
+<span class="line"><span style="color:#F8F8F2">			}),</span></span>
+<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"><span style="color:#F8F8F2">	];</span></span>
+<span class="line"><span style="color:#F8F8F2">});</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<ul>
+<li>✅ Whenever the user clicks a button or presses a handled key, the value property is updated.</li>
+<li>✅ The component sets hidden and disabled states of buttons and updates the text of the <code>.value</code> element.</li>
+</ul>
 
 	            <h3 id="full-example">
 	                <a name="full-example" class="anchor" href="#full-example">
@@ -204,9 +280,9 @@
 	                Full Example
 	            </h3><p>Here&#39;s how everything comes together:</p>
 <ul>
-<li>Each <code>SpinButton</code> <strong>tracks its own count</strong>.</li>
-<li>The <code>ProductCatalog</code> <strong>sums all counts and passes the total to <code>InputButton</code></strong>.</li>
-<li>The <code>InputButton</code> <strong>displays the total</strong> if it&#39;s greater than zero.</li>
+<li>Each <code>SpinButton</code> tracks its own value.</li>
+<li>The <code>ProductCatalog</code> sums all quantities and passes the total to <code>InputButton</code>.</li>
+<li>The <code>InputButton</code> displays the total if it&#39;s greater than zero.</li>
 </ul>
 <p><strong>No custom events are needed – state flows naturally!</strong></p>
 <component-demo>
@@ -277,11 +353,11 @@
 <section>
 
 
-	            <h2 id="events-bubbling-up">
-	                <a name="events-bubbling-up" class="anchor" href="#events-bubbling-up">
+	            <h2 id="custom-events">
+	                <a name="custom-events" class="anchor" href="#custom-events">
 		                <span class="permalink">🔗</span>
 	                </a>
-	                Events Bubbling Up
+	                Custom Events
 	            </h2><p>Passing state down works well when a <strong>parent component can directly observe child state</strong>, but sometimes a <strong>child needs to notify its parent</strong> about an action <strong>without managing shared state itself</strong>.</p>
 <p>Let&#39;s consider a Todo App, where users can add tasks:</p>
 <ul>

@@ -12,7 +12,7 @@ export type TabGroupProps = {
 };
 
 const manageArrowKeyFocus =
-	(elements: HTMLElement[], index: number) => (e: KeyboardEvent) => {
+	(elements: HTMLElement[], index: number) => (e: Event) => {
 		if (!(e instanceof KeyboardEvent))
 			throw new TypeError("Event is not a KeyboardEvent");
 		const handledKeys = [
@@ -69,7 +69,7 @@ export default component(
 			),
 			all<TabGroupProps, HTMLButtonElement>(
 				'[role="tab"]',
-				on("click", (e) => {
+				on("click", (e: Event) => {
 					el.selected =
 						(e.currentTarget as HTMLElement).getAttribute(
 							"aria-controls",

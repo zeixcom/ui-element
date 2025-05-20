@@ -1,6 +1,6 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.12.1
+ * @version 0.12.2
  * @author Esther Brunner
  */
 
@@ -49,7 +49,15 @@ export {
 	LOG_ERROR,
 	log,
 } from "./src/core/log";
-export { type PassedSignals, first, all, on, emit, pass } from "./src/core/ui";
+export {
+	type PassedSignals,
+	first,
+	all,
+	selection,
+	on,
+	emit,
+	pass,
+} from "./src/core/ui";
 export {
 	type Context,
 	type UnknownContext,

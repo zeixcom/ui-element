@@ -12,7 +12,7 @@
 	<body>
 		<header class="content-grid">
 			<h1 class="content">
-				UIElement Docs <small>Version 0.12.1</small>
+				UIElement Docs <small>Version 0.12.2</small>
 			</h1>
 			
 	<nav class="breakout">
@@ -256,18 +256,18 @@
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> intersectionObserver </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> IntersectionObserver</span><span style="color:#F8F8F2">(([</span><span style="color:#FD971F;font-style:italic">entry</span><span style="color:#F8F8F2">]) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#88846F">		// Do something</span></span>
-<span class="line"><span style="color:#F8F8F2">	}).</span><span style="color:#A6E22E">observe</span><span style="color:#F8F8F2">(el);</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#88846F">	// Setup logic</span></span>
+<span class="line"><span style="color:#F8F8F2">	() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> observer </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> IntersectionObserver</span><span style="color:#F8F8F2">(([</span><span style="color:#FD971F;font-style:italic">entry</span><span style="color:#F8F8F2">]) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">			// Do something</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#F8F8F2">		observer.</span><span style="color:#A6E22E">observe</span><span style="color:#F8F8F2">(el);</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">		// Component setup: effects and event listeners</span></span>
-<span class="line"><span style="color:#F8F8F2">		() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">			intersectionObserver.</span><span style="color:#A6E22E">disconnect</span><span style="color:#F8F8F2">(); </span><span style="color:#88846F">// Cleanup logic</span></span>
-<span class="line"><span style="color:#F8F8F2">		}</span></span>
-<span class="line"><span style="color:#F8F8F2">	]</span></span>
-<span class="line"><span style="color:#F8F8F2">});</span></span>
+<span class="line"><span style="color:#88846F">		// Cleanup logic</span></span>
+<span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> observer.</span><span style="color:#A6E22E">disconnect</span><span style="color:#F8F8F2">();</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">]);</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -724,6 +724,34 @@
 				<div class="slide" data-index="1">
 					<h3>Slide 2</h3>
 					<calc-table rows="3" columns="3">
+						<div class="rows">
+							<p>Number of rows:</p>
+							<spin-button value="3" zero-label="Add Row" increment-label="Increment">
+								<button type="button" class="decrement" aria-label="Decrement">
+									−
+								</button>
+								<p class="value">3</p>
+								<button type="button" class="increment" aria-label="Increment">
+									+
+								</button>
+							</spin-button>
+						</div>
+						<div class="columns">
+							<p>Number of columns:</p>
+							<spin-button
+								value="3"
+								zero-label="Add Column"
+								increment-label="Increment"
+							>
+								<button type="button" class="decrement" aria-label="Decrement">
+									−
+								</button>
+								<p class="value">3</p>
+								<button type="button" class="increment" aria-label="Increment">
+									+
+								</button>
+							</spin-button>
+						</div>
 						<table>
 							<thead>
 								<tr>

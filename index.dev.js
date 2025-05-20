@@ -213,7 +213,10 @@ var computed = (matcher) => {
     try {
       result = m && m.signals.length ? match(m) : fn(controller?.signal);
     } catch (e) {
-      isAbortError(e) ? nil() : err(e);
+      if (isAbortError(e))
+        nil();
+      else
+        err(e);
       computing = false;
       return;
     }
@@ -348,10 +351,59 @@ var log = (value, msg, level = LOG_DEBUG) => {
 };
 
 // src/core/ui.ts
+class CircularMutationError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "CircularMutationError";
+  }
+}
 var isElement = (node) => node.nodeType === Node.ELEMENT_NODE;
 var isComponent = (value) => value instanceof HTMLElement && value.localName.includes("-");
-var run = (fns, host, element) => {
-  const cleanups = fns.filter(isFunction2).map((fn) => fn(host, element));
+var extractAttributes = (selector) => {
+  const attributes = new Set;
+  if (selector.includes("."))
+    attributes.add("class");
+  if (selector.includes("#"))
+    attributes.add("id");
+  if (selector.includes("[")) {
+    const parts = selector.split("[");
+    for (let i = 1;i < parts.length; i++) {
+      const part = parts[i];
+      if (!part.includes("]"))
+        continue;
+      const attrName = part.split("=")[0].trim().replace(/[^a-zA-Z0-9_-]/g, "");
+      if (attrName)
+        attributes.add(attrName);
+    }
+  }
+  return Array.from(attributes);
+};
+var areElementArraysEqual = (arr1, arr2) => {
+  if (arr1.length !== arr2.length)
+    return false;
+  const set1 = new Set(arr1);
+  for (const el of arr2) {
+    if (!set1.has(el))
+      return false;
+  }
+  return true;
+};
+var observeSubtree = (parent, selectors, callback) => {
+  const observer = new MutationObserver(callback);
+  const observedAttributes = extractAttributes(selectors);
+  const observerConfig = {
+    childList: true,
+    subtree: true
+  };
+  if (observedAttributes.length) {
+    observerConfig.attributes = true;
+    observerConfig.attributeFilter = observedAttributes;
+  }
+  observer.observe(parent, observerConfig);
+  return observer;
+};
+var run = (fns, host, target) => {
+  const cleanups = fns.filter(isFunction2).map((fn) => fn(host, target));
   return () => {
     cleanups.filter(isFunction2).forEach((cleanup) => cleanup());
     cleanups.length = 0;
@@ -382,15 +434,11 @@ var all = (selector, ...fns) => (host) => {
       node.querySelectorAll(selector).forEach(fn);
     }
   };
-  const observer = new MutationObserver((mutations) => {
+  const observer = observeSubtree(root, selector, (mutations) => {
     for (const mutation of mutations) {
       mutation.addedNodes.forEach(applyToMatching(attach));
       mutation.removedNodes.forEach(applyToMatching(detach));
     }
-  });
-  observer.observe(root, {
-    childList: true,
-    subtree: true
   });
   root.querySelectorAll(selector).forEach(attach);
   return () => {
@@ -398,6 +446,57 @@ var all = (selector, ...fns) => (host) => {
     cleanups.forEach((cleanup) => cleanup());
     cleanups.clear();
   };
+};
+var selection = (parent, selectors) => {
+  const watchers = new Set;
+  const select = () => Array.from(parent.querySelectorAll(selectors));
+  let value = UNSET;
+  let observer;
+  let mutationDepth = 0;
+  const MAX_MUTATION_DEPTH = 2;
+  const observe = () => {
+    value = select();
+    observer = observeSubtree(parent, selectors, () => {
+      if (!watchers.size) {
+        observer?.disconnect();
+        observer = undefined;
+        return;
+      }
+      mutationDepth++;
+      if (mutationDepth > MAX_MUTATION_DEPTH) {
+        observer?.disconnect();
+        observer = undefined;
+        mutationDepth = 0;
+        throw new CircularMutationError("Circular mutation in element selection detected");
+      }
+      try {
+        const newElements = select();
+        if (!areElementArraysEqual(value, newElements)) {
+          value = newElements;
+          notify(watchers);
+        }
+      } finally {
+        mutationDepth--;
+      }
+    });
+  };
+  const s = {
+    [Symbol.toStringTag]: "Computed",
+    get: () => {
+      subscribe(watchers);
+      if (!watchers.size)
+        value = select();
+      else if (!observer)
+        observe();
+      return value;
+    },
+    map: (fn) => computed(() => fn(s.get())),
+    tap: (matcher) => effect({
+      signals: [s],
+      ...isFunction2(matcher) ? { ok: matcher } : matcher
+    })
+  };
+  return s;
 };
 var on = (type, listener) => (host, target = host) => {
   if (!isFunction2(listener))
@@ -801,6 +900,7 @@ export {
   setStyle,
   setProperty,
   setAttribute,
+  selection,
   provide,
   pass,
   on,
