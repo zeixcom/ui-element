@@ -794,6 +794,10 @@ var dangerouslySetInnerHTML = (s, attachShadow, allowScripts) => updateElement(s
 var extractAttributesFromSelector = (selector) => {
   const attributeRegex = /\[\s*([a-zA-Z0-9_-]+)(?:[~|^$*]?=(?:"[^"]*"|'[^']*'|[^\]]*))?\s*\]/g;
   const attributes = new Set;
+  if (selector.includes("."))
+    attributes.add("class");
+  if (selector.includes("#"))
+    attributes.add("id");
   let match2;
   while ((match2 = attributeRegex.exec(selector)) !== null) {
     if (match2[1])
@@ -803,34 +807,37 @@ var extractAttributesFromSelector = (selector) => {
 };
 var selection = (parent, selectors) => {
   const watchers = new Set;
-  let value = Array.from(parent.querySelectorAll(selectors));
+  const select = () => Array.from(parent.querySelectorAll(selectors));
+  let value = UNSET;
   let observing = false;
-  const observedAttributes = extractAttributesFromSelector(selectors);
-  const observer = new MutationObserver(() => {
-    value = Array.from(parent.querySelectorAll(selectors));
-    if (watchers.size) {
-      notify(watchers);
-    } else {
-      observer.disconnect();
-      observing = false;
+  const observe = () => {
+    observing = true;
+    const observer = new MutationObserver(() => {
+      if (watchers.size) {
+        notify(watchers);
+      } else {
+        observer.disconnect();
+        observing = false;
+      }
+    });
+    const observerConfig = {
+      childList: true,
+      subtree: true
+    };
+    const observedAttributes = extractAttributesFromSelector(selectors);
+    if (observedAttributes.length) {
+      observerConfig.attributes = true;
+      observerConfig.attributeFilter = observedAttributes;
     }
-  });
+    observer.observe(parent, observerConfig);
+  };
   const s = {
     [Symbol.toStringTag]: "Computed",
     get: () => {
-      if (!observing) {
-        observing = true;
-        const observerConfig = {
-          childList: true,
-          subtree: true
-        };
-        if (observedAttributes.length > 0) {
-          observerConfig.attributes = true;
-          observerConfig.attributeFilter = observedAttributes;
-        }
-        observer.observe(parent, observerConfig);
-      }
       subscribe(watchers);
+      if (watchers.size && !observing)
+        observe();
+      value = select();
       return value;
     },
     map: (fn) => computed(() => fn(s.get())),

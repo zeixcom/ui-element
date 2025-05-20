@@ -1,4 +1,4 @@
-import { type Computed, computed, effect } from "@zeix/cause-effect";
+import { type Computed, computed, effect, UNSET } from "@zeix/cause-effect";
 import {
 	type Watcher,
 	notify,
@@ -20,6 +20,8 @@ const extractAttributesFromSelector = (selector: string): string[] => {
 	const attributeRegex =
 		/\[\s*([a-zA-Z0-9_-]+)(?:[~|^$*]?=(?:"[^"]*"|'[^']*'|[^\]]*))?\s*\]/g;
 	const attributes = new Set<string>();
+	if (selector.includes(".")) attributes.add("class");
+	if (selector.includes("#")) attributes.add("id");
 	let match;
 	while ((match = attributeRegex.exec(selector)) !== null) {
 		if (match[1]) attributes.add(match[1]);
@@ -42,42 +44,41 @@ export const selection = <E extends Element>(
 	selectors: string,
 ): Computed<E[]> => {
 	const watchers: Set<Watcher> = new Set();
-	let value: E[] = Array.from(parent.querySelectorAll<E>(selectors));
+	const select = () => Array.from(parent.querySelectorAll<E>(selectors));
+	let value: E[] = UNSET;
 	let observing = false;
 
-	// Extract attributes to observe from the selector
-	const observedAttributes = extractAttributesFromSelector(selectors);
+	const observe = () => {
+		observing = true;
 
-	const observer = new MutationObserver(() => {
-		value = Array.from(parent.querySelectorAll<E>(selectors));
-		if (watchers.size) {
-			notify(watchers);
-		} else {
-			observer.disconnect();
-			observing = false;
+		const observer = new MutationObserver(() => {
+			if (watchers.size) {
+				notify(watchers);
+			} else {
+				observer.disconnect();
+				observing = false;
+			}
+		});
+		const observerConfig: MutationObserverInit = {
+			childList: true,
+			subtree: true,
+		};
+		const observedAttributes = extractAttributesFromSelector(selectors);
+		if (observedAttributes.length) {
+			observerConfig.attributes = true;
+			observerConfig.attributeFilter = observedAttributes;
 		}
-	});
+
+		observer.observe(parent, observerConfig);
+	};
 
 	const s: Computed<E[]> = {
 		[Symbol.toStringTag]: "Computed",
 
 		get: (): E[] => {
-			if (!observing) {
-				observing = true;
-				const observerConfig: MutationObserverInit = {
-					childList: true,
-					subtree: true,
-				};
-
-				// If there are attribute selectors, configure the observer to watch those attributes
-				if (observedAttributes.length > 0) {
-					observerConfig.attributes = true;
-					observerConfig.attributeFilter = observedAttributes;
-				}
-
-				observer.observe(parent, observerConfig);
-			}
 			subscribe(watchers);
+			if (watchers.size && !observing) observe();
+			value = select();
 			return value;
 		},
 

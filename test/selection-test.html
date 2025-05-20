@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>UI Functions Tests</title>
+	</head>
+	<body>
+		<div class="test-element">Content</div>
+		<script type="module">
+			import { runTests } from "@web/test-runner-mocha";
+			import { assert } from "@esm-bundle/chai";
+			import { selection } from "../index.dev.js";
+
+			const microtask = async () => new Promise(queueMicrotask);
+			const normalizeText = (text) => text.replace(/\s+/g, " ").trim();
+
+			runTests(() => {
+				describe("selection()", () => {
+					it("should create a signal returning an empty array for no matching elements", () => {
+						const signal = selection(document, ".nonexistent");
+						assert.deepEqual(signal.get(), []);
+					});
+
+					it("should return an array of elements matching the selector", () => {
+						const signal = selection(document, ".test-element");
+						const elements = Array.from(
+							document.querySelectorAll(".test-element"),
+						);
+						assert.deepEqual(signal.get(), elements);
+					});
+
+					it("should update the signal when elements are added or removed", () => {
+						const signal = selection(document, ".test-element");
+
+						const newElement = document.createElement("div");
+						newElement.classList.add("test-element");
+						document.body.appendChild(newElement);
+						let elements = Array.from(
+							document.querySelectorAll(".test-element"),
+						);
+						assert.deepEqual(signal.get(), elements);
+
+						newElement.remove();
+						elements = Array.from(
+							document.querySelectorAll(".test-element"),
+						);
+						assert.deepEqual(signal.get(), elements);
+					});
+
+					it("should update the signal when matching class is added or removed", () => {
+						const signal = selection(
+							document.body,
+							".test-element",
+						);
+						const newElement = document.createElement("div");
+						document.body.appendChild(newElement);
+						let elements = Array.from(
+							document.querySelectorAll(".test-element"),
+						);
+						assert.deepEqual(signal.get(), elements);
+
+						newElement.classList.add("test-element");
+						elements = Array.from(
+							document.querySelectorAll(".test-element"),
+						);
+						assert.deepEqual(signal.get(), elements);
+
+						newElement.classList.remove("test-element");
+						elements = Array.from(
+							document.querySelectorAll(".test-element"),
+						);
+						assert.deepEqual(signal.get(), elements);
+					});
+
+					it("should update the signal when matching id is added or removed", () => {
+						const signal = selection(document, "#test-element");
+						const newElement = document.createElement("div");
+						document.body.appendChild(newElement);
+						let elements = Array.from(
+							document.querySelectorAll("#test-element"),
+						);
+						assert.deepEqual(signal.get(), elements);
+
+						newElement.id = "test-element";
+						elements = Array.from(
+							document.querySelectorAll("#test-element"),
+						);
+						assert.deepEqual(signal.get(), elements);
+
+						newElement.removeAttribute("id");
+						elements = Array.from(
+							document.querySelectorAll("#test-element"),
+						);
+						assert.deepEqual(signal.get(), elements);
+					});
+
+					it("should create a computed signal watching the element selection with .map()", () => {
+						const signal = selection(document, ".test-element");
+						const contents = signal.map((elements) =>
+							elements.map((element) => element.textContent),
+						);
+						assert.deepEqual(contents.get(), ["Content"]);
+					});
+
+					it("should update the computed signal watching the element selection when elements are added or removed", async () => {
+						const signal = selection(document, ".test-element");
+						const contents = signal.map((elements) =>
+							elements.map((element) => element.textContent),
+						);
+						assert.deepEqual(contents.get(), ["Content"]);
+
+						const newElement = document.createElement("div");
+						newElement.textContent = "New Content";
+						newElement.classList.add("test-element");
+						document.body.appendChild(newElement);
+						await microtask();
+						assert.deepEqual(contents.get(), [
+							"Content",
+							"New Content",
+						]);
+
+						newElement.remove();
+						await microtask();
+						assert.deepEqual(contents.get(), ["Content"]);
+					});
+
+					it("should create an effect watching the element selection with .tap()", () => {
+						const signal = selection(document, ".test-element");
+						signal.tap({
+							ok: (elements) =>
+								elements
+									.filter((element) => !element.hidden)
+									.map((element) => {
+										element.hidden = true;
+									}),
+						});
+						const expected = Array.from(
+							document.querySelectorAll(".test-element"),
+						).map((element) => element.hidden);
+						assert.deepEqual(expected, [true]);
+						document.querySelector(".test-element").hidden = false;
+					});
+
+					it("should apply the effect to an updated array of elements when elements are added or removed", async () => {
+						const signal = selection(document, ".test-element");
+						signal.tap({
+							ok: (elements) =>
+								elements
+									.filter((element) => !element.hidden)
+									.map((element) => {
+										element.hidden = true;
+									}),
+						});
+
+						const newElement = document.createElement("div");
+						newElement.textContent = "New Content";
+						newElement.classList.add("test-element");
+						document.body.appendChild(newElement);
+						await microtask();
+						let expected = Array.from(
+							document.querySelectorAll(".test-element"),
+						).map((element) => element.hidden);
+						assert.deepEqual(expected, [true, true]);
+						document
+							.querySelectorAll(".test-element")
+							.forEach((element) => {
+								element.hidden = false;
+							});
+
+						newElement.remove();
+						await microtask();
+						expected = Array.from(
+							document.querySelectorAll(".test-element"),
+						).map((element) => element.hidden);
+						assert.deepEqual(expected, [true]);
+						document
+							.querySelectorAll(".test-element")
+							.forEach((element) => {
+								element.hidden = false;
+							});
+					});
+				});
+			});
+		</script>
+	</body>
+</html>

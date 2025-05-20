@@ -41,7 +41,7 @@ export default component(
 						);
 					} catch (err) {
 						console.error(
-							"Error when trying to use navigator.clipboard.writeText()",
+							"Error while trying to use navigator.clipboard.writeText()",
 							err,
 						);
 						status = "error";
