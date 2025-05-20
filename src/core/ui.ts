@@ -69,14 +69,17 @@ const isComponent = (value: unknown): value is Component<ComponentProps> =>
  * @returns {string[]} - Array of attribute names found in the selector
  */
 const extractAttributes = (selector: string): string[] => {
-	const attributeRegex =
-		/\[\s*([a-zA-Z0-9_-]+)(?:[~|^$*]?=(?:"[^"]*"|'[^']*'|[^\]]*))?\s*\]/g;
 	const attributes = new Set<string>();
 	if (selector.includes(".")) attributes.add("class");
 	if (selector.includes("#")) attributes.add("id");
-	let match;
-	while ((match = attributeRegex.exec(selector)) !== null) {
-		if (match[1]) attributes.add(match[1]);
+	if (selector.includes("[")) {
+		const parts = selector.split("[");
+		for (let i = 1; i < parts.length; i++) {
+			const part = parts[i];
+			if (!part.includes("]")) continue;
+			const attrName = part.split("=")[0].trim().replace(/[^a-zA-Z0-9_-]/g, "");
+			if (attrName) attributes.add(attrName);
+		}
 	}
 	return Array.from(attributes);
 };

@@ -360,16 +360,21 @@ class CircularMutationError extends Error {
 var isElement = (node) => node.nodeType === Node.ELEMENT_NODE;
 var isComponent = (value) => value instanceof HTMLElement && value.localName.includes("-");
 var extractAttributes = (selector) => {
-  const attributeRegex = /\[\s*([a-zA-Z0-9_-]+)(?:[~|^$*]?=(?:"[^"]*"|'[^']*'|[^\]]*))?\s*\]/g;
   const attributes = new Set;
   if (selector.includes("."))
     attributes.add("class");
   if (selector.includes("#"))
     attributes.add("id");
-  let match2;
-  while ((match2 = attributeRegex.exec(selector)) !== null) {
-    if (match2[1])
-      attributes.add(match2[1]);
+  if (selector.includes("[")) {
+    const parts = selector.split("[");
+    for (let i = 1;i < parts.length; i++) {
+      const part = parts[i];
+      if (!part.includes("]"))
+        continue;
+      const attrName = part.split("=")[0].trim().replace(/[^a-zA-Z0-9_-]/g, "");
+      if (attrName)
+        attributes.add(attrName);
+    }
   }
   return Array.from(attributes);
 };
