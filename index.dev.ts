@@ -49,7 +49,15 @@ export {
 	LOG_ERROR,
 	log,
 } from "./src/core/log";
-export { type PassedSignals, first, all, on, emit, pass } from "./src/core/ui";
+export {
+	type PassedSignals,
+	first,
+	all,
+	selection,
+	on,
+	emit,
+	pass,
+} from "./src/core/ui";
 export {
 	type Context,
 	type UnknownContext,
@@ -82,4 +90,3 @@ export {
 	setStyle,
 	dangerouslySetInnerHTML,
 } from "./src/lib/effects";
-export { selection } from "./src/lib/selection";

@@ -179,6 +179,63 @@
 								element.hidden = false;
 							});
 					});
+
+					it("should detect circular mutations and throw CircularMutationError", () => {
+						// Create a container div
+						const container = document.createElement("div");
+						document.body.appendChild(container);
+
+						try {
+							// Create a selection signal watching for .circular-test elements
+							const signal = selection(
+								container,
+								".circular-test",
+							);
+
+							// Create a tracked count to ensure our effect runs
+							let effectRanCount = 0;
+
+							// Set up an effect that creates a circular dependency
+							// Each time it runs, it adds another element with the class
+							// that the selection is watching
+							const cleanup = signal.tap({
+								ok: (elements) => {
+									effectRanCount++;
+									elements.forEach((element) => {
+										const newElement =
+											document.createElement("div");
+										newElement.classList.add(
+											"circular-test",
+										);
+										newElement.textContent = `Element ${effectRanCount}`;
+										element.appendChild(newElement);
+									});
+								},
+								err: (error) => {
+									assert.equal(
+										error.name,
+										"CircularMutationError",
+									);
+									assert.include(
+										e.message,
+										"Circular mutation in element selection detected",
+									);
+								},
+							});
+
+							// If we reach here with no error and effectRanCount > 3,
+							// the circularity wasn't detected
+							if (effectRanCount > 3) {
+								cleanup();
+								assert.fail(
+									`Circular mutation not detected after ${effectRanCount} iterations`,
+								);
+							}
+						} finally {
+							// Clean up
+							container.remove();
+						}
+					});
 				});
 			});
 		</script>

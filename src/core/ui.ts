@@ -1,4 +1,18 @@
-import { toSignal, type MaybeSignal, type Signal } from "@zeix/cause-effect";
+import {
+	type Computed,
+	type MaybeSignal,
+	type Signal,
+	computed,
+	effect,
+	toSignal,
+	UNSET,
+} from "@zeix/cause-effect";
+import {
+	type Watcher,
+	notify,
+	subscribe,
+} from "@zeix/cause-effect/lib/scheduler";
+import type { EffectMatcher, TapMatcher } from "@zeix/cause-effect/lib/effect";
 
 import type {
 	Cleanup,
@@ -15,22 +29,123 @@ type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
 	[K in keyof Q]?: Signal<Q[K]> | ((element: Component<Q>) => Q[K]) | keyof P;
 };
 
+/* === Error Class === */
+
+/**
+ * Error thrown when a circular dependency is detected in a selection signal
+ */
+class CircularMutationError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = "CircularMutationError";
+	}
+}
+
 /* === Internal Function === */
 
+/**
+ * Check if a node is an Element
+ *
+ * @param {Node} node - node to check
+ * @returns {boolean} - `true` if node is an element node, otherwise `false`
+ */
 const isElement = (node: Node): node is Element =>
 	node.nodeType === Node.ELEMENT_NODE;
 
+/**
+ * Check if a value is a Component
+ *
+ * @param {unknown} value - value to check
+ * @returns {boolean} - `true` if value is a valid custom element, otherwise `false`
+ */
 const isComponent = (value: unknown): value is Component<ComponentProps> =>
 	value instanceof HTMLElement && value.localName.includes("-");
 
+/**
+ * Extract attribute names from a CSS selector
+ * Handles various attribute selector formats: .class, #id, [attr], [attr=value], [attr^=value], etc.
+ *
+ * @param {string} selector - CSS selector to parse
+ * @returns {string[]} - Array of attribute names found in the selector
+ */
+const extractAttributes = (selector: string): string[] => {
+	const attributeRegex =
+		/\[\s*([a-zA-Z0-9_-]+)(?:[~|^$*]?=(?:"[^"]*"|'[^']*'|[^\]]*))?\s*\]/g;
+	const attributes = new Set<string>();
+	if (selector.includes(".")) attributes.add("class");
+	if (selector.includes("#")) attributes.add("id");
+	let match;
+	while ((match = attributeRegex.exec(selector)) !== null) {
+		if (match[1]) attributes.add(match[1]);
+	}
+	return Array.from(attributes);
+};
+
+/**
+ * Compare two arrays of elements to determine if they contain the same elements
+ *
+ * @since 0.12.2
+ * @param {E[]} arr1 - First array of elements to compare
+ * @param {E[]} arr2 - Second array of elements to compare
+ * @returns {boolean} - True if arrays contain the same elements, false otherwise
+ */
+const areElementArraysEqual = <E extends Element>(
+	arr1: E[],
+	arr2: E[],
+): boolean => {
+	if (arr1.length !== arr2.length) return false;
+	const set1 = new Set(arr1);
+	for (const el of arr2) {
+		if (!set1.has(el)) return false;
+	}
+	return true;
+};
+
+/**
+ * Observe a DOM subtree with a mutation observer
+ *
+ * @since 0.12.2
+ * @param {ParentNode} parent - parent node
+ * @param {string} selectors - selector for matching elements to observe
+ * @param {MutationCallback} callback - mutation callback
+ * @returns {MutationObserver} - the created mutation observer
+ */
+const observeSubtree = (
+	parent: ParentNode,
+	selectors: string,
+	callback: MutationCallback,
+): MutationObserver => {
+	const observer = new MutationObserver(callback);
+	const observedAttributes = extractAttributes(selectors);
+	const observerConfig: MutationObserverInit = {
+		childList: true,
+		subtree: true,
+	};
+	if (observedAttributes.length) {
+		observerConfig.attributes = true;
+		observerConfig.attributeFilter = observedAttributes;
+	}
+	observer.observe(parent, observerConfig);
+	return observer;
+};
+
 /* === Exported Functions === */
 
+/**
+ * Run one or more functions on a component's element
+ *
+ * @since 0.12.0
+ * @param {FxFunction<P, E>[]} fns - functions to run
+ * @param {Component<P>} host - component host element
+ * @param {E} target - target element
+ * @returns {Cleanup} - a cleanup function that runs collected cleanup functions
+ */
 const run = <P extends ComponentProps, E extends Element>(
 	fns: FxFunction<P, E>[],
 	host: Component<P>,
-	element: E,
+	target: E,
 ): Cleanup => {
-	const cleanups = fns.filter(isFunction).map((fn) => fn(host, element));
+	const cleanups = fns.filter(isFunction).map((fn) => fn(host, target));
 	return () => {
 		cleanups.filter(isFunction).forEach((cleanup) => cleanup());
 		cleanups.length = 0;
@@ -86,15 +201,11 @@ const all =
 			}
 		};
 
-		const observer = new MutationObserver((mutations) => {
+		const observer = observeSubtree(root, selector, (mutations) => {
 			for (const mutation of mutations) {
 				mutation.addedNodes.forEach(applyToMatching(attach));
 				mutation.removedNodes.forEach(applyToMatching(detach));
 			}
-		});
-		observer.observe(root, {
-			childList: true,
-			subtree: true,
 		});
 
 		root.querySelectorAll<E>(selector).forEach(attach);
@@ -105,6 +216,81 @@ const all =
 			cleanups.clear();
 		};
 	};
+
+/**
+ * Create a element selection signal from a query selector
+ *
+ * @since 0.12.2
+ * @param {ParentNode} parent - parent node to query
+ * @param {string} selectors - query selector
+ * @returns {Computed<T>} - Element selection signal
+ */
+const selection = <E extends Element>(
+	parent: ParentNode,
+	selectors: string,
+): Computed<E[]> => {
+	const watchers: Set<Watcher> = new Set();
+	const select = () => Array.from(parent.querySelectorAll<E>(selectors));
+	let value: E[] = UNSET;
+	let observer: MutationObserver | undefined;
+	let mutationDepth = 0;
+	const MAX_MUTATION_DEPTH = 2; // Consider a depth > 1 as circular
+
+	const observe = () => {
+		value = select();
+		observer = observeSubtree(parent, selectors, () => {
+			// If we have no watchers, just disconnect
+			if (!watchers.size) {
+				observer?.disconnect();
+				observer = undefined;
+				return;
+			}
+
+			mutationDepth++;
+			if (mutationDepth > MAX_MUTATION_DEPTH) {
+				observer?.disconnect();
+				observer = undefined;
+				mutationDepth = 0;
+				throw new CircularMutationError(
+					"Circular mutation in element selection detected",
+				);
+			}
+
+			try {
+				const newElements = select();
+				if (!areElementArraysEqual(value, newElements)) {
+					value = newElements;
+					notify(watchers);
+				}
+			} finally {
+				mutationDepth--;
+			}
+		});
+	};
+
+	const s: Computed<E[]> = {
+		[Symbol.toStringTag]: "Computed",
+
+		get: (): E[] => {
+			subscribe(watchers);
+			if (!watchers.size) value = select();
+			else if (!observer) observe();
+			return value;
+		},
+
+		map: <U extends {}>(fn: (v: E[]) => U | Promise<U>): Computed<U> =>
+			computed(() => fn(s.get())),
+
+		tap: (
+			matcher: TapMatcher<E[]> | ((v: E[]) => Cleanup | void),
+		): Cleanup =>
+			effect({
+				signals: [s],
+				...(isFunction(matcher) ? { ok: matcher } : matcher),
+			} as EffectMatcher<[Computed<E[]>]>),
+	};
+	return s;
+};
 
 /**
  * Attach an event listener to an element
@@ -189,4 +375,4 @@ const pass =
 			});
 	};
 
-export { type PassedSignals, run, all, first, on, emit, pass };
+export { type PassedSignals, run, first, all, selection, on, emit, pass };
