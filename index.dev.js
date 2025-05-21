@@ -1,4 +1,4 @@
-// node_modules/@zeix/cause-effect/lib/util.ts
+// node_modules/@zeix/cause-effect/src/util.ts
 var isFunction = (value) => typeof value === "function";
 var isAsyncFunction = (value) => isFunction(value) && value.constructor.name === "AsyncFunction";
 var isObjectOfType = (value, type) => Object.prototype.toString.call(value) === `[object ${type}]`;
@@ -13,7 +13,7 @@ class CircularDependencyError extends Error {
     return this;
   }
 }
-// node_modules/@zeix/cause-effect/lib/scheduler.ts
+// node_modules/@zeix/cause-effect/src/scheduler.ts
 var active;
 var pending = new Set;
 var batchDepth = 0;
@@ -77,7 +77,7 @@ var watch = (run, mark) => {
     active = prev;
   }
 };
-var enqueue = (fn, dedupe = []) => new Promise((resolve, reject) => {
+var enqueue = (fn, dedupe) => new Promise((resolve, reject) => {
   updateMap.set(dedupe, () => {
     try {
       resolve(fn());
@@ -88,7 +88,7 @@ var enqueue = (fn, dedupe = []) => new Promise((resolve, reject) => {
   requestTick();
 });
 
-// node_modules/@zeix/cause-effect/lib/effect.ts
+// node_modules/@zeix/cause-effect/src/effect.ts
 function effect(matcher) {
   const {
     signals,
@@ -104,7 +104,12 @@ function effect(matcher) {
     running = true;
     let cleanup = undefined;
     try {
-      cleanup = match({ signals, ok, err, nil });
+      cleanup = match({
+        signals,
+        ok,
+        err,
+        nil
+      });
     } catch (e) {
       err(toError(e));
     }
@@ -120,7 +125,7 @@ function effect(matcher) {
   };
 }
 
-// node_modules/@zeix/cause-effect/lib/computed.ts
+// node_modules/@zeix/cause-effect/src/computed.ts
 var TYPE_COMPUTED = "Computed";
 var isEquivalentError = (error1, error2) => {
   if (!error2)
@@ -188,8 +193,7 @@ var computed = (matcher) => {
     dirty = true;
     controller?.abort("Aborted because source signal changed");
     if (watchers.size) {
-      if (changed)
-        notify(watchers);
+      notify(watchers);
     } else {
       mark.cleanups.forEach((fn2) => fn2());
       mark.cleanups.clear();
@@ -206,7 +210,9 @@ var computed = (matcher) => {
       controller = new AbortController;
       if (m)
         m.abort = m.abort instanceof AbortSignal ? AbortSignal.any([m.abort, controller.signal]) : controller.signal;
-      controller.signal.addEventListener("abort", abort, { once: true });
+      controller.signal.addEventListener("abort", abort, {
+        once: true
+      });
     }
     let result;
     computing = true;
@@ -252,7 +258,7 @@ var computed = (matcher) => {
 };
 var isComputed = (value) => isObjectOfType(value, TYPE_COMPUTED);
 
-// node_modules/@zeix/cause-effect/lib/state.ts
+// node_modules/@zeix/cause-effect/src/state.ts
 var TYPE_STATE = "State";
 var state = (initialValue) => {
   const watchers = new Set;
@@ -287,7 +293,7 @@ var state = (initialValue) => {
 };
 var isState = (value) => isObjectOfType(value, TYPE_STATE);
 
-// node_modules/@zeix/cause-effect/lib/signal.ts
+// node_modules/@zeix/cause-effect/src/signal.ts
 var UNSET = Symbol();
 var isSignal = (value) => isState(value) || isComputed(value);
 var isComputedCallback = (value) => isFunction(value) && value.length < 2;
@@ -318,11 +324,6 @@ var match = (matcher) => {
   }
 };
 // src/core/util.ts
-var isFunction2 = (value) => typeof value === "function";
-var isDefinedObject = (value) => !!value && typeof value === "object";
-var isString = (value) => typeof value === "string";
-
-// src/core/log.ts
 var DEV_MODE = true;
 var LOG_DEBUG = "debug";
 var LOG_INFO = "info";
@@ -330,6 +331,8 @@ var LOG_WARN = "warn";
 var LOG_ERROR = "error";
 var idString = (id) => id ? `#${id}` : "";
 var classString = (classList) => classList.length ? `.${Array.from(classList).join(".")}` : "";
+var isDefinedObject = (value) => !!value && typeof value === "object";
+var isString = (value) => typeof value === "string";
 var elementName = (el) => `<${el.localName}${idString(el.id)}${classString(el.classList)}>`;
 var valueString = (value) => isString(value) ? `"${value}"` : isDefinedObject(value) ? JSON.stringify(value) : String(value);
 var typeString = (value) => {
@@ -376,7 +379,7 @@ var extractAttributes = (selector) => {
         attributes.add(attrName);
     }
   }
-  return Array.from(attributes);
+  return [...attributes];
 };
 var areElementArraysEqual = (arr1, arr2) => {
   if (arr1.length !== arr2.length)
@@ -403,9 +406,9 @@ var observeSubtree = (parent, selectors, callback) => {
   return observer;
 };
 var run = (fns, host, target) => {
-  const cleanups = fns.filter(isFunction2).map((fn) => fn(host, target));
+  const cleanups = fns.filter(isFunction).map((fn) => fn(host, target));
   return () => {
-    cleanups.filter(isFunction2).forEach((cleanup) => cleanup());
+    cleanups.filter(isFunction).forEach((cleanup) => cleanup());
     cleanups.length = 0;
   };
 };
@@ -423,7 +426,7 @@ var all = (selector, ...fns) => (host) => {
   };
   const detach = (target) => {
     const cleanup = cleanups.get(target);
-    if (isFunction2(cleanup))
+    if (isFunction(cleanup))
       cleanup();
     cleanups.delete(target);
   };
@@ -493,20 +496,20 @@ var selection = (parent, selectors) => {
     map: (fn) => computed(() => fn(s.get())),
     tap: (matcher) => effect({
       signals: [s],
-      ...isFunction2(matcher) ? { ok: matcher } : matcher
+      ...isFunction(matcher) ? { ok: matcher } : matcher
     })
   };
   return s;
 };
 var on = (type, listener) => (host, target = host) => {
-  if (!isFunction2(listener))
+  if (!isFunction(listener))
     throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
   target.addEventListener(type, listener);
   return () => target.removeEventListener(type, listener);
 };
 var emit = (type, detail) => (host, target = host) => {
   target.dispatchEvent(new CustomEvent(type, {
-    detail: isFunction2(detail) ? detail(target) : detail,
+    detail: isFunction(detail) ? detail(target) : detail,
     bubbles: true
   }));
 };
@@ -514,7 +517,7 @@ var pass = (signals) => (host, target) => {
   const targetName = target.localName;
   if (!isComponent(target))
     throw new TypeError(`Target element must be a custom element`);
-  const sources = isFunction2(signals) ? signals(target) : signals;
+  const sources = isFunction(signals) ? signals(target) : signals;
   if (!isDefinedObject(sources))
     throw new TypeError(`Passed signals must be an object or a provider function`);
   customElements.whenDefined(targetName).then(() => {
@@ -541,7 +544,7 @@ var RESERVED_WORDS = new Set([
   "propertyIsEnumerable",
   "toLocaleString"
 ]);
-var isAttributeParser = (value) => isFunction2(value) && value.length >= 2;
+var isAttributeParser = (value) => isFunction(value) && value.length >= 2;
 var validatePropertyName = (prop) => !(HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop));
 var component = (name, init = {}, setup) => {
 
@@ -555,7 +558,7 @@ var component = (name, init = {}, setup) => {
       for (const [prop, ini] of Object.entries(init)) {
         if (ini == null)
           continue;
-        const result = isAttributeParser(ini) ? ini(this, null) : isFunction2(ini) ? ini(this) : ini;
+        const result = isAttributeParser(ini) ? ini(this, null) : isFunction(ini) ? ini(this) : ini;
         if (result != null)
           this.setSignal(prop, toSignal(result));
       }
@@ -572,7 +575,7 @@ var component = (name, init = {}, setup) => {
       this.#cleanup = run(fns, this, this);
     }
     disconnectedCallback() {
-      if (isFunction2(this.#cleanup))
+      if (isFunction(this.#cleanup))
         this.#cleanup();
       if (DEV_MODE && this.debug)
         log(this, "Disconnected");
@@ -637,7 +640,7 @@ class ContextRequestEvent extends Event {
 var provide = (provided) => (host) => {
   const listener = (e) => {
     const { context, callback } = e;
-    if (provided.includes(context) && isFunction2(callback)) {
+    if (provided.includes(context) && isFunction(callback)) {
       e.stopPropagation();
       callback(host.getSignal(String(context)));
     }
@@ -675,12 +678,14 @@ var asJSON = (fallback) => (_, value) => {
   try {
     result = JSON.parse(value);
   } catch (error) {
-    throw new SyntaxError(`Failed to parse JSON: ${String(error)}`, { cause: error });
+    throw new SyntaxError(`Failed to parse JSON: ${String(error)}`, {
+      cause: error
+    });
   }
   return result ?? fallback;
 };
 // src/lib/effects.ts
-var resolveSignalLike = (s, host, target) => isString(s) ? host.getSignal(s).get() : isSignal(s) ? s.get() : isFunction2(s) ? s(target) : RESET;
+var resolveSignalLike = (s, host, target) => isString(s) ? host.getSignal(s).get() : isSignal(s) ? s.get() : isFunction(s) ? s(target) : RESET;
 var isSafeURL = (value) => {
   if (/^(mailto|tel):/i.test(value))
     return true;
@@ -757,7 +762,7 @@ var insertOrRemoveElement = (s, inserter) => (host, target) => {
   const ok = (verb) => () => {
     if (DEV_MODE && host.debug)
       log(target, `${verb} element in ${elementName(target)} in ${elementName(host)}`);
-    if (isFunction2(inserter?.resolve)) {
+    if (isFunction(inserter?.resolve)) {
       inserter.resolve(target);
     } else {
       const signal = isSignal(s) ? s : isString(s) ? host.getSignal(s) : undefined;

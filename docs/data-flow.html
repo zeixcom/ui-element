@@ -119,7 +119,7 @@
 </ul>
 </li>
 <li><code>InputButton</code> <strong>(Child)</strong>:<ul>
-<li>Displays a <strong>badge</strong> in the top-right corner when the <code>&#39;badge&#39;</code> signal is set.</li>
+<li>Displays a <strong>badge</strong> in the top-right corner when the <code>badge</code> property is set.</li>
 <li><strong>Does not track any state</strong> – it simply renders whatever value is passed to it.</li>
 </ul>
 </li>
@@ -136,7 +136,7 @@
 		                <span class="permalink">🔗</span>
 	                </a>
 	                Parent Component: ProductCatalog
-	            </h3><p>The <strong>parent component (<code>ProductCatalog</code>) knows about its children</strong>, meaning it can <strong>observe and pass state</strong> to them.</p>
+	            </h3><p>The <strong>parent component (<code>ProductCatalog</code>) knows about its children</strong>, meaning it can <strong>retrieve state from and pass state to</strong> them.</p>
 <p>First, we need to observe the quantities of all <code>SpinButton</code> components. For this, we create a signal of all children matching the <code>spin-button</code> selector:</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
@@ -144,7 +144,10 @@
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"product-catalog"</span><span style="color:#F8F8F2">, {</span></span>
-<span class="line"><span style="color:#A6E22E">	quantities</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> selection</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">"spin-button"</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">	total</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#A6E22E">		selection</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">"spin-button"</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">reduce</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F;font-style:italic">sum</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">item</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> sum </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> item.value, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#F8F8F2">}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> []);</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
@@ -155,19 +158,22 @@
 	
 </code-block>
 <p>The <code>selection()</code> function returns a signal that emits an array of all matching elements. In contrast to a static <code>querySelectorAll()</code> call, the <code>selection()</code> function is reactive and updates whenever new elements are added or removed from the DOM.</p>
-<p>Then, we need to calculate the total of all product quantities and pass it on to the <code>InputButton</code> component. As states in UIElement are accessed through normal properties we use the <code>setProperty()</code> effect to send values to child components:</p>
+<p>Then, we need to calculate the total of all product quantities and pass it on to the <code>InputButton</code> component. In UIElement we use the <code>pass()</code> function to share state across components:</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"product-catalog"</span><span style="color:#F8F8F2">, {</span></span>
-<span class="line"><span style="color:#A6E22E">	quantities</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> selection</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">"spin-button"</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">	total</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#A6E22E">		selection</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">"spin-button"</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">reduce</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F;font-style:italic">sum</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">item</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> sum </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> item.value, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#F8F8F2">}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"input-button"</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">		setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"badge"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.quantities.</span><span style="color:#A6E22E">reduce</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F;font-style:italic">sum</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">item</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> sum </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> item.value, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">);</span></span>
-<span class="line"><span style="color:#F92672">			return</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">></span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> ?</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(total) </span><span style="color:#F92672">:</span><span style="color:#E6DB74"> ""</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#A6E22E">		pass</span><span style="color:#F8F8F2">({</span></span>
+<span class="line"><span style="color:#A6E22E">			badge</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (el.total </span><span style="color:#F92672">></span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> ?</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(el.total) </span><span style="color:#F92672">:</span><span style="color:#E6DB74"> ""</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">			disabled</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.total,</span></span>
 <span class="line"><span style="color:#F8F8F2">		}),</span></span>
 <span class="line"><span style="color:#F8F8F2">	),</span></span>
 <span class="line"><span style="color:#F8F8F2">]);</span></span>
@@ -211,7 +217,7 @@
 </code-block>
 <ul>
 <li>✅ Whenever the <code>badge</code> property is updated by a parent component, the badge text updates.</li>
-<li>✅ If badge is an empty string, the badge is hidden (via CSS).</li>
+<li>✅ If <code>badge</code> is an empty string, the badge indicator is hidden (via CSS).</li>
 </ul>
 
 	            <h3 id="childcomponent-spinbutton">
@@ -290,8 +296,8 @@
 		<product-catalog>
 			<header>
 				<p>Shop</p>
-				<input-button>
-					<button type="button">
+				<input-button disabled>
+					<button type="button" disabled>
 						<span class="label">🛒 Shopping Cart</span>
 						<span class="badge"></span>
 					</button>
@@ -363,13 +369,13 @@
 <ul>
 <li><code>TodoApp</code> <strong>(Parent)</strong>:<ul>
 <li>Holds the list of todos as a state signal.</li>
-<li>Listens for an <code>&#39;add-todo&#39;</code> event from the child (<code>TodoForm</code>).</li>
+<li>Listens for an <code>add-todo</code> event from the child (<code>TodoForm</code>).</li>
 <li>Updates the state when a new todo is submitted.</li>
 </ul>
 </li>
 <li><code>TodoForm</code> <strong>(Child)</strong>:<ul>
 <li>Handles <strong>user input</strong> but does <strong>not</strong> store todos.</li>
-<li>Emits an <code>&#39;add-todo&#39;</code> event when the user submits the form.</li>
+<li>Emits an <code>add-todo</code> event when the user submits the form.</li>
 <li>Lets the parent decide <strong>what to do with the data</strong>.</li>
 </ul>
 </li>
@@ -381,7 +387,7 @@
 	                </a>
 	                Why use events here?
 	            </h3><ul>
-<li>The child <strong>doesn’t need to know where the data goes</strong> – it just <strong>emits an event</strong>.</li>
+<li>The child <strong>doesn&#39;t need to know where the data goes</strong> – it just <strong>emits an event</strong>.</li>
 <li>The parent <strong>decides what to do</strong> with the new todo (e.g., adding it to a list).</li>
 <li>This keeps <code>TodoForm</code> <strong>reusable</strong> – it could work in different apps without modification.</li>
 </ul>

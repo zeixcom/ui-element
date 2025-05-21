@@ -1,4 +1,4 @@
-import { type MaybeSignal, type Signal } from "@zeix/cause-effect";
+import { type MaybeSignal, type Signal } from '@zeix/cause-effect';
 type ReservedWords = 'constructor' | 'prototype' | '__proto__' | 'toString' | 'valueOf' | 'hasOwnProperty' | 'isPrototypeOf' | 'propertyIsEnumerable' | 'toLocaleString';
 type ValidPropertyKey<T> = T extends keyof HTMLElement | ReservedWords ? never : T;
 type ComponentProps = {
@@ -31,4 +31,4 @@ declare const RESET: any;
  * @returns {typeof HTMLElement & P} - constructor function for the custom element
  */
 declare const component: <P extends ComponentProps>(name: string, init: { [K in keyof P]: Initializer<Component<P>, P[K]>; } | undefined, setup: (host: Component<P>) => FxFunction<P, Component<P>>[]) => Component<P>;
-export { type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords, type Initializer, type AttributeParser, type SignalProducer, type MethodProducer, type Cleanup, type FxFunction, RESET, component };
+export { type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords, type Initializer, type AttributeParser, type SignalProducer, type MethodProducer, type Cleanup, type FxFunction, RESET, component, };

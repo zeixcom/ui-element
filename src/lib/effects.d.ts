@@ -1,7 +1,7 @@
-import { type Signal } from "@zeix/cause-effect";
-import { type ComponentProps, type Component, type Cleanup } from "../component";
+import { type Signal } from '@zeix/cause-effect';
+import { type ComponentProps, type Component, type Cleanup } from '../component';
 type SignalLike<P extends ComponentProps, E extends Element, T> = keyof P | Signal<NonNullable<T>> | ((element: E) => T | null | undefined);
-type UpdateOperation = "a" | "c" | "h" | "p" | "s" | "t";
+type UpdateOperation = 'a' | 'c' | 'h' | 'p' | 's' | 't';
 type ElementUpdater<E extends Element, T> = {
     op: UpdateOperation;
     read: (element: E) => T | null;
