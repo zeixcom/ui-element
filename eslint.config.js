@@ -5,6 +5,9 @@ import tseslint from "typescript-eslint";
 /** @type {import('eslint').Linter.Config[]} */
 export default [
 	{
+		ignores: ["index.js", "docs/assets/main.js", "**/*.min.js"],
+	},
+	{
 		files: ["**/*.{js,mjs,cjs,ts}"],
 	},
 	{ languageOptions: { globals: globals.browser } },

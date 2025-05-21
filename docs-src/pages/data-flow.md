@@ -21,7 +21,7 @@ Let's consider a **product catalog** where users can add items to a shopping car
 	- **Tracks all `SpinButton` components** in its subtree and calculates the total count of items in the shopping cart.
 	- **Passes that total** to a `InputButton`.
 * `InputButton` **(Child)**:
-	- Displays a **badge** in the top-right corner when the `'badge'` signal is set.
+	- Displays a **badge** in the top-right corner when the `badge` property is set.
 	- **Does not track any state** – it simply renders whatever value is passed to it.
 * `SpinButton` **(Child)**:
 	- Displays an **Add to Cart** button initially.
@@ -32,28 +32,34 @@ So `ProductCatalog` **coordinates the data flow between them**.
 
 ### Parent Component: ProductCatalog
 
-The **parent component (`ProductCatalog`) knows about its children**, meaning it can **observe and pass state** to them.
+The **parent component (`ProductCatalog`) knows about its children**, meaning it can **retrieve state from and pass state to** them.
 
 First, we need to observe the quantities of all `SpinButton` components. For this, we create a signal of all children matching the `spin-button` selector:
 
 ```js
 component("product-catalog", {
-	quantities: (el) => selection(el, "spin-button"),
+	total: (el) => () =>
+		selection(el, "spin-button")
+			.get()
+			.reduce((sum, item) => sum + item.value, 0),
 }, () => []);
 ```
 
 The `selection()` function returns a signal that emits an array of all matching elements. In contrast to a static `querySelectorAll()` call, the `selection()` function is reactive and updates whenever new elements are added or removed from the DOM.
 
-Then, we need to calculate the total of all product quantities and pass it on to the `InputButton` component. As states in UIElement are accessed through normal properties we use the `setProperty()` effect to send values to child components:
+Then, we need to calculate the total of all product quantities and pass it on to the `InputButton` component. In UIElement we use the `pass()` function to share state across components:
 
 ```js
 component("product-catalog", {
-	quantities: (el) => selection(el, "spin-button"),
+	total: (el) => () =>
+		selection(el, "spin-button")
+			.get()
+			.reduce((sum, item) => sum + item.value, 0),
 }, (el) => [
 	first("input-button",
-		setProperty("badge", () => {
-			const total = el.quantities.reduce((sum, item) => sum + item.value, 0);
-			return total > 0 ? String(total) : "";
+		pass({
+			badge: () => (el.total > 0 ? String(el.total) : ""),
+			disabled: () => !el.total,
 		}),
 	),
 ]);
@@ -77,7 +83,7 @@ component("input-button", {
 ```
 
 * ✅ Whenever the `badge` property is updated by a parent component, the badge text updates.
-* ✅ If badge is an empty string, the badge is hidden (via CSS).
+* ✅ If `badge` is an empty string, the badge indicator is hidden (via CSS).
 
 ### ChildComponent: SpinButton
 
@@ -139,8 +145,8 @@ Here's how everything comes together:
 		<product-catalog>
 			<header>
 				<p>Shop</p>
-				<input-button>
-					<button type="button">
+				<input-button disabled>
+					<button type="button" disabled>
 						<span class="label">🛒 Shopping Cart</span>
 						<span class="badge"></span>
 					</button>
@@ -209,16 +215,16 @@ Let's consider a Todo App, where users can add tasks:
 
 * `TodoApp` **(Parent)**:
 	- Holds the list of todos as a state signal.
-	- Listens for an `'add-todo'` event from the child (`TodoForm`).
+	- Listens for an `add-todo` event from the child (`TodoForm`).
 	- Updates the state when a new todo is submitted.
 * `TodoForm` **(Child)**:
 	- Handles **user input** but does **not** store todos.
-	- Emits an `'add-todo'` event when the user submits the form.
+	- Emits an `add-todo` event when the user submits the form.
 	- Lets the parent decide **what to do with the data**.
 
 ### Why use events here?
 
-* The child **doesn’t need to know where the data goes** – it just **emits an event**.
+* The child **doesn't need to know where the data goes** – it just **emits an event**.
 * The parent **decides what to do** with the new todo (e.g., adding it to a list).
 * This keeps `TodoForm` **reusable** – it could work in different apps without modification.
 

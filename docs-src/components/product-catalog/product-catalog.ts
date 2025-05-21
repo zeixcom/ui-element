@@ -4,33 +4,29 @@ import {
 	component,
 	first,
 	selection,
-	setProperty,
+	pass,
 } from "../../../";
 import { SpinButtonProps } from "../spin-button/spin-button";
-import { InputButtonProps } from "../input-button/input-button";
 
 export type ProductCatalogProps = {
-	quantities: Component<SpinButtonProps>[];
+	total: number;
 };
 
 export default component(
 	"product-catalog",
 	{
-		quantities: ((el) =>
-			selection<Component<SpinButtonProps>>(
-				el,
-				"spin-button",
-			)) as SignalProducer<HTMLElement, Component<SpinButtonProps>[]>,
+		total: ((el) => () =>
+			selection<Component<SpinButtonProps>>(el, "spin-button")
+				.get()
+				.reduce((sum, item) => sum + item.value, 0)
+		) as SignalProducer<HTMLElement, number>,
 	},
 	(el) => [
-		first<ProductCatalogProps, Component<InputButtonProps>>(
+		first(
 			"input-button",
-			setProperty("badge", () => {
-				const total = el.quantities.reduce(
-					(sum, item) => sum + item.value,
-					0,
-				);
-				return total > 0 ? String(total) : "";
+			pass({
+				badge: () => (el.total > 0 ? String(el.total) : ""),
+				disabled: () => !el.total,
 			}),
 		),
 	],

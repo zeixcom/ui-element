@@ -5,47 +5,41 @@ import {
 	isSignal,
 	isState,
 	UNSET,
-} from "@zeix/cause-effect";
+} from '@zeix/cause-effect'
+import { isFunction } from '@zeix/cause-effect/src/util'
 
-import { isFunction, isString } from "../core/util";
 import {
 	type ComponentProps,
 	type Component,
 	RESET,
 	type Cleanup,
-} from "../component";
-import {
-	DEV_MODE,
-	elementName,
-	log,
-	LOG_ERROR,
-	valueString,
-} from "../core/log";
+} from '../component'
+import { DEV_MODE, isString, elementName, log, LOG_ERROR, valueString } from '../core/util'
 
 /* === Types === */
 
 type SignalLike<P extends ComponentProps, E extends Element, T> =
 	| keyof P
 	| Signal<NonNullable<T>>
-	| ((element: E) => T | null | undefined);
+	| ((element: E) => T | null | undefined)
 
-type UpdateOperation = "a" | "c" | "h" | "p" | "s" | "t";
+type UpdateOperation = 'a' | 'c' | 'h' | 'p' | 's' | 't'
 
 type ElementUpdater<E extends Element, T> = {
-	op: UpdateOperation;
-	read: (element: E) => T | null;
-	update: (element: E, value: T) => string;
-	delete?: (element: E) => string;
-	resolve?: (element: E) => void;
-	reject?: (error: unknown) => void;
-};
+	op: UpdateOperation
+	read: (element: E) => T | null
+	update: (element: E, value: T) => string
+	delete?: (element: E) => string
+	resolve?: (element: E) => void
+	reject?: (error: unknown) => void
+}
 
 type ElementInserter<E extends Element> = {
-	position?: InsertPosition;
-	create: (parent: E) => Element | null;
-	resolve?: (parent: E) => void;
-	reject?: (error: unknown) => void;
-};
+	position?: InsertPosition
+	create: (parent: E) => Element | null
+	resolve?: (parent: E) => void
+	reject?: (error: unknown) => void
+}
 
 /* === Internal === */
 
@@ -64,31 +58,31 @@ const resolveSignalLike = /*#__PURE__*/ <
 			? s.get()
 			: isFunction<T>(s)
 				? s(target)
-				: RESET;
+				: RESET
 
 const isSafeURL = /*#__PURE__*/ (value: string): boolean => {
-	if (/^(mailto|tel):/i.test(value)) return true;
-	if (value.includes("://")) {
+	if (/^(mailto|tel):/i.test(value)) return true
+	if (value.includes('://')) {
 		try {
-			const url = new URL(value, window.location.origin);
-			return ["http:", "https:", "ftp:"].includes(url.protocol);
+			const url = new URL(value, window.location.origin)
+			return ['http:', 'https:', 'ftp:'].includes(url.protocol)
 		} catch (_error) {
-			return false;
+			return false
 		}
 	}
-	return true;
-};
+	return true
+}
 
 const safeSetAttribute = /*#__PURE__*/ (
 	element: Element,
 	attr: string,
 	value: string,
 ): void => {
-	if (/^on/i.test(attr)) throw new Error(`Unsafe attribute: ${attr}`);
-	value = String(value).trim();
-	if (!isSafeURL(value)) throw new Error(`Unsafe URL for ${attr}: ${value}`);
-	element.setAttribute(attr, value);
-};
+	if (/^on/i.test(attr)) throw new Error(`Unsafe attribute: ${attr}`)
+	value = String(value).trim()
+	if (!isSafeURL(value)) throw new Error(`Unsafe URL for ${attr}: ${value}`)
+	element.setAttribute(attr, value)
+}
 
 /* === Exported Functions === */
 
@@ -105,77 +99,77 @@ const updateElement =
 		updater: ElementUpdater<E, T>,
 	) =>
 	(host: Component<P>, target: E): Cleanup => {
-		const { op, read, update } = updater;
-		const fallback = read(target);
+		const { op, read, update } = updater
+		const fallback = read(target)
 		const ops: Record<string, string> = {
-			a: "attribute ",
-			c: "class ",
-			h: "inner HTML",
-			p: "property ",
-			s: "style property ",
-			t: "text content",
-		};
-		let name: string = "";
+			a: 'attribute ',
+			c: 'class ',
+			h: 'inner HTML',
+			p: 'property ',
+			s: 'style property ',
+			t: 'text content',
+		}
+		let name: string = ''
 
 		// If not yet set, set signal value to value read from DOM
 		if (isString(s) && isString(fallback) && host[s] === RESET)
-			host.attributeChangedCallback(s, null, fallback);
+			host.attributeChangedCallback(s, null, fallback)
 
 		const ok = (verb: string) => () => {
 			if (DEV_MODE && host.debug)
 				log(
 					target,
 					`${verb} ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`,
-				);
-			updater.resolve?.(target);
-		};
+				)
+			updater.resolve?.(target)
+		}
 		const err = (verb: string) => (error: unknown) => {
 			log(
 				error,
 				`Failed to ${verb} ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`,
 				LOG_ERROR,
-			);
-			updater.reject?.(error);
-		};
+			)
+			updater.reject?.(error)
+		}
 
 		// Update the element's DOM state according to the signal value
 		return effect(() => {
-			let value = RESET;
+			let value = RESET
 			try {
-				value = resolveSignalLike(s, host, target);
+				value = resolveSignalLike(s, host, target)
 			} catch (error) {
 				log(
 					error,
 					`Failed to resolve value of ${valueString(s)} for ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`,
 					LOG_ERROR,
-				);
-				return;
+				)
+				return
 			}
-			if (value === RESET) value = fallback;
-			else if (value === UNSET) value = updater.delete ? null : fallback;
+			if (value === RESET) value = fallback
+			else if (value === UNSET) value = updater.delete ? null : fallback
 
 			// Nil path => delete the attribute or style property of the element
 			if (updater.delete && value === null) {
 				enqueue(() => {
-					name = updater.delete!(target);
-					return true;
+					name = updater.delete!(target)
+					return true
 				}, [target, op])
-					.then(ok("Deleted"))
-					.catch(err("delete"));
+					.then(ok('Deleted'))
+					.catch(err('delete'))
 
 				// Ok path => update the element
 			} else if (value != null) {
-				const current = read(target);
-				if (Object.is(value, current)) return;
+				const current = read(target)
+				if (Object.is(value, current)) return
 				enqueue(() => {
-					name = update(target, value);
-					return true;
+					name = update(target, value)
+					return true
 				}, [target, op])
-					.then(ok("Updated"))
-					.catch(err("update"));
+					.then(ok('Updated'))
+					.catch(err('update'))
 			}
-		});
-	};
+		})
+	}
 
 /**
  * Effect for inserting or removing elements according to a given SignalLike
@@ -195,80 +189,80 @@ const insertOrRemoveElement =
 				log(
 					target,
 					`${verb} element in ${elementName(target)} in ${elementName(host)}`,
-				);
+				)
 			if (isFunction(inserter?.resolve)) {
-				inserter.resolve(target);
+				inserter.resolve(target)
 			} else {
 				const signal = isSignal(s)
 					? s
 					: isString(s)
 						? host.getSignal(s)
-						: undefined;
-				if (isState<number>(signal)) signal.set(0);
+						: undefined
+				if (isState<number>(signal)) signal.set(0)
 			}
-		};
+		}
 		const err = (verb: string) => (error: unknown) => {
 			log(
 				error,
 				`Failed to ${verb} element in ${elementName(target)} in ${elementName(host)}`,
 				LOG_ERROR,
-			);
-			inserter?.reject?.(error);
-		};
+			)
+			inserter?.reject?.(error)
+		}
 
 		return effect(() => {
-			let diff = 0;
+			let diff = 0
 			try {
-				diff = resolveSignalLike(s, host, target);
+				diff = resolveSignalLike(s, host, target)
 			} catch (error) {
 				log(
 					error,
 					`Failed to resolve value of ${valueString(s)} for insertion or deletion in ${elementName(target)} in ${elementName(host)}`,
 					LOG_ERROR,
-				);
-				return;
+				)
+				return
 			}
-			if (diff === RESET) diff = 0;
+			if (diff === RESET) diff = 0
 
 			if (diff > 0) {
 				// Positive diff => insert element
-				if (!inserter) throw new TypeError(`No inserter provided`);
+				if (!inserter) throw new TypeError(`No inserter provided`)
 				enqueue(() => {
 					for (let i = 0; i < diff; i++) {
-						const element = inserter.create(target);
-						if (!element) continue;
+						const element = inserter.create(target)
+						if (!element) continue
 						target.insertAdjacentElement(
-							inserter.position ?? "beforeend",
+							inserter.position ?? 'beforeend',
 							element,
-						);
+						)
 					}
-					return true;
-				}, [target, "i"])
-					.then(ok("Inserted"))
-					.catch(err("insert"));
+					return true
+				}, [target, 'i'])
+					.then(ok('Inserted'))
+					.catch(err('insert'))
 			} else if (diff < 0) {
 				// Negative diff => remove element
 				enqueue(() => {
 					if (
 						inserter &&
-						(inserter.position === "afterbegin" ||
-							inserter.position === "beforeend")
+						(inserter.position === 'afterbegin' ||
+							inserter.position === 'beforeend')
 					) {
 						for (let i = 0; i > diff; i--) {
-							if (inserter.position === "afterbegin")
-								target.firstElementChild?.remove();
-							else target.lastElementChild?.remove();
+							if (inserter.position === 'afterbegin')
+								target.firstElementChild?.remove()
+							else target.lastElementChild?.remove()
 						}
 					} else {
-						target.remove();
+						target.remove()
 					}
-					return true;
-				}, [target, "r"])
-					.then(ok("Removed"))
-					.catch(err("remove"));
+					return true
+				}, [target, 'r'])
+					.then(ok('Removed'))
+					.catch(err('remove'))
 			}
-		});
-	};
+		})
+	}
 
 /**
  * Set text content of an element
@@ -280,16 +274,16 @@ const setText = <P extends ComponentProps, E extends Element>(
 	s: SignalLike<P, E, string>,
 ) =>
 	updateElement(s, {
-		op: "t",
+		op: 't',
 		read: (el: E): string | null => el.textContent,
 		update: (el: E, value: string): string => {
 			Array.from(el.childNodes)
-				.filter((node) => node.nodeType !== Node.COMMENT_NODE)
-				.forEach((node) => node.remove());
-			el.append(document.createTextNode(value));
-			return "";
+				.filter(node => node.nodeType !== Node.COMMENT_NODE)
+				.forEach(node => node.remove())
+			el.append(document.createTextNode(value))
+			return ''
 		},
-	});
+	})
 
 /**
  * Set property of an element
@@ -307,13 +301,13 @@ const setProperty = <
 	s: SignalLike<P, E, E[K]> = key as SignalLike<P, E, E[K]>,
 ) =>
 	updateElement(s, {
-		op: "p",
+		op: 'p',
 		read: (el: E) => (key in el ? el[key] : UNSET),
 		update: (el: E, value: E[K]): string => {
-			el[key] = value;
-			return String(key);
+			el[key] = value
+			return String(key)
 		},
-	});
+	})
 
 /**
  * Set attribute of an element
@@ -327,17 +321,17 @@ const setAttribute = <P extends ComponentProps, E extends Element>(
 	s: SignalLike<P, E, string> = name,
 ) =>
 	updateElement(s, {
-		op: "a",
+		op: 'a',
 		read: (el: E): string | null => el.getAttribute(name),
 		update: (el: E, value: string): string => {
-			safeSetAttribute(el, name, value);
-			return name;
+			safeSetAttribute(el, name, value)
+			return name
 		},
 		delete: (el: E): string => {
-			el.removeAttribute(name);
-			return name;
+			el.removeAttribute(name)
+			return name
 		},
-	});
+	})
 
 /**
  * Toggle a boolan attribute of an element
@@ -351,13 +345,13 @@ const toggleAttribute = <P extends ComponentProps, E extends Element>(
 	s: SignalLike<P, E, boolean> = name,
 ) =>
 	updateElement(s, {
-		op: "a",
+		op: 'a',
 		read: (el: E): boolean => el.hasAttribute(name),
 		update: (el: E, value: boolean): string => {
-			el.toggleAttribute(name, value);
-			return name;
+			el.toggleAttribute(name, value)
+			return name
 		},
-	});
+	})
 
 /**
  * Toggle a classList token of an element
@@ -371,13 +365,13 @@ const toggleClass = <P extends ComponentProps, E extends Element>(
 	s: SignalLike<P, E, boolean> = token,
 ) =>
 	updateElement(s, {
-		op: "c",
+		op: 'c',
 		read: (el: E): boolean => el.classList.contains(token),
 		update: (el: E, value: boolean): string => {
-			el.classList.toggle(token, value);
-			return token;
+			el.classList.toggle(token, value)
+			return token
 		},
-	});
+	})
 
 /**
  * Set a style property of an element
@@ -394,17 +388,17 @@ const setStyle = <
 	s: SignalLike<P, E, string> = prop,
 ) =>
 	updateElement(s, {
-		op: "s",
+		op: 's',
 		read: (el: E): string | null => el.style.getPropertyValue(prop),
 		update: (el: E, value: string): string => {
-			el.style.setProperty(prop, value);
-			return prop;
+			el.style.setProperty(prop, value)
+			return prop
 		},
 		delete: (el: E): string => {
-			el.style.removeProperty(prop);
-			return prop;
+			el.style.removeProperty(prop)
+			return prop
 		},
-	});
+	})
 
 /**
  * Set inner HTML of an element
@@ -416,34 +410,34 @@ const setStyle = <
  */
 const dangerouslySetInnerHTML = <P extends ComponentProps, E extends Element>(
 	s: SignalLike<P, E, string>,
-	attachShadow?: "open" | "closed",
+	attachShadow?: 'open' | 'closed',
 	allowScripts?: boolean,
 ) =>
 	updateElement(s, {
-		op: "h",
+		op: 'h',
 		read: (el: E): string =>
-			(el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? "",
+			(el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? '',
 		update: (el: E, html: string): string => {
 			if (!html) {
-				if (el.shadowRoot) el.shadowRoot.innerHTML = "<slot></slot>";
-				return "";
+				if (el.shadowRoot) el.shadowRoot.innerHTML = '<slot></slot>'
+				return ''
 			}
 			if (attachShadow && !el.shadowRoot)
-				el.attachShadow({ mode: attachShadow });
-			const target = el.shadowRoot || el;
-			target.innerHTML = html;
-			if (!allowScripts) return "";
-			target.querySelectorAll("script").forEach((script) => {
-				const newScript = document.createElement("script");
+				el.attachShadow({ mode: attachShadow })
+			const target = el.shadowRoot || el
+			target.innerHTML = html
+			if (!allowScripts) return ''
+			target.querySelectorAll('script').forEach(script => {
+				const newScript = document.createElement('script')
 				newScript.appendChild(
-					document.createTextNode(script.textContent ?? ""),
-				);
-				target.appendChild(newScript);
-				script.remove();
-			});
-			return " with scripts";
+					document.createTextNode(script.textContent ?? ''),
+				)
+				target.appendChild(newScript)
+				script.remove()
+			})
+			return ' with scripts'
 		},
-	});
+	})
 
 /* === Exported Types === */
 
@@ -461,4 +455,4 @@ export {
 	toggleClass,
 	setStyle,
 	dangerouslySetInnerHTML,
-};
+}

@@ -1,5 +1,5 @@
-import { type Computed, type Signal } from "@zeix/cause-effect";
-import type { Cleanup, Component, ComponentProps, FxFunction } from "../component";
+import { type Computed, type Signal } from '@zeix/cause-effect';
+import type { Cleanup, Component, ComponentProps, FxFunction } from '../component';
 type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
     [K in keyof Q]?: Signal<Q[K]> | ((element: Component<Q>) => Q[K]) | keyof P;
 };
@@ -41,7 +41,7 @@ declare const selection: <E extends Element>(parent: ParentNode, selectors: stri
  *
  * @since 0.12.0
  * @param {string} type - event type to listen for
- * @param {EventListenerOrEventListenerObject | Provider<EventListenerOrEventListenerObject>} listener - event listener or provider function
+ * @param {(evt: E) => void} listener - event listener
  * @throws {TypeError} - if the provided handler is not an event listener or a provider function
  */
 declare const on: <E extends Event>(type: string, listener: (evt: E) => void) => <P extends ComponentProps>(host: Component<P>, target?: Element) => Cleanup;
@@ -50,17 +50,17 @@ declare const on: <E extends Event>(type: string, listener: (evt: E) => void) =>
  *
  * @since 0.12.0
  * @param {string} type - event type to emit
- * @param {T | Provider<T>} detail - event detail or provider function
+ * @param {T | ((element: Element) => T)} detail - event detail or provider function
  */
 declare const emit: <T>(type: string, detail: T | ((element: Element) => T)) => <P extends ComponentProps>(host: Component<P>, target?: Element) => void;
 /**
  * Pass signals to a custom element
  *
  * @since 0.12.0
- * @param {PassedSignals<P, Q>} signals - signals to be passed to the custom element
+ * @param {PassedSignals<P, Q> | ((target: Component<Q>) => PassedSignals<P, Q>)} signals - signals to be passed to the custom element
  * @throws {TypeError} - if the target element is not a custom element
  * @throws {TypeError} - if the provided signals are not an object or a provider function
  * @throws {Error} - if it fails to pass signals to the target element
  */
-declare const pass: <P extends ComponentProps, Q extends ComponentProps>(signals: PassedSignals<P, Q>) => <E extends Element>(host: Component<P>, target: E) => void;
+declare const pass: <P extends ComponentProps, Q extends ComponentProps>(signals: PassedSignals<P, Q> | ((target: Component<Q>) => PassedSignals<P, Q>)) => <E extends Element>(host: Component<P>, target: E) => void;
 export { type PassedSignals, run, first, all, selection, on, emit, pass };
