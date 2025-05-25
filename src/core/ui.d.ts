@@ -1,5 +1,5 @@
-import { type Computed, type Signal } from '@zeix/cause-effect';
-import type { Cleanup, Component, ComponentProps, FxFunction } from '../component';
+import { type Computed, type Signal, type Cleanup } from '@zeix/cause-effect';
+import type { Component, ComponentProps, FxFunction } from '../component';
 type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
     [K in keyof Q]?: Signal<Q[K]> | ((element: Component<Q>) => Q[K]) | keyof P;
 };

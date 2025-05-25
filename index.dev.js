@@ -1,11 +1,7 @@
 // node_modules/@zeix/cause-effect/src/util.ts
 var isFunction = (value) => typeof value === "function";
-var isAsyncFunction = (value) => isFunction(value) && value.constructor.name === "AsyncFunction";
 var isObjectOfType = (value, type) => Object.prototype.toString.call(value) === `[object ${type}]`;
-var isError = (value) => value instanceof Error;
-var isAbortError = (value) => value instanceof DOMException && value.name === "AbortError";
-var isPromise = (value) => value instanceof Promise;
-var toError = (reason) => isError(reason) ? reason : Error(String(reason));
+var toError = (reason) => reason instanceof Error ? reason : Error(String(reason));
 
 class CircularDependencyError extends Error {
   constructor(where) {
@@ -23,8 +19,8 @@ var updateDOM = () => {
   requestId = undefined;
   const updates = Array.from(updateMap.values());
   updateMap.clear();
-  for (const fn of updates) {
-    fn();
+  for (const update of updates) {
+    update();
   }
 };
 var requestTick = () => {
@@ -33,29 +29,43 @@ var requestTick = () => {
   requestId = requestAnimationFrame(updateDOM);
 };
 queueMicrotask(updateDOM);
+var watch = (notice) => {
+  const cleanups = new Set;
+  const w = notice;
+  w.off = (on) => {
+    cleanups.add(on);
+  };
+  w.cleanup = () => {
+    for (const cleanup of cleanups) {
+      cleanup();
+    }
+    cleanups.clear();
+  };
+  return w;
+};
 var subscribe = (watchers) => {
   if (active && !watchers.has(active)) {
     const watcher = active;
     watchers.add(watcher);
-    active.cleanups.add(() => {
+    active.off(() => {
       watchers.delete(watcher);
     });
   }
 };
 var notify = (watchers) => {
-  for (const mark of watchers) {
+  for (const watcher of watchers) {
     if (batchDepth)
-      pending.add(mark);
+      pending.add(watcher);
     else
-      mark();
+      watcher();
   }
 };
 var flush = () => {
   while (pending.size) {
     const watchers = Array.from(pending);
     pending.clear();
-    for (const mark of watchers) {
-      mark();
+    for (const watcher of watchers) {
+      watcher();
     }
   }
 };
@@ -68,9 +78,9 @@ var batch = (fn) => {
     batchDepth--;
   }
 };
-var watch = (run, mark) => {
+var observe = (run, watcher) => {
   const prev = active;
-  active = mark;
+  active = watcher;
   try {
     run();
   } finally {
@@ -78,7 +88,7 @@ var watch = (run, mark) => {
   }
 };
 var enqueue = (fn, dedupe) => new Promise((resolve, reject) => {
-  updateMap.set(dedupe, () => {
+  updateMap.set(dedupe || Symbol(), () => {
     try {
       resolve(fn());
     } catch (error) {
@@ -87,176 +97,6 @@ var enqueue = (fn, dedupe) => new Promise((resolve, reject) => {
   });
   requestTick();
 });
-
-// node_modules/@zeix/cause-effect/src/effect.ts
-function effect(matcher) {
-  const {
-    signals,
-    ok,
-    err = console.error,
-    nil = () => {
-    }
-  } = isFunction(matcher) ? { signals: [], ok: matcher } : matcher;
-  let running = false;
-  const run = () => watch(() => {
-    if (running)
-      throw new CircularDependencyError("effect");
-    running = true;
-    let cleanup = undefined;
-    try {
-      cleanup = match({
-        signals,
-        ok,
-        err,
-        nil
-      });
-    } catch (e) {
-      err(toError(e));
-    }
-    if (isFunction(cleanup))
-      run.cleanups.add(cleanup);
-    running = false;
-  }, run);
-  run.cleanups = new Set;
-  run();
-  return () => {
-    run.cleanups.forEach((fn) => fn());
-    run.cleanups.clear();
-  };
-}
-
-// node_modules/@zeix/cause-effect/src/computed.ts
-var TYPE_COMPUTED = "Computed";
-var isEquivalentError = (error1, error2) => {
-  if (!error2)
-    return false;
-  return error1.name === error2.name && error1.message === error2.message;
-};
-var computed = (matcher) => {
-  const watchers = new Set;
-  const m = isFunction(matcher) ? undefined : {
-    nil: () => UNSET,
-    err: (...errors) => {
-      if (errors.length > 1)
-        throw new AggregateError(errors);
-      else
-        throw errors[0];
-    },
-    ...matcher
-  };
-  const fn = m ? m.ok : matcher;
-  let value = UNSET;
-  let error;
-  let dirty = true;
-  let changed = false;
-  let computing = false;
-  let controller;
-  const ok = (v) => {
-    if (!Object.is(v, value)) {
-      value = v;
-      dirty = false;
-      error = undefined;
-      changed = true;
-    }
-  };
-  const nil = () => {
-    changed = UNSET !== value;
-    value = UNSET;
-    error = undefined;
-  };
-  const err = (e) => {
-    const newError = toError(e);
-    changed = !isEquivalentError(newError, error);
-    value = UNSET;
-    error = newError;
-  };
-  const resolve = (v) => {
-    computing = false;
-    controller = undefined;
-    ok(v);
-    if (changed)
-      notify(watchers);
-  };
-  const reject = (e) => {
-    computing = false;
-    controller = undefined;
-    err(e);
-    if (changed)
-      notify(watchers);
-  };
-  const abort = () => {
-    computing = false;
-    controller = undefined;
-    compute();
-  };
-  const mark = () => {
-    dirty = true;
-    controller?.abort("Aborted because source signal changed");
-    if (watchers.size) {
-      notify(watchers);
-    } else {
-      mark.cleanups.forEach((fn2) => fn2());
-      mark.cleanups.clear();
-    }
-  };
-  mark.cleanups = new Set;
-  const compute = () => watch(() => {
-    if (computing)
-      throw new CircularDependencyError("computed");
-    changed = false;
-    if (isAsyncFunction(fn)) {
-      if (controller)
-        return value;
-      controller = new AbortController;
-      if (m)
-        m.abort = m.abort instanceof AbortSignal ? AbortSignal.any([m.abort, controller.signal]) : controller.signal;
-      controller.signal.addEventListener("abort", abort, {
-        once: true
-      });
-    }
-    let result;
-    computing = true;
-    try {
-      result = m && m.signals.length ? match(m) : fn(controller?.signal);
-    } catch (e) {
-      if (isAbortError(e))
-        nil();
-      else
-        err(e);
-      computing = false;
-      return;
-    }
-    if (isPromise(result))
-      result.then(resolve, reject);
-    else if (result == null || UNSET === result)
-      nil();
-    else
-      ok(result);
-    computing = false;
-  }, mark);
-  const c = {
-    [Symbol.toStringTag]: TYPE_COMPUTED,
-    get: () => {
-      subscribe(watchers);
-      flush();
-      if (dirty)
-        compute();
-      if (error)
-        throw error;
-      return value;
-    },
-    map: (fn2) => computed({
-      signals: [c],
-      ok: fn2
-    }),
-    tap: (matcher2) => effect({
-      signals: [c],
-      ...isFunction(matcher2) ? { ok: matcher2 } : matcher2
-    })
-  };
-  return c;
-};
-var isComputed = (value) => isObjectOfType(value, TYPE_COMPUTED);
 
 // node_modules/@zeix/cause-effect/src/state.ts
 var TYPE_STATE = "State";
@@ -279,50 +119,154 @@ var state = (initialValue) => {
     },
     update: (fn) => {
       s.set(fn(value));
-    },
-    map: (fn) => computed({
-      signals: [s],
-      ok: fn
-    }),
-    tap: (matcher) => effect({
-      signals: [s],
-      ...isFunction(matcher) ? { ok: matcher } : matcher
-    })
+    }
   };
   return s;
 };
 var isState = (value) => isObjectOfType(value, TYPE_STATE);
 
+// node_modules/@zeix/cause-effect/src/computed.ts
+var TYPE_COMPUTED = "Computed";
+var computed = (fn) => {
+  const watchers = new Set;
+  let value = UNSET;
+  let error;
+  let controller;
+  let dirty = true;
+  let changed = false;
+  let computing = false;
+  const ok = (v) => {
+    if (!Object.is(v, value)) {
+      value = v;
+      changed = true;
+    }
+    error = undefined;
+    dirty = false;
+  };
+  const nil = () => {
+    changed = UNSET !== value;
+    value = UNSET;
+    error = undefined;
+  };
+  const err = (e) => {
+    const newError = toError(e);
+    changed = !error || newError.name !== error.name || newError.message !== error.message;
+    value = UNSET;
+    error = newError;
+  };
+  const settle = (settleFn) => (arg) => {
+    computing = false;
+    controller = undefined;
+    settleFn(arg);
+    if (changed)
+      notify(watchers);
+  };
+  const mark = watch(() => {
+    dirty = true;
+    controller?.abort("Aborted because source signal changed");
+    if (watchers.size)
+      notify(watchers);
+    else
+      mark.cleanup();
+  });
+  const compute = () => observe(() => {
+    if (computing)
+      throw new CircularDependencyError("computed");
+    changed = false;
+    if (isFunction(fn) && fn.constructor.name === "AsyncFunction") {
+      if (controller)
+        return value;
+      controller = new AbortController;
+      controller.signal.addEventListener("abort", () => {
+        computing = false;
+        controller = undefined;
+        compute();
+      }, {
+        once: true
+      });
+    }
+    let result;
+    computing = true;
+    try {
+      result = controller ? fn(controller.signal) : fn();
+    } catch (e) {
+      if (e instanceof DOMException && e.name === "AbortError")
+        nil();
+      else
+        err(e);
+      computing = false;
+      return;
+    }
+    if (result instanceof Promise)
+      result.then(settle(ok), settle(err));
+    else if (result == null || UNSET === result)
+      nil();
+    else
+      ok(result);
+    computing = false;
+  }, mark);
+  const c = {
+    [Symbol.toStringTag]: TYPE_COMPUTED,
+    get: () => {
+      subscribe(watchers);
+      flush();
+      if (dirty)
+        compute();
+      if (error)
+        throw error;
+      return value;
+    }
+  };
+  return c;
+};
+var isComputed = (value) => isObjectOfType(value, TYPE_COMPUTED);
+var isComputedCallback = (value) => isFunction(value) && value.length < 2;
+
 // node_modules/@zeix/cause-effect/src/signal.ts
 var UNSET = Symbol();
 var isSignal = (value) => isState(value) || isComputed(value);
-var isComputedCallback = (value) => isFunction(value) && value.length < 2;
 var toSignal = (value) => isSignal(value) ? value : isComputedCallback(value) ? computed(value) : state(value);
-var match = (matcher) => {
-  const { signals, abort, ok, err, nil } = matcher;
-  const errors = [];
-  let suspense = false;
-  const values = signals.map((signal) => {
-    try {
-      const value = signal.get();
-      if (value === UNSET)
-        suspense = true;
-      return value;
-    } catch (e) {
-      if (isAbortError(e))
-        throw e;
-      errors.push(toError(e));
+// node_modules/@zeix/cause-effect/src/effect.ts
+function effect(matcher) {
+  const {
+    signals,
+    ok,
+    err = console.error,
+    nil = () => {
     }
-  });
-  try {
-    return suspense ? nil(abort) : errors.length ? err(...errors) : ok(...values);
-  } catch (e) {
-    if (isAbortError(e))
-      throw e;
-    const error = toError(e);
-    return err(error);
-  }
-};
+  } = isFunction(matcher) ? { signals: [], ok: matcher } : matcher;
+  let running = false;
+  const run = watch(() => observe(() => {
+    if (running)
+      throw new CircularDependencyError("effect");
+    running = true;
+    const errors = [];
+    let pending2 = false;
+    const values = signals.map((signal) => {
+      try {
+        const value = signal.get();
+        if (value === UNSET)
+          pending2 = true;
+        return value;
+      } catch (e) {
+        errors.push(toError(e));
+        return UNSET;
+      }
+    });
+    let cleanup = undefined;
+    try {
+      cleanup = pending2 ? nil() : errors.length ? err(...errors) : ok(...values);
+    } catch (e) {
+      cleanup = err(toError(e));
+    } finally {
+      if (isFunction(cleanup))
+        run.off(cleanup);
+    }
+    running = false;
+  }, run));
+  run();
+  return () => run.cleanup();
+}
 // src/core/util.ts
 var DEV_MODE = true;
 var LOG_DEBUG = "debug";
@@ -457,7 +401,7 @@ var selection = (parent, selectors) => {
   let observer;
   let mutationDepth = 0;
   const MAX_MUTATION_DEPTH = 2;
-  const observe = () => {
+  const observe2 = () => {
     value = select();
     observer = observeSubtree(parent, selectors, () => {
       if (!watchers.size) {
@@ -484,20 +428,15 @@ var selection = (parent, selectors) => {
     });
   };
   const s = {
-    [Symbol.toStringTag]: "Computed",
+    [Symbol.toStringTag]: TYPE_COMPUTED,
     get: () => {
       subscribe(watchers);
       if (!watchers.size)
         value = select();
       else if (!observer)
-        observe();
+        observe2();
       return value;
-    },
-    map: (fn) => computed(() => fn(s.get())),
-    tap: (matcher) => effect({
-      signals: [s],
-      ...isFunction(matcher) ? { ok: matcher } : matcher
-    })
+    }
   };
   return s;
 };
@@ -708,7 +647,7 @@ var safeSetAttribute = (element, attr, value) => {
   element.setAttribute(attr, value);
 };
 var updateElement = (s, updater) => (host, target) => {
-  const { op, read, update } = updater;
+  const { op, name = "", read, update } = updater;
   const fallback = read(target);
   const ops = {
     a: "attribute ",
@@ -718,7 +657,6 @@ var updateElement = (s, updater) => (host, target) => {
     s: "style property ",
     t: "text content"
   };
-  let name = "";
   if (isString(s) && isString(fallback) && host[s] === RESET)
     host.attributeChangedCallback(s, null, fallback);
   const ok = (verb) => () => {
@@ -731,6 +669,8 @@ var updateElement = (s, updater) => (host, target) => {
     updater.reject?.(error);
   };
   return effect(() => {
+    const UPDATE_DEDUPE = Symbol(`${op}:${name}`);
+    const DELETE_DEDUPE = Symbol(`${op}-${name}`);
     let value = RESET;
     try {
       value = resolveSignalLike(s, host, target);
@@ -744,17 +684,17 @@ var updateElement = (s, updater) => (host, target) => {
       value = updater.delete ? null : fallback;
     if (updater.delete && value === null) {
       enqueue(() => {
-        name = updater.delete(target);
+        updater.delete(target);
         return true;
-      }, [target, op]).then(ok("Deleted")).catch(err("delete"));
+      }, DELETE_DEDUPE).then(ok("Deleted")).catch(err("delete"));
     } else if (value != null) {
       const current = read(target);
       if (Object.is(value, current))
         return;
       enqueue(() => {
-        name = update(target, value);
+        update(target, value);
         return true;
-      }, [target, op]).then(ok("Updated")).catch(err("update"));
+      }, UPDATE_DEDUPE).then(ok("Updated")).catch(err("update"));
     }
   });
 };
@@ -775,6 +715,8 @@ var insertOrRemoveElement = (s, inserter) => (host, target) => {
     inserter?.reject?.(error);
   };
   return effect(() => {
+    const INSERT_DEDUPE = Symbol("i");
+    const REMOVE_DEDUPE = Symbol("d");
     let diff = 0;
     try {
       diff = resolveSignalLike(s, host, target);
@@ -795,7 +737,7 @@ var insertOrRemoveElement = (s, inserter) => (host, target) => {
           target.insertAdjacentElement(inserter.position ?? "beforeend", element);
         }
         return true;
-      }, [target, "i"]).then(ok("Inserted")).catch(err("insert"));
+      }, INSERT_DEDUPE).then(ok("Inserted")).catch(err("insert"));
     } else if (diff < 0) {
       enqueue(() => {
         if (inserter && (inserter.position === "afterbegin" || inserter.position === "beforeend")) {
@@ -809,7 +751,7 @@ var insertOrRemoveElement = (s, inserter) => (host, target) => {
           target.remove();
         }
         return true;
-      }, [target, "r"]).then(ok("Removed")).catch(err("remove"));
+      }, REMOVE_DEDUPE).then(ok("Removed")).catch(err("remove"));
     }
   });
 };
@@ -819,55 +761,52 @@ var setText = (s) => updateElement(s, {
   update: (el, value) => {
     Array.from(el.childNodes).filter((node) => node.nodeType !== Node.COMMENT_NODE).forEach((node) => node.remove());
     el.append(document.createTextNode(value));
-    return "";
   }
 });
 var setProperty = (key, s = key) => updateElement(s, {
   op: "p",
+  name: String(key),
   read: (el) => (key in el) ? el[key] : UNSET,
   update: (el, value) => {
     el[key] = value;
-    return String(key);
   }
 });
 var setAttribute = (name, s = name) => updateElement(s, {
   op: "a",
+  name,
   read: (el) => el.getAttribute(name),
   update: (el, value) => {
     safeSetAttribute(el, name, value);
-    return name;
   },
   delete: (el) => {
     el.removeAttribute(name);
-    return name;
   }
 });
 var toggleAttribute = (name, s = name) => updateElement(s, {
   op: "a",
+  name,
   read: (el) => el.hasAttribute(name),
   update: (el, value) => {
     el.toggleAttribute(name, value);
-    return name;
   }
 });
 var toggleClass = (token, s = token) => updateElement(s, {
   op: "c",
+  name: token,
   read: (el) => el.classList.contains(token),
   update: (el, value) => {
     el.classList.toggle(token, value);
-    return token;
   }
 });
 var setStyle = (prop, s = prop) => updateElement(s, {
   op: "s",
+  name: prop,
   read: (el) => el.style.getPropertyValue(prop),
   update: (el, value) => {
     el.style.setProperty(prop, value);
-    return prop;
   },
   delete: (el) => {
     el.style.removeProperty(prop);
-    return prop;
   }
 });
 var dangerouslySetInnerHTML = (s, attachShadow, allowScripts) => updateElement(s, {
@@ -895,7 +834,6 @@ var dangerouslySetInnerHTML = (s, attachShadow, allowScripts) => updateElement(s
   }
 });
 export {
-  watch,
   updateElement,
   toggleClass,
   toggleAttribute,

@@ -1,6 +1,6 @@
 /**
  * @name UIElement
- * @version 0.12.2
+ * @version 0.12.3
  * @author Esther Brunner
  */
 
@@ -12,13 +12,12 @@ export {
 	type Computed,
 	type ComputedCallback,
 	type EffectMatcher,
-	type EnqueueDedupe,
+	type Cleanup,
 	UNSET,
 	state,
 	computed,
 	effect,
 	batch,
-	watch,
 	enqueue,
 	isState,
 	isComputed,
@@ -36,7 +35,6 @@ export {
 	type AttributeParser,
 	type SignalProducer,
 	type MethodProducer,
-	type Cleanup,
 	type FxFunction,
 	RESET,
 	component,

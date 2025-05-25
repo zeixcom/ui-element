@@ -1,12 +1,13 @@
-import { type Signal } from '@zeix/cause-effect';
-import { type ComponentProps, type Component, type Cleanup } from '../component';
+import { type Signal, type Cleanup } from '@zeix/cause-effect';
+import { type ComponentProps, type Component } from '../component';
 type SignalLike<P extends ComponentProps, E extends Element, T> = keyof P | Signal<NonNullable<T>> | ((element: E) => T | null | undefined);
 type UpdateOperation = 'a' | 'c' | 'h' | 'p' | 's' | 't';
 type ElementUpdater<E extends Element, T> = {
     op: UpdateOperation;
+    name?: string;
     read: (element: E) => T | null;
-    update: (element: E, value: T) => string;
-    delete?: (element: E) => string;
+    update: (element: E, value: T) => void;
+    delete?: (element: E) => void;
     resolve?: (element: E) => void;
     reject?: (error: unknown) => void;
 };
@@ -31,7 +32,7 @@ declare const updateElement: <P extends ComponentProps, E extends Element, T ext
  * @param {SignalLike<P, E, number>} s - state bound to the number of elements to insert (positive) or remove (negative)
  * @param {ElementInserter<E>} inserter - inserter object containing position, insert, and remove methods
  */
-declare const insertOrRemoveElement: <P extends ComponentProps, E extends Element>(s: SignalLike<P, E, number>, inserter?: ElementInserter<E>) => (host: Component<P>, target: E) => () => void;
+declare const insertOrRemoveElement: <P extends ComponentProps, E extends Element>(s: SignalLike<P, E, number>, inserter?: ElementInserter<E>) => (host: Component<P>, target: E) => Cleanup;
 /**
  * Set text content of an element
  *

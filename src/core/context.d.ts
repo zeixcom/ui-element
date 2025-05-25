@@ -1,4 +1,4 @@
-import type { Signal } from '@zeix/cause-effect';
+import { type Signal } from '@zeix/cause-effect';
 import { type Component, type ComponentProps } from '../component';
 /** @see https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md */
 /**
