@@ -1,18 +1,18 @@
 import {
 	type Signal,
+	type Cleanup,
+	isFunction,
 	effect,
 	enqueue,
 	isSignal,
 	isState,
 	UNSET,
 } from '@zeix/cause-effect'
-import { isFunction } from '@zeix/cause-effect/src/util'
 
 import {
 	type ComponentProps,
 	type Component,
 	RESET,
-	type Cleanup,
 } from '../component'
 import { DEV_MODE, isString, elementName, log, LOG_ERROR, valueString } from '../core/util'
 
@@ -27,9 +27,10 @@ type UpdateOperation = 'a' | 'c' | 'h' | 'p' | 's' | 't'
 
 type ElementUpdater<E extends Element, T> = {
 	op: UpdateOperation
+	name?: string
 	read: (element: E) => T | null
-	update: (element: E, value: T) => string
-	delete?: (element: E) => string
+	update: (element: E, value: T) => void
+	delete?: (element: E) => void
 	resolve?: (element: E) => void
 	reject?: (error: unknown) => void
 }
@@ -99,7 +100,7 @@ const updateElement =
 		updater: ElementUpdater<E, T>,
 	) =>
 	(host: Component<P>, target: E): Cleanup => {
-		const { op, read, update } = updater
+		const { op, name = '', read, update } = updater
 		const fallback = read(target)
 		const ops: Record<string, string> = {
 			a: 'attribute ',
@@ -109,7 +110,6 @@ const updateElement =
 			s: 'style property ',
 			t: 'text content',
 		}
-		let name: string = ''
 
 		// If not yet set, set signal value to value read from DOM
 		if (isString(s) && isString(fallback) && host[s] === RESET)
@@ -134,6 +134,8 @@ const updateElement =
 
 		// Update the element's DOM state according to the signal value
 		return effect(() => {
+			const UPDATE_DEDUPE = Symbol(`${op}:${name}`)
+			const DELETE_DEDUPE = Symbol(`${op}-${name}`)
 			let value = RESET
 			try {
 				value = resolveSignalLike(s, host, target)
@@ -151,9 +153,9 @@ const updateElement =
 			// Nil path => delete the attribute or style property of the element
 			if (updater.delete && value === null) {
 				enqueue(() => {
-					name = updater.delete!(target)
+					updater.delete!(target)
 					return true
-				}, [target, op])
+				}, DELETE_DEDUPE)
 					.then(ok('Deleted'))
 					.catch(err('delete'))
 
@@ -162,9 +164,9 @@ const updateElement =
 				const current = read(target)
 				if (Object.is(value, current)) return
 				enqueue(() => {
-					name = update(target, value)
+					update(target, value)
 					return true
-				}, [target, op])
+				}, UPDATE_DEDUPE)
 					.then(ok('Updated'))
 					.catch(err('update'))
 			}
@@ -211,6 +213,8 @@ const insertOrRemoveElement =
 		}
 
 		return effect(() => {
+			const INSERT_DEDUPE = Symbol('i')
+			const REMOVE_DEDUPE = Symbol('d')
 			let diff = 0
 			try {
 				diff = resolveSignalLike(s, host, target)
@@ -237,7 +241,7 @@ const insertOrRemoveElement =
 						)
 					}
 					return true
-				}, [target, 'i'])
+				}, INSERT_DEDUPE)
 					.then(ok('Inserted'))
 					.catch(err('insert'))
 			} else if (diff < 0) {
@@ -257,7 +261,7 @@ const insertOrRemoveElement =
 						target.remove()
 					}
 					return true
-				}, [target, 'r'])
+				}, REMOVE_DEDUPE)
 					.then(ok('Removed'))
 					.catch(err('remove'))
 			}
@@ -275,13 +279,12 @@ const setText = <P extends ComponentProps, E extends Element>(
 ) =>
 	updateElement(s, {
 		op: 't',
-		read: (el: E): string | null => el.textContent,
-		update: (el: E, value: string): string => {
+		read: (el) => el.textContent,
+		update: (el, value) => {
 			Array.from(el.childNodes)
 				.filter(node => node.nodeType !== Node.COMMENT_NODE)
 				.forEach(node => node.remove())
 			el.append(document.createTextNode(value))
-			return ''
 		},
 	})
 
@@ -302,10 +305,10 @@ const setProperty = <
 ) =>
 	updateElement(s, {
 		op: 'p',
-		read: (el: E) => (key in el ? el[key] : UNSET),
-		update: (el: E, value: E[K]): string => {
+		name: String(key),
+		read: (el) => (key in el ? el[key] : UNSET),
+		update: (el, value) => {
 			el[key] = value
-			return String(key)
 		},
 	})
 
@@ -322,14 +325,13 @@ const setAttribute = <P extends ComponentProps, E extends Element>(
 ) =>
 	updateElement(s, {
 		op: 'a',
-		read: (el: E): string | null => el.getAttribute(name),
-		update: (el: E, value: string): string => {
+		name,
+		read: (el) => el.getAttribute(name),
+		update: (el, value) => {
 			safeSetAttribute(el, name, value)
-			return name
 		},
-		delete: (el: E): string => {
+		delete: (el) => {
 			el.removeAttribute(name)
-			return name
 		},
 	})
 
@@ -346,10 +348,10 @@ const toggleAttribute = <P extends ComponentProps, E extends Element>(
 ) =>
 	updateElement(s, {
 		op: 'a',
-		read: (el: E): boolean => el.hasAttribute(name),
-		update: (el: E, value: boolean): string => {
+		name,
+		read: (el) => el.hasAttribute(name),
+		update: (el, value) => {
 			el.toggleAttribute(name, value)
-			return name
 		},
 	})
 
@@ -366,10 +368,10 @@ const toggleClass = <P extends ComponentProps, E extends Element>(
 ) =>
 	updateElement(s, {
 		op: 'c',
-		read: (el: E): boolean => el.classList.contains(token),
-		update: (el: E, value: boolean): string => {
+		name: token,
+		read: (el) => el.classList.contains(token),
+		update: (el, value) => {
 			el.classList.toggle(token, value)
-			return token
 		},
 	})
 
@@ -389,14 +391,13 @@ const setStyle = <
 ) =>
 	updateElement(s, {
 		op: 's',
-		read: (el: E): string | null => el.style.getPropertyValue(prop),
-		update: (el: E, value: string): string => {
+		name: prop,
+		read: (el) => el.style.getPropertyValue(prop),
+		update: (el, value) => {
 			el.style.setProperty(prop, value)
-			return prop
 		},
-		delete: (el: E): string => {
+		delete: (el) => {
 			el.style.removeProperty(prop)
-			return prop
 		},
 	})
 
@@ -415,9 +416,9 @@ const dangerouslySetInnerHTML = <P extends ComponentProps, E extends Element>(
 ) =>
 	updateElement(s, {
 		op: 'h',
-		read: (el: E): string =>
+		read: (el) =>
 			(el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? '',
-		update: (el: E, html: string): string => {
+		update: (el, html) => {
 			if (!html) {
 				if (el.shadowRoot) el.shadowRoot.innerHTML = '<slot></slot>'
 				return ''

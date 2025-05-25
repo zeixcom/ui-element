@@ -1,5 +1,4 @@
-import type { Signal } from '@zeix/cause-effect'
-import { isFunction } from '@zeix/cause-effect/src/util'
+import { type Signal, isFunction } from '@zeix/cause-effect'
 
 import { type Component, type ComponentProps } from '../component'
 

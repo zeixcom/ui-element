@@ -2,22 +2,17 @@ import {
 	type Computed,
 	type MaybeSignal,
 	type Signal,
-	computed,
-	effect,
-	toSignal,
-	UNSET,
-} from '@zeix/cause-effect'
-import { isFunction } from '@zeix/cause-effect/src/util'
-
-import {
 	type Watcher,
+	type Cleanup,
+	isFunction,
+	toSignal,
 	notify,
 	subscribe,
-} from '@zeix/cause-effect/src/scheduler'
-import type { EffectMatcher, TapMatcher } from '@zeix/cause-effect/src/effect'
+	UNSET,
+    TYPE_COMPUTED,
+} from '@zeix/cause-effect'
 
 import type {
-	Cleanup,
 	Component,
 	ComponentProps,
 	FxFunction,
@@ -276,7 +271,7 @@ const selection = <E extends Element>(
 	}
 
 	const s: Computed<E[]> = {
-		[Symbol.toStringTag]: 'Computed',
+		[Symbol.toStringTag]: TYPE_COMPUTED,
 
 		get: (): E[] => {
 			subscribe(watchers)
@@ -284,17 +279,6 @@ const selection = <E extends Element>(
 			else if (!observer) observe()
 			return value
 		},
-
-		map: <U extends {}>(fn: (v: E[]) => U | Promise<U>): Computed<U> =>
-			computed(() => fn(s.get())),
-
-		tap: (
-			matcher: TapMatcher<E[]> | ((v: E[]) => Cleanup | void),
-		): Cleanup =>
-			effect({
-				signals: [s],
-				...(isFunction(matcher) ? { ok: matcher } : matcher),
-			} as EffectMatcher<[Computed<E[]>]>),
 	}
 	return s
 }

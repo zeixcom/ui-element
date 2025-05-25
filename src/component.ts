@@ -1,13 +1,14 @@
 import {
 	type MaybeSignal,
 	type Signal,
+	type Cleanup,
 	UNSET,
+	isFunction,
 	isComputed,
 	isSignal,
 	isState,
 	toSignal,
 } from '@zeix/cause-effect'
-import { isFunction } from '@zeix/cause-effect/src/util'
 
 import { DEV_MODE, elementName, log, typeString, valueString } from './core/util'
 import { run } from './core/ui'
@@ -69,8 +70,6 @@ type Initializer<C extends HTMLElement, T extends {}> =
 	| AttributeParser<C, T>
 	| SignalProducer<C, T>
 	| MethodProducer<C>
-
-type Cleanup = () => void
 
 type FxFunction<P extends ComponentProps, E extends Element> = (
 	host: Component<P>,
@@ -282,7 +281,6 @@ export {
 	type AttributeParser,
 	type SignalProducer,
 	type MethodProducer,
-	type Cleanup,
 	type FxFunction,
 	RESET,
 	component,

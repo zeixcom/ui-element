@@ -1,6 +1,6 @@
 # UIElement
 
-Version 0.12.2
+Version 0.12.3
 
 **UIElement** - the HTML-first microframework bringing reactivity to Web Components.
 
@@ -341,3 +341,11 @@ component("lazy-load", {
     ),
 ]);
 ```
+
+## Contributing & License
+
+Feel free to contribute, report issues, or suggest improvements.
+
+License: [MIT](LICENSE)
+
+(c) 2025 [Zeix AG](https://zeix.com)
