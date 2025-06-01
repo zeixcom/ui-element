@@ -2,7 +2,6 @@ import {
 	type Component,
 	asString,
 	component,
-	first,
 	on,
 	setAttribute,
 	setProperty,
@@ -25,7 +24,7 @@ export default component(
 		error: "",
 		description: "",
 	},
-	(el) => {
+	(el, { first }) => {
 		const input = el.querySelector("input");
 		if (!input) throw new Error("No input element found");
 
@@ -50,7 +49,7 @@ export default component(
 					el.description && descriptionId ? descriptionId : UNSET,
 				),
 			),
-			first<InputTextProps, HTMLButtonElement>(
+			first<HTMLButtonElement>(
 				".clear",
 				on("click", () => {
 					el.value = "";

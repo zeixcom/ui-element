@@ -1,7 +1,6 @@
 import {
 	type Component,
 	component,
-	first,
 	on,
 	RESET,
 	setText,
@@ -16,7 +15,7 @@ export default component(
 	{
 		name: RESET,
 	},
-	(el) => [
+	(el, { first }) => [
 		first("span", setText("name")),
 		first(
 			"input",

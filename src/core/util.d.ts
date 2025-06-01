@@ -7,6 +7,13 @@ declare const LOG_ERROR: LogLevel;
 declare const isDefinedObject: (value: unknown) => value is Record<string, unknown>;
 declare const isString: (value: unknown) => value is string;
 /**
+ * Check if a node is an Element
+ *
+ * @param {Node} node - node to check
+ * @returns {boolean} - `true` if node is an element node, otherwise `false`
+ */
+declare const isElement: (node: Node) => node is Element;
+/**
  * Return a HyperScript string representation of the Element instance
  *
  * @since 0.7.0
@@ -41,4 +48,4 @@ declare const typeString: (value: unknown) => string;
  */
 declare const log: <T>(value: T, msg: string, level?: LogLevel) => T;
 declare const assert: (assertion: boolean, msg: string, ...rest: unknown[]) => boolean;
-export { type LogLevel, isString, isDefinedObject, log, assert, elementName, valueString, typeString, DEV_MODE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, };
+export { type LogLevel, isString, isDefinedObject, isElement, log, assert, elementName, valueString, typeString, DEV_MODE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, };

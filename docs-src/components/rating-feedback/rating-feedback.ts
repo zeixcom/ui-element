@@ -1,9 +1,6 @@
 import {
 	type Component,
-	type ComponentProps,
-	all,
 	component,
-	first,
 	on,
 	setProperty,
 	state,
@@ -11,7 +8,7 @@ import {
 import type { InputButtonProps } from "../input-button/input-button";
 import type { RatingStarsProps } from "../rating-stars/rating-stars";
 
-export default component("rating-feedback", {}, (el) => {
+export default component("rating-feedback", {}, (el, { all, first }) => {
 	const rating = state(0);
 	const empty = state(true);
 	const submitted = state(false);
@@ -51,17 +48,17 @@ export default component("rating-feedback", {}, (el) => {
 		),
 
 		// Effects on rating changes
-		first<ComponentProps, HTMLElement>(
+		first<HTMLElement>(
 			".feedback",
 			setProperty("hidden", () => submitted.get() || !rating.get()),
 		),
-		all<ComponentProps, HTMLElement>(
+		all<HTMLElement>(
 			".feedback p",
 			setProperty("hidden", hasDifferentKey),
 		),
 
 		// Effect on empty state
-		first<ComponentProps, Component<InputButtonProps>>(
+		first<Component<InputButtonProps>>(
 			"input-button",
 			setProperty("disabled", empty),
 		),

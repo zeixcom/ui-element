@@ -6,7 +6,6 @@ import {
 	setText,
 	dangerouslySetInnerHTML,
 	component,
-	first,
 } from "../../../";
 
 export type LazyLoadProps = {
@@ -70,9 +69,9 @@ export default component(
 		src: asURL,
 		content: fetchText,
 	},
-	(el) => [
+	(el, { first }) => [
 		dangerouslySetInnerHTML("content"),
-		first<LazyLoadProps, HTMLElement>(
+		first<HTMLElement>(
 			".error",
 			setText("error"),
 			setProperty("hidden", () => !el.error),

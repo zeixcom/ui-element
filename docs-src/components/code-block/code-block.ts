@@ -2,7 +2,6 @@ import {
 	type Component,
 	asBoolean,
 	component,
-	first,
 	on,
 	toggleAttribute,
 } from "../../../";
@@ -18,7 +17,7 @@ export default component(
 	{
 		collapsed: asBoolean,
 	},
-	(el) => {
+	(el, { first }) => {
 		const code = el.querySelector("code");
 		return [
 			toggleAttribute("collapsed"),

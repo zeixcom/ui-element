@@ -1,6 +1,5 @@
 import {
 	type Component,
-	all,
 	asString,
 	component,
 	on,
@@ -17,7 +16,7 @@ export default component(
 	{
 		value: asString(),
 	},
-	(el) => [
+	(el, { all }) => [
 		setAttribute("value"),
 		all(
 			"input",

@@ -10,8 +10,8 @@ import {
 	toSignal,
 } from '@zeix/cause-effect'
 
-import { DEV_MODE, elementName, log, typeString, valueString } from './core/util'
-import { run } from './core/ui'
+import { DEV_MODE, isElement, elementName, log, typeString, valueString } from './core/util'
+import { observeSubtree } from './core/dom'
 
 /* === Types === */
 
@@ -76,6 +76,11 @@ type FxFunction<P extends ComponentProps, E extends Element> = (
 	element: E,
 ) => Cleanup | void
 
+type SelectorFunctions<P extends ComponentProps> = {
+	first: <E extends Element>(selector: string, ...fns: FxFunction<P, E>[])  => (host: Component<P>) => Cleanup | void
+	all: <E extends Element>(selector: string, ...fns: FxFunction<P, E>[])  => (host: Component<P>) => Cleanup
+}
+
 /* === Constants === */
 
 // Special value explicitly marked as any so it can be used as signal value of any type
@@ -107,6 +112,97 @@ const isAttributeParser = <C extends HTMLElement, T extends {}>(
 const validatePropertyName = (prop: string): boolean =>
 	!(HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop))
 
+/**
+ * Run one or more functions on a component's element
+ *
+ * @since 0.12.0
+ * @param {FxFunction<P, E>[]} fns - functions to run
+ * @param {Component<P>} host - component host element
+ * @param {E} target - target element
+ * @returns {Cleanup} - a cleanup function that runs collected cleanup functions
+ */
+const run = <P extends ComponentProps, E extends Element = Component<P>>(
+	fns: FxFunction<P, E>[],
+	host: Component<P>,
+	target: E = host as unknown as E,
+): Cleanup => {
+	const cleanups = fns.filter(isFunction).map(fn => fn(host, target))
+	return () => {
+		cleanups.filter(isFunction).forEach(cleanup => cleanup())
+		cleanups.length = 0
+	}
+}
+
+/**
+ * Create partially applied helper functions to select sub-elements
+ *
+ * @since 0.13.0
+ * @returns {UI<P>} - helper functions for selecting sub-elements
+ */
+const select = <P extends ComponentProps>(): SelectorFunctions<P> => ({
+
+	/**
+	 * Apply effect functions to a first matching sub-element within the custom element
+	 *
+	 * @since 0.12.0
+	 * @param {string} selector - selector to match sub-element
+	 */
+	first:<E extends Element>(
+		selector: string,
+		...fns: FxFunction<P, E>[]
+	) => (host: Component<P>): Cleanup | void => {
+		const el = (host.shadowRoot || host).querySelector<E>(selector)
+		if (el) run(fns, host, el)
+	},
+
+	/**
+	 * Apply effect functions to all matching sub-elements within the custom element
+	 *
+	 * @since 0.12.0
+	 * @param {string} selector - selector to match sub-elements
+	 */
+	all: <E extends Element>(
+		selector: string,
+		...fns: FxFunction<P, E>[]
+	) => (host: Component<P>): Cleanup => {
+		const cleanups = new Map<E, Cleanup>()
+		const root = host.shadowRoot || host
+
+		const attach = (target: E) => {
+			if (!cleanups.has(target))
+				cleanups.set(target, run(fns, host, target))
+		}
+
+		const detach = (target: E) => {
+			const cleanup = cleanups.get(target)
+			if (isFunction(cleanup)) cleanup()
+			cleanups.delete(target)
+		}
+
+		const applyToMatching = (fn: (target: E) => void) => (node: Node) => {
+			if (isElement(node)) {
+				if (node.matches(selector)) fn(node as E)
+				node.querySelectorAll<E>(selector).forEach(fn)
+			}
+		}
+
+		const observer = observeSubtree(root, selector, mutations => {
+			for (const mutation of mutations) {
+				mutation.addedNodes.forEach(applyToMatching(attach))
+				mutation.removedNodes.forEach(applyToMatching(detach))
+			}
+		})
+
+		root.querySelectorAll<E>(selector).forEach(attach)
+
+		return () => {
+			observer.disconnect()
+			cleanups.forEach(cleanup => cleanup())
+			cleanups.clear()
+		}
+	},
+})
+
 /* === Exported Function === */
 
 /**
@@ -125,7 +221,7 @@ const component = <P extends ComponentProps>(
 	} = {} as {
 		[K in keyof P]: Initializer<Component<P>, P[K]>
 	},
-	setup: (host: Component<P>) => FxFunction<P, Component<P>>[],
+	setup: (host: Component<P>, select: SelectorFunctions<P>) => FxFunction<P, Component<P>>[],
 ): Component<P> => {
 	class CustomElement extends HTMLElement {
 		debug?: boolean
@@ -168,16 +264,12 @@ const component = <P extends ComponentProps>(
 				this.debug = this.hasAttribute('debug')
 				if (this.debug) log(this, 'Connected')
 			}
-			const fns = setup(this as unknown as Component<P>)
+			const fns = setup(this as unknown as Component<P>, select())
 			if (!Array.isArray(fns))
 				throw new TypeError(
 					`Expected array of functions as return value of setup function in ${elementName(this)}`,
 				)
-			this.#cleanup = run(
-				fns,
-				this as unknown as Component<P>,
-				this as unknown as Component<P>,
-			)
+			this.#cleanup = run(fns, this as unknown as Component<P>)
 		}
 
 		/**
@@ -282,6 +374,7 @@ export {
 	type SignalProducer,
 	type MethodProducer,
 	type FxFunction,
+	type SelectorFunctions,
 	RESET,
 	component,
 }

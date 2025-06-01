@@ -24,7 +24,6 @@
 				RESET,
 				component,
 				state,
-				first,
 				provide,
 				consume,
 				asString,
@@ -53,7 +52,7 @@
 				{
 					reducedMotion: consume("reduced-motion"),
 				},
-				() => [first("span", setText("reducedMotion"))],
+				(_, { first }) => [first("span", setText("reducedMotion"))],
 			);
 
 			component(
@@ -69,7 +68,7 @@
 				{
 					displayName: consume("display-name"),
 				},
-				() => [first("span", setText("displayName"))],
+				(_, { first }) => [first("span", setText("displayName"))],
 			);
 
 			runTests(() => {

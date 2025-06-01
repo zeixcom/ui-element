@@ -42,6 +42,15 @@ const isString = /*#__PURE__*/ (value: unknown): value is string =>
 	typeof value === 'string'
 
 /**
+ * Check if a node is an Element
+ *
+ * @param {Node} node - node to check
+ * @returns {boolean} - `true` if node is an element node, otherwise `false`
+ */
+const isElement = (node: Node): node is Element =>
+	node.nodeType === Node.ELEMENT_NODE
+
+/**
  * Return a HyperScript string representation of the Element instance
  *
  * @since 0.7.0
@@ -114,6 +123,7 @@ export {
 	type LogLevel,
 	isString,
 	isDefinedObject,
+	isElement,
 	log,
 	assert,
 	elementName,

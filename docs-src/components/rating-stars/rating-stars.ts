@@ -1,6 +1,5 @@
 import {
 	type Component,
-	all,
 	asInteger,
 	component,
 	emit,
@@ -18,12 +17,12 @@ export default component(
 	{
 		value: asInteger(),
 	},
-	(el) => {
+	(el, { all }) => {
 		const getKey = (element: HTMLElement): number =>
 			parseInt(element.dataset["key"] || "0");
 
 		return [
-			all<RatingStarsProps, HTMLInputElement>(
+			all<HTMLInputElement>(
 				"input",
 				setProperty("checked", (target) => el.value === getKey(target)),
 				on("change", (e) => {
@@ -35,7 +34,7 @@ export default component(
 					emit("change-rating", value)(el);
 				}),
 			),
-			all<RatingStarsProps, HTMLElement>(
+			all<HTMLElement>(
 				".label",
 				setText((target) => (getKey(target) <= el.value ? "★" : "☆")),
 			),

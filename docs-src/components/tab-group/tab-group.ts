@@ -1,8 +1,6 @@
 import {
 	type Component,
-	all,
 	component,
-	first,
 	on,
 	setProperty,
 } from "../../..";
@@ -50,7 +48,7 @@ export default component(
 	{
 		selected: "",
 	},
-	(el) => {
+	(el, { all, first }) => {
 		el.selected =
 			el
 				.querySelector('[role="tab"][aria-selected="true"]')
@@ -67,7 +65,7 @@ export default component(
 				'[role="tablist"]',
 				on("keydown", manageArrowKeyFocus(tabs, focusIndex)),
 			),
-			all<TabGroupProps, HTMLButtonElement>(
+			all<HTMLButtonElement>(
 				'[role="tab"]',
 				on("click", (e: Event) => {
 					el.selected =
@@ -83,7 +81,7 @@ export default component(
 					isSelected(target) ? 0 : -1,
 				),
 			),
-			all<TabGroupProps, HTMLElement>(
+			all<HTMLElement>(
 				'[role="tabpanel"]',
 				setProperty("hidden", (target) => el.selected !== target.id),
 			),

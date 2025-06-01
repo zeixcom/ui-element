@@ -1,6 +1,6 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.12.3
+ * @version 0.13.0
  * @author Esther Brunner
  */
 
@@ -36,6 +36,7 @@ export {
 	type SignalProducer,
 	type MethodProducer,
 	type FxFunction,
+	type SelectorFunctions,
 	RESET,
 	component,
 } from './src/component'
@@ -49,13 +50,11 @@ export {
 } from './src/core/util'
 export {
 	type PassedSignals,
-	first,
-	all,
 	selection,
 	on,
 	emit,
 	pass,
-} from './src/core/ui'
+} from './src/core/dom'
 export {
 	type Context,
 	type UnknownContext,

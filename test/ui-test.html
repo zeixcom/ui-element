@@ -26,7 +26,6 @@
 			import { runTests } from "@web/test-runner-mocha";
 			import { assert } from "@esm-bundle/chai";
 			import {
-				first,
 				on,
 				emit,
 				pass,
@@ -46,7 +45,7 @@
 					heading: asString(RESET),
 					text: asString(RESET),
 				},
-				() => [
+				(_, { first }) => [
 					first("h1", setText("heading")),
 					first("p", setText("text")),
 				],
@@ -57,7 +56,7 @@
 				{
 					heading: asString(RESET),
 				},
-				(el) => [
+				(el, { first }) => [
 					first(
 						"child-component",
 						pass({

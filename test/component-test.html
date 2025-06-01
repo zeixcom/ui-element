@@ -197,8 +197,6 @@
 			import {
 				RESET,
 				component,
-				first,
-				all,
 				on,
 				pass,
 				state,
@@ -231,7 +229,7 @@
 				{
 					heading: "Hello from Internal State",
 				},
-				() => [first("h1", setText("heading"))],
+				(_, { first }) => [first("h1", setText("heading"))],
 			);
 
 			component(
@@ -249,7 +247,7 @@
 					},
 					selected: asBoolean,
 				},
-				() => [
+				(_, { first }) => [
 					first("h1", setText("heading"), toggleClass("selected")),
 					first("span", setText("count")),
 					first("input", setAttribute("step"), setProperty("value")),
@@ -261,7 +259,7 @@
 				{
 					value: asInteger(),
 				},
-				(el) => [
+				(el, { first }) => [
 					first(
 						".decrement",
 						on("click", () => {
@@ -286,7 +284,7 @@
 				],
 			);
 
-			component("greeting-configurator", {}, (el) => [
+			component("greeting-configurator", {}, (el, { first }) => [
 				first(
 					"hello-world",
 					pass({
@@ -309,7 +307,7 @@
 					greeting: asString(RESET),
 					name: asString("World"),
 				},
-				() => [
+				(_, { first }) => [
 					first(".greeting", setText("greeting")),
 					first(".name", setText("name")),
 				],
@@ -320,7 +318,7 @@
 				{
 					value: asString(RESET),
 				},
-				(el) => [
+				(el, { first }) => [
 					first(
 						"input",
 						setProperty("value"),
@@ -336,7 +334,7 @@
 				{
 					checked: asBoolean,
 				},
-				(el) => [
+				(el, { first }) => [
 					first(
 						"input",
 						setProperty("checked"),
@@ -391,7 +389,7 @@
 						return "";
 					},
 				},
-				(el) => [
+				(el, { first }) => [
 					first(
 						".error",
 						setText("error"),
@@ -406,7 +404,7 @@
 				{
 					selected: "",
 				},
-				(el) => {
+				(el, { all, first }) => {
 					el.selected =
 						el
 							.querySelector('[role="tab"][aria-selected="true"]')
@@ -452,7 +450,7 @@
 				},
 			);
 
-			component("post-reply", {}, (el) => {
+			component("post-reply", {}, (el, { first }) => {
 				const message = state("");
 				const formIsHidden = state(true);
 				return [

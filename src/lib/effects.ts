@@ -12,13 +12,14 @@ import {
 import {
 	type ComponentProps,
 	type Component,
+    type FxFunction,
 	RESET,
 } from '../component'
 import { DEV_MODE, isString, elementName, log, LOG_ERROR, valueString } from '../core/util'
 
 /* === Types === */
 
-type SignalLike<P extends ComponentProps, E extends Element, T> =
+type SignalLike<P extends ComponentProps, T, E extends Element = Component<P>> =
 	| keyof P
 	| Signal<NonNullable<T>>
 	| ((element: E) => T | null | undefined)
@@ -46,10 +47,10 @@ type ElementInserter<E extends Element> = {
 
 const resolveSignalLike = /*#__PURE__*/ <
 	P extends ComponentProps,
-	E extends Element,
 	T extends {},
+	E extends Element = Component<P>,
 >(
-	s: SignalLike<P, E, T>,
+	s: SignalLike<P, T, E>,
 	host: Component<P>,
 	target: E,
 ): T =>
@@ -95,10 +96,10 @@ const safeSetAttribute = /*#__PURE__*/ (
  * @param {ElementUpdater} updater - updater object containing key, read, update, and delete methods
  */
 const updateElement =
-	<P extends ComponentProps, E extends Element, T extends {}>(
-		s: SignalLike<P, E, T>,
+	<P extends ComponentProps, T extends {}, E extends Element = Component<P>>(
+		s: SignalLike<P, T, E>,
 		updater: ElementUpdater<E, T>,
-	) =>
+	): FxFunction<P, E> =>
 	(host: Component<P>, target: E): Cleanup => {
 		const { op, name = '', read, update } = updater
 		const fallback = read(target)
@@ -181,10 +182,10 @@ const updateElement =
  * @param {ElementInserter<E>} inserter - inserter object containing position, insert, and remove methods
  */
 const insertOrRemoveElement =
-	<P extends ComponentProps, E extends Element>(
-		s: SignalLike<P, E, number>,
+	<P extends ComponentProps, E extends Element = Component<P>>(
+		s: SignalLike<P, number, E>,
 		inserter?: ElementInserter<E>,
-	) =>
+	): FxFunction<P, E> =>
 	(host: Component<P>, target: E) => {
 		const ok = (verb: string) => () => {
 			if (DEV_MODE && host.debug)
@@ -274,9 +275,9 @@ const insertOrRemoveElement =
  * @since 0.8.0
  * @param {SignalLike<string>} s - state bound to the text content
  */
-const setText = <P extends ComponentProps, E extends Element>(
-	s: SignalLike<P, E, string>,
-) =>
+const setText = <P extends ComponentProps, E extends Element = Component<P>>(
+	s: SignalLike<P, string, E>,
+): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 't',
 		read: (el) => el.textContent,
@@ -297,12 +298,12 @@ const setText = <P extends ComponentProps, E extends Element>(
  */
 const setProperty = <
 	P extends ComponentProps,
-	E extends Element,
 	K extends keyof E,
+	E extends Element = Component<P>,
 >(
 	key: K,
-	s: SignalLike<P, E, E[K]> = key as SignalLike<P, E, E[K]>,
-) =>
+	s: SignalLike<P, E[K], E> = key as SignalLike<P, E[K], E>,
+): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 'p',
 		name: String(key),
@@ -319,10 +320,10 @@ const setProperty = <
  * @param {string} name - name of attribute to be set
  * @param {SignalLike<string>} s - state bound to the attribute value
  */
-const setAttribute = <P extends ComponentProps, E extends Element>(
+const setAttribute = <P extends ComponentProps, E extends Element = Component<P>>(
 	name: string,
-	s: SignalLike<P, E, string> = name,
-) =>
+	s: SignalLike<P, string, E> = name,
+): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 'a',
 		name,
@@ -342,10 +343,10 @@ const setAttribute = <P extends ComponentProps, E extends Element>(
  * @param {string} name - name of attribute to be toggled
  * @param {SignalLike<boolean>} s - state bound to the attribute existence
  */
-const toggleAttribute = <P extends ComponentProps, E extends Element>(
+const toggleAttribute = <P extends ComponentProps, E extends Element = Component<P>>(
 	name: string,
-	s: SignalLike<P, E, boolean> = name,
-) =>
+	s: SignalLike<P, boolean, E> = name,
+): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 'a',
 		name,
@@ -362,10 +363,10 @@ const toggleAttribute = <P extends ComponentProps, E extends Element>(
  * @param {string} token - class token to be toggled
  * @param {SignalLike<boolean>} s - state bound to the class existence
  */
-const toggleClass = <P extends ComponentProps, E extends Element>(
+const toggleClass = <P extends ComponentProps, E extends Element = Component<P>>(
 	token: string,
-	s: SignalLike<P, E, boolean> = token,
-) =>
+	s: SignalLike<P, boolean, E> = token,
+): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 'c',
 		name: token,
@@ -387,8 +388,8 @@ const setStyle = <
 	E extends HTMLElement | SVGElement | MathMLElement,
 >(
 	prop: string,
-	s: SignalLike<P, E, string> = prop,
-) =>
+	s: SignalLike<P, string, E> = prop,
+): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 's',
 		name: prop,
@@ -410,10 +411,10 @@ const setStyle = <
  * @param {boolean} [allowScripts] - whether to allow executable script tags in the HTML content, defaults to false
  */
 const dangerouslySetInnerHTML = <P extends ComponentProps, E extends Element>(
-	s: SignalLike<P, E, string>,
+	s: SignalLike<P, string, E>,
 	attachShadow?: 'open' | 'closed',
 	allowScripts?: boolean,
-) =>
+): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 'h',
 		read: (el) =>

@@ -278,7 +278,6 @@
 <span class="line"><span style="color:#F8F8F2">	component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	computed,</span></span>
 <span class="line"><span style="color:#F8F8F2">	emit,</span></span>
-<span class="line"><span style="color:#F8F8F2">	first,</span></span>
 <span class="line"><span style="color:#F8F8F2">	on,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setAttribute,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
@@ -349,7 +348,7 @@
 <span class="line"><span style="color:#F8F8F2">			};</span></span>
 <span class="line"><span style="color:#F8F8F2">		},</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputFieldProps</span><span style="color:#F8F8F2">>) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputFieldProps</span><span style="color:#F8F8F2">>, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> fns</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">FxFunction</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputFieldProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputFieldProps</span><span style="color:#F8F8F2">>>[] </span><span style="color:#F92672">=</span></span>
 <span class="line"><span style="color:#F8F8F2">			[];</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> input </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"input"</span><span style="color:#F8F8F2">);</span></span>
@@ -392,7 +391,7 @@
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Handle input changes</span></span>
 <span class="line"><span style="color:#F8F8F2">		fns.</span><span style="color:#A6E22E">push</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputFieldProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">HTMLInputElement</span><span style="color:#F8F8F2">>(</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLInputElement</span><span style="color:#F8F8F2">>(</span></span>
 <span class="line"><span style="color:#E6DB74">				"input"</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"value"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(el.value)),</span></span>
 <span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"change"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
@@ -454,7 +453,7 @@
 <span class="line"><span style="color:#88846F">			// Handle spin button clicks and update their disabled state</span></span>
 <span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (spinButton) {</span></span>
 <span class="line"><span style="color:#F8F8F2">				fns.</span><span style="color:#A6E22E">push</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#A6E22E">					first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputFieldProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">>(</span></span>
+<span class="line"><span style="color:#A6E22E">					first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">>(</span></span>
 <span class="line"><span style="color:#E6DB74">						".decrement"</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">						on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> n </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (e </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">MouseEvent</span><span style="color:#F8F8F2">).shiftKey</span></span>
@@ -474,7 +473,7 @@
 <span class="line"><span style="color:#F8F8F2">								min,</span></span>
 <span class="line"><span style="color:#F8F8F2">						),</span></span>
 <span class="line"><span style="color:#F8F8F2">					),</span></span>
-<span class="line"><span style="color:#A6E22E">					first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputFieldProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">>(</span></span>
+<span class="line"><span style="color:#A6E22E">					first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">>(</span></span>
 <span class="line"><span style="color:#E6DB74">						".increment"</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">						on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> n </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (e </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">MouseEvent</span><span style="color:#F8F8F2">).shiftKey</span></span>
@@ -499,7 +498,7 @@
 <span class="line"><span style="color:#F8F8F2">		} </span><span style="color:#F92672">else</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#88846F">			// Setup clear button and method</span></span>
 <span class="line"><span style="color:#F8F8F2">			fns.</span><span style="color:#A6E22E">push</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#A6E22E">				first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputFieldProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">>(</span></span>
+<span class="line"><span style="color:#A6E22E">				first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">>(</span></span>
 <span class="line"><span style="color:#E6DB74">					".clear"</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">					on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">						el.</span><span style="color:#A6E22E">clear</span><span style="color:#F8F8F2">();</span></span>

@@ -1,10 +1,8 @@
 import {
 	type Component,
 	type State,
-	all,
 	asInteger,
 	component,
-	first,
 	insertOrRemoveElement,
 	on,
 	setProperty,
@@ -25,7 +23,7 @@ export default component(
 		columns: asInteger(),
 		rows: asInteger(),
 	},
-	(el) => {
+	(el, { all, first }) => {
 		const colHeads = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		const rowTemplate =
 			el.querySelector<HTMLTemplateElement>(".calc-table-row");

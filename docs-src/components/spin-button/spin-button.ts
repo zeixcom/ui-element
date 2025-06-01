@@ -1,9 +1,7 @@
 import {
 	type Component,
-	all,
 	asInteger,
 	component,
-	first,
 	on,
 	setProperty,
 	setText,
@@ -18,26 +16,26 @@ export default component(
 	{
 		value: asInteger(),
 	},
-	(el) => {
+	(el, { all, first }) => {
 		const zeroLabel = el.getAttribute("zero-label") || "Add to Cart";
 		const incrementLabel =
 			el.getAttribute("increment-label") || "Increment";
 		const max = asInteger(9)(el, el.getAttribute("max"));
 		const isZero = () => el.value === 0;
 		return [
-			first<SpinButtonProps, HTMLButtonElement>(
+			first<HTMLButtonElement>(
 				".value",
 				setText("value"),
 				setProperty("hidden", isZero),
 			),
-			first<SpinButtonProps, HTMLButtonElement>(
+			first<HTMLButtonElement>(
 				".decrement",
 				setProperty("hidden", isZero),
 				on("click", () => {
 					el.value--;
 				}),
 			),
-			first<SpinButtonProps, HTMLButtonElement>(
+			first<HTMLButtonElement>(
 				".increment",
 				setText(() => (isZero() ? zeroLabel : "+")),
 				setProperty("ariaLabel", () =>

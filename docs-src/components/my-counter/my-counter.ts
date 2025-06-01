@@ -2,7 +2,6 @@ import {
 	type Component,
 	asInteger,
 	component,
-	first,
 	on,
 	setText,
 } from "../../../";
@@ -16,7 +15,7 @@ export default component(
 	{
 		count: asInteger(),
 	},
-	(el) => [
+	(el, { first }) => [
 		first(".count", setText("count")),
 		first(
 			".parity",

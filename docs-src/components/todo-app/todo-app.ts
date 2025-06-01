@@ -2,7 +2,6 @@ import {
 	type Component,
 	type SignalProducer,
 	component,
-	first,
 	on,
 	selection,
 	setAttribute,
@@ -33,7 +32,7 @@ export default component(
 				"input-checkbox[checked]",
 			)) as SignalProducer<HTMLElement, Component<InputCheckboxProps>[]>,
 	},
-	(el) => {
+	(el, { first }) => {
 		const input =
 			el.querySelector<Component<InputFieldProps>>("input-field");
 		if (!input) throw new Error("No input field found");
@@ -44,7 +43,7 @@ export default component(
 
 		return [
 			// Control todo input form
-			first<TodoAppProps, Component<InputButtonProps>>(
+			first<Component<InputButtonProps>>(
 				".submit",
 				setProperty("disabled", () => !input.length),
 			),
@@ -94,25 +93,25 @@ export default component(
 				".count",
 				setText(() => String(el.active.length)),
 			),
-			first<TodoAppProps, HTMLElement>(
+			first<HTMLElement>(
 				".singular",
 				setProperty("hidden", () => el.active.length > 1),
 			),
-			first<TodoAppProps, HTMLElement>(
+			first<HTMLElement>(
 				".plural",
 				setProperty("hidden", () => el.active.length === 1),
 			),
-			first<TodoAppProps, HTMLElement>(
+			first<HTMLElement>(
 				".remaining",
 				setProperty("hidden", () => !el.active.length),
 			),
-			first<TodoAppProps, HTMLElement>(
+			first<HTMLElement>(
 				".all-done",
 				setProperty("hidden", () => !!el.active.length),
 			),
 
 			// Control clear-completed button
-			first<TodoAppProps, Component<InputButtonProps>>(
+			first<Component<InputButtonProps>>(
 				".clear-completed",
 				setProperty("disabled", () => !el.completed.length),
 				setProperty("badge", () =>

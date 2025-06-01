@@ -2,7 +2,6 @@ import {
 	type Component,
 	asBoolean,
 	component,
-	first,
 	setProperty,
 	toggleAttribute,
 } from "../../../";
@@ -18,11 +17,11 @@ export default component(
 		open: asBoolean,
 		collapsible: asBoolean,
 	},
-	(el) => [
+	(el, { first }) => [
 		toggleAttribute("open"),
 		toggleAttribute("collapsible"),
 		setProperty("hidden", () => !el.open && !el.collapsible),
-		first<AccordionPanelProps, HTMLDetailsElement>(
+		first<HTMLDetailsElement>(
 			"details",
 			setProperty("open"),
 			setProperty("ariaDisabled", () => String(!el.collapsible)),

@@ -5,7 +5,6 @@ import {
 	component,
 	computed,
 	emit,
-	first,
 	on,
 	setAttribute,
 	setProperty,
@@ -76,7 +75,7 @@ export default component(
 			};
 		},
 	},
-	(el: Component<InputFieldProps>) => {
+	(el: Component<InputFieldProps>, { first }) => {
 		const fns: FxFunction<InputFieldProps, Component<InputFieldProps>>[] =
 			[];
 		const input = el.querySelector("input");
@@ -119,7 +118,7 @@ export default component(
 
 		// Handle input changes
 		fns.push(
-			first<InputFieldProps, HTMLInputElement>(
+			first<HTMLInputElement>(
 				"input",
 				setProperty("value", () => String(el.value)),
 				on("change", () => {
@@ -181,7 +180,7 @@ export default component(
 			// Handle spin button clicks and update their disabled state
 			if (spinButton) {
 				fns.push(
-					first<InputFieldProps, HTMLButtonElement>(
+					first<HTMLButtonElement>(
 						".decrement",
 						on("click", (e: Event) => {
 							const n = (e as MouseEvent).shiftKey
@@ -201,7 +200,7 @@ export default component(
 								min,
 						),
 					),
-					first<InputFieldProps, HTMLButtonElement>(
+					first<HTMLButtonElement>(
 						".increment",
 						on("click", (e: Event) => {
 							const n = (e as MouseEvent).shiftKey
@@ -226,7 +225,7 @@ export default component(
 		} else {
 			// Setup clear button and method
 			fns.push(
-				first<InputFieldProps, HTMLButtonElement>(
+				first<HTMLButtonElement>(
 					".clear",
 					on("click", () => {
 						el.clear();

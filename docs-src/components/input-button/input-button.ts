@@ -3,7 +3,6 @@ import {
 	asBoolean,
 	asString,
 	component,
-	first,
 	RESET,
 	setProperty,
 	setText,
@@ -22,8 +21,8 @@ export default component(
 		label: asString(RESET),
 		badge: asString(RESET),
 	},
-	() => [
-		first<InputButtonProps, HTMLButtonElement>(
+	(_, { first }) => [
+		first<HTMLButtonElement>(
 			"button",
 			setProperty("disabled"),
 		),

@@ -3,7 +3,6 @@ import {
 	asBoolean,
 	asString,
 	component,
-	first,
 	on,
 	RESET,
 	setProperty,
@@ -22,9 +21,9 @@ export default component(
 		checked: asBoolean,
 		label: asString(RESET),
 	},
-	(el) => [
+	(el, { first }) => [
 		toggleAttribute("checked"),
-		first<InputCheckboxProps, HTMLInputElement>(
+		first<HTMLInputElement>(
 			"input",
 			setProperty("checked"),
 			on("change", (e: Event) => {

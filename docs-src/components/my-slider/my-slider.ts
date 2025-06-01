@@ -1,6 +1,6 @@
-import { all, component, first, on, state, toggleClass } from "../../../";
+import { component, on, state, toggleClass } from "../../../";
 
-export default component("my-slider", {}, (el) => {
+export default component("my-slider", {}, (el, { all, first }) => {
 	const active = state(0);
 	const total = el.querySelectorAll(".slide").length;
 	const isActive = (target: HTMLElement): boolean =>

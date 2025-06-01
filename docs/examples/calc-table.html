@@ -119,10 +119,8 @@
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> State,</span></span>
-<span class="line"><span style="color:#F8F8F2">	all,</span></span>
 <span class="line"><span style="color:#F8F8F2">	asInteger,</span></span>
 <span class="line"><span style="color:#F8F8F2">	component,</span></span>
-<span class="line"><span style="color:#F8F8F2">	first,</span></span>
 <span class="line"><span style="color:#F8F8F2">	insertOrRemoveElement,</span></span>
 <span class="line"><span style="color:#F8F8F2">	on,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
@@ -143,7 +141,7 @@
 <span class="line"><span style="color:#F8F8F2">		columns: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(),</span></span>
 <span class="line"><span style="color:#F8F8F2">		rows: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> colHeads </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> "ABCDEFGHIJKLMNOPQRSTUVWXYZ"</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> rowTemplate </span><span style="color:#F92672">=</span></span>
 <span class="line"><span style="color:#F8F8F2">			el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLTemplateElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">".calc-table-row"</span><span style="color:#F8F8F2">);</span></span>

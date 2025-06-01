@@ -2,7 +2,6 @@ import {
 	type Component,
 	type SignalProducer,
 	component,
-	first,
 	selection,
 	pass,
 } from "../../../";
@@ -21,7 +20,7 @@ export default component(
 				.reduce((sum, item) => sum + item.value, 0)
 		) as SignalProducer<HTMLElement, number>,
 	},
-	(el) => [
+	(el, { first }) => [
 		first(
 			"input-button",
 			pass({
