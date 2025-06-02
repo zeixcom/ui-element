@@ -5,7 +5,6 @@ import {
 	setProperty,
 	state,
 } from "../../../";
-import type { InputButtonProps } from "../input-button/input-button";
 import type { RatingStarsProps } from "../rating-stars/rating-stars";
 
 export default component("rating-feedback", {}, (el, { all, first }) => {
@@ -48,19 +47,10 @@ export default component("rating-feedback", {}, (el, { all, first }) => {
 		),
 
 		// Effects on rating changes
-		first<HTMLElement>(
-			".feedback",
-			setProperty("hidden", () => submitted.get() || !rating.get()),
-		),
-		all<HTMLElement>(
-			".feedback p",
-			setProperty("hidden", hasDifferentKey),
-		),
+		first(".feedback", setProperty("hidden", () => submitted.get() || !rating.get())),
+		all(".feedback p", setProperty("hidden", hasDifferentKey)),
 
 		// Effect on empty state
-		first<Component<InputButtonProps>>(
-			"input-button",
-			setProperty("disabled", empty),
-		),
+		first("input-button", setProperty("disabled", empty)),
 	];
 });

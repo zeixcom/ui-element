@@ -23,7 +23,7 @@ export default component(
 	},
 	(el, { first }) => [
 		toggleAttribute("checked"),
-		first<HTMLInputElement>(
+		first(
 			"input",
 			setProperty("checked"),
 			on("change", (e: Event) => {

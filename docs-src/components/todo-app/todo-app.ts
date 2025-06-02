@@ -89,26 +89,11 @@ export default component(
 			),
 
 			// Update count elements
-			first(
-				".count",
-				setText(() => String(el.active.length)),
-			),
-			first<HTMLElement>(
-				".singular",
-				setProperty("hidden", () => el.active.length > 1),
-			),
-			first<HTMLElement>(
-				".plural",
-				setProperty("hidden", () => el.active.length === 1),
-			),
-			first<HTMLElement>(
-				".remaining",
-				setProperty("hidden", () => !el.active.length),
-			),
-			first<HTMLElement>(
-				".all-done",
-				setProperty("hidden", () => !!el.active.length),
-			),
+			first(".count",setText(() => String(el.active.length))),
+			first(".singular", setProperty("hidden", () => el.active.length > 1)),
+			first(".plural", setProperty("hidden", () => el.active.length === 1)),
+			first(".remaining", setProperty("hidden", () => !el.active.length)),
+			first(".all-done", setProperty("hidden", () => !!el.active.length)),
 
 			// Control clear-completed button
 			first<Component<InputButtonProps>>(

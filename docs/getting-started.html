@@ -288,12 +288,12 @@
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"module"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F92672">	import</span><span style="color:#F8F8F2"> { asString, component, first, on, RESET, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"</span></span>
+<span class="line"><span style="color:#F92672">	import</span><span style="color:#F8F8F2"> { asString, component, on, RESET, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#A6E22E">	component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"hello-world"</span><span style="color:#F8F8F2">, {</span></span>
 <span class="line"><span style="color:#88846F">		// Parse "name" attribute, falling back to server-rendered content</span></span>
 <span class="line"><span style="color:#F8F8F2">		name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(RESET)</span></span>
-<span class="line"><span style="color:#F8F8F2">	}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#F8F8F2">	}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Update content dynamically based on the "name" signal</span></span>
 <span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"span"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"name"</span><span style="color:#F8F8F2">)),</span></span>

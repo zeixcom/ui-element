@@ -21,7 +21,7 @@ export default component(
 		toggleAttribute("open"),
 		toggleAttribute("collapsible"),
 		setProperty("hidden", () => !el.open && !el.collapsible),
-		first<HTMLDetailsElement>(
+		first(
 			"details",
 			setProperty("open"),
 			setProperty("ariaDisabled", () => String(!el.collapsible)),

@@ -71,7 +71,7 @@ export default component(
 	},
 	(el, { first }) => [
 		dangerouslySetInnerHTML("content"),
-		first<HTMLElement>(
+		first(
 			".error",
 			setText("error"),
 			setProperty("hidden", () => !el.error),

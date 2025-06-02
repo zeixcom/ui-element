@@ -76,9 +76,18 @@ type FxFunction<P extends ComponentProps, E extends Element> = (
 	element: E,
 ) => Cleanup | void
 
+type ElementFromSelector<K extends string, E extends Element = HTMLElement> =
+    K extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[K] : E
+
 type SelectorFunctions<P extends ComponentProps> = {
-	first: <E extends Element>(selector: string, ...fns: FxFunction<P, E>[])  => (host: Component<P>) => Cleanup | void
-	all: <E extends Element>(selector: string, ...fns: FxFunction<P, E>[])  => (host: Component<P>) => Cleanup
+	first: <E extends Element = never, K extends string = string>(
+		selector: K,
+		...fns: FxFunction<P, ElementFromSelector<K, E>>[]
+	) => (host: Component<P>) => Cleanup | void
+	all: <E extends Element = never, K extends string = string>(
+		selector: K,
+		...fns: FxFunction<P, ElementFromSelector<K, E>>[]
+	) => (host: Component<P>) => Cleanup
 }
 
 /* === Constants === */
@@ -145,13 +154,13 @@ const select = <P extends ComponentProps>(): SelectorFunctions<P> => ({
 	 * Apply effect functions to a first matching sub-element within the custom element
 	 *
 	 * @since 0.12.0
-	 * @param {string} selector - selector to match sub-element
+	 * @param {K} selector - selector to match sub-element
 	 */
-	first:<E extends Element>(
-		selector: string,
-		...fns: FxFunction<P, E>[]
+	first: <E extends Element = never, K extends string = string>(
+		selector: K,
+		...fns: FxFunction<P, ElementFromSelector<K, E>>[]
 	) => (host: Component<P>): Cleanup | void => {
-		const el = (host.shadowRoot || host).querySelector<E>(selector)
+		const el = (host.shadowRoot || host).querySelector<ElementFromSelector<K, E>>(selector)
 		if (el) run(fns, host, el)
 	},
 
@@ -159,30 +168,30 @@ const select = <P extends ComponentProps>(): SelectorFunctions<P> => ({
 	 * Apply effect functions to all matching sub-elements within the custom element
 	 *
 	 * @since 0.12.0
-	 * @param {string} selector - selector to match sub-elements
+	 * @param {K} selector - selector to match sub-elements
 	 */
-	all: <E extends Element>(
-		selector: string,
-		...fns: FxFunction<P, E>[]
+	all: <E extends Element = never, K extends string = string>(
+		selector: K,
+		...fns: FxFunction<P, ElementFromSelector<K, E>>[]
 	) => (host: Component<P>): Cleanup => {
-		const cleanups = new Map<E, Cleanup>()
+		const cleanups = new Map<ElementFromSelector<K, E>, Cleanup>()
 		const root = host.shadowRoot || host
 
-		const attach = (target: E) => {
+		const attach = (target: ElementFromSelector<K, E>) => {
 			if (!cleanups.has(target))
 				cleanups.set(target, run(fns, host, target))
 		}
 
-		const detach = (target: E) => {
+		const detach = (target: ElementFromSelector<K, E>) => {
 			const cleanup = cleanups.get(target)
 			if (isFunction(cleanup)) cleanup()
 			cleanups.delete(target)
 		}
 
-		const applyToMatching = (fn: (target: E) => void) => (node: Node) => {
+		const applyToMatching = (fn: (target: ElementFromSelector<K, E>) => void) => (node: Node) => {
 			if (isElement(node)) {
-				if (node.matches(selector)) fn(node as E)
-				node.querySelectorAll<E>(selector).forEach(fn)
+				if (node.matches(selector)) fn(node as ElementFromSelector<K, E>)
+				node.querySelectorAll<ElementFromSelector<K, E>>(selector).forEach(fn)
 			}
 		}
 
@@ -193,7 +202,7 @@ const select = <P extends ComponentProps>(): SelectorFunctions<P> => ({
 			}
 		})
 
-		root.querySelectorAll<E>(selector).forEach(attach)
+		root.querySelectorAll<ElementFromSelector<K, E>>(selector).forEach(attach)
 
 		return () => {
 			observer.disconnect()
@@ -328,7 +337,7 @@ const component = <P extends ComponentProps>(
 		 * Set the signal for a given key
 		 *
 		 * @since 0.12.0
-		 * @param {K} key - key to set signal for
+		 * @param {keyof P} key - key to set signal for
 		 * @param {Signal<P[keyof P]>} signal - signal to set value to
 		 * @throws {TypeError} if key is not a valid property key
 		 * @throws {TypeError} if signal is not a valid signal
@@ -374,6 +383,7 @@ export {
 	type SignalProducer,
 	type MethodProducer,
 	type FxFunction,
+	type ElementFromSelector,
 	type SelectorFunctions,
 	RESET,
 	component,

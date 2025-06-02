@@ -22,7 +22,7 @@ export default component(
 			parseInt(element.dataset["key"] || "0");
 
 		return [
-			all<HTMLInputElement>(
+			all(
 				"input",
 				setProperty("checked", (target) => el.value === getKey(target)),
 				on("change", (e) => {
@@ -34,10 +34,7 @@ export default component(
 					emit("change-rating", value)(el);
 				}),
 			),
-			all<HTMLElement>(
-				".label",
-				setText((target) => (getKey(target) <= el.value ? "★" : "☆")),
-			),
+			all(".label", setText((target) => (getKey(target) <= el.value ? "★" : "☆"))),
 		];
 	},
 );

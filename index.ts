@@ -36,6 +36,7 @@ export {
 	type SignalProducer,
 	type MethodProducer,
 	type FxFunction,
+	type ElementFromSelector,
 	type SelectorFunctions,
 	RESET,
 	component,

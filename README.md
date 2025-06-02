@@ -59,11 +59,11 @@ Server-rendered markup:
 UIElement component:
 
 ```js
-import { asInteger, component, first, on, RESET, setText } from "@zeix/ui-element";
+import { asInteger, component, on, RESET, setText } from "@zeix/ui-element";
 
 component("show-appreciation", {
     count: asInteger(RESET) // Get initial value from .count element
-}, el => [
+}, (el, { first }) => [
 
     // Update count display when state changes
     first(".count", setText("count")),
@@ -163,7 +163,7 @@ Server-rendered markup:
 UIElement component:
 
 ```js
-import { all, component, first, on, setProperty } from "@zeix/ui-element"
+import { component, on, setProperty } from "@zeix/ui-element"
 
 // Function to create event handler for arrow key focus management
 const manageArrowKeyFocus = (elements, index) => e => {
@@ -195,7 +195,7 @@ const manageArrowKeyFocus = (elements, index) => e => {
 // Component
 component("tab-group", {
     selected: ""
-}, el => {
+}, (el, { all, first }) => {
     el.selected = el.querySelector("[role=tab][aria-selected=true]")?.getAttribute("aria-controls") ?? "";
     const isSelected = target =>
         el.selected === target.getAttribute("aria-controls");
@@ -288,7 +288,7 @@ An example demonstrating how to use a custom attribute parser (sanitize an URL) 
 ```
 
 ```js
-import { setProperty, setText, dangerouslySetInnerHTML, component, first } from "@zeix/ui-element";
+import { component, dangerouslySetInnerHTML, setProperty, setText } from "@zeix/ui-element";
 
 // Attribute Parser uses current element to detect recursion and set error message
 const asURL = (el, v) => {
@@ -333,7 +333,7 @@ component("lazy-load", {
     error: "",
     src: asURL,
     content: fetchText,
-}, el => [
+}, (el, { first }) => [
     dangerouslySetInnerHTML("content"),
     first(".error",
         setText("error"),

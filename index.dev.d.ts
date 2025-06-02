@@ -4,7 +4,7 @@
  * @author Esther Brunner
  */
 export { type Signal, type MaybeSignal, type State, type Computed, type ComputedCallback, type EffectMatcher, type Cleanup, UNSET, state, computed, effect, batch, enqueue, isState, isComputed, isSignal, toSignal, } from '@zeix/cause-effect';
-export { type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords, type Initializer, type AttributeParser, type SignalProducer, type MethodProducer, type FxFunction, type SelectorFunctions, RESET, component, } from './src/component';
+export { type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords, type Initializer, type AttributeParser, type SignalProducer, type MethodProducer, type FxFunction, type ElementFromSelector, type SelectorFunctions, RESET, component, } from './src/component';
 export { type LogLevel, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, log, } from './src/core/util';
 export { type PassedSignals, selection, on, emit, pass, } from './src/core/dom';
 export { type Context, type UnknownContext, type ContextType, provide, consume, } from './src/core/context';

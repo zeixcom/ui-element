@@ -118,7 +118,7 @@ export default component(
 
 		// Handle input changes
 		fns.push(
-			first<HTMLInputElement>(
+			first(
 				"input",
 				setProperty("value", () => String(el.value)),
 				on("change", () => {

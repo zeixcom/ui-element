@@ -55,7 +55,7 @@ component("product-catalog", {
 		selection(el, "spin-button")
 			.get()
 			.reduce((sum, item) => sum + item.value, 0),
-}, (el) => [
+}, (el, { first }) => [
 	first("input-button",
 		pass({
 			badge: () => (el.total > 0 ? String(el.total) : ""),
@@ -77,7 +77,7 @@ The `InputButton` component **displays a badge when needed** – it does not kno
 ```js
 component("input-button", {
 	badge: asString(RESET),
-}, () => [
+}, (_, { first }) => [
 	first(".badge", setText("badge")),
 ])
 ```
@@ -92,7 +92,7 @@ The `SpinButton` component reacts to user interactions and exposes a reactive pr
 ```js
 component("spin-button", {
 	value: asInteger(),
-}, (el) => {
+}, (el, { all, first }) => {
 	const max = asInteger(9)(el, el.getAttribute("max"));
 	const isZero = () => el.value === 0;
 	return [

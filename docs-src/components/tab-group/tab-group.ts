@@ -81,7 +81,7 @@ export default component(
 					isSelected(target) ? 0 : -1,
 				),
 			),
-			all<HTMLElement>(
+			all(
 				'[role="tabpanel"]',
 				setProperty("hidden", (target) => el.selected !== target.id),
 			),

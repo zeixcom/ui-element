@@ -22,10 +22,7 @@ export default component(
 		badge: asString(RESET),
 	},
 	(_, { first }) => [
-		first<HTMLButtonElement>(
-			"button",
-			setProperty("disabled"),
-		),
+		first("button", setProperty("disabled")),
 		first(".label", setText("label")),
 		first(".badge", setText("badge")),
 	],

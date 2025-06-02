@@ -19,9 +19,10 @@ type SignalProducer<C extends HTMLElement, T extends {}> = (host: C) => MaybeSig
 type MethodProducer<C extends HTMLElement> = (host: C) => void;
 type Initializer<C extends HTMLElement, T extends {}> = T | AttributeParser<C, T> | SignalProducer<C, T> | MethodProducer<C>;
 type FxFunction<P extends ComponentProps, E extends Element> = (host: Component<P>, element: E) => Cleanup | void;
+type ElementFromSelector<K extends string, E extends Element = HTMLElement> = K extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[K] : E;
 type SelectorFunctions<P extends ComponentProps> = {
-    first: <E extends Element>(selector: string, ...fns: FxFunction<P, E>[]) => (host: Component<P>) => Cleanup | void;
-    all: <E extends Element>(selector: string, ...fns: FxFunction<P, E>[]) => (host: Component<P>) => Cleanup;
+    first: <E extends Element = never, K extends string = string>(selector: K, ...fns: FxFunction<P, ElementFromSelector<K, E>>[]) => (host: Component<P>) => Cleanup | void;
+    all: <E extends Element = never, K extends string = string>(selector: K, ...fns: FxFunction<P, ElementFromSelector<K, E>>[]) => (host: Component<P>) => Cleanup;
 };
 declare const RESET: any;
 /**
@@ -34,4 +35,4 @@ declare const RESET: any;
  * @returns {typeof HTMLElement & P} - constructor function for the custom element
  */
 declare const component: <P extends ComponentProps>(name: string, init: { [K in keyof P]: Initializer<Component<P>, P[K]>; } | undefined, setup: (host: Component<P>, select: SelectorFunctions<P>) => FxFunction<P, Component<P>>[]) => Component<P>;
-export { type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords, type Initializer, type AttributeParser, type SignalProducer, type MethodProducer, type FxFunction, type SelectorFunctions, RESET, component, };
+export { type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords, type Initializer, type AttributeParser, type SignalProducer, type MethodProducer, type FxFunction, type ElementFromSelector, type SelectorFunctions, RESET, component, };
