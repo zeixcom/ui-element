@@ -1,43 +1,37 @@
-import {
-	type Component,
-	asInteger,
-	component,
-	on,
-	setText,
-} from "../../../";
+import { type Component, asInteger, component, on, setText } from '../../../'
 
 export type MyCounterProps = {
-	count: number;
-};
+	count: number
+}
 
 export default component(
-	"my-counter",
+	'my-counter',
 	{
 		count: asInteger(),
 	},
 	(el, { first }) => [
-		first(".count", setText("count")),
+		first('.count', setText('count')),
 		first(
-			".parity",
-			setText(() => (el.count % 2 ? "odd" : "even")),
+			'.parity',
+			setText(() => (el.count % 2 ? 'odd' : 'even')),
 		),
 		first(
-			".increment",
-			on("click", () => {
-				el.count++;
+			'.increment',
+			on('click', () => {
+				el.count++
 			}),
 		),
 		first(
-			".decrement",
-			on("click", () => {
-				el.count--;
+			'.decrement',
+			on('click', () => {
+				el.count--
 			}),
 		),
 	],
-);
+)
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"my-counter": Component<MyCounterProps>;
+		'my-counter': Component<MyCounterProps>
 	}
 }

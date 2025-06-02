@@ -8,36 +8,36 @@ import {
 	setProperty,
 	setText,
 	state,
-} from "../../../";
+} from '../../../'
 
-import { SpinButtonProps } from "../spin-button/spin-button";
+import { SpinButtonProps } from '../spin-button/spin-button'
 
 export type CalcTableProps = {
-	columns: number;
-	rows: number;
-};
+	columns: number
+	rows: number
+}
 
 export default component(
-	"calc-table",
+	'calc-table',
 	{
 		columns: asInteger(),
 		rows: asInteger(),
 	},
 	(el, { all, first }) => {
-		const colHeads = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		const colHeads = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 		const rowTemplate =
-			el.querySelector<HTMLTemplateElement>(".calc-table-row");
+			el.querySelector<HTMLTemplateElement>('.calc-table-row')
 		const colheadTemplate = el.querySelector<HTMLTemplateElement>(
-			".calc-table-colhead",
-		);
+			'.calc-table-colhead',
+		)
 		const cellTemplate =
-			el.querySelector<HTMLTemplateElement>(".calc-table-cell");
+			el.querySelector<HTMLTemplateElement>('.calc-table-cell')
 		if (!rowTemplate || !colheadTemplate || !cellTemplate)
-			throw new Error("Missing template elements");
+			throw new Error('Missing template elements')
 
-		const colSums = new Map<string, State<number>>();
+		const colSums = new Map<string, State<number>>()
 		for (let i = 0; i < el.columns; i++) {
-			colSums.set(colHeads[i], state(0));
+			colSums.set(colHeads[i], state(0))
 		}
 
 		const calcColumnSum = (rowKey: string): number => {
@@ -46,59 +46,59 @@ export default component(
 					`tbody input[data-key="${rowKey}"]`,
 				),
 			)
-				.map((input) =>
+				.map(input =>
 					Number.isFinite(input.valueAsNumber)
 						? input.valueAsNumber
 						: 0,
 				)
-				.reduce((acc, val) => acc + val, 0);
-		};
+				.reduce((acc, val) => acc + val, 0)
+		}
 
 		return [
 			/* Control number of rows / columns */
 			setProperty(
-				"rows",
+				'rows',
 				() =>
 					el.querySelector<Component<SpinButtonProps>>(
-						".rows spin-button",
+						'.rows spin-button',
 					)?.value,
 			),
 			setProperty(
-				"columns",
+				'columns',
 				() =>
 					el.querySelector<Component<SpinButtonProps>>(
-						".columns spin-button",
+						'.columns spin-button',
 					)?.value,
 			),
 
 			/* Create rows */
 			first(
-				"tbody",
+				'tbody',
 				insertOrRemoveElement(
-					(target) => el.rows - target.querySelectorAll("tr").length,
+					target => el.rows - target.querySelectorAll('tr').length,
 					{
-						position: "beforeend",
-						create: (parent) => {
+						position: 'beforeend',
+						create: parent => {
 							const row = document.importNode(
 								rowTemplate.content,
 								true,
-							).firstElementChild;
+							).firstElementChild
 							if (!(row instanceof HTMLTableRowElement))
 								throw new Error(
 									`Expected <tr> as root in table row template, got ${row}`,
-								);
+								)
 							const rowKey = String(
-								parent.querySelectorAll("tr").length + 1,
-							);
-							row.dataset["key"] = rowKey;
+								parent.querySelectorAll('tr').length + 1,
+							)
+							row.dataset['key'] = rowKey
 							row
-								.querySelector("slot")
-								?.replaceWith(document.createTextNode(rowKey));
-							return row;
+								.querySelector('slot')
+								?.replaceWith(document.createTextNode(rowKey))
+							return row
 						},
 						resolve: () => {
 							for (const [colKey, colSum] of colSums) {
-								colSum.set(calcColumnSum(colKey));
+								colSum.set(calcColumnSum(colKey))
 							}
 						},
 					},
@@ -107,30 +107,30 @@ export default component(
 
 			/* Create column headers */
 			first(
-				"thead tr",
+				'thead tr',
 				insertOrRemoveElement(
-					(target) =>
-						el.columns - (target.querySelectorAll("th").length - 1),
+					target =>
+						el.columns - (target.querySelectorAll('th').length - 1),
 					{
-						position: "beforeend",
-						create: (parent) => {
+						position: 'beforeend',
+						create: parent => {
 							const cell = document.importNode(
 								colheadTemplate.content,
 								true,
-							).firstElementChild;
+							).firstElementChild
 							if (!(cell instanceof HTMLTableCellElement))
 								throw new Error(
 									`Expected <th> as root in column header template, got ${cell}`,
-								);
+								)
 							const colKey =
 								colHeads[
-									parent.querySelectorAll("th").length - 1
-								];
-							colSums.set(colKey, state(0));
+									parent.querySelectorAll('th').length - 1
+								]
+							colSums.set(colKey, state(0))
 							cell
-								.querySelector("slot")
-								?.replaceWith(document.createTextNode(colKey));
-							return cell;
+								.querySelector('slot')
+								?.replaceWith(document.createTextNode(colKey))
+							return cell
 						},
 					},
 				),
@@ -138,38 +138,37 @@ export default component(
 
 			/* Create input cells for each row */
 			all(
-				"tbody tr",
+				'tbody tr',
 				insertOrRemoveElement(
-					(target) =>
-						el.columns - target.querySelectorAll("td").length,
+					target => el.columns - target.querySelectorAll('td').length,
 					{
-						position: "beforeend",
+						position: 'beforeend',
 						create: (parent: HTMLElement) => {
 							const cell = document.importNode(
 								cellTemplate.content,
 								true,
-							).firstElementChild;
+							).firstElementChild
 							if (!(cell instanceof HTMLTableCellElement))
 								throw new Error(
 									`Expected <td> as root in cell template, got ${cell}`,
-								);
-							const rowKey = parent.dataset["key"];
+								)
+							const rowKey = parent.dataset['key']
 							const colKey =
-								colHeads[parent.querySelectorAll("td").length];
-							const input = cell.querySelector("input");
+								colHeads[parent.querySelectorAll('td').length]
+							const input = cell.querySelector('input')
 							if (!input)
 								throw new Error(
-									"No input found in cell template",
-								);
-							input.dataset["key"] = colKey;
+									'No input found in cell template',
+								)
+							input.dataset['key'] = colKey
 							cell
-								.querySelector("slot")
+								.querySelector('slot')
 								?.replaceWith(
 									document.createTextNode(
 										`${colKey}${rowKey}`,
 									),
-								);
-							return cell;
+								)
+							return cell
 						},
 					},
 				),
@@ -177,18 +176,17 @@ export default component(
 
 			/* Create empty cells for column sums */
 			first(
-				"tfoot tr",
+				'tfoot tr',
 				insertOrRemoveElement(
-					(target) =>
-						el.columns - target.querySelectorAll("td").length,
+					target => el.columns - target.querySelectorAll('td').length,
 					{
-						position: "beforeend",
-						create: (parent) => {
-							const cell = document.createElement("td");
+						position: 'beforeend',
+						create: parent => {
+							const cell = document.createElement('td')
 							const colKey =
-								colHeads[parent.querySelectorAll("td").length];
-							cell.dataset["key"] = colKey;
-							return cell;
+								colHeads[parent.querySelectorAll('td').length]
+							cell.dataset['key'] = colKey
+							return cell
 						},
 					},
 				),
@@ -196,28 +194,28 @@ export default component(
 
 			/* Update column values when cells change */
 			all(
-				"tbody input",
-				on("change", (e: Event) => {
+				'tbody input',
+				on('change', (e: Event) => {
 					const colKey = (e.target as HTMLInputElement)?.dataset[
-						"key"
-					];
-					colSums.get(colKey!)?.set(calcColumnSum(colKey!));
+						'key'
+					]
+					colSums.get(colKey!)?.set(calcColumnSum(colKey!))
 				}),
 			),
 
 			/* Update sums for each column */
 			all(
-				"tfoot td",
+				'tfoot td',
 				setText((target: HTMLTableCellElement) =>
-					String(colSums.get(target.dataset["key"]!)!.get()),
+					String(colSums.get(target.dataset['key']!)!.get()),
 				),
 			),
-		];
+		]
 	},
-);
+)
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"calc-table": Component<CalcTableProps>;
+		'calc-table': Component<CalcTableProps>
 	}
 }

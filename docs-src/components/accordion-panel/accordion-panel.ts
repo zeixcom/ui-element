@@ -4,33 +4,33 @@ import {
 	component,
 	setProperty,
 	toggleAttribute,
-} from "../../../";
+} from '../../../'
 
 export type AccordionPanelProps = {
-	open: boolean;
-	collapsible: boolean;
-};
+	open: boolean
+	collapsible: boolean
+}
 
 export default component(
-	"accordion-panel",
+	'accordion-panel',
 	{
 		open: asBoolean,
 		collapsible: asBoolean,
 	},
 	(el, { first }) => [
-		toggleAttribute("open"),
-		toggleAttribute("collapsible"),
-		setProperty("hidden", () => !el.open && !el.collapsible),
+		toggleAttribute('open'),
+		toggleAttribute('collapsible'),
+		setProperty('hidden', () => !el.open && !el.collapsible),
 		first(
-			"details",
-			setProperty("open"),
-			setProperty("ariaDisabled", () => String(!el.collapsible)),
+			'details',
+			setProperty('open'),
+			setProperty('ariaDisabled', () => String(!el.collapsible)),
 		),
 	],
-);
+)
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"accordion-panel": Component<AccordionPanelProps>;
+		'accordion-panel': Component<AccordionPanelProps>
 	}
 }

@@ -1,38 +1,28 @@
-import {
-	type Component,
-	type SignalProducer,
-	component,
-	selection,
-	pass,
-} from "../../../";
-import { SpinButtonProps } from "../spin-button/spin-button";
+import { type Component, component, pass } from '../../../'
+import { sumValues } from '../../functions/signal-producer/sum-values'
 
 export type ProductCatalogProps = {
-	total: number;
-};
+	total: number
+}
 
 export default component(
-	"product-catalog",
+	'product-catalog',
 	{
-		total: ((el) => () =>
-			selection<Component<SpinButtonProps>>(el, "spin-button")
-				.get()
-				.reduce((sum, item) => sum + item.value, 0)
-		) as SignalProducer<HTMLElement, number>,
+		total: sumValues('spin-button'),
 	},
 	(el, { first }) => [
 		first(
-			"input-button",
+			'input-button',
 			pass({
-				badge: () => (el.total > 0 ? String(el.total) : ""),
+				badge: () => (el.total > 0 ? String(el.total) : ''),
 				disabled: () => !el.total,
 			}),
 		),
 	],
-);
+)
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"product-catalog": Component<ProductCatalogProps>;
+		'product-catalog': Component<ProductCatalogProps>
 	}
 }

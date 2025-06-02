@@ -8,34 +8,34 @@ import {
 	setProperty,
 	setText,
 	toggleAttribute,
-} from "../../../";
+} from '../../../'
 
 export type InputCheckboxProps = {
-	checked: boolean;
-	label: string;
-};
+	checked: boolean
+	label: string
+}
 
 export default component(
-	"input-checkbox",
+	'input-checkbox',
 	{
 		checked: asBoolean,
 		label: asString(RESET),
 	},
 	(el, { first }) => [
-		toggleAttribute("checked"),
+		toggleAttribute('checked'),
 		first(
-			"input",
-			setProperty("checked"),
-			on("change", (e: Event) => {
-				el.checked = (e.target as HTMLInputElement)?.checked;
+			'input',
+			setProperty('checked'),
+			on('change', (e: Event) => {
+				el.checked = (e.target as HTMLInputElement)?.checked
 			}),
 		),
-		first(".label", setText("label")),
+		first('.label', setText('label')),
 	],
-);
+)
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"input-checkbox": Component<InputCheckboxProps>;
+		'input-checkbox': Component<InputCheckboxProps>
 	}
 }

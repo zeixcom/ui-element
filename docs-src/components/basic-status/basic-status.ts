@@ -24,9 +24,9 @@ export default component(
 	el => [
 		setText('status'),
 		...basicStatusOptions.map(status =>
-			toggleClass<BasicStatusProps>(status, () => el.status === status)
+			toggleClass<BasicStatusProps>(status, () => el.status === status),
 		),
-	]
+	],
 )
 
 declare global {

@@ -4,65 +4,65 @@ import {
 	component,
 	on,
 	toggleAttribute,
-} from "../../../";
+} from '../../../'
 
-import type { InputButtonProps } from "../input-button/input-button";
+import type { InputButtonProps } from '../input-button/input-button'
 
 export type CodeBlockProps = {
-	collapsed: boolean;
-};
+	collapsed: boolean
+}
 
 export default component(
-	"code-block",
+	'code-block',
 	{
 		collapsed: asBoolean,
 	},
 	(el, { first }) => {
-		const code = el.querySelector("code");
+		const code = el.querySelector('code')
 		return [
-			toggleAttribute("collapsed"),
+			toggleAttribute('collapsed'),
 			first(
-				".overlay",
-				on("click", () => {
-					el.collapsed = false;
+				'.overlay',
+				on('click', () => {
+					el.collapsed = false
 				}),
 			),
 			first(
-				".copy",
-				on("click", async (e: Event) => {
+				'.copy',
+				on('click', async (e: Event) => {
 					const copyButton =
-						e.currentTarget as Component<InputButtonProps>;
-					const label = copyButton.textContent?.trim() ?? "";
-					let status = "success";
+						e.currentTarget as Component<InputButtonProps>
+					const label = copyButton.textContent?.trim() ?? ''
+					let status = 'success'
 					try {
 						await navigator.clipboard.writeText(
-							code?.textContent?.trim() ?? "",
-						);
+							code?.textContent?.trim() ?? '',
+						)
 					} catch (err) {
 						console.error(
-							"Error while trying to use navigator.clipboard.writeText()",
+							'Error while trying to use navigator.clipboard.writeText()',
 							err,
-						);
-						status = "error";
+						)
+						status = 'error'
 					}
-					copyButton.disabled = true;
+					copyButton.disabled = true
 					copyButton.label =
-						el.getAttribute(`copy-${status}`) ?? label;
+						el.getAttribute(`copy-${status}`) ?? label
 					setTimeout(
 						() => {
-							copyButton.disabled = false;
-							copyButton.label = label;
+							copyButton.disabled = false
+							copyButton.label = label
 						},
-						status === "success" ? 1000 : 3000,
-					);
+						status === 'success' ? 1000 : 3000,
+					)
 				}),
 			),
-		];
+		]
 	},
-);
+)
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"code-block": Component<CodeBlockProps>;
+		'code-block': Component<CodeBlockProps>
 	}
 }
