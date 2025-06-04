@@ -23,17 +23,19 @@ UIElement is a lightweight TypeScript library (approximately 4kB gzipped) that b
 * Progressively enhance server-rendered content with client-side interactivity
 
 ```js
-import { asInteger, component, first, on, RESET, setText } from "@zeix/ui-element";
+import { asInteger, component, on, RESET, setText } from "@zeix/ui-element";
 
 component("show-appreciation", {
     count: asInteger(RESET) // Get initial value from .count element
-}, el => [
+}, (el, { first }) => [
 
     // Update count display when state changes
     first(".count", setText("count")),
 
     // Handle click events to change state
-    first("button", on("click", () => { el.count++ }))
+    first("button", on("click", () => {
+        el.count++
+    }))
 ]);
 ```
 

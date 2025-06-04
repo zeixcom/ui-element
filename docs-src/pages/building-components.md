@@ -81,6 +81,11 @@ Runs when the component is added to the page (`connectedCallback()`). This is wh
 * **Emit custom events**
 * **Provide context**
 
+The setup function has two arguments:
+
+1. `el`: The component element instance.
+2. `{ all, first }`: An object containing two functions, `all` and `first`, which can be used to select elements within the component. See [Accessing Sub-elements](#accessing-sub-elements).
+
 UIElement expects you to return an array of partially applied functions to be executed during the setup phase. The order doesn't matter, as each function targets a specific element or event. So feel free to organize your code in a way that makes sense to you.
 
 Each of these functions will return a cleanup function that will be executed during the `disconnectedCallback()` lifecycle method.
@@ -88,7 +93,7 @@ Each of these functions will return a cleanup function that will be executed dur
 ```js
 component("my-component", {
 	count: 0,
-}, el => [
+}, (el, { first }) => [
 	emit("update-count", el.count), // Emit custom event
 	provide("count"), // Provide context
 	first(".increment",
@@ -197,7 +202,7 @@ The `asJSON()` parser requires a fallback object as parameter as `{}` probably w
 
 ## Accessing Sub-elements
 
-Before adding **event listeners**, **applying effects**, or **passing states** to sub-elements, you need to select them using a function for **element selection**:
+Before adding **event listeners**, **applying effects**, or **passing states** to sub-components, you need to select them using a function for **element selection**:
 
 | Function                  | Description |
 | --------------------------| ----------- |
@@ -234,7 +239,7 @@ Event listeners allow to respond to user interactions. They are the cause of cha
 component("my-component", {
 	active: 0,
 	value: ''
-}, (el) => [
+}, (el, { all, first }) => [
 	all("button",
 		on("click", (e) => {
 			// Set "active" signal to value of data-index attribute of button
@@ -264,7 +269,7 @@ Effects **automatically update the DOM** when signals change, avoiding manual DO
 Apply one or multiple effects in the setup function (for component itself) or in element selector functions:
 
 ```js
-() => [
+(_, { first }) => [
 	// On the component itself
 	setAttribute("open", "isOpen"), // Set "open" attribute according to "isOpen" signal
 
@@ -314,7 +319,7 @@ Here, `toggleClass("even")` automatically uses the `"even"` signal.
 Local signals are useful for storing state that should not be exposed to the outside world. They can be used to manage internal state within a component:
 
 ```js
-component("my-component", {}, () => {
+component("my-component", {}, (_, { first }) => {
 	const count = state(0);
 	const double = count.map(v => v * 2);
 	return [
@@ -336,7 +341,7 @@ Instead of a signal key or a local signal, you can **pass a function** that deri
 ```js
 component("my-component", {
 	count: 0
-}, el => {
+}, (el, { first }) => {
 	const double = computed(() => el.count * 2);
 	return [
 		first(".count", toggleClass("even", () => !(el.count % 2)))),
@@ -509,8 +514,10 @@ Bringing all of the above together, you are now ready to build your own componen
 	<details>
 		<summary>Source Code</summary>
 		<lazy-load src="./examples/my-slider.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 </component-demo>

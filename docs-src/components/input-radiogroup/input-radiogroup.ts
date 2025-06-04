@@ -1,42 +1,41 @@
 import {
 	type Component,
-	all,
 	asString,
 	component,
 	on,
 	setAttribute,
 	toggleClass,
-} from "../../../";
+} from '../../../'
 
 export type InputRadiogroupProps = {
-	value: string;
-};
+	value: string
+}
 
 export default component(
-	"input-radiogroup",
+	'input-radiogroup',
 	{
 		value: asString(),
 	},
-	(el) => [
-		setAttribute("value"),
+	(el, { all }) => [
+		setAttribute('value'),
 		all(
-			"input",
-			on("change", (e: Event) => {
-				el.value = (e.target as HTMLInputElement)?.value;
+			'input',
+			on('change', (e: Event) => {
+				el.value = (e.target as HTMLInputElement)?.value
 			}),
 		),
 		all(
-			"label",
+			'label',
 			toggleClass(
-				"selected",
-				(target) => el.value === target.querySelector("input")?.value,
+				'selected',
+				target => el.value === target.querySelector('input')?.value,
 			),
 		),
 	],
-);
+)
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"input-radiogroup": Component<InputRadiogroupProps>;
+		'input-radiogroup': Component<InputRadiogroupProps>
 	}
 }

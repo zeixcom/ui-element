@@ -277,6 +277,7 @@ var idString = (id) => id ? `#${id}` : "";
 var classString = (classList) => classList.length ? `.${Array.from(classList).join(".")}` : "";
 var isDefinedObject = (value) => !!value && typeof value === "object";
 var isString = (value) => typeof value === "string";
+var isElement = (node) => node.nodeType === Node.ELEMENT_NODE;
 var elementName = (el) => `<${el.localName}${idString(el.id)}${classString(el.classList)}>`;
 var valueString = (value) => isString(value) ? `"${value}"` : isDefinedObject(value) ? JSON.stringify(value) : String(value);
 var typeString = (value) => {
@@ -297,14 +298,13 @@ var log = (value, msg, level = LOG_DEBUG) => {
   return value;
 };
 
-// src/core/ui.ts
+// src/core/dom.ts
 class CircularMutationError extends Error {
   constructor(message) {
     super(message);
     this.name = "CircularMutationError";
   }
 }
-var isElement = (node) => node.nodeType === Node.ELEMENT_NODE;
 var isComponent = (value) => value instanceof HTMLElement && value.localName.includes("-");
 var extractAttributes = (selector) => {
   const attributes = new Set;
@@ -348,51 +348,6 @@ var observeSubtree = (parent, selectors, callback) => {
   }
   observer.observe(parent, observerConfig);
   return observer;
-};
-var run = (fns, host, target) => {
-  const cleanups = fns.filter(isFunction).map((fn) => fn(host, target));
-  return () => {
-    cleanups.filter(isFunction).forEach((cleanup) => cleanup());
-    cleanups.length = 0;
-  };
-};
-var first = (selector, ...fns) => (host) => {
-  const el = (host.shadowRoot || host).querySelector(selector);
-  if (el)
-    run(fns, host, el);
-};
-var all = (selector, ...fns) => (host) => {
-  const cleanups = new Map;
-  const root = host.shadowRoot || host;
-  const attach = (target) => {
-    if (!cleanups.has(target))
-      cleanups.set(target, run(fns, host, target));
-  };
-  const detach = (target) => {
-    const cleanup = cleanups.get(target);
-    if (isFunction(cleanup))
-      cleanup();
-    cleanups.delete(target);
-  };
-  const applyToMatching = (fn) => (node) => {
-    if (isElement(node)) {
-      if (node.matches(selector))
-        fn(node);
-      node.querySelectorAll(selector).forEach(fn);
-    }
-  };
-  const observer = observeSubtree(root, selector, (mutations) => {
-    for (const mutation of mutations) {
-      mutation.addedNodes.forEach(applyToMatching(attach));
-      mutation.removedNodes.forEach(applyToMatching(detach));
-    }
-  });
-  root.querySelectorAll(selector).forEach(attach);
-  return () => {
-    observer.disconnect();
-    cleanups.forEach((cleanup) => cleanup());
-    cleanups.clear();
-  };
 };
 var selection = (parent, selectors) => {
   const watchers = new Set;
@@ -485,6 +440,53 @@ var RESERVED_WORDS = new Set([
 ]);
 var isAttributeParser = (value) => isFunction(value) && value.length >= 2;
 var validatePropertyName = (prop) => !(HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop));
+var run = (fns, host, target = host) => {
+  const cleanups = fns.filter(isFunction).map((fn) => fn(host, target));
+  return () => {
+    cleanups.filter(isFunction).forEach((cleanup) => cleanup());
+    cleanups.length = 0;
+  };
+};
+var select = () => ({
+  first: (selector, ...fns) => (host) => {
+    const el = (host.shadowRoot || host).querySelector(selector);
+    if (el)
+      run(fns, host, el);
+  },
+  all: (selector, ...fns) => (host) => {
+    const cleanups = new Map;
+    const root = host.shadowRoot || host;
+    const attach = (target) => {
+      if (!cleanups.has(target))
+        cleanups.set(target, run(fns, host, target));
+    };
+    const detach = (target) => {
+      const cleanup = cleanups.get(target);
+      if (isFunction(cleanup))
+        cleanup();
+      cleanups.delete(target);
+    };
+    const applyToMatching = (fn) => (node) => {
+      if (isElement(node)) {
+        if (node.matches(selector))
+          fn(node);
+        node.querySelectorAll(selector).forEach(fn);
+      }
+    };
+    const observer = observeSubtree(root, selector, (mutations) => {
+      for (const mutation of mutations) {
+        mutation.addedNodes.forEach(applyToMatching(attach));
+        mutation.removedNodes.forEach(applyToMatching(detach));
+      }
+    });
+    root.querySelectorAll(selector).forEach(attach);
+    return () => {
+      observer.disconnect();
+      cleanups.forEach((cleanup) => cleanup());
+      cleanups.clear();
+    };
+  }
+});
 var component = (name, init = {}, setup) => {
 
   class CustomElement extends HTMLElement {
@@ -508,10 +510,10 @@ var component = (name, init = {}, setup) => {
         if (this.debug)
           log(this, "Connected");
       }
-      const fns = setup(this);
+      const fns = setup(this, select());
       if (!Array.isArray(fns))
         throw new TypeError(`Expected array of functions as return value of setup function in ${elementName(this)}`);
-      this.#cleanup = run(fns, this, this);
+      this.#cleanup = run(fns, this);
     }
     disconnectedCallback() {
       if (isFunction(this.#cleanup))
@@ -809,17 +811,18 @@ var setStyle = (prop, s = prop) => updateElement(s, {
     el.style.removeProperty(prop);
   }
 });
-var dangerouslySetInnerHTML = (s, attachShadow, allowScripts) => updateElement(s, {
+var dangerouslySetInnerHTML = (s, options = {}) => updateElement(s, {
   op: "h",
-  read: (el) => (el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? "",
+  read: (el) => (el.shadowRoot || !options.shadowRootMode ? el : null)?.innerHTML ?? "",
   update: (el, html) => {
+    const { shadowRootMode, allowScripts } = options;
     if (!html) {
       if (el.shadowRoot)
         el.shadowRoot.innerHTML = "<slot></slot>";
       return "";
     }
-    if (attachShadow && !el.shadowRoot)
-      el.attachShadow({ mode: attachShadow });
+    if (shadowRootMode && !el.shadowRoot)
+      el.attachShadow({ mode: shadowRootMode });
     const target = el.shadowRoot || el;
     target.innerHTML = html;
     if (!allowScripts)
@@ -852,7 +855,6 @@ export {
   isSignal,
   isComputed,
   insertOrRemoveElement,
-  first,
   enqueue,
   emit,
   effect,
@@ -867,7 +869,6 @@ export {
   asInteger,
   asEnum,
   asBoolean,
-  all,
   UNSET,
   RESET,
   LOG_WARN,

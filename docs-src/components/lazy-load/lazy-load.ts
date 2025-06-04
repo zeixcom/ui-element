@@ -1,87 +1,66 @@
 import {
-	type AttributeParser,
 	type Component,
-	type SignalProducer,
-	setProperty,
-	setText,
 	dangerouslySetInnerHTML,
 	component,
-	first,
-} from "../../../";
+	computed,
+	state,
+	setProperty,
+	setText,
+	toggleClass,
+	UNSET,
+} from '../../..'
+import { asURL } from '../../functions/attribute-parser/as-url'
+import { fetchWithCache } from '../../functions/shared/fetch-with-cache'
 
 export type LazyLoadProps = {
-	error: string;
-	src: string;
-	content: string;
-};
-
-/* === Attribute Parser === */
-
-const asURL: AttributeParser<HTMLElement & { error: string }, string> = (
-	el,
-	v,
-) => {
-	let value = "";
-	let error = "";
-	if (!v) {
-		error = "No URL provided in src attribute";
-	} else if (
-		(el.parentElement || (el.getRootNode() as ShadowRoot).host)?.closest(
-			`${el.localName}[src="${v}"]`,
-		)
-	) {
-		error = "Recursive loading detected";
-	} else {
-		const url = new URL(v, location.href); // Ensure 'src' attribute is a valid URL
-		if (url.origin === location.origin)
-			value = String(url); // Sanity check for cross-origin URLs
-		else error = "Invalid URL origin";
-	}
-	el.error = error;
-	return value;
-};
-
-/* === Signal Producer === */
-
-const fetchText: SignalProducer<
-	HTMLElement & { error: string; src: string },
-	string
-> = (el) => async (abort) => {
-	// Async Computed callback
-	const url = el.src;
-	if (!url) return "";
-	try {
-		const response = await fetch(url, { signal: abort });
-		el.querySelector(".loading")?.remove();
-		if (response.ok) return response.text();
-		else el.error = response.statusText;
-	} catch (error) {
-		el.error = error.message;
-	}
-	return "";
-};
-
-/* === Component === */
+	src: string
+}
 
 export default component(
-	"lazy-load",
+	'lazy-load',
 	{
-		error: "",
 		src: asURL,
-		content: fetchText,
 	},
-	(el) => [
-		dangerouslySetInnerHTML("content"),
-		first<LazyLoadProps, HTMLElement>(
-			".error",
-			setText("error"),
-			setProperty("hidden", () => !el.error),
-		),
-	],
-);
+	(el, { first }) => {
+		const error = state('')
+
+		const content = computed(async abort => {
+			const url = el.src.value
+			if (el.src.error || !url) {
+				error.set(el.src.error ?? 'No URL provided')
+				return ''
+			}
+
+			try {
+				error.set('')
+				el.querySelector('.loading')?.remove()
+				const { content } = await fetchWithCache(url, abort)
+				return content
+			} catch (err) {
+				const errorMessage =
+					err instanceof Error ? err.message : String(err)
+				error.set(errorMessage)
+				return ''
+			}
+		})
+
+		return [
+			dangerouslySetInnerHTML(content),
+			first(
+				'callout-box',
+				setProperty(
+					'hidden',
+					() => !error.get() && content.get() !== UNSET,
+				),
+				toggleClass('danger', () => !error.get()),
+			),
+			first('.error', setText(error)),
+		]
+	},
+)
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"lazy-load": Component<LazyLoadProps>;
+		'lazy-load': Component<LazyLoadProps>
 	}
 }

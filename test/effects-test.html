@@ -66,8 +66,6 @@
 			import { assert } from "@esm-bundle/chai";
 			import {
 				component,
-				first,
-				all,
 				on,
 				computed,
 				effect,
@@ -96,7 +94,7 @@
 				{
 					text: asString(),
 				},
-				() => [first("p", setText("text"))],
+				(_, { first }) => [first("p", setText("text"))],
 			);
 
 			component(
@@ -104,7 +102,7 @@
 				{
 					value: asString(),
 				},
-				() => [first("input", setProperty("value"))],
+				(_, { first }) => [first("input", setProperty("value"))],
 			);
 
 			component(
@@ -113,7 +111,7 @@
 					required: asBoolean,
 					ariaInvalid: "false",
 				},
-				(el) => [
+				(el, { first }) => [
 					first(
 						"input",
 						on("change", (e) => {
@@ -134,7 +132,7 @@
 				{
 					active: asInteger(),
 				},
-				(el) => [
+				(el, { all }) => [
 					all(
 						"li",
 						toggleClass(
@@ -151,7 +149,7 @@
 				{
 					color: asString(),
 				},
-				() => [first("p", setStyle("color"))],
+				(_, { first }) => [first("p", setStyle("color"))],
 			);
 
 			component(
@@ -167,7 +165,7 @@
 				{
 					content: "<p>Initial shadow content</p>",
 				},
-				() => [dangerouslySetInnerHTML("content", "open")],
+				() => [dangerouslySetInnerHTML("content", { shadowRootMode: "open" })],
 			);
 
 			component(
@@ -175,7 +173,7 @@
 				{
 					content: '<p id="test-p-shadow">Original</p>',
 				},
-				() => [dangerouslySetInnerHTML("content", "open", true)],
+				() => [dangerouslySetInnerHTML("content", { shadowRootMode: "open", allowScripts: true })],
 			);
 
 			component(
@@ -186,7 +184,7 @@
 					append: 0,
 					after: 0,
 				},
-				(el) => [
+				(el, { first }) => [
 					first(
 						"ul",
 						insertOrRemoveElement("before", {
@@ -226,7 +224,7 @@
 				{
 					items: [1, 2, 3],
 				},
-				(el) => [
+				(el, { all }) => [
 					all(
 						"li",
 						insertOrRemoveElement((li) =>
@@ -246,7 +244,7 @@
 					append: 0,
 					after: 0,
 				},
-				(el) => {
+				(el, { first }) => {
 					const pTemplate = el.querySelector(".p");
 					const liTemplate = el.querySelector(".li");
 					return [

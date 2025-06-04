@@ -23,10 +23,9 @@
 		</parent-component>
 
 		<script type="module">
-			import { runTests } from "@web/test-runner-mocha";
-			import { assert } from "@esm-bundle/chai";
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
 			import {
-				first,
 				on,
 				emit,
 				pass,
@@ -34,279 +33,276 @@
 				asString,
 				setText,
 				RESET,
-			} from "../index.dev.js";
+			} from '../index.dev.js'
 
 			const animationFrame = async () =>
-				new Promise(requestAnimationFrame);
-			const normalizeText = (text) => text.replace(/\s+/g, " ").trim();
+				new Promise(requestAnimationFrame)
+			const normalizeText = text => text.replace(/\s+/g, ' ').trim()
 
 			component(
-				"child-component",
+				'child-component',
 				{
 					heading: asString(RESET),
 					text: asString(RESET),
 				},
-				() => [
-					first("h1", setText("heading")),
-					first("p", setText("text")),
+				(_, { first }) => [
+					first('h1', setText('heading')),
+					first('p', setText('text')),
 				],
-			);
+			)
 
 			component(
-				"parent-component",
+				'parent-component',
 				{
 					heading: asString(RESET),
 				},
-				(el) => [
+				(el, { first }) => [
 					first(
-						"child-component",
+						'child-component',
 						pass({
-							heading: "heading",
+							heading: 'heading',
 							text: () => el.heading.toUpperCase(),
 						}),
 					),
 				],
-			);
+			)
 
 			class InvalidComponent extends HTMLElement {
 				constructor() {
-					super();
-					throw new Error("Invalid component");
+					super()
+					throw new Error('Invalid component')
 				}
 			}
-			customElements.define("invalid-component", InvalidComponent);
+			customElements.define('invalid-component', InvalidComponent)
 
 			runTests(() => {
-				describe("on()", () => {
-					it("should attach and remove an event listener", async () => {
-						const div = document.getElementById("test-on-function");
-						let called = false;
+				describe('on()', () => {
+					it('should attach and remove an event listener', async () => {
+						const div = document.getElementById('test-on-function')
+						let called = false
 
-						const off = on("click", () => {
-							called = true;
-						})({}, div);
+						const off = on('click', () => {
+							called = true
+						})({}, div)
 
-						div.click();
-						const wasCalled = called;
+						div.click()
+						const wasCalled = called
 
-						off(); // Remove the event listener
-						called = false;
-						div.click();
+						off() // Remove the event listener
+						called = false
+						div.click()
 
-						assert.equal(wasCalled, true);
-						assert.equal(called, false);
-					});
+						assert.equal(wasCalled, true)
+						assert.equal(called, false)
+					})
 
-					it("should throw TypeError for invalid handler", async () => {
-						const div = document.getElementById("test-on-invalid");
-						assert.throws(
-							() => on("click", {})({}, div),
-							TypeError,
-						);
-					});
+					it('should throw TypeError for invalid handler', async () => {
+						const div = document.getElementById('test-on-invalid')
+						assert.throws(() => on('click', {})({}, div), TypeError)
+					})
 
-					it("should use host as default target", async () => {
-						const host = document.getElementById("host");
-						let called = false;
+					it('should use host as default target', async () => {
+						const host = document.getElementById('host')
+						let called = false
 
-						const off = on("click", () => {
-							called = true;
-						})(host);
+						const off = on('click', () => {
+							called = true
+						})(host)
 
-						host.click();
-						const wasCalled = called;
+						host.click()
+						const wasCalled = called
 
-						off(); // Remove the event listener
-						called = false;
-						host.click();
+						off() // Remove the event listener
+						called = false
+						host.click()
 
-						assert.equal(wasCalled, true);
-						assert.equal(called, false);
-					});
-				});
+						assert.equal(wasCalled, true)
+						assert.equal(called, false)
+					})
+				})
 
-				describe("emit()", () => {
-					it("should emit an event", async () => {
-						const div = document.getElementById("test-on-function");
-						let called = false;
+				describe('emit()', () => {
+					it('should emit an event', async () => {
+						const div = document.getElementById('test-on-function')
+						let called = false
 
 						const handler = () => {
-							called = true;
-						};
+							called = true
+						}
 
-						div.addEventListener("custom-event", handler);
-						emit("custom-event")(div);
+						div.addEventListener('custom-event', handler)
+						emit('custom-event')(div)
 
-						assert.equal(called, true);
+						assert.equal(called, true)
 
-						div.removeEventListener("custom-event", handler);
-					});
+						div.removeEventListener('custom-event', handler)
+					})
 
-					it("should emit an event with detail", async () => {
-						const div = document.getElementById("test-on-function");
-						let detailReceived = null;
+					it('should emit an event with detail', async () => {
+						const div = document.getElementById('test-on-function')
+						let detailReceived = null
 
-						const handler = (event) => {
-							detailReceived = event.detail;
-						};
+						const handler = event => {
+							detailReceived = event.detail
+						}
 
-						div.addEventListener("custom-event", handler);
-						emit("custom-event", { foo: "bar" })(div);
+						div.addEventListener('custom-event', handler)
+						emit('custom-event', { foo: 'bar' })(div)
 
-						assert.deepEqual(detailReceived, { foo: "bar" });
+						assert.deepEqual(detailReceived, { foo: 'bar' })
 
-						div.removeEventListener("custom-event", handler);
-					});
-				});
+						div.removeEventListener('custom-event', handler)
+					})
+				})
 
-				describe("Orphan child component", function () {
-					it("should do nothing at all", async function () {
+				describe('Orphan child component', function () {
+					it('should do nothing at all', async function () {
 						const orphanComponent =
-							document.getElementById("orphan");
-						await animationFrame();
+							document.getElementById('orphan')
+						await animationFrame()
 						const headingContent = normalizeText(
-							orphanComponent.querySelector("h1").textContent,
-						);
+							orphanComponent.querySelector('h1').textContent,
+						)
 						const textContent = normalizeText(
-							orphanComponent.querySelector("p").textContent,
-						);
+							orphanComponent.querySelector('p').textContent,
+						)
 						assert.equal(
 							headingContent,
-							"Hello from Server",
-							"Should not change server-side rendered heading",
-						);
+							'Hello from Server',
+							'Should not change server-side rendered heading',
+						)
 						assert.equal(
 							textContent,
-							"Text from Server",
-							"Should not change server-side rendered text",
-						);
-					});
-				});
+							'Text from Server',
+							'Should not change server-side rendered text',
+						)
+					})
+				})
 
-				describe("Child component", function () {
-					it("should receive state from attribute of parent component", async function () {
-						const childComponent = document.getElementById("child");
+				describe('Child component', function () {
+					it('should receive state from attribute of parent component', async function () {
+						const childComponent = document.getElementById('child')
 						await customElements.whenDefined(
 							childComponent.localName,
-						);
+						)
 						const headingContent =
-							childComponent.querySelector("h1").textContent;
+							childComponent.querySelector('h1').textContent
 						assert.equal(
 							headingContent,
-							"Hello from Attribute",
-							"Should have initial heading from attribute of parent component",
-						);
-					});
+							'Hello from Attribute',
+							'Should have initial heading from attribute of parent component',
+						)
+					})
 
-					it("should receive derived state from attribute of parent component", async function () {
-						const childComponent = document.getElementById("child");
+					it('should receive derived state from attribute of parent component', async function () {
+						const childComponent = document.getElementById('child')
 						await customElements.whenDefined(
 							childComponent.localName,
-						);
+						)
 						const textContent = normalizeText(
-							childComponent.querySelector("p").textContent,
-						);
+							childComponent.querySelector('p').textContent,
+						)
 						assert.equal(
 							textContent,
-							"Hello from Attribute".toUpperCase(),
-							"Should have initial text derived from attribute of parent component",
-						);
-					});
+							'Hello from Attribute'.toUpperCase(),
+							'Should have initial text derived from attribute of parent component',
+						)
+					})
 
-					it("should receive passed and derived states from changed attribute of parent component", async function () {
+					it('should receive passed and derived states from changed attribute of parent component', async function () {
 						const parentComponent =
-							document.getElementById("parent");
-						const childComponent = document.getElementById("child");
+							document.getElementById('parent')
+						const childComponent = document.getElementById('child')
 						parentComponent.setAttribute(
-							"heading",
-							"Hello from Changed Attribute",
-						);
-						await animationFrame();
+							'heading',
+							'Hello from Changed Attribute',
+						)
+						await animationFrame()
 						const headingContent = normalizeText(
-							childComponent.querySelector("h1").textContent,
-						);
+							childComponent.querySelector('h1').textContent,
+						)
 						const textContent = normalizeText(
-							childComponent.querySelector("p").textContent,
-						);
+							childComponent.querySelector('p').textContent,
+						)
 						assert.equal(
 							headingContent,
-							"Hello from Changed Attribute",
-							"Should have changed heading from attribute of parent component",
-						);
+							'Hello from Changed Attribute',
+							'Should have changed heading from attribute of parent component',
+						)
 						assert.equal(
 							textContent,
-							"Hello from Changed Attribute".toUpperCase(),
-							"Should have changed text derived from attribute of parent component",
-						);
-					});
+							'Hello from Changed Attribute'.toUpperCase(),
+							'Should have changed text derived from attribute of parent component',
+						)
+					})
 
-					it("should change heading if inherited state is set", async function () {
+					it('should change heading if inherited state is set', async function () {
 						const parentComponent =
-							document.getElementById("parent");
-						const childComponent = document.getElementById("child");
-						parentComponent.heading = "Hello from State on Parent";
-						await animationFrame();
+							document.getElementById('parent')
+						const childComponent = document.getElementById('child')
+						parentComponent.heading = 'Hello from State on Parent'
+						await animationFrame()
 						const headingContent =
-							childComponent.querySelector("h1").textContent;
+							childComponent.querySelector('h1').textContent
 						assert.equal(
 							headingContent,
-							"Hello from State on Parent",
-							"Should have changed heading from state of parent component",
-						);
-					});
+							'Hello from State on Parent',
+							'Should have changed heading from state of parent component',
+						)
+					})
 
-					it("should throw TypeError if target is not a custom element", async function () {
+					it('should throw TypeError if target is not a custom element', async function () {
 						const parentComponent =
-							document.getElementById("parent");
-						const invalidTarget = document.createElement("div");
+							document.getElementById('parent')
+						const invalidTarget = document.createElement('div')
 
 						assert.throws(
 							() => {
-								pass({ heading: "heading" })(
+								pass({ heading: 'heading' })(
 									parentComponent,
 									invalidTarget,
-								);
+								)
 							},
 							TypeError,
-							"Target element must be a custom element",
-						);
-					});
+							'Target element must be a custom element',
+						)
+					})
 
-					it("should throw TypeError if signals are not an object or provider", async function () {
+					it('should throw TypeError if signals are not an object or provider', async function () {
 						const parentComponent =
-							document.getElementById("parent");
-						const childComponent = document.getElementById("child");
+							document.getElementById('parent')
+						const childComponent = document.getElementById('child')
 
 						assert.throws(
 							() => {
-								pass(null)(parentComponent, childComponent);
+								pass(null)(parentComponent, childComponent)
 							},
 							TypeError,
-							"Passed signals must be an object or a provider function",
-						);
-					});
+							'Passed signals must be an object or a provider function',
+						)
+					})
 
-					it("should throw TypeError if signals are not a function", async function () {
+					it('should throw TypeError if signals are not a function', async function () {
 						const parentComponent =
-							document.getElementById("parent");
+							document.getElementById('parent')
 						const invalidComponent =
-							document.getElementById("invalid");
+							document.getElementById('invalid')
 
 						try {
-							pass({ heading: "heading" })(
+							pass({ heading: 'heading' })(
 								parentComponent,
 								invalidComponent,
-							);
+							)
 						} catch (error) {
 							assert.equal(
 								error instanceof TypeError,
 								true,
-								"Should throw TypeError",
-							);
+								'Should throw TypeError',
+							)
 						}
-					});
-				});
-			});
+					})
+				})
+			})
 		</script>
 	</body>
 </html>

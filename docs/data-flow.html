@@ -10,11 +10,12 @@
 		<script type="module" src="assets/main.js"></script>
 	</head>
 	<body>
-		<header class="content-grid">
-			<h1 class="content">
-				UIElement Docs <small>Version 0.12.2</small>
-			</h1>
-			
+		<client-router>
+			<header class="content-grid">
+				<h1 class="content">
+					UIElement Docs <small>Version 0.13.0</small>
+				</h1>
+				
 	<nav class="breakout">
 		<ol>
 			
@@ -91,8 +92,11 @@
 				</li>
 		</ol>
 	</nav>
-		</header>
-		<main><section class="hero">
+				<callout-box class="content danger" hidden>
+					<p class="error" role="alert" aria-live="polite"></p>
+				</callout-box>
+			</header>
+			<main><section class="hero">
 
 
 	            <h1 id="data-flow">
@@ -169,7 +173,7 @@
 <span class="line"><span style="color:#A6E22E">		selection</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">"spin-button"</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">reduce</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F;font-style:italic">sum</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">item</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> sum </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> item.value, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#F8F8F2">}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#F8F8F2">}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"input-button"</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">		pass</span><span style="color:#F8F8F2">({</span></span>
 <span class="line"><span style="color:#A6E22E">			badge</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (el.total </span><span style="color:#F92672">></span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> ?</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(el.total) </span><span style="color:#F92672">:</span><span style="color:#E6DB74"> ""</span><span style="color:#F8F8F2">),</span></span>
@@ -204,7 +208,7 @@
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"input-button"</span><span style="color:#F8F8F2">, {</span></span>
 <span class="line"><span style="color:#F8F8F2">	badge: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(RESET),</span></span>
-<span class="line"><span style="color:#F8F8F2">}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#F8F8F2">}, (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".badge"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"badge"</span><span style="color:#F8F8F2">)),</span></span>
 <span class="line"><span style="color:#F8F8F2">])</span></span>
 <span class="line"></span></code></pre>
@@ -233,7 +237,7 @@
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"spin-button"</span><span style="color:#F8F8F2">, {</span></span>
 <span class="line"><span style="color:#F8F8F2">	value: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(),</span></span>
-<span class="line"><span style="color:#F8F8F2">}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> max </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">9</span><span style="color:#F8F8F2">)(el, el.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"max"</span><span style="color:#F8F8F2">));</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#A6E22E"> isZero</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">===</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> [</span></span>
@@ -334,22 +338,28 @@
 	<details>
 		<summary>ProductCatalog Source Code</summary>
 		<lazy-load src="./examples/product-catalog.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 	<details>
 		<summary>InputButton Source Code</summary>
 		<lazy-load src="./examples/input-button.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 	<details>
 		<summary>SpinButton Source Code</summary>
 		<lazy-load src="./examples/spin-button.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 </component-demo>
@@ -537,36 +547,46 @@
 	<details>
 		<summary>TodoApp Source Code</summary>
 		<lazy-load src="./examples/todo-app.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 	<details>
 		<summary>InputField Source Code</summary>
 		<lazy-load src="./examples/input-field.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 	<details>
 		<summary>InputButton Source Code</summary>
 		<lazy-load src="./examples/input-button.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 	<details>
 		<summary>InputCheckbox Source Code</summary>
 		<lazy-load src="./examples/input-checkbox.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 	<details>
 		<summary>InputRadiogroup Source Code</summary>
 		<lazy-load src="./examples/input-radiogroup.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 </component-demo>
@@ -603,11 +623,12 @@
 	                Next Steps
 	            </h2></section>
 </main>
-		<footer class="content-grid">
-			<div class="content">
-				<h2 class="visually-hidden">Footer</h2>
-				<p>© 2024 – 2025 Zeix AG</p>
-			</div>
-		</footer>
+			<footer class="content-grid">
+				<div class="content">
+					<h2 class="visually-hidden">Footer</h2>
+					<p>© 2024 – 2025 Zeix AG</p>
+				</div>
+			</footer>
+		</client-router>
 	</body>
 </html>

@@ -12,13 +12,21 @@ import {
 import {
 	type ComponentProps,
 	type Component,
+	type FxFunction,
 	RESET,
 } from '../component'
-import { DEV_MODE, isString, elementName, log, LOG_ERROR, valueString } from '../core/util'
+import {
+	DEV_MODE,
+	isString,
+	elementName,
+	log,
+	LOG_ERROR,
+	valueString,
+} from '../core/util'
 
 /* === Types === */
 
-type SignalLike<P extends ComponentProps, E extends Element, T> =
+type SignalLike<P extends ComponentProps, T, E extends Element = HTMLElement> =
 	| keyof P
 	| Signal<NonNullable<T>>
 	| ((element: E) => T | null | undefined)
@@ -42,14 +50,19 @@ type ElementInserter<E extends Element> = {
 	reject?: (error: unknown) => void
 }
 
+type DangerouslySetInnerHTMLOptions = {
+	shadowRootMode?: ShadowRootMode
+	allowScripts?: boolean
+}
+
 /* === Internal === */
 
 const resolveSignalLike = /*#__PURE__*/ <
 	P extends ComponentProps,
-	E extends Element,
 	T extends {},
+	E extends Element = Component<P>,
 >(
-	s: SignalLike<P, E, T>,
+	s: SignalLike<P, T, E>,
 	host: Component<P>,
 	target: E,
 ): T =>
@@ -95,10 +108,10 @@ const safeSetAttribute = /*#__PURE__*/ (
  * @param {ElementUpdater} updater - updater object containing key, read, update, and delete methods
  */
 const updateElement =
-	<P extends ComponentProps, E extends Element, T extends {}>(
-		s: SignalLike<P, E, T>,
+	<P extends ComponentProps, T extends {}, E extends Element = HTMLElement>(
+		s: SignalLike<P, T, E>,
 		updater: ElementUpdater<E, T>,
-	) =>
+	): FxFunction<P, E> =>
 	(host: Component<P>, target: E): Cleanup => {
 		const { op, name = '', read, update } = updater
 		const fallback = read(target)
@@ -181,10 +194,10 @@ const updateElement =
  * @param {ElementInserter<E>} inserter - inserter object containing position, insert, and remove methods
  */
 const insertOrRemoveElement =
-	<P extends ComponentProps, E extends Element>(
-		s: SignalLike<P, E, number>,
+	<P extends ComponentProps, E extends Element = HTMLElement>(
+		s: SignalLike<P, number, E>,
 		inserter?: ElementInserter<E>,
-	) =>
+	): FxFunction<P, E> =>
 	(host: Component<P>, target: E) => {
 		const ok = (verb: string) => () => {
 			if (DEV_MODE && host.debug)
@@ -274,12 +287,12 @@ const insertOrRemoveElement =
  * @since 0.8.0
  * @param {SignalLike<string>} s - state bound to the text content
  */
-const setText = <P extends ComponentProps, E extends Element>(
-	s: SignalLike<P, E, string>,
-) =>
+const setText = <P extends ComponentProps, E extends Element = HTMLElement>(
+	s: SignalLike<P, string, E>,
+): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 't',
-		read: (el) => el.textContent,
+		read: el => el.textContent,
 		update: (el, value) => {
 			Array.from(el.childNodes)
 				.filter(node => node.nodeType !== Node.COMMENT_NODE)
@@ -297,16 +310,16 @@ const setText = <P extends ComponentProps, E extends Element>(
  */
 const setProperty = <
 	P extends ComponentProps,
-	E extends Element,
 	K extends keyof E,
+	E extends Element = HTMLElement,
 >(
 	key: K,
-	s: SignalLike<P, E, E[K]> = key as SignalLike<P, E, E[K]>,
-) =>
+	s: SignalLike<P, E[K], E> = key as SignalLike<P, E[K], E>,
+): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 'p',
 		name: String(key),
-		read: (el) => (key in el ? el[key] : UNSET),
+		read: el => (key in el ? el[key] : UNSET),
 		update: (el, value) => {
 			el[key] = value
 		},
@@ -319,18 +332,21 @@ const setProperty = <
  * @param {string} name - name of attribute to be set
  * @param {SignalLike<string>} s - state bound to the attribute value
  */
-const setAttribute = <P extends ComponentProps, E extends Element>(
+const setAttribute = <
+	P extends ComponentProps,
+	E extends Element = HTMLElement,
+>(
 	name: string,
-	s: SignalLike<P, E, string> = name,
-) =>
+	s: SignalLike<P, string, E> = name,
+): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 'a',
 		name,
-		read: (el) => el.getAttribute(name),
+		read: el => el.getAttribute(name),
 		update: (el, value) => {
 			safeSetAttribute(el, name, value)
 		},
-		delete: (el) => {
+		delete: el => {
 			el.removeAttribute(name)
 		},
 	})
@@ -342,14 +358,17 @@ const setAttribute = <P extends ComponentProps, E extends Element>(
  * @param {string} name - name of attribute to be toggled
  * @param {SignalLike<boolean>} s - state bound to the attribute existence
  */
-const toggleAttribute = <P extends ComponentProps, E extends Element>(
+const toggleAttribute = <
+	P extends ComponentProps,
+	E extends Element = HTMLElement,
+>(
 	name: string,
-	s: SignalLike<P, E, boolean> = name,
-) =>
+	s: SignalLike<P, boolean, E> = name,
+): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 'a',
 		name,
-		read: (el) => el.hasAttribute(name),
+		read: el => el.hasAttribute(name),
 		update: (el, value) => {
 			el.toggleAttribute(name, value)
 		},
@@ -362,14 +381,14 @@ const toggleAttribute = <P extends ComponentProps, E extends Element>(
  * @param {string} token - class token to be toggled
  * @param {SignalLike<boolean>} s - state bound to the class existence
  */
-const toggleClass = <P extends ComponentProps, E extends Element>(
+const toggleClass = <P extends ComponentProps, E extends Element = HTMLElement>(
 	token: string,
-	s: SignalLike<P, E, boolean> = token,
-) =>
+	s: SignalLike<P, boolean, E> = token,
+): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 'c',
 		name: token,
-		read: (el) => el.classList.contains(token),
+		read: el => el.classList.contains(token),
 		update: (el, value) => {
 			el.classList.toggle(token, value)
 		},
@@ -387,16 +406,16 @@ const setStyle = <
 	E extends HTMLElement | SVGElement | MathMLElement,
 >(
 	prop: string,
-	s: SignalLike<P, E, string> = prop,
-) =>
+	s: SignalLike<P, string, E> = prop,
+): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 's',
 		name: prop,
-		read: (el) => el.style.getPropertyValue(prop),
+		read: el => el.style.getPropertyValue(prop),
 		update: (el, value) => {
 			el.style.setProperty(prop, value)
 		},
-		delete: (el) => {
+		delete: el => {
 			el.style.removeProperty(prop)
 		},
 	})
@@ -406,25 +425,28 @@ const setStyle = <
  *
  * @since 0.11.0
  * @param {SignalLike<string>} s - state bound to the inner HTML
- * @param {'open' | 'closed'} [attachShadow] - whether to attach a shadow root to the element, expects mode 'open' or 'closed'
- * @param {boolean} [allowScripts] - whether to allow executable script tags in the HTML content, defaults to false
+ * @param {DangerouslySetInnerHTMLOptions} options - options for setting inner HTML: shadowRootMode, allowScripts
  */
-const dangerouslySetInnerHTML = <P extends ComponentProps, E extends Element>(
-	s: SignalLike<P, E, string>,
-	attachShadow?: 'open' | 'closed',
-	allowScripts?: boolean,
-) =>
+const dangerouslySetInnerHTML = <
+	P extends ComponentProps,
+	E extends Element = HTMLElement,
+>(
+	s: SignalLike<P, string, E>,
+	options: DangerouslySetInnerHTMLOptions = {},
+): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 'h',
-		read: (el) =>
-			(el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? '',
+		read: el =>
+			(el.shadowRoot || !options.shadowRootMode ? el : null)?.innerHTML ??
+			'',
 		update: (el, html) => {
+			const { shadowRootMode, allowScripts } = options
 			if (!html) {
 				if (el.shadowRoot) el.shadowRoot.innerHTML = '<slot></slot>'
 				return ''
 			}
-			if (attachShadow && !el.shadowRoot)
-				el.attachShadow({ mode: attachShadow })
+			if (shadowRootMode && !el.shadowRoot)
+				el.attachShadow({ mode: shadowRootMode })
 			const target = el.shadowRoot || el
 			target.innerHTML = html
 			if (!allowScripts) return ''
@@ -447,6 +469,7 @@ export {
 	type UpdateOperation,
 	type ElementUpdater,
 	type ElementInserter,
+	type DangerouslySetInnerHTMLOptions,
 	updateElement,
 	insertOrRemoveElement,
 	setText,

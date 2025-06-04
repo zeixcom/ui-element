@@ -1,9 +1,33 @@
 
 <tab-group>
 	<div role="tablist">
-		<button type="button" role="tab" id="trigger_accordion-panel.html" aria-controls="panel_accordion-panel.html" aria-selected="false" tabindex="-1">HTML</button>
-		<button type="button" role="tab" id="trigger_accordion-panel.css" aria-controls="panel_accordion-panel.css" aria-selected="false" tabindex="-1">CSS</button>
-		<button type="button" role="tab" id="trigger_accordion-panel.ts" aria-controls="panel_accordion-panel.ts" aria-selected="true" tabindex="0">TypeScript</button>
+		
+			<button
+				type="button"
+				role="tab"
+				id="trigger_accordion-panel.html"
+				aria-controls="panel_accordion-panel.html"
+				aria-selected="false"
+				tabindex="-1"
+			>HTML</button>
+		
+			<button
+				type="button"
+				role="tab"
+				id="trigger_accordion-panel.css"
+				aria-controls="panel_accordion-panel.css"
+				aria-selected="false"
+				tabindex="-1"
+			>CSS</button>
+		
+			<button
+				type="button"
+				role="tab"
+				id="trigger_accordion-panel.ts"
+				aria-controls="panel_accordion-panel.ts"
+				aria-selected="true"
+				tabindex="0"
+			>TypeScript</button>
 	</div>
 	
 <div role="tabpanel" id="panel_accordion-panel.html" aria-labelledby="trigger_accordion-panel.html" hidden>
@@ -113,37 +137,36 @@
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	asBoolean,</span></span>
 <span class="line"><span style="color:#F8F8F2">	component,</span></span>
-<span class="line"><span style="color:#F8F8F2">	first,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
 <span class="line"><span style="color:#F8F8F2">	toggleAttribute,</span></span>
-<span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "../../../"</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">AccordionPanelProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">	open</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> boolean</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"><span style="color:#F8F8F2">	collapsible</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> boolean</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"><span style="color:#F8F8F2">};</span></span>
+<span class="line"><span style="color:#F8F8F2">	open</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> boolean</span></span>
+<span class="line"><span style="color:#F8F8F2">	collapsible</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> boolean</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">	"accordion-panel"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">	'accordion-panel'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
 <span class="line"><span style="color:#F8F8F2">		open: asBoolean,</span></span>
 <span class="line"><span style="color:#F8F8F2">		collapsible: asBoolean,</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">		toggleAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"open"</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">		toggleAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"collapsible"</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">		setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"hidden"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.open </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.collapsible),</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">AccordionPanelProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">HTMLDetailsElement</span><span style="color:#F8F8F2">>(</span></span>
-<span class="line"><span style="color:#E6DB74">			"details"</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"open"</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"ariaDisabled"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">el.collapsible)),</span></span>
+<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">		toggleAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'open'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">		toggleAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'collapsible'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">		setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.open </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.collapsible),</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'details'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'open'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaDisabled'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">el.collapsible)),</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
 <span class="line"><span style="color:#F8F8F2">	],</span></span>
-<span class="line"><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#E6DB74">		"accordion-panel"</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">AccordionPanelProps</span><span style="color:#F8F8F2">>;</span></span>
+<span class="line"><span style="color:#E6DB74">		'accordion-panel'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">AccordionPanelProps</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>

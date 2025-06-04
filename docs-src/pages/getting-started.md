@@ -116,12 +116,12 @@ Save the following inside a `<script type="module">` tag or an external JavaScri
 
 ```html
 <script type="module">
-	import { asString, component, first, on, RESET, setText } from "https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"
+	import { asString, component, on, RESET, setText } from "https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"
 
 	component("hello-world", {
 		// Parse "name" attribute, falling back to server-rendered content
 		name: asString(RESET)
-	}, el => [
+	}, (el, { first }) => [
 
 		// Update content dynamically based on the "name" signal
 		first("span", setText("name")),

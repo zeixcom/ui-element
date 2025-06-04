@@ -9,14 +9,10 @@ import {
 	notify,
 	subscribe,
 	UNSET,
-    TYPE_COMPUTED,
+	TYPE_COMPUTED,
 } from '@zeix/cause-effect'
 
-import type {
-	Component,
-	ComponentProps,
-	FxFunction,
-} from '../component'
+import type { Component, ComponentProps } from '../component'
 import { elementName, isDefinedObject, isString } from './util'
 
 /* === Types === */
@@ -38,15 +34,6 @@ class CircularMutationError extends Error {
 }
 
 /* === Internal Function === */
-
-/**
- * Check if a node is an Element
- *
- * @param {Node} node - node to check
- * @returns {boolean} - `true` if node is an element node, otherwise `false`
- */
-const isElement = (node: Node): node is Element =>
-	node.nodeType === Node.ELEMENT_NODE
 
 /**
  * Check if a value is a Component
@@ -132,92 +119,6 @@ const observeSubtree = (
 }
 
 /* === Exported Functions === */
-
-/**
- * Run one or more functions on a component's element
- *
- * @since 0.12.0
- * @param {FxFunction<P, E>[]} fns - functions to run
- * @param {Component<P>} host - component host element
- * @param {E} target - target element
- * @returns {Cleanup} - a cleanup function that runs collected cleanup functions
- */
-const run = <P extends ComponentProps, E extends Element>(
-	fns: FxFunction<P, E>[],
-	host: Component<P>,
-	target: E,
-): Cleanup => {
-	const cleanups = fns.filter(isFunction).map(fn => fn(host, target))
-	return () => {
-		cleanups.filter(isFunction).forEach(cleanup => cleanup())
-		cleanups.length = 0
-	}
-}
-
-/**
- * Apply effect functions to a first matching sub-element within the custom element
- *
- * @since 0.12.0
- * @param {string} selector - selector to match sub-element
- */
-const first =
-	<P extends ComponentProps, E extends Element>(
-		selector: string,
-		...fns: FxFunction<P, E>[]
-	) =>
-	(host: Component<P>): Cleanup | void => {
-		const el = (host.shadowRoot || host).querySelector<E>(selector)
-		if (el) run(fns, host, el)
-	}
-
-/**
- * Apply effect functions to all matching sub-elements within the custom element
- *
- * @since 0.12.0
- * @param {string} selector - selector to match sub-elements
- */
-const all =
-	<P extends ComponentProps, E extends Element>(
-		selector: string,
-		...fns: FxFunction<P, E>[]
-	) =>
-	(host: Component<P>): Cleanup => {
-		const cleanups = new Map<E, Cleanup>()
-		const root = host.shadowRoot || host
-
-		const attach = (target: E) => {
-			if (!cleanups.has(target))
-				cleanups.set(target, run(fns, host, target))
-		}
-
-		const detach = (target: E) => {
-			const cleanup = cleanups.get(target)
-			if (isFunction(cleanup)) cleanup()
-			cleanups.delete(target)
-		}
-
-		const applyToMatching = (fn: (target: E) => void) => (node: Node) => {
-			if (isElement(node)) {
-				if (node.matches(selector)) fn(node as E)
-				node.querySelectorAll<E>(selector).forEach(fn)
-			}
-		}
-
-		const observer = observeSubtree(root, selector, mutations => {
-			for (const mutation of mutations) {
-				mutation.addedNodes.forEach(applyToMatching(attach))
-				mutation.removedNodes.forEach(applyToMatching(detach))
-			}
-		})
-
-		root.querySelectorAll<E>(selector).forEach(attach)
-
-		return () => {
-			observer.disconnect()
-			cleanups.forEach(cleanup => cleanup())
-			cleanups.clear()
-		}
-	}
 
 /**
  * Create a element selection signal from a query selector
@@ -368,4 +269,4 @@ const pass =
 			})
 	}
 
-export { type PassedSignals, run, first, all, selection, on, emit, pass }
+export { type PassedSignals, observeSubtree, selection, on, emit, pass }
