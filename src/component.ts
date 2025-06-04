@@ -104,21 +104,36 @@ type SelectorFunctions<P extends ComponentProps> = {
 // Special value explicitly marked as any so it can be used as signal value of any type
 const RESET: any = Symbol()
 
-// HTMLElement property names to check against
-const HTML_ELEMENT_PROPS = new Set(
-	Object.getOwnPropertyNames(HTMLElement.prototype),
-)
-// Add additional reserved words
+// Reserved words that should never be used as property names
+// These are fundamental JavaScript/Object properties that cause serious issues
 const RESERVED_WORDS = new Set([
 	'constructor',
 	'prototype',
-	'__proto__',
-	'toString',
-	'valueOf',
-	'hasOwnProperty',
-	'isPrototypeOf',
-	'propertyIsEnumerable',
-	'toLocaleString',
+	// Expand this list based on user feedback for other reserved words like:
+	// '__proto__', 'toString', 'valueOf', 'hasOwnProperty', etc.
+])
+
+// HTMLElement properties that commonly cause conflicts
+// These are properties that exist on HTMLElement and cause confusion when overridden
+// in our reactive components because we use the same name for both attributes and properties
+const HTML_ELEMENT_PROPS = new Set([
+	'id', // DOM selector conflicts
+	'class', // CSS class management conflicts (note: property is 'className')
+	'className', // CSS class management conflicts (note: HTML attribute is 'class')
+	'title', // Conflicts with tooltip behavior
+	'role', // ARIA/accessibility conflicts
+	'style', // Conflicts with style object
+	'dataset', // Conflicts with data-* attribute access
+	'lang', // Language/i18n conflicts
+	'dir', // Text direction conflicts
+	'hidden', // Visibility control conflicts
+	'children', // DOM manipulation conflicts
+	'innerHTML', // DOM manipulation conflicts
+	'outerHTML', // Full element HTML conflicts
+	'textContent', // Text manipulation conflicts
+	'innerText', // Text manipulation conflicts
+	// TO EXPAND: Add properties based on user feedback and common mistakes
+	// 'tabindex', 'tabIndex', 'slot', 'part', etc.
 ])
 
 /* === Internal Functions === */
@@ -127,8 +142,25 @@ const isAttributeParser = <C extends HTMLElement, T extends {}>(
 	value: unknown,
 ): value is AttributeParser<C, T> => isFunction(value) && value.length >= 2
 
-const validatePropertyName = (prop: string): boolean =>
-	!(HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop))
+/**
+ * Simple fail-fast validation that checks for specific problematic cases
+ *
+ * This validation prevents common mistakes where developers accidentally
+ * use property names that conflict with native HTMLElement functionality.
+ */
+const validatePropertyName = (prop: string): string | null => {
+	// Check for reserved words that should never be used
+	if (RESERVED_WORDS.has(prop)) {
+		return `Property name "${prop}" is a reserved word`
+	}
+
+	// Check for problematic HTMLElement properties
+	if (HTML_ELEMENT_PROPS.has(prop)) {
+		return `Property name "${prop}" conflicts with inherited HTMLElement property`
+	}
+
+	return null
+}
 
 /**
  * Run one or more functions on a component's element
@@ -256,6 +288,13 @@ const component = <P extends ComponentProps>(
 		select: SelectorFunctions<P>,
 	) => FxFunction<P, Component<P>>[],
 ): Component<P> => {
+	for (const prop of Object.keys(init)) {
+		const error = validatePropertyName(prop)
+		if (error) {
+			throw new TypeError(`${error} in component "${name}".`)
+		}
+	}
+
 	class CustomElement extends HTMLElement {
 		debug?: boolean
 		#signals: {
@@ -368,10 +407,8 @@ const component = <P extends ComponentProps>(
 		 * @returns {void}
 		 */
 		setSignal(key: keyof P, signal: Signal<P[keyof P]>): void {
-			if (!validatePropertyName(String(key)))
-				throw new TypeError(
-					`Invalid property name "${String(key)}". Property names must be valid JavaScript identifiers and not conflict with inherited HTMLElement properties.`,
-				)
+			const error = validatePropertyName(String(key))
+			if (error) throw new TypeError(`${error} on ${elementName(this)}.`)
 			if (!isSignal(signal))
 				throw new TypeError(
 					`Expected signal as value for property "${String(key)}" on ${elementName(this)}.`,

@@ -11,6 +11,8 @@ declare const asBoolean: AttributeParser<HTMLElement, boolean>;
 /**
  * Parse an attribute as as number forced to integer with a fallback
  *
+ * Supports hexadecimal and scientific notation
+ *
  * @since 0.11.0
  * @param {number} [fallback=0] - fallback value
  * @returns {Parser<HTMLElement, number>} - parser function

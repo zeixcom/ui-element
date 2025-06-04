@@ -13,6 +13,7 @@
 				asInteger,
 				asNumber,
 				asString,
+				asEnum,
 				asJSON,
 			} from '../index.dev.js'
 
@@ -41,6 +42,30 @@
 						assert.isFalse(
 							result,
 							'Should return false for undefined attribute',
+						)
+					})
+
+					it('should be false for null', function () {
+						const result = asBoolean(body, null)
+						assert.isFalse(
+							result,
+							'Should return false for null attribute',
+						)
+					})
+
+					it('should be false for "false" string', function () {
+						const result = asBoolean(body, 'false')
+						assert.isFalse(
+							result,
+							'Should return false for "false" string',
+						)
+					})
+
+					it('should be true for "0" string', function () {
+						const result = asBoolean(body, '0')
+						assert.isTrue(
+							result,
+							'Should return true for "0" string (only "false" is falsy)',
 						)
 					})
 				})
@@ -111,6 +136,60 @@
 							'Should return number for parsable attribute with integer and ignored whitespace',
 						)
 					})
+
+					it('should use custom fallback for undefined', function () {
+						const result = asInteger(42)()
+						assert.equal(
+							result,
+							42,
+							'Should return custom fallback for undefined attribute',
+						)
+					})
+
+					it('should use custom fallback for null', function () {
+						const result = asInteger(99)(body, null)
+						assert.equal(
+							result,
+							99,
+							'Should return custom fallback for null attribute',
+						)
+					})
+
+					it('should be 100000 for "1e5"', function () {
+						const result = asInteger()(body, '1e5')
+						assert.equal(
+							result,
+							100000,
+							'Should parse scientific notation',
+						)
+					})
+
+					it('should be 255 for "0xFF"', function () {
+						const result = asInteger()(body, '0xFF')
+						assert.equal(
+							result,
+							255,
+							'Should parse hexadecimal notation',
+						)
+					})
+
+					it('should be 0 for "Infinity"', function () {
+						const result = asInteger()(body, 'Infinity')
+						assert.equal(
+							result,
+							0,
+							'Should return fallback for Infinity (not finite)',
+						)
+					})
+
+					it('should be 0 for "NaN"', function () {
+						const result = asInteger()(body, 'NaN')
+						assert.equal(
+							result,
+							0,
+							'Should return fallback for NaN',
+						)
+					})
 				})
 
 				describe('asNumber()', function () {
@@ -179,6 +258,51 @@
 							'Should return number for parsable attribute with integer value and ignored whitespace',
 						)
 					})
+
+					it('should use custom fallback for undefined', function () {
+						const result = asNumber(3.14)()
+						assert.equal(
+							result,
+							3.14,
+							'Should return custom fallback for undefined attribute',
+						)
+					})
+
+					it('should use custom fallback for null', function () {
+						const result = asNumber(2.718)(body, null)
+						assert.equal(
+							result,
+							2.718,
+							'Should return custom fallback for null attribute',
+						)
+					})
+
+					it('should be 100000 for "1e5"', function () {
+						const result = asNumber()(body, '1e5')
+						assert.equal(
+							result,
+							100000,
+							'Should parse scientific notation',
+						)
+					})
+
+					it('should be 0.0025 for "2.5e-3"', function () {
+						const result = asNumber()(body, '2.5e-3')
+						assert.equal(
+							result,
+							0.0025,
+							'Should parse negative scientific notation',
+						)
+					})
+
+					it('should be 0 for "Infinity"', function () {
+						const result = asNumber()(body, 'Infinity')
+						assert.equal(
+							result,
+							0,
+							'Should return fallback for Infinity (not finite)',
+						)
+					})
 				})
 
 				describe('asString()', function () {
@@ -244,6 +368,95 @@
 							'Should return string for attribute with JSON value',
 						)
 					})
+
+					it('should use custom fallback for undefined', function () {
+						const result = asString('default')()
+						assert.equal(
+							result,
+							'default',
+							'Should return custom fallback for undefined attribute',
+						)
+					})
+
+					it('should use custom fallback for null', function () {
+						const result = asString('fallback')(body, null)
+						assert.equal(
+							result,
+							'fallback',
+							'Should return custom fallback for null attribute',
+						)
+					})
+
+					it('should preserve whitespace-only strings', function () {
+						const result = asString()(body, '   ')
+						assert.equal(
+							result,
+							'   ',
+							'Should preserve whitespace-only strings',
+						)
+					})
+				})
+
+				describe('asEnum()', function () {
+					it('should return first option for undefined', function () {
+						const result = asEnum(['on', 'off'])()
+						assert.equal(
+							result,
+							'on',
+							'Should return first valid option for undefined attribute',
+						)
+					})
+
+					it('should return first option for null', function () {
+						const result = asEnum(['yes', 'no', 'maybe'])(
+							body,
+							null,
+						)
+						assert.equal(
+							result,
+							'yes',
+							'Should return first valid option for null attribute',
+						)
+					})
+
+					it('should return first option for invalid value', function () {
+						const result = asEnum(['small', 'medium', 'large'])(
+							body,
+							'invalid',
+						)
+						assert.equal(
+							result,
+							'small',
+							'Should return first valid option for invalid value',
+						)
+					})
+
+					it('should return matching value case-sensitively', function () {
+						const result = asEnum(['On', 'Off'])(body, 'On')
+						assert.equal(
+							result,
+							'On',
+							'Should return exact matching value',
+						)
+					})
+
+					it('should match case-insensitively but return original', function () {
+						const result = asEnum(['TRUE', 'FALSE'])(body, 'true')
+						assert.equal(
+							result,
+							'true',
+							'Should match case-insensitively but return original input value',
+						)
+					})
+
+					it('should work with single option', function () {
+						const result = asEnum(['only'])(body, 'anything')
+						assert.equal(
+							result,
+							'only',
+							'Should return single option for any input',
+						)
+					})
 				})
 
 				describe('asJSON()', function () {
@@ -297,6 +510,67 @@
 							result,
 							{ 42: true },
 							'Should return JSON for attribute with JSON value with numeric key',
+						)
+					})
+
+					it('should return array fallback for null', function () {
+						const result = asJSON(['default'])(body, null)
+						assert.deepEqual(
+							result,
+							['default'],
+							'Should return array fallback for null attribute',
+						)
+					})
+
+					it('should parse nested objects', function () {
+						const result = asJSON({})(
+							body,
+							'{"user": {"name": "John", "age": 30}}',
+						)
+						assert.deepEqual(
+							result,
+							{ user: { name: 'John', age: 30 } },
+							'Should parse nested JSON objects',
+						)
+					})
+
+					it('should parse arrays with mixed types', function () {
+						const result = asJSON([])(
+							body,
+							'[1, "two", true, null]',
+						)
+						assert.deepEqual(
+							result,
+							[1, 'two', true, null],
+							'Should parse arrays with mixed types',
+						)
+					})
+
+					it('should throw for malformed JSON', function () {
+						assert.throws(
+							() => asJSON({})(body, '{"invalid": json}'),
+							SyntaxError,
+							'Failed to parse JSON:',
+						)
+					})
+
+					it('should throw for JSON with trailing comma', function () {
+						assert.throws(
+							() => asJSON({})(body, '{"valid": true,}'),
+							SyntaxError,
+							'Failed to parse JSON:',
+						)
+					})
+
+					it('should handle JSON with escaped characters', function () {
+						const result = asJSON({})(
+							body,
+							'{"message": "Hello\\nWorld\\t!"}',
+						)
+						assert.deepEqual(
+							result,
+							{ message: 'Hello\nWorld\t!' },
+							'Should handle JSON with escaped characters',
 						)
 					})
 				})

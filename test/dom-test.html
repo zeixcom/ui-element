@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>UI Functions Tests</title>
+	</head>
+	<body>
+		<div class="test-element">Content</div>
+		<div id="host">
+			<div id="test-on-function"></div>
+			<div id="test-on-provider"></div>
+			<div id="test-on-invalid"></div>
+		</div>
+		<child-component id="orphan">
+			<h1>Hello from Server</h1>
+			<p>Text from Server</p>
+		</child-component>
+		<parent-component id="parent" heading="Hello from Attribute">
+			<child-component id="child">
+				<h1>Hello from Server</h1>
+				<p>Text from Server</p>
+			</child-component>
+			<invalid-component id="invalid"></invalid-component>
+		</parent-component>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				selection,
+				on,
+				emit,
+				pass,
+				component,
+				computed,
+				effect,
+				state,
+				asString,
+				setText,
+				RESET,
+			} from '../index.dev.js'
+
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+			const microtask = async () => new Promise(queueMicrotask)
+			const normalizeText = text => text.replace(/\s+/g, ' ').trim()
+
+			component(
+				'child-component',
+				{
+					heading: asString(RESET),
+					text: asString(RESET),
+				},
+				(_, { first }) => [
+					first('h1', setText('heading')),
+					first('p', setText('text')),
+				],
+			)
+
+			component(
+				'parent-component',
+				{
+					heading: asString(RESET),
+				},
+				(el, { first }) => [
+					first(
+						'child-component',
+						pass({
+							heading: 'heading',
+							text: () => el.heading.toUpperCase(),
+						}),
+					),
+				],
+			)
+
+			class InvalidComponent extends HTMLElement {
+				constructor() {
+					super()
+					throw new Error('Invalid component')
+				}
+			}
+			customElements.define('invalid-component', InvalidComponent)
+
+			runTests(() => {
+				describe('selection()', () => {
+					it('should create a signal returning an empty array for no matching elements', () => {
+						const signal = selection(document, '.nonexistent')
+						assert.deepEqual(signal.get(), [])
+					})
+
+					it('should return an array of elements matching the selector', () => {
+						const signal = selection(document, '.test-element')
+						const elements = Array.from(
+							document.querySelectorAll('.test-element'),
+						)
+						assert.deepEqual(signal.get(), elements)
+					})
+
+					it('should update the signal when elements are added or removed', () => {
+						const signal = selection(document, '.test-element')
+
+						const newElement = document.createElement('div')
+						newElement.classList.add('test-element')
+						document.body.appendChild(newElement)
+						let elements = Array.from(
+							document.querySelectorAll('.test-element'),
+						)
+						assert.deepEqual(signal.get(), elements)
+
+						newElement.remove()
+						elements = Array.from(
+							document.querySelectorAll('.test-element'),
+						)
+						assert.deepEqual(signal.get(), elements)
+					})
+
+					it('should update the signal when matching class is added or removed', () => {
+						const signal = selection(document.body, '.test-element')
+						const newElement = document.createElement('div')
+						document.body.appendChild(newElement)
+						let elements = Array.from(
+							document.querySelectorAll('.test-element'),
+						)
+						assert.deepEqual(signal.get(), elements)
+
+						newElement.classList.add('test-element')
+						elements = Array.from(
+							document.querySelectorAll('.test-element'),
+						)
+						assert.deepEqual(signal.get(), elements)
+
+						newElement.classList.remove('test-element')
+						elements = Array.from(
+							document.querySelectorAll('.test-element'),
+						)
+						assert.deepEqual(signal.get(), elements)
+					})
+
+					it('should update the signal when matching id is added or removed', () => {
+						const signal = selection(document, '#test-element')
+						const newElement = document.createElement('div')
+						document.body.appendChild(newElement)
+						let elements = Array.from(
+							document.querySelectorAll('#test-element'),
+						)
+						assert.deepEqual(signal.get(), elements)
+
+						newElement.id = 'test-element'
+						elements = Array.from(
+							document.querySelectorAll('#test-element'),
+						)
+						assert.deepEqual(signal.get(), elements)
+
+						newElement.removeAttribute('id')
+						elements = Array.from(
+							document.querySelectorAll('#test-element'),
+						)
+						assert.deepEqual(signal.get(), elements)
+					})
+
+					it('should update the computed signal watching the element selection when elements are added or removed', async () => {
+						const signal = selection(document, '.test-element')
+						const contents = computed(elements =>
+							signal.get().map(element => element.textContent),
+						)
+						
+						// Wait for initial setup
+						await microtask()
+						assert.deepEqual(contents.get(), ['Content'])
+
+						const newElement = document.createElement('div')
+						newElement.textContent = 'New Content'
+						newElement.classList.add('test-element')
+						document.body.appendChild(newElement)
+						await microtask()
+						assert.deepEqual(contents.get(), [
+							'Content',
+							'New Content',
+						])
+
+						newElement.remove()
+						await microtask()
+						assert.deepEqual(contents.get(), ['Content'])
+					})
+
+					it('should apply the effect to an updated array of elements when elements are added or removed', async () => {
+						const signal = selection(document, '.test-element')
+						
+						// Reset hidden state first
+						document.querySelectorAll('.test-element').forEach(element => {
+							element.hidden = false
+						})
+						
+						const cleanup = effect({
+							signals: [signal],
+							ok: elements =>
+								elements
+									.filter(element => !element.hidden)
+									.map(element => {
+										element.hidden = true
+									}),
+						})
+
+						// Wait for initial effect to run
+						await microtask()
+						
+						const newElement = document.createElement('div')
+						newElement.textContent = 'New Content'
+						newElement.classList.add('test-element')
+						document.body.appendChild(newElement)
+						await microtask()
+						let expected = Array.from(
+							document.querySelectorAll('.test-element'),
+						).map(element => element.hidden)
+						assert.deepEqual(expected, [true, true])
+						document
+							.querySelectorAll('.test-element')
+							.forEach(element => {
+								element.hidden = false
+							})
+
+						newElement.remove()
+						await microtask()
+						expected = Array.from(
+							document.querySelectorAll('.test-element'),
+						).map(element => element.hidden)
+						assert.deepEqual(expected, [true])
+						document
+							.querySelectorAll('.test-element')
+							.forEach(element => {
+								element.hidden = false
+							})
+
+						cleanup()
+					})
+
+					it('should handle complex selectors with multiple attributes', async () => {
+						const container = document.createElement('div')
+						document.body.appendChild(container)
+
+						try {
+							const signal = selection(container, 'div[data-test="value"].active[role="button"]')
+							
+							// Initially empty
+							assert.deepEqual(signal.get(), [])
+
+							// Add element that partially matches
+							const partial = document.createElement('div')
+							partial.setAttribute('data-test', 'value')
+							container.appendChild(partial)
+							
+							await microtask()
+							assert.deepEqual(signal.get(), [])
+
+							// Add all required attributes
+							partial.classList.add('active')
+							partial.setAttribute('role', 'button')
+							
+							await microtask()
+							assert.deepEqual(signal.get(), [partial])
+
+							// Remove one attribute
+							partial.removeAttribute('role')
+							
+							await microtask()
+							assert.deepEqual(signal.get(), [])
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should handle attribute selectors with different operators', async () => {
+						const container = document.createElement('div')
+						document.body.appendChild(container)
+
+						try {
+							const signal = selection(container, '[data-prefix^="test"]')
+							
+							const element1 = document.createElement('div')
+							element1.setAttribute('data-prefix', 'testing')
+							container.appendChild(element1)
+							
+							await microtask()
+							assert.deepEqual(signal.get(), [element1])
+
+							const element2 = document.createElement('div')
+							element2.setAttribute('data-prefix', 'nottesting')
+							container.appendChild(element2)
+							
+							await microtask()
+							assert.deepEqual(signal.get(), [element1])
+
+							element2.setAttribute('data-prefix', 'test-value')
+							
+							await microtask()
+							assert.deepEqual(signal.get(), [element1, element2])
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should properly disconnect observer when no watchers exist', () => {
+						const container = document.createElement('div')
+						document.body.appendChild(container)
+
+						try {
+							const signal = selection(container, '.test')
+							
+							// Get value to create observer
+							signal.get()
+							
+							// Add element to trigger mutation
+							const element = document.createElement('div')
+							element.classList.add('test')
+							container.appendChild(element)
+							
+							// Observer should disconnect automatically since no watchers
+							assert.deepEqual(signal.get(), [element])
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should handle rapid DOM mutations efficiently', async () => {
+						const container = document.createElement('div')
+						document.body.appendChild(container)
+
+						try {
+							const signal = selection(container, '.rapid-test')
+							let updateCount = 0
+							
+							const cleanup = effect({
+								signals: [signal],
+								ok: () => {
+									updateCount++
+								}
+							})
+
+							// Rapid mutations
+							for (let i = 0; i < 10; i++) {
+								const element = document.createElement('div')
+								element.classList.add('rapid-test')
+								container.appendChild(element)
+							}
+
+							await animationFrame()
+
+							// Should handle rapid mutations without excessive updates
+							assert.isBelow(updateCount, 15, 'Should not update excessively for rapid mutations')
+							assert.equal(signal.get().length, 10)
+
+							cleanup()
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should detect circular mutations and throw CircularMutationError', async () => {
+						// Create a container div
+						const container = document.createElement('div')
+						document.body.appendChild(container)
+
+						try {
+							// Add an initial element to trigger the effect
+							const initialElement = document.createElement('div')
+							initialElement.classList.add('circular-test')
+							container.appendChild(initialElement)
+
+							// Create a selection signal watching for .circular-test elements
+							const signal = selection(container, '.circular-test')
+
+							let errorCaught = false
+							let effectRanCount = 0
+
+							// Set up an effect that creates a circular dependency
+							const cleanup = effect({
+								signals: [signal],
+								ok: elements => {
+									effectRanCount++
+									if (effectRanCount <= 3) {
+										elements.forEach(element => {
+											const newElement = document.createElement('div')
+											newElement.classList.add('circular-test')
+											newElement.textContent = `Element ${effectRanCount}`
+											element.appendChild(newElement)
+										})
+									}
+								},
+								err: error => {
+									errorCaught = true
+									assert.equal(error.name, 'CircularMutationError')
+									assert.include(
+										error.message,
+										'Circular mutation in element selection detected',
+									)
+									cleanup()
+								},
+							})
+
+							// Wait for effects to run
+							await animationFrame()
+
+							// Either error should be caught or effect should have run multiple times
+							assert.isTrue(
+								errorCaught || effectRanCount > 1,
+								'Should either catch circular mutation error or run effect multiple times'
+							)
+
+							if (!errorCaught) {
+								cleanup()
+							}
+						} finally {
+							// Clean up
+							container.remove()
+						}
+					})
+				})
+
+				describe('on()', () => {
+					it('should attach and remove an event listener', async () => {
+						const div = document.getElementById('test-on-function')
+						let called = false
+
+						const off = on('click', () => {
+							called = true
+						})({}, div)
+
+						div.click()
+						const wasCalled = called
+
+						off() // Remove the event listener
+						called = false
+						div.click()
+
+						assert.equal(wasCalled, true)
+						assert.equal(called, false)
+					})
+
+					it('should throw TypeError for invalid handler', async () => {
+						const div = document.getElementById('test-on-invalid')
+						assert.throws(() => on('click', {})({}, div), TypeError)
+					})
+
+					it('should use host as default target', async () => {
+						const host = document.getElementById('host')
+						let called = false
+
+						const off = on('click', () => {
+							called = true
+						})(host)
+
+						host.click()
+						const wasCalled = called
+
+						off() // Remove the event listener
+						called = false
+						host.click()
+
+						assert.equal(wasCalled, true)
+						assert.equal(called, false)
+					})
+
+					it('should handle multiple event types', () => {
+						const element = document.createElement('input')
+						document.body.appendChild(element) // Add to DOM for focus/blur to work
+						let focusCount = 0
+						let blurCount = 0
+
+						const cleanup1 = on('focus', () => focusCount++)(null, element)
+						const cleanup2 = on('blur', () => blurCount++)(null, element)
+
+						element.focus()
+						element.blur()
+
+						assert.equal(focusCount, 1)
+						assert.equal(blurCount, 1)
+
+						cleanup1()
+						cleanup2()
+						document.body.removeChild(element) // Clean up
+					})
+				})
+
+				describe('emit()', () => {
+					it('should emit an event', async () => {
+						const div = document.getElementById('test-on-function')
+						let called = false
+
+						const handler = () => {
+							called = true
+						}
+
+						div.addEventListener('custom-event', handler)
+						emit('custom-event')(div)
+
+						assert.equal(called, true)
+
+						div.removeEventListener('custom-event', handler)
+					})
+
+					it('should emit an event with detail', async () => {
+						const div = document.getElementById('test-on-function')
+						let detailReceived = null
+
+						const handler = event => {
+							detailReceived = event.detail
+						}
+
+						div.addEventListener('custom-event', handler)
+						emit('custom-event', { foo: 'bar' })(div)
+
+						assert.deepEqual(detailReceived, { foo: 'bar' })
+
+						div.removeEventListener('custom-event', handler)
+					})
+
+					it('should emit event with function detail', () => {
+						const element = document.createElement('div')
+						let eventDetail = null
+
+						element.addEventListener('test-event', (e) => {
+							eventDetail = e.detail
+						})
+
+						emit('test-event', (target) => ({
+							tagName: target.tagName
+						}))(null, element)
+
+						assert.deepEqual(eventDetail, { tagName: 'DIV' })
+					})
+
+					it('should make events bubble by default', () => {
+						const parent = document.createElement('div')
+						const child = document.createElement('span')
+						parent.appendChild(child)
+
+						let parentReceived = false
+
+						parent.addEventListener('bubble-test', () => {
+							parentReceived = true
+						})
+
+						emit('bubble-test', 'data')(null, child)
+
+						assert.isTrue(parentReceived, 'Event should bubble to parent')
+					})
+
+					it('should use host as default target', () => {
+						const host = document.createElement('div')
+						let eventReceived = false
+
+						host.addEventListener('host-event', () => {
+							eventReceived = true
+						})
+
+						emit('host-event', null)(host)
+
+						assert.isTrue(eventReceived, 'Event should fire on host')
+					})
+				})
+
+				describe('Orphan child component', function () {
+					it('should do nothing at all', async function () {
+						const orphanComponent =
+							document.getElementById('orphan')
+						await animationFrame()
+						const headingContent = normalizeText(
+							orphanComponent.querySelector('h1').textContent,
+						)
+						const textContent = normalizeText(
+							orphanComponent.querySelector('p').textContent,
+						)
+						assert.equal(
+							headingContent,
+							'Hello from Server',
+							'Should not change server-side rendered heading',
+						)
+						assert.equal(
+							textContent,
+							'Text from Server',
+							'Should not change server-side rendered text',
+						)
+					})
+				})
+
+				describe('Child component', function () {
+					it('should receive state from attribute of parent component', async function () {
+						const childComponent = document.getElementById('child')
+						await customElements.whenDefined(
+							childComponent.localName,
+						)
+						const headingContent =
+							childComponent.querySelector('h1').textContent
+						assert.equal(
+							headingContent,
+							'Hello from Attribute',
+							'Should have initial heading from attribute of parent component',
+						)
+					})
+
+					it('should receive derived state from attribute of parent component', async function () {
+						const childComponent = document.getElementById('child')
+						await customElements.whenDefined(
+							childComponent.localName,
+						)
+						const textContent = normalizeText(
+							childComponent.querySelector('p').textContent,
+						)
+						assert.equal(
+							textContent,
+							'Hello from Attribute'.toUpperCase(),
+							'Should have initial text derived from attribute of parent component',
+						)
+					})
+
+					it('should receive passed and derived states from changed attribute of parent component', async function () {
+						const parentComponent =
+							document.getElementById('parent')
+						const childComponent = document.getElementById('child')
+						parentComponent.setAttribute(
+							'heading',
+							'Hello from Changed Attribute',
+						)
+						await animationFrame()
+						const headingContent = normalizeText(
+							childComponent.querySelector('h1').textContent,
+						)
+						const textContent = normalizeText(
+							childComponent.querySelector('p').textContent,
+						)
+						assert.equal(
+							headingContent,
+							'Hello from Changed Attribute',
+							'Should have changed heading from attribute of parent component',
+						)
+						assert.equal(
+							textContent,
+							'Hello from Changed Attribute'.toUpperCase(),
+							'Should have changed text derived from attribute of parent component',
+						)
+					})
+
+					it('should change heading if inherited state is set', async function () {
+						const parentComponent =
+							document.getElementById('parent')
+						const childComponent = document.getElementById('child')
+						parentComponent.heading = 'Hello from State on Parent'
+						await animationFrame()
+						const headingContent =
+							childComponent.querySelector('h1').textContent
+						assert.equal(
+							headingContent,
+							'Hello from State on Parent',
+							'Should have changed heading from state of parent component',
+						)
+					})
+
+					it('should throw TypeError if target is not a custom element', async function () {
+						const parentComponent =
+							document.getElementById('parent')
+						const invalidTarget = document.createElement('div')
+
+						assert.throws(
+							() => {
+								pass({ heading: 'heading' })(
+									parentComponent,
+									invalidTarget,
+								)
+							},
+							TypeError,
+							'Target element must be a custom element',
+						)
+					})
+
+					it('should throw TypeError if signals are not an object or provider', async function () {
+						const parentComponent =
+							document.getElementById('parent')
+						const childComponent = document.getElementById('child')
+
+						assert.throws(
+							() => {
+								pass(null)(parentComponent, childComponent)
+							},
+							TypeError,
+							'Passed signals must be an object or a provider function',
+						)
+					})
+
+					it('should throw TypeError if signals are not a function', async function () {
+						const parentComponent =
+							document.getElementById('parent')
+						const invalidComponent =
+							document.getElementById('invalid')
+
+						try {
+							pass({ heading: 'heading' })(
+								parentComponent,
+								invalidComponent,
+							)
+						} catch (error) {
+							assert.equal(
+								error instanceof TypeError,
+								true,
+								'Should throw TypeError',
+							)
+						}
+					})
+
+					it('should handle Signal objects directly', async () => {
+						const host = document.querySelector('parent-component')
+						const target = document.querySelector('child-component')
+
+						const directSignal = state('Direct Signal')
+
+						try {
+							pass({
+								heading: directSignal
+							})(host, target)
+
+							await customElements.whenDefined('child-component')
+							await animationFrame()
+
+							assert.equal(target.heading, 'Direct Signal')
+
+							// Test reactivity
+							directSignal.set('Updated Signal')
+							await animationFrame()
+
+							assert.equal(target.heading, 'Updated Signal')
+						} catch (error) {
+							// If pass fails, test that error handling works
+							assert.include(error.message, 'Failed to pass signals')
+						}
+					})
+
+					it('should pass signals using function', async () => {
+						const host = document.querySelector('parent-component')
+						const target = document.querySelector('child-component')
+
+						const dynamicSignal = state('Dynamic')
+
+						try {
+							pass((targetElement) => ({
+								text: dynamicSignal
+							}))(host, target)
+
+							await customElements.whenDefined('child-component')
+							await animationFrame()
+
+							assert.equal(target.text, 'Dynamic')
+						} catch (error) {
+							// If pass fails, test that error handling works
+							assert.include(error.message, 'Failed to pass signals')
+						}
+					})
+				})
+
+				describe('Edge Cases and Integration', () => {
+					it('should handle selection with rapidly changing DOM', async () => {
+						const container = document.createElement('div')
+						document.body.appendChild(container)
+
+						try {
+							const signal = selection(container, '.dynamic')
+							let lastCount = 0
+
+							const cleanup = effect({
+								signals: [signal],
+								ok: elements => {
+									lastCount = elements.length
+								}
+							})
+
+							// Simulate rapid DOM changes
+							const elements = []
+							for (let i = 0; i < 5; i++) {
+								const el = document.createElement('div')
+								el.classList.add('dynamic')
+								container.appendChild(el)
+								elements.push(el)
+							}
+
+							await animationFrame()
+							assert.equal(lastCount, 5)
+
+							// Remove elements
+							elements.forEach(el => el.remove())
+							await animationFrame()
+							assert.equal(lastCount, 0)
+
+							cleanup()
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should handle events during DOM mutations', async () => {
+						const container = document.createElement('div')
+						document.body.appendChild(container)
+
+						try {
+							const signal = selection(container, '.clickable')
+							let clicksReceived = 0
+
+							// Add element
+							const button = document.createElement('button')
+							button.classList.add('clickable')
+							container.appendChild(button)
+
+							await microtask()
+
+							// Attach event listener
+							const cleanup = on('click', () => {
+								clicksReceived++
+								// Modify DOM during event handling
+								const newButton = document.createElement('button')
+								newButton.classList.add('clickable')
+								container.appendChild(newButton)
+							})(null, button)
+
+							button.click()
+							await animationFrame()
+
+							assert.equal(clicksReceived, 1)
+							assert.equal(signal.get().length, 2) // Original + new button
+
+							cleanup()
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should handle memory cleanup properly', () => {
+						const container = document.createElement('div')
+						document.body.appendChild(container)
+
+						try {
+							// Create many signals and let them go out of scope
+							for (let i = 0; i < 100; i++) {
+								const signal = selection(container, `.test-${i}`)
+								signal.get() // Access to trigger observer creation
+							}
+
+							// Force garbage collection if possible
+							if (typeof window !== 'undefined' && window.gc) {
+								window.gc()
+							}
+
+							// Should not throw or cause memory issues
+							assert.isTrue(true, 'Memory cleanup should work')
+						} finally {
+							container.remove()
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

@@ -426,20 +426,37 @@ var pass = (signals) => (host, target) => {
 
 // src/component.ts
 var RESET = Symbol();
-var HTML_ELEMENT_PROPS = new Set(Object.getOwnPropertyNames(HTMLElement.prototype));
 var RESERVED_WORDS = new Set([
   "constructor",
-  "prototype",
-  "__proto__",
-  "toString",
-  "valueOf",
-  "hasOwnProperty",
-  "isPrototypeOf",
-  "propertyIsEnumerable",
-  "toLocaleString"
+  "prototype"
+]);
+var HTML_ELEMENT_PROPS = new Set([
+  "id",
+  "class",
+  "className",
+  "title",
+  "role",
+  "style",
+  "dataset",
+  "lang",
+  "dir",
+  "hidden",
+  "children",
+  "innerHTML",
+  "outerHTML",
+  "textContent",
+  "innerText"
 ]);
 var isAttributeParser = (value) => isFunction(value) && value.length >= 2;
-var validatePropertyName = (prop) => !(HTML_ELEMENT_PROPS.has(prop) || RESERVED_WORDS.has(prop));
+var validatePropertyName = (prop) => {
+  if (RESERVED_WORDS.has(prop)) {
+    return `Property name "${prop}" is a reserved word`;
+  }
+  if (HTML_ELEMENT_PROPS.has(prop)) {
+    return `Property name "${prop}" conflicts with inherited HTMLElement property`;
+  }
+  return null;
+};
 var run = (fns, host, target = host) => {
   const cleanups = fns.filter(isFunction).map((fn) => fn(host, target));
   return () => {
@@ -488,6 +505,12 @@ var select = () => ({
   }
 });
 var component = (name, init = {}, setup) => {
+  for (const prop of Object.keys(init)) {
+    const error = validatePropertyName(prop);
+    if (error) {
+      throw new TypeError(`${error} in component "${name}".`);
+    }
+  }
 
   class CustomElement extends HTMLElement {
     debug;
@@ -539,8 +562,9 @@ var component = (name, init = {}, setup) => {
       return signal;
     }
     setSignal(key, signal) {
-      if (!validatePropertyName(String(key)))
-        throw new TypeError(`Invalid property name "${String(key)}". Property names must be valid JavaScript identifiers and not conflict with inherited HTMLElement properties.`);
+      const error = validatePropertyName(String(key));
+      if (error)
+        throw new TypeError(`${error} on ${elementName(this)}.`);
       if (!isSignal(signal))
         throw new TypeError(`Expected signal as value for property "${String(key)}" on ${elementName(this)}.`);
       const prev = this.#signals[key];
@@ -604,10 +628,28 @@ var parseNumber = (parseFn, value) => {
   return Number.isFinite(parsed) ? parsed : undefined;
 };
 var asBoolean = (_, value) => value !== "false" && value != null;
-var asInteger = (fallback = 0) => (_, value) => parseNumber(parseInt, value) ?? fallback;
+var asInteger = (fallback = 0) => (_, value) => {
+  if (value == null)
+    return fallback;
+  const trimmed = value.trim();
+  if (trimmed === "")
+    return fallback;
+  if (trimmed.toLowerCase().startsWith("0x")) {
+    const parsed2 = parseInt(trimmed, 16);
+    return Number.isFinite(parsed2) ? parsed2 : fallback;
+  }
+  const parsed = parseNumber(parseFloat, value);
+  return parsed != null ? Math.trunc(parsed) : fallback;
+};
 var asNumber = (fallback = 0) => (_, value) => parseNumber(parseFloat, value) ?? fallback;
 var asString = (fallback = "") => (_, value) => value ?? fallback;
-var asEnum = (valid) => (_, value) => value != null && valid.includes(value.toLowerCase()) ? value : valid[0];
+var asEnum = (valid) => (_, value) => {
+  if (value == null)
+    return valid[0];
+  const lowerValue = value.toLowerCase();
+  const matchingValid = valid.find((v) => v.toLowerCase() === lowerValue);
+  return matchingValid ? value : valid[0];
+};
 var asJSON = (fallback) => (_, value) => {
   if ((value ?? fallback) == null)
     throw new ReferenceError("Value and fallback are both null or undefined");
