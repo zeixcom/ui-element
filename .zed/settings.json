@@ -12,6 +12,6 @@
 			}
 		}
 	},
-	"format_on_save": "off",
+	"format_on_save": "on",
 	"eslint.rules.ignore": ["index.js", "docs/assets/main.js", "**/*.min.js"]
 }

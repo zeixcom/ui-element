@@ -567,7 +567,7 @@ var CONTEXT_REQUEST = "context-request";
 class ContextRequestEvent extends Event {
   context;
   callback;
-  subscribe;
+  subscribe2;
   constructor(context, callback, subscribe2 = false) {
     super(CONTEXT_REQUEST, {
       bubbles: true,
@@ -811,17 +811,18 @@ var setStyle = (prop, s = prop) => updateElement(s, {
     el.style.removeProperty(prop);
   }
 });
-var dangerouslySetInnerHTML = (s, attachShadow, allowScripts) => updateElement(s, {
+var dangerouslySetInnerHTML = (s, options = {}) => updateElement(s, {
   op: "h",
-  read: (el) => (el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? "",
+  read: (el) => (el.shadowRoot || !options.shadowRootMode ? el : null)?.innerHTML ?? "",
   update: (el, html) => {
+    const { shadowRootMode, allowScripts } = options;
     if (!html) {
       if (el.shadowRoot)
         el.shadowRoot.innerHTML = "<slot></slot>";
       return "";
     }
-    if (attachShadow && !el.shadowRoot)
-      el.attachShadow({ mode: attachShadow });
+    if (shadowRootMode && !el.shadowRoot)
+      el.attachShadow({ mode: shadowRootMode });
     const target = el.shadowRoot || el;
     target.innerHTML = html;
     if (!allowScripts)

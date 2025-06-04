@@ -165,7 +165,7 @@
 				{
 					content: "<p>Initial shadow content</p>",
 				},
-				() => [dangerouslySetInnerHTML("content", "open")],
+				() => [dangerouslySetInnerHTML("content", { shadowRootMode: "open" })],
 			);
 
 			component(
@@ -173,7 +173,7 @@
 				{
 					content: '<p id="test-p-shadow">Original</p>',
 				},
-				() => [dangerouslySetInnerHTML("content", "open", true)],
+				() => [dangerouslySetInnerHTML("content", { shadowRootMode: "open", allowScripts: true })],
 			);
 
 			component(

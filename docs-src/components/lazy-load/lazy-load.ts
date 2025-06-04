@@ -1,34 +1,62 @@
 import {
 	type Component,
-	setProperty,
-	setText,
 	dangerouslySetInnerHTML,
 	component,
-} from '../../../'
+	computed,
+	state,
+	setProperty,
+	setText,
+	toggleClass,
+	UNSET,
+} from '../../..'
 import { asURL } from '../../functions/attribute-parser/as-url'
-import { fetchText } from '../../functions/signal-producer/fetch-text'
+import { fetchWithCache } from '../../functions/shared/fetch-with-cache'
 
 export type LazyLoadProps = {
-	error: string
 	src: string
-	content: string
 }
 
 export default component(
 	'lazy-load',
 	{
-		error: '',
 		src: asURL,
-		content: fetchText,
 	},
-	(el, { first }) => [
-		dangerouslySetInnerHTML('content'),
-		first(
-			'.error',
-			setText('error'),
-			setProperty('hidden', () => !el.error),
-		),
-	],
+	(el, { first }) => {
+		const error = state('')
+
+		const content = computed(async abort => {
+			const url = el.src.value
+			if (el.src.error || !url) {
+				error.set(el.src.error ?? 'No URL provided')
+				return ''
+			}
+
+			try {
+				error.set('')
+				el.querySelector('.loading')?.remove()
+				const { content } = await fetchWithCache(url, abort)
+				return content
+			} catch (err) {
+				const errorMessage =
+					err instanceof Error ? err.message : String(err)
+				error.set(errorMessage)
+				return ''
+			}
+		})
+
+		return [
+			dangerouslySetInnerHTML(content),
+			first(
+				'callout-box',
+				setProperty(
+					'hidden',
+					() => !error.get() && content.get() !== UNSET,
+				),
+				toggleClass('danger', () => !error.get()),
+			),
+			first('.error', setText(error)),
+		]
+	},
 )
 
 declare global {

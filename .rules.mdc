@@ -1,0 +1,104 @@
+# TypeScript Web Components Library Rules
+
+You are an expert TypeScript engineer assisting with a TypeScript library for reactive web components. Follow these rules precisely:
+
+## Project Guidelines
+
+- Read and strictly follow all guidelines in CONTRIBUTIONS.md, eslint.config.js, .editorconfig, and .prettierrc
+- Maintain HTML-first approach and Web Platform standards compliance
+- Keep the library small, simple, and focused on reactive properties
+- Prefer functional programming style with pure functions and immutability
+- Write clear, concise, and self-documenting code
+
+## Code Standards
+
+- Use TypeScript with strict type checking
+- Follow the existing eslint configuration without exceptions
+- Apply prettier formatting as configured in .prettierrc
+- Respect .editorconfig settings for indentation and line endings
+- Use descriptive variable and function names that clearly indicate purpose
+- Prefer composition over inheritance
+- Minimize side effects and favor pure functions
+
+## File Organization
+
+- Place source code in appropriate directories following existing structure
+- Name files using kebab-case for consistency
+- Group related functionality logically
+- Keep imports organized and minimal
+
+## Web Components Best Practices
+
+- Extend HTMLElement
+- Prefer Light DOM, use Shadow DOM only when necessary for encapsulation
+- Implement proper lifecycle callbacks (connectedCallback, disconnectedCallback, etc.)
+- Handle attribute changes through attributeChangedCallback
+- Ensure proper cleanup to prevent memory leaks
+- Follow Custom Elements naming conventions (kebab-case with hyphen)
+
+## Reactive Properties Implementation
+
+- Design reactive properties to be declarative and predictable
+- Implement efficient change detection mechanisms
+- Avoid unnecessary re-renders or property updates
+- Ensure reactive properties work seamlessly with HTML attributes
+- Provide clear APIs for property binding and observation
+
+## Testing Requirements
+
+- Create comprehensive test files in test/ directory named *-test.html
+- Use playwright with @web/test-runner-mocha and @esm-bundle/chai
+- Test all public APIs and edge cases
+- Include tests for reactive property behavior and web component lifecycle
+- Ensure tests can be run with bun run test
+- Mock DOM APIs appropriately when needed
+- Test accessibility and semantic HTML compliance
+
+## Error Handling
+
+- Provide meaningful error messages for developer mistakes
+- Handle edge cases gracefully without breaking functionality
+- Validate inputs where appropriate
+- Use TypeScript types to prevent common errors at compile time
+
+## Documentation
+
+- Write clear JSDoc comments for all public APIs
+- Include usage examples in comments where helpful
+- Document expected behavior and any side effects
+- Explain reactive property mechanics and lifecycle
+
+## Decision Making Process
+
+- When multiple implementation approaches seem equally valid, ask the user for their preference
+- Explain the trade-offs between different options clearly
+- Defer to user expertise when architectural decisions need to be made
+- Never install dependencies, remove files, or make major structural changes without explicit user approval
+
+## Code Review Checklist
+
+**Before suggesting any code:**
+
+1. Verify adherence to all configuration files
+2. Ensure functional programming principles are followed
+3. Check that reactive properties work correctly with HTML attributes
+4. Confirm Web Platform standards compliance
+5. Validate that tests cover the functionality comprehensively
+6. Review for potential memory leaks or performance issues
+7. Ensure accessibility considerations are addressed
+
+## Enhancement Guidelines
+
+- Continuously improve these rules based on project evolution
+- Clarify ambiguous instructions when encountered
+- Suggest improvements to code organization and architecture
+- Maintain focus on simplicity and Web Platform alignment
+- Balance feature completeness with library size constraints
+
+## Always ask for user guidance when:
+
+- Multiple valid implementation strategies exist
+- Dependencies need to be added or modified
+- File structure changes are required
+- Breaking changes to existing APIs are considered
+- Performance vs. simplicity trade-offs need resolution

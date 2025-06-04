@@ -17,6 +17,10 @@ type ElementInserter<E extends Element> = {
     resolve?: (parent: E) => void;
     reject?: (error: unknown) => void;
 };
+type DangerouslySetInnerHTMLOptions = {
+    shadowRootMode?: ShadowRootMode;
+    allowScripts?: boolean;
+};
 /**
  * Effect for setting properties of a target element according to a given SignalLike
  *
@@ -85,8 +89,7 @@ declare const setStyle: <P extends ComponentProps, E extends HTMLElement | SVGEl
  *
  * @since 0.11.0
  * @param {SignalLike<string>} s - state bound to the inner HTML
- * @param {'open' | 'closed'} [attachShadow] - whether to attach a shadow root to the element, expects mode 'open' or 'closed'
- * @param {boolean} [allowScripts] - whether to allow executable script tags in the HTML content, defaults to false
+ * @param {DangerouslySetInnerHTMLOptions} options - options for setting inner HTML: shadowRootMode, allowScripts
  */
-declare const dangerouslySetInnerHTML: <P extends ComponentProps, E extends Element = HTMLElement>(s: SignalLike<P, string, E>, attachShadow?: "open" | "closed", allowScripts?: boolean) => FxFunction<P, E>;
-export { type SignalLike, type UpdateOperation, type ElementUpdater, type ElementInserter, updateElement, insertOrRemoveElement, setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle, dangerouslySetInnerHTML, };
+declare const dangerouslySetInnerHTML: <P extends ComponentProps, E extends Element = HTMLElement>(s: SignalLike<P, string, E>, options?: DangerouslySetInnerHTMLOptions) => FxFunction<P, E>;
+export { type SignalLike, type UpdateOperation, type ElementUpdater, type ElementInserter, type DangerouslySetInnerHTMLOptions, updateElement, insertOrRemoveElement, setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle, dangerouslySetInnerHTML, };

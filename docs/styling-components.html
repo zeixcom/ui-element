@@ -10,11 +10,12 @@
 		<script type="module" src="assets/main.js"></script>
 	</head>
 	<body>
-		<header class="content-grid">
-			<h1 class="content">
-				UIElement Docs <small>Version 0.13.0</small>
-			</h1>
-			
+		<client-router>
+			<header class="content-grid">
+				<h1 class="content">
+					UIElement Docs <small>Version 0.13.0</small>
+				</h1>
+				
 	<nav class="breakout">
 		<ol>
 			
@@ -91,8 +92,11 @@
 				</li>
 		</ol>
 	</nav>
-		</header>
-		<main><section class="hero">
+				<callout-box class="content danger" hidden>
+					<p class="error" role="alert" aria-live="polite"></p>
+				</callout-box>
+			</header>
+			<main><section class="hero">
 
 
 	            <h1 id="styling-components">
@@ -348,8 +352,10 @@
 	<details>
 		<summary>Source Code</summary>
 		<lazy-load src="./examples/callout-box.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 </component-demo>
@@ -369,12 +375,14 @@
 <li><a href="data-flow.html">Data Flow</a> – Learn about communication between components.</li>
 <li><a href="patterns-techniques.html">Patterns &amp; Techniques</a> – Explore best practices and advanced topics.</li>
 </ul>
-</section></main>
-		<footer class="content-grid">
-			<div class="content">
-				<h2 class="visually-hidden">Footer</h2>
-				<p>© 2024 – 2025 Zeix AG</p>
-			</div>
-		</footer>
+</section>
+</main>
+			<footer class="content-grid">
+				<div class="content">
+					<h2 class="visually-hidden">Footer</h2>
+					<p>© 2024 – 2025 Zeix AG</p>
+				</div>
+			</footer>
+		</client-router>
 	</body>
 </html>

@@ -25,12 +25,12 @@
 				}
 			}
 
-			tab-group > [role="tablist"] {
+			tab-group > [role='tablist'] {
 				display: flex;
 				gap: 0.2rem;
 				padding: 0;
 
-				& button[aria-selected="true"] {
+				& button[aria-selected='true'] {
 					color: purple;
 				}
 			}
@@ -111,16 +111,22 @@
 			</hello-world>
 		</greeting-configurator>
 		<lazy-load src="/test/mock/lazy-load.html" id="lazy-success">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite" hidden></p>
+			</callout-box>
 		</lazy-load>
 		<lazy-load src="/test/mock/404.html" id="lazy-error">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite" hidden></p>
+			</callout-box>
 		</lazy-load>
 		<lazy-load src="/test/mock/recursion.html" id="lazy-recursion">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite" hidden></p>
+			</callout-box>
 		</lazy-load>
 		<tab-group>
 			<div role="tablist">
@@ -192,8 +198,8 @@
 		</post-reply>
 
 		<script type="module">
-			import { runTests } from "@web/test-runner-mocha";
-			import { assert } from "@esm-bundle/chai";
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
 			import {
 				RESET,
 				component,
@@ -212,886 +218,882 @@
 				setStyle,
 				dangerouslySetInnerHTML,
 				insertOrRemoveElement,
-			} from "../index.dev.js";
+			} from '../index.dev.js'
 
-			const wait = (ms) =>
-				new Promise((resolve) => setTimeout(resolve, ms));
+			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 			const animationFrame = async () =>
-				new Promise(requestAnimationFrame);
-			const normalizeText = (text) => text.replace(/\s+/g, " ").trim();
+				new Promise(requestAnimationFrame)
+			const normalizeText = text => text.replace(/\s+/g, ' ').trim()
 
-			const LOADING_DELAY = 800; // Adjust this if tests for LazyLoad fail; needs to be high enough so initial loading message can be observed before it gets removed when async connectedCallback() finishes
+			const LOADING_DELAY = 800 // Adjust this if tests for LazyLoad fail; needs to be high enough so initial loading message can be observed before it gets removed when async connectedCallback() finishes
 
-			component("void-component", {}, () => []);
+			component('void-component', {}, () => [])
 
 			component(
-				"causal-component",
+				'causal-component',
 				{
-					heading: "Hello from Internal State",
+					heading: 'Hello from Internal State',
 				},
-				(_, { first }) => [first("h1", setText("heading"))],
-			);
+				(_, { first }) => [first('h1', setText('heading'))],
+			)
 
 			component(
-				"updating-component",
+				'updating-component',
 				{
 					heading: asString(RESET),
 					count: asInteger(),
 					step: asNumber(),
 					value: (el, value) => {
-						if (value == null) return RESET;
+						if (value == null) return RESET
 						const parsed = Number.isInteger(el.step)
 							? parseInt(value, 10)
-							: parseFloat(value);
-						return Number.isFinite(parsed) ? parsed : RESET;
+							: parseFloat(value)
+						return Number.isFinite(parsed) ? parsed : RESET
 					},
 					selected: asBoolean,
 				},
 				(_, { first }) => [
-					first("h1", setText("heading"), toggleClass("selected")),
-					first("span", setText("count")),
-					first("input", setAttribute("step"), setProperty("value")),
+					first('h1', setText('heading'), toggleClass('selected')),
+					first('span', setText('count')),
+					first('input', setAttribute('step'), setProperty('value')),
 				],
-			);
+			)
 
 			component(
-				"my-counter",
+				'my-counter',
 				{
 					value: asInteger(),
 				},
 				(el, { first }) => [
 					first(
-						".decrement",
-						on("click", () => {
-							el.value--;
+						'.decrement',
+						on('click', () => {
+							el.value--
 						}),
 					),
 					first(
-						".increment",
-						on("click", () => {
-							el.value++;
+						'.increment',
+						on('click', () => {
+							el.value++
 						}),
 					),
-					first(".value", setText("value")),
+					first('.value', setText('value')),
 					first(
-						".parity",
-						setText(() => (el.value % 2 ? "odd" : "even")),
+						'.parity',
+						setText(() => (el.value % 2 ? 'odd' : 'even')),
 					),
 					first(
-						".double",
+						'.double',
 						setText(() => el.value * 2),
 					),
 				],
-			);
+			)
 
-			component("greeting-configurator", {}, (el, { first }) => [
+			component('greeting-configurator', {}, (el, { first }) => [
 				first(
-					"hello-world",
+					'hello-world',
 					pass({
 						name: () => {
-							const firstName = el.querySelector(".first");
-							const lastName = el.querySelector(".last");
+							const firstName = el.querySelector('.first')
+							const lastName = el.querySelector('.last')
 							const useFullname =
-								el.querySelector("input-checkbox");
+								el.querySelector('input-checkbox')
 							return useFullname.checked
 								? `${firstName.value} ${lastName.value}`
-								: firstName.value;
+								: firstName.value
 						},
 					}),
 				),
-			]);
+			])
 
 			component(
-				"hello-world",
+				'hello-world',
 				{
 					greeting: asString(RESET),
-					name: asString("World"),
+					name: asString('World'),
 				},
 				(_, { first }) => [
-					first(".greeting", setText("greeting")),
-					first(".name", setText("name")),
+					first('.greeting', setText('greeting')),
+					first('.name', setText('name')),
 				],
-			);
+			)
 
 			component(
-				"input-field",
+				'input-field',
 				{
 					value: asString(RESET),
 				},
 				(el, { first }) => [
 					first(
-						"input",
-						setProperty("value"),
-						on("change", (e) => {
-							el.value = e.target.value;
+						'input',
+						setProperty('value'),
+						on('change', e => {
+							el.value = e.target.value
 						}),
 					),
 				],
-			);
+			)
 
 			component(
-				"input-checkbox",
+				'input-checkbox',
 				{
 					checked: asBoolean,
 				},
 				(el, { first }) => [
 					first(
-						"input",
-						setProperty("checked"),
-						on("change", (e) => {
-							el.checked = e.target.checked;
+						'input',
+						setProperty('checked'),
+						on('change', e => {
+							el.checked = e.target.checked
 						}),
 					),
 				],
-			);
+			)
 
 			component(
-				"lazy-load",
+				'lazy-load',
 				{
-					error: "",
+					error: '',
 					src: (el, v) => {
 						// Custom attribute parser
 						if (!v) {
-							el.error = "No URL provided in src attribute";
-							return "";
+							el.error = 'No URL provided in src attribute'
+							return ''
 						} else if (
 							(
 								el.parentElement || el.getRootNode().host
 							)?.closest(`${el.localName}[src="${v}"]`)
 						) {
-							el.error = "Recursive loading detected";
-							return "";
+							el.error = 'Recursive loading detected'
+							return ''
 						}
-						const url = new URL(v, location.href); // Ensure 'src' attribute is a valid URL
+						const url = new URL(v, location.href) // Ensure 'src' attribute is a valid URL
 						if (url.origin === location.origin) {
 							// Sanity check for cross-origin URLs
-							el.error = ""; // Success: wipe previous error if there was any
-							return String(url);
+							el.error = '' // Success: wipe previous error if there was any
+							return String(url)
 						}
-						el.error = "Invalid URL origin";
-						return "";
+						el.error = 'Invalid URL origin'
+						return ''
 					},
-					content: (el) => async (abort) => {
+					content: el => async abort => {
 						// Async Computed callback
-						const url = el.src;
-						if (!url) return "";
+						const url = el.src
+						if (!url) return ''
 						try {
 							const response = await fetch(url, {
 								signal: abort,
-							});
-							await wait(LOADING_DELAY);
-							el.querySelector(".loading")?.remove();
-							if (response.ok) return response.text();
-							else el.error = response.statusText;
+							})
+							await wait(LOADING_DELAY)
+							el.querySelector('.loading')?.remove()
+							if (response.ok) return response.text()
+							else el.error = response.statusText
 						} catch (error) {
-							el.error = error.message;
+							el.error = error.message
 						}
-						return "";
+						return ''
 					},
 				},
 				(el, { first }) => [
 					first(
-						".error",
-						setText("error"),
-						setProperty("hidden", () => !el.error),
+						'.error',
+						setText('error'),
+						setProperty('hidden', () => !el.error),
 					),
-					dangerouslySetInnerHTML("content", "open"),
+					dangerouslySetInnerHTML('content', {
+						shadowRootMode: 'open',
+					}),
 				],
-			);
+			)
 
 			component(
-				"tab-group",
+				'tab-group',
 				{
-					selected: "",
+					selected: '',
 				},
 				(el, { all, first }) => {
 					el.selected =
 						el
 							.querySelector('[role="tab"][aria-selected="true"]')
-							.getAttribute("aria-controls") ?? "";
-					const isSelected = (target) =>
-						el.selected === target.getAttribute("aria-controls");
-					const tabs = Array.from(
-						el.querySelectorAll('[role="tab"]'),
-					);
-					let focusIndex = 0;
+							.getAttribute('aria-controls') ?? ''
+					const isSelected = target =>
+						el.selected === target.getAttribute('aria-controls')
+					const tabs = Array.from(el.querySelectorAll('[role="tab"]'))
+					let focusIndex = 0
 
 					return [
 						first(
 							'[role="tablist"]',
-							on("keydown", () => {}),
+							on('keydown', () => {}),
 						),
 						all(
 							'[role="tab"]',
-							on("click", (e) => {
+							on('click', e => {
 								el.selected =
 									e.currentTarget.getAttribute(
-										"aria-controls",
-									) ?? "";
-								focusIndex = tabs.findIndex((tab) =>
+										'aria-controls',
+									) ?? ''
+								focusIndex = tabs.findIndex(tab =>
 									isSelected(tab),
-								);
+								)
 							}),
-							setProperty("ariaSelected", (target) =>
+							setProperty('ariaSelected', target =>
 								String(isSelected(target)),
 							),
-							setProperty("tabIndex", (target) =>
+							setProperty('tabIndex', target =>
 								isSelected(target) ? 0 : -1,
 							),
 						),
 						all(
 							'[role="tabpanel"]',
 							setProperty(
-								"hidden",
-								(target) => el.selected !== target.id,
+								'hidden',
+								target => el.selected !== target.id,
 							),
 						),
-					];
+					]
 				},
-			);
+			)
 
-			component("post-reply", {}, (el, { first }) => {
-				const message = state("");
-				const formIsHidden = state(true);
+			component('post-reply', {}, (el, { first }) => {
+				const message = state('')
+				const formIsHidden = state(true)
 				return [
 					first(
-						"button",
-						on("click", () => {
-							formIsHidden.set(false);
+						'button',
+						on('click', () => {
+							formIsHidden.set(false)
 						}),
 					),
 					first(
-						"form",
-						on("submit", (e) => {
-							e.preventDefault();
-							message.set(el.querySelector("textarea").value);
-							formIsHidden.set(true);
+						'form',
+						on('submit', e => {
+							e.preventDefault()
+							message.set(el.querySelector('textarea').value)
+							formIsHidden.set(true)
 						}),
-						setProperty("hidden", formIsHidden),
+						setProperty('hidden', formIsHidden),
 					),
 					insertOrRemoveElement(() => !!message.get(), {
 						create: () => {
 							const post = document.importNode(
-								document.getElementById("post-template")
+								document.getElementById('post-template')
 									.content,
 								true,
-							);
-							post.querySelector("h2").textContent =
-								message.get();
-							return post;
+							)
+							post.querySelector('h2').textContent = message.get()
+							return post
 						},
 					}),
-				];
-			});
+				]
+			})
 
 			runTests(() => {
-				describe("Void component", function () {
-					it("should be an instance of HTMLElement", async function () {
-						const voidComponent = document.getElementById("void");
-						assert.instanceOf(voidComponent, HTMLElement);
-						assert.equal(voidComponent.localName, "void-component");
-					});
+				describe('Void component', function () {
+					it('should be an instance of HTMLElement', async function () {
+						const voidComponent = document.getElementById('void')
+						assert.instanceOf(voidComponent, HTMLElement)
+						assert.equal(voidComponent.localName, 'void-component')
+					})
 
-					it("should do nothing at all", async function () {
-						const voidComponent = document.getElementById("void");
-						await animationFrame();
+					it('should do nothing at all', async function () {
+						const voidComponent = document.getElementById('void')
+						await animationFrame()
 						const textContent = normalizeText(
-							voidComponent.querySelector("h1").textContent,
-						);
+							voidComponent.querySelector('h1').textContent,
+						)
 						assert.equal(
 							textContent,
-							"Hello from Server",
-							"Should not change server-side rendered heading",
-						);
-					});
+							'Hello from Server',
+							'Should not change server-side rendered heading',
+						)
+					})
 
-					it("should return false with in for unset state", async function () {
-						const voidComponent = document.getElementById("void");
-						assert.equal("test" in voidComponent, false);
+					it('should return false with in for unset state', async function () {
+						const voidComponent = document.getElementById('void')
+						assert.equal('test' in voidComponent, false)
 						assert.equal(
-							voidComponent.hasOwnProperty("test"),
+							voidComponent.hasOwnProperty('test'),
 							false,
-						);
-					});
-				});
+						)
+					})
+				})
 
-				describe("Causal component", function () {
-					it("should update according to internal state", async function () {
+				describe('Causal component', function () {
+					it('should update according to internal state', async function () {
 						const causalComponent =
-							document.getElementById("causal");
-						await animationFrame();
+							document.getElementById('causal')
+						await animationFrame()
 						const textContent = normalizeText(
-							causalComponent.querySelector("h1").textContent,
-						);
+							causalComponent.querySelector('h1').textContent,
+						)
 						assert.equal(
 							textContent,
-							"Hello from Internal State",
-							"Should have initial heading from internal state",
-						);
-					});
+							'Hello from Internal State',
+							'Should have initial heading from internal state',
+						)
+					})
 
-					it("should update when state is set", async function () {
+					it('should update when state is set', async function () {
 						const causalComponent =
-							document.getElementById("causal");
-						causalComponent.heading = "Hello from State";
-						await animationFrame();
+							document.getElementById('causal')
+						causalComponent.heading = 'Hello from State'
+						await animationFrame()
 						const textContent = normalizeText(
-							causalComponent.querySelector("h1").textContent,
-						);
+							causalComponent.querySelector('h1').textContent,
+						)
 						assert.equal(
 							textContent,
-							"Hello from State",
-							"Should update text content from setting heading state",
-						);
-					});
+							'Hello from State',
+							'Should update text content from setting heading state',
+						)
+					})
 
-					it("should update after a delay when state is set", async function () {
+					it('should update after a delay when state is set', async function () {
 						const causalComponent =
-							document.getElementById("causal");
-						const delay = Math.floor(Math.random() * 200);
-						await wait(delay);
-						causalComponent.heading = "Hello from Delayed State";
-						await animationFrame();
+							document.getElementById('causal')
+						const delay = Math.floor(Math.random() * 200)
+						await wait(delay)
+						causalComponent.heading = 'Hello from Delayed State'
+						await animationFrame()
 						const textContent = normalizeText(
-							causalComponent.querySelector("h1").textContent,
-						);
+							causalComponent.querySelector('h1').textContent,
+						)
 						assert.equal(
 							textContent,
-							"Hello from Delayed State",
-							"Should update text content from setting heading state after a delay",
-						);
-					});
+							'Hello from Delayed State',
+							'Should update text content from setting heading state after a delay',
+						)
+					})
 
-					it("should ignore non-observed attributes", async function () {
+					it('should ignore non-observed attributes', async function () {
 						const causalComponent = document.getElementById(
-							"causal-with-ignored-attribute",
-						);
-						await animationFrame();
+							'causal-with-ignored-attribute',
+						)
+						await animationFrame()
 						const textContent = normalizeText(
-							causalComponent.querySelector("h1").textContent,
-						);
+							causalComponent.querySelector('h1').textContent,
+						)
 						assert.equal(
 							textContent,
-							"Hello from Internal State",
-							"Should have initial heading from internal state",
-						);
-					});
-				});
+							'Hello from Internal State',
+							'Should have initial heading from internal state',
+						)
+					})
+				})
 
-				describe("Updating component", function () {
-					it("should do nothing if attribute is not set", async function () {
+				describe('Updating component', function () {
+					it('should do nothing if attribute is not set', async function () {
 						const updatingComponent =
-							document.getElementById("updating");
-						await animationFrame();
+							document.getElementById('updating')
+						await animationFrame()
 						const textContent = normalizeText(
-							updatingComponent.querySelector("h1").textContent,
-						);
+							updatingComponent.querySelector('h1').textContent,
+						)
 						assert.equal(
 							textContent,
-							"Hello from Server",
-							"Should not change server-side rendered heading",
-						);
-					});
+							'Hello from Server',
+							'Should not change server-side rendered heading',
+						)
+					})
 
-					it("should update from initial string attribute", async function () {
+					it('should update from initial string attribute', async function () {
 						const updatingComponent = document.getElementById(
-							"updating-with-string-attribute",
-						);
-						await animationFrame();
+							'updating-with-string-attribute',
+						)
+						await animationFrame()
 						const textContent = normalizeText(
-							updatingComponent.querySelector("h1").textContent,
-						);
+							updatingComponent.querySelector('h1').textContent,
+						)
 						assert.equal(
 							textContent,
-							"Hello from Attribute",
-							"Should have initial heading from string attribute",
-						);
-					});
+							'Hello from Attribute',
+							'Should have initial heading from string attribute',
+						)
+					})
 
-					it("should update from initial integer number attribute", async function () {
+					it('should update from initial integer number attribute', async function () {
 						const updatingComponent = document.getElementById(
-							"updating-with-number-attribute",
-						);
-						await animationFrame();
+							'updating-with-number-attribute',
+						)
+						await animationFrame()
 						const textContent = normalizeText(
-							updatingComponent.querySelector("span").textContent,
-						);
+							updatingComponent.querySelector('span').textContent,
+						)
 						assert.equal(
 							textContent,
-							"42",
-							"Should have initial count from numeric attribute",
-						);
-					});
+							'42',
+							'Should have initial count from numeric attribute',
+						)
+					})
 
-					it("should update from initial floating point number attribute", async function () {
+					it('should update from initial floating point number attribute', async function () {
 						const updatingComponent = document.getElementById(
-							"updating-with-number-attribute",
-						);
-						await animationFrame();
+							'updating-with-number-attribute',
+						)
+						await animationFrame()
 						const stepAttribute = updatingComponent
-							.querySelector("input")
-							.getAttribute("step");
+							.querySelector('input')
+							.getAttribute('step')
 						assert.equal(
 							stepAttribute,
-							"0.1",
-							"Should have initial step attribute from floating point number attribute",
-						);
-					});
+							'0.1',
+							'Should have initial step attribute from floating point number attribute',
+						)
+					})
 
-					it("should update from initial custom parser attribute", async function () {
+					it('should update from initial custom parser attribute', async function () {
 						const updatingComponent = document.getElementById(
-							"updating-with-number-attribute",
-						);
-						await animationFrame();
+							'updating-with-number-attribute',
+						)
+						await animationFrame()
 						const valueAttribute =
-							updatingComponent.querySelector("input").value;
+							updatingComponent.querySelector('input').value
 						assert.equal(
 							valueAttribute,
-							"3.14",
-							"Should have initial value attribute from custom parser attribute",
-						);
-					});
+							'3.14',
+							'Should have initial value attribute from custom parser attribute',
+						)
+					})
 
-					it("should add class from boolean attribute", async function () {
+					it('should add class from boolean attribute', async function () {
 						const updatingComponent = document.getElementById(
-							"updating-with-boolean-attribute",
-						);
-						await animationFrame();
+							'updating-with-boolean-attribute',
+						)
+						await animationFrame()
 						const className =
-							updatingComponent.querySelector("h1").className;
+							updatingComponent.querySelector('h1').className
 						assert.equal(
 							className,
-							"selected",
-							"Should have initial class from boolean attribute",
-						);
-					});
+							'selected',
+							'Should have initial class from boolean attribute',
+						)
+					})
 
-					it("should update when string attribute set", async function () {
+					it('should update when string attribute set', async function () {
 						const updatingComponent = document.getElementById(
-							"updating-with-string-attribute",
-						);
+							'updating-with-string-attribute',
+						)
 						updatingComponent.setAttribute(
-							"heading",
-							"Hello from Changed Attribute",
-						);
-						await animationFrame();
+							'heading',
+							'Hello from Changed Attribute',
+						)
+						await animationFrame()
 						const textContent = normalizeText(
-							updatingComponent.querySelector("h1").textContent,
-						);
+							updatingComponent.querySelector('h1').textContent,
+						)
 						assert.equal(
 							textContent,
-							"Hello from Changed Attribute",
-							"Should update text content from setting heading attribute",
-						);
-					});
+							'Hello from Changed Attribute',
+							'Should update text content from setting heading attribute',
+						)
+					})
 
-					it("should update when numeric attribute is set", async function () {
+					it('should update when numeric attribute is set', async function () {
 						const updatingComponent = document.getElementById(
-							"updating-with-number-attribute",
-						);
-						updatingComponent.setAttribute("count", "0");
-						await animationFrame();
+							'updating-with-number-attribute',
+						)
+						updatingComponent.setAttribute('count', '0')
+						await animationFrame()
 						const textContent = normalizeText(
-							updatingComponent.querySelector("span").textContent,
-						);
+							updatingComponent.querySelector('span').textContent,
+						)
 						assert.equal(
 							textContent,
-							"0",
-							"Should update text content from setting count attribute",
-						);
-					});
+							'0',
+							'Should update text content from setting count attribute',
+						)
+					})
 
-					it("should update when numeric state is set", async function () {
+					it('should update when numeric state is set', async function () {
 						const updatingComponent = document.getElementById(
-							"updating-with-number-attribute",
-						);
-						updatingComponent.step = 1;
-						await animationFrame();
+							'updating-with-number-attribute',
+						)
+						updatingComponent.step = 1
+						await animationFrame()
 						const stepAttribute = updatingComponent
-							.querySelector("input")
-							.getAttribute("step");
+							.querySelector('input')
+							.getAttribute('step')
 						assert.equal(
 							stepAttribute,
-							"1",
-							"Should update step attribute of input element from setting step state",
-						);
-					});
+							'1',
+							'Should update step attribute of input element from setting step state',
+						)
+					})
 
-					it("should update when numeric attribute is set, parsed as integer", async function () {
+					it('should update when numeric attribute is set, parsed as integer', async function () {
 						const updatingComponent = document.getElementById(
-							"updating-with-number-attribute",
-						);
-						updatingComponent.setAttribute("value", "1.14");
-						await animationFrame();
+							'updating-with-number-attribute',
+						)
+						updatingComponent.setAttribute('value', '1.14')
+						await animationFrame()
 						const valueAttribute =
-							updatingComponent.querySelector("input").value;
+							updatingComponent.querySelector('input').value
 						assert.equal(
 							valueAttribute,
-							"1",
-							"Should update value attribute of input element from setting value attribute and parse it as defined",
-						);
-					});
+							'1',
+							'Should update value attribute of input element from setting value attribute and parse it as defined',
+						)
+					})
 
-					it("should remove class when boolean attribute removed", async function () {
+					it('should remove class when boolean attribute removed', async function () {
 						const updatingComponent = document.getElementById(
-							"updating-with-boolean-attribute",
-						);
-						updatingComponent.removeAttribute("selected");
-						await animationFrame();
+							'updating-with-boolean-attribute',
+						)
+						updatingComponent.removeAttribute('selected')
+						await animationFrame()
 						const className =
-							updatingComponent.querySelector("h1").className;
+							updatingComponent.querySelector('h1').className
 						assert.equal(
 							className,
-							"",
-							"Should remove class from removing selected attribute",
-						);
-					});
+							'',
+							'Should remove class from removing selected attribute',
+						)
+					})
 
-					it("should update when state is set", async function () {
+					it('should update when state is set', async function () {
 						const updatingComponent = document.getElementById(
-							"updating-with-string-attribute",
-						);
-						updatingComponent.heading = "Hello from State";
-						await animationFrame();
+							'updating-with-string-attribute',
+						)
+						updatingComponent.heading = 'Hello from State'
+						await animationFrame()
 						const textContent = normalizeText(
-							updatingComponent.querySelector("h1").textContent,
-						);
+							updatingComponent.querySelector('h1').textContent,
+						)
 						assert.equal(
 							textContent,
-							"Hello from State",
-							"Should update text content from setting heading state",
-						);
-					});
-				});
+							'Hello from State',
+							'Should update text content from setting heading state',
+						)
+					})
+				})
 
-				describe("My counter", function () {
-					it("should increment and decrement", async function () {
-						const counter = document.querySelector("my-counter");
-						const decrement = counter.querySelector(".decrement");
-						const increment = counter.querySelector(".increment");
-						const value = counter.querySelector(".value");
+				describe('My counter', function () {
+					it('should increment and decrement', async function () {
+						const counter = document.querySelector('my-counter')
+						const decrement = counter.querySelector('.decrement')
+						const increment = counter.querySelector('.increment')
+						const value = counter.querySelector('.value')
 						assert.equal(
 							counter.value,
 							42,
-							"Should have initial value from attribute",
-						);
+							'Should have initial value from attribute',
+						)
 						assert.equal(
 							normalizeText(value.textContent),
-							"42",
-							"Should have initial textContent from attribute",
-						);
-						decrement.click();
+							'42',
+							'Should have initial textContent from attribute',
+						)
+						decrement.click()
 						assert.equal(
 							counter.value,
 							41,
-							"Should decrement value",
-						);
-						await animationFrame();
+							'Should decrement value',
+						)
+						await animationFrame()
 						assert.equal(
 							normalizeText(value.textContent),
-							"41",
-							"Should have updated textContent from decrement",
-						);
-						increment.click();
+							'41',
+							'Should have updated textContent from decrement',
+						)
+						increment.click()
 						assert.equal(
 							counter.value,
 							42,
-							"Should increment value",
-						);
-						await animationFrame();
+							'Should increment value',
+						)
+						await animationFrame()
 						assert.equal(
 							normalizeText(value.textContent),
-							"42",
-							"Should have updated textContent from increment",
-						);
-					});
+							'42',
+							'Should have updated textContent from increment',
+						)
+					})
 
-					it("should update derived values", async function () {
-						const counter = document.querySelector("my-counter");
-						const decrement = counter.querySelector(".decrement");
-						const parity = counter.querySelector(".parity");
-						const double = counter.querySelector(".double");
+					it('should update derived values', async function () {
+						const counter = document.querySelector('my-counter')
+						const decrement = counter.querySelector('.decrement')
+						const parity = counter.querySelector('.parity')
+						const double = counter.querySelector('.double')
 						assert.equal(
 							normalizeText(parity.textContent),
-							"even",
-							"Should have derived parity textContent from attribute",
-						);
+							'even',
+							'Should have derived parity textContent from attribute',
+						)
 						assert.equal(
 							normalizeText(double.textContent),
-							"84",
-							"Should have derived double textContent from attribute",
-						);
-						decrement.click();
-						await animationFrame();
+							'84',
+							'Should have derived double textContent from attribute',
+						)
+						decrement.click()
+						await animationFrame()
 						assert.equal(
 							normalizeText(parity.textContent),
-							"odd",
-							"Should have changed derived parity textContent",
-						);
+							'odd',
+							'Should have changed derived parity textContent',
+						)
 						assert.equal(
 							normalizeText(double.textContent),
-							"82",
-							"Should have decremented derived double textContent",
-						);
-					});
-				});
+							'82',
+							'Should have decremented derived double textContent',
+						)
+					})
+				})
 
-				describe("Greeting Configurator", function () {
-					it("should display greeting", async function () {
+				describe('Greeting Configurator', function () {
+					it('should display greeting', async function () {
 						const configurator = document.querySelector(
-							"greeting-configurator",
-						);
+							'greeting-configurator',
+						)
 						const helloWorld =
-							configurator.querySelector("hello-world");
-						const greeting = helloWorld.querySelector("p");
+							configurator.querySelector('hello-world')
+						const greeting = helloWorld.querySelector('p')
 						assert.equal(
 							normalizeText(greeting.textContent),
-							"Hello Jane",
-							"Should have initial greeting",
-						);
-						helloWorld.greeting = "Hi";
-						await animationFrame();
+							'Hello Jane',
+							'Should have initial greeting',
+						)
+						helloWorld.greeting = 'Hi'
+						await animationFrame()
 						assert.equal(
 							normalizeText(greeting.textContent),
-							"Hi Jane",
-							"Should have updated greeting from state",
-						);
-					});
+							'Hi Jane',
+							'Should have updated greeting from state',
+						)
+					})
 
-					it("should update name if first name changes", async function () {
+					it('should update name if first name changes', async function () {
 						const configurator = document.querySelector(
-							"greeting-configurator",
-						);
-						const first = configurator.querySelector(".first");
-						const input = first.querySelector("input");
+							'greeting-configurator',
+						)
+						const first = configurator.querySelector('.first')
+						const input = first.querySelector('input')
 						const helloWorld =
-							configurator.querySelector("hello-world");
-						const greeting = helloWorld.querySelector("p");
-						input.value = "Esther";
-						input.dispatchEvent(new Event("change"));
-						await animationFrame();
+							configurator.querySelector('hello-world')
+						const greeting = helloWorld.querySelector('p')
+						input.value = 'Esther'
+						input.dispatchEvent(new Event('change'))
+						await animationFrame()
 						assert.equal(
 							normalizeText(greeting.textContent),
-							"Hi Esther",
-							"Should update if first name changes",
-						);
-					});
+							'Hi Esther',
+							'Should update if first name changes',
+						)
+					})
 
-					it("should not update name if last name changes", async function () {
+					it('should not update name if last name changes', async function () {
 						const configurator = document.querySelector(
-							"greeting-configurator",
-						);
-						const last = configurator.querySelector(".last");
-						const input = last.querySelector("input");
+							'greeting-configurator',
+						)
+						const last = configurator.querySelector('.last')
+						const input = last.querySelector('input')
 						const helloWorld =
-							configurator.querySelector("hello-world");
-						const greeting = helloWorld.querySelector("p");
-						input.value = "Brunner";
-						input.dispatchEvent(new Event("change"));
-						await animationFrame();
+							configurator.querySelector('hello-world')
+						const greeting = helloWorld.querySelector('p')
+						input.value = 'Brunner'
+						input.dispatchEvent(new Event('change'))
+						await animationFrame()
 						assert.equal(
 							normalizeText(greeting.textContent),
-							"Hi Esther",
-							"Should not update if last name changes",
-						);
-					});
+							'Hi Esther',
+							'Should not update if last name changes',
+						)
+					})
 
-					it("should update greeting if use fullname is checked or unchecked", async function () {
+					it('should update greeting if use fullname is checked or unchecked', async function () {
 						const configurator = document.querySelector(
-							"greeting-configurator",
-						);
+							'greeting-configurator',
+						)
 						const fullname =
-							configurator.querySelector("input-checkbox");
-						const input = fullname.querySelector("input");
+							configurator.querySelector('input-checkbox')
+						const input = fullname.querySelector('input')
 						const helloWorld =
-							configurator.querySelector("hello-world");
-						const greeting = helloWorld.querySelector("p");
-						input.checked = true;
-						input.dispatchEvent(new Event("change"));
-						await animationFrame();
+							configurator.querySelector('hello-world')
+						const greeting = helloWorld.querySelector('p')
+						input.checked = true
+						input.dispatchEvent(new Event('change'))
+						await animationFrame()
 						assert.equal(
 							normalizeText(greeting.textContent),
-							"Hi Esther Brunner",
-							"Should update if use fullname is checked",
-						);
-						input.checked = false;
-						input.dispatchEvent(new Event("change"));
-						await animationFrame();
+							'Hi Esther Brunner',
+							'Should update if use fullname is checked',
+						)
+						input.checked = false
+						input.dispatchEvent(new Event('change'))
+						await animationFrame()
 						assert.equal(
 							normalizeText(greeting.textContent),
-							"Hi Esther",
-							"Should update if use fullname is unchecked",
-						);
-					});
-				});
+							'Hi Esther',
+							'Should update if use fullname is unchecked',
+						)
+					})
+				})
 
-				describe("Lazy Load", function () {
-					it("should display loading status initially", function () {
+				describe('Lazy Load', function () {
+					it('should display loading status initially', function () {
 						const lazyComponent =
-							document.getElementById("lazy-success");
+							document.getElementById('lazy-success')
 						assert.equal(
 							normalizeText(
-								lazyComponent.querySelector(".loading")
+								lazyComponent.querySelector('.loading')
 									.textContent,
 							),
-							"Loading...",
-						);
-					});
+							'Loading...',
+						)
+					})
 
-					it("should display lazy loaded content", async function () {
+					it('should display lazy loaded content', async function () {
 						const lazyComponent =
-							document.getElementById("lazy-success");
-						await wait(LOADING_DELAY);
-						const shadow = lazyComponent.shadowRoot;
+							document.getElementById('lazy-success')
+						await wait(LOADING_DELAY)
+						const shadow = lazyComponent.shadowRoot
 						assert.instanceOf(
 							shadow,
 							DocumentFragment,
-							"Should have a shadow root",
-						);
+							'Should have a shadow root',
+						)
 						assert.equal(
 							normalizeText(
-								shadow.querySelector("p").textContent,
+								shadow.querySelector('p').textContent,
 							),
-							"Lazy loaded content",
-							"Should display lazy loaded content",
-						);
+							'Lazy loaded content',
+							'Should display lazy loaded content',
+						)
 						assert.equal(
-							lazyComponent.querySelector(".error").hidden,
+							lazyComponent.querySelector('.error').hidden,
 							true,
-							"Should hide error container",
-						);
+							'Should hide error container',
+						)
 						assert.equal(
-							lazyComponent.querySelector(".loading") === null,
+							lazyComponent.querySelector('.loading') === null,
 							true,
-							"Should remove loading status",
-						);
-					});
+							'Should remove loading status',
+						)
+					})
 
-					it("should display error message", async function () {
+					it('should display error message', async function () {
 						const lazyComponent =
-							document.getElementById("lazy-error");
-						await wait(LOADING_DELAY);
+							document.getElementById('lazy-error')
+						await wait(LOADING_DELAY)
 						assert.equal(
 							normalizeText(
-								lazyComponent.querySelector(".error")
+								lazyComponent.querySelector('.error')
 									.textContent,
 							),
-							"Not Found",
-							"Should display error message",
-						);
+							'Not Found',
+							'Should display error message',
+						)
 						assert.equal(
-							lazyComponent.querySelector(".loading") === null,
+							lazyComponent.querySelector('.loading') === null,
 							true,
-							"Should remove loading status",
-						);
-					});
+							'Should remove loading status',
+						)
+					})
 
-					it("should prevent recursive loading", async function () {
+					it('should prevent recursive loading', async function () {
 						const lazyComponent =
-							document.getElementById("lazy-recursion");
-						await wait(LOADING_DELAY);
-						const shadow = lazyComponent.shadowRoot;
+							document.getElementById('lazy-recursion')
+						await wait(LOADING_DELAY)
+						const shadow = lazyComponent.shadowRoot
 						assert.instanceOf(
 							shadow,
 							DocumentFragment,
-							"Should have a shadow root",
-						);
+							'Should have a shadow root',
+						)
 						const lazySubComponent =
-							shadow.querySelector("lazy-load");
+							shadow.querySelector('lazy-load')
 						const errorElement =
-							lazySubComponent.querySelector(".error");
+							lazySubComponent.querySelector('.error')
 						assert.isFalse(
 							errorElement.hidden,
-							"Error message should be visible",
-						);
+							'Error message should be visible',
+						)
 						assert.equal(
 							errorElement.textContent,
-							"Recursive loading detected",
-							"Should display recursion error message",
-						);
-					});
-				});
+							'Recursive loading detected',
+							'Should display recursion error message',
+						)
+					})
+				})
 
-				describe("Tab Group", function () {
-					it("should mark the first button as active", async function () {
-						const tabGroup = document.querySelector("tab-group");
-						const buttons = tabGroup.querySelectorAll("button");
-						await animationFrame();
+				describe('Tab Group', function () {
+					it('should mark the first button as active', async function () {
+						const tabGroup = document.querySelector('tab-group')
+						const buttons = tabGroup.querySelectorAll('button')
+						await animationFrame()
 						assert.equal(
 							buttons[0].ariaSelected,
-							"true",
-							"Should have the first button marked as active",
-						);
-					});
+							'true',
+							'Should have the first button marked as active',
+						)
+					})
 
-					it("should change the active tab when a button is clicked", async function () {
-						const tabGroup = document.querySelector("tab-group");
-						const buttons = tabGroup.querySelectorAll("button");
-						buttons[1].click();
-						await animationFrame();
+					it('should change the active tab when a button is clicked', async function () {
+						const tabGroup = document.querySelector('tab-group')
+						const buttons = tabGroup.querySelectorAll('button')
+						buttons[1].click()
+						await animationFrame()
 						assert.equal(
 							buttons[0].ariaSelected,
-							"false",
-							"Should have the first button marked as inactive",
-						);
+							'false',
+							'Should have the first button marked as inactive',
+						)
 						assert.equal(
 							buttons[1].ariaSelected,
-							"true",
-							"Should have the second button marked as active",
-						);
-					});
+							'true',
+							'Should have the second button marked as active',
+						)
+					})
 
-					it("should display the content of the active tab", async function () {
-						const tabGroup = document.querySelector("tab-group");
-						const buttons = tabGroup.querySelectorAll("button");
-						await animationFrame();
+					it('should display the content of the active tab', async function () {
+						const tabGroup = document.querySelector('tab-group')
+						const buttons = tabGroup.querySelectorAll('button')
+						await animationFrame()
 						assert.equal(
 							tabGroup
 								.querySelectorAll('[role="tabpanel"]')[1]
-								.hasAttribute("hidden"),
+								.hasAttribute('hidden'),
 							false,
-							"Should mark the second tabpanel as visible",
-						);
-						buttons[0].click();
-						await animationFrame();
+							'Should mark the second tabpanel as visible',
+						)
+						buttons[0].click()
+						await animationFrame()
 						assert.equal(
 							tabGroup
 								.querySelectorAll('[role="tabpanel"]')[1]
-								.hasAttribute("hidden"),
+								.hasAttribute('hidden'),
 							true,
-							"Should mark the second tabpanel as hidden",
-						);
+							'Should mark the second tabpanel as hidden',
+						)
 						assert.equal(
 							tabGroup
 								.querySelectorAll('[role="tabpanel"]')[0]
-								.hasAttribute("hidden"),
+								.hasAttribute('hidden'),
 							false,
-							"Should mark the first tabpanel as visible",
-						);
-					});
-				});
+							'Should mark the first tabpanel as visible',
+						)
+					})
+				})
 
-				describe("InsertRecursion", function () {
-					it("should not cause infinite loops or memory leaks", async function () {
+				describe('InsertRecursion', function () {
+					it('should not cause infinite loops or memory leaks', async function () {
 						const parentCount =
-							document.querySelectorAll(
-								"recursion-parent",
-							).length;
+							document.querySelectorAll('recursion-parent').length
 						const childCount =
-							document.querySelectorAll("recursion-child").length;
+							document.querySelectorAll('recursion-child').length
 						assert.isAtMost(
 							parentCount,
 							3,
-							"Should not create more than 3 recursion-parent components",
-						);
+							'Should not create more than 3 recursion-parent components',
+						)
 						assert.isAtMost(
 							childCount,
 							3,
-							"Should not create more than 3 recursion-child components",
-						);
-					});
-				});
-			});
+							'Should not create more than 3 recursion-child components',
+						)
+					})
+				})
+			})
 		</script>
 	</body>
 </html>

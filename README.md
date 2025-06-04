@@ -59,18 +59,18 @@ Server-rendered markup:
 UIElement component:
 
 ```js
-import { asInteger, component, on, RESET, setText } from "@zeix/ui-element";
+import { asInteger, component, on, RESET, setText } from '@zeix/ui-element';
 
-component("show-appreciation", {
+component('show-appreciation', {
     count: asInteger(RESET) // Get initial value from .count element
 }, (el, { first }) => [
 
     // Update count display when state changes
-    first(".count", setText("count")),
+    first('.count', setText('count')),
 
     // Handle click events to change state
-    first("button", on("click", () => { el.count++ }))
-]);
+    first('button', on('click', () => { el.count++ })),
+])
 ```
 
 Example styles:
@@ -163,62 +163,74 @@ Server-rendered markup:
 UIElement component:
 
 ```js
-import { component, on, setProperty } from "@zeix/ui-element"
+import { component, on, setProperty } from '@zeix/ui-element'
+import { manageArrowKeyFocus } from './manage-arrow-key-focus'
 
-// Function to create event handler for arrow key focus management
-const manageArrowKeyFocus = (elements, index) => e => {
-    if (!(e instanceof KeyboardEvent))
-        throw new TypeError("Event is not a KeyboardEvent")
-    const handledKeys = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"]
-    if (handledKeys.includes(e.key)) {
-        e.preventDefault()
-        switch (e.key) {
-            case "ArrowLeft":
-            case "ArrowUp":
-                index = index < 1 ? elements.length - 1 : index - 1
-                break
-            case "ArrowRight":
-            case "ArrowDown":
-                index = index >= elements.length - 1 ? 0 : index + 1
-                break
-            case "Home":
-                index = 0
-                break
-            case "End":
-                index = elements.length - 1
-                break
-        }
-        if (elements[index]) elements[index].focus()
-    }
+export default component('tab-group', {
+	selected: '',
+},
+(el, { all, first }) => {
+	el.selected =
+		el.querySelector('[role="tab"][aria-selected="true"]')
+			?.getAttribute('aria-controls') ?? ''
+	const isSelected = target => el.selected === target.getAttribute('aria-controls')
+	const tabs = Array.from(el.querySelectorAll<HTMLButtonElement>('[role="tab"]'))
+	let focusIndex = 0
+
+	return [
+		first('[role="tablist"]',
+			on('keydown', manageArrowKeyFocus(tabs, focusIndex)),
+		),
+		all('[role="tab"]',
+			on('click', e => {
+				el.selected =
+					e.currentTarget.getAttribute('aria-controls') ?? ''
+				focusIndex = tabs.findIndex(tab => isSelected(tab))
+			}),
+			setProperty('ariaSelected', target => String(isSelected(target))),
+			setProperty('tabIndex', target => isSelected(target) ? 0 : -1),
+		),
+		all('[role="tabpanel"]',
+			setProperty('hidden', target => el.selected !== target.id),
+		),
+	]
+})
+
+Auxiliary function:
+
+```js
+export const manageArrowKeyFocus = (elements, index) => e => {
+	if (!(e instanceof KeyboardEvent))
+		throw new TypeError('Event is not a KeyboardEvent')
+	const handledKeys = [
+		'ArrowLeft',
+		'ArrowRight',
+		'ArrowUp',
+		'ArrowDown',
+		'Home',
+		'End',
+	]
+	if (handledKeys.includes(e.key)) {
+		e.preventDefault()
+		switch (e.key) {
+			case 'ArrowLeft':
+			case 'ArrowUp':
+				index = index < 1 ? elements.length - 1 : index - 1
+				break
+			case 'ArrowRight':
+			case 'ArrowDown':
+				index = index >= elements.length - 1 ? 0 : index + 1
+				break
+			case 'Home':
+				index = 0
+				break
+			case 'End':
+				index = elements.length - 1
+				break
+		}
+		if (elements[index]) elements[index].focus()
+	}
 }
-
-// Component
-component("tab-group", {
-    selected: ""
-}, (el, { all, first }) => {
-    el.selected = el.querySelector("[role=tab][aria-selected=true]")?.getAttribute("aria-controls") ?? "";
-    const isSelected = target =>
-        el.selected === target.getAttribute("aria-controls");
-    const tabs = Array.from(el.querySelectorAll("[role=tab]"));
-    let focusIndex = 0;
-
-    return [
-        first("[role=tablist]",
-            on("keydown", manageArrowKeyFocus(tabs, focusIndex)),
-        ),
-        all("[role=tab]",
-            on("click", e => {
-                el.selected = e.currentTarget.getAttribute("aria-controls") ?? "";
-                focusIndex = tabs.findIndex(tab => isSelected(tab));
-            }),
-            setProperty("ariaSelected", target => String(isSelected(target))),
-            setProperty("tabIndex", target => isSelected(target) ? 0 : -1),
-        ),
-        all("[role=tabpanel]",
-            setProperty("hidden", target => el.selected !== target.id),
-        )
-    ];
-});
 ```
 
 Example styles:
@@ -282,64 +294,86 @@ An example demonstrating how to use a custom attribute parser (sanitize an URL) 
 
 ```html
 <lazy-load src="/lazy-load/snippet.html">
-    <div class="loading" role="status">Loading...</div>
-    <div class="error" role="alert" aria-live="polite"></div>
+    <callout-box>
+        <div class="loading" role="status">Loading...</div>
+        <div class="error" role="alert" aria-live="polite"></div>
+    </callout-box>
 </lazy-load>
 ```
 
 ```js
-import { component, dangerouslySetInnerHTML, setProperty, setText } from "@zeix/ui-element";
+import {
+	component,
+	dangerouslySetInnerHTML,
+	setProperty,
+	setText,
+	UNSET,
+} from '@zeix/ui-element'
 
 // Attribute Parser uses current element to detect recursion and set error message
 const asURL = (el, v) => {
-    let value = "";
-    let error = "";
-    if (!v) {
-        error = "No URL provided in src attribute";
-    } else if (
-        (el.parentElement || (el.getRootNode() as ShadowRoot).host)?.closest(
-            `${el.localName}[src="${v}"]`,
-        )
-    ) {
-        error = "Recursive loading detected";
-    } else {
-        const url = new URL(v, location.href); // Ensure "src" attribute is a valid URL
-        if (url.origin === location.origin)
-            value = String(url); // Sanity check for cross-origin URLs
-        else error = "Invalid URL origin";
-    }
-    el.error = error;
-    return value;
-};
+	let value = ''
+	let error = ''
+	if (!v) {
+		error = 'No URL provided'
+	} else if (
+		(el.parentElement || el.getRootNode().host)?.closest(
+			`${el.localName}[src="${v}"]`
+		)
+	) {
+		error = 'Recursive loading detected'
+	} else {
+		try {
+			// Ensure 'src' attribute is a valid URL
+			const url = new URL(v, location.href)
 
-// Signal Producer fetches inner HTML
-const fetchText = el => async abort => {
-    // Async Computed callback
-    const url = el.src;
-    if (!url) return "";
-    try {
-        const response = await fetch(url, { signal: abort });
-        el.querySelector(".loading")?.remove();
-        if (response.ok) return response.text();
-        else el.error = response.statusText;
-    } catch (error) {
-        el.error = error.message;
-    }
-    return "";
-};
+			// Sanity check for cross-origin URLs
+			if (url.origin === location.origin) value = String(url)
+			else error = 'Invalid URL origin'
+		} catch (err) {
+			error = String(err)
+		}
+	}
+	return { value, error }
+}
 
 // Component
-component("lazy-load", {
-    error: "",
-    src: asURL,
-    content: fetchText,
-}, (el, { first }) => [
-    dangerouslySetInnerHTML("content"),
-    first(".error",
-        setText("error"),
-        setProperty("hidden", () => !el.error),
-    ),
-]);
+export default component('lazy-load',{
+	src: asURL,
+},
+(el, { first }) => {
+	const error = state('')
+
+	const content = computed(async abort => {
+		if (el.src.error) {
+			error.set(el.src.error)
+			return ''
+		}
+		const url = el.src.value
+
+		try {
+			error.set('')
+			el.querySelector('.loading')?.remove()
+			const response = await fetch(url, { signal: abort })
+	        if (response.ok) return response.text()
+	        else error.set(response.statusText)
+		} catch (err) {
+			const errorMessage =
+				err instanceof Error ? err.message : String(err)
+			error.set(errorMessage)
+			return ''
+		}
+	})
+
+	return [
+		dangerouslySetInnerHTML(content),
+		first('callout-box',
+			setProperty('hidden', () => !error.get() && content.get() !== UNSET),
+			toggleClass('danger', () => !error.get()),
+		),
+		first('.error', setText(error)),
+	]
+})
 ```
 
 ## Contributing & License

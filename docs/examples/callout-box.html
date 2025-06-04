@@ -1,8 +1,24 @@
 
 <tab-group>
 	<div role="tablist">
-		<button type="button" role="tab" id="trigger_callout-box.html" aria-controls="panel_callout-box.html" aria-selected="false" tabindex="-1">HTML</button>
-		<button type="button" role="tab" id="trigger_callout-box.css" aria-controls="panel_callout-box.css" aria-selected="false" tabindex="-1">CSS</button>
+		
+			<button
+				type="button"
+				role="tab"
+				id="trigger_callout-box.html"
+				aria-controls="panel_callout-box.html"
+				aria-selected="false"
+				tabindex="-1"
+			>HTML</button>
+		
+			<button
+				type="button"
+				role="tab"
+				id="trigger_callout-box.css"
+				aria-controls="panel_callout-box.css"
+				aria-selected="true"
+				tabindex="0"
+			>CSS</button>
 	</div>
 	
 <div role="tabpanel" id="panel_callout-box.html" aria-labelledby="trigger_callout-box.html" hidden>
@@ -24,7 +40,7 @@
 	</code-block>
 </div>
 
-<div role="tabpanel" id="panel_callout-box.css" aria-labelledby="trigger_callout-box.css" hidden>
+<div role="tabpanel" id="panel_callout-box.css" aria-labelledby="trigger_callout-box.css">
 	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">callout-box.css</span>

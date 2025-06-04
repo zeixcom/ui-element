@@ -12,10 +12,17 @@ import {
 import {
 	type ComponentProps,
 	type Component,
-    type FxFunction,
+	type FxFunction,
 	RESET,
 } from '../component'
-import { DEV_MODE, isString, elementName, log, LOG_ERROR, valueString } from '../core/util'
+import {
+	DEV_MODE,
+	isString,
+	elementName,
+	log,
+	LOG_ERROR,
+	valueString,
+} from '../core/util'
 
 /* === Types === */
 
@@ -41,6 +48,11 @@ type ElementInserter<E extends Element> = {
 	create: (parent: E) => Element | null
 	resolve?: (parent: E) => void
 	reject?: (error: unknown) => void
+}
+
+type DangerouslySetInnerHTMLOptions = {
+	shadowRootMode?: ShadowRootMode
+	allowScripts?: boolean
 }
 
 /* === Internal === */
@@ -280,7 +292,7 @@ const setText = <P extends ComponentProps, E extends Element = HTMLElement>(
 ): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 't',
-		read: (el) => el.textContent,
+		read: el => el.textContent,
 		update: (el, value) => {
 			Array.from(el.childNodes)
 				.filter(node => node.nodeType !== Node.COMMENT_NODE)
@@ -307,7 +319,7 @@ const setProperty = <
 	updateElement(s, {
 		op: 'p',
 		name: String(key),
-		read: (el) => (key in el ? el[key] : UNSET),
+		read: el => (key in el ? el[key] : UNSET),
 		update: (el, value) => {
 			el[key] = value
 		},
@@ -320,18 +332,21 @@ const setProperty = <
  * @param {string} name - name of attribute to be set
  * @param {SignalLike<string>} s - state bound to the attribute value
  */
-const setAttribute = <P extends ComponentProps, E extends Element = HTMLElement>(
+const setAttribute = <
+	P extends ComponentProps,
+	E extends Element = HTMLElement,
+>(
 	name: string,
 	s: SignalLike<P, string, E> = name,
 ): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 'a',
 		name,
-		read: (el) => el.getAttribute(name),
+		read: el => el.getAttribute(name),
 		update: (el, value) => {
 			safeSetAttribute(el, name, value)
 		},
-		delete: (el) => {
+		delete: el => {
 			el.removeAttribute(name)
 		},
 	})
@@ -343,14 +358,17 @@ const setAttribute = <P extends ComponentProps, E extends Element = HTMLElement>
  * @param {string} name - name of attribute to be toggled
  * @param {SignalLike<boolean>} s - state bound to the attribute existence
  */
-const toggleAttribute = <P extends ComponentProps, E extends Element = HTMLElement>(
+const toggleAttribute = <
+	P extends ComponentProps,
+	E extends Element = HTMLElement,
+>(
 	name: string,
 	s: SignalLike<P, boolean, E> = name,
 ): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 'a',
 		name,
-		read: (el) => el.hasAttribute(name),
+		read: el => el.hasAttribute(name),
 		update: (el, value) => {
 			el.toggleAttribute(name, value)
 		},
@@ -370,7 +388,7 @@ const toggleClass = <P extends ComponentProps, E extends Element = HTMLElement>(
 	updateElement(s, {
 		op: 'c',
 		name: token,
-		read: (el) => el.classList.contains(token),
+		read: el => el.classList.contains(token),
 		update: (el, value) => {
 			el.classList.toggle(token, value)
 		},
@@ -393,11 +411,11 @@ const setStyle = <
 	updateElement(s, {
 		op: 's',
 		name: prop,
-		read: (el) => el.style.getPropertyValue(prop),
+		read: el => el.style.getPropertyValue(prop),
 		update: (el, value) => {
 			el.style.setProperty(prop, value)
 		},
-		delete: (el) => {
+		delete: el => {
 			el.style.removeProperty(prop)
 		},
 	})
@@ -407,25 +425,28 @@ const setStyle = <
  *
  * @since 0.11.0
  * @param {SignalLike<string>} s - state bound to the inner HTML
- * @param {'open' | 'closed'} [attachShadow] - whether to attach a shadow root to the element, expects mode 'open' or 'closed'
- * @param {boolean} [allowScripts] - whether to allow executable script tags in the HTML content, defaults to false
+ * @param {DangerouslySetInnerHTMLOptions} options - options for setting inner HTML: shadowRootMode, allowScripts
  */
-const dangerouslySetInnerHTML = <P extends ComponentProps, E extends Element = HTMLElement>(
+const dangerouslySetInnerHTML = <
+	P extends ComponentProps,
+	E extends Element = HTMLElement,
+>(
 	s: SignalLike<P, string, E>,
-	attachShadow?: 'open' | 'closed',
-	allowScripts?: boolean,
+	options: DangerouslySetInnerHTMLOptions = {},
 ): FxFunction<P, E> =>
 	updateElement(s, {
 		op: 'h',
-		read: (el) =>
-			(el.shadowRoot || !attachShadow ? el : null)?.innerHTML ?? '',
+		read: el =>
+			(el.shadowRoot || !options.shadowRootMode ? el : null)?.innerHTML ??
+			'',
 		update: (el, html) => {
+			const { shadowRootMode, allowScripts } = options
 			if (!html) {
 				if (el.shadowRoot) el.shadowRoot.innerHTML = '<slot></slot>'
 				return ''
 			}
-			if (attachShadow && !el.shadowRoot)
-				el.attachShadow({ mode: attachShadow })
+			if (shadowRootMode && !el.shadowRoot)
+				el.attachShadow({ mode: shadowRootMode })
 			const target = el.shadowRoot || el
 			target.innerHTML = html
 			if (!allowScripts) return ''
@@ -448,6 +469,7 @@ export {
 	type UpdateOperation,
 	type ElementUpdater,
 	type ElementInserter,
+	type DangerouslySetInnerHTMLOptions,
 	updateElement,
 	insertOrRemoveElement,
 	setText,

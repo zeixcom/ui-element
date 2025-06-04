@@ -49,13 +49,7 @@ export {
 	LOG_ERROR,
 	log,
 } from './src/core/util'
-export {
-	type PassedSignals,
-	selection,
-	on,
-	emit,
-	pass,
-} from './src/core/dom'
+export { type PassedSignals, selection, on, emit, pass } from './src/core/dom'
 export {
 	type Context,
 	type UnknownContext,
@@ -78,6 +72,7 @@ export {
 	type UpdateOperation,
 	type ElementUpdater,
 	type ElementInserter,
+	type DangerouslySetInnerHTMLOptions,
 	updateElement,
 	insertOrRemoveElement,
 	setText,

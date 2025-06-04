@@ -183,22 +183,28 @@ Here's how everything comes together:
 	<details>
 		<summary>ProductCatalog Source Code</summary>
 		<lazy-load src="./examples/product-catalog.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 	<details>
 		<summary>InputButton Source Code</summary>
 		<lazy-load src="./examples/input-button.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 	<details>
 		<summary>SpinButton Source Code</summary>
 		<lazy-load src="./examples/spin-button.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 </component-demo>
@@ -341,36 +347,46 @@ Here's how everything comes together:
 	<details>
 		<summary>TodoApp Source Code</summary>
 		<lazy-load src="./examples/todo-app.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 	<details>
 		<summary>InputField Source Code</summary>
 		<lazy-load src="./examples/input-field.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 	<details>
 		<summary>InputButton Source Code</summary>
 		<lazy-load src="./examples/input-button.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 	<details>
 		<summary>InputCheckbox Source Code</summary>
 		<lazy-load src="./examples/input-checkbox.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 	<details>
 		<summary>InputRadiogroup Source Code</summary>
 		<lazy-load src="./examples/input-radiogroup.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 </component-demo>

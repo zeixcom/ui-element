@@ -514,8 +514,10 @@ Bringing all of the above together, you are now ready to build your own componen
 	<details>
 		<summary>Source Code</summary>
 		<lazy-load src="./examples/my-slider.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 </component-demo>

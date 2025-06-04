@@ -18,8 +18,8 @@
 		</user-context>
 
 		<script type="module">
-			import { runTests } from "@web/test-runner-mocha";
-			import { assert } from "@esm-bundle/chai";
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
 			import {
 				RESET,
 				component,
@@ -28,136 +28,136 @@
 				consume,
 				asString,
 				setText,
-			} from "../index.dev.js";
+			} from '../index.dev.js'
 
 			const animationFrame = async () =>
-				new Promise(requestAnimationFrame);
-			const normalizeText = (text) => text.replace(/\s+/g, " ").trim();
+				new Promise(requestAnimationFrame)
+			const normalizeText = text => text.replace(/\s+/g, ' ').trim()
 
 			component(
-				"motion-context",
+				'motion-context',
 				{
-					"reduced-motion": () => {
-						const mql = matchMedia("(prefers-reduced-motion)");
-						const reducedMotion = state(mql.matches);
-						mql.onchange = (e) => reducedMotion.set(e.matches);
-						return reducedMotion;
+					'reduced-motion': () => {
+						const mql = matchMedia('(prefers-reduced-motion)')
+						const reducedMotion = state(mql.matches)
+						mql.onchange = e => reducedMotion.set(e.matches)
+						return reducedMotion
 					},
 				},
-				() => [provide(["reduced-motion"])],
-			);
+				() => [provide(['reduced-motion'])],
+			)
 
 			component(
-				"my-animation",
+				'my-animation',
 				{
-					reducedMotion: consume("reduced-motion"),
+					reducedMotion: consume('reduced-motion'),
 				},
-				(_, { first }) => [first("span", setText("reducedMotion"))],
-			);
+				(_, { first }) => [first('span', setText('reducedMotion'))],
+			)
 
 			component(
-				"user-context",
+				'user-context',
 				{
-					"display-name": asString(RESET),
+					'display-name': asString(RESET),
 				},
-				() => [provide(["display-name"])],
-			);
+				() => [provide(['display-name'])],
+			)
 
 			component(
-				"hello-world",
+				'hello-world',
 				{
-					displayName: consume("display-name"),
+					displayName: consume('display-name'),
 				},
-				(_, { first }) => [first("span", setText("displayName"))],
-			);
+				(_, { first }) => [first('span', setText('displayName'))],
+			)
 
 			runTests(() => {
-				describe("Context provider", function () {
-					it("should have motion-context signal from media query list", async function () {
+				describe('Context provider', function () {
+					it('should have motion-context signal from media query list', async function () {
 						assert.equal(
-							"reduced-motion" in
-								document.querySelector("motion-context"),
+							'reduced-motion' in
+								document.querySelector('motion-context'),
 							true,
-						);
-					});
+						)
+					})
 
-					it("should have display-name signal from attribute", async function () {
+					it('should have display-name signal from attribute', async function () {
 						assert.equal(
-							document.querySelector("user-context")[
-								"display-name"
+							document.querySelector('user-context')[
+								'display-name'
 							],
-							"Jane Doe",
-						);
-					});
-				});
+							'Jane Doe',
+						)
+					})
+				})
 
-				describe("Context consumer", function () {
-					it("should have consumed context in properties", async function () {
+				describe('Context consumer', function () {
+					it('should have consumed context in properties', async function () {
 						assert.equal(
-							"reducedMotion" in
-								document.querySelector("my-animation"),
+							'reducedMotion' in
+								document.querySelector('my-animation'),
 							true,
-						);
-					});
+						)
+					})
 
-					it("should update according to consumed context", async function () {
+					it('should update according to consumed context', async function () {
 						const contextConsumer =
-							document.querySelector("my-animation");
-						await animationFrame();
+							document.querySelector('my-animation')
+						await animationFrame()
 						const textContent = normalizeText(
-							contextConsumer.querySelector("h1").textContent,
-						);
+							contextConsumer.querySelector('h1').textContent,
+						)
 						assert.equal(
 							textContent,
-							`Reduced Motion: ${matchMedia("(prefers-reduced-motion)").matches}`,
-							"Should have updated heading from context",
-						);
-					});
+							`Reduced Motion: ${matchMedia('(prefers-reduced-motion)').matches}`,
+							'Should have updated heading from context',
+						)
+					})
 
-					it("should update when context is set", async function () {
+					it('should update when context is set', async function () {
 						const contextProvider =
-							document.querySelector("user-context");
+							document.querySelector('user-context')
 						const contextConsumer =
-							document.querySelector("hello-world");
-						await animationFrame();
+							document.querySelector('hello-world')
+						await animationFrame()
 						let textContent = normalizeText(
-							contextConsumer.querySelector("span").textContent,
-						);
+							contextConsumer.querySelector('span').textContent,
+						)
 						assert.equal(
 							textContent,
-							"Jane Doe",
-							"Should update heading from initial display-name context",
-						);
-						contextProvider["display-name"] = "Esther Brunner";
-						await animationFrame();
+							'Jane Doe',
+							'Should update heading from initial display-name context',
+						)
+						contextProvider['display-name'] = 'Esther Brunner'
+						await animationFrame()
 						textContent = normalizeText(
-							contextConsumer.querySelector("span").textContent,
-						);
+							contextConsumer.querySelector('span').textContent,
+						)
 						assert.equal(
 							textContent,
-							"Esther Brunner",
-							"Should update heading from setting display-name context",
-						);
-					});
+							'Esther Brunner',
+							'Should update heading from setting display-name context',
+						)
+					})
 
-					it("should revert when context is removed", async function () {
+					it('should revert when context is removed', async function () {
 						const contextProvider =
-							document.querySelector("user-context");
+							document.querySelector('user-context')
 						const contextConsumer =
-							document.querySelector("hello-world");
-						contextProvider.removeAttribute("display-name");
-						await animationFrame();
+							document.querySelector('hello-world')
+						contextProvider.removeAttribute('display-name')
+						await animationFrame()
 						const textContent = normalizeText(
-							contextConsumer.querySelector("span").textContent,
-						);
+							contextConsumer.querySelector('span').textContent,
+						)
 						assert.equal(
 							textContent,
-							"World",
-							"Should revert heading from context",
-						);
-					});
-				});
-			});
+							'World',
+							'Should revert heading from context',
+						)
+					})
+				})
+			})
 		</script>
 	</body>
 </html>

@@ -9,13 +9,10 @@ import {
 	notify,
 	subscribe,
 	UNSET,
-    TYPE_COMPUTED,
+	TYPE_COMPUTED,
 } from '@zeix/cause-effect'
 
-import type {
-	Component,
-	ComponentProps,
-} from '../component'
+import type { Component, ComponentProps } from '../component'
 import { elementName, isDefinedObject, isString } from './util'
 
 /* === Types === */

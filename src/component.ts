@@ -10,7 +10,14 @@ import {
 	toSignal,
 } from '@zeix/cause-effect'
 
-import { DEV_MODE, isElement, elementName, log, typeString, valueString } from './core/util'
+import {
+	DEV_MODE,
+	isElement,
+	elementName,
+	log,
+	typeString,
+	valueString,
+} from './core/util'
 import { observeSubtree } from './core/dom'
 
 /* === Types === */
@@ -76,8 +83,10 @@ type FxFunction<P extends ComponentProps, E extends Element> = (
 	element: E,
 ) => Cleanup | void
 
-type ElementFromSelector<K extends string, E extends Element = HTMLElement> =
-    K extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[K] : E
+type ElementFromSelector<
+	K extends string,
+	E extends Element = HTMLElement,
+> = K extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[K] : E
 
 type SelectorFunctions<P extends ComponentProps> = {
 	first: <E extends Element = never, K extends string = string>(
@@ -149,20 +158,23 @@ const run = <P extends ComponentProps, E extends Element = Component<P>>(
  * @returns {UI<P>} - helper functions for selecting sub-elements
  */
 const select = <P extends ComponentProps>(): SelectorFunctions<P> => ({
-
 	/**
 	 * Apply effect functions to a first matching sub-element within the custom element
 	 *
 	 * @since 0.12.0
 	 * @param {K} selector - selector to match sub-element
 	 */
-	first: <E extends Element = never, K extends string = string>(
-		selector: K,
-		...fns: FxFunction<P, ElementFromSelector<K, E>>[]
-	) => (host: Component<P>): Cleanup | void => {
-		const el = (host.shadowRoot || host).querySelector<ElementFromSelector<K, E>>(selector)
-		if (el) run(fns, host, el)
-	},
+	first:
+		<E extends Element = never, K extends string = string>(
+			selector: K,
+			...fns: FxFunction<P, ElementFromSelector<K, E>>[]
+		) =>
+		(host: Component<P>): Cleanup | void => {
+			const el = (host.shadowRoot || host).querySelector<
+				ElementFromSelector<K, E>
+			>(selector)
+			if (el) run(fns, host, el)
+		},
 
 	/**
 	 * Apply effect functions to all matching sub-elements within the custom element
@@ -170,46 +182,55 @@ const select = <P extends ComponentProps>(): SelectorFunctions<P> => ({
 	 * @since 0.12.0
 	 * @param {K} selector - selector to match sub-elements
 	 */
-	all: <E extends Element = never, K extends string = string>(
-		selector: K,
-		...fns: FxFunction<P, ElementFromSelector<K, E>>[]
-	) => (host: Component<P>): Cleanup => {
-		const cleanups = new Map<ElementFromSelector<K, E>, Cleanup>()
-		const root = host.shadowRoot || host
+	all:
+		<E extends Element = never, K extends string = string>(
+			selector: K,
+			...fns: FxFunction<P, ElementFromSelector<K, E>>[]
+		) =>
+		(host: Component<P>): Cleanup => {
+			const cleanups = new Map<ElementFromSelector<K, E>, Cleanup>()
+			const root = host.shadowRoot || host
 
-		const attach = (target: ElementFromSelector<K, E>) => {
-			if (!cleanups.has(target))
-				cleanups.set(target, run(fns, host, target))
-		}
-
-		const detach = (target: ElementFromSelector<K, E>) => {
-			const cleanup = cleanups.get(target)
-			if (isFunction(cleanup)) cleanup()
-			cleanups.delete(target)
-		}
-
-		const applyToMatching = (fn: (target: ElementFromSelector<K, E>) => void) => (node: Node) => {
-			if (isElement(node)) {
-				if (node.matches(selector)) fn(node as ElementFromSelector<K, E>)
-				node.querySelectorAll<ElementFromSelector<K, E>>(selector).forEach(fn)
+			const attach = (target: ElementFromSelector<K, E>) => {
+				if (!cleanups.has(target))
+					cleanups.set(target, run(fns, host, target))
 			}
-		}
 
-		const observer = observeSubtree(root, selector, mutations => {
-			for (const mutation of mutations) {
-				mutation.addedNodes.forEach(applyToMatching(attach))
-				mutation.removedNodes.forEach(applyToMatching(detach))
+			const detach = (target: ElementFromSelector<K, E>) => {
+				const cleanup = cleanups.get(target)
+				if (isFunction(cleanup)) cleanup()
+				cleanups.delete(target)
 			}
-		})
 
-		root.querySelectorAll<ElementFromSelector<K, E>>(selector).forEach(attach)
+			const applyToMatching =
+				(fn: (target: ElementFromSelector<K, E>) => void) =>
+				(node: Node) => {
+					if (isElement(node)) {
+						if (node.matches(selector))
+							fn(node as ElementFromSelector<K, E>)
+						node.querySelectorAll<ElementFromSelector<K, E>>(
+							selector,
+						).forEach(fn)
+					}
+				}
 
-		return () => {
-			observer.disconnect()
-			cleanups.forEach(cleanup => cleanup())
-			cleanups.clear()
-		}
-	},
+			const observer = observeSubtree(root, selector, mutations => {
+				for (const mutation of mutations) {
+					mutation.addedNodes.forEach(applyToMatching(attach))
+					mutation.removedNodes.forEach(applyToMatching(detach))
+				}
+			})
+
+			root.querySelectorAll<ElementFromSelector<K, E>>(selector).forEach(
+				attach,
+			)
+
+			return () => {
+				observer.disconnect()
+				cleanups.forEach(cleanup => cleanup())
+				cleanups.clear()
+			}
+		},
 })
 
 /* === Exported Function === */
@@ -230,7 +251,10 @@ const component = <P extends ComponentProps>(
 	} = {} as {
 		[K in keyof P]: Initializer<Component<P>, P[K]>
 	},
-	setup: (host: Component<P>, select: SelectorFunctions<P>) => FxFunction<P, Component<P>>[],
+	setup: (
+		host: Component<P>,
+		select: SelectorFunctions<P>,
+	) => FxFunction<P, Component<P>>[],
 ): Component<P> => {
 	class CustomElement extends HTMLElement {
 		debug?: boolean

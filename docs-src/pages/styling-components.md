@@ -179,8 +179,10 @@ Here's the example of the `<callout-box>` we're using in this documentation:
 	<details>
 		<summary>Source Code</summary>
 		<lazy-load src="./examples/callout-box.html">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
 		</lazy-load>
 	</details>
 </component-demo>

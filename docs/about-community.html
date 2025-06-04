@@ -10,11 +10,12 @@
 		<script type="module" src="assets/main.js"></script>
 	</head>
 	<body>
-		<header class="content-grid">
-			<h1 class="content">
-				UIElement Docs <small>Version 0.13.0</small>
-			</h1>
-			
+		<client-router>
+			<header class="content-grid">
+				<h1 class="content">
+					UIElement Docs <small>Version 0.13.0</small>
+				</h1>
+				
 	<nav class="breakout">
 		<ol>
 			
@@ -91,8 +92,11 @@
 				</li>
 		</ol>
 	</nav>
-		</header>
-		<main><section class="hero">
+				<callout-box class="content danger" hidden>
+					<p class="error" role="alert" aria-live="polite"></p>
+				</callout-box>
+			</header>
+			<main><section class="hero">
 
 
 	            <h1 id="about-amp-community">
@@ -158,15 +162,15 @@
 	                </a>
 	                Version History
 	            </h2>
-	            <h3 id="current-version-0110">
-	                <a name="current-version-0110" class="anchor" href="#current-version-0110">
+	            <h3 id="current-version-0130">
+	                <a name="current-version-0130" class="anchor" href="#current-version-0130">
 		                <span class="permalink">🔗</span>
 	                </a>
-	                Current Version: 0.11.0
+	                Current Version: 0.13.0
 	            </h3><callout-box class="caution">
 
 <p><strong>Release candidate</strong></p>
-<p>This version is a stable <strong>pre-release</strong> of UIElement, meaning <strong>breaking changes</strong> may still occur before the official release of version 1.0. Please check the <a href="https://github.com/zeixcom/ui-element/releases">release notes</a> before updating.</p>
+<p>This version is a <strong>pre-release</strong> of UIElement, meaning <strong>breaking changes</strong> may still occur before the official release of version 1.0. Please check the <a href="https://github.com/zeixcom/ui-element/releases">release notes</a> before updating.</p>
 </callout-box>
 
 
@@ -221,12 +225,14 @@
 	                </a>
 	                Community Guidelines
 	            </h3><p>We strive for a welcoming and inclusive environment. Please follow our <a href="https://github.com/zeixcom/ui-element/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a> when contributing.</p>
-</section></main>
-		<footer class="content-grid">
-			<div class="content">
-				<h2 class="visually-hidden">Footer</h2>
-				<p>© 2024 – 2025 Zeix AG</p>
-			</div>
-		</footer>
+</section>
+</main>
+			<footer class="content-grid">
+				<div class="content">
+					<h2 class="visually-hidden">Footer</h2>
+					<p>© 2024 – 2025 Zeix AG</p>
+				</div>
+			</footer>
+		</client-router>
 	</body>
 </html>
