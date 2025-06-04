@@ -1,7 +1,7 @@
 ---
-title: "Styling Components"
-emoji: "🎨"
-description: "Scoped styles, CSS custom properties"
+title: 'Styling Components'
+emoji: '🎨'
+description: 'Scoped styles, CSS custom properties'
 ---
 
 <section class="hero">
@@ -17,9 +17,9 @@ description: "Scoped styles, CSS custom properties"
 
 UIElement is focused on **state management and reactivity**, not styling. However, to **ensure consistent, maintainable, and reusable styles**, we recommend techniques that **scope component styles properly while allowing shared design tokens** (e.g., spacing, font sizes, colors, layout grids).
 
-* ✅ **Each component brings along its own specific styles.**
-* ✅ Component styles should be **scoped or encapsulated** so they don't leak out.
-* ✅ **Allow customizations** via CSS custom properties or pre-defined classes.
+- ✅ **Each component brings along its own specific styles.**
+- ✅ Component styles should be **scoped or encapsulated** so they don't leak out.
+- ✅ **Allow customizations** via CSS custom properties or pre-defined classes.
 
 Parent components may apply styles to the wrapper element of known sub-components for layout purposes. But avoid styling inner elements of sub-components directly. This would tightly couple the styles of the outer and inner components.
 
@@ -33,20 +33,18 @@ Use the **custom element name** to scope component styles if **you control the p
 
 ```css
 my-component {
-
 	& button {
 		/* Button style rules */
 	}
 
 	/* More selectors for inner elements */
-
 }
 ```
 
 ### Advantages of Custom Element Names
 
-* ✅ By definition **unique within the document** with a descriptive name.
-* ✅ **Low specificity**, making it easy to override when you need to with a single class.
+- ✅ By definition **unique within the document** with a descriptive name.
+- ✅ **Low specificity**, making it easy to override when you need to with a single class.
 
 <callout-box class="tip">
 
@@ -109,7 +107,6 @@ Set global tokens in a stylesheet:
 }
 ```
 
-
 ### Using Tokens in a Component
 
 ```css
@@ -125,8 +122,8 @@ my-component {
 
 ### Advantages of CSS Custom Properties
 
-* ✅ **Supports theming** – Users can override styles globally.
-* ✅ **Works inside Shadow DOM** – Unlike normal CSS, custom properties are inherited inside the shadow tree.
+- ✅ **Supports theming** – Users can override styles globally.
+- ✅ **Works inside Shadow DOM** – Unlike normal CSS, custom properties are inherited inside the shadow tree.
 
 </section>
 
@@ -195,7 +192,7 @@ Here's the example of the `<callout-box>` we're using in this documentation:
 
 Now that you know how to style components, explore:
 
-* [Data Flow](data-flow.html) – Learn about communication between components.
-* [Patterns & Techniques](patterns-techniques.html) – Explore best practices and advanced topics.
+- [Component Communication](component-communication.html) – Learn about communication between components.
+- [Patterns & Techniques](patterns-techniques.html) – Explore best practices and advanced topics.
 
 </section>

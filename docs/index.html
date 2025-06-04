@@ -36,34 +36,26 @@
 				</li>
 
 				<li>
-					<a href="building-components.html">
+					<a href="core-concepts.html">
 						<span class="icon">🏗️</span>
-						<strong>Building Components</strong>
-						<small>Anatomy, lifecycle, signals, effects</small>
+						<strong>Core Concepts</strong>
+						<small>Component anatomy, lifecycle, and basic patterns</small>
 					</a>
 				</li>
 
 				<li>
-					<a href="styling-components.html">
-						<span class="icon">🎨</span>
-						<strong>Styling Components</strong>
-						<small>Scoped styles, CSS custom properties</small>
+					<a href="reactive-state.html">
+						<span class="icon">⚡</span>
+						<strong>Reactive State & Effects</strong>
+						<small>Signals, effects, and advanced reactivity patterns</small>
 					</a>
 				</li>
 
 				<li>
-					<a href="data-flow.html">
+					<a href="component-communication.html">
 						<span class="icon">🔄</span>
-						<strong>Data Flow</strong>
-						<small>Passing state, events, context</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="patterns-techniques.html">
-						<span class="icon">💡</span>
-						<strong>Patterns & Techniques</strong>
-						<small>Composition, scheduling, best practices</small>
+						<strong>Component Communication</strong>
+						<small>How components work together</small>
 					</a>
 				</li>
 
@@ -72,6 +64,22 @@
 						<span class="icon">🍽️</span>
 						<strong>Examples & Recipes</strong>
 						<small>Common use cases and demos</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="patterns-techniques.html">
+						<span class="icon">💡</span>
+						<strong>Patterns & Techniques</strong>
+						<small>Advanced patterns, testing strategies, and best practices</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="styling-components.html">
+						<span class="icon">🎨</span>
+						<strong>Styling Components</strong>
+						<small>Scoped styles, CSS custom properties</small>
 					</a>
 				</li>
 
@@ -104,7 +112,7 @@
 		                <span class="permalink">🔗</span>
 	                </a>
 	                📖 Introduction
-	            </h1><p class="lead">Web development doesn't need to be complicated. UIElement offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
+	            </h1><p class="lead"><strong>Web development doesn't need to be complicated</strong>. UIElement offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
 </section>
 
 <section>
@@ -122,32 +130,22 @@
 <li>Create reusable component patterns without complex abstractions</li>
 <li>Progressively enhance server-rendered content with client-side interactivity</li>
 </ul>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asInteger, component, on, RESET, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "@zeix/ui-element"</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"show-appreciation"</span><span style="color:#F8F8F2">, {</span></span>
-<span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(RESET) </span><span style="color:#88846F">// Get initial value from .count element</span></span>
-<span class="line"><span style="color:#F8F8F2">}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">    // Update count display when state changes</span></span>
-<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".count"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"count"</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">    // Handle click events to change state</span></span>
-<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">        el.count</span><span style="color:#F92672">++</span></span>
-<span class="line"><span style="color:#F8F8F2">    }))</span></span>
-<span class="line"><span style="color:#F8F8F2">]);</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Transform HTML into reactive components with minimal code</span></span>
+<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">, { name: RESET }, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#F8F8F2">])</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
 	</input-button>
-	<button type="button" class="overlay">Expand</button>
+	
 </code-block>
 <p>UIElement augments what the platform already provides. It leverages the Web Components standard while adding just enough convenience functions to make reactive UI behaviors easy to implement.</p>
 </section>
@@ -166,19 +164,15 @@
 		                <span class="permalink">🔗</span>
 	                </a>
 	                HTML-First Approach
-	            </h3><p>While many frameworks start with JavaScript and generate HTML, UIElement takes the opposite approach. It assumes you already have HTML (usually server-rendered) and want to enhance it with behavior:</p>
+	            </h3><p>UIElement assumes you start with semantic HTML and want to enhance it with behavior:</p>
 <code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">&#x3C;!-- Start with semantic HTML --></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">show-appreciation</span><span style="color:#A6E22E"> aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Show appreciation"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">        &#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"emoji"</span><span style="color:#F8F8F2">>💐&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">        &#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"count"</span><span style="color:#F8F8F2">>5&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">    &#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">show-appreciation</span><span style="color:#F8F8F2">></span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>Alice&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -187,62 +181,38 @@
 	</input-button>
 	
 </code-block>
-<p>This philosophy means:</p>
-<ul>
-<li>Better SEO and initial page load performance</li>
-<li>Progressive enhancement for resilient UIs</li>
-<li>Less client-side rendering overhead</li>
-<li>Simpler accessibility implementation</li>
-</ul>
+<p>This means better SEO, faster initial page loads, and progressive enhancement that works even when JavaScript fails.</p>
 
-	            <h3 id="performance-by-design">
-	                <a name="performance-by-design" class="anchor" href="#performance-by-design">
+	            <h3 id="reactive-by-design">
+	                <a name="reactive-by-design" class="anchor" href="#reactive-by-design">
 		                <span class="permalink">🔗</span>
 	                </a>
-	                Performance By Design
-	            </h3><p>UIElement avoids the overhead of virtual DOM diffing, instead using precise, targeted DOM updates through a fine-grained reactivity system:</p>
-<ul>
-<li>Efficient signal propagation that updates only what changed</li>
-<li>Batch processing and scheduling of updates to minimize browser reflows</li>
-<li>Minimal abstraction layers between your code and the browser</li>
-</ul>
-
-	            <h3 id="developer-experience-without-compromise">
-	                <a name="developer-experience-without-compromise" class="anchor" href="#developer-experience-without-compromise">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Developer Experience Without Compromise
-	            </h3><p>UIElement is designed to be intuitive and easy to use. It&#39;s built with type safety in mind, ensuring that your code is correct and that you don&#39;t miss any potential bugs.</p>
-<ul>
-<li><strong>Type Safety</strong>: Get early warnings when types don&#39;t match, improving code quality and reducing bugs.</li>
-<li><strong>Minimal Boilerplate</strong>: Write less code to achieve the same result.</li>
-<li><strong>Declarative Syntax</strong>: Define component behavior by composing small, reusable functions (attribute parsers and effects).</li>
-<li><strong>Customizable</strong>: UIElement is designed to be easily customizable and extensible. You can create your own custom attribute parsers and effects to suit your specific needs.</li>
-</ul>
+	                Reactive by Design
+	            </h3><p>UIElement uses signals for efficient, targeted DOM updates. Only the parts that actually changed get updated - no virtual DOM overhead, no unnecessary re-renders.</p>
 </section>
 
 <section>
 
 
-	            <h2 id="why-uielement">
-	                <a name="why-uielement" class="anchor" href="#why-uielement">
+	            <h2 id="why-choose-uielement">
+	                <a name="why-choose-uielement" class="anchor" href="#why-choose-uielement">
 		                <span class="permalink">🔗</span>
 	                </a>
-	                Why UIElement?
-	            </h2><p>While there are many excellent JavaScript frameworks out there, UIElement embraces web standards without proprietary extensions. It deliberately eschews abstractions like HTML-in-JS (client-side rendering) or JS-in-HTML (logic in framework-specific attributes) in favor of directness. While it does state management and view updates the hard way internally, it provides the benefits of declarative reactivity with only a few functions to compose complex behavior for developers.</p>
-<p>UIElement differentiates itself through:</p>
+	                Why Choose UIElement?
+	            </h2><p>UIElement shines when you want:</p>
 <ul>
-<li><strong>Simplicity</strong>: Few, clear concepts (components, signals, element selectors, effects) allow developers to quickly build interactive components.</li>
-<li><strong>Performance</strong>: Fine-grained, direct DOM manipulation outperforms virtual DOM approaches with re-rendering.</li>
-<li><strong>Minimalism</strong>: As a thin layer over native web standards, it has no dependencies and minimal footprint with tree-shakable functions.</li>
+<li><strong>Server-rendered content</strong> with client-side enhancements</li>
+<li><strong>High performance</strong> on all devices (no virtual DOM overhead)</li>
+<li><strong>Component reusability</strong> without framework lock-in</li>
+<li><strong>Future-proof</strong> code built on web standards</li>
+<li><strong>Easy integration</strong> with existing codebases</li>
 </ul>
-<p>UIElement shines when:</p>
+<p><strong>Key Benefits:</strong></p>
 <ul>
-<li>You&#39;re working with server-rendered content that needs client-side enhancements</li>
-<li>Performance is critical, especially on lower-powered devices</li>
-<li>You want component reusability without framework lock-in</li>
-<li>You prefer working with future-proof standard web technologies</li>
-<li>You need to integrate with diverse tech stacks and existing codebases</li>
+<li>~4kB gzipped with no dependencies</li>
+<li>TypeScript support with full type safety</li>
+<li>Works with any backend or build setup</li>
+<li>Progressive enhancement friendly</li>
 </ul>
 </section>
 
@@ -257,8 +227,8 @@
 	            </h2><p>Now that you understand what UIElement is and its core philosophy, you&#39;re ready to:</p>
 <ul>
 <li>Move on to <a href="getting-started.html">Getting Started</a> to install the library and build your first component</li>
-<li>Learn more about <a href="building-components.html">Building Components</a> to create reusable UI patterns</li>
-<li>Explore <a href="data-flow.html">Data Flow</a> to understand how to manage component communication</li>
+<li>Learn more about <a href="core-concepts.html">Core Concepts</a> to create reusable UI patterns</li>
+<li>Explore <a href="component-communication.html">Component Communication</a> to understand how components can work together</li>
 </ul>
 </section>
 </main>
