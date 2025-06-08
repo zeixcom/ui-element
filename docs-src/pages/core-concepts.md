@@ -8,7 +8,7 @@ description: 'Component anatomy, lifecycle, and basic patterns'
 
 # 🏗️ Core Concepts
 
-<p class="lead"><strong>Master the fundamental building blocks of UIElement components.</strong> Learn how to define components, manage their lifecycle, select elements, and handle basic state and events. These core concepts form the foundation for building reactive, maintainable Web Components.</p>
+<p class="lead"><strong>Master the fundamental building blocks of UIElement components.</strong> This chapter explores the fundamental building blocks of UIElement: components, signals, effects, and element interactions.</p>
 </section>
 
 <section>
@@ -19,82 +19,21 @@ Every UIElement component follows the same basic structure. Let's break down a s
 
 ```js
 component(
-	'my-counter',
+	'my-component',
 	{
-		// State definition - reactive properties
-		count: 0,
+		// Reactive properties
 	},
 	(el, { first, all }) => [
-		// Effects array - what happens when the component mounts
-		first('.display', setText('count')),
-		first(
-			'.increment',
-			on('click', () => el.count++),
-		),
+		// Setup logic and effects
 	],
 )
 ```
 
-**Three main parts:**
+The `component()` function has three parameters:
 
-1. **Component name** (`"my-counter"`) - Must contain a hyphen for Web Components
-2. **State definition** (`{ count: 0 }`) - Reactive properties and their initial values
-3. **Effects function** - Returns an array of effects that define component behavior
-
-</section>
-
-<section>
-
-## Defining Your First Component
-
-Let's build a simple greeting component step by step:
-
-### HTML Structure
-
-Start with semantic HTML:
-
-```html
-<user-greeting name="Alice">
-	<p>Hello, <span class="name">Alice</span>!</p>
-	<button type="button">Change Name</button>
-</user-greeting>
-```
-
-### Component Definition
-
-```js
-import { component, on, setText } from '@zeix/ui-element'
-
-component(
-	'user-greeting',
-	{
-		// Define a reactive property called "name"
-		name: 'Guest',
-	},
-	(el, { first }) => [
-		// Update the .name element when state changes
-		first('.name', setText('name')),
-
-		// Handle button clicks to change the name
-		first(
-			'button',
-			on('click', () => {
-				const names = ['Alice', 'Bob', 'Charlie', 'Diana']
-				const currentIndex = names.indexOf(el.name)
-				const nextIndex = (currentIndex + 1) % names.length
-				el.name = names[nextIndex]
-			}),
-		),
-	],
-)
-```
-
-**What happens here:**
-
-- `name: "Guest"` creates a reactive string property with a default value
-- `setText("name")` updates the text content when the `name` property changes
-- `on("click", ...)` adds an event listener that cycles through names
-- The component automatically updates the DOM when `el.name` changes
+1. **Component name**: A unique tag name for your custom element (must include a hyphen)
+2. **Reactive properties**: An object defining properties and their initializers
+3. **Setup function**: Runs when the component connects to the DOM and returns an array of effects that define component behavior
 
 </section>
 
@@ -112,18 +51,12 @@ When a component is first defined:
 component(
 	'my-component',
 	{
-		// State is initialized here
+		// Reactive properties are initialized here
 		message: 'Hello',
 	},
-	(el, selectors) => {
-		// This function runs once when the component is created
-		console.log('Component created:', el.tagName)
-
-		return [
-			// Effects are set up but not yet active
-			first('.output', setText('message')),
-		]
-	},
+	(el, selectors) => [
+		// Effects are set up but not yet active
+	],
 )
 ```
 
@@ -170,65 +103,61 @@ UIElement automatically handles cleanup when components are removed from the DOM
 
 Use the provided selector utilities to find elements within your component:
 
-### `first(selector, ...effects)`
+### first()
 
 Selects the first matching element and applies effects:
 
 ```js
 component(
-	'selector-demo',
+	'my-counter',
 	{
-		value: '',
+		count: asInteger(),
 	},
 	(el, { first }) => [
-		// Select first input and add event listener
+		first('.count', setText('count')),
 		first(
-			'input',
-			on('input', e => {
-				el.value = e.target.value
+			'button',
+			on('click', () => {
+				el.count++
 			}),
 		),
-
-		// Select first .output and update text
-		first('.output', setText('value')),
 	],
 )
 ```
 
-### `all(selector, ...effects)`
+### all()
 
 Selects all matching elements and applies effects to each:
 
 ```js
 component(
-	'multi-select',
+	'tab-group',
 	{
-		activeClass: 'active',
+		selected: '',
 	},
 	(el, { all }) => [
 		// Apply click handler to all buttons
 		all(
-			'button',
+			'[role="tab"]',
 			on('click', e => {
-				// Toggle active class on clicked button
-				const isActive = e.target.classList.contains(el.activeClass)
-				e.target.classList.toggle(el.activeClass, !isActive)
+				el.selected =
+					e.currentTarget?.getAttribute('aria-controls') ?? ''
 			}),
+			setProperty(
+				'ariaSelected',
+				target => target?.getAttribute('aria-controls') === el.selected,
+			),
+			setProperty('tabIndex', target =>
+				target?.getAttribute('aria-controls') === el.selected ? 0 : -1,
+			),
+		),
+
+		// Apply hidden property to all tabs
+		all(
+			'[role="tabpanel"]',
+			setProperty('hidden', target => el.selected !== target.id),
 		),
 	],
-)
-```
-
-### Chaining Effects
-
-You can apply multiple effects to the same element:
-
-```js
-first(
-	'button',
-	setText('label'),
-	setProperty('disabled', () => !el.isValid),
-	on('click', handleClick),
 )
 ```
 

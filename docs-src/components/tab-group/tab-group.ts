@@ -1,5 +1,5 @@
-import { type Component, component, on, setProperty } from '../../..'
-import { manageArrowKeyFocus } from '../../functions/event-listener/manage-arrow-key-focus'
+import { type Component, component, on, setProperty, state } from '../../..'
+import { manageFocusOnKeydown } from '../../functions/event-listener/manage-focus-on-keydown'
 
 export type TabGroupProps = {
 	selected: string
@@ -11,36 +11,33 @@ export default component(
 		selected: '',
 	},
 	(el, { all, first }) => {
-		el.selected =
-			el
-				.querySelector('[role="tab"][aria-selected="true"]')
-				?.getAttribute('aria-controls') ?? ''
-		const isSelected = (target: Element) =>
-			el.selected === target.getAttribute('aria-controls')
+		const getAriaControls = (target: Element) =>
+			target?.getAttribute('aria-controls') ?? ''
 		const tabs = Array.from(
 			el.querySelectorAll<HTMLButtonElement>('[role="tab"]'),
 		)
-		let focusIndex = 0
+		const focusIndex = state(
+			tabs.findIndex(tab => tab.ariaSelected === 'true'),
+		)
+		el.selected = getAriaControls(tabs[focusIndex.get()])
 
 		return [
-			first(
-				'[role="tablist"]',
-				on('keydown', manageArrowKeyFocus(tabs, focusIndex)),
-			),
+			first('[role="tablist"]', manageFocusOnKeydown(tabs, focusIndex)),
 			all<HTMLButtonElement>(
 				'[role="tab"]',
 				on('click', (e: Event) => {
-					el.selected =
-						(e.currentTarget as HTMLElement).getAttribute(
-							'aria-controls',
-						) ?? ''
-					focusIndex = tabs.findIndex(tab => isSelected(tab))
+					el.selected = getAriaControls(
+						e.currentTarget as HTMLElement,
+					)
+					focusIndex.set(
+						tabs.findIndex(tab => tab === e.currentTarget),
+					)
 				}),
 				setProperty('ariaSelected', target =>
-					String(isSelected(target)),
+					String(el.selected === getAriaControls(target)),
 				),
 				setProperty('tabIndex', target =>
-					isSelected(target) ? 0 : -1,
+					el.selected === getAriaControls(target) ? 0 : -1,
 				),
 			),
 			all(

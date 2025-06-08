@@ -810,20 +810,36 @@ var my_counter_default = _B("my-counter", {
   }))
 ]);
 
-// docs-src/components/my-slider/my-slider.ts
-var my_slider_default = _B("my-slider", {}, (el, { all, first }) => {
-  const active = o(0);
-  const total = el.querySelectorAll(".slide").length;
-  const isActive = (target) => String(active.get()) === target.dataset["index"];
+// docs-src/components/my-carousel/my-carousel.ts
+var my_carousel_default = _B("my-carousel", {}, (el, { all, first }) => {
+  const currentIndex = o(0);
+  const slides = Array.from(el.querySelectorAll('[role="tabpanel"]'));
+  const total = slides.length;
+  const updateIndex = (direction) => {
+    currentIndex.update((v2) => (v2 + direction + total) % total);
+  };
   return [
-    first(".prev", UB("click", () => {
-      active.update((v2) => (v2 - 1 + total) % total);
-    })),
-    first(".next", UB("click", () => {
-      active.update((v2) => (v2 + 1 + total) % total);
-    })),
-    all(".slide", cB("active", isActive)),
-    all(".dots span", cB("active", isActive))
+    first("nav", UB("keyup", (e2) => {
+      if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(e2.key)) {
+        e2.preventDefault();
+        if (e2.key === "Home")
+          currentIndex.set(0);
+        else if (e2.key === "End")
+          currentIndex.set(total - 1);
+        else
+          updateIndex(e2.key === "ArrowLeft" ? -1 : 1);
+        el.querySelectorAll('[role="tab"]')[currentIndex.get()].focus();
+      }
+    }), first(".prev", UB("click", () => {
+      updateIndex(-1);
+    })), first(".next", UB("click", () => {
+      updateIndex(1);
+    })), all('[role="tab"]', pB("ariaSelected", (target) => String(target.dataset["index"] === String(currentIndex.get()))), pB("tabIndex", (target) => target.dataset["index"] === String(currentIndex.get()) ? 0 : -1), UB("click", (e2) => {
+      const rawIndex = e2.target?.dataset["index"];
+      const nextIndex = rawIndex ? parseInt(rawIndex) : 0;
+      currentIndex.set(Number.isInteger(nextIndex) ? nextIndex : 0);
+    }))),
+    all('[role="tabpanel"]', pB("ariaCurrent", (target) => String(target.id === slides[currentIndex.get()].id)))
   ];
 });
 
@@ -850,16 +866,50 @@ var input_checkbox_default = _B("input-checkbox", {
   first(".label", hB("label"))
 ]);
 
+// docs-src/functions/event-listener/manage-focus-on-keydown.ts
+var HANDLED_KEYS = [
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowUp",
+  "ArrowDown",
+  "Home",
+  "End"
+];
+var clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+var manageFocusOnKeydown = (elements, index) => UB("keydown", (e2) => {
+  if (HANDLED_KEYS.includes(e2.key)) {
+    e2.preventDefault();
+    if (e2.key === "Home")
+      index.set(0);
+    else if (e2.key === "End")
+      index.set(elements.length - 1);
+    else
+      index.update((v2) => clamp(v2 + (e2.key === "ArrowRight" || e2.key === "ArrowDown" ? 1 : -1), 0, elements.length - 1));
+    if (elements[index.get()])
+      elements[index.get()].focus();
+  }
+});
+
 // docs-src/components/input-radiogroup/input-radiogroup.ts
 var input_radiogroup_default = _B("input-radiogroup", {
   value: kB()
-}, (el, { all }) => [
-  gB("value"),
-  all("input", UB("change", (e2) => {
-    el.value = e2.target?.value;
-  })),
-  all("label", cB("selected", (target) => el.value === target.querySelector("input")?.value))
-]);
+}, (el, { all }) => {
+  const inputs = Array.from(el.querySelectorAll("input"));
+  const focusIndex = o(inputs.findIndex((input) => input.checked));
+  return [
+    gB("value"),
+    manageFocusOnKeydown(inputs, focusIndex),
+    all("input", UB("change", (e2) => {
+      const input = e2.target;
+      el.value = input.value;
+      focusIndex.set(inputs.findIndex((input2) => input2.checked));
+    }), UB("keyup", (e2) => {
+      if (e2.key === "Enter" && e2.target)
+        e2.target.click();
+    }), pB("tabIndex", (target) => target.value === el.value ? 0 : -1)),
+    all("label", cB("selected", (target) => el.value === target.querySelector("input")?.value))
+  ];
+});
 
 // docs-src/components/input-field/input-field.ts
 var isNumber = (num) => typeof num === "number";
@@ -1014,55 +1064,20 @@ var code_block_default = _B("code-block", {
   ];
 });
 
-// docs-src/functions/event-listener/manage-arrow-key-focus.ts
-var manageArrowKeyFocus = (elements, index) => (e2) => {
-  if (!(e2 instanceof KeyboardEvent))
-    throw new TypeError("Event is not a KeyboardEvent");
-  const handledKeys = [
-    "ArrowLeft",
-    "ArrowRight",
-    "ArrowUp",
-    "ArrowDown",
-    "Home",
-    "End"
-  ];
-  if (handledKeys.includes(e2.key)) {
-    e2.preventDefault();
-    switch (e2.key) {
-      case "ArrowLeft":
-      case "ArrowUp":
-        index = index < 1 ? elements.length - 1 : index - 1;
-        break;
-      case "ArrowRight":
-      case "ArrowDown":
-        index = index >= elements.length - 1 ? 0 : index + 1;
-        break;
-      case "Home":
-        index = 0;
-        break;
-      case "End":
-        index = elements.length - 1;
-        break;
-    }
-    if (elements[index])
-      elements[index].focus();
-  }
-};
-
 // docs-src/components/tab-group/tab-group.ts
 var tab_group_default = _B("tab-group", {
   selected: ""
 }, (el, { all, first }) => {
-  el.selected = el.querySelector('[role="tab"][aria-selected="true"]')?.getAttribute("aria-controls") ?? "";
-  const isSelected = (target) => el.selected === target.getAttribute("aria-controls");
+  const getAriaControls = (target) => target?.getAttribute("aria-controls") ?? "";
   const tabs = Array.from(el.querySelectorAll('[role="tab"]'));
-  let focusIndex = 0;
+  const focusIndex = o(tabs.findIndex((tab) => tab.ariaSelected === "true"));
+  el.selected = getAriaControls(tabs[focusIndex.get()]);
   return [
-    first('[role="tablist"]', UB("keydown", manageArrowKeyFocus(tabs, focusIndex))),
+    first('[role="tablist"]', manageFocusOnKeydown(tabs, focusIndex)),
     all('[role="tab"]', UB("click", (e2) => {
-      el.selected = e2.currentTarget.getAttribute("aria-controls") ?? "";
-      focusIndex = tabs.findIndex((tab) => isSelected(tab));
-    }), pB("ariaSelected", (target) => String(isSelected(target))), pB("tabIndex", (target) => isSelected(target) ? 0 : -1)),
+      el.selected = getAriaControls(e2.currentTarget);
+      focusIndex.set(tabs.findIndex((tab) => tab === e2.currentTarget));
+    }), pB("ariaSelected", (target) => String(el.selected === getAriaControls(target))), pB("tabIndex", (target) => el.selected === getAriaControls(target) ? 0 : -1)),
     all('[role="tabpanel"]', pB("hidden", (target) => el.selected !== target.id))
   ];
 });
@@ -1346,4 +1361,4 @@ var calc_table_default = _B("calc-table", {
   ];
 });
 
-//# debugId=143DEE99A5E0545F64756E2164756E21
+//# debugId=6C0AFD0B5D0CBE5C64756E2164756E21

@@ -112,7 +112,7 @@
 		                <span class="permalink">🔗</span>
 	                </a>
 	                🏗️ Core Concepts
-	            </h1><p class="lead"><strong>Master the fundamental building blocks of UIElement components.</strong> Learn how to define components, manage their lifecycle, select elements, and handle basic state and events. These core concepts form the foundation for building reactive, maintainable Web Components.</p>
+	            </h1><p class="lead"><strong>Master the fundamental building blocks of UIElement components.</strong> This chapter explores the fundamental building blocks of UIElement: components, signals, effects, and element interactions.</p>
 </section>
 
 <section>
@@ -124,67 +124,20 @@
 	                </a>
 	                Component Anatomy
 	            </h2><p>Every UIElement component follows the same basic structure. Let&#39;s break down a simple example:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">	'my-counter'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">	'my-component'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
-<span class="line"><span style="color:#88846F">		// State definition - reactive properties</span></span>
-<span class="line"><span style="color:#F8F8F2">		count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#88846F">		// Reactive properties</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">		// Effects array - what happens when the component mounts</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.display'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">			'.increment'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.count</span><span style="color:#F92672">++</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"><span style="color:#88846F">		// Setup logic and effects</span></span>
 <span class="line"><span style="color:#F8F8F2">	],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span></code></pre>
-	<input-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</input-button>
-	<button type="button" class="overlay">Expand</button>
-</code-block>
-<p><strong>Three main parts:</strong></p>
-<ol>
-<li><strong>Component name</strong> (<code>&quot;my-counter&quot;</code>) - Must contain a hyphen for Web Components</li>
-<li><strong>State definition</strong> (<code>{ count: 0 }</code>) - Reactive properties and their initial values</li>
-<li><strong>Effects function</strong> - Returns an array of effects that define component behavior</li>
-</ol>
-</section>
-
-<section>
-
-
-	            <h2 id="defining-your-first-component">
-	                <a name="defining-your-first-component" class="anchor" href="#defining-your-first-component">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Defining Your First Component
-	            </h2><p>Let&#39;s build a simple greeting component step by step:</p>
-
-	            <h3 id="html-structure">
-	                <a name="html-structure" class="anchor" href="#html-structure">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                HTML Structure
-	            </h3><p>Start with semantic HTML:</p>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">html</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">user-greeting</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Alice"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"name"</span><span style="color:#F8F8F2">>Alice&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">>Change Name&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">user-greeting</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -193,56 +146,12 @@
 	</input-button>
 	
 </code-block>
-
-	            <h3 id="component-definition">
-	                <a name="component-definition" class="anchor" href="#component-definition">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Component Definition
-	            </h3><code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { component, on, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">	'user-greeting'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">	{</span></span>
-<span class="line"><span style="color:#88846F">		// Define a reactive property called "name"</span></span>
-<span class="line"><span style="color:#F8F8F2">		name: </span><span style="color:#E6DB74">'Guest'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">		// Update the .name element when state changes</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.name'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">		// Handle button clicks to change the name</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">			'button'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> names </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'Alice'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'Bob'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'Charlie'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'Diana'</span><span style="color:#F8F8F2">]</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> currentIndex </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> names.</span><span style="color:#A6E22E">indexOf</span><span style="color:#F8F8F2">(el.name)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> nextIndex </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (currentIndex </span><span style="color:#F92672">+</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">%</span><span style="color:#F8F8F2"> names.length</span></span>
-<span class="line"><span style="color:#F8F8F2">				el.name </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> names[nextIndex]</span></span>
-<span class="line"><span style="color:#F8F8F2">			}),</span></span>
-<span class="line"><span style="color:#F8F8F2">		),</span></span>
-<span class="line"><span style="color:#F8F8F2">	],</span></span>
-<span class="line"><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span></code></pre>
-	<input-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</input-button>
-	<button type="button" class="overlay">Expand</button>
-</code-block>
-<p><strong>What happens here:</strong></p>
-<ul>
-<li><code>name: &quot;Guest&quot;</code> creates a reactive string property with a default value</li>
-<li><code>setText(&quot;name&quot;)</code> updates the text content when the <code>name</code> property changes</li>
-<li><code>on(&quot;click&quot;, ...)</code> adds an event listener that cycles through names</li>
-<li>The component automatically updates the DOM when <code>el.name</code> changes</li>
-</ul>
+<p>The <code>component()</code> function has three parameters:</p>
+<ol>
+<li><strong>Component name</strong>: A unique tag name for your custom element (must include a hyphen)</li>
+<li><strong>Reactive properties</strong>: An object defining properties and their initializers</li>
+<li><strong>Setup function</strong>: Runs when the component connects to the DOM and returns an array of effects that define component behavior</li>
+</ol>
 </section>
 
 <section>
@@ -269,18 +178,12 @@
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">	'my-component'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
-<span class="line"><span style="color:#88846F">		// State is initialized here</span></span>
+<span class="line"><span style="color:#88846F">		// Reactive properties are initialized here</span></span>
 <span class="line"><span style="color:#F8F8F2">		message: </span><span style="color:#E6DB74">'Hello'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">selectors</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#88846F">		// This function runs once when the component is created</span></span>
-<span class="line"><span style="color:#F8F8F2">		console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Component created:'</span><span style="color:#F8F8F2">, el.tagName)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">			// Effects are set up but not yet active</span></span>
-<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.output'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'message'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"><span style="color:#F8F8F2">		]</span></span>
-<span class="line"><span style="color:#F8F8F2">	},</span></span>
+<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">selectors</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#88846F">		// Effects are set up but not yet active</span></span>
+<span class="line"><span style="color:#F8F8F2">	],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
@@ -354,11 +257,11 @@
 	                Selecting Elements
 	            </h2><p>Use the provided selector utilities to find elements within your component:</p>
 
-	            <h3 id="codefirstselector-effectscode">
-	                <a name="codefirstselector-effectscode" class="anchor" href="#codefirstselector-effectscode">
+	            <h3 id="first">
+	                <a name="first" class="anchor" href="#first">
 		                <span class="permalink">🔗</span>
 	                </a>
-	                <code>first(selector, ...effects)</code>
+	                first()
 	            </h3><p>Selects the first matching element and applies effects:</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
@@ -366,21 +269,18 @@
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">	'selector-demo'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">	'my-counter'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
-<span class="line"><span style="color:#F8F8F2">		value: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">		count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">		// Select first input and add event listener</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">)),</span></span>
 <span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">			'input'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">				el.value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value</span></span>
+<span class="line"><span style="color:#E6DB74">			'button'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">				el.count</span><span style="color:#F92672">++</span></span>
 <span class="line"><span style="color:#F8F8F2">			}),</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">		// Select first .output and update text</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.output'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">)),</span></span>
 <span class="line"><span style="color:#F8F8F2">	],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
@@ -392,11 +292,11 @@
 	<button type="button" class="overlay">Expand</button>
 </code-block>
 
-	            <h3 id="codeallselector-effectscode">
-	                <a name="codeallselector-effectscode" class="anchor" href="#codeallselector-effectscode">
+	            <h3 id="all">
+	                <a name="all" class="anchor" href="#all">
 		                <span class="permalink">🔗</span>
 	                </a>
-	                <code>all(selector, ...effects)</code>
+	                all()
 	            </h3><p>Selects all matching elements and applies effects to each:</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
@@ -404,19 +304,31 @@
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">	'multi-select'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">	'tab-group'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
-<span class="line"><span style="color:#F8F8F2">		activeClass: </span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">		selected: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">		// Apply click handler to all buttons</span></span>
 <span class="line"><span style="color:#A6E22E">		all</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">			'button'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">			'[role="tab"]'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#88846F">				// Toggle active class on clicked button</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> isActive </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.classList.</span><span style="color:#A6E22E">contains</span><span style="color:#F8F8F2">(el.activeClass)</span></span>
-<span class="line"><span style="color:#F8F8F2">				e.target.classList.</span><span style="color:#A6E22E">toggle</span><span style="color:#F8F8F2">(el.activeClass, </span><span style="color:#F92672">!</span><span style="color:#F8F8F2">isActive)</span></span>
+<span class="line"><span style="color:#F8F8F2">				el.selected </span><span style="color:#F92672">=</span></span>
+<span class="line"><span style="color:#F8F8F2">					e.currentTarget?.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-controls'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span></span>
 <span class="line"><span style="color:#F8F8F2">			}),</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">				'ariaSelected'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">				target</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> target?.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-controls'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> el.selected,</span></span>
+<span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tabIndex'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
+<span class="line"><span style="color:#F8F8F2">				target?.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-controls'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> el.selected </span><span style="color:#F92672">?</span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> :</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">		// Apply hidden property to all tabs</span></span>
+<span class="line"><span style="color:#A6E22E">		all</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'[role="tabpanel"]'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.selected </span><span style="color:#F92672">!==</span><span style="color:#F8F8F2"> target.id),</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
 <span class="line"><span style="color:#F8F8F2">	],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
@@ -427,32 +339,6 @@
 		</button>
 	</input-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
-
-	            <h3 id="chaining-effects">
-	                <a name="chaining-effects" class="anchor" href="#chaining-effects">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Chaining Effects
-	            </h3><p>You can apply multiple effects to the same element:</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">	'button'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">	setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'label'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">	setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.isValid),</span></span>
-<span class="line"><span style="color:#A6E22E">	on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, handleClick),</span></span>
-<span class="line"><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span></code></pre>
-	<input-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</input-button>
-	
 </code-block>
 </section>
 

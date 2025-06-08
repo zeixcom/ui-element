@@ -15,7 +15,7 @@ description: 'Installation, setup, and first steps'
 
 ## How to Install UIElement
 
-UIElement works **without build tools** but also supports **NPM and module bundlers** for larger projects. Choose the option that best fits your needs.
+UIElement works **without build tools** but also supports **package managers and bundlers** for larger projects. Choose the option that best fits your needs.
 
 ### Using a CDN
 
@@ -102,8 +102,8 @@ Include the following in your server-rendered HTML:
 
 ```html
 <hello-world>
-	<label
-		>Your name<br />
+	<label>
+		Your name<br />
 		<input type="text" />
 	</label>
 	<p>Hello, <span>World</span>!</p>
@@ -154,9 +154,9 @@ Save the following inside a `<script type="module">` tag or an external JavaScri
 
 ## Understanding Your First Component
 
-Let's break down each part of your hello-world component to understand how UIElement works:
+Let's break down each part of your `<hello-world>` component to understand how UIElement works:
 
-### State Definition
+### Reactive Properties
 
 ```js
 {
@@ -170,40 +170,29 @@ This creates a reactive property called `name`:
 - UIElement automatically reads "World" from the `<span>` element as the initial value
 - When `name` changes, any effects that depend on it automatically update
 
-**Note:** This is one of three ways to initialize state in UIElement:
+There are other ways to initialize state in UIElement. You'll learn about those approaches in [Core Concepts](core-concepts.html).
 
-- **Direct values** like `name: "Guest"` for hardcoded defaults
-- **Parser functions** like `name: asString()` to read from HTML attributes
-- **RESET** to read from existing DOM content (what we're using here)
+### Setup Function
 
-You'll learn about all three approaches in [Core Concepts](core-concepts.html).
-
-### Effect Array
+Returns an array of effects:
 
 ```js
-[
-  first("span", setText("name")),
-  first("input", on("input", e => { ... }))
+(el, { first }) => [
+  first('span', setText('name')),
+  first('input', on('input', e => { ... }))
 ]
 ```
 
-Effects define what happens when the component starts up:
+Effects define component behaviors:
 
-- `first("span", setText("name"))` finds the first `<span>` and keeps its text in sync with the `name` property
-- `first("input", on("input", ...))` finds the first `<input>` and adds an event listener
-- Effects run automatically when the component is added to the page
+- `first('span', setText('name'))` finds the first `<span>` and keeps its text in sync with the `name` property
+- `first('input', on('input', ...))` finds the first `<input>` and adds an event listener
 
-### The RESET Pattern
+Characteristics of Effects:
 
-`RESET` is particularly useful for server-rendered content:
-
-```html
-<hello-world>
-	<p>Hello, <span>World</span>!</p>
-</hello-world>
-```
-
-When the component initializes, it reads "World" from the `<span>` and uses that as the starting value for `name`. This allows your components to enhance existing HTML content seamlessly.
+- Effects run when the component is added to the page
+- Effects rerun when their dependencies change
+- Effects may return a cleanup function to be executed when the component is removed from the page
 
 </section>
 

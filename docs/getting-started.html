@@ -123,7 +123,7 @@
 		                <span class="permalink">🔗</span>
 	                </a>
 	                How to Install UIElement
-	            </h2><p>UIElement works <strong>without build tools</strong> but also supports <strong>NPM and module bundlers</strong> for larger projects. Choose the option that best fits your needs.</p>
+	            </h2><p>UIElement works <strong>without build tools</strong> but also supports <strong>package managers and bundlers</strong> for larger projects. Choose the option that best fits your needs.</p>
 
 	            <h3 id="using-a-cdn">
 	                <a name="using-a-cdn" class="anchor" href="#using-a-cdn">
@@ -274,8 +274,8 @@
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">label</span></span>
-<span class="line"><span style="color:#F8F8F2">		>Your name&#x3C;</span><span style="color:#F92672">br</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		Your name&#x3C;</span><span style="color:#F92672">br</span><span style="color:#F8F8F2"> /></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#F8F8F2"> /></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>World&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
@@ -349,13 +349,13 @@
 		                <span class="permalink">🔗</span>
 	                </a>
 	                Understanding Your First Component
-	            </h2><p>Let&#39;s break down each part of your hello-world component to understand how UIElement works:</p>
+	            </h2><p>Let&#39;s break down each part of your <code>&lt;hello-world&gt;</code> component to understand how UIElement works:</p>
 
-	            <h3 id="state-definition">
-	                <a name="state-definition" class="anchor" href="#state-definition">
+	            <h3 id="reactive-properties">
+	                <a name="reactive-properties" class="anchor" href="#reactive-properties">
 		                <span class="permalink">🔗</span>
 	                </a>
-	                State Definition
+	                Reactive Properties
 	            </h3><code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -378,27 +378,22 @@
 <li>UIElement automatically reads &quot;World&quot; from the <code>&lt;span&gt;</code> element as the initial value</li>
 <li>When <code>name</code> changes, any effects that depend on it automatically update</li>
 </ul>
-<p><strong>Note:</strong> This is one of three ways to initialize state in UIElement:</p>
-<ul>
-<li><strong>Direct values</strong> like <code>name: &quot;Guest&quot;</code> for hardcoded defaults</li>
-<li><strong>Parser functions</strong> like <code>name: asString()</code> to read from HTML attributes</li>
-<li><strong>RESET</strong> to read from existing DOM content (what we&#39;re using here)</li>
-</ul>
-<p>You&#39;ll learn about all three approaches in <a href="core-concepts.html">Core Concepts</a>.</p>
+<p>There are other ways to initialize state in UIElement. You&#39;ll learn about those approaches in <a href="core-concepts.html">Core Concepts</a>.</p>
 
-	            <h3 id="effect-array">
-	                <a name="effect-array" class="anchor" href="#effect-array">
+	            <h3 id="setup-function">
+	                <a name="setup-function" class="anchor" href="#setup-function">
 		                <span class="permalink">🔗</span>
 	                </a>
-	                Effect Array
-	            </h3><code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	                Setup Function
+	            </h3><p>Returns an array of effects:</p>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">[</span></span>
-<span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"span"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"name"</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"input"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"input"</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> { </span><span style="color:#F92672">...</span><span style="color:#F8F8F2"> }))</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> { </span><span style="color:#F92672">...</span><span style="color:#F8F8F2"> }))</span></span>
 <span class="line"><span style="color:#F8F8F2">]</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
@@ -408,36 +403,17 @@
 	</input-button>
 	
 </code-block>
-<p>Effects define what happens when the component starts up:</p>
+<p>Effects define component behaviors:</p>
 <ul>
-<li><code>first(&quot;span&quot;, setText(&quot;name&quot;))</code> finds the first <code>&lt;span&gt;</code> and keeps its text in sync with the <code>name</code> property</li>
-<li><code>first(&quot;input&quot;, on(&quot;input&quot;, ...))</code> finds the first <code>&lt;input&gt;</code> and adds an event listener</li>
-<li>Effects run automatically when the component is added to the page</li>
+<li><code>first(&#39;span&#39;, setText(&#39;name&#39;))</code> finds the first <code>&lt;span&gt;</code> and keeps its text in sync with the <code>name</code> property</li>
+<li><code>first(&#39;input&#39;, on(&#39;input&#39;, ...))</code> finds the first <code>&lt;input&gt;</code> and adds an event listener</li>
 </ul>
-
-	            <h3 id="the-reset-pattern">
-	                <a name="the-reset-pattern" class="anchor" href="#the-reset-pattern">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                The RESET Pattern
-	            </h3><p><code>RESET</code> is particularly useful for server-rendered content:</p>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">html</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>World&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
-<span class="line"></span></code></pre>
-	<input-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</input-button>
-	
-</code-block>
-<p>When the component initializes, it reads &quot;World&quot; from the <code>&lt;span&gt;</code> and uses that as the starting value for <code>name</code>. This allows your components to enhance existing HTML content seamlessly.</p>
+<p>Characteristics of Effects:</p>
+<ul>
+<li>Effects run when the component is added to the page</li>
+<li>Effects rerun when their dependencies change</li>
+<li>Effects may return a cleanup function to be executed when the component is removed from the page</li>
+</ul>
 </section>
 
 <section>

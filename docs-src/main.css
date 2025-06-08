@@ -1,7 +1,7 @@
 @import './global.css';
 
 @import './components/my-counter/my-counter.css';
-@import './components/my-slider/my-slider.css';
+@import './components/my-carousel/my-carousel.css';
 @import './components/code-block/code-block.css';
 @import './components/tab-group/tab-group.css';
 @import './components/input-button/input-button.css';

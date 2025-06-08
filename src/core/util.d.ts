@@ -47,5 +47,4 @@ declare const typeString: (value: unknown) => string;
  * @returns {T} - value passed through
  */
 declare const log: <T>(value: T, msg: string, level?: LogLevel) => T;
-declare const assert: (assertion: boolean, msg: string, ...rest: unknown[]) => boolean;
-export { type LogLevel, isString, isDefinedObject, isElement, log, assert, elementName, valueString, typeString, DEV_MODE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, };
+export { type LogLevel, isString, isDefinedObject, isElement, log, elementName, valueString, typeString, DEV_MODE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, };

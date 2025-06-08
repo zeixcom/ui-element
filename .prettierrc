@@ -3,5 +3,6 @@
 	"useTabs": true,
 	"tabWidth": 4,
 	"singleQuote": true,
-	"arrowParens": "avoid"
+	"arrowParens": "avoid",
+	"experimentalTernaries": true,
 }

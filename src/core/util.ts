@@ -68,11 +68,9 @@ const elementName = (el: Element): string =>
  * @returns {string}
  */
 const valueString = (value: unknown): string =>
-	isString(value)
-		? `"${value}"`
-		: isDefinedObject(value)
-			? JSON.stringify(value)
-			: String(value)
+	isString(value) ? `"${value}"`
+	: isDefinedObject(value) ? JSON.stringify(value)
+	: String(value)
 
 /**
  * Return a detailed type of a JavaScript variable
@@ -110,22 +108,12 @@ const log = <T>(value: T, msg: string, level: LogLevel = LOG_DEBUG): T => {
 	return value
 }
 
-const assert = (
-	assertion: boolean,
-	msg: string,
-	...rest: unknown[]
-): boolean => {
-	console.assert(assertion, msg, ...rest)
-	return assertion
-}
-
 export {
 	type LogLevel,
 	isString,
 	isDefinedObject,
 	isElement,
 	log,
-	assert,
 	elementName,
 	valueString,
 	typeString,
