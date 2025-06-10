@@ -68,9 +68,11 @@ const elementName = (el: Element): string =>
  * @returns {string}
  */
 const valueString = (value: unknown): string =>
-	isString(value) ? `"${value}"`
-	: isDefinedObject(value) ? JSON.stringify(value)
-	: String(value)
+	isString(value)
+		? `"${value}"`
+		: isDefinedObject(value)
+			? JSON.stringify(value)
+			: String(value)
 
 /**
  * Return a detailed type of a JavaScript variable

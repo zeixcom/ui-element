@@ -135,6 +135,74 @@ component(
 
 <section>
 
+## Combobox
+
+<component-demo>
+	<div class="preview">
+		<input-combobox value="">
+			<label for="city-input">Choose a city</label>
+			<div class="input">
+				<input
+					id="city-input"
+					type="text"
+					role="combobox"
+					aria-expanded="false"
+					aria-controls="city-popup"
+					aria-autocomplete="list"
+					autocomplete="off"
+					required
+				/>
+				<ol id="city-popup" role="listbox" hidden>
+					<li role="option" tabindex="-1">Amsterdam</li>
+					<li role="option" tabindex="-1">Berlin</li>
+					<li role="option" tabindex="-1">Copenhagen</li>
+					<li role="option" tabindex="-1">Dublin</li>
+					<li role="option" tabindex="-1">Edinburgh</li>
+					<li role="option" tabindex="-1">Frankfurt</li>
+					<li role="option" tabindex="-1">Geneva</li>
+					<li role="option" tabindex="-1">Helsinki</li>
+					<li role="option" tabindex="-1">Istanbul</li>
+					<li role="option" tabindex="-1">Jakarta</li>
+					<li role="option" tabindex="-1">Kairo</li>
+					<li role="option" tabindex="-1">London</li>
+					<li role="option" tabindex="-1">Madrid</li>
+					<li role="option" tabindex="-1">New York</li>
+					<li role="option" tabindex="-1">Oslo</li>
+					<li role="option" tabindex="-1">Paris</li>
+					<li role="option" tabindex="-1">Qingdao</li>
+					<li role="option" tabindex="-1">Rome</li>
+					<li role="option" tabindex="-1">Stockholm</li>
+					<li role="option" tabindex="-1">Tokyo</li>
+					<li role="option" tabindex="-1">Ulan Bator</li>
+					<li role="option" tabindex="-1">Vienna</li>
+					<li role="option" tabindex="-1">Warsaw</li>
+					<li role="option" tabindex="-1">Xi'an</li>
+					<li role="option" tabindex="-1">Yokohama</li>
+					<li role="option" tabindex="-1">Zurich</li>
+				</ol>
+				<button type="button" class="clear" aria-label="Clear input" hidden>
+					✕
+				</button>
+			</div>
+			<p class="error" aria-live="assertive" id="city-error"></p>
+			<p class="description" aria-live="polite" id="city-description">Tell us where you live so we can set your timezone for our calendar and notification features.</p>
+		</input-combobox>
+	</div>
+	<details>
+		<summary>Source Code</summary>
+		<lazy-load src="./examples/input-combobox.html">
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
+		</lazy-load>
+	</details>
+</component-demo>
+
+</section>
+
+<section>
+
 ## Simple Carousel Component
 
 <component-demo>

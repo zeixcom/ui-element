@@ -33,13 +33,14 @@ type ReservedWords =
 	| 'propertyIsEnumerable'
 	| 'toLocaleString'
 
-type ValidPropertyKey<T> =
-	T extends keyof HTMLElement | ReservedWords ? never : T
+type ValidPropertyKey<T> = T extends keyof HTMLElement | ReservedWords
+	? never
+	: T
 
 type ComponentProps = { [K in string as ValidPropertyKey<K>]: {} }
 
-type Component<P extends ComponentProps> = HTMLElement &
-	P & {
+type Component<P extends ComponentProps> = HTMLElement
+	& P & {
 		// Common Web Component lifecycle properties
 		adoptedCallback?(): void
 		attributeChangedCallback(
@@ -82,8 +83,10 @@ type FxFunction<P extends ComponentProps, E extends Element> = (
 	element: E,
 ) => Cleanup | void
 
-type ElementFromSelector<K extends string, E extends Element = HTMLElement> =
-	K extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[K] : E
+type ElementFromSelector<
+	K extends string,
+	E extends Element = HTMLElement,
+> = K extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[K] : E
 
 type SelectorFunctions<P extends ComponentProps> = {
 	first: <E extends Element = never, K extends string = string>(
@@ -313,12 +316,14 @@ const component = <P extends ComponentProps>(
 			super()
 			for (const [prop, ini] of Object.entries(init)) {
 				if (ini == null) continue
-				const result =
-					isAttributeParser<Component<P>, Signal<P[keyof P]>>(ini) ?
-						ini(this as unknown as Component<P>, null)
-					: isFunction<Component<P>>(ini) ?
-						ini(this as unknown as Component<P>)
-					:	ini
+				const result = isAttributeParser<
+					Component<P>,
+					Signal<P[keyof P]>
+				>(ini)
+					? ini(this as unknown as Component<P>, null)
+					: isFunction<Component<P>>(ini)
+						? ini(this as unknown as Component<P>)
+						: ini
 				if (result != null) this.setSignal(prop, toSignal(result))
 			}
 		}

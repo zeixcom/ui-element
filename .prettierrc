@@ -4,5 +4,5 @@
 	"tabWidth": 4,
 	"singleQuote": true,
 	"arrowParens": "avoid",
-	"experimentalTernaries": true,
+	"experimentalOperatorPosition": "start",
 }

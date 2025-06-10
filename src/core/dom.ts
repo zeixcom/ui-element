@@ -255,10 +255,9 @@ const pass =
 			.whenDefined(targetName)
 			.then(() => {
 				for (const [prop, source] of Object.entries(sources)) {
-					const signal =
-						isString(source) ?
-							host.getSignal(prop)
-						:	toSignal(source as MaybeSignal<Q[keyof Q]>)
+					const signal = isString(source)
+						? host.getSignal(prop)
+						: toSignal(source as MaybeSignal<Q[keyof Q]>)
 					target.setSignal(prop, signal)
 				}
 			})

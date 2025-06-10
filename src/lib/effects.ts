@@ -66,10 +66,13 @@ const resolveSignalLike = /*#__PURE__*/ <
 	host: Component<P>,
 	target: E,
 ): T =>
-	isString(s) ? (host.getSignal(s).get() as unknown as T)
-	: isSignal(s) ? s.get()
-	: isFunction<T>(s) ? s(target)
-	: RESET
+	isString(s)
+		? (host.getSignal(s).get() as unknown as T)
+		: isSignal(s)
+			? s.get()
+			: isFunction<T>(s)
+				? s(target)
+				: RESET
 
 const isSafeURL = /*#__PURE__*/ (value: string): boolean => {
 	if (/^(mailto|tel):/i.test(value)) return true
@@ -205,10 +208,11 @@ const insertOrRemoveElement =
 			if (isFunction(inserter?.resolve)) {
 				inserter.resolve(target)
 			} else {
-				const signal =
-					isSignal(s) ? s
-					: isString(s) ? host.getSignal(s)
-					: undefined
+				const signal = isSignal(s)
+					? s
+					: isString(s)
+						? host.getSignal(s)
+						: undefined
 				if (isState<number>(signal)) signal.set(0)
 			}
 		}
@@ -257,9 +261,9 @@ const insertOrRemoveElement =
 				// Negative diff => remove element
 				enqueue(() => {
 					if (
-						inserter &&
-						(inserter.position === 'afterbegin' ||
-							inserter.position === 'beforeend')
+						inserter
+						&& (inserter.position === 'afterbegin'
+							|| inserter.position === 'beforeend')
 					) {
 						for (let i = 0; i > diff; i--) {
 							if (inserter.position === 'afterbegin')
@@ -433,8 +437,8 @@ const dangerouslySetInnerHTML = <
 	updateElement(s, {
 		op: 'h',
 		read: el =>
-			(el.shadowRoot || !options.shadowRootMode ? el : null)?.innerHTML ??
-			'',
+			(el.shadowRoot || !options.shadowRootMode ? el : null)?.innerHTML
+			?? '',
 		update: (el, html) => {
 			const { shadowRootMode, allowScripts } = options
 			if (!html) {

@@ -8,6 +8,8 @@
 @import './components/input-field/input-field.css';
 @import './components/input-checkbox/input-checkbox.css';
 @import './components/input-radiogroup/input-radiogroup.css';
+@import './components/input-textbox/input-textbox.css';
+@import './components/input-combobox/input-combobox.css';
 @import './components/component-demo/component-demo.css';
 @import './components/todo-app/todo-app.css';
 @import './components/callout-box/callout-box.css';

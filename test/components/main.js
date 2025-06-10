@@ -60,6 +60,14 @@ var u = () => {
       K();
   }
 };
+var ZB = (B) => {
+  s++;
+  try {
+    B();
+  } finally {
+    u(), s--;
+  }
+};
 var d = (B, K) => {
   let $ = _;
   _ = K;
@@ -822,6 +830,7 @@ var my_carousel_default = _B("my-carousel", {}, (el, { all, first }) => {
     first("nav", UB("keyup", (e2) => {
       if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(e2.key)) {
         e2.preventDefault();
+        e2.stopPropagation();
         if (e2.key === "Home")
           currentIndex.set(0);
         else if (e2.key === "End")
@@ -879,6 +888,7 @@ var clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 var manageFocusOnKeydown = (elements, index) => UB("keydown", (e2) => {
   if (HANDLED_KEYS.includes(e2.key)) {
     e2.preventDefault();
+    e2.stopPropagation();
     if (e2.key === "Home")
       index.set(0);
     else if (e2.key === "End")
@@ -1032,6 +1042,135 @@ var input_field_default = _B("input-field", {
     fns.push(first(".description", hB("description")), first("input", gB("aria-describedby", () => el.description && description.id ? description.id : j)));
   }
   return fns;
+});
+
+// docs-src/components/input-textbox/input-textbox.ts
+var input_textbox_default = _B("input-textbox", {
+  value: kB(),
+  length: 0,
+  error: "",
+  description: T
+}, (el, { first }) => {
+  const input = el.querySelector("input, textarea");
+  if (!input)
+    throw new Error("No Input or textarea element found");
+  const errorId = el.querySelector(".error")?.id;
+  const description = el.querySelector(".description");
+  const descriptionId = description?.id;
+  if (description?.dataset.remaining && input.maxLength) {
+    el.setSignal("description", i(() => description.dataset.remaining.replace("${n}", String(input.maxLength - el.length))));
+  }
+  return [
+    gB("value"),
+    first(".description", hB("description")),
+    first("input, textarea", pB("value"), pB("ariaInvalid", () => el.error ? "true" : "false"), gB("aria-errormessage", () => el.error && errorId ? errorId : j), gB("aria-describedby", () => el.description && descriptionId ? descriptionId : j), UB("input", () => el.length = input.value.length), UB("change", () => ZB(() => {
+      el.value = input.value;
+      el.error = input.validationMessage ?? "";
+    }))),
+    first(".clear", pB("hidden", () => !el.length), UB("click", () => {
+      input.value = "";
+      ZB(() => {
+        el.value = "";
+        el.error = input.validationMessage ?? "";
+        el.length = 0;
+      });
+    })),
+    first(".error", hB("error"))
+  ];
+});
+
+// docs-src/components/input-combobox/input-combobox.ts
+var input_combobox_default = _B("input-combobox", {
+  value: kB(),
+  length: 0,
+  error: "",
+  description: T
+}, (el, { first, all }) => {
+  const input = el.querySelector("input");
+  if (!input)
+    throw new Error("Input element not found");
+  const errorId = el.querySelector(".error")?.id;
+  const descriptionId = el.querySelector(".description")?.id;
+  const mode = o("idle");
+  const focusIndex = o(-1);
+  const filterText = o("");
+  const showPopup = o(false);
+  const options = CB(el, '[role="option"]:not([hidden])');
+  const isExpanded = () => mode.get() === "editing" && showPopup.get();
+  const commit = (value) => {
+    input.value = value;
+    ZB(() => {
+      mode.set("selected");
+      el.value = value;
+      el.length = value.length;
+      el.error = input.validationMessage ?? "";
+      filterText.set(value.toLowerCase());
+      focusIndex.set(-1);
+      showPopup.set(input.required && !input.value || false);
+    });
+  };
+  return [
+    gB("value"),
+    () => p(() => {
+      const m2 = mode.get();
+      const i2 = focusIndex.get();
+      if (m2 === "idle")
+        return;
+      else if (m2 === "editing" && i2 >= 0)
+        options.get().at(i2)?.focus();
+      else
+        input.focus();
+    }),
+    UB("keydown", (e2) => {
+      if (["ArrowDown", "ArrowUp"].includes(e2.key)) {
+        e2.preventDefault();
+        e2.stopPropagation();
+        mode.set("editing");
+        if (e2.altKey)
+          showPopup.set(e2.key === "ArrowDown");
+        else
+          focusIndex.update((v2) => e2.key === "ArrowDown" ? Math.min(v2 + 1, options.get().length - 1) : Math.max(v2 - 1, -1));
+      }
+    }),
+    UB("keyup", (e2) => {
+      if (e2.key === "Delete") {
+        e2.preventDefault();
+        e2.stopPropagation();
+        commit("");
+      }
+    }),
+    UB("focusout", () => requestAnimationFrame(() => {
+      if (!el.contains(document.activeElement))
+        mode.set("idle");
+    })),
+    first(".description", hB("description")),
+    first("input", pB("value"), pB("ariaExpanded", () => String(isExpanded())), pB("ariaInvalid", () => el.error ? "true" : "false"), gB("aria-errormessage", () => el.error && errorId ? errorId : j), gB("aria-describedby", () => el.description && descriptionId ? descriptionId : j), UB("input", () => ZB(() => {
+      mode.set("editing");
+      showPopup.set(true);
+      filterText.set(input.value.trim().toLowerCase());
+      el.length = input.value.length;
+    })), UB("change", () => ZB(() => {
+      el.value = input.value;
+      el.error = input.validationMessage ?? "";
+    }))),
+    first(".clear", pB("hidden", () => !el.length), UB("click", () => commit(""))),
+    first('[role="listbox"]', pB("hidden", () => !isExpanded()), UB("keyup", (e2) => {
+      if (e2.key === "Enter") {
+        commit(options.get().at(focusIndex.get())?.textContent?.trim() || "");
+      } else if (e2.key === "Escape") {
+        commit(el.value);
+      } else {
+        const key = e2.key.toLowerCase();
+        const nextIndex = options.get().findIndex((option) => (option.textContent?.trim().toLowerCase() || "").startsWith(key));
+        if (nextIndex !== -1)
+          focusIndex.set(nextIndex);
+      }
+    })),
+    all('[role="option"]', pB("ariaSelected", (target) => String(target.textContent?.trim().toLowerCase() === el.value.toLowerCase())), pB("hidden", (target) => !target.textContent?.trim().toLowerCase().includes(filterText.get())), UB("click", (e2) => {
+      commit(e2.target.textContent?.trim() || "");
+    })),
+    first(".error", hB("error"))
+  ];
 });
 
 // docs-src/components/code-block/code-block.ts
@@ -1361,4 +1500,4 @@ var calc_table_default = _B("calc-table", {
   ];
 });
 
-//# debugId=6C0AFD0B5D0CBE5C64756E2164756E21
+//# debugId=16E609D16B20534C64756E2164756E21
