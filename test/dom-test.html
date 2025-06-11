@@ -31,6 +31,7 @@
 				on,
 				emit,
 				pass,
+				read,
 				component,
 				computed,
 				effect,
@@ -413,6 +414,270 @@
 							// Clean up
 							container.remove()
 						}
+					})
+
+					describe('read()', () => {
+						it('should return fallback when source is null', () => {
+							const reader = read(null, 'value', 'default')
+							assert.equal(reader(), 'default')
+						})
+
+						it('should throw TypeError if source is not a custom element', () => {
+							const div = document.createElement('div')
+							assert.throws(() => {
+								read(div, 'value', 'default')
+							}, TypeError, 'Target element must be a custom element')
+						})
+
+						it('should return fallback until component is defined', async () => {
+							// Create a mock component that's not yet defined
+							const mockElement = document.createElement('test-component')
+							Object.defineProperty(mockElement, 'localName', {
+								value: 'undefined-component'
+							})
+							mockElement.getSignal = () => ({ get: () => 'component-value' })
+						
+							const reader = read(mockElement, 'value', 'fallback')
+						
+							// Should return fallback initially
+							assert.equal(reader(), 'fallback')
+						})
+
+						it('should read component property after component is defined', async () => {
+							// Define a simple test component
+							class TestReadComponent extends HTMLElement {
+								constructor() {
+									super()
+									this.signals = new Map()
+									this.value = 'test-value'
+								}
+							
+								getSignal(prop) {
+									if (!this.signals.has(prop)) {
+										this.signals.set(prop, {
+											get: () => this[prop]
+										})
+									}
+									return this.signals.get(prop)
+								}
+							}
+						
+							customElements.define('test-read-component', TestReadComponent)
+						
+							const element = document.createElement('test-read-component')
+							document.body.appendChild(element)
+						
+							try {
+								const reader = read(element, 'value', 'fallback')
+								
+								// Should return fallback initially
+								assert.equal(reader(), 'fallback')
+								
+								// Wait for component to be defined and upgraded
+								await customElements.whenDefined('test-read-component')
+								await microtask()
+								await animationFrame()
+								await microtask() // Extra wait for async computed
+							
+								// Now should return component value
+								assert.equal(reader(), 'test-value')
+							} finally {
+								element.remove()
+							}
+						})
+
+						it('should work with todo-app pattern reading input length', async () => {
+							// Simulate the todo-app pattern with input-textbox
+							class MockInputTextbox extends HTMLElement {
+								constructor() {
+									super()
+									this.signals = new Map()
+									this._length = 0
+									this._value = ''
+								}
+							
+								getSignal(prop) {
+									if (!this.signals.has(prop)) {
+										const signal = state(this[`_${prop}`] || this[prop] || 0)
+										this.signals.set(prop, signal)
+										// Keep signal in sync with property
+										this[`_${prop}Signal`] = signal
+									}
+									return this.signals.get(prop)
+								}
+							
+								set value(val) {
+									this._value = val
+									this.length = val.length
+								}
+							
+								get value() {
+									return this._value || ''
+								}
+								
+								set length(val) {
+									this._length = val
+									// Update signal when property changes
+									if (this._lengthSignal) {
+										this._lengthSignal.set(val)
+									}
+								}
+								
+								get length() {
+									return this._length
+								}
+							}
+						
+							customElements.define('mock-input-textbox', MockInputTextbox)
+						
+							const input = document.createElement('mock-input-textbox')
+							document.body.appendChild(input)
+						
+							try {
+								const inputLength = read(input, 'length', 0)
+								
+								// Should return fallback initially
+								assert.equal(inputLength(), 0)
+								
+								// Wait for component to be defined
+								await customElements.whenDefined('mock-input-textbox')
+								await microtask()
+								await animationFrame()
+								await microtask()
+							
+								// Initially should be 0
+								assert.equal(inputLength(), 0)
+							
+								// Change value and test length updates
+								input.value = 'hello'
+								await microtask()
+								await animationFrame()
+								assert.equal(inputLength(), 5)
+							
+								// Test that reader function can be used in effects
+								let effectResult = 0
+								const cleanup = effect(() => {
+									effectResult = inputLength()
+								})
+						
+								await animationFrame()
+								assert.equal(effectResult, 5)
+						
+								// Change value again - use setter to trigger length update
+								input.value = 'world!'
+								await microtask()
+								await animationFrame()
+								await microtask() // Extra wait for reactive update
+								assert.equal(effectResult, 6)
+							
+								cleanup()
+							} finally {
+								input.remove()
+							}
+						})
+
+						it('should handle multiple read calls efficiently', async () => {
+							class EfficiencyTestComponent extends HTMLElement {
+								constructor() {
+									super()
+									this.signals = new Map()
+									this.value = 'initial'
+									this.callCount = 0
+								}
+							
+								getSignal(prop) {
+									if (!this.signals.has(prop)) {
+										this.signals.set(prop, {
+											get: () => {
+												this.callCount++
+												return this[prop]
+											}
+										})
+									}
+									return this.signals.get(prop)
+								}
+							}
+						
+							customElements.define('efficiency-test-component', EfficiencyTestComponent)
+						
+							const element = document.createElement('efficiency-test-component')
+							document.body.appendChild(element)
+						
+							try {
+								const reader1 = read(element, 'value', 'fallback')
+								const reader2 = read(element, 'value', 'fallback')
+								
+								// Should return fallback initially
+								assert.equal(reader1(), 'fallback')
+								assert.equal(reader2(), 'fallback')
+								
+								// Wait for component to be defined
+								await customElements.whenDefined('efficiency-test-component')
+								await microtask()
+								await animationFrame()
+								await microtask()
+							
+								// Multiple reads should work
+								const val1 = reader1()
+								const val2 = reader2()
+							
+								assert.equal(val1, 'initial')
+								assert.equal(val2, 'initial')
+							
+								// Each read() call creates its own async computed
+								assert.isTrue(element.callCount >= 2)
+							} finally {
+								element.remove()
+							}
+						})
+
+						it('should handle component upgrade timing correctly', async () => {
+							// Test the actual timing issue that read() solves
+							const container = document.createElement('div')
+							container.innerHTML = '<timing-test-component></timing-test-component>'
+							document.body.appendChild(container)
+						
+							try {
+								// Get element before it's defined (like querySelector in real usage)
+								const element = container.querySelector('timing-test-component')
+							
+								// Create reader before component is defined
+								const reader = read(element, 'status', 'not-ready')
+							
+								// Should return fallback initially
+								assert.equal(reader(), 'not-ready')
+							
+								// Now define the component
+								class TimingTestComponent extends HTMLElement {
+									constructor() {
+										super()
+										this.signals = new Map()
+										this.status = 'ready'
+									}
+								
+									getSignal(prop) {
+										if (!this.signals.has(prop)) {
+											this.signals.set(prop, {
+												get: () => this[prop]
+											})
+										}
+										return this.signals.get(prop)
+									}
+								}
+							
+								customElements.define('timing-test-component', TimingTestComponent)
+							
+								// Wait for upgrade
+								await customElements.whenDefined('timing-test-component')
+								await microtask()
+								await animationFrame()
+							
+								// Now should return component value
+								assert.equal(reader(), 'ready')
+							} finally {
+								container.remove()
+							}
+						})
 					})
 				})
 

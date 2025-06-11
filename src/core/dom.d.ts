@@ -49,4 +49,15 @@ declare const emit: <T>(type: string, detail: T | ((element: Element) => T)) => 
  * @throws {Error} - if it fails to pass signals to the target element
  */
 declare const pass: <P extends ComponentProps, Q extends ComponentProps>(signals: PassedSignals<P, Q> | ((target: Component<Q>) => PassedSignals<P, Q>)) => <E extends Element>(host: Component<P>, target: E) => void;
-export { type PassedSignals, observeSubtree, selection, on, emit, pass };
+/**
+ * Read a signal property from a custom element safely after it's defined
+ * Returns a function that provides the signal value with fallback until component is ready
+ *
+ * @since 0.13.1
+ * @param {Component<Q>} source - source custom element to read signal from
+ * @param {K} prop - property name to get signal for
+ * @param {Q[K]} fallback - fallback value to use until component is ready
+ * @returns {() => Q[K]} - function that returns signal value or fallback
+ */
+declare const read: <Q extends ComponentProps, K extends keyof Q>(source: Component<Q> | null, prop: K, fallback: Q[K]) => (() => Q[K]);
+export { type PassedSignals, observeSubtree, selection, on, emit, pass, read };

@@ -10,6 +10,7 @@ import {
 	subscribe,
 	UNSET,
 	TYPE_COMPUTED,
+	computed,
 } from '@zeix/cause-effect'
 
 import type { Component, ComponentProps } from '../component'
@@ -243,7 +244,6 @@ const pass =
 			| ((target: Component<Q>) => PassedSignals<P, Q>),
 	) =>
 	<E extends Element>(host: Component<P>, target: E): void => {
-		const targetName = target.localName
 		if (!isComponent(target))
 			throw new TypeError(`Target element must be a custom element`)
 		const sources = isFunction(signals) ? signals(target) : signals
@@ -252,7 +252,7 @@ const pass =
 				`Passed signals must be an object or a provider function`,
 			)
 		customElements
-			.whenDefined(targetName)
+			.whenDefined(target.localName)
 			.then(() => {
 				for (const [prop, source] of Object.entries(sources)) {
 					const signal = isString(source)
@@ -269,4 +269,34 @@ const pass =
 			})
 	}
 
-export { type PassedSignals, observeSubtree, selection, on, emit, pass }
+/**
+ * Read a signal property from a custom element safely after it's defined
+ * Returns a function that provides the signal value with fallback until component is ready
+ *
+ * @since 0.13.1
+ * @param {Component<Q>} source - source custom element to read signal from
+ * @param {K} prop - property name to get signal for
+ * @param {Q[K]} fallback - fallback value to use until component is ready
+ * @returns {() => Q[K]} - function that returns signal value or fallback
+ */
+const read = <Q extends ComponentProps, K extends keyof Q>(
+	source: Component<Q> | null,
+	prop: K,
+	fallback: Q[K],
+): (() => Q[K]) => {
+	if (!source) return () => fallback
+	if (!isComponent(source))
+		throw new TypeError(`Target element must be a custom element`)
+
+	const awaited = computed(async () => {
+		await customElements.whenDefined(source.localName)
+		return source.getSignal(prop)
+	})
+
+	return () => {
+		const value = awaited.get()
+		return value === UNSET ? fallback : (value.get() as Q[K])
+	}
+}
+
+export { type PassedSignals, observeSubtree, selection, on, emit, pass, read }
