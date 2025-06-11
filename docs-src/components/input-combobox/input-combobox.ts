@@ -10,32 +10,37 @@ import {
 	setAttribute,
 	setProperty,
 	setText,
+	show,
 	state,
-	UNSET,
 } from '../../..'
+import {
+	createClearFunction,
+	standardClearEffects,
+} from '../../functions/shared/clear-input'
+import { standardInputEffects } from '../../functions/shared/input-effects'
 
 export type InputComboboxProps = {
 	value: string
 	length: number
 	error: string
 	description: string
+	clear(): void
 }
 
 type ComboboxMode = 'idle' | 'editing' | 'selected'
 
-export default component(
+export default component<InputComboboxProps>(
 	'input-combobox',
 	{
 		value: asString(),
 		length: 0,
 		error: '',
 		description: RESET,
+		clear() {},
 	},
 	(el, { first, all }) => {
 		const input = el.querySelector('input')
 		if (!input) throw new Error('Input element not found')
-		const errorId = el.querySelector('.error')?.id
-		const descriptionId = el.querySelector('.description')?.id
 
 		// Internal signals
 		const mode = state<ComboboxMode>('idle')
@@ -62,6 +67,9 @@ export default component(
 				showPopup.set((input.required && !input.value) || false)
 			})
 		}
+
+		// Add clear method to component
+		el.clear = createClearFunction(input, () => commit(''))
 
 		return [
 			// Effects and event listeners on component
@@ -110,15 +118,13 @@ export default component(
 			// Effects and event listeners on input
 			first(
 				'input',
-				setProperty('value'),
+				...standardInputEffects(
+					el,
+					input,
+					el.querySelector('.error')?.id,
+					el.querySelector('.description')?.id,
+				),
 				setProperty('ariaExpanded', () => String(isExpanded())),
-				setProperty('ariaInvalid', () => (el.error ? 'true' : 'false')),
-				setAttribute('aria-errormessage', () =>
-					el.error && errorId ? errorId : UNSET,
-				),
-				setAttribute('aria-describedby', () =>
-					el.description && descriptionId ? descriptionId : UNSET,
-				),
 				on('input', () =>
 					batch(() => {
 						// Set mode to editing when typing
@@ -128,25 +134,15 @@ export default component(
 						el.length = input.value.length
 					}),
 				),
-				on('change', () =>
-					batch(() => {
-						el.value = input.value
-						el.error = input.validationMessage ?? ''
-					}),
-				),
 			),
 
 			// Effects and event listeners on clear button
-			first<HTMLButtonElement>(
-				'.clear',
-				setProperty('hidden', () => !el.length),
-				on('click', () => commit('')),
-			),
+			first<HTMLButtonElement>('.clear', ...standardClearEffects(el)),
 
 			// Effect on listbox
 			first(
 				'[role="listbox"]',
-				setProperty('hidden', () => !isExpanded()),
+				show(isExpanded),
 				on('keyup', (e: KeyboardEvent) => {
 					if (e.key === 'Enter') {
 						commit(
@@ -181,13 +177,11 @@ export default component(
 							=== el.value.toLowerCase(),
 					),
 				),
-				setProperty(
-					'hidden',
-					target =>
-						!target.textContent
-							?.trim()
-							.toLowerCase()
-							.includes(filterText.get()),
+				show(target =>
+					target.textContent
+						?.trim()
+						.toLowerCase()
+						.includes(filterText.get()),
 				),
 				on('click', e => {
 					commit(

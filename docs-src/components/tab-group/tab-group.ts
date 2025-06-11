@@ -1,4 +1,11 @@
-import { type Component, component, on, setProperty, state } from '../../..'
+import {
+	type Component,
+	component,
+	on,
+	setProperty,
+	show,
+	state,
+} from '../../..'
 import { manageFocusOnKeydown } from '../../functions/event-listener/manage-focus-on-keydown'
 
 export type TabGroupProps = {
@@ -42,7 +49,7 @@ export default component(
 			),
 			all(
 				'[role="tabpanel"]',
-				setProperty('hidden', target => el.selected !== target.id),
+				show(target => el.selected === target.id),
 			),
 		]
 	},

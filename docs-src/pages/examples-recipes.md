@@ -379,6 +379,145 @@ component(
 	</details>
 </component-demo>
 
+</section>
+
+<section>
+
+## Todo App
+
+<component-demo>
+	<div class="preview">
+		<todo-app>
+			<form action="#">
+				<input-textbox>
+					<label for="add-todo">What needs to be done?</label>
+					<div class="input">
+						<input id="add-todo" type="text" value="" />
+					</div>
+				</input-textbox>
+				<input-button class="submit">
+					<button type="submit" class="constructive" disabled>
+						Add Todo
+					</button>
+				</input-button>
+			</form>
+			<ol filter="all"></ol>
+			<template>
+				<li>
+					<input-checkbox class="todo">
+						<label>
+							<input type="checkbox" class="visually-hidden" />
+							<span class="label"><slot></slot></span>
+						</label>
+					</input-checkbox>
+					<input-button class="delete">
+						<button type="button" class="destructive small">Delete</button>
+					</input-button>
+				</li>
+			</template>
+			<footer>
+				<div class="todo-count">
+					<p class="all-done">Well done, all done!</p>
+					<p class="remaining">
+						<span class="count"></span>
+						<span class="singular">task</span>
+						<span class="plural">tasks</span>
+						remaining
+					</p>
+				</div>
+				<input-radiogroup value="all" class="split-button">
+					<fieldset>
+						<legend class="visually-hidden">Filter</legend>
+						<label class="selected">
+							<input
+								type="radio"
+								class="visually-hidden"
+								name="filter"
+								value="all"
+								checked
+							/>
+							<span>All</span>
+						</label>
+						<label>
+							<input
+								type="radio"
+								class="visually-hidden"
+								name="filter"
+								value="active"
+							/>
+							<span>Active</span>
+						</label>
+						<label>
+							<input
+								type="radio"
+								class="visually-hidden"
+								name="filter"
+								value="completed"
+							/>
+							<span>Completed</span>
+						</label>
+					</fieldset>
+				</input-radiogroup>
+				<input-button class="clear-completed">
+					<button type="button" class="destructive">
+						<span class="label">Clear Completed</span>
+						<span class="badge"></span>
+					</button>
+				</input-button>
+			</footer>
+		</todo-app>
+	</div>
+	<details>
+		<summary>TodoApp Source Code</summary>
+		<lazy-load src="./examples/todo-app.html">
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
+		</lazy-load>
+	</details>
+	<details>
+		<summary>InputTextbox Source Code</summary>
+		<lazy-load src="./examples/input-textbox.html">
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
+		</lazy-load>
+	</details>
+	<details>
+		<summary>InputButton Source Code</summary>
+		<lazy-load src="./examples/input-button.html">
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
+		</lazy-load>
+	</details>
+	<details>
+		<summary>InputCheckbox Source Code</summary>
+		<lazy-load src="./examples/input-checkbox.html">
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
+		</lazy-load>
+	</details>
+	<details>
+		<summary>InputRadiogroup Source Code</summary>
+		<lazy-load src="./examples/input-radiogroup.html">
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
+		</lazy-load>
+	</details>
+</component-demo>
+
+</section>
+
+<section>
+
 ## Advanced Slider Component
 
 This example shows complex state management, multiple effects, and custom validation.

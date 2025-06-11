@@ -1,5 +1,5 @@
 input-combobox {
-	display: inline-block;
+	width: 100%;
 
 	& label,
 	& p,

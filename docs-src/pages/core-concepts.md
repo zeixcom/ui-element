@@ -155,7 +155,7 @@ component(
 		// Apply hidden property to all tabs
 		all(
 			'[role="tabpanel"]',
-			setProperty('hidden', target => el.selected !== target.id),
+			show(target => el.selected === target.id),
 		),
 	],
 )

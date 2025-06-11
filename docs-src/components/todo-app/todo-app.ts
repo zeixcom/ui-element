@@ -2,13 +2,16 @@ import {
 	type Component,
 	component,
 	on,
+	read,
 	setAttribute,
 	setProperty,
 	setText,
-} from '../../../'
+	show,
+} from '../../..'
 import { selectChecked } from '../../functions/signal-producer/select-checked'
 import type { InputButtonProps } from '../input-button/input-button'
-import type { InputFieldProps } from '../input-field/input-field'
+import type { InputTextboxProps } from '../input-textbox/input-textbox'
+import type { InputRadiogroupProps } from '../input-radiogroup/input-radiogroup'
 
 export type TodoAppProps = {
 	active: HTMLElement[]
@@ -23,18 +26,27 @@ export default component(
 	},
 	(el, { first }) => {
 		const input =
-			el.querySelector<Component<InputFieldProps>>('input-field')
+			el.querySelector<Component<InputTextboxProps>>('input-textbox')
 		if (!input) throw new Error('No input field found')
 		const template = el.querySelector('template')
 		if (!template) throw new Error('No template found')
 		const list = el.querySelector('ol')
 		if (!list) throw new Error('No list found')
 
+		const inputLength = read(input, 'length', 0)
+		const filterValue = read(
+			el.querySelector<Component<InputRadiogroupProps>>(
+				'input-radiogroup',
+			),
+			'value',
+			'all',
+		)
+
 		return [
 			// Control todo input form
 			first<Component<InputButtonProps>>(
 				'.submit',
-				setProperty('disabled', () => !input.length),
+				setProperty('disabled', () => !inputLength()),
 			),
 			first(
 				'form',
@@ -63,10 +75,7 @@ export default component(
 			// Control todo list
 			first(
 				'ol',
-				setAttribute(
-					'filter',
-					() => el.querySelector('input-radiogroup')?.value ?? 'all',
-				),
+				setAttribute('filter', filterValue),
 				on('click', (e: Event) => {
 					const target = e.target as HTMLElement
 					if (target.localName === 'button')
@@ -81,19 +90,19 @@ export default component(
 			),
 			first(
 				'.singular',
-				setProperty('hidden', () => el.active.length > 1),
+				show(() => el.active.length === 1),
 			),
 			first(
 				'.plural',
-				setProperty('hidden', () => el.active.length === 1),
+				show(() => el.active.length > 1),
 			),
 			first(
 				'.remaining',
-				setProperty('hidden', () => !el.active.length),
+				show(() => !!el.active.length),
 			),
 			first(
 				'.all-done',
-				setProperty('hidden', () => !!el.active.length),
+				show(() => !el.active.length),
 			),
 
 			// Control clear-completed button
