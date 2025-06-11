@@ -326,6 +326,24 @@ const setProperty = <
 	})
 
 /**
+ * Set 'hidden' property of an element
+ *
+ * @since 0.13.1
+ * @param {SignalLike<boolean>} s - state bound to the 'hidden' property value
+ */
+const show = <P extends ComponentProps, E extends HTMLElement = HTMLElement>(
+	s: SignalLike<P, boolean, E>,
+): FxFunction<P, E> =>
+	updateElement(s, {
+		op: 'p',
+		name: 'hidden',
+		read: el => !el.hidden,
+		update: (el, value) => {
+			el.hidden = !value
+		},
+	})
+
+/**
  * Set attribute of an element
  *
  * @since 0.8.0
@@ -474,6 +492,7 @@ export {
 	insertOrRemoveElement,
 	setText,
 	setProperty,
+	show,
 	setAttribute,
 	toggleAttribute,
 	toggleClass,

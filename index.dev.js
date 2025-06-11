@@ -408,13 +408,12 @@ var emit = (type, detail) => (host, target = host) => {
   }));
 };
 var pass = (signals) => (host, target) => {
-  const targetName = target.localName;
   if (!isComponent(target))
     throw new TypeError(`Target element must be a custom element`);
   const sources = isFunction(signals) ? signals(target) : signals;
   if (!isDefinedObject(sources))
     throw new TypeError(`Passed signals must be an object or a provider function`);
-  customElements.whenDefined(targetName).then(() => {
+  customElements.whenDefined(target.localName).then(() => {
     for (const [prop, source] of Object.entries(sources)) {
       const signal = isString(source) ? host.getSignal(prop) : toSignal(source);
       target.setSignal(prop, signal);
@@ -422,6 +421,20 @@ var pass = (signals) => (host, target) => {
   }).catch((error) => {
     throw new Error(`Failed to pass signals to ${elementName(target)}}`, { cause: error });
   });
+};
+var read = (source, prop, fallback) => {
+  if (!source)
+    return () => fallback;
+  if (!isComponent(source))
+    throw new TypeError(`Target element must be a custom element`);
+  const awaited = computed(async () => {
+    await customElements.whenDefined(source.localName);
+    return source.getSignal(prop);
+  });
+  return () => {
+    const value = awaited.get();
+    return value === UNSET ? fallback : value.get();
+  };
 };
 
 // src/component.ts
@@ -691,8 +704,8 @@ var safeSetAttribute = (element, attr, value) => {
   element.setAttribute(attr, value);
 };
 var updateElement = (s, updater) => (host, target) => {
-  const { op, name = "", read, update } = updater;
-  const fallback = read(target);
+  const { op, name = "", read: read2, update } = updater;
+  const fallback = read2(target);
   const ops = {
     a: "attribute ",
     c: "class ",
@@ -732,7 +745,7 @@ var updateElement = (s, updater) => (host, target) => {
         return true;
       }, DELETE_DEDUPE).then(ok("Deleted")).catch(err("delete"));
     } else if (value != null) {
-      const current = read(target);
+      const current = read2(target);
       if (Object.is(value, current))
         return;
       enqueue(() => {
@@ -815,6 +828,14 @@ var setProperty = (key, s = key) => updateElement(s, {
     el[key] = value;
   }
 });
+var show = (s) => updateElement(s, {
+  op: "p",
+  name: "hidden",
+  read: (el) => !el.hidden,
+  update: (el, value) => {
+    el.hidden = !value;
+  }
+});
 var setAttribute = (name, s = name) => updateElement(s, {
   op: "a",
   name,
@@ -884,11 +905,13 @@ export {
   toggleAttribute,
   toSignal,
   state,
+  show,
   setText,
   setStyle,
   setProperty,
   setAttribute,
   selection,
+  read,
   provide,
   pass,
   on,

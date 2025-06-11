@@ -1,6 +1,6 @@
 # UIElement
 
-Version 0.13.0
+Version 0.13.1
 
 **UIElement** - the HTML-first microframework bringing reactivity to Web Components.
 
@@ -172,7 +172,7 @@ Server-rendered markup:
 UIElement component:
 
 ````js
-import { component, on, setProperty } from '@zeix/ui-element'
+import { component, on, setProperty, show } from '@zeix/ui-element'
 import { manageArrowKeyFocus } from './manage-arrow-key-focus'
 
 export default component('tab-group', {
@@ -200,7 +200,7 @@ export default component('tab-group', {
 			setProperty('tabIndex', target => isSelected(target) ? 0 : -1),
 		),
 		all('[role="tabpanel"]',
-			setProperty('hidden', target => el.selected !== target.id),
+			show(target => el.selected === target.id),
 		),
 	]
 })
