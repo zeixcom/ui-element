@@ -34,7 +34,7 @@ export default component<InputComboboxProps>(
 	{
 		value: asString(),
 		length: 0,
-		error: '',
+		error: RESET,
 		description: RESET,
 		clear() {},
 	},
@@ -69,7 +69,7 @@ export default component<InputComboboxProps>(
 		}
 
 		// Add clear method to component
-		el.clear = createClearFunction(input, () => commit(''))
+		el.clear = createClearFunction(input)
 
 		return [
 			// Effects and event listeners on component
@@ -112,7 +112,9 @@ export default component<InputComboboxProps>(
 				}),
 			),
 
-			// Effect on description - has to come first so we can set the el.description using RESET
+			// Effects on error and description
+			// Have to come first so we can set the el.description using RESET
+			first('.error', setText('error')),
 			first('.description', setText('description')),
 
 			// Effects and event listeners on input
@@ -189,9 +191,6 @@ export default component<InputComboboxProps>(
 					)
 				}),
 			),
-
-			// Effect on error message
-			first('.error', setText('error')),
 		]
 	},
 )

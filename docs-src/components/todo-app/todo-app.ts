@@ -1,6 +1,7 @@
 import {
 	type Component,
 	component,
+	fromSelector,
 	on,
 	read,
 	setAttribute,
@@ -8,10 +9,10 @@ import {
 	setText,
 	show,
 } from '../../..'
-import { selectChecked } from '../../functions/signal-producer/select-checked'
 import type { InputButtonProps } from '../input-button/input-button'
 import type { InputTextboxProps } from '../input-textbox/input-textbox'
 import type { InputRadiogroupProps } from '../input-radiogroup/input-radiogroup'
+import type { InputCheckboxProps } from '../input-checkbox/input-checkbox'
 
 export type TodoAppProps = {
 	active: HTMLElement[]
@@ -21,8 +22,8 @@ export type TodoAppProps = {
 export default component(
 	'todo-app',
 	{
-		active: selectChecked('input-checkbox', false),
-		completed: selectChecked('input-checkbox', true),
+		active: fromSelector('input-checkbox:not([checked])'),
+		completed: fromSelector('input-checkbox[checked]'),
 	},
 	(el, { first }) => {
 		const input =
@@ -65,7 +66,7 @@ export default component(
 							)
 						li
 							.querySelector('slot')
-							?.replaceWith(String(input.value))
+							?.replaceWith(String(input.value.trim()))
 						list.append(li)
 						input.clear()
 					})
@@ -115,7 +116,9 @@ export default component(
 				on('click', () => {
 					const items = Array.from(el.querySelectorAll('ol li'))
 					for (let i = items.length - 1; i >= 0; i--) {
-						const task = items[i].querySelector('input-checkbox')
+						const task = items[i].querySelector<
+							HTMLElement & InputCheckboxProps
+						>('input-checkbox')
 						if (task?.checked) items[i].remove()
 					}
 				}),

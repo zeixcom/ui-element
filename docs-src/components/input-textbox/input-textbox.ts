@@ -1,19 +1,16 @@
 import {
 	type Component,
-	asString,
 	component,
 	computed,
+	fromEvent,
 	on,
 	RESET,
 	setAttribute,
+	setProperty,
 	setText,
+	show,
+	UNSET,
 } from '../../..'
-import {
-	createClearFunction,
-	standardClearEffects,
-	standardClearUpdate,
-} from '../../functions/shared/clear-input'
-import { standardInputEffects } from '../../functions/shared/input-effects'
 
 export type InputTextboxProps = {
 	value: string
@@ -26,9 +23,28 @@ export type InputTextboxProps = {
 export default component<InputTextboxProps>(
 	'input-textbox',
 	{
-		value: asString(),
-		length: 0,
-		error: '',
+		value: fromEvent<
+			string,
+			HTMLInputElement | HTMLTextAreaElement,
+			'change',
+			Component<InputTextboxProps>
+		>(
+			'input, textarea',
+			'change',
+			(el, source) => {
+				source.checkValidity()
+				el.error = source.validationMessage
+				return source.value
+			},
+			'',
+		),
+		length: fromEvent<
+			number,
+			HTMLInputElement | HTMLTextAreaElement,
+			'input',
+			Component<InputTextboxProps>
+		>('input, textarea', 'input', (_, source) => source.value.length, 0),
+		error: RESET,
 		description: RESET,
 		clear() {},
 	},
@@ -39,7 +55,10 @@ export default component<InputTextboxProps>(
 		if (!input) throw new Error('No Input or textarea element found')
 
 		// Add clear method to component using shared functionality
-		el.clear = createClearFunction(input, standardClearUpdate(el, input))
+		el.clear = () => {
+			input.value = ''
+			input.dispatchEvent(new Event('change'))
+		}
 
 		// If there's a description with data-remaining attribute we set a computed signal to update the description text
 		const description = el.querySelector<HTMLElement>('.description')
@@ -54,31 +73,35 @@ export default component<InputTextboxProps>(
 				),
 			)
 		}
+		const errorId = el.querySelector('.error')?.id
 
 		return [
 			// Effects and event listeners on component
 			setAttribute('value'),
 
-			// Effect on description - has to come first so we can set the el.description using RESET
+			// Effects on error and description
+			// Have to come first so we can set the el.description using RESET
+			first('.error', setText('error')),
 			first('.description', setText('description')),
 
 			// Effects and event listeners on input / textarea
-			first<HTMLInputElement | HTMLTextAreaElement>(
+			first(
 				'input, textarea',
-				...standardInputEffects(
-					el,
-					input,
-					el.querySelector('.error')?.id,
-					description?.id,
+				setProperty('ariaInvalid', () => String(!!el.error)),
+				setAttribute('aria-errormessage', () =>
+					el.error && errorId ? errorId : UNSET,
 				),
-				on('input', () => (el.length = input.value.length)),
+				setAttribute('aria-describedby', () =>
+					el.description && description?.id ? description.id : UNSET,
+				),
 			),
 
 			// Effects and event listeners on clear button
-			first<HTMLButtonElement>('.clear', ...standardClearEffects(el)),
-
-			// Effect on error message
-			first('.error', setText('error')),
+			first(
+				'.clear',
+				show(() => !!el.length),
+				on('click', () => el.clear()),
+			),
 		]
 	},
 )

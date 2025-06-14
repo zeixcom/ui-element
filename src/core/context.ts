@@ -1,4 +1,10 @@
-import { type Signal, isFunction } from '@zeix/cause-effect'
+import {
+	type Cleanup,
+	type MaybeSignal,
+	type Signal,
+	isFunction,
+	toSignal,
+} from '@zeix/cause-effect'
 
 import { type Component, type ComponentProps } from '../component'
 
@@ -80,14 +86,21 @@ class ContextRequestEvent<T extends UnknownContext> extends Event {
 	}
 }
 
+/**
+ * Provide a context for descendant component consumers
+ *
+ * @since 0.12.0
+ * @param {Context<string, Signal<T>>[]} provided - array of contexts to provide
+ * @returns {(host: Component<P>) => Cleanup} - function to add an event listener for ContextRequestEvent returning a cleanup function to remove the event listener
+ */
 const provide =
-	<P extends ComponentProps>(
-		provided: Context<keyof P, Signal<P[keyof P]>>[],
-	) =>
+	<P extends ComponentProps, K extends keyof P>(
+		provided: Context<K, Signal<P[K]>>[],
+	): ((host: Component<P>) => Cleanup) =>
 	(host: Component<P>) => {
 		const listener = (e: Event) => {
 			const { context, callback } = e as ContextRequestEvent<
-				Context<keyof P, Signal<P[keyof P]>>
+				Context<K, Signal<P[K]>>
 			>
 			if (provided.includes(context) && isFunction(callback)) {
 				e.stopPropagation()
@@ -98,12 +111,21 @@ const provide =
 		return () => host.removeEventListener(CONTEXT_REQUEST, listener)
 	}
 
+/**
+ * Consume a context value for a component.
+ *
+ * @since 0.12.0
+ * @param {Context<string, Signal<T>>} context - context key to consume
+ * @param {T | () => T} fallback - fallback value to use if context is not provided
+ * @returns {(host: C) => Signal<T>} - a function that returns the consumed context signal or a signal of the fallback value
+ */
 const consume =
 	<T extends {}, C extends HTMLElement>(
 		context: Context<string, Signal<T>>,
-	) =>
+		fallback: MaybeSignal<T>,
+	): ((host: C) => Signal<T>) =>
 	(host: C) => {
-		let consumed
+		let consumed: Signal<T> = toSignal(fallback)
 		host.dispatchEvent(
 			new ContextRequestEvent(context, (value: Signal<T>) => {
 				consumed = value

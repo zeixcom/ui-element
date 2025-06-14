@@ -11,7 +11,7 @@ import { type Component, type FxFunction, batch, on, show } from '../../..'
 export const createClearFunction =
 	(
 		input: HTMLInputElement | HTMLTextAreaElement,
-		update: () => void,
+		// update: () => void,
 	): (() => void) =>
 	() => {
 		// Clear native input value
@@ -24,7 +24,7 @@ export const createClearFunction =
 		input.checkValidity()
 
 		// Update component reactive properties
-		update()
+		// update()
 	}
 
 /**

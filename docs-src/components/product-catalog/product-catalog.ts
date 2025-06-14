@@ -1,5 +1,4 @@
-import { type Component, component, pass } from '../../../'
-import { sumValues } from '../../functions/signal-producer/sum-values'
+import { type Component, component, fromChildren, pass } from '../../..'
 
 export type ProductCatalogProps = {
 	total: number
@@ -8,7 +7,11 @@ export type ProductCatalogProps = {
 export default component(
 	'product-catalog',
 	{
-		total: sumValues('spin-button'),
+		total: fromChildren<number, HTMLElement & { value: number }>(
+			'spin-button',
+			(sum, item) => sum + item.value,
+			0,
+		),
 	},
 	(el, { first }) => [
 		first(

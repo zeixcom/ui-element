@@ -51,11 +51,19 @@ export {
 } from './src/core/util'
 export {
 	type PassedSignals,
+	type ElementEventMap,
+	type ElementEventType,
+	type ValidEventName,
 	selection,
+	fromSelector,
+	fromChildren,
 	on,
+	sensor,
+	fromEvent,
 	emit,
 	pass,
 	read,
+	fromChild,
 } from './src/core/dom'
 export {
 	type Context,

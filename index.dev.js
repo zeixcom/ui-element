@@ -395,11 +395,57 @@ var selection = (parent, selectors) => {
   };
   return s;
 };
-var on = (type, listener) => (host, target = host) => {
+var fromSelector = (selectors) => (host) => selection(host, selectors);
+var fromChildren = (selectors, reducer, initialValue) => (host) => computed(() => selection(host, selectors).get().reduce(reducer, initialValue));
+var on = (type, listener, options = false) => (host, target = host) => {
   if (!isFunction(listener))
     throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
-  target.addEventListener(type, listener);
+  target.addEventListener(type, listener, options);
   return () => target.removeEventListener(type, listener);
+};
+var sensor = (host, source, type, transform, initialValue, options = false) => {
+  const watchers = new Set;
+  let value = initialValue;
+  let listener;
+  let cleanup;
+  const listen = () => {
+    listener = (event) => {
+      const newValue = transform(host, source, event, value);
+      if (!Object.is(newValue, value)) {
+        value = newValue;
+        if (watchers.size > 0)
+          notify(watchers);
+        else if (cleanup)
+          cleanup();
+      }
+    };
+    source.addEventListener(type, listener, options);
+    cleanup = () => {
+      if (listener) {
+        source.removeEventListener(type, listener);
+        listener = undefined;
+      }
+      cleanup = undefined;
+    };
+  };
+  const s = {
+    [Symbol.toStringTag]: TYPE_COMPUTED,
+    get: () => {
+      subscribe(watchers);
+      if (watchers.size && !listener)
+        listen();
+      return value;
+    }
+  };
+  return s;
+};
+var fromEvent = (selector, type, transform, initializer) => (host) => {
+  const source = host.querySelector(selector);
+  if (!source) {
+    throw new Error(`Element not found for selector "${selector}" in ${host.localName || "component"}`);
+  }
+  const initialValue = isFunction(initializer) ? initializer(host, source) : initializer;
+  return sensor(host, source, type, transform, initialValue);
 };
 var emit = (type, detail) => (host, target = host) => {
   target.dispatchEvent(new CustomEvent(type, {
@@ -419,7 +465,7 @@ var pass = (signals) => (host, target) => {
       target.setSignal(prop, signal);
     }
   }).catch((error) => {
-    throw new Error(`Failed to pass signals to ${elementName(target)}}`, { cause: error });
+    throw new Error(`Failed to pass signals to ${elementName(target)}`, { cause: error });
   });
 };
 var read = (source, prop, fallback) => {
@@ -435,6 +481,10 @@ var read = (source, prop, fallback) => {
     const value = awaited.get();
     return value === UNSET ? fallback : value.get();
   };
+};
+var fromChild = (selector, prop, fallback) => (host) => {
+  const element = host.querySelector(selector);
+  return computed(read(element, prop, fallback));
 };
 
 // src/component.ts
@@ -626,8 +676,8 @@ var provide = (provided) => (host) => {
   host.addEventListener(CONTEXT_REQUEST, listener);
   return () => host.removeEventListener(CONTEXT_REQUEST, listener);
 };
-var consume = (context) => (host) => {
-  let consumed;
+var consume = (context, fallback) => (host) => {
+  let consumed = toSignal(fallback);
   host.dispatchEvent(new ContextRequestEvent(context, (value) => {
     consumed = value;
   }));
@@ -910,6 +960,7 @@ export {
   setStyle,
   setProperty,
   setAttribute,
+  sensor,
   selection,
   read,
   provide,
@@ -920,6 +971,10 @@ export {
   isSignal,
   isComputed,
   insertOrRemoveElement,
+  fromSelector,
+  fromEvent,
+  fromChildren,
+  fromChild,
   enqueue,
   emit,
   effect,

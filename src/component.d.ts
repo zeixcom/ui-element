@@ -14,10 +14,10 @@ type Component<P extends ComponentProps> = HTMLElement & P & {
     getSignal(prop: keyof P): Signal<P[keyof P]>;
     setSignal(prop: keyof P, signal: Signal<P[keyof P]>): void;
 };
-type AttributeParser<C extends HTMLElement, T extends {}> = (host: C, value: string | null, old?: string | null) => T;
-type SignalProducer<C extends HTMLElement, T extends {}> = (host: C) => MaybeSignal<T>;
+type AttributeParser<T extends {}, C extends HTMLElement = HTMLElement> = (host: C, value: string | null, old?: string | null) => T;
+type SignalProducer<T extends {}, C extends HTMLElement = HTMLElement> = (host: C) => MaybeSignal<T>;
 type MethodProducer<C extends HTMLElement> = (host: C) => void;
-type Initializer<C extends HTMLElement, T extends {}> = T | AttributeParser<C, T> | SignalProducer<C, T> | MethodProducer<C>;
+type Initializer<T extends {}, C extends HTMLElement> = T | AttributeParser<T, C> | SignalProducer<T, C> | MethodProducer<C>;
 type FxFunction<P extends ComponentProps, E extends Element> = (host: Component<P>, element: E) => Cleanup | void;
 type ElementFromSelector<K extends string, E extends Element = HTMLElement> = K extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[K] : E;
 type SelectorFunctions<P extends ComponentProps> = {
@@ -34,5 +34,5 @@ declare const RESET: any;
  * @param {FxFunction<S>[]} setup - setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
  * @returns {typeof HTMLElement & P} - constructor function for the custom element
  */
-declare const component: <P extends ComponentProps>(name: string, init: { [K in keyof P]: Initializer<Component<P>, P[K]>; } | undefined, setup: (host: Component<P>, select: SelectorFunctions<P>) => FxFunction<P, Component<P>>[]) => Component<P>;
+declare const component: <P extends ComponentProps>(name: string, init: { [K in keyof P]: Initializer<P[K], Component<P>>; } | undefined, setup: (host: Component<P>, select: SelectorFunctions<P>) => FxFunction<P, Component<P>>[]) => Component<P>;
 export { type Component, type ComponentProps, type ValidPropertyKey, type ReservedWords, type Initializer, type AttributeParser, type SignalProducer, type MethodProducer, type FxFunction, type ElementFromSelector, type SelectorFunctions, RESET, component, };
