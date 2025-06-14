@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>My Counter Component Tests</title>
+    <!-- 
+    UIElement Timing Notes:
+    - Effects are scheduled, not synchronous
+    - DOM updates happen after animationFrame()
+    - Use animationFrame() for reactive property updates
+    - Use longer delays only for async operations (network, etc.)
+    -->
+</head>
+<body>
+    <!-- Test fixtures -->
+    <my-counter id="test1" count="42">
+        <p>
+            Count: <span class="count"></span><br>
+            Parity: <span class="parity"></span>
+        </p>
+        <button type="button" class="decrement">−</button>
+        <button type="button" class="increment">+</button>
+    </my-counter>
+
+    <my-counter id="test2">
+        <p>
+            Count: <span class="count"></span><br>
+            Parity: <span class="parity"></span>
+        </p>
+        <button type="button" class="decrement">−</button>
+        <button type="button" class="increment">+</button>
+    </my-counter>
+
+    <my-counter id="test3" count="-5">
+        <p>
+            Count: <span class="count"></span><br>
+            Parity: <span class="parity"></span>
+        </p>
+        <button type="button" class="decrement">−</button>
+        <button type="button" class="increment">+</button>
+    </my-counter>
+
+    <script type="module">
+        import { runTests } from '@web/test-runner-mocha'
+        import { assert } from '@esm-bundle/chai'
+        import './main.js' // Built components bundle
+
+        const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+        const animationFrame = () => new Promise(requestAnimationFrame)
+        
+        // Configurable delay for async component operations
+        // UIElement effects are scheduled and DOM updates happen after animationFrame
+        const COMPONENT_DELAY = 50 // Sufficient for most synchronous reactive updates
+
+        runTests(() => {
+            describe('My Counter Component', () => {
+                it('should initialize with count attribute', async () => {
+                    const el = document.getElementById('test1')
+                    const countSpan = el.querySelector('.count')
+                    const paritySpan = el.querySelector('.parity')
+                    
+                    await animationFrame() // Wait for scheduled effect execution
+                    
+                    assert.equal(el.count, 42)
+                    assert.equal(countSpan.textContent, '42')
+                    assert.equal(paritySpan.textContent, 'even')
+                })
+
+                it('should initialize with default count when no attribute', async () => {
+                    const el = document.getElementById('test2')
+                    const countSpan = el.querySelector('.count')
+                    const paritySpan = el.querySelector('.parity')
+                    
+                    await animationFrame() // Wait for scheduled effect execution
+                    
+                    assert.equal(el.count, 0)
+                    assert.equal(countSpan.textContent, '0')
+                    assert.equal(paritySpan.textContent, 'even')
+                })
+
+                it('should handle negative initial values', async () => {
+                    const el = document.getElementById('test3')
+                    const countSpan = el.querySelector('.count')
+                    const paritySpan = el.querySelector('.parity')
+                    
+                    await animationFrame() // Wait for scheduled effect execution
+                    
+                    assert.equal(el.count, -5)
+                    assert.equal(countSpan.textContent, '-5')
+                    assert.equal(paritySpan.textContent, 'odd')
+                })
+
+                it('should increment count when increment button clicked', async () => {
+                    const el = document.getElementById('test1')
+                    const incrementBtn = el.querySelector('.increment')
+                    const countSpan = el.querySelector('.count')
+                    const paritySpan = el.querySelector('.parity')
+                    
+                    const initialCount = el.count
+                    incrementBtn.click()
+                    await animationFrame() // Wait for event handling and effect execution
+                    
+                    assert.equal(el.count, initialCount + 1)
+                    assert.equal(countSpan.textContent, String(initialCount + 1))
+                    assert.equal(paritySpan.textContent, (initialCount + 1) % 2 ? 'odd' : 'even')
+                })
+
+                it('should decrement count when decrement button clicked', async () => {
+                    const el = document.getElementById('test1')
+                    const decrementBtn = el.querySelector('.decrement')
+                    const countSpan = el.querySelector('.count')
+                    const paritySpan = el.querySelector('.parity')
+                    
+                    const initialCount = el.count
+                    decrementBtn.click()
+                    await animationFrame() // Wait for event handling and effect execution
+                    
+                    assert.equal(el.count, initialCount - 1)
+                    assert.equal(countSpan.textContent, String(initialCount - 1))
+                    assert.equal(paritySpan.textContent, (initialCount - 1) % 2 ? 'odd' : 'even')
+                })
+
+                it('should update parity correctly for odd numbers', async () => {
+                    const el = document.getElementById('test2')
+                    const paritySpan = el.querySelector('.parity')
+                    
+                    el.count = 7
+                    await animationFrame() // Wait for scheduled effect execution
+                    
+                    assert.equal(paritySpan.textContent, 'odd')
+                })
+
+                it('should update parity correctly for even numbers', async () => {
+                    const el = document.getElementById('test2')
+                    const paritySpan = el.querySelector('.parity')
+                    
+                    el.count = 8
+                    await animationFrame() // Wait for scheduled effect execution
+                    
+                    assert.equal(paritySpan.textContent, 'even')
+                })
+
+                it('should handle multiple rapid button clicks', async () => {
+                    const el = document.getElementById('test2')
+                    const incrementBtn = el.querySelector('.increment')
+                    const countSpan = el.querySelector('.count')
+                    
+                    el.count = 0
+                    await animationFrame() // Wait for scheduled effect execution
+                    
+                    // Click multiple times rapidly
+                    incrementBtn.click()
+                    incrementBtn.click()
+                    incrementBtn.click()
+                    await animationFrame() // Wait for all event handling and effect execution
+                    
+                    assert.equal(el.count, 3)
+                    assert.equal(countSpan.textContent, '3')
+                })
+
+                it('should handle programmatic count updates', async () => {
+                    const el = document.getElementById('test2')
+                    const countSpan = el.querySelector('.count')
+                    const paritySpan = el.querySelector('.parity')
+                    
+                    el.count = 100
+                    await animationFrame() // Wait for scheduled effect execution
+                    
+                    assert.equal(countSpan.textContent, '100')
+                    assert.equal(paritySpan.textContent, 'even')
+                    
+                    el.count = 101
+                    await animationFrame() // Wait for scheduled effect execution
+                    
+                    assert.equal(countSpan.textContent, '101')
+                    assert.equal(paritySpan.textContent, 'odd')
+                })
+
+                it('should handle zero correctly', async () => {
+                    const el = document.getElementById('test2')
+                    const countSpan = el.querySelector('.count')
+                    const paritySpan = el.querySelector('.parity')
+                    
+                    el.count = 0
+                    await animationFrame()
+                    
+                    assert.equal(countSpan.textContent, '0')
+                    assert.equal(paritySpan.textContent, 'even')
+                })
+
+                it('should maintain count across increment/decrement cycles', async () => {
+                    const el = document.getElementById('test2')
+                    const incrementBtn = el.querySelector('.increment')
+                    const decrementBtn = el.querySelector('.decrement')
+                    
+                    el.count = 10
+                    await animationFrame() // Wait for initial state update
+                    
+                    incrementBtn.click()
+                    await animationFrame() // Wait for event handling and effect execution
+                    assert.equal(el.count, 11)
+                    
+                    decrementBtn.click()
+                    await animationFrame() // Wait for event handling and effect execution
+                    assert.equal(el.count, 10)
+                    
+                    decrementBtn.click()
+                    await animationFrame() // Wait for event handling and effect execution
+                    assert.equal(el.count, 9)
+                })
+            })
+        })
+    </script>
+</body>
+</html>

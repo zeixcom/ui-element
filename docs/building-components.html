@@ -20,6 +20,14 @@
 		<ol>
 			
 				<li>
+					<a href="building-components.html" class="active">
+						<span class="icon">🏗️</span>
+						<strong>Building Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
+
+				<li>
 					<a href="index.html">
 						<span class="icon">📖</span>
 						<strong>Introduction</strong>
@@ -36,26 +44,34 @@
 				</li>
 
 				<li>
-					<a href="building-components.html" class="active">
+					<a href="core-concepts.html">
 						<span class="icon">🏗️</span>
-						<strong>Building Components</strong>
-						<small>Anatomy, lifecycle, signals, effects</small>
+						<strong>Core Concepts</strong>
+						<small>Component anatomy, lifecycle, and basic patterns</small>
 					</a>
 				</li>
 
 				<li>
-					<a href="styling-components.html">
-						<span class="icon">🎨</span>
-						<strong>Styling Components</strong>
-						<small>Scoped styles, CSS custom properties</small>
+					<a href="reactive-state.html">
+						<span class="icon">⚡</span>
+						<strong>Reactive State & Effects</strong>
+						<small>Signals, effects, and advanced reactivity patterns</small>
 					</a>
 				</li>
 
 				<li>
-					<a href="data-flow.html">
+					<a href="component-communication.html">
 						<span class="icon">🔄</span>
-						<strong>Data Flow</strong>
-						<small>Passing state, events, context</small>
+						<strong>Component Communication</strong>
+						<small>How components work together</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="examples-recipes.html">
+						<span class="icon">🍽️</span>
+						<strong>Examples & Recipes</strong>
+						<small>Common use cases and demos</small>
 					</a>
 				</li>
 
@@ -68,10 +84,10 @@
 				</li>
 
 				<li>
-					<a href="examples-recipes.html">
-						<span class="icon">🍽️</span>
-						<strong>Examples & Recipes</strong>
-						<small>Common use cases and demos</small>
+					<a href="styling-components.html">
+						<span class="icon">🎨</span>
+						<strong>Styling Components</strong>
+						<small>Scoped styles, CSS custom properties</small>
 					</a>
 				</li>
 
@@ -122,9 +138,9 @@
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">	// Component setup</span></span>
-<span class="line"><span style="color:#F8F8F2">]);</span></span>
+<span class="line"><span style="color:#F8F8F2">])</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -173,26 +189,30 @@
 	                </a>
 	                Component Creation
 	            </h3><p>In the <code>constructor()</code> reactive properties are initialized. You pass a second argument to the <code>component()</code> function to defines initial values for <strong>component states</strong>.</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {</span></span>
-<span class="line"><span style="color:#F8F8F2">	count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#88846F">// Initial value of "count" signal</span></span>
-<span class="line"><span style="color:#A6E22E">	isEven</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">(el.count </span><span style="color:#F92672">%</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Computed signal based on "count" signal</span></span>
-<span class="line"><span style="color:#F8F8F2">	value: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">5</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Parse "value" attribute as integer defaulting to 5</span></span>
-<span class="line"><span style="color:#F8F8F2">	name: </span><span style="color:#A6E22E">consume</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"display-name"</span><span style="color:#F8F8F2">) </span><span style="color:#88846F">// Consume "display-name" signal from closest context provider</span></span>
-<span class="line"><span style="color:#F8F8F2">}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">	// Component setup</span></span>
-<span class="line"><span style="color:#F8F8F2">]);</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">	'my-component'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	{</span></span>
+<span class="line"><span style="color:#F8F8F2">		count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#88846F">// Initial value of "count" signal</span></span>
+<span class="line"><span style="color:#A6E22E">		isEven</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">(el.count </span><span style="color:#F92672">%</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Computed signal based on "count" signal</span></span>
+<span class="line"><span style="color:#F8F8F2">		value: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">5</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Parse "value" attribute as integer defaulting to 5</span></span>
+<span class="line"><span style="color:#F8F8F2">		name: </span><span style="color:#A6E22E">consume</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display-name'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Consume "display-name" signal from closest context provider</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
+<span class="line"><span style="color:#F8F8F2">	() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#88846F">		// Component setup</span></span>
+<span class="line"><span style="color:#F8F8F2">	],</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
 	</input-button>
-	
+	<button type="button" class="overlay">Expand</button>
 </code-block>
 <p>In this example you see all four ways to define a reactive property:</p>
 <ul>
@@ -232,18 +252,26 @@
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {</span></span>
-<span class="line"><span style="color:#F8F8F2">	count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">	emit</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"update-count"</span><span style="color:#F8F8F2">, el.count), </span><span style="color:#88846F">// Emit custom event</span></span>
-<span class="line"><span style="color:#A6E22E">	provide</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"count"</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Provide context</span></span>
-<span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".increment"</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> { el.count</span><span style="color:#F92672">++</span><span style="color:#F8F8F2"> }) </span><span style="color:#88846F">// Add click event listener</span></span>
-<span class="line"><span style="color:#F8F8F2">	),</span></span>
-<span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".count"</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">		setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"count"</span><span style="color:#F8F8F2">) </span><span style="color:#88846F">// Apply effect to update text</span></span>
-<span class="line"><span style="color:#F8F8F2">	)</span></span>
-<span class="line"><span style="color:#F8F8F2">]);</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">	'my-component'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	{</span></span>
+<span class="line"><span style="color:#F8F8F2">		count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
+<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">		emit</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'update-count'</span><span style="color:#F8F8F2">, el.count), </span><span style="color:#88846F">// Emit custom event</span></span>
+<span class="line"><span style="color:#A6E22E">		provide</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Provide context</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'.increment'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">				el.count</span><span style="color:#F92672">++</span></span>
+<span class="line"><span style="color:#F8F8F2">			}), </span><span style="color:#88846F">// Add click event listener</span></span>
+<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'.count'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Apply effect to update text</span></span>
+<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"><span style="color:#F8F8F2">	],</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -265,18 +293,18 @@
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> [</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">	// Setup logic</span></span>
 <span class="line"><span style="color:#F8F8F2">	() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> observer </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> IntersectionObserver</span><span style="color:#F8F8F2">(([</span><span style="color:#FD971F;font-style:italic">entry</span><span style="color:#F8F8F2">]) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#88846F">			// Do something</span></span>
 <span class="line"><span style="color:#F8F8F2">		})</span></span>
-<span class="line"><span style="color:#F8F8F2">		observer.</span><span style="color:#A6E22E">observe</span><span style="color:#F8F8F2">(el);</span></span>
+<span class="line"><span style="color:#F8F8F2">		observer.</span><span style="color:#A6E22E">observe</span><span style="color:#F8F8F2">(el)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Cleanup logic</span></span>
-<span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> observer.</span><span style="color:#A6E22E">disconnect</span><span style="color:#F8F8F2">();</span></span>
-<span class="line"><span style="color:#F8F8F2">	}</span></span>
-<span class="line"><span style="color:#F8F8F2">]);</span></span>
+<span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> observer.</span><span style="color:#A6E22E">disconnect</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
+<span class="line"><span style="color:#F8F8F2">])</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -308,9 +336,9 @@
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"count"</span><span style="color:#F92672"> in</span><span style="color:#F8F8F2"> el); </span><span style="color:#88846F">// Check if the signal exists</span></span>
-<span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(el.count); </span><span style="color:#88846F">// Read the signal value</span></span>
-<span class="line"><span style="color:#F8F8F2">el.count </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 42</span><span style="color:#F8F8F2">; </span><span style="color:#88846F">// Update the signal value</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F92672"> in</span><span style="color:#F8F8F2"> el) </span><span style="color:#88846F">// Check if the signal exists</span></span>
+<span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(el.count) </span><span style="color:#88846F">// Read the signal value</span></span>
+<span class="line"><span style="color:#F8F8F2">el.count </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 42</span><span style="color:#88846F"> // Update the signal value</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -342,24 +370,28 @@
 	                </a>
 	                Initializing State from Attributes
 	            </h3><p>The standard way to set initial state in UIElement is via <strong>server-rendered attributes</strong> on the component that needs it. No props drilling as in other frameworks. UIElements provides some bundled attribute parsers to convert attribute values to the desired type. And you can also define your own custom parsers.</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {</span></span>
-<span class="line"><span style="color:#F8F8F2">	count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(), </span><span style="color:#88846F">// Bundled parser: Convert '42' -> 42</span></span>
-<span class="line"><span style="color:#A6E22E">	date</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Date</span><span style="color:#F8F8F2">(v), </span><span style="color:#88846F">// Custom parser: '2025-02-14' -> Date object</span></span>
-<span class="line"><span style="color:#F8F8F2">}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">	// Component setup</span></span>
-<span class="line"><span style="color:#F8F8F2">]);</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">	'my-component'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	{</span></span>
+<span class="line"><span style="color:#F8F8F2">		count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(), </span><span style="color:#88846F">// Bundled parser: Convert '42' -> 42</span></span>
+<span class="line"><span style="color:#A6E22E">		date</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Date</span><span style="color:#F8F8F2">(v), </span><span style="color:#88846F">// Custom parser: '2025-02-14' -> Date object</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
+<span class="line"><span style="color:#F8F8F2">	() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#88846F">		// Component setup</span></span>
+<span class="line"><span style="color:#F8F8F2">	],</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
 	</input-button>
-	
+	<button type="button" class="overlay">Expand</button>
 </code-block>
 <callout-box class="caution">
 
@@ -439,18 +471,20 @@
 <td>Selects <strong>all matching elements</strong> inside the component and applies the given setup functions.</td>
 </tr>
 </tbody></table>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Select the first ".increment" button and apply effects on it</span></span>
-<span class="line"><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".increment"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">	'.increment'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#88846F">	// Fx functions</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">// Select all &#x3C;button> elements and apply effects on them</span></span>
-<span class="line"><span style="color:#A6E22E">all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">all</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">	'button'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#88846F">	// Fx functions</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
@@ -459,7 +493,7 @@
 			<span class="label">Copy</span>
 		</button>
 	</input-button>
-	
+	<button type="button" class="overlay">Expand</button>
 </code-block>
 <p>The <code>first()</code> function expects the matched element to be present at connection time. If not, it will silently ignore the call.</p>
 <p>On the other hand, the <code>all()</code> function creates a dynamic array of elements that will be updated whenever the matching elements are added or removed from the component&#39;s DOM branch. UIElement will apply the given setup functions to added elements and run the cleanup functions on removed elements.</p>
@@ -529,16 +563,17 @@
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">;(</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">	// On the component itself</span></span>
-<span class="line"><span style="color:#A6E22E">	setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"open"</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">"isOpen"</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Set "open" attribute according to "isOpen" signal</span></span>
+<span class="line"><span style="color:#A6E22E">	setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'open'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'isOpen'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Set "open" attribute according to "isOpen" signal</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">	// On first element matching ".count"</span></span>
-<span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".count"</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">		setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"count"</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Update text content according to "count" signal</span></span>
-<span class="line"><span style="color:#A6E22E">		toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"even"</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">"isEven"</span><span style="color:#F8F8F2">) </span><span style="color:#88846F">// Toggle "even" class according to "isEven" signal</span></span>
-<span class="line"><span style="color:#F8F8F2">	)</span></span>
-<span class="line"><span style="color:#F8F8F2">];</span></span>
+<span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">		'.count'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">		setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Update text content according to "count" signal</span></span>
+<span class="line"><span style="color:#A6E22E">		toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'even'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'isEven'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Toggle "even" class according to "isEven" signal</span></span>
+<span class="line"><span style="color:#F8F8F2">	),</span></span>
+<span class="line"><span style="color:#F8F8F2">]</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -612,7 +647,7 @@
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".count"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"even"</span><span style="color:#F8F8F2">))</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'even'</span><span style="color:#F8F8F2">))</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -634,17 +669,20 @@
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {}, (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> count </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> double </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> count.</span><span style="color:#A6E22E">map</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> v </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">);</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {}, (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> count </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> double </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> count.</span><span style="color:#A6E22E">map</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> v </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".increment"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">			count.</span><span style="color:#A6E22E">update</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F92672"> ++</span><span style="color:#F8F8F2">v);</span></span>
-<span class="line"><span style="color:#F8F8F2">		})),</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".count"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(count)),</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">".double"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(double))</span></span>
-<span class="line"><span style="color:#F8F8F2">	];</span></span>
-<span class="line"><span style="color:#F8F8F2">});</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'.increment'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">				count.</span><span style="color:#A6E22E">update</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F92672"> ++</span><span style="color:#F8F8F2">v)</span></span>
+<span class="line"><span style="color:#F8F8F2">			}),</span></span>
+<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(count)),</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.double'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(double)),</span></span>
+<span class="line"><span style="color:#F8F8F2">	]</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
 		<button type="button" class="secondary small">
@@ -874,7 +912,7 @@
 	            </h2><p>Now that you understand the basics, explore:</p>
 <ul>
 <li><a href="styling-components.html">Styling Components</a> – Learn techniques to apply styles to components.</li>
-<li><a href="data-flow.html">Data Flow</a> – Learn about passing state between components.</li>
+<li><a href="component-communication.html">Component Communication</a> – Learn about passing state between components.</li>
 </ul>
 </section>
 </main>

@@ -1,13 +1,13 @@
 input-radiogroup {
 	display: inline-block;
 
-    > fieldset {
+	> fieldset {
 		display: flex;
 		gap: var(--space-m);
-        border: none;
-        margin: 0;
-        padding: var(--space-xs) 0 var(--space-s);
-    }
+		border: none;
+		margin: 0;
+		padding: var(--space-xs) 0 var(--space-s);
+	}
 
 	& legend,
 	& label {
@@ -20,7 +20,7 @@ input-radiogroup {
 		&:focus-within {
 			box-shadow: 0 0 var(--space-xxs) 2px var(--color-selection);
 		}
-	
+
 		& input:focus {
 			outline: none;
 			box-shadow: none;
@@ -28,7 +28,6 @@ input-radiogroup {
 	}
 
 	&.split-button {
-
 		& fieldset {
 			gap: 0;
 			padding: 0;
@@ -52,33 +51,37 @@ input-radiogroup {
 
 			&:hover {
 				background-color: var(--color-secondary-hover);
-                opacity: var(--opacity-solid);
+				opacity: var(--opacity-solid);
 			}
-	  
+
 			&:active {
 				background-color: var(--color-secondary-active);
 			}
-	  
+
+			&:focus-within {
+				z-index: 1;
+			}
+
 			&.selected {
 				color: var(--color-text-inverted);
 				background-color: var(--color-primary);
 				border-color: var(--color-primary-active);
 
 				&:hover {
-                    background-color: var(--color-primary-hover);
-                }
-		
+					background-color: var(--color-primary-hover);
+				}
+
 				&:active {
 					background-color: var(--color-primary-active);
 				}
 			}
 		}
-	  
+
 		& legend + label {
 			border-radius: var(--space-xs) 0 0 var(--space-xs);
 			border-left-width: 1px;
 		}
-	  
+
 		& label:last-child {
 			border-radius: 0 var(--space-xs) var(--space-xs) 0;
 		}

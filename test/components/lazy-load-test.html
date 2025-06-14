@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Lazy Load Component Tests</title>
+    <!-- 
+    UIElement Timing Notes:
+    - Effects are scheduled, not synchronous
+    - DOM updates happen after animationFrame()
+    - Use animationFrame() for reactive property updates
+    - Use LOADING_DELAY for async operations (network requests, etc.)
+    -->
+</head>
+<body>
+    <!-- Test fixtures -->
+    <lazy-load id="test1">
+        <callout-box>
+            <p class="loading" role="status">Loading...</p>
+            <p class="error" role="alert" aria-live="polite" hidden></p>
+        </callout-box>
+    </lazy-load>
+
+    <lazy-load id="test2" src="https://example.com/test">
+        <callout-box>
+            <p class="loading" role="status">Loading...</p>
+            <p class="error" role="alert" aria-live="polite" hidden></p>
+        </callout-box>
+    </lazy-load>
+
+    <script type="module">
+        import { runTests } from '@web/test-runner-mocha'
+        import { assert } from '@esm-bundle/chai'
+        import './main.js' // Built components bundle
+
+        const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+        const animationFrame = () => new Promise(requestAnimationFrame)
+        
+        // Configurable delay for async component operations
+        // Adjust if tests fail; needs to be high enough for async connectedCallback() to finish
+        const LOADING_DELAY = 200 // Can be increased if network requests are involved
+
+        runTests(() => {
+            describe('Lazy Load Component', () => {
+                it('should initially show loading state', () => {
+                    const el = document.getElementById('test1')
+                    const loading = el.querySelector('.loading')
+                    const calloutBox = el.querySelector('callout-box')
+                    
+                    assert.isNotNull(loading)
+                    assert.equal(loading.textContent, 'Loading...')
+                    assert.isFalse(calloutBox.hidden)
+                })
+
+                it('should show error when no src is provided', async () => {
+                    const el = document.getElementById('test1')
+                    const errorEl = el.querySelector('.error')
+                    const calloutBox = el.querySelector('callout-box')
+                    
+                    // Wait for async connectedCallback to complete
+                    await wait(LOADING_DELAY)
+                    
+                    assert.isFalse(calloutBox.hidden)
+                    assert.include(errorEl.textContent, 'No URL provided')
+                })
+
+                it('should show error for invalid URL', async () => {
+                    const el = document.getElementById('test2')
+                    const calloutBox = el.querySelector('callout-box')
+                    
+                    // Wait for async connectedCallback to complete
+                    await wait(LOADING_DELAY)
+                    
+                    // Test that the src property has an error (from asURL parser)
+                    assert.isObject(el.src)
+                    assert.isNotEmpty(el.src.error)
+                    assert.isFalse(calloutBox.hidden)
+                })
+
+                it('should maintain callout-box structure', () => {
+                    const el = document.getElementById('test1')
+                    const calloutBox = el.querySelector('callout-box')
+                    const errorEl = el.querySelector('.error')
+                    
+                    assert.isNotNull(calloutBox)
+                    assert.isNotNull(errorEl)
+                    assert.equal(errorEl.getAttribute('role'), 'alert')
+                    assert.equal(errorEl.getAttribute('aria-live'), 'polite')
+                })
+
+                it('should have src property available', () => {
+                    const el = document.getElementById('test2')
+                    assert.isDefined(el.src)
+                    assert.isObject(el.src) // src property should be an object with value and error
+                })
+            })
+        })
+    </script>
+</body>
+</html>

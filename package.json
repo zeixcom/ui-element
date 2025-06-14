@@ -15,10 +15,14 @@
 		"build:docs": "bun run build:docs-js & bun run build:docs-css & bun run build:docs-html & bun run build:docs-api",
 		"serve:docs": "BUN_ENV=development bun run --hot ./docs-src/server/serve-docs.ts",
 		"lint": "bunx eslint src/",
+		"build:test-components": "bun build docs-src/main.ts --outdir ./test/components/ --define process.env.DEV_MODE=true --sourcemap=external",
 		"test": "bun run test:setup && bun run test:ci",
 		"test:setup": "playwright install-deps",
 		"test:ci": "web-test-runner \"test/*-test.html\" --node-resolve --playwright --browsers chromium firefox webkit",
-		"test:watch": "BUN_ENV=development web-test-runner \"test/*-test.html\" --node-resolve --watch --playwright --browsers chromium firefox webkit"
+		"test:watch": "BUN_ENV=development web-test-runner \"test/*-test.html\" --node-resolve --watch --playwright --browsers chromium firefox webkit",
+		"test:components": "bun run build:test-components && web-test-runner \"test/components/*-test.html\" --node-resolve --playwright --browsers chromium firefox webkit",
+		"test:components:watch": "BUN_ENV=development bun run build:test-components && web-test-runner \"test/components/*-test.html\" --node-resolve --watch --playwright --browsers chromium firefox webkit",
+		"test:all": "bun run test && bun run test:components"
 	},
 	"keywords": [
 		"UIElement",

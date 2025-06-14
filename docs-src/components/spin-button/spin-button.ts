@@ -21,6 +21,7 @@ export default component(
 		const incrementLabel = el.getAttribute('increment-label') || 'Increment'
 		const max = asInteger(9)(el, el.getAttribute('max'))
 		const isZero = () => el.value === 0
+
 		return [
 			first<HTMLButtonElement>(
 				'.value',

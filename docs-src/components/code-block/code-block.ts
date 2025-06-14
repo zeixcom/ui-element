@@ -4,7 +4,7 @@ import {
 	component,
 	on,
 	toggleAttribute,
-} from '../../../'
+} from '../../..'
 
 import type { InputButtonProps } from '../input-button/input-button'
 

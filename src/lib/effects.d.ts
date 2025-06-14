@@ -53,6 +53,13 @@ declare const setText: <P extends ComponentProps, E extends Element = HTMLElemen
  */
 declare const setProperty: <P extends ComponentProps, K extends keyof E, E extends Element = HTMLElement>(key: K, s?: SignalLike<P, E[K], E>) => FxFunction<P, E>;
 /**
+ * Set 'hidden' property of an element
+ *
+ * @since 0.13.1
+ * @param {SignalLike<boolean>} s - state bound to the 'hidden' property value
+ */
+declare const show: <P extends ComponentProps, E extends HTMLElement = HTMLElement>(s: SignalLike<P, boolean, E>) => FxFunction<P, E>;
+/**
  * Set attribute of an element
  *
  * @since 0.8.0
@@ -92,4 +99,4 @@ declare const setStyle: <P extends ComponentProps, E extends HTMLElement | SVGEl
  * @param {DangerouslySetInnerHTMLOptions} options - options for setting inner HTML: shadowRootMode, allowScripts
  */
 declare const dangerouslySetInnerHTML: <P extends ComponentProps, E extends Element = HTMLElement>(s: SignalLike<P, string, E>, options?: DangerouslySetInnerHTMLOptions) => FxFunction<P, E>;
-export { type SignalLike, type UpdateOperation, type ElementUpdater, type ElementInserter, type DangerouslySetInnerHTMLOptions, updateElement, insertOrRemoveElement, setText, setProperty, setAttribute, toggleAttribute, toggleClass, setStyle, dangerouslySetInnerHTML, };
+export { type SignalLike, type UpdateOperation, type ElementUpdater, type ElementInserter, type DangerouslySetInnerHTMLOptions, updateElement, insertOrRemoveElement, setText, setProperty, show, setAttribute, toggleAttribute, toggleClass, setStyle, dangerouslySetInnerHTML, };

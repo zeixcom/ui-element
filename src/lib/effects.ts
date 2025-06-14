@@ -261,9 +261,9 @@ const insertOrRemoveElement =
 				// Negative diff => remove element
 				enqueue(() => {
 					if (
-						inserter &&
-						(inserter.position === 'afterbegin' ||
-							inserter.position === 'beforeend')
+						inserter
+						&& (inserter.position === 'afterbegin'
+							|| inserter.position === 'beforeend')
 					) {
 						for (let i = 0; i > diff; i--) {
 							if (inserter.position === 'afterbegin')
@@ -322,6 +322,24 @@ const setProperty = <
 		read: el => (key in el ? el[key] : UNSET),
 		update: (el, value) => {
 			el[key] = value
+		},
+	})
+
+/**
+ * Set 'hidden' property of an element
+ *
+ * @since 0.13.1
+ * @param {SignalLike<boolean>} s - state bound to the 'hidden' property value
+ */
+const show = <P extends ComponentProps, E extends HTMLElement = HTMLElement>(
+	s: SignalLike<P, boolean, E>,
+): FxFunction<P, E> =>
+	updateElement(s, {
+		op: 'p',
+		name: 'hidden',
+		read: el => !el.hidden,
+		update: (el, value) => {
+			el.hidden = !value
 		},
 	})
 
@@ -437,8 +455,8 @@ const dangerouslySetInnerHTML = <
 	updateElement(s, {
 		op: 'h',
 		read: el =>
-			(el.shadowRoot || !options.shadowRootMode ? el : null)?.innerHTML ??
-			'',
+			(el.shadowRoot || !options.shadowRootMode ? el : null)?.innerHTML
+			?? '',
 		update: (el, html) => {
 			const { shadowRootMode, allowScripts } = options
 			if (!html) {
@@ -474,6 +492,7 @@ export {
 	insertOrRemoveElement,
 	setText,
 	setProperty,
+	show,
 	setAttribute,
 	toggleAttribute,
 	toggleClass,

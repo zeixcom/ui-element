@@ -13,5 +13,10 @@
 		}
 	},
 	"format_on_save": "on",
-	"eslint.rules.ignore": ["index.js", "docs/assets/main.js", "**/*.min.js"]
+	"eslint.rules.ignore": [
+		"index.js",
+		"**/*.min.js",
+		"docs/assets/main.js",
+		"test/components/main.js"
+	]
 }

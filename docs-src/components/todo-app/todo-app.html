@@ -1,15 +1,15 @@
 <todo-app>
 	<form action="#">
-		<input-field>
+		<input-textbox>
 			<label for="add-todo">What needs to be done?</label>
-			<div class="row">
-				<div class="group auto">
-					<input id="add-todo" type="text" value="" required>
-				</div>
+			<div class="input">
+				<input id="add-todo" type="text" value="" />
 			</div>
-		</input-field>
+		</input-textbox>
 		<input-button class="submit">
-			<button type="submit" class="constructive" disabled>Add Todo</button>
+			<button type="submit" class="constructive" disabled>
+				Add Todo
+			</button>
 		</input-button>
 	</form>
 	<ol filter="all"></ol>
@@ -39,18 +39,34 @@
 		<input-radiogroup value="all" class="split-button">
 			<fieldset>
 				<legend class="visually-hidden">Filter</legend>
-					<label class="selected">
-						<input type="radio" class="visually-hidden" name="filter" value="all" checked>
-						<span>All</span>
-					</label>
-					<label>
-						<input type="radio" class="visually-hidden" name="filter" value="active">
-						<span>Active</span>
-					</label>
-					<label>
-						<input type="radio" class="visually-hidden" name="filter" value="completed">
-						<span>Completed</span>
-					</label>
+				<label class="selected">
+					<input
+						type="radio"
+						class="visually-hidden"
+						name="filter"
+						value="all"
+						checked
+					/>
+					<span>All</span>
+				</label>
+				<label>
+					<input
+						type="radio"
+						class="visually-hidden"
+						name="filter"
+						value="active"
+					/>
+					<span>Active</span>
+				</label>
+				<label>
+					<input
+						type="radio"
+						class="visually-hidden"
+						name="filter"
+						value="completed"
+					/>
+					<span>Completed</span>
+				</label>
 			</fieldset>
 		</input-radiogroup>
 		<input-button class="clear-completed">

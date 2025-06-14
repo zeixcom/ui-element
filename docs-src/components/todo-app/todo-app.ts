@@ -1,14 +1,18 @@
 import {
 	type Component,
 	component,
+	fromSelector,
 	on,
+	read,
 	setAttribute,
 	setProperty,
 	setText,
-} from '../../../'
-import { selectChecked } from '../../functions/signal-producer/select-checked'
+	show,
+} from '../../..'
 import type { InputButtonProps } from '../input-button/input-button'
-import type { InputFieldProps } from '../input-field/input-field'
+import type { InputTextboxProps } from '../input-textbox/input-textbox'
+import type { InputRadiogroupProps } from '../input-radiogroup/input-radiogroup'
+import type { InputCheckboxProps } from '../input-checkbox/input-checkbox'
 
 export type TodoAppProps = {
 	active: HTMLElement[]
@@ -18,23 +22,32 @@ export type TodoAppProps = {
 export default component(
 	'todo-app',
 	{
-		active: selectChecked('input-checkbox', false),
-		completed: selectChecked('input-checkbox', true),
+		active: fromSelector('input-checkbox:not([checked])'),
+		completed: fromSelector('input-checkbox[checked]'),
 	},
 	(el, { first }) => {
 		const input =
-			el.querySelector<Component<InputFieldProps>>('input-field')
+			el.querySelector<Component<InputTextboxProps>>('input-textbox')
 		if (!input) throw new Error('No input field found')
 		const template = el.querySelector('template')
 		if (!template) throw new Error('No template found')
 		const list = el.querySelector('ol')
 		if (!list) throw new Error('No list found')
 
+		const inputLength = read(input, 'length', 0)
+		const filterValue = read(
+			el.querySelector<Component<InputRadiogroupProps>>(
+				'input-radiogroup',
+			),
+			'value',
+			'all',
+		)
+
 		return [
 			// Control todo input form
 			first<Component<InputButtonProps>>(
 				'.submit',
-				setProperty('disabled', () => !input.length),
+				setProperty('disabled', () => !inputLength()),
 			),
 			first(
 				'form',
@@ -53,7 +66,7 @@ export default component(
 							)
 						li
 							.querySelector('slot')
-							?.replaceWith(String(input.value))
+							?.replaceWith(String(input.value.trim()))
 						list.append(li)
 						input.clear()
 					})
@@ -63,10 +76,7 @@ export default component(
 			// Control todo list
 			first(
 				'ol',
-				setAttribute(
-					'filter',
-					() => el.querySelector('input-radiogroup')?.value ?? 'all',
-				),
+				setAttribute('filter', filterValue),
 				on('click', (e: Event) => {
 					const target = e.target as HTMLElement
 					if (target.localName === 'button')
@@ -81,19 +91,19 @@ export default component(
 			),
 			first(
 				'.singular',
-				setProperty('hidden', () => el.active.length > 1),
+				show(() => el.active.length === 1),
 			),
 			first(
 				'.plural',
-				setProperty('hidden', () => el.active.length === 1),
+				show(() => el.active.length > 1),
 			),
 			first(
 				'.remaining',
-				setProperty('hidden', () => !el.active.length),
+				show(() => !!el.active.length),
 			),
 			first(
 				'.all-done',
-				setProperty('hidden', () => !!el.active.length),
+				show(() => !el.active.length),
 			),
 
 			// Control clear-completed button
@@ -106,7 +116,9 @@ export default component(
 				on('click', () => {
 					const items = Array.from(el.querySelectorAll('ol li'))
 					for (let i = items.length - 1; i >= 0; i--) {
-						const task = items[i].querySelector('input-checkbox')
+						const task = items[i].querySelector<
+							HTMLElement & InputCheckboxProps
+						>('input-checkbox')
 						if (task?.checked) items[i].remove()
 					}
 				}),

@@ -1,17 +1,17 @@
-<my-slider>
+<my-carousel>
 	<h2 class="visually-hidden">Slides</h2>
 	<div class="slides">
-		<div class="slide active" data-index="0">
+		<div id="slide1" role="tabpanel" aria-current="true">
 			<h3>Slide 1</h3>
 			<hello-world>
-				<label
-					>Your name<br />
+				<label>
+					Your name<br />
 					<input type="text" />
 				</label>
 				<p>Hello, <span>World</span>!</p>
 			</hello-world>
 		</div>
-		<div class="slide" data-index="1">
+		<div id="slide2" role="tabpanel" aria-current="false">
 			<h3>Slide 2</h3>
 			<calc-table rows="3" columns="3">
 				<div class="rows">
@@ -99,7 +99,7 @@
 				</template>
 			</calc-table>
 		</div>
-		<div class="slide" data-index="2">
+		<div id="slide3" role="tabpanel" aria-current="false">
 			<h3>Slide 3</h3>
 			<rating-feedback>
 				<form>
@@ -202,11 +202,40 @@
 			</rating-feedback>
 		</div>
 	</div>
-	<button type="button" class="prev" aria-label="Previous">‹</button>
-	<button type="button" class="next" aria-label="Next">›</button>
-	<div class="dots">
-		<span class="active"></span>
-		<span></span>
-		<span></span>
-	</div>
-</my-slider>
+	<nav aria-label="Carousel Navigation">
+		<button type="button" class="prev" aria-label="Previous">❮</button>
+		<button type="button" class="next" aria-label="Next">❯</button>
+		<div role="tablist">
+			<button
+				role="tab"
+				aria-selected="true"
+				aria-controls="slide1"
+				aria-label="Slide1"
+				data-index="0"
+				tabindex="0"
+			>
+				●
+			</button>
+			<button
+				role="tab"
+				aria-selected="false"
+				aria-controls="slide2"
+				aria-label="Slide 2"
+				data-index="1"
+				tabindex="-1"
+			>
+				●
+			</button>
+			<button
+				role="tab"
+				aria-selected="false"
+				aria-controls="slide3"
+				aria-label="Slide 3"
+				data-index="2"
+				tabindex="-1"
+			>
+				●
+			</button>
+		</div>
+	</nav>
+</my-carousel>
