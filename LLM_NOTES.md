@@ -782,6 +782,76 @@ const invalid = fromEvent<string, HTMLInputElement, 'submit'>( // <- Error here
 
 **Enhanced event type safety successfully implemented** without breaking existing functionality. The DOM abstraction functions now provide compile-time validation for element/event combinations while maintaining full flexibility for edge cases. This represents a significant improvement in developer experience and type safety for the library's DOM interaction layer.
 
+## ✅ Issue #11: Stale Compiled Code in Component Tests [RESOLVED]
+
+### Problem Summary
+
+Component tests failing massively (~30 tests) due to running against outdated compiled code instead of latest source changes.
+
+### Expected Behavior
+
+- Tests should run against the latest component source code changes
+- Component properties should update when event handlers fire
+- Traditional event handlers should work correctly
+
+### Actual Behavior
+
+- 28+ tests failing with component properties not updating
+- Event handlers appeared to not be called
+- Properties remained at initial values (0 for length, '' for value)
+- Misleading symptoms suggesting fundamental issues with component system
+
+### Root Cause
+
+**Build synchronization issue**: Component tests use compiled JavaScript (`test/components/main.js`) built from TypeScript source. Changes to source files in `docs-src/components/` are not reflected in tests until the compiled bundle is rebuilt.
+
+### Evidence
+
+```bash
+# Before rebuild - 28+ failing tests
+npx web-test-runner "test/components/input-textbox-test.html"
+
+# After rebuild - 28 passing, 1 unrelated failure
+bun run build:test-components
+npx web-test-runner "test/components/input-textbox-test.html"
+```
+
+### Solution
+
+Always run `bun run build:test-components` after making changes to component source files before running component tests.
+
+### Debugging Journey
+
+Wasted significant time investigating:
+
+- ❌ Sensor-based `fromEvent()` vs traditional event handlers
+- ❌ Complex timing fixes in test helpers
+- ❌ Initial validation state handling
+- ❌ Event bubbling and listener registration issues
+
+**None of these were necessary** - the real issue was stale compiled code.
+
+### Prevention
+
+1. **Always rebuild before testing components**: `bun run build:test-components`
+2. **Use the proper test command**: `bun run test:components` (includes build step)
+3. **Check build timestamps** when debugging mysterious test failures
+4. **Verify test output includes recent changes** through debug logging
+
+### Key Lesson
+
+When component tests fail after code changes:
+
+1. **First check**: Is a build step required?
+2. **Second check**: Are tests running against latest code?
+3. **Only then**: Debug actual component logic
+
+Build system issues can masquerade as complex application logic problems.
+
+### Takeaway
+
+**Component test failures often indicate build synchronization issues rather than component logic bugs**. Always verify tests are running against current code before deep-diving into component implementation debugging. This prevented ~2 hours of unnecessary investigation into working systems.
+
 ## Future Investigation Topics
 
 1. **Component Attribute Parsing**: Should we provide more examples of when to use parsers vs RESET?
@@ -792,3 +862,4 @@ const invalid = fromEvent<string, HTMLInputElement, 'submit'>( // <- Error here
 6. **Test Isolation**: Should we provide guidelines for component test isolation and state management?
 7. **Developer Experience**: What other unexpected behaviors might trip up developers?
 8. **Sensor Cleanup**: Should we document the automatic cleanup behavior for users?
+9. **Build Process Documentation**: Should we better document the component test build requirements?

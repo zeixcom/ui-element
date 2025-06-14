@@ -25,12 +25,33 @@ type ElementEventMap<E extends Element> = E extends
 	| HTMLSelectElement
 	? Pick<
 			HTMLElementEventMap,
-			'input' | 'change' | 'focus' | 'blur' | 'invalid'
+			| 'input'
+			| 'change'
+			| 'focus'
+			| 'blur'
+			| 'invalid'
+			| 'keydown'
+			| 'keyup'
+			| 'keypress'
+			| 'click'
+			| 'mousedown'
+			| 'mouseup'
+			| 'paste'
+			| 'cut'
+			| 'copy'
 		>
 	: E extends HTMLFormElement
 		? Pick<HTMLElementEventMap, 'submit' | 'reset' | 'formdata'>
 		: E extends HTMLButtonElement
-			? Pick<HTMLElementEventMap, 'click' | 'focus' | 'blur'>
+			? Pick<
+					HTMLElementEventMap,
+					| 'click'
+					| 'focus'
+					| 'blur'
+					| 'keydown'
+					| 'keyup'
+					| 'keypress'
+				>
 			: E extends HTMLAnchorElement
 				? Pick<HTMLElementEventMap, 'click' | 'focus' | 'blur'>
 				: E extends HTMLDetailsElement
@@ -268,20 +289,20 @@ const fromChildren =
  * Attach an event listener to an element
  *
  * @since 0.12.0
- * @param {string} type - event type to listen for
- * @param {(event: Evt) => void} listener - event listener
+ * @param {K} type - event type to listen for (type-safe based on element type)
+ * @param {(event: ElementEventType<E, K>) => void} listener - event listener
  * @param {boolean | AddEventListenerOptions} options - event listener options
  * @throws {TypeError} - if the provided handler is not an event listener or a provider function
  */
 const on =
-	<Evt extends Event>(
-		type: string,
-		listener: (event: Evt) => void,
+	<E extends Element, K extends ValidEventName<E>>(
+		type: K,
+		listener: (event: ElementEventType<E, K>) => void,
 		options: boolean | AddEventListenerOptions = false,
 	) =>
 	<P extends ComponentProps>(
 		host: Component<P>,
-		target: Element = host,
+		target: E = host as unknown as E,
 	): Cleanup => {
 		if (!isFunction(listener))
 			throw new TypeError(

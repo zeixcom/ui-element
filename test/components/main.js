@@ -291,32 +291,6 @@ var OB = (B, W, $ = false) => (Z, J = Z) => {
     throw new TypeError(`Invalid event listener provided for "${B} event on element ${j(J)}`);
   return J.addEventListener(B, W, $), () => J.removeEventListener(B, W);
 };
-var XB = (B, W, $, Z, J, K = false) => {
-  let G = new Set, I = J, H, X = () => {
-    let q = (F) => {
-      let V = Z(B, W, F, I);
-      if (!Object.is(V, I)) {
-        if (I = V, G.size)
-          U(G);
-      }
-    };
-    W.addEventListener($, q, K), H = () => {
-      W.removeEventListener($, q), H = undefined;
-    };
-  };
-  return { [Symbol.toStringTag]: b, get: () => {
-    if (O(G), !H)
-      X();
-    return I;
-  } };
-};
-var RB = (B, W, $, Z) => (J) => {
-  let K = J.querySelector(B);
-  if (!K)
-    throw new Error(`Element not found for selector "${B}" in ${J.localName || "component"}`);
-  let G = Y(Z) ? Z(J, K) : Z;
-  return XB(J, K, W, $, G);
-};
 var _B = (B, W) => ($, Z = $) => {
   Z.dispatchEvent(new CustomEvent(B, { detail: Y(W) ? W(Z) : W, bubbles: true }));
 };
@@ -1087,14 +1061,19 @@ var input_field_default = kB("input-field", {
   return fns;
 });
 
+// docs-src/functions/shared/clear-input.ts
+var createClearFunction = (input) => () => {
+  input.value = "";
+  input.setCustomValidity("");
+  input.checkValidity();
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  input.dispatchEvent(new Event("change", { bubbles: true }));
+};
+
 // docs-src/components/input-textbox/input-textbox.ts
 var input_textbox_default = kB("input-textbox", {
-  value: RB("input, textarea", "change", (el, source) => {
-    source.checkValidity();
-    el.error = source.validationMessage;
-    return source.value;
-  }, ""),
-  length: RB("input, textarea", "input", (_2, source) => source.value.length, 0),
+  value: "",
+  length: 0,
   error: k,
   description: k,
   clear() {
@@ -1103,49 +1082,32 @@ var input_textbox_default = kB("input-textbox", {
   const input = el.querySelector("input, textarea");
   if (!input)
     throw new Error("No Input or textarea element found");
-  el.clear = () => {
-    input.value = "";
-    input.dispatchEvent(new Event("change"));
-  };
+  el.clear = createClearFunction(input);
+  el.error = "";
   const description = el.querySelector(".description");
   if (description?.dataset.remaining && input.maxLength) {
     el.setSignal("description", R(() => description.dataset.remaining.replace("${n}", String(input.maxLength - el.length))));
   }
   const errorId = el.querySelector(".error")?.id;
+  const descriptionId = description?.id;
   return [
     sB("value"),
     first(".error", iB("error")),
     first(".description", iB("description")),
-    first("input, textarea", oB("ariaInvalid", () => String(!!el.error)), sB("aria-errormessage", () => el.error && errorId ? errorId : z), sB("aria-describedby", () => el.description && description?.id ? description.id : z)),
+    first("input, textarea", oB("ariaInvalid", () => String(!!el.error)), sB("aria-errormessage", () => el.error && errorId ? errorId : z), sB("aria-describedby", () => el.description && descriptionId ? descriptionId : z), OB("input", () => {
+      el.length = input.value.length;
+    }), OB("change", () => {
+      input.checkValidity();
+      el.value = input.value;
+      el.error = input.validationMessage ?? "";
+    })),
     first(".clear", nB(() => !!el.length), OB("click", () => el.clear()))
   ];
 });
 
-// docs-src/functions/shared/clear-input.ts
-var createClearFunction = (input) => () => {
-  input.value = "";
-  input.setCustomValidity("");
-  input.checkValidity();
-};
-var standardClearEffects = (host) => [
-  nB(() => !!host.length),
-  OB("click", () => host.clear())
-];
-
-// docs-src/functions/shared/input-effects.ts
-var standardInputEffects = (host, input, errorId, descriptionId) => [
-  oB("ariaInvalid", () => String(!!host.error)),
-  sB("aria-errormessage", () => host.error && errorId ? errorId : z),
-  sB("aria-describedby", () => host.description && descriptionId ? descriptionId : z),
-  OB("change", () => KB(() => {
-    host.value = input.value;
-    host.error = input.validationMessage ?? "";
-  }))
-];
-
 // docs-src/components/input-combobox/input-combobox.ts
 var input_combobox_default = kB("input-combobox", {
-  value: hB(),
+  value: "",
   length: 0,
   error: k,
   description: k,
@@ -1163,6 +1125,8 @@ var input_combobox_default = kB("input-combobox", {
   const isExpanded = () => mode.get() === "editing" && showPopup.get();
   const commit = (value) => {
     input.value = value;
+    input.setCustomValidity("");
+    input.checkValidity();
     KB(() => {
       mode.set("selected");
       el.value = value;
@@ -1210,13 +1174,17 @@ var input_combobox_default = kB("input-combobox", {
     })),
     first(".error", iB("error")),
     first(".description", iB("description")),
-    first("input", ...standardInputEffects(el, input, el.querySelector(".error")?.id, el.querySelector(".description")?.id), oB("ariaExpanded", () => String(isExpanded())), OB("input", () => KB(() => {
+    first("input", oB("ariaInvalid", () => String(!!el.error)), sB("aria-errormessage", () => el.error && el.querySelector(".error")?.id ? el.querySelector(".error")?.id : z), sB("aria-describedby", () => el.description && el.querySelector(".description")?.id ? el.querySelector(".description")?.id : z), oB("ariaExpanded", () => String(isExpanded())), OB("change", () => {
+      input.checkValidity();
+      el.value = input.value;
+      el.error = input.validationMessage ?? "";
+    }), OB("input", () => KB(() => {
       mode.set("editing");
       showPopup.set(true);
       filterText.set(input.value.trim().toLowerCase());
       el.length = input.value.length;
     }))),
-    first(".clear", ...standardClearEffects(el)),
+    first(".clear", nB(() => !!el.length), OB("click", () => el.clear())),
     first('[role="listbox"]', nB(isExpanded), OB("keyup", (e2) => {
       if (e2.key === "Enter") {
         commit(options.get().at(focusIndex.get())?.textContent?.trim() || "");
@@ -1558,4 +1526,4 @@ var calc_table_default = kB("calc-table", {
   ];
 });
 
-//# debugId=D67188CF369AA9C964756E2164756E21
+//# debugId=542CEEECD02F4EDE64756E2164756E21

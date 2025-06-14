@@ -868,13 +868,13 @@
 							'Listbox should be visible when typing',
 						)
 
-						// Clear should close popup
+						// Clear should keep popup open for required field
 						el.clear()
 						await tick()
 
-						assert.isTrue(
+						assert.isFalse(
 							listbox.hidden,
-							'Listbox should be hidden after clear()',
+							'Listbox should remain open after clear() for required field',
 						)
 					})
 

@@ -2,7 +2,6 @@ import {
 	type Component,
 	component,
 	computed,
-	fromEvent,
 	on,
 	RESET,
 	setAttribute,
@@ -11,6 +10,7 @@ import {
 	show,
 	UNSET,
 } from '../../..'
+import { createClearFunction } from '../../functions/shared/clear-input'
 
 export type InputTextboxProps = {
 	value: string
@@ -23,27 +23,8 @@ export type InputTextboxProps = {
 export default component<InputTextboxProps>(
 	'input-textbox',
 	{
-		value: fromEvent<
-			string,
-			HTMLInputElement | HTMLTextAreaElement,
-			'change',
-			Component<InputTextboxProps>
-		>(
-			'input, textarea',
-			'change',
-			(el, source) => {
-				source.checkValidity()
-				el.error = source.validationMessage
-				return source.value
-			},
-			'',
-		),
-		length: fromEvent<
-			number,
-			HTMLInputElement | HTMLTextAreaElement,
-			'input',
-			Component<InputTextboxProps>
-		>('input, textarea', 'input', (_, source) => source.value.length, 0),
+		value: '',
+		length: 0,
 		error: RESET,
 		description: RESET,
 		clear() {},
@@ -55,10 +36,10 @@ export default component<InputTextboxProps>(
 		if (!input) throw new Error('No Input or textarea element found')
 
 		// Add clear method to component using shared functionality
-		el.clear = () => {
-			input.value = ''
-			input.dispatchEvent(new Event('change'))
-		}
+		el.clear = createClearFunction(input)
+
+		// Set initial error state (browsers don't show validation errors until first interaction)
+		el.error = ''
 
 		// If there's a description with data-remaining attribute we set a computed signal to update the description text
 		const description = el.querySelector<HTMLElement>('.description')
@@ -74,6 +55,7 @@ export default component<InputTextboxProps>(
 			)
 		}
 		const errorId = el.querySelector('.error')?.id
+		const descriptionId = description?.id
 
 		return [
 			// Effects and event listeners on component
@@ -92,8 +74,16 @@ export default component<InputTextboxProps>(
 					el.error && errorId ? errorId : UNSET,
 				),
 				setAttribute('aria-describedby', () =>
-					el.description && description?.id ? description.id : UNSET,
+					el.description && descriptionId ? descriptionId : UNSET,
 				),
+				on('input', () => {
+					el.length = input.value.length
+				}),
+				on('change', () => {
+					input.checkValidity()
+					el.value = input.value
+					el.error = input.validationMessage ?? ''
+				}),
 			),
 
 			// Effects and event listeners on clear button

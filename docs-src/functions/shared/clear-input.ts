@@ -1,18 +1,15 @@
-import { type Component, type FxFunction, batch, on, show } from '../../..'
+import { type Component, type FxFunction, on, show } from '../../..'
 
 /**
  * Creates a clear function for input components that properly handles
- * clearing the native input, custom validity, and component state
+ * clearing the native input, custom validity, and dispatching events
+ * to trigger sensor-based property updates
  *
  * @param {HTMLInputElement | HTMLTextAreaElement} input - The native input or textarea element
- * @param {() => void} update - Function to update component reactive properties
  * @returns {() => void} Clear function that can be assigned to component.clear
  */
 export const createClearFunction =
-	(
-		input: HTMLInputElement | HTMLTextAreaElement,
-		// update: () => void,
-	): (() => void) =>
+	(input: HTMLInputElement | HTMLTextAreaElement): (() => void) =>
 	() => {
 		// Clear native input value
 		input.value = ''
@@ -23,28 +20,10 @@ export const createClearFunction =
 		// Force validation state update
 		input.checkValidity()
 
-		// Update component reactive properties
-		// update()
-	}
-
-/**
- * Standard component state update for clearing basic input components
- *
- * @param {Component<P>} host - The component instance with value, length, error properties
- * @param {HTMLInputElement | HTMLTextAreaElement} input - The native input element for getting validation message
- * @returns {() => void} Function to clear the component state
- */
-export const standardClearUpdate =
-	<P extends { value: string; length: number; error: string }>(
-		host: Component<P>,
-		input: HTMLInputElement | HTMLTextAreaElement,
-	): (() => void) =>
-	() => {
-		batch(() => {
-			host.value = ''
-			host.length = 0
-			host.error = input.validationMessage ?? ''
-		})
+		// Dispatch events to trigger sensor-based property updates
+		// Use both 'input' and 'change' events to ensure all sensors are updated
+		input.dispatchEvent(new Event('input', { bubbles: true }))
+		input.dispatchEvent(new Event('change', { bubbles: true }))
 	}
 
 /**

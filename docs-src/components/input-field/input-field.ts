@@ -43,10 +43,7 @@ const countDecimals = (value: number): number => {
 
 /* === Attribute Parsers === */
 
-const asNumberOrString: AttributeParser<HTMLElement, string | number> = (
-	el,
-	v,
-) => {
+const asNumberOrString: AttributeParser<string | number> = (el, v) => {
 	const input = el.querySelector('input')
 	return input && input.type === 'number'
 		? parseNumber(v, el.hasAttribute('integer'), 0)
@@ -160,15 +157,15 @@ export default component(
 			fns.push(
 				first(
 					'input',
-					on('keydown', (e: Event) => {
-						const { key, shiftKey } = e as KeyboardEvent
+					on('keydown', (e: KeyboardEvent) => {
+						const { key, shiftKey } = e
 						if (['ArrowUp', 'ArrowDown'].includes(key)) {
 							e.stopPropagation()
 							e.preventDefault()
 							const n = shiftKey ? step * 10 : step
 							const newValue = nearestStep(
-								input.valueAsNumber +
-									(key === 'ArrowUp' ? n : -n),
+								input.valueAsNumber
+									+ (key === 'ArrowUp' ? n : -n),
 							)
 							input.value = String(newValue)
 							triggerChange(newValue)
@@ -195,9 +192,9 @@ export default component(
 						setProperty(
 							'disabled',
 							() =>
-								(isNumber(min) ? (el.value as number) : 0) -
-									step <
-								min,
+								(isNumber(min) ? (el.value as number) : 0)
+									- step
+								< min,
 						),
 					),
 					first<HTMLButtonElement>(
@@ -215,9 +212,9 @@ export default component(
 						setProperty(
 							'disabled',
 							() =>
-								(isNumber(max) ? (el.value as number) : 0) +
-									step >
-								max,
+								(isNumber(max) ? (el.value as number) : 0)
+									+ step
+								> max,
 						),
 					),
 				)

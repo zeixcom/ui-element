@@ -1,6 +1,5 @@
 import {
 	type Component,
-	asString,
 	batch,
 	component,
 	effect,
@@ -12,12 +11,9 @@ import {
 	setText,
 	show,
 	state,
+	UNSET,
 } from '../../..'
-import {
-	createClearFunction,
-	standardClearEffects,
-} from '../../functions/shared/clear-input'
-import { standardInputEffects } from '../../functions/shared/input-effects'
+import { createClearFunction } from '../../functions/shared/clear-input'
 
 export type InputComboboxProps = {
 	value: string
@@ -32,7 +28,7 @@ type ComboboxMode = 'idle' | 'editing' | 'selected'
 export default component<InputComboboxProps>(
 	'input-combobox',
 	{
-		value: asString(),
+		value: '',
 		length: 0,
 		error: RESET,
 		description: RESET,
@@ -56,6 +52,11 @@ export default component<InputComboboxProps>(
 		// Internal function
 		const commit = (value: string) => {
 			input.value = value
+			// Clear any custom validity messages
+			input.setCustomValidity('')
+			// Force validation state update
+			input.checkValidity()
+
 			batch(() => {
 				// Set mode to selected when input is changed
 				mode.set('selected')
@@ -120,13 +121,23 @@ export default component<InputComboboxProps>(
 			// Effects and event listeners on input
 			first(
 				'input',
-				...standardInputEffects(
-					el,
-					input,
-					el.querySelector('.error')?.id,
-					el.querySelector('.description')?.id,
+				setProperty('ariaInvalid', () => String(!!el.error)),
+				setAttribute('aria-errormessage', () =>
+					el.error && el.querySelector('.error')?.id
+						? el.querySelector('.error')?.id
+						: UNSET,
+				),
+				setAttribute('aria-describedby', () =>
+					el.description && el.querySelector('.description')?.id
+						? el.querySelector('.description')?.id
+						: UNSET,
 				),
 				setProperty('ariaExpanded', () => String(isExpanded())),
+				on('change', () => {
+					input.checkValidity()
+					el.value = input.value
+					el.error = input.validationMessage ?? ''
+				}),
 				on('input', () =>
 					batch(() => {
 						// Set mode to editing when typing
@@ -139,7 +150,11 @@ export default component<InputComboboxProps>(
 			),
 
 			// Effects and event listeners on clear button
-			first<HTMLButtonElement>('.clear', ...standardClearEffects(el)),
+			first(
+				'.clear',
+				show(() => !!el.length),
+				on('click', () => el.clear()),
+			),
 
 			// Effect on listbox
 			first(
