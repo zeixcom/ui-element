@@ -13,7 +13,7 @@ description: 'Components are a proven way to reduce complexity, encourage reuse,
 
 <section>
 
-## Why Components
+## Why Components?
 
 The idea of organizing user interfaces into components became mainstream with React over a decade ago, when Pete Hunt explained its core benefit: **reduce coupling, increase cohesion**.
 

@@ -136,10 +136,94 @@ Their underlying reactivity systems track dependencies, re-run derivations, and 
 
 ```js
 // React component
+import React, { useState, useMemo } from 'react'
+
+function GreetingConfig() {
+	const [first, setFirst] = useState('')
+	const [last, setLast] = useState('')
+	const [full, setFull] = useState(false)
+
+	const displayName = useMemo(() => {
+		return full ? `${first} ${last}` : first
+	}, [first, last, full])
+
+	const userName = useMemo(() => {
+		return `${first[0] ?? ''}${last}`.toLowerCase()
+	}, [first, last])
+
+	return (
+		<div>
+			<label>
+				First name
+				<input
+					type="text"
+					value={first}
+					onChange={e => setFirst(e.target.value)}
+				/>
+			</label>
+			<label>
+				Last name
+				<input
+					type="text"
+					value={last}
+					onChange={e => setLast(e.target.value)}
+				/>
+			</label>
+			<label>
+				<input
+					type="checkbox"
+					checked={full}
+					onChange={e => setFull(e.target.checked)}
+				/>
+				Use full name as display name
+			</label>
+			<p>
+				Display name: <span>{displayName}</span>
+			</p>
+			<p>
+				User name: <span>{userName}</span>
+			</p>
+		</div>
+	)
+}
 ```
 
 ```js
 // Vue component
+<template>
+	<div>
+		<label>
+			First name
+			<input v-model="first" type="text" />
+		</label>
+		<label>
+			Last name
+			<input v-model="last" type="text" />
+		</label>
+		<label>
+			<input v-model="full" type="checkbox" />
+			Use full name as display name
+		</label>
+		<p>Display name: <span>{{ displayName }}</span></p>
+		<p>User name: <span>{{ userName }}</span></p>
+	</div>
+</template>
+
+<script setup>
+	import { ref, computed } from 'vue'
+
+	const first = ref('')
+	const last = ref('')
+	const full = ref(false)
+
+	const displayName = computed(() => {
+		return full.value ? `${first.value} ${last.value}` : first.value
+	})
+
+	const userName = computed(() => {
+		return `${first.value[0] ?? ''}${last.value}`.toLowerCase()
+	})
+</script>
 ```
 
 These solutions work well and have powered countless applications. However, they come with trade-offs that may not fit every project:
@@ -196,16 +280,19 @@ effect(() => {
 
 Notice:
 
-- When you change just the last name: The effect that depends on `displayName` will only run if the checkbox is checked.
-- When you change just the first name: The effect that depends on `userName` will only run if the the first letter of the first name changes.
-- No unnecessary recalculations and DOM updates
+- All necessary recalculations and DOM updates are performed automatically.
+- Unnecessary updates are avoided:
+    - When you change the last name, the effect that depends on `displayName` will only run if the checkbox is checked.
+    - When you change the first name, the effect that depends on `userName` will only run if the the first letter of the first name changes.
+    - When you toggle the full name checkbox, only the effect that depends on `fullName` will run.
 
 This is **fine-grained reactivity** – the system tracks exactly what depends on what and updates only what's necessary.
 
 This model:
 
 - Works with server-rendered HTML.
-- Doesn't require hydration or reconciliation.
+- Hydration is done by the browser.
+- Performs only minimal reconciliation in the signal graph.
 - Keeps JavaScript optional for initial rendering.
 - Makes each state update cheap and predictable.
 
@@ -257,6 +344,6 @@ In the next article, we'll dive into **how UIElement implements reactivity** –
 - Updates only what changed,
 - And integrates seamlessly into Web Components and HTML-first user interfaces.
 
-Stay tuned—we'll revisit our example and show how reactivity becomes almost effortless with signals and effects.
+Stay tuned – we'll revisit our example and show how reactivity becomes almost effortless with signals and effects.
 
 </section>
