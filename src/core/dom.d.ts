@@ -1,6 +1,6 @@
 import { type Cleanup, type Computed, type Signal } from '@zeix/cause-effect';
 import type { Component, ComponentProps, SignalProducer } from '../component';
-type ElementEventMap<E extends Element> = E extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement ? Pick<HTMLElementEventMap, 'input' | 'change' | 'focus' | 'blur' | 'invalid'> : E extends HTMLFormElement ? Pick<HTMLElementEventMap, 'submit' | 'reset' | 'formdata'> : E extends HTMLButtonElement ? Pick<HTMLElementEventMap, 'click' | 'focus' | 'blur'> : E extends HTMLAnchorElement ? Pick<HTMLElementEventMap, 'click' | 'focus' | 'blur'> : E extends HTMLDetailsElement ? Pick<HTMLElementEventMap, 'toggle'> : E extends HTMLDialogElement ? Pick<HTMLElementEventMap, 'close' | 'cancel'> : E extends HTMLMediaElement ? Pick<HTMLElementEventMap, 'loadstart' | 'loadeddata' | 'canplay' | 'play' | 'pause' | 'ended' | 'volumechange'> : E extends HTMLImageElement ? Pick<HTMLElementEventMap, 'load' | 'error'> : HTMLElementEventMap;
+type ElementEventMap<E extends Element> = E extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement ? Pick<HTMLElementEventMap, 'input' | 'change' | 'focus' | 'blur' | 'invalid' | 'keydown' | 'keyup' | 'keypress' | 'click' | 'mousedown' | 'mouseup' | 'paste' | 'cut' | 'copy'> : E extends HTMLFormElement ? Pick<HTMLElementEventMap, 'submit' | 'reset' | 'formdata'> : E extends HTMLButtonElement ? Pick<HTMLElementEventMap, 'click' | 'focus' | 'blur' | 'keydown' | 'keyup' | 'keypress'> : E extends HTMLAnchorElement ? Pick<HTMLElementEventMap, 'click' | 'focus' | 'blur'> : E extends HTMLDetailsElement ? Pick<HTMLElementEventMap, 'toggle'> : E extends HTMLDialogElement ? Pick<HTMLElementEventMap, 'close' | 'cancel'> : E extends HTMLMediaElement ? Pick<HTMLElementEventMap, 'loadstart' | 'loadeddata' | 'canplay' | 'play' | 'pause' | 'ended' | 'volumechange'> : E extends HTMLImageElement ? Pick<HTMLElementEventMap, 'load' | 'error'> : HTMLElementEventMap;
 type ElementEventType<E extends Element, K extends string> = K extends keyof ElementEventMap<E> ? ElementEventMap<E>[K] : Event;
 type ValidEventName<E extends Element> = keyof ElementEventMap<E> & string;
 type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
@@ -47,12 +47,12 @@ declare const fromChildren: <T extends {}, E extends Element = HTMLElement>(sele
  * Attach an event listener to an element
  *
  * @since 0.12.0
- * @param {string} type - event type to listen for
- * @param {(event: Evt) => void} listener - event listener
+ * @param {K} type - event type to listen for (type-safe based on element type)
+ * @param {(event: ElementEventType<E, K>) => void} listener - event listener
  * @param {boolean | AddEventListenerOptions} options - event listener options
  * @throws {TypeError} - if the provided handler is not an event listener or a provider function
  */
-declare const on: <Evt extends Event>(type: string, listener: (event: Evt) => void, options?: boolean | AddEventListenerOptions) => <P extends ComponentProps>(host: Component<P>, target?: Element) => Cleanup;
+declare const on: <E extends Element, K extends ValidEventName<E>>(type: K, listener: (event: ElementEventType<E, K>) => void, options?: boolean | AddEventListenerOptions) => <P extends ComponentProps>(host: Component<P>, target?: E) => Cleanup;
 /**
  * Create a computed signal that listens to an event on an element
  *
