@@ -1,4 +1,4 @@
-import type { AttributeParser } from '../component';
+import type { AttributeParser } from '../component'
 /**
  * Parse a boolean attribute as an actual boolean value
  *
@@ -7,7 +7,7 @@ import type { AttributeParser } from '../component';
  * @param {string} value - maybe string value
  * @returns {boolean}
  */
-declare const asBoolean: AttributeParser<boolean>;
+declare const asBoolean: AttributeParser<boolean>
 /**
  * Parse an attribute as as number forced to integer with a fallback
  *
@@ -17,7 +17,7 @@ declare const asBoolean: AttributeParser<boolean>;
  * @param {number} [fallback=0] - fallback value
  * @returns {AttributeParser<number>} parser function
  */
-declare const asInteger: (fallback?: number) => AttributeParser<number>;
+declare const asInteger: (fallback?: number) => AttributeParser<number>
 /**
  * Parse an attribute as as number with a fallback
  *
@@ -25,7 +25,7 @@ declare const asInteger: (fallback?: number) => AttributeParser<number>;
  * @param {number} [fallback=0] - fallback value
  * @returns {AttributeParser<number>} parser function
  */
-declare const asNumber: (fallback?: number) => AttributeParser<number>;
+declare const asNumber: (fallback?: number) => AttributeParser<number>
 /**
  * Parse an attribute as a string with a fallback
  *
@@ -33,7 +33,7 @@ declare const asNumber: (fallback?: number) => AttributeParser<number>;
  * @param {string} [fallback=''] - fallback value
  * @returns {AttributeParser<string>} parser function
  */
-declare const asString: (fallback?: string) => AttributeParser<string>;
+declare const asString: (fallback?: string) => AttributeParser<string>
 /**
  * Parse an attribute as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option
  *
@@ -41,7 +41,7 @@ declare const asString: (fallback?: string) => AttributeParser<string>;
  * @param {string[]} valid - array of valid values
  * @returns {AttributeParser<string>} parser function
  */
-declare const asEnum: (valid: [string, ...string[]]) => AttributeParser<string>;
+declare const asEnum: (valid: [string, ...string[]]) => AttributeParser<string>
 /**
  * Parse an attribute as a JSON serialized object with a fallback
  *
@@ -51,5 +51,5 @@ declare const asEnum: (valid: [string, ...string[]]) => AttributeParser<string>;
  * @throws {ReferenceError} if the value and fallback are both null or undefined
  * @throws {SyntaxError} if the value is not a valid JSON object
  */
-declare const asJSON: <T extends {}>(fallback: T) => AttributeParser<T>;
-export { asBoolean, asInteger, asNumber, asString, asEnum, asJSON };
+declare const asJSON: <T extends {}>(fallback: T) => AttributeParser<T>
+export { asBoolean, asInteger, asNumber, asString, asEnum, asJSON }

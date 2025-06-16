@@ -1,4 +1,11 @@
-import { type Component, asInteger, component, on, setText } from '../../../'
+import {
+	type Component,
+	RESET,
+	asInteger,
+	component,
+	on,
+	setText,
+} from '../../..'
 
 export type MyCounterProps = {
 	count: number
@@ -7,24 +14,14 @@ export type MyCounterProps = {
 export default component(
 	'my-counter',
 	{
-		count: asInteger(),
+		count: asInteger(RESET),
 	},
 	(el, { first }) => [
-		first('.count', setText('count')),
+		first('span', setText('count')),
 		first(
-			'.parity',
-			setText(() => (el.count % 2 ? 'odd' : 'even')),
-		),
-		first(
-			'.increment',
+			'button',
 			on('click', () => {
 				el.count++
-			}),
-		),
-		first(
-			'.decrement',
-			on('click', () => {
-				el.count--
 			}),
 		),
 	],
