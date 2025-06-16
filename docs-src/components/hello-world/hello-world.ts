@@ -1,4 +1,4 @@
-import { type Component, component, on, RESET, setText } from '../../../'
+import { type Component, RESET, component, on, setText } from '../../../'
 
 export type HelloWorldProps = {
 	name: string

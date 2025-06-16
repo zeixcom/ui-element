@@ -6,7 +6,7 @@ component-demo {
 
 	.preview {
 		border: 1px dotted var(--color-border);
-		border-radius: var(--space-xs); 
+		border-radius: var(--space-xs);
 		padding: var(--space-s);
 	}
 }

@@ -1,6 +1,6 @@
 spin-button {
 	display: inline-flex;
-    max-width: 7rem;
+	max-width: 7rem;
 
 	.value {
 		box-sizing: border-box;

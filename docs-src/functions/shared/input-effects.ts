@@ -1,9 +1,9 @@
 import {
 	type Component,
 	type FxFunction,
+	UNSET,
 	setAttribute,
 	setProperty,
-	UNSET,
 } from '../../..'
 
 /**

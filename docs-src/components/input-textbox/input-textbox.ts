@@ -1,14 +1,14 @@
 import {
 	type Component,
+	RESET,
+	UNSET,
 	component,
 	computed,
 	on,
-	RESET,
 	setAttribute,
 	setProperty,
 	setText,
 	show,
-	UNSET,
 } from '../../..'
 import { createClearFunction } from '../../functions/shared/clear-input'
 

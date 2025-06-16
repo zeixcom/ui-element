@@ -1,24 +1,24 @@
 import {
+	type Cleanup,
 	type MaybeSignal,
 	type Signal,
-	type Cleanup,
 	UNSET,
-	isFunction,
 	isComputed,
+	isFunction,
 	isSignal,
 	isState,
 	toSignal,
 } from '@zeix/cause-effect'
 
+import { observeSubtree } from './core/dom'
 import {
 	DEV_MODE,
-	isElement,
 	elementName,
+	isElement,
 	log,
 	typeString,
 	valueString,
 } from './core/util'
-import { observeSubtree } from './core/dom'
 
 /* === Types === */
 
@@ -39,8 +39,8 @@ type ValidPropertyKey<T> = T extends keyof HTMLElement | ReservedWords
 
 type ComponentProps = { [K in string as ValidPropertyKey<K>]: {} }
 
-type Component<P extends ComponentProps> = HTMLElement
-	& P & {
+type Component<P extends ComponentProps> = HTMLElement &
+	P & {
 		// Common Web Component lifecycle properties
 		adoptedCallback?(): void
 		attributeChangedCallback(

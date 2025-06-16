@@ -1,4 +1,4 @@
-import { type MaybeSignal, type Signal, type Cleanup } from '@zeix/cause-effect';
+import { type Cleanup, type MaybeSignal, type Signal } from '@zeix/cause-effect';
 type ReservedWords = 'constructor' | 'prototype' | '__proto__' | 'toString' | 'valueOf' | 'hasOwnProperty' | 'isPrototypeOf' | 'propertyIsEnumerable' | 'toLocaleString';
 type ValidPropertyKey<T> = T extends keyof HTMLElement | ReservedWords ? never : T;
 type ComponentProps = {

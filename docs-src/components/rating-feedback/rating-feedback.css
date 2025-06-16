@@ -58,7 +58,7 @@ rating-feedback {
 
 	textarea {
 		resize: vertical;
-        width: 100%;
+		width: 100%;
 		display: inline-block;
 		box-sizing: border-box;
 		background: var(--color-input);
@@ -66,7 +66,7 @@ rating-feedback {
 		border: 1px solid var(--color-border);
 		padding: var(--space-xs) var(--space-xxs);
 		font-size: var(--font-size-m);
-        line-height: var(--line-height-m);
+		line-height: var(--line-height-m);
 		margin-bottom: var(--space-xs);
 	}
 }

@@ -1,13 +1,13 @@
 import {
 	type Component,
-	dangerouslySetInnerHTML,
+	UNSET,
 	component,
 	computed,
-	state,
+	dangerouslySetInnerHTML,
 	setProperty,
 	setText,
+	state,
 	toggleClass,
-	UNSET,
 } from '../../..'
 import { asURL } from '../../functions/attribute-parser/as-url'
 import { fetchWithCache } from '../../functions/shared/fetch-with-cache'

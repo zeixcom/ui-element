@@ -233,9 +233,9 @@
 <span class="line"><span style="color:#F8F8F2">								parent.</span><span style="color:#A6E22E">querySelectorAll</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tr'</span><span style="color:#F8F8F2">).length </span><span style="color:#F92672">+</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">							)</span></span>
 <span class="line"><span style="color:#F8F8F2">							row.dataset[</span><span style="color:#E6DB74">'key'</span><span style="color:#F8F8F2">] </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> rowKey</span></span>
-<span class="line"><span style="color:#F8F8F2">							row</span></span>
-<span class="line"><span style="color:#F8F8F2">								.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">								?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(document.</span><span style="color:#A6E22E">createTextNode</span><span style="color:#F8F8F2">(rowKey))</span></span>
+<span class="line"><span style="color:#F8F8F2">							row.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">								document.</span><span style="color:#A6E22E">createTextNode</span><span style="color:#F8F8F2">(rowKey),</span></span>
+<span class="line"><span style="color:#F8F8F2">							)</span></span>
 <span class="line"><span style="color:#F92672">							return</span><span style="color:#F8F8F2"> row</span></span>
 <span class="line"><span style="color:#F8F8F2">						},</span></span>
 <span class="line"><span style="color:#A6E22E">						resolve</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
@@ -269,9 +269,9 @@
 <span class="line"><span style="color:#F8F8F2">									parent.</span><span style="color:#A6E22E">querySelectorAll</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'th'</span><span style="color:#F8F8F2">).length </span><span style="color:#F92672">-</span><span style="color:#AE81FF"> 1</span></span>
 <span class="line"><span style="color:#F8F8F2">								]</span></span>
 <span class="line"><span style="color:#F8F8F2">							colSums.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(colKey, </span><span style="color:#A6E22E">state</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">))</span></span>
-<span class="line"><span style="color:#F8F8F2">							cell</span></span>
-<span class="line"><span style="color:#F8F8F2">								.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">								?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(document.</span><span style="color:#A6E22E">createTextNode</span><span style="color:#F8F8F2">(colKey))</span></span>
+<span class="line"><span style="color:#F8F8F2">							cell.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">								document.</span><span style="color:#A6E22E">createTextNode</span><span style="color:#F8F8F2">(colKey),</span></span>
+<span class="line"><span style="color:#F8F8F2">							)</span></span>
 <span class="line"><span style="color:#F92672">							return</span><span style="color:#F8F8F2"> cell</span></span>
 <span class="line"><span style="color:#F8F8F2">						},</span></span>
 <span class="line"><span style="color:#F8F8F2">					},</span></span>
@@ -303,13 +303,9 @@
 <span class="line"><span style="color:#E6DB74">									'No input found in cell template'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">								)</span></span>
 <span class="line"><span style="color:#F8F8F2">							input.dataset[</span><span style="color:#E6DB74">'key'</span><span style="color:#F8F8F2">] </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> colKey</span></span>
-<span class="line"><span style="color:#F8F8F2">							cell</span></span>
-<span class="line"><span style="color:#F8F8F2">								.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">								?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">									document.</span><span style="color:#A6E22E">createTextNode</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">										`</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">colKey</span><span style="color:#F92672">}${</span><span style="color:#F8F8F2">rowKey</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">									),</span></span>
-<span class="line"><span style="color:#F8F8F2">								)</span></span>
+<span class="line"><span style="color:#F8F8F2">							cell.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">								document.</span><span style="color:#A6E22E">createTextNode</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">`</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">colKey</span><span style="color:#F92672">}${</span><span style="color:#F8F8F2">rowKey</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">							)</span></span>
 <span class="line"><span style="color:#F92672">							return</span><span style="color:#F8F8F2"> cell</span></span>
 <span class="line"><span style="color:#F8F8F2">						},</span></span>
 <span class="line"><span style="color:#F8F8F2">					},</span></span>

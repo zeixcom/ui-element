@@ -10,9 +10,9 @@ import {
 	show,
 } from '../../..'
 import type { InputButtonProps } from '../input-button/input-button'
-import type { InputTextboxProps } from '../input-textbox/input-textbox'
-import type { InputRadiogroupProps } from '../input-radiogroup/input-radiogroup'
 import type { InputCheckboxProps } from '../input-checkbox/input-checkbox'
+import type { InputRadiogroupProps } from '../input-radiogroup/input-radiogroup'
+import type { InputTextboxProps } from '../input-textbox/input-textbox'
 
 export type TodoAppProps = {
 	active: HTMLElement[]
@@ -64,9 +64,9 @@ export default component(
 							throw new Error(
 								'Invalid template for list item; expected <li>',
 							)
-						li
-							.querySelector('slot')
-							?.replaceWith(String(input.value.trim()))
+						li.querySelector('slot')?.replaceWith(
+							String(input.value.trim()),
+						)
 						list.append(li)
 						input.clear()
 					})

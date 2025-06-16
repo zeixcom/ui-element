@@ -26,9 +26,9 @@ export const manageFocusOnKeydown = (
 				index.update(v =>
 					clamp(
 						v +
-							(e.key === 'ArrowRight' || e.key === 'ArrowDown' ?
-								1
-							:	-1),
+							(e.key === 'ArrowRight' || e.key === 'ArrowDown'
+								? 1
+								: -1),
 						0,
 						elements.length - 1,
 					),

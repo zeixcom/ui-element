@@ -1,26 +1,26 @@
 import {
-	type Signal,
 	type Cleanup,
-	isFunction,
+	type Signal,
+	UNSET,
 	effect,
 	enqueue,
+	isFunction,
 	isSignal,
 	isState,
-	UNSET,
 } from '@zeix/cause-effect'
 
 import {
-	type ComponentProps,
 	type Component,
+	type ComponentProps,
 	type FxFunction,
 	RESET,
 } from '../component'
 import {
 	DEV_MODE,
-	isString,
-	elementName,
-	log,
 	LOG_ERROR,
+	elementName,
+	isString,
+	log,
 	valueString,
 } from '../core/util'
 
@@ -261,9 +261,9 @@ const insertOrRemoveElement =
 				// Negative diff => remove element
 				enqueue(() => {
 					if (
-						inserter
-						&& (inserter.position === 'afterbegin'
-							|| inserter.position === 'beforeend')
+						inserter &&
+						(inserter.position === 'afterbegin' ||
+							inserter.position === 'beforeend')
 					) {
 						for (let i = 0; i > diff; i--) {
 							if (inserter.position === 'afterbegin')
@@ -455,8 +455,8 @@ const dangerouslySetInnerHTML = <
 	updateElement(s, {
 		op: 'h',
 		read: el =>
-			(el.shadowRoot || !options.shadowRootMode ? el : null)?.innerHTML
-			?? '',
+			(el.shadowRoot || !options.shadowRootMode ? el : null)?.innerHTML ??
+			'',
 		update: (el, html) => {
 			const { shadowRootMode, allowScripts } = options
 			if (!html) {

@@ -11,7 +11,7 @@ callout-box {
 
 	&::before {
 		position: absolute;
-		content: 'ℹ️';
+		content: "ℹ️";
 		left: var(--space-s);
 	}
 
@@ -21,65 +21,64 @@ callout-box {
 
 	&.tip {
 		background: #aaca95;
-        border-color: #5d9934;
+		border-color: #5d9934;
 
 		&::before {
-			content: '💡';
+			content: "💡";
 		}
 	}
 
 	&.note {
 		background: var(--color-gray-20);
-        border-color: var(--color-gray-40);
+		border-color: var(--color-gray-40);
 
 		&::before {
-			content: '💬';
+			content: "💬";
 		}
 	}
 
 	&.caution {
 		background: var(--color-gray-20);
-        border-color: var(--color-gray-40);
+		border-color: var(--color-gray-40);
 
 		&::before {
-			content: '⚠️';
+			content: "⚠️";
 		}
 	}
 
 	&.danger {
 		background: #fdab92;
-        border-color: #e55a32;
+		border-color: #e55a32;
 
 		&::before {
-			content: '🚨';
+			content: "🚨";
 		}
 	}
 }
 
 @media (prefers-color-scheme: dark) {
-
 	callout-box {
 		background: #18338f;
-        border-color: #325df1;
+		border-color: #325df1;
 
 		&.tip {
-            background: #234905;
-            border-color: #417f11;
-        }
+			background: #234905;
+			border-color: #417f11;
+		}
 
 		&.note {
-            background: var(--color-gray-80);
-            border-color: var(--color-gray-60);
-        }
+			background: var(--color-gray-80);
+			border-color: var(--color-gray-60);
+		}
 
 		&.caution {
-            background: var(--color-gray-80);
-            border-color: var(--color-gray-60);
-        }
+			background: var(--color-gray-80);
+			border-color: var(--color-gray-60);
+		}
 
 		&.danger {
-            background: #792109;
-            border-color: #c83c15;
-        }
+			background: #792109;
+			border-color: #c83c15;
+		}
 	}
 }

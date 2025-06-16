@@ -1,11 +1,11 @@
 rating-stars {
 	display: inline-block;
-	
+
 	& fieldset {
 		display: flex;
 		border: none;
-        margin: 0;
-        padding: 0;
+		margin: 0;
+		padding: 0;
 		justify-content: center;
 	}
 

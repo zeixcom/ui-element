@@ -4,13 +4,13 @@ import {
 	type MaybeSignal,
 	type Signal,
 	type Watcher,
+	TYPE_COMPUTED,
+	UNSET,
 	computed,
 	isFunction,
 	notify,
 	subscribe,
 	toSignal,
-	TYPE_COMPUTED,
-	UNSET,
 } from '@zeix/cause-effect'
 
 import type { Component, ComponentProps, SignalProducer } from '../component'

@@ -1,17 +1,17 @@
 import {
 	type Component,
+	RESET,
+	UNSET,
 	batch,
 	component,
 	effect,
 	on,
-	RESET,
 	selection,
 	setAttribute,
 	setProperty,
 	setText,
 	show,
 	state,
-	UNSET,
 } from '../../..'
 import { createClearFunction } from '../../functions/shared/clear-input'
 
@@ -176,8 +176,8 @@ export default component<InputComboboxProps>(
 							.get()
 							.findIndex(option =>
 								(
-									option.textContent?.trim().toLowerCase()
-									|| ''
+									option.textContent?.trim().toLowerCase() ||
+									''
 								).startsWith(key),
 							)
 						if (nextIndex !== -1) focusIndex.set(nextIndex)
@@ -190,8 +190,8 @@ export default component<InputComboboxProps>(
 				'[role="option"]',
 				setProperty('ariaSelected', target =>
 					String(
-						target.textContent?.trim().toLowerCase()
-							=== el.value.toLowerCase(),
+						target.textContent?.trim().toLowerCase() ===
+							el.value.toLowerCase(),
 					),
 				),
 				show(target =>
