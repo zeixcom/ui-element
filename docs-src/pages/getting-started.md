@@ -102,11 +102,11 @@ Include the following in your server-rendered HTML:
 
 ```html
 <hello-world>
-	<label>
-		Your name<br />
-		<input type="text" />
-	</label>
-	<p>Hello, <span>World</span>!</p>
+  <label>
+    Your name<br />
+    <input type="text" />
+  </label>
+  <p>Hello, <span>World</span>!</p>
 </hello-world>
 ```
 
@@ -116,32 +116,32 @@ Save the following inside a `<script type="module">` tag or an external JavaScri
 
 ```html
 <script type="module">
-	import {
-		component,
-		on,
-		RESET,
-		setText,
-	} from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
+  import {
+    component,
+    on,
+    RESET,
+    setText,
+  } from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
 
-	component(
-		'hello-world',
-		{
-			// Fall back to server-rendered content
-			name: RESET,
-		},
-		(el, { first }) => [
-			// Update content dynamically based on the "name" signal
-			first('span', setText('name')),
+  component(
+    'hello-world',
+    {
+      // Fall back to server-rendered content
+      name: RESET,
+    },
+    (el, { first }) => [
+      // Update content dynamically based on the "name" signal
+      first('span', setText('name')),
 
-			// Handle user input to change the "name"
-			first(
-				'input',
-				on('input', e => {
-					el.name = e.target.value || RESET
-				}),
-			),
-		],
-	)
+      // Handle user input to change the "name"
+      first(
+        'input',
+        on('input', e => {
+          el.name = e.target.value || RESET
+        }),
+      ),
+    ],
+  )
 </script>
 ```
 
@@ -160,7 +160,7 @@ Let's break down each part of your `<hello-world>` component to understand how U
 
 ```js
 {
-	name: RESET
+  name: RESET
 }
 ```
 

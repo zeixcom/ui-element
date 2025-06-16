@@ -123,7 +123,7 @@
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">	// Component setup</span></span>
+<span class="line"><span style="color:#88846F">  // Component setup</span></span>
 <span class="line"><span style="color:#F8F8F2">])</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
@@ -179,16 +179,16 @@
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">	'my-component'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">	{</span></span>
-<span class="line"><span style="color:#F8F8F2">		count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#88846F">// Initial value of "count" signal</span></span>
-<span class="line"><span style="color:#A6E22E">		isEven</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">(el.count </span><span style="color:#F92672">%</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Computed signal based on "count" signal</span></span>
-<span class="line"><span style="color:#F8F8F2">		value: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">5</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Parse "value" attribute as integer defaulting to 5</span></span>
-<span class="line"><span style="color:#F8F8F2">		name: </span><span style="color:#A6E22E">consume</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display-name'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Consume "display-name" signal from closest context provider</span></span>
-<span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">	() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">		// Component setup</span></span>
-<span class="line"><span style="color:#F8F8F2">	],</span></span>
+<span class="line"><span style="color:#E6DB74">  'my-component'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  {</span></span>
+<span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#88846F">// Initial value of "count" signal</span></span>
+<span class="line"><span style="color:#A6E22E">    isEven</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">(el.count </span><span style="color:#F92672">%</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Computed signal based on "count" signal</span></span>
+<span class="line"><span style="color:#F8F8F2">    value: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">5</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Parse "value" attribute as integer defaulting to 5</span></span>
+<span class="line"><span style="color:#F8F8F2">    name: </span><span style="color:#A6E22E">consume</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display-name'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Consume "display-name" signal from closest context provider</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
+<span class="line"><span style="color:#F8F8F2">  () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#88846F">    // Component setup</span></span>
+<span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
@@ -237,24 +237,24 @@
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">	'my-component'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">	{</span></span>
-<span class="line"><span style="color:#F8F8F2">		count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">		emit</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'update-count'</span><span style="color:#F8F8F2">, el.count), </span><span style="color:#88846F">// Emit custom event</span></span>
-<span class="line"><span style="color:#A6E22E">		provide</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Provide context</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">			'.increment'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">				el.count</span><span style="color:#F92672">++</span></span>
-<span class="line"><span style="color:#F8F8F2">			}), </span><span style="color:#88846F">// Add click event listener</span></span>
-<span class="line"><span style="color:#F8F8F2">		),</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">			'.count'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">			setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Apply effect to update text</span></span>
-<span class="line"><span style="color:#F8F8F2">		),</span></span>
-<span class="line"><span style="color:#F8F8F2">	],</span></span>
+<span class="line"><span style="color:#E6DB74">  'my-component'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  {</span></span>
+<span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
+<span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">    emit</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'update-count'</span><span style="color:#F8F8F2">, el.count), </span><span style="color:#88846F">// Emit custom event</span></span>
+<span class="line"><span style="color:#A6E22E">    provide</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Provide context</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">      '.increment'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">      on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">        el.count</span><span style="color:#F92672">++</span></span>
+<span class="line"><span style="color:#F8F8F2">      }), </span><span style="color:#88846F">// Add click event listener</span></span>
+<span class="line"><span style="color:#F8F8F2">    ),</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">      '.count'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">      setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Apply effect to update text</span></span>
+<span class="line"><span style="color:#F8F8F2">    ),</span></span>
+<span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
@@ -278,16 +278,16 @@
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">	// Setup logic</span></span>
-<span class="line"><span style="color:#F8F8F2">	() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> observer </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> IntersectionObserver</span><span style="color:#F8F8F2">(([</span><span style="color:#FD971F;font-style:italic">entry</span><span style="color:#F8F8F2">]) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#88846F">			// Do something</span></span>
-<span class="line"><span style="color:#F8F8F2">		})</span></span>
-<span class="line"><span style="color:#F8F8F2">		observer.</span><span style="color:#A6E22E">observe</span><span style="color:#F8F8F2">(el)</span></span>
+<span class="line"><span style="color:#88846F">  // Setup logic</span></span>
+<span class="line"><span style="color:#F8F8F2">  () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> observer </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> IntersectionObserver</span><span style="color:#F8F8F2">(([</span><span style="color:#FD971F;font-style:italic">entry</span><span style="color:#F8F8F2">]) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">      // Do something</span></span>
+<span class="line"><span style="color:#F8F8F2">    })</span></span>
+<span class="line"><span style="color:#F8F8F2">    observer.</span><span style="color:#A6E22E">observe</span><span style="color:#F8F8F2">(el)</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#88846F">		// Cleanup logic</span></span>
-<span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> observer.</span><span style="color:#A6E22E">disconnect</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">	},</span></span>
+<span class="line"><span style="color:#88846F">    // Cleanup logic</span></span>
+<span class="line"><span style="color:#F92672">    return</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> observer.</span><span style="color:#A6E22E">disconnect</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">])</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
@@ -360,14 +360,14 @@
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">	'my-component'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">	{</span></span>
-<span class="line"><span style="color:#F8F8F2">		count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(), </span><span style="color:#88846F">// Bundled parser: Convert '42' -> 42</span></span>
-<span class="line"><span style="color:#A6E22E">		date</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Date</span><span style="color:#F8F8F2">(v), </span><span style="color:#88846F">// Custom parser: '2025-02-14' -> Date object</span></span>
-<span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">	() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">		// Component setup</span></span>
-<span class="line"><span style="color:#F8F8F2">	],</span></span>
+<span class="line"><span style="color:#E6DB74">  'my-component'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  {</span></span>
+<span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(), </span><span style="color:#88846F">// Bundled parser: Convert '42' -> 42</span></span>
+<span class="line"><span style="color:#A6E22E">    date</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Date</span><span style="color:#F8F8F2">(v), </span><span style="color:#88846F">// Custom parser: '2025-02-14' -> Date object</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
+<span class="line"><span style="color:#F8F8F2">  () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#88846F">    // Component setup</span></span>
+<span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
@@ -452,19 +452,19 @@
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">	'my-counter'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">	{</span></span>
-<span class="line"><span style="color:#F8F8F2">		count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(),</span></span>
-<span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">			'button'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">				el.count</span><span style="color:#F92672">++</span></span>
-<span class="line"><span style="color:#F8F8F2">			}),</span></span>
-<span class="line"><span style="color:#F8F8F2">		),</span></span>
-<span class="line"><span style="color:#F8F8F2">	],</span></span>
+<span class="line"><span style="color:#E6DB74">  'my-counter'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  {</span></span>
+<span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(),</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
+<span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">      'button'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">      on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">        el.count</span><span style="color:#F92672">++</span></span>
+<span class="line"><span style="color:#F8F8F2">      }),</span></span>
+<span class="line"><span style="color:#F8F8F2">    ),</span></span>
+<span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
@@ -487,33 +487,32 @@
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">	'tab-group'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">	{</span></span>
-<span class="line"><span style="color:#F8F8F2">		selected: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">		// Apply click handler to all buttons</span></span>
-<span class="line"><span style="color:#A6E22E">		all</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">			'[role="tab"]'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">				el.selected </span><span style="color:#F92672">=</span></span>
-<span class="line"><span style="color:#F8F8F2">					e.currentTarget?.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-controls'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span></span>
-<span class="line"><span style="color:#F8F8F2">			}),</span></span>
-<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">				'ariaSelected'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#FD971F;font-style:italic">				target</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> target?.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-controls'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> el.selected,</span></span>
-<span class="line"><span style="color:#F8F8F2">			),</span></span>
-<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tabIndex'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
-<span class="line"><span style="color:#F8F8F2">				target?.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-controls'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> el.selected </span><span style="color:#F92672">?</span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> :</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">			),</span></span>
-<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"><span style="color:#E6DB74">  'tab-group'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  {</span></span>
+<span class="line"><span style="color:#F8F8F2">    selected: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
+<span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#88846F">    // Apply click handler to all buttons</span></span>
+<span class="line"><span style="color:#A6E22E">    all</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">      '[role="tab"]'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">      on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">        el.selected </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.currentTarget?.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-controls'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#F8F8F2">      }),</span></span>
+<span class="line"><span style="color:#A6E22E">      setProperty</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">        'ariaSelected'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">        target</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> target?.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-controls'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> el.selected,</span></span>
+<span class="line"><span style="color:#F8F8F2">      ),</span></span>
+<span class="line"><span style="color:#A6E22E">      setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tabIndex'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
+<span class="line"><span style="color:#F8F8F2">        target?.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-controls'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> el.selected </span><span style="color:#F92672">?</span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> :</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">      ),</span></span>
+<span class="line"><span style="color:#F8F8F2">    ),</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#88846F">		// Apply hidden property to all tabs</span></span>
-<span class="line"><span style="color:#A6E22E">		all</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">			'[role="tabpanel"]'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">			show</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.selected </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> target.id),</span></span>
-<span class="line"><span style="color:#F8F8F2">		),</span></span>
-<span class="line"><span style="color:#F8F8F2">	],</span></span>
+<span class="line"><span style="color:#88846F">    // Apply hidden property to all tabs</span></span>
+<span class="line"><span style="color:#A6E22E">    all</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">      '[role="tabpanel"]'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">      show</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.selected </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> target.id),</span></span>
+<span class="line"><span style="color:#F8F8F2">    ),</span></span>
+<span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
@@ -596,15 +595,15 @@
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">;(</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">	// On the component itself</span></span>
-<span class="line"><span style="color:#A6E22E">	setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'open'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'isOpen'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Set "open" attribute according to "isOpen" signal</span></span>
+<span class="line"><span style="color:#88846F">  // On the component itself</span></span>
+<span class="line"><span style="color:#A6E22E">  setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'open'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'isOpen'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Set "open" attribute according to "isOpen" signal</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#88846F">	// On first element matching ".count"</span></span>
-<span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">		'.count'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">		setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Update text content according to "count" signal</span></span>
-<span class="line"><span style="color:#A6E22E">		toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'even'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'isEven'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Toggle "even" class according to "isEven" signal</span></span>
-<span class="line"><span style="color:#F8F8F2">	),</span></span>
+<span class="line"><span style="color:#88846F">  // On first element matching ".count"</span></span>
+<span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">    '.count'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">    setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Update text content according to "count" signal</span></span>
+<span class="line"><span style="color:#A6E22E">    toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'even'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'isEven'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Toggle "even" class according to "isEven" signal</span></span>
+<span class="line"><span style="color:#F8F8F2">  ),</span></span>
 <span class="line"><span style="color:#F8F8F2">]</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
@@ -702,18 +701,18 @@
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {}, (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> count </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> double </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> count.</span><span style="color:#A6E22E">map</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> v </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">			'.increment'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">				count.</span><span style="color:#A6E22E">update</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F92672"> ++</span><span style="color:#F8F8F2">v)</span></span>
-<span class="line"><span style="color:#F8F8F2">			}),</span></span>
-<span class="line"><span style="color:#F8F8F2">		),</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(count)),</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.double'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(double)),</span></span>
-<span class="line"><span style="color:#F8F8F2">	]</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> count </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> double </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> count.</span><span style="color:#A6E22E">map</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> v </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">  return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">      '.increment'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">      on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">        count.</span><span style="color:#A6E22E">update</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F92672"> ++</span><span style="color:#F8F8F2">v)</span></span>
+<span class="line"><span style="color:#F8F8F2">      }),</span></span>
+<span class="line"><span style="color:#F8F8F2">    ),</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(count)),</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.double'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(double)),</span></span>
+<span class="line"><span style="color:#F8F8F2">  ]</span></span>
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">

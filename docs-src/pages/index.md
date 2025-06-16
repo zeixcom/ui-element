@@ -25,7 +25,7 @@ UIElement is a lightweight TypeScript library (approximately 4kB gzipped) that b
 ```js
 // Transform HTML into reactive components with minimal code
 component('hello-world', { name: RESET }, (el, { first }) => [
-	first('span', setText('name')),
+  first('span', setText('name')),
 ])
 ```
 
@@ -43,7 +43,7 @@ UIElement assumes you start with semantic HTML and want to enhance it with behav
 
 ```html
 <hello-world>
-	<p>Hello, <span>Alice</span>!</p>
+  <p>Hello, <span>Alice</span>!</p>
 </hello-world>
 ```
 

@@ -33,11 +33,11 @@ Use the **custom element name** to scope component styles if **you control the p
 
 ```css
 my-component {
-	& button {
-		/* Button style rules */
-	}
+  & button {
+    /* Button style rules */
+  }
 
-	/* More selectors for inner elements */
+  /* More selectors for inner elements */
 }
 ```
 
@@ -65,16 +65,16 @@ Use **Shadow DOM** to encapsulate styles if your component is going to be used i
 
 ```html
 <my-component>
-	<template shadowrootmode="open">
-		<style>
-			button {
-				/* Button style rules */
-			}
+  <template shadowrootmode="open">
+    <style>
+      button {
+        /* Button style rules */
+      }
 
-			/* More selectors for inner elements */
-		</style>
-		<!-- Inner elements -->
-	</template>
+      /* More selectors for inner elements */
+    </style>
+    <!-- Inner elements -->
+  </template>
 </my-component>
 ```
 
@@ -101,9 +101,9 @@ Set global tokens in a stylesheet:
 
 ```css
 :root {
-	--button-bg: #007bff;
-	--button-text: #fff;
-	--spacing: 1rem;
+  --button-bg: #007bff;
+  --button-text: #fff;
+  --spacing: 1rem;
 }
 ```
 
@@ -111,12 +111,12 @@ Set global tokens in a stylesheet:
 
 ```css
 my-component {
-	padding: var(--spacing);
+  padding: var(--spacing);
 
-	& button {
-		background: var(--button-bg);
-		color: var(--button-text);
-	}
+  & button {
+    background: var(--button-bg);
+    color: var(--button-text);
+  }
 }
 ```
 
@@ -135,23 +135,23 @@ Use **classes** if your components can appear in a **limited set of specific man
 
 ```css
 my-button {
-	/* Style rules for default (medium-sized, secondary) buttons */
+  /* Style rules for default (medium-sized, secondary) buttons */
 
-	&.small {
-		/* Style rules for small buttons */
-	}
+  &.small {
+    /* Style rules for small buttons */
+  }
 
-	&.large {
-		/* Style rules for large buttons */
-	}
+  &.large {
+    /* Style rules for large buttons */
+  }
 
-	&.primary {
-		/* Style rules for primary buttons */
-	}
+  &.primary {
+    /* Style rules for primary buttons */
+  }
 
-	&.tertiary {
-		/* Style rules for tertiary buttons */
-	}
+  &.tertiary {
+    /* Style rules for tertiary buttons */
+  }
 }
 ```
 

@@ -51,10 +51,10 @@ Underwhelmed because it's just HTML? – Well, that's the whole point! For now, 
 
 ```css
 hello-world {
-	display: block;
-	padding: 1rem;
-	border: 1px solid #ccc;
-	border-radius: 0.25rem;
+  display: block;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
 }
 ```
 
@@ -62,11 +62,11 @@ Let's add some interactivity:
 
 ```html
 <hello-world>
-	<label>
-		Your name
-		<input type="text" />
-	</label>
-	<p>Hello, <span>world</span>!</p>
+  <label>
+    Your name
+    <input type="text" />
+  </label>
+  <p>Hello, <span>world</span>!</p>
 </hello-world>
 ```
 
@@ -74,12 +74,12 @@ Add the following to your JavaScript for the page:
 
 ```javascript
 class HelloWorld extends HTMLElement {
-	connectedCallback() {
-		const nameEl = this.querySelector('span')
-		this.querySelector('input')?.addEventListener('input', e => {
-			if (nameEl) nameEl.textContent = e.target.value
-		})
-	}
+  connectedCallback() {
+    const nameEl = this.querySelector('span')
+    this.querySelector('input')?.addEventListener('input', e => {
+      if (nameEl) nameEl.textContent = e.target.value
+    })
+  }
 }
 customElements.define('hello-world', HelloWorld)
 ```
@@ -100,30 +100,30 @@ To achieve this, we can expose an observed attribute and a public property. Obse
 
 ```js
 class HelloWorld extends HTMLElement {
-	static observedAttributes = ['name']
-	#name = ''
+  static observedAttributes = ['name']
+  #name = ''
 
-	connectedCallback() {
-		this.querySelector('input')?.addEventListener('input', e => {
-			this.name = e.target.value
-		})
-	}
+  connectedCallback() {
+    this.querySelector('input')?.addEventListener('input', e => {
+      this.name = e.target.value
+    })
+  }
 
-	attributeChangedCallback(name, oldValue, newValue) {
-		if (name === 'name') {
-			this.name = newValue
-		}
-	}
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === 'name') {
+      this.name = newValue
+    }
+  }
 
-	get name() {
-		return this.#name
-	}
+  get name() {
+    return this.#name
+  }
 
-	set name(value) {
-		this.#name = value
-		const nameEl = this.querySelector('span')
-		if (nameEl) nameEl.textContent = this.name
-	}
+  set name(value) {
+    this.#name = value
+    const nameEl = this.querySelector('span')
+    if (nameEl) nameEl.textContent = this.name
+  }
 }
 customElements.define('hello-world', HelloWorld)
 ```
@@ -153,19 +153,19 @@ Here's the same component rewritten using UIElement. Notice how the concerns are
 import { component, asString, on, setText } from '@zeix/ui-element'
 
 component(
-	'hello-world',
-	{
-		name: asString(),
-	},
-	(el, { first }) => [
-		first(
-			'input',
-			on('input', e => {
-				el.name = e.target.value
-			}),
-		),
-		first('span', setText('name')),
-	],
+  'hello-world',
+  {
+    name: asString(),
+  },
+  (el, { first }) => [
+    first(
+      'input',
+      on('input', e => {
+        el.name = e.target.value
+      }),
+    ),
+    first('span', setText('name')),
+  ],
 )
 ```
 

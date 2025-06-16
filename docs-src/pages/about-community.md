@@ -1,7 +1,7 @@
 ---
-title: "About & Community"
-emoji: "🤝"
-description: "License, versioning, getting involved"
+title: 'About & Community'
+emoji: '🤝'
+description: 'License, versioning, getting involved'
 ---
 
 <section class="hero">
@@ -19,9 +19,9 @@ UIElement is an **open-source project**, actively developed by [Zeix AG](https:/
 
 ### Core Team & Contributors
 
-* **Zeix AG**: [@zeixcom](https://github.com/zeixcom) – Maintainers and primary developers
-* **Esther Brunner**: [@estherbrunner](https://github.com/estherbrunner) – Lead developer
-* **Fabian Haefliger**: [@fabianhaef](https://github.com/fabianhaef) – Core team
+- **Zeix AG**: [@zeixcom](https://github.com/zeixcom) – Maintainers and primary developers
+- **Esther Brunner**: [@estherbrunner](https://github.com/estherbrunner) – Lead developer
+- **Fabian Haefliger**: [@fabianhaef](https://github.com/fabianhaef) – Core team
 
 ### Sponsors
 
@@ -63,9 +63,9 @@ This version is a **pre-release** of UIElement, meaning **breaking changes** may
 
 UIElement follows [Semantic Versioning](https://semver.org/) (SemVer), which is structured as <code>MAJOR.MINOR.PATCH</code>.
 
-* **MAJOR**: Breaking changes that require migrations.
-* **MINOR**: New features that are backwards compatible.
-* **PATCH**: Bug fixes and performance improvements.
+- **MAJOR**: Breaking changes that require migrations.
+- **MINOR**: New features that are backwards compatible.
+- **PATCH**: Bug fixes and performance improvements.
 
 ### Previous Pre-Releases
 
@@ -79,14 +79,14 @@ View all releases and associated notes on [Github Releases](https://github.com/z
 
 UIElement is **an open-source project**, and contributions are always welcome! Whether you’re **reporting bugs, improving documentation, or suggesting features**, here's how you can help:
 
-* ✅ [Open an Issue](https://github.com/zeixcom/ui-element/issues) – Report bugs or suggest features.
-* ✅ [Submit a Pull Request](https://github.com/zeixcom/ui-element/blob/main/CONTRIBUTING.md) – Help improve UIElement by fixing issues or adding new features.
-* ✅ Join the Discussion – Share ideas and get feedback from the community.
+- ✅ [Open an Issue](https://github.com/zeixcom/ui-element/issues) – Report bugs or suggest features.
+- ✅ [Submit a Pull Request](https://github.com/zeixcom/ui-element/blob/main/CONTRIBUTING.md) – Help improve UIElement by fixing issues or adding new features.
+- ✅ Join the Discussion – Share ideas and get feedback from the community.
 
 ### Contributing Code
 
-* Fork the repository, create a new branch, and submit a pull request.
-* Read the [Contributing Guidelines](https://github.com/zeixcom/ui-element/blob/main/CONTRIBUTING.md) for setting up a development environment and best practices.
+- Fork the repository, create a new branch, and submit a pull request.
+- Read the [Contributing Guidelines](https://github.com/zeixcom/ui-element/blob/main/CONTRIBUTING.md) for setting up a development environment and best practices.
 
 ### Community Guidelines
 

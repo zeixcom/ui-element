@@ -31,26 +31,26 @@ We have:
 - Two input fields: **First name** and **Last name**.
 - A checkbox: **Use full name name as display name**.
 - Two derived values:
-    - `displayName`: first name or full name depending on checkbox.
-    - `userName`: first initial + last name, lowercased.
+  - `displayName`: first name or full name depending on checkbox.
+  - `userName`: first initial + last name, lowercased.
 - Two `<span>` elements that display these values.
 
 ```html
 <greeting-config>
-	<label>
-		First name
-		<input name="first" type="text" />
-	</label>
-	<label>
-		Last name
-		<input name="last" type="text" />
-	</label>
-	<label>
-		<input name="full" type="checkbox" />
-		Use full name as display name
-	</label>
-	<p>Display name: <span class="display-name"></span></p>
-	<p>User name: <span class="user-name"></span></p>
+  <label>
+    First name
+    <input name="first" type="text" />
+  </label>
+  <label>
+    Last name
+    <input name="last" type="text" />
+  </label>
+  <label>
+    <input name="full" type="checkbox" />
+    Use full name as display name
+  </label>
+  <p>Display name: <span class="display-name"></span></p>
+  <p>User name: <span class="user-name"></span></p>
 </greeting-config>
 ```
 
@@ -66,48 +66,39 @@ It gets surprisingly tricky – even though the logic is simple.
 
 ```js
 class GreetingConfig extends HTMLElement {
-	#first = ''
-	#last = ''
-	#full = false
+  #first = ''
+  #last = ''
+  #full = false
 
-	connectedCallback() {
-		this.querySelector('input[name="first"]').addEventListener(
-			'change',
-			e => {
-				this.#first = e.target.value
-				this.#updateDisplay()
-			},
-		)
+  connectedCallback() {
+    this.querySelector('input[name="first"]').addEventListener('change', e => {
+      this.#first = e.target.value
+      this.#updateDisplay()
+    })
 
-		this.querySelector('input[name="last"]').addEventListener(
-			'change',
-			e => {
-				this.#last = e.target.value
-				this.#updateDisplay()
-			},
-		)
+    this.querySelector('input[name="last"]').addEventListener('change', e => {
+      this.#last = e.target.value
+      this.#updateDisplay()
+    })
 
-		this.querySelector('input[name="full"]').addEventListener(
-			'change',
-			e => {
-				this.#full = e.target.checked
-				this.#updateDisplay()
-			},
-		)
-	}
+    this.querySelector('input[name="full"]').addEventListener('change', e => {
+      this.#full = e.target.checked
+      this.#updateDisplay()
+    })
+  }
 
-	#updateDisplay() {
-		const displayName = this.#full
-			? `${this.#first} ${this.#last}`
-			: this.#first
-		const userName = `${this.#first[0] ?? ''}${this.#last}`.toLowerCase()
+  #updateDisplay() {
+    const displayName = this.#full
+      ? `${this.#first} ${this.#last}`
+      : this.#first
+    const userName = `${this.#first[0] ?? ''}${this.#last}`.toLowerCase()
 
-		const displayNameEl = this.querySelector('.display-name')
-		if (displayNameEl) displayNameEl.textContent = displayName
+    const displayNameEl = this.querySelector('.display-name')
+    if (displayNameEl) displayNameEl.textContent = displayName
 
-		const userNameEl = this.querySelector('.user-name')
-		if (userNameEl) userNameEl.textContent = userName
-	}
+    const userNameEl = this.querySelector('.user-name')
+    if (userNameEl) userNameEl.textContent = userName
+  }
 }
 customElements.define('greeting-config', GreetingConfig)
 ```
@@ -139,52 +130,52 @@ Their underlying reactivity systems track dependencies, re-run derivations, and 
 import React, { useState, useMemo } from 'react'
 
 function GreetingConfig() {
-	const [first, setFirst] = useState('')
-	const [last, setLast] = useState('')
-	const [full, setFull] = useState(false)
+  const [first, setFirst] = useState('')
+  const [last, setLast] = useState('')
+  const [full, setFull] = useState(false)
 
-	const displayName = useMemo(() => {
-		return full ? `${first} ${last}` : first
-	}, [first, last, full])
+  const displayName = useMemo(() => {
+    return full ? `${first} ${last}` : first
+  }, [first, last, full])
 
-	const userName = useMemo(() => {
-		return `${first[0] ?? ''}${last}`.toLowerCase()
-	}, [first, last])
+  const userName = useMemo(() => {
+    return `${first[0] ?? ''}${last}`.toLowerCase()
+  }, [first, last])
 
-	return (
-		<div>
-			<label>
-				First name
-				<input
-					type="text"
-					value={first}
-					onChange={e => setFirst(e.target.value)}
-				/>
-			</label>
-			<label>
-				Last name
-				<input
-					type="text"
-					value={last}
-					onChange={e => setLast(e.target.value)}
-				/>
-			</label>
-			<label>
-				<input
-					type="checkbox"
-					checked={full}
-					onChange={e => setFull(e.target.checked)}
-				/>
-				Use full name as display name
-			</label>
-			<p>
-				Display name: <span>{displayName}</span>
-			</p>
-			<p>
-				User name: <span>{userName}</span>
-			</p>
-		</div>
-	)
+  return (
+    <div>
+      <label>
+        First name
+        <input
+          type="text"
+          value={first}
+          onChange={e => setFirst(e.target.value)}
+        />
+      </label>
+      <label>
+        Last name
+        <input
+          type="text"
+          value={last}
+          onChange={e => setLast(e.target.value)}
+        />
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          checked={full}
+          onChange={e => setFull(e.target.checked)}
+        />
+        Use full name as display name
+      </label>
+      <p>
+        Display name: <span>{displayName}</span>
+      </p>
+      <p>
+        User name: <span>{userName}</span>
+      </p>
+    </div>
+  )
 }
 ```
 
@@ -263,18 +254,18 @@ const full = state(false)
 
 // Computed signals
 const fullName = computed(() =>
-	full.get() ? `${first.get()} ${last.get()}` : first.get(),
+  full.get() ? `${first.get()} ${last.get()}` : first.get(),
 )
 const userName = computed(() =>
-	`${first.get()[0] ?? ''}${last.get()}`.toLowerCase(),
+  `${first.get()[0] ?? ''}${last.get()}`.toLowerCase(),
 )
 
 // Effects
 effect(() => {
-	console.log(fullName.get())
+  console.log(fullName.get())
 })
 effect(() => {
-	console.log(userName.get())
+  console.log(userName.get())
 })
 ```
 
@@ -282,9 +273,9 @@ Notice:
 
 - All necessary recalculations and DOM updates are performed automatically.
 - Unnecessary updates are avoided:
-    - When you change the last name, the effect that depends on `displayName` will only run if the checkbox is checked.
-    - When you change the first name, the effect that depends on `userName` will only run if the the first letter of the first name changes.
-    - When you toggle the full name checkbox, only the effect that depends on `fullName` will run.
+  - When you change the last name, the effect that depends on `displayName` will only run if the checkbox is checked.
+  - When you change the first name, the effect that depends on `userName` will only run if the the first letter of the first name changes.
+  - When you toggle the full name checkbox, only the effect that depends on `fullName` will run.
 
 This is **fine-grained reactivity** – the system tracks exactly what depends on what and updates only what's necessary.
 
@@ -316,10 +307,10 @@ const full = new Signal.State(false)
 
 // Computed signals
 const fullName = new Signal.Computed(() =>
-	full.get() ? `${first.get()} ${last.get()}` : first.get(),
+  full.get() ? `${first.get()} ${last.get()}` : first.get(),
 )
 const userName = new Signal.Computed(() =>
-	`${first.get()[0]}${last.get()}`.toLowerCase(),
+  `${first.get()[0]}${last.get()}`.toLowerCase(),
 )
 
 // State updates
