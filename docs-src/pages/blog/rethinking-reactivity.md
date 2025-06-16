@@ -8,7 +8,7 @@ description: 'Reactivity ensures that your user interface stays up to date autom
 
 # Rethinking Reactivity
 
-<p class="lead">In our previous post, we saw how components help organize frontend code into manageable, encapsulated pieces. But what happens when we need **multiple inputs, derived values, and complex state relationships**?</p>
+<p class="lead">In our previous post, we saw how components help organize frontend code into manageable, encapsulated pieces. But what happens when we need <strong>multiple inputs, derived values, and complex state relationships</strong>?</p>
 
 </section>
 
@@ -16,7 +16,7 @@ description: 'Reactivity ensures that your user interface stays up to date autom
 
 ## What Is Reactivity, and Why Should You Care?
 
-At its core, reactivity is a programming model where the system keeps your user interface up to date automatically. You declare what should happen when state changes, and the system ensures that it does—consistently and efficiently.
+At its core, reactivity is a programming model where the system keeps your user interface up to date automatically. You declare what should happen when state changes, and the system ensures that it does – consistently and efficiently.
 
 Compared to imperative code, reactivity offers a few key benefits:
 
@@ -72,7 +72,7 @@ class GreetingConfig extends HTMLElement {
 
 	connectedCallback() {
 		this.querySelector('input[name="first"]').addEventListener(
-			'input',
+			'change',
 			e => {
 				this.#first = e.target.value
 				this.#updateDisplay()
@@ -80,7 +80,7 @@ class GreetingConfig extends HTMLElement {
 		)
 
 		this.querySelector('input[name="last"]').addEventListener(
-			'input',
+			'change',
 			e => {
 				this.#last = e.target.value
 				this.#updateDisplay()

@@ -83,7 +83,5 @@ UIElement shines when you want:
 Now that you understand what UIElement is and its core philosophy, you're ready to:
 
 - Move on to [Getting Started](getting-started.html) to install the library and build your first component
-- Learn more about [Core Concepts](core-concepts.html) to create reusable UI patterns
-- Explore [Component Communication](component-communication.html) to understand how components can work together
 
 </section>

@@ -1,7 +1,7 @@
 ---
-title: "API Reference"
-emoji: "📚"
-description: "Detailed documentation of classes and functions"
+title: 'API Reference'
+emoji: '📚'
+description: 'Detailed documentation of types and functions'
 ---
 
 <section class="hero">

@@ -13,20 +13,12 @@
 		<client-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.0</small>
+					UIElement Docs <small>Version 0.13.1</small>
 				</h1>
 				
 	<nav class="breakout">
 		<ol>
 			
-				<li>
-					<a href="building-components.html" class="active">
-						<span class="icon">🏗️</span>
-						<strong>Building Components</strong>
-						<small>Anatomy, lifecycle, signals, effects</small>
-					</a>
-				</li>
-
 				<li>
 					<a href="index.html">
 						<span class="icon">📖</span>
@@ -44,26 +36,26 @@
 				</li>
 
 				<li>
-					<a href="core-concepts.html">
+					<a href="building-components.html" class="active">
 						<span class="icon">🏗️</span>
-						<strong>Core Concepts</strong>
-						<small>Component anatomy, lifecycle, and basic patterns</small>
+						<strong>Building Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
 					</a>
 				</li>
 
 				<li>
-					<a href="reactive-state.html">
-						<span class="icon">⚡</span>
-						<strong>Reactive State & Effects</strong>
-						<small>Signals, effects, and advanced reactivity patterns</small>
+					<a href="styling-components.html">
+						<span class="icon">🎨</span>
+						<strong>Styling Components</strong>
+						<small>Scoped styles, CSS custom properties</small>
 					</a>
 				</li>
 
 				<li>
-					<a href="component-communication.html">
+					<a href="data-flow.html">
 						<span class="icon">🔄</span>
-						<strong>Component Communication</strong>
-						<small>How components work together</small>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
 					</a>
 				</li>
 
@@ -79,15 +71,7 @@
 					<a href="patterns-techniques.html">
 						<span class="icon">💡</span>
 						<strong>Patterns & Techniques</strong>
-						<small>Composition, scheduling, best practices</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="styling-components.html">
-						<span class="icon">🎨</span>
-						<strong>Styling Components</strong>
-						<small>Scoped styles, CSS custom properties</small>
+						<small>Advanced patterns, testing strategies, and best practices</small>
 					</a>
 				</li>
 
@@ -95,7 +79,7 @@
 					<a href="api-reference.html">
 						<span class="icon">📚</span>
 						<strong>API Reference</strong>
-						<small>Detailed documentation of classes and functions</small>
+						<small>Detailed documentation of types and functions</small>
 					</a>
 				</li>
 
@@ -449,43 +433,87 @@
 <section>
 
 
-	            <h2 id="accessing-sub-elements">
-	                <a name="accessing-sub-elements" class="anchor" href="#accessing-sub-elements">
+	            <h2 id="selecting-elements">
+	                <a name="selecting-elements" class="anchor" href="#selecting-elements">
 		                <span class="permalink">🔗</span>
 	                </a>
-	                Accessing Sub-elements
-	            </h2><p>Before adding <strong>event listeners</strong>, <strong>applying effects</strong>, or <strong>passing states</strong> to sub-components, you need to select them using a function for <strong>element selection</strong>:</p>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>first(selector, ...fns)</code></td>
-<td>Selects <strong>the first matching element</strong> inside the component and applies the given setup functions.</td>
-</tr>
-<tr>
-<td><code>all(selector, ...fns)</code></td>
-<td>Selects <strong>all matching elements</strong> inside the component and applies the given setup functions.</td>
-</tr>
-</tbody></table>
+	                Selecting Elements
+	            </h2><p>Use the provided selector utilities to find elements within your component:</p>
+
+	            <h3 id="first">
+	                <a name="first" class="anchor" href="#first">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                first()
+	            </h3><p>Selects the first matching element and applies effects:</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Select the first ".increment" button and apply effects on it</span></span>
-<span class="line"><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">	'.increment'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#88846F">	// Fx functions</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">	'my-counter'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	{</span></span>
+<span class="line"><span style="color:#F8F8F2">		count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(),</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
+<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'button'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">				el.count</span><span style="color:#F92672">++</span></span>
+<span class="line"><span style="color:#F8F8F2">			}),</span></span>
+<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"><span style="color:#F8F8F2">	],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+
+	            <h3 id="all">
+	                <a name="all" class="anchor" href="#all">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                all()
+	            </h3><p>Selects all matching elements and applies effects to each:</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">	'tab-group'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	{</span></span>
+<span class="line"><span style="color:#F8F8F2">		selected: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
+<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#88846F">		// Apply click handler to all buttons</span></span>
+<span class="line"><span style="color:#A6E22E">		all</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'[role="tab"]'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">				el.selected </span><span style="color:#F92672">=</span></span>
+<span class="line"><span style="color:#F8F8F2">					e.currentTarget?.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-controls'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#F8F8F2">			}),</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">				'ariaSelected'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">				target</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> target?.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-controls'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> el.selected,</span></span>
+<span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tabIndex'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
+<span class="line"><span style="color:#F8F8F2">				target?.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-controls'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> el.selected </span><span style="color:#F92672">?</span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> :</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"><span style="color:#F8F8F2">		),</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#88846F">// Select all &#x3C;button> elements and apply effects on them</span></span>
-<span class="line"><span style="color:#A6E22E">all</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">	'button'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#88846F">	// Fx functions</span></span>
+<span class="line"><span style="color:#88846F">		// Apply hidden property to all tabs</span></span>
+<span class="line"><span style="color:#A6E22E">		all</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'[role="tabpanel"]'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			show</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.selected </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> target.id),</span></span>
+<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"><span style="color:#F8F8F2">	],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
 	<input-button class="copy">
@@ -502,13 +530,17 @@
 <p><strong>Tip</strong>: The <code>all()</code> function is more flexible but also more resource-intensive than <code>first()</code>. Prefer <code>first()</code> when targeting a single element known to be present at connection time.</p>
 </callout-box>
 
+</section>
 
-	            <h3 id="adding-event-listeners">
+<section>
+
+
+	            <h2 id="adding-event-listeners">
 	                <a name="adding-event-listeners" class="anchor" href="#adding-event-listeners">
 		                <span class="permalink">🔗</span>
 	                </a>
 	                Adding Event Listeners
-	            </h3><p>Event listeners allow to respond to user interactions. They are the cause of changes in the component&#39;s state.</p>
+	            </h2><p>Event listeners allow to respond to user interactions. They are the cause of changes in the component&#39;s state.</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -748,162 +780,6 @@
 <section>
 
 
-	            <h2 id="single-component-example-myslider">
-	                <a name="single-component-example-myslider" class="anchor" href="#single-component-example-myslider">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Single Component Example: MySlider
-	            </h2><p>Bringing all of the above together, you are now ready to build your own components like this slider with prev / next buttons and dot indicators, demonstrating single-component reactivity.</p>
-<component-demo>
-	<div class="preview">
-		<my-slider>
-			<h2 class="visually-hidden">Slides</h2>
-			<div class="slides">
-				<div class="slide active" data-index="0">
-					<h3>Slide 1</h3>
-					<hello-world>
-						<label>Your name<br>
-							<input type="text">
-						</label>
-						<p>Hello, <span>World</span>!</p>
-					</hello-world>
-				</div>
-				<div class="slide" data-index="1">
-					<h3>Slide 2</h3>
-					<calc-table rows="3" columns="3">
-						<div class="rows">
-							<p>Number of rows:</p>
-							<spin-button value="3" zero-label="Add Row" increment-label="Increment">
-								<button type="button" class="decrement" aria-label="Decrement">
-									−
-								</button>
-								<p class="value">3</p>
-								<button type="button" class="increment" aria-label="Increment">
-									+
-								</button>
-							</spin-button>
-						</div>
-						<div class="columns">
-							<p>Number of columns:</p>
-							<spin-button
-								value="3"
-								zero-label="Add Column"
-								increment-label="Increment"
-							>
-								<button type="button" class="decrement" aria-label="Decrement">
-									−
-								</button>
-								<p class="value">3</p>
-								<button type="button" class="increment" aria-label="Increment">
-									+
-								</button>
-							</spin-button>
-						</div>
-						<table>
-							<thead>
-								<tr>
-									<th scope="col">Row</th>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-							<tfoot>
-								<tr>
-									<th scope="row">Sum</th>
-								</tr>
-							</tfoot>
-						</table>
-						<template class="calc-table-row">
-							<tr><th scope="row"><slot></slot></th></tr>
-						</template>
-						<template class="calc-table-colhead">
-							<th scope="col"><slot></slot></th>
-						</template>
-						<template class="calc-table-cell">
-							<td>
-								<label>
-									<span class="visually-hidden"><slot></slot></span>
-									<input type="number" min="0" max="100" step="1" value="" />
-								</label>
-							</td>
-						</template>
-					</calc-table>
-				</div>
-				<div class="slide" data-index="2">
-					<h3>Slide 3</h3>
-					<rating-feedback>
-						<form>
-							<rating-stars>
-								<fieldset>
-									<legend class="visually-hidden">Rate</legend>
-									<label>
-										<input type="radio" class="visually-hidden" name="rating" value="1">
-										<span class="label">☆</span>
-									</label>
-									<label>
-										<input type="radio" class="visually-hidden" name="rating" value="2">
-										<span class="label">☆</span>
-									</label>
-									<label>
-										<input type="radio" class="visually-hidden" name="rating" value="3">
-										<span class="label">☆</span>
-									</label>
-									<label>
-										<input type="radio" class="visually-hidden" name="rating" value="4">
-										<span class="label">☆</span>
-									</label>
-									<label>
-										<input type="radio" class="visually-hidden" name="rating" value="5">
-										<span class="label">☆</span>
-									</label>
-								</fieldset>
-							</rating-stars>
-							<div class="feedback" hidden>
-								<header>
-									<button button="button" class="hide" aria-label="Hide">×</button>
-									<p hidden>We're sorry to hear that! Your feedback is important, and we'd love to improve. Let us know how we can do better.</p>
-									<p hidden>Thank you for your honesty. We appreciate your feedback and will work on making things better.</p>
-									<p hidden>Thanks for your rating! If there's anything we can improve, we'd love to hear your thoughts.</p>
-									<p hidden>We're glad you had a good experience! If there's anything that could make it even better, let us know.</p>
-									<p hidden>Thank you for your support! We're thrilled you had a great experience. Your feedback keeps us motivated!</p>
-								</header>
-								<fieldset>
-									<label for="rating-feedback">Describe your experience (optional)</label>
-									<textarea id="rating-feedback"></textarea>
-									<input-button disabled>
-										<button type="submit" class="primary" disabled>Submit</button>
-									</input-button>
-								</fieldset>
-							</div>
-						</form>
-					</rating-feedback>
-				</div>
-			</div>
-			<button type="button" class="prev" aria-label="Previous">‹</button>
-			<button type="button" class="next" aria-label="Next">›</button>
-			<div class="dots">
-				<span class="active" data-index="0"></span>
-				<span data-index="1"></span>
-				<span data-index="2"></span>
-			</div>
-		</my-slider>
-	</div>
-	<details>
-		<summary>Source Code</summary>
-		<lazy-load src="./examples/my-slider.html">
-			<callout-box>
-				<p class="loading" role="status">Loading...</p>
-				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
-	</details>
-</component-demo>
-
-</section>
-
-<section>
-
-
 	            <h2 id="next-steps">
 	                <a name="next-steps" class="anchor" href="#next-steps">
 		                <span class="permalink">🔗</span>
@@ -912,7 +788,7 @@
 	            </h2><p>Now that you understand the basics, explore:</p>
 <ul>
 <li><a href="styling-components.html">Styling Components</a> – Learn techniques to apply styles to components.</li>
-<li><a href="component-communication.html">Component Communication</a> – Learn about passing state between components.</li>
+<li><a href="data-flow.html">Data Flow</a> – Learn about passing state between components.</li>
 </ul>
 </section>
 </main>

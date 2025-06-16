@@ -233,16 +233,7 @@ If it's not working:
 
 You've successfully created your first reactive component! Now you're ready to dive deeper into UIElement's core concepts:
 
-**Next: [Core Concepts](core-concepts.html)**
+**Next: [Building Components](building-components.html)**
 Learn the fundamental building blocks: component anatomy, element selection, basic state management, and event handling patterns.
-
-**Then: [Reactive State & Effects](reactive-state.html)**
-Master UIElement's powerful reactivity system with signals, effects, and advanced state patterns.
-
-**Finally: [Component Communication](component-communication.html)**
-Discover how components can work together, share state, and coordinate complex behaviors.
-
-**Or explore: [Examples & Recipes](examples-recipes.html)**
-See complete, real-world examples that demonstrate these concepts in action.
 
 </section>
