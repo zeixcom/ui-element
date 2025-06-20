@@ -29,8 +29,9 @@ type UnknownContext = Context<unknown, unknown>
 /**
  * A helper type which can extract a Context value type from a Context type
  */
-type ContextType<T extends UnknownContext> =
-	T extends Context<string, infer V> ? V : never
+type ContextType<T extends UnknownContext> = T extends Context<string, infer V>
+	? V
+	: never
 
 /**
  * A callback which is provided by a context requester and is called with the value satisfying the request.

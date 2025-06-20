@@ -2,6 +2,7 @@ import {
 	type AttributeParser,
 	type Component,
 	type FxFunction,
+	UNSET,
 	component,
 	computed,
 	emit,
@@ -9,7 +10,6 @@ import {
 	setAttribute,
 	setProperty,
 	setText,
-	UNSET,
 } from '../../../'
 
 /* === Type === */
@@ -164,8 +164,8 @@ export default component(
 							e.preventDefault()
 							const n = shiftKey ? step * 10 : step
 							const newValue = nearestStep(
-								input.valueAsNumber
-									+ (key === 'ArrowUp' ? n : -n),
+								input.valueAsNumber +
+									(key === 'ArrowUp' ? n : -n),
 							)
 							input.value = String(newValue)
 							triggerChange(newValue)
@@ -192,9 +192,9 @@ export default component(
 						setProperty(
 							'disabled',
 							() =>
-								(isNumber(min) ? (el.value as number) : 0)
-									- step
-								< min,
+								(isNumber(min) ? (el.value as number) : 0) -
+									step <
+								min,
 						),
 					),
 					first<HTMLButtonElement>(
@@ -212,9 +212,9 @@ export default component(
 						setProperty(
 							'disabled',
 							() =>
-								(isNumber(max) ? (el.value as number) : 0)
-									+ step
-								> max,
+								(isNumber(max) ? (el.value as number) : 0) +
+									step >
+								max,
 						),
 					),
 				)

@@ -1,19 +1,19 @@
-import { readFile, writeFile, readdir } from 'fs/promises'
 import { join } from 'path'
+import { readFile, readdir, writeFile } from 'fs/promises'
 import matter from 'gray-matter'
 import { marked } from 'marked'
 
 import {
-	PAGES_DIR,
 	INCLUDES_DIR,
 	LAYOUT_FILE,
 	MENU_FILE,
 	OUTPUT_DIR,
+	PAGES_DIR,
 } from './config'
-import { transformCodeBlocks } from './transform-code-blocks'
-import { replaceAsync } from './replace-async'
 import { generateMenu } from './generate-menu'
 import { generateSitemap } from './generate-sitemap'
+import { replaceAsync } from './replace-async'
+import { transformCodeBlocks } from './transform-code-blocks'
 
 marked.setOptions({
 	gfm: true, // Enables tables, task lists, and strikethroughs

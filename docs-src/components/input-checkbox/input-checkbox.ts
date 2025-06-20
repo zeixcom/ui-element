@@ -1,10 +1,10 @@
 import {
 	type Component,
+	RESET,
 	asBoolean,
 	asString,
 	component,
 	on,
-	RESET,
 	setProperty,
 	setText,
 	toggleAttribute,

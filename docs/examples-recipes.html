@@ -36,26 +36,10 @@
 				</li>
 
 				<li>
-					<a href="building-components.html">
-						<span class="icon">🏗️</span>
-						<strong>Building Components</strong>
-						<small>Anatomy, lifecycle, signals, effects</small>
-					</a>
-				</li>
-
-				<li>
 					<a href="styling-components.html">
 						<span class="icon">🎨</span>
 						<strong>Styling Components</strong>
 						<small>Scoped styles, CSS custom properties</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="data-flow.html">
-						<span class="icon">🔄</span>
-						<strong>Data Flow</strong>
-						<small>Passing state, events, context</small>
 					</a>
 				</li>
 
@@ -109,6 +93,7 @@
 
 <section>
 
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
 
 	            <h2 id="simple-click-counter">
 	                <a name="simple-click-counter" class="anchor" href="#simple-click-counter">
@@ -282,60 +267,37 @@
 		                <span class="permalink">🔗</span>
 	                </a>
 	                Combobox
-	            </h2><component-demo>
-	<div class="preview">
-		<input-combobox value="">
-			<label for="city-input">Choose a city</label>
-			<div class="input">
-				<input
-					id="city-input"
-					type="text"
-					role="combobox"
-					aria-expanded="false"
-					aria-controls="city-popup"
-					aria-autocomplete="list"
-					autocomplete="off"
-					required
-				/>
-				<ol id="city-popup" role="listbox" hidden>
-					<li role="option" tabindex="-1">Amsterdam</li>
-					<li role="option" tabindex="-1">Berlin</li>
-					<li role="option" tabindex="-1">Copenhagen</li>
-					<li role="option" tabindex="-1">Dublin</li>
-					<li role="option" tabindex="-1">Edinburgh</li>
-					<li role="option" tabindex="-1">Frankfurt</li>
-					<li role="option" tabindex="-1">Geneva</li>
-					<li role="option" tabindex="-1">Helsinki</li>
-					<li role="option" tabindex="-1">Istanbul</li>
-					<li role="option" tabindex="-1">Jakarta</li>
-					<li role="option" tabindex="-1">Kairo</li>
-					<li role="option" tabindex="-1">London</li>
-					<li role="option" tabindex="-1">Madrid</li>
-					<li role="option" tabindex="-1">New York</li>
-					<li role="option" tabindex="-1">Oslo</li>
-					<li role="option" tabindex="-1">Paris</li>
-					<li role="option" tabindex="-1">Qingdao</li>
-					<li role="option" tabindex="-1">Rome</li>
-					<li role="option" tabindex="-1">Stockholm</li>
-					<li role="option" tabindex="-1">Tokyo</li>
-					<li role="option" tabindex="-1">Ulan Bator</li>
-					<li role="option" tabindex="-1">Vienna</li>
-					<li role="option" tabindex="-1">Warsaw</li>
-					<li role="option" tabindex="-1">Xi'an</li>
-					<li role="option" tabindex="-1">Yokohama</li>
-					<li role="option" tabindex="-1">Zurich</li>
-				</ol>
-				<button type="button" class="clear" aria-label="Clear input" hidden>
-					✕
-				</button>
-			</div>
-			<p class="error" aria-live="assertive" id="city-error"></p>
-			<p class="description" aria-live="polite" id="city-description">Tell us where you live so we can set your timezone for our calendar and notification features.</p>
-		</input-combobox>
-	</div>
-	<details>
+	            </h2><p>=======</p>
+
+	            <h2 id="simple-counter">
+	                <a name="simple-counter" class="anchor" href="#simple-counter">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Simple Counter
+	            </h2><blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>3960718687d895827d215e1a484959dbbb958c5c</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<component-demo>
+  <div class="preview">
+    <my-counter>
+     	<button type="button">💐 <span>5</span></button>
+    </my-counter>
+  </div>
+  <details>
 		<summary>Source Code</summary>
-		<lazy-load src="./examples/input-combobox.html">
+		<lazy-load src="./examples/my-counter.html">
 			<callout-box>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
@@ -520,6 +482,78 @@
 	<details>
 		<summary>Source Code</summary>
 		<lazy-load src="./examples/my-carousel.html">
+			<callout-box>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite"></p>
+			</callout-box>
+		</lazy-load>
+	</details>
+</component-demo>
+
+</section>
+
+<section>
+
+
+	            <h2 id="combobox">
+	                <a name="combobox" class="anchor" href="#combobox">
+		                <span class="permalink">🔗</span>
+	                </a>
+	                Combobox
+	            </h2><component-demo>
+	<div class="preview">
+		<input-combobox value="">
+			<label for="city-input">Choose a city</label>
+			<div class="input">
+				<input
+					id="city-input"
+					type="text"
+					role="combobox"
+					aria-expanded="false"
+					aria-controls="city-popup"
+					aria-autocomplete="list"
+					autocomplete="off"
+					required
+				/>
+				<ol id="city-popup" role="listbox" hidden>
+					<li role="option" tabindex="-1">Amsterdam</li>
+					<li role="option" tabindex="-1">Berlin</li>
+					<li role="option" tabindex="-1">Copenhagen</li>
+					<li role="option" tabindex="-1">Dublin</li>
+					<li role="option" tabindex="-1">Edinburgh</li>
+					<li role="option" tabindex="-1">Frankfurt</li>
+					<li role="option" tabindex="-1">Geneva</li>
+					<li role="option" tabindex="-1">Helsinki</li>
+					<li role="option" tabindex="-1">Istanbul</li>
+					<li role="option" tabindex="-1">Jakarta</li>
+					<li role="option" tabindex="-1">Kairo</li>
+					<li role="option" tabindex="-1">London</li>
+					<li role="option" tabindex="-1">Madrid</li>
+					<li role="option" tabindex="-1">New York</li>
+					<li role="option" tabindex="-1">Oslo</li>
+					<li role="option" tabindex="-1">Paris</li>
+					<li role="option" tabindex="-1">Qingdao</li>
+					<li role="option" tabindex="-1">Rome</li>
+					<li role="option" tabindex="-1">Stockholm</li>
+					<li role="option" tabindex="-1">Tokyo</li>
+					<li role="option" tabindex="-1">Ulan Bator</li>
+					<li role="option" tabindex="-1">Vienna</li>
+					<li role="option" tabindex="-1">Warsaw</li>
+					<li role="option" tabindex="-1">Xi'an</li>
+					<li role="option" tabindex="-1">Yokohama</li>
+					<li role="option" tabindex="-1">Zurich</li>
+				</ol>
+				<button type="button" class="clear" aria-label="Clear input" hidden>
+					✕
+				</button>
+			</div>
+			<p class="error" aria-live="assertive" id="city-error"></p>
+			<p class="description" aria-live="polite" id="city-description">Tell us where you live so we can set your timezone for our calendar and notification features.</p>
+		</input-combobox>
+	</div>
+	<details>
+		<summary>Source Code</summary>
+		<lazy-load src="./examples/input-combobox.html">
 			<callout-box>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>

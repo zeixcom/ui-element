@@ -11,11 +11,11 @@ my-carousel {
 		width: 100%;
 	}
 
-	[role='tabpanel'] {
+	[role="tabpanel"] {
 		width: 100%;
 		text-align: center;
 
-		&[aria-current='false'] {
+		&[aria-current="false"] {
 			display: none;
 		}
 	}
@@ -55,7 +55,7 @@ my-carousel {
 			}
 		}
 
-		[role='tablist'] {
+		[role="tablist"] {
 			position: absolute;
 			bottom: 0;
 			left: 0;
@@ -64,7 +64,7 @@ my-carousel {
 			justify-content: center;
 			padding-block: var(--space-s);
 
-			[role='tab'] {
+			[role="tab"] {
 				width: var(--space-l);
 				height: var(--space-l);
 				border: 0;
@@ -82,7 +82,7 @@ my-carousel {
 					opacity: var(--opacity-dimmed);
 				}
 
-				&[aria-selected='true'] {
+				&[aria-selected="true"] {
 					opacity: var(--opacity-solid);
 				}
 			}

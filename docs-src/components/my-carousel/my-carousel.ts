@@ -1,4 +1,4 @@
-import { component, on, state, setProperty } from '../../..'
+import { component, on, setProperty, state } from '../../..'
 
 export default component('my-carousel', {}, (el, { all, first }) => {
 	const currentIndex = state(0)
@@ -45,9 +45,9 @@ export default component('my-carousel', {}, (el, { all, first }) => {
 					),
 				),
 				setProperty('tabIndex', target =>
-					target.dataset['index'] === String(currentIndex.get()) ?
-						0
-					:	-1,
+					target.dataset['index'] === String(currentIndex.get())
+						? 0
+						: -1,
 				),
 				on('click', e => {
 					const rawIndex = (e.target as HTMLElement)?.dataset['index']

@@ -58,9 +58,9 @@
 	--color-text-soft: var(--color-gray-80);
 	--color-text-inverted: var(--color-white);
 
-	--font-family-sans: 'Helvetica Neue', Arial, Roboto, sans-serif;
-	--font-family-mono:
-		Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	--font-family-sans: "Helvetica Neue", Arial, Roboto, sans-serif;
+	--font-family-mono: Consolas, Monaco, "Andale Mono", "Ubuntu Mono",
+		monospace;
 
 	--font-weight-regular: 400;
 	--font-weight-bold: 700;
@@ -271,7 +271,7 @@ header {
 
 	a {
 		display: grid;
-		grid-template-areas: 'icon title' 'icon description';
+		grid-template-areas: "icon title" "icon description";
 		grid-template-columns: auto 1fr;
 		grid-template-rows: auto 1fr;
 		gap: var(--space-xs) var(--space-s);
@@ -462,7 +462,7 @@ a[href] {
 	}
 }
 
-[aria-hidden='true'],
+[aria-hidden="true"],
 [hidden] {
 	display: none;
 }

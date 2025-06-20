@@ -102,7 +102,6 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">	&#x26;</span><span style="color:#A6E22E">:focus-within</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">		&#x26; </span><span style="color:#66D9EF;font-style:italic">label</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x26; p,</span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x26; </span><span style="color:#66D9EF;font-style:italic">span</span><span style="color:#F8F8F2"> {</span></span>
@@ -241,7 +240,6 @@
 <span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">		&#x26;</span><span style="color:#A6E22E">:not</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">:disabled</span><span style="color:#F8F8F2">) {</span></span>
-<span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">			&#x26;:hover {</span></span>
 <span class="line"><span style="color:#F8F8F2">				background-color: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary-hover);</span></span>
 <span class="line"><span style="color:#F8F8F2">			}</span></span>
@@ -299,6 +297,7 @@
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> AttributeParser,</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> FxFunction,</span></span>
+<span class="line"><span style="color:#F8F8F2">	UNSET,</span></span>
 <span class="line"><span style="color:#F8F8F2">	component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	computed,</span></span>
 <span class="line"><span style="color:#F8F8F2">	emit,</span></span>
@@ -306,7 +305,6 @@
 <span class="line"><span style="color:#F8F8F2">	setAttribute,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setText,</span></span>
-<span class="line"><span style="color:#F8F8F2">	UNSET,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">/* === Type === */</span></span>
@@ -461,8 +459,8 @@
 <span class="line"><span style="color:#F8F8F2">							e.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> n </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> shiftKey </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> step </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 10</span><span style="color:#F92672"> :</span><span style="color:#F8F8F2"> step</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> newValue </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> nearestStep</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">								input.valueAsNumber</span></span>
-<span class="line"><span style="color:#F92672">									+</span><span style="color:#F8F8F2"> (key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'ArrowUp'</span><span style="color:#F92672"> ?</span><span style="color:#F8F8F2"> n </span><span style="color:#F92672">:</span><span style="color:#F92672"> -</span><span style="color:#F8F8F2">n),</span></span>
+<span class="line"><span style="color:#F8F8F2">								input.valueAsNumber </span><span style="color:#F92672">+</span></span>
+<span class="line"><span style="color:#F8F8F2">									(key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'ArrowUp'</span><span style="color:#F92672"> ?</span><span style="color:#F8F8F2"> n </span><span style="color:#F92672">:</span><span style="color:#F92672"> -</span><span style="color:#F8F8F2">n),</span></span>
 <span class="line"><span style="color:#F8F8F2">							)</span></span>
 <span class="line"><span style="color:#F8F8F2">							input.value </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(newValue)</span></span>
 <span class="line"><span style="color:#A6E22E">							triggerChange</span><span style="color:#F8F8F2">(newValue)</span></span>
@@ -489,9 +487,9 @@
 <span class="line"><span style="color:#A6E22E">						setProperty</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">							'disabled'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">							() </span><span style="color:#66D9EF;font-style:italic">=></span></span>
-<span class="line"><span style="color:#F8F8F2">								(</span><span style="color:#A6E22E">isNumber</span><span style="color:#F8F8F2">(min) </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> (el.value </span><span style="color:#F92672">as</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">									-</span><span style="color:#F8F8F2"> step</span></span>
-<span class="line"><span style="color:#F92672">								&#x3C;</span><span style="color:#F8F8F2"> min,</span></span>
+<span class="line"><span style="color:#F8F8F2">								(</span><span style="color:#A6E22E">isNumber</span><span style="color:#F8F8F2">(min) </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> (el.value </span><span style="color:#F92672">as</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">-</span></span>
+<span class="line"><span style="color:#F8F8F2">									step </span><span style="color:#F92672">&#x3C;</span></span>
+<span class="line"><span style="color:#F8F8F2">								min,</span></span>
 <span class="line"><span style="color:#F8F8F2">						),</span></span>
 <span class="line"><span style="color:#F8F8F2">					),</span></span>
 <span class="line"><span style="color:#A6E22E">					first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">>(</span></span>
@@ -509,9 +507,9 @@
 <span class="line"><span style="color:#A6E22E">						setProperty</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">							'disabled'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">							() </span><span style="color:#66D9EF;font-style:italic">=></span></span>
-<span class="line"><span style="color:#F8F8F2">								(</span><span style="color:#A6E22E">isNumber</span><span style="color:#F8F8F2">(max) </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> (el.value </span><span style="color:#F92672">as</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">									+</span><span style="color:#F8F8F2"> step</span></span>
-<span class="line"><span style="color:#F92672">								></span><span style="color:#F8F8F2"> max,</span></span>
+<span class="line"><span style="color:#F8F8F2">								(</span><span style="color:#A6E22E">isNumber</span><span style="color:#F8F8F2">(max) </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> (el.value </span><span style="color:#F92672">as</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">+</span></span>
+<span class="line"><span style="color:#F8F8F2">									step </span><span style="color:#F92672">></span></span>
+<span class="line"><span style="color:#F8F8F2">								max,</span></span>
 <span class="line"><span style="color:#F8F8F2">						),</span></span>
 <span class="line"><span style="color:#F8F8F2">					),</span></span>
 <span class="line"><span style="color:#F8F8F2">				)</span></span>

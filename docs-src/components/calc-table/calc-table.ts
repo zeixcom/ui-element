@@ -91,9 +91,9 @@ export default component(
 								parent.querySelectorAll('tr').length + 1,
 							)
 							row.dataset['key'] = rowKey
-							row
-								.querySelector('slot')
-								?.replaceWith(document.createTextNode(rowKey))
+							row.querySelector('slot')?.replaceWith(
+								document.createTextNode(rowKey),
+							)
 							return row
 						},
 						resolve: () => {
@@ -127,9 +127,9 @@ export default component(
 									parent.querySelectorAll('th').length - 1
 								]
 							colSums.set(colKey, state(0))
-							cell
-								.querySelector('slot')
-								?.replaceWith(document.createTextNode(colKey))
+							cell.querySelector('slot')?.replaceWith(
+								document.createTextNode(colKey),
+							)
 							return cell
 						},
 					},
@@ -161,13 +161,9 @@ export default component(
 									'No input found in cell template',
 								)
 							input.dataset['key'] = colKey
-							cell
-								.querySelector('slot')
-								?.replaceWith(
-									document.createTextNode(
-										`${colKey}${rowKey}`,
-									),
-								)
+							cell.querySelector('slot')?.replaceWith(
+								document.createTextNode(`${colKey}${rowKey}`),
+							)
 							return cell
 						},
 					},

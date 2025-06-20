@@ -27,11 +27,11 @@ todo-app {
 			margin: 0;
 			padding: 0;
 		}
-	
+
 		&[filter="completed"] li:not(:has([checked])) {
 			display: none;
 		}
-	
+
 		&[filter="active"] li:has([checked]) {
 			display: none;
 		}
@@ -46,13 +46,13 @@ todo-app {
 
 		.todo-count {
 			justify-self: start;
-			
+
 			& p {
 				font-size: var(--font-size-s);
 				margin: 0;
 			}
 		}
-  
+
 		.clear-completed {
 			justify-self: end;
 		}

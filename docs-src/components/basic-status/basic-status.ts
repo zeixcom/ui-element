@@ -10,11 +10,7 @@ export type BasicStatusProps = {
 	status: string
 }
 
-const STATUS_OPTIONS: [string, ...string[]] = [
-	'success',
-	'warning',
-	'error',
-]
+const STATUS_OPTIONS: [string, ...string[]] = ['success', 'warning', 'error']
 
 export default component(
 	'basic-status',

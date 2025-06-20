@@ -1,13 +1,13 @@
 import {
 	type Component,
 	component,
-	on,
-	toggleClass,
-	dangerouslySetInnerHTML,
 	computed,
-	setText,
+	dangerouslySetInnerHTML,
+	on,
 	setProperty,
+	setText,
 	state,
+	toggleClass,
 } from '../../..'
 import { fetchWithCache } from '../../functions/shared/fetch-with-cache'
 

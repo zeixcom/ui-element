@@ -44,13 +44,24 @@ code-block {
 		overflow: hidden;
 
 		&::after {
-			content: '';
+			content: "";
 			display: block;
 			position: absolute;
 			bottom: 0;
 			width: 100%;
 			height: var(--space-m);
-			background: linear-gradient(-135deg, var(--color-secondary) 0.5rem, transparent 0) 0 0.5rem, linear-gradient(135deg, var(--color-secondary) 0.5rem, var(--color-background) 0) 0 0.5rem;
+			background: linear-gradient(
+					-135deg,
+					var(--color-secondary) 0.5rem,
+					transparent 0
+				)
+				0 0.5rem,
+				linear-gradient(
+					135deg,
+					var(--color-secondary) 0.5rem,
+					var(--color-background) 0
+				)
+				0 0.5rem;
 			background-color: var(--color-secondary);
 			background-size: var(--space-m) var(--space-m);
 			background-position: bottom;
@@ -76,12 +87,14 @@ code-block {
 			padding: var(--space-xs) var(--space-s);
 			margin-bottom: var(--space-m);
 			font-size: var(--font-size-s);
-			transition: background-color var(--transition-short) var(--easing-inout);
+			transition: background-color var(--transition-short)
+				var(--easing-inout);
 			text-shadow: var(--color-background) 1px 0 var(--space-xs);
 
 			&:hover,
 			&:active {
-				text-shadow: var(--color-text-inverted) var(--space-xs) 0 var(--space-s);
+				text-shadow: var(--color-text-inverted) var(--space-xs) 0
+					var(--space-s);
 			}
 		}
 	}
