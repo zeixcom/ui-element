@@ -5,11 +5,143 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>API Reference – UIElement Docs</title>
 		<meta name="description" content="Detailed documentation of types and functions" />
-		<base href="./api-reference.html" />
-		<link rel="stylesheet" href="assets/main.css" />
-		<script type="module" src="assets/main.js"></script>
+		<link rel="stylesheet" href="./assets/main.css" />
+		<script type="module" src="./assets/main.js"></script>
+		<style>
+			/* Section Navigation Styles */
+			.api-navigation,
+			.blog-navigation {
+				grid-area: sidebar;
+				position: sticky;
+				top: 2rem;
+				max-height: calc(100vh - 4rem);
+				overflow-y: auto;
+				padding: 1rem;
+				background: var(--color-background-soft, #f8f9fa);
+				border: 1px solid var(--color-border, #e1e5e9);
+				border-radius: 0.5rem;
+				margin-left: 2rem;
+				min-width: 280px;
+				max-width: 320px;
+			}
+
+			.api-menu section {
+				margin-bottom: 1.5rem;
+			}
+
+			.api-menu h3,
+			.blog-menu h3 {
+				font-size: 0.875rem;
+				font-weight: 600;
+				text-transform: uppercase;
+				color: var(--color-text-soft, #6b7280);
+				margin: 0 0 0.75rem 0;
+				padding-bottom: 0.25rem;
+				border-bottom: 1px solid var(--color-border, #e1e5e9);
+			}
+
+			.api-menu ul,
+			.blog-menu ul {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+
+			.api-menu li {
+				margin-bottom: 0.25rem;
+			}
+
+			.blog-menu li {
+				margin-bottom: 0.75rem;
+			}
+
+			.api-menu a {
+				display: block;
+				padding: 0.375rem 0.75rem;
+				color: var(--color-text, #374151);
+				text-decoration: none;
+				font-size: 0.875rem;
+				border-radius: 0.25rem;
+				transition: all 0.15s ease;
+			}
+
+			.blog-menu a {
+				display: block;
+				padding: 0.75rem;
+				color: var(--color-text, #374151);
+				text-decoration: none;
+				border-radius: 0.375rem;
+				border: 1px solid transparent;
+				transition: all 0.15s ease;
+			}
+
+			.api-menu a:hover {
+				background: var(--color-primary-soft, #eff6ff);
+				color: var(--color-primary, #2563eb);
+			}
+
+			.blog-menu a:hover {
+				border-color: var(--color-border, #e1e5e9);
+				background: var(--color-background, white);
+				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+			}
+
+			.api-menu a.active,
+			.blog-menu a.active {
+				background: var(--color-primary, #2563eb);
+				color: white;
+				font-weight: 500;
+			}
+
+			.blog-menu .title {
+				display: block;
+				font-weight: 500;
+				font-size: 0.875rem;
+				line-height: 1.25;
+				margin-bottom: 0.25rem;
+			}
+
+			.blog-menu .description {
+				display: block;
+				font-size: 0.75rem;
+				color: var(--color-text-soft, #6b7280);
+				line-height: 1.3;
+			}
+
+			/* Layout adjustments for pages with section navigation */
+			main.has-sidebar {
+				display: grid;
+				grid-template-areas: 'content sidebar';
+				grid-template-columns: 1fr auto;
+				gap: 2rem;
+				align-items: start;
+			}
+
+			main.has-sidebar .content {
+				grid-area: content;
+			}
+
+			@media (max-width: 1200px) {
+				.api-navigation,
+				.blog-navigation {
+					position: static;
+					margin-left: 0;
+					margin-top: 2rem;
+					max-height: none;
+					min-width: auto;
+					max-width: none;
+				}
+
+				main.has-sidebar {
+					grid-template-areas:
+						'content'
+						'sidebar';
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
 	</head>
-	<body>
+	<body class="section-">
 		<client-router>
 			<header class="content-grid">
 				<h1 class="content">
@@ -76,7 +208,7 @@
 				</li>
 
 				<li>
-					<a href="api-reference.html" class="active">
+					<a href="api-reference.html">
 						<span class="icon">📚</span>
 						<strong>API Reference</strong>
 						<small>Detailed documentation of types and functions</small>
@@ -96,20 +228,23 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</callout-box>
 			</header>
-			<main><section class="hero">
+			<main class="content-grid ">
+				<div class="content"><section class="hero">
 
-
-	            <h1 id="api-reference">
-	                <a name="api-reference" class="anchor" href="#api-reference">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                📚 API Reference
-	            </h1></section>
+<h1 id="api-reference">
+                <a name="api-reference" class="anchor" href="#api-reference">
+	                <span class="permalink">🔗</span>
+                </a>
+                📚 API Reference
+            </h1>
+</section>
 
 <section class="breakout">
   <iframe src="api/index.html" width="100%" height="600px"></iframe>
 </section>
-</main>
+</div>
+				 
+			</main>
 			<footer class="content-grid">
 				<div class="content">
 					<h2 class="visually-hidden">Footer</h2>

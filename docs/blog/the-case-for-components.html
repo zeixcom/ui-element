@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>The Case for Components – UIElement Docs</title>
+		<meta name="description" content="Components are a proven way to reduce complexity, encourage reuse, and allow teams to scale their work across independent user interface parts." />
+		<link rel="stylesheet" href="../assets/main.css" />
+		<script type="module" src="../assets/main.js"></script>
+		<style>
+			/* Section Navigation Styles */
+			.api-navigation,
+			.blog-navigation {
+				grid-area: sidebar;
+				position: sticky;
+				top: 2rem;
+				max-height: calc(100vh - 4rem);
+				overflow-y: auto;
+				padding: 1rem;
+				background: var(--color-background-soft, #f8f9fa);
+				border: 1px solid var(--color-border, #e1e5e9);
+				border-radius: 0.5rem;
+				margin-left: 2rem;
+				min-width: 280px;
+				max-width: 320px;
+			}
+
+			.api-menu section {
+				margin-bottom: 1.5rem;
+			}
+
+			.api-menu h3,
+			.blog-menu h3 {
+				font-size: 0.875rem;
+				font-weight: 600;
+				text-transform: uppercase;
+				color: var(--color-text-soft, #6b7280);
+				margin: 0 0 0.75rem 0;
+				padding-bottom: 0.25rem;
+				border-bottom: 1px solid var(--color-border, #e1e5e9);
+			}
+
+			.api-menu ul,
+			.blog-menu ul {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+
+			.api-menu li {
+				margin-bottom: 0.25rem;
+			}
+
+			.blog-menu li {
+				margin-bottom: 0.75rem;
+			}
+
+			.api-menu a {
+				display: block;
+				padding: 0.375rem 0.75rem;
+				color: var(--color-text, #374151);
+				text-decoration: none;
+				font-size: 0.875rem;
+				border-radius: 0.25rem;
+				transition: all 0.15s ease;
+			}
+
+			.blog-menu a {
+				display: block;
+				padding: 0.75rem;
+				color: var(--color-text, #374151);
+				text-decoration: none;
+				border-radius: 0.375rem;
+				border: 1px solid transparent;
+				transition: all 0.15s ease;
+			}
+
+			.api-menu a:hover {
+				background: var(--color-primary-soft, #eff6ff);
+				color: var(--color-primary, #2563eb);
+			}
+
+			.blog-menu a:hover {
+				border-color: var(--color-border, #e1e5e9);
+				background: var(--color-background, white);
+				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+			}
+
+			.api-menu a.active,
+			.blog-menu a.active {
+				background: var(--color-primary, #2563eb);
+				color: white;
+				font-weight: 500;
+			}
+
+			.blog-menu .title {
+				display: block;
+				font-weight: 500;
+				font-size: 0.875rem;
+				line-height: 1.25;
+				margin-bottom: 0.25rem;
+			}
+
+			.blog-menu .description {
+				display: block;
+				font-size: 0.75rem;
+				color: var(--color-text-soft, #6b7280);
+				line-height: 1.3;
+			}
+
+			/* Layout adjustments for pages with section navigation */
+			main.has-sidebar {
+				display: grid;
+				grid-template-areas: 'content sidebar';
+				grid-template-columns: 1fr auto;
+				gap: 2rem;
+				align-items: start;
+			}
+
+			main.has-sidebar .content {
+				grid-area: content;
+			}
+
+			@media (max-width: 1200px) {
+				.api-navigation,
+				.blog-navigation {
+					position: static;
+					margin-left: 0;
+					margin-top: 2rem;
+					max-height: none;
+					min-width: auto;
+					max-width: none;
+				}
+
+				main.has-sidebar {
+					grid-template-areas:
+						'content'
+						'sidebar';
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
+	</head>
+	<body class="section-blog">
+		<client-router>
+			<header class="content-grid">
+				<h1 class="content">
+					UIElement Docs <small>Version 0.13.1</small>
+				</h1>
+				
+	<nav class="breakout">
+		<ol>
+			
+				<li>
+					<a href="../index.html">
+						<span class="icon">📖</span>
+						<strong>Introduction</strong>
+						<small>Overview and key benefits of UIElement</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../getting-started.html">
+						<span class="icon">🚀</span>
+						<strong>Getting Started</strong>
+						<small>Installation, setup, and first steps</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../building-components.html">
+						<span class="icon">🏗️</span>
+						<strong>Building Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../styling-components.html">
+						<span class="icon">🎨</span>
+						<strong>Styling Components</strong>
+						<small>Scoped styles, CSS custom properties</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../data-flow.html">
+						<span class="icon">🔄</span>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../examples-recipes.html">
+						<span class="icon">🍽️</span>
+						<strong>Examples & Recipes</strong>
+						<small>Common use cases and demos</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../patterns-techniques.html">
+						<span class="icon">💡</span>
+						<strong>Patterns & Techniques</strong>
+						<small>Advanced patterns, testing strategies, and best practices</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../api-reference.html">
+						<span class="icon">📚</span>
+						<strong>API Reference</strong>
+						<small>Detailed documentation of types and functions</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../about-community.html">
+						<span class="icon">🤝</span>
+						<strong>About & Community</strong>
+						<small>License, versioning, getting involved</small>
+					</a>
+				</li>
+		</ol>
+	</nav>
+				<callout-box class="content danger" hidden>
+					<p class="error" role="alert" aria-live="polite"></p>
+				</callout-box>
+			</header>
+			<main class="content-grid has-sidebar">
+				<div class="content"><section class="hero">
+
+<h1 id="the-case-for-components">
+                <a name="the-case-for-components" class="anchor" href="#the-case-for-components">
+	                <span class="permalink">🔗</span>
+                </a>
+                The Case for Components
+            </h1>
+<p class="lead"><strong>Components are a proven way to reduce complexity, encourage reuse, and allow teams to scale their work across independent user interface parts</strong>. But you don't need a framework to get these benefits. Let's explore how components help us build better interfaces – and how native Web Components and UIElement fit into that picture.</p>
+</section>
+
+<section>
+
+<h2 id="why-components">
+                <a name="why-components" class="anchor" href="#why-components">
+	                <span class="permalink">🔗</span>
+                </a>
+                Why Components?
+            </h2>
+<p>The idea of organizing user interfaces into components became mainstream with React over a decade ago, when Pete Hunt explained its core benefit: <strong>reduce coupling, increase cohesion</strong>.</p>
+<p>Instead of writing large, monolithic pages where styling, behavior, and data flow are all tangled together, components encourage you to break your user interface into small, focused pieces that each:</p>
+<ul>
+<li>Own their internal structure and styles,</li>
+<li>Expose a clear public interface (via attributes or properties),</li>
+<li>And optionally encapsulate logic for interaction, validation, or data binding.</li>
+</ul>
+<p>This separation of concerns helps in multiple ways:</p>
+<ul>
+<li><strong>Local reasoning</strong>: You can understand and test a component in isolation.</li>
+<li><strong>Reusability</strong>: A component written once can be used anywhere.</li>
+<li><strong>Parallel development</strong>: Teams can divide work by component boundaries.</li>
+</ul>
+<p>As requirements grow – new features, edge cases, accessibility tweaks – components give you a way to evolve your user interface incrementally. You don&#39;t have to rewrite your app. You just enhance or replace parts of it.</p>
+<p>These benefits sound framework-specific, but they&#39;re not. The Web Platform itself provides everything you need to build components – let&#39;s see how.</p>
+</section>
+
+<section>
+
+<h2 id="you-don39t-need-a-framework-for-that">
+                <a name="you-don39t-need-a-framework-for-that" class="anchor" href="#you-don39t-need-a-framework-for-that">
+	                <span class="permalink">🔗</span>
+                </a>
+                You Don&#39;t Need a Framework for That
+            </h2>
+<p>Frameworks like React, Vue, or Svelte give you component models out of the box – but they aren&#39;t the only way. In fact, the Web Platform itself has a native component model: <strong>Web Components</strong>.</p>
+<p>Web Components allow you to define your own HTML tags with scoped or encapsulated behavior and styles. Let&#39;s look at a simple example:</p>
+<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">html</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">>Hello, world!&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
+<p>Underwhelmed because it&#39;s just HTML? – Well, that&#39;s the whole point! For now, it&#39;s just a custom element. But it gives you already a way to unambiguously scope your styles to your components.</p>
+<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">css</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">block</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> solid</span><span style="color:#AE81FF"> #ccc</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  border-radius</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0.25</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
+<p>Let&#39;s add some interactivity:</p>
+<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">html</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">    Your name</span></span>
+<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">  &#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>world&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
+<p>Add the following to your JavaScript for the page:</p>
+<code-block language="javascript" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">javascript</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HelloWorld</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#A6E22E">  connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> nameEl </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#FD971F">    this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">addEventListener</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">      if</span><span style="color:#F8F8F2"> (nameEl) nameEl.textContent </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value</span></span>
+<span class="line"><span style="color:#F8F8F2">    })</span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">customElements.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">, HelloWorld)</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
+<p>Web Components are registered using <code>customElements.define()</code> and automatically upgrade when they appear in the DOM – no bundler magic or runtime library required. Now, our <code>hello-world</code> component reacts to user input and updates the greeting accordingly. No external dependencies, just plain JavaScript and the browser&#39;s built-in APIs and it works – everywhere!</p>
+</section>
+
+<section>
+
+<h2 id="building-on-a-solid-foundation">
+                <a name="building-on-a-solid-foundation" class="anchor" href="#building-on-a-solid-foundation">
+	                <span class="permalink">🔗</span>
+                </a>
+                Building on a Solid Foundation
+            </h2>
+<p><strong>UIElement</strong> builds on the Web Platform rather than abstracting over it. We embrace semantic HTML as the foundation. Add CSS to your components however you like and make them look great. Use Web Components to add reusable behavior.</p>
+<p>While native Web Components are powerful, they require you to wire things together manually – querying elements, adding event listeners, and managing updates. This works great for simple interactions, but what if we want other components or JavaScript code to control our component&#39;s state? Let&#39;s add a public API.</p>
+<p>To achieve this, we can expose an observed attribute and a public property. Observed attributes allow our component to react when the attribute changes. Element properties usually mirror attributes, but they can be of any type, not just strings. We need a setter function to react to changes in the property.</p>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HelloWorld</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">  static</span><span style="color:#F8F8F2"> observedAttributes </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">]</span></span>
+<span class="line"><span style="color:#F8F8F2">  #name </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">  connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">    this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">addEventListener</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">      this</span><span style="color:#F8F8F2">.name </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value</span></span>
+<span class="line"><span style="color:#F8F8F2">    })</span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">  attributeChangedCallback</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">name</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">oldValue</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">newValue</span><span style="color:#F8F8F2">) {</span></span>
+<span class="line"><span style="color:#F92672">    if</span><span style="color:#F8F8F2"> (name </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'name'</span><span style="color:#F8F8F2">) {</span></span>
+<span class="line"><span style="color:#FD971F">      this</span><span style="color:#F8F8F2">.name </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> newValue</span></span>
+<span class="line"><span style="color:#F8F8F2">    }</span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  get</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#F92672">    return</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.#name</span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  set</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">value</span><span style="color:#F8F8F2">) {</span></span>
+<span class="line"><span style="color:#FD971F">    this</span><span style="color:#F8F8F2">.#name </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> value</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> nameEl </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">    if</span><span style="color:#F8F8F2"> (nameEl) nameEl.textContent </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.name</span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">customElements.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">, HelloWorld)</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<p>Hooray, now we can set the name from outside the component in HTML:</p>
+<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">html</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Ada"</span><span style="color:#F8F8F2">></span><span style="color:#88846F">&#x3C;!-- contents --></span><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
+<p>... or via JavaScript:</p>
+<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> helloWorld </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">helloWorld.name </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'Betty'</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	
+</code-block>
+<p>This manual wiring works, but notice how much boilerplate we needed for a simple reactive property. As components grow more complex, this pattern becomes harder to maintain. This is where <strong>UIElement</strong> shines – it provides the reactivity patterns you need while staying close to the platform.</p>
+<p>Here&#39;s the same component rewritten using UIElement. Notice how the concerns are cleanly separated:</p>
+<ul>
+<li><strong>State declaration</strong>: <code>name: asString()</code> defines our component&#39;s reactive state</li>
+<li><strong>Input handling</strong>: The <code>on(&#39;input&#39;, ...)</code> handler updates state declaratively</li>
+<li><strong>DOM updates</strong>: <code>setText(&#39;name&#39;)</code> automatically keeps the display in sync</li>
+</ul>
+<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { component, asString, on, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">  'hello-world'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  {</span></span>
+<span class="line"><span style="color:#F8F8F2">    name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(),</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
+<span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">      'input'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">      on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">        el.name </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value</span></span>
+<span class="line"><span style="color:#F8F8F2">      }),</span></span>
+<span class="line"><span style="color:#F8F8F2">    ),</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#F8F8F2">  ],</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<input-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</input-button>
+	<button type="button" class="overlay">Expand</button>
+</code-block>
+<p>This scales much better as complexity grows. You could add default values, validation rules, attribute reflection, or derived values – all while keeping effects and state management declarative and contained.</p>
+<p>The functions we use:</p>
+<ul>
+<li><code>component()</code> creates a Web Component with less boilerplate.</li>
+<li><code>asString()</code> does nothing, but tells TypeScript that state <code>name</code> is a for sure a string.</li>
+<li><code>first()</code> selects the first element matching a selector.</li>
+<li><code>on()</code> adds an event listener to an element and removes it when the component is disconnected.</li>
+<li><code>setText()</code> updates the text content of an element when a state change occurs.</li>
+</ul>
+<p>Components in UIElement are still standard Web Components that can be used everywhere. Other components need to know nothing more about UIElement components other than they are standard HTML elements with a few reactive properties according to a clearly defined contract – its public interface.</p>
+</section>
+
+<section>
+
+<h2 id="takeaways">
+                <a name="takeaways" class="anchor" href="#takeaways">
+	                <span class="permalink">🔗</span>
+                </a>
+                Takeaways
+            </h2>
+<p>Here&#39;s what we&#39;ve seen:</p>
+<ul>
+<li><strong>Components</strong> help you organize frontend code in ways that scale – conceptually and organizationally.</li>
+<li><strong>Web Components</strong> offer a native way to build encapsulated, reusable user interfaces without needing a framework.</li>
+<li><strong>UIElement</strong> builds on this foundation, simplifying common tasks like wiring inputs and syncing state to the DOM.</li>
+</ul>
+<p>In short: you don&#39;t need a framework to build with components. You just need a few functions that stay close to the platform, while smoothing over the rough edges.</p>
+</section>
+
+<section>
+
+<h2 id="coming-up-next-rethinking-reactivity">
+                <a name="coming-up-next-rethinking-reactivity" class="anchor" href="#coming-up-next-rethinking-reactivity">
+	                <span class="permalink">🔗</span>
+                </a>
+                Coming Up Next: Rethinking Reactivity
+            </h2>
+<p>In the next post, we&#39;ll revisit similar components and explore how reactivity can make more complex relationships easier to manage – like derived values, async state, and multiple sources of truth.</p>
+<p>We&#39;ll look at the pitfalls of imperative state wiring as logic grows, and how UIElement&#39;s signal graph provides a robust and minimal foundation for keeping your user interface in sync.</p>
+<p>Stay tuned!</p>
+</section>
+</div>
+				 <aside class="blog-navigation">
+  <nav class="blog-menu">
+    <section>
+      <h3>Blog Posts</h3>
+      <ul>
+        <li>
+          <a href="composing-complexity.html">
+            <span class="emoji">📄</span>
+            <span class="title">Composing Complexity</span>
+          </a>
+        </li>
+        <li>
+          <a href="flow-from-cause-to-effect.html">
+            <span class="emoji">📄</span>
+            <span class="title">Flow from Cause to Effect</span>
+          </a>
+        </li>
+        <li>
+          <a href="html-first-thinking.html">
+            <span class="emoji">📄</span>
+            <span class="title">HTML-first Thinking</span>
+          </a>
+        </li>
+        <li>
+          <a href="rethinking-reactivity.html">
+            <span class="emoji">📄</span>
+            <span class="title">Rethinking Reactivity</span>
+            <span class="description">Reactivity ensures that your user interface stays up to date automatically. It simplifies the code when we need multiple inputs, derived values, and complex state relationships.</span>
+          </a>
+        </li>
+        <li>
+          <a href="the-case-for-components.html" class="active">
+            <span class="emoji">📄</span>
+            <span class="title">The Case for Components</span>
+            <span class="description">Components are a proven way to reduce complexity, encourage reuse, and allow teams to scale their work across independent user interface parts.</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+  </nav>
+</aside>
+
+			</main>
+			<footer class="content-grid">
+				<div class="content">
+					<h2 class="visually-hidden">Footer</h2>
+					<p>© 2024 – 2025 Zeix AG</p>
+				</div>
+			</footer>
+		</client-router>
+	</body>
+</html>

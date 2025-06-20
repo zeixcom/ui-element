@@ -5,11 +5,143 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Building Components – UIElement Docs</title>
 		<meta name="description" content="Anatomy, lifecycle, signals, effects" />
-		<base href="./building-components.html" />
-		<link rel="stylesheet" href="assets/main.css" />
-		<script type="module" src="assets/main.js"></script>
+		<link rel="stylesheet" href="./assets/main.css" />
+		<script type="module" src="./assets/main.js"></script>
+		<style>
+			/* Section Navigation Styles */
+			.api-navigation,
+			.blog-navigation {
+				grid-area: sidebar;
+				position: sticky;
+				top: 2rem;
+				max-height: calc(100vh - 4rem);
+				overflow-y: auto;
+				padding: 1rem;
+				background: var(--color-background-soft, #f8f9fa);
+				border: 1px solid var(--color-border, #e1e5e9);
+				border-radius: 0.5rem;
+				margin-left: 2rem;
+				min-width: 280px;
+				max-width: 320px;
+			}
+
+			.api-menu section {
+				margin-bottom: 1.5rem;
+			}
+
+			.api-menu h3,
+			.blog-menu h3 {
+				font-size: 0.875rem;
+				font-weight: 600;
+				text-transform: uppercase;
+				color: var(--color-text-soft, #6b7280);
+				margin: 0 0 0.75rem 0;
+				padding-bottom: 0.25rem;
+				border-bottom: 1px solid var(--color-border, #e1e5e9);
+			}
+
+			.api-menu ul,
+			.blog-menu ul {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+
+			.api-menu li {
+				margin-bottom: 0.25rem;
+			}
+
+			.blog-menu li {
+				margin-bottom: 0.75rem;
+			}
+
+			.api-menu a {
+				display: block;
+				padding: 0.375rem 0.75rem;
+				color: var(--color-text, #374151);
+				text-decoration: none;
+				font-size: 0.875rem;
+				border-radius: 0.25rem;
+				transition: all 0.15s ease;
+			}
+
+			.blog-menu a {
+				display: block;
+				padding: 0.75rem;
+				color: var(--color-text, #374151);
+				text-decoration: none;
+				border-radius: 0.375rem;
+				border: 1px solid transparent;
+				transition: all 0.15s ease;
+			}
+
+			.api-menu a:hover {
+				background: var(--color-primary-soft, #eff6ff);
+				color: var(--color-primary, #2563eb);
+			}
+
+			.blog-menu a:hover {
+				border-color: var(--color-border, #e1e5e9);
+				background: var(--color-background, white);
+				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+			}
+
+			.api-menu a.active,
+			.blog-menu a.active {
+				background: var(--color-primary, #2563eb);
+				color: white;
+				font-weight: 500;
+			}
+
+			.blog-menu .title {
+				display: block;
+				font-weight: 500;
+				font-size: 0.875rem;
+				line-height: 1.25;
+				margin-bottom: 0.25rem;
+			}
+
+			.blog-menu .description {
+				display: block;
+				font-size: 0.75rem;
+				color: var(--color-text-soft, #6b7280);
+				line-height: 1.3;
+			}
+
+			/* Layout adjustments for pages with section navigation */
+			main.has-sidebar {
+				display: grid;
+				grid-template-areas: 'content sidebar';
+				grid-template-columns: 1fr auto;
+				gap: 2rem;
+				align-items: start;
+			}
+
+			main.has-sidebar .content {
+				grid-area: content;
+			}
+
+			@media (max-width: 1200px) {
+				.api-navigation,
+				.blog-navigation {
+					position: static;
+					margin-left: 0;
+					margin-top: 2rem;
+					max-height: none;
+					min-width: auto;
+					max-width: none;
+				}
+
+				main.has-sidebar {
+					grid-template-areas:
+						'content'
+						'sidebar';
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
 	</head>
-	<body>
+	<body class="section-">
 		<client-router>
 			<header class="content-grid">
 				<h1 class="content">
@@ -36,7 +168,7 @@
 				</li>
 
 				<li>
-					<a href="building-components.html" class="active">
+					<a href="building-components.html">
 						<span class="icon">🏗️</span>
 						<strong>Building Components</strong>
 						<small>Anatomy, lifecycle, signals, effects</small>
@@ -96,26 +228,27 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</callout-box>
 			</header>
-			<main><section class="hero">
+			<main class="content-grid ">
+				<div class="content"><section class="hero">
 
-
-	            <h1 id="building-components">
-	                <a name="building-components" class="anchor" href="#building-components">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                🏗️ Building Components
-	            </h1><p class="lead"><strong>Create lightweight, self-contained Web Components with built-in reactivity</strong>. UIElement lets you define custom elements that manage state efficiently, update the DOM automatically, and enhance server-rendered pages without an SPA framework.</p>
+<h1 id="building-components">
+                <a name="building-components" class="anchor" href="#building-components">
+	                <span class="permalink">🔗</span>
+                </a>
+                🏗️ Building Components
+            </h1>
+<p class="lead"><strong>Create lightweight, self-contained Web Components with built-in reactivity</strong>. UIElement lets you define custom elements that manage state efficiently, update the DOM automatically, and enhance server-rendered pages without an SPA framework.</p>
 </section>
 
 <section>
 
-
-	            <h2 id="defining-a-component">
-	                <a name="defining-a-component" class="anchor" href="#defining-a-component">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Defining a Component
-	            </h2><p>UIElement builds on <strong>Web Components</strong>, extending <code>HTMLElement</code> to provide <strong>built-in state management and reactive updates</strong>.</p>
+<h2 id="defining-a-component">
+                <a name="defining-a-component" class="anchor" href="#defining-a-component">
+	                <span class="permalink">🔗</span>
+                </a>
+                Defining a Component
+            </h2>
+<p>UIElement builds on <strong>Web Components</strong>, extending <code>HTMLElement</code> to provide <strong>built-in state management and reactive updates</strong>.</p>
 <p>A UIElement creates components using the <code>component()</code> function:</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
@@ -134,13 +267,13 @@
 	
 </code-block>
 <p>Every UIElement component must be registered with a valid custom element tag name (two or more words joined with <code>-</code>) as the first parameter.</p>
-
-	            <h3 id="using-the-custom-element-in-html">
-	                <a name="using-the-custom-element-in-html" class="anchor" href="#using-the-custom-element-in-html">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Using the Custom Element in HTML
-	            </h3><p>Once registered, the component can be used like any native HTML element:</p>
+<h3 id="using-the-custom-element-in-html">
+                <a name="using-the-custom-element-in-html" class="anchor" href="#using-the-custom-element-in-html">
+	                <span class="permalink">🔗</span>
+                </a>
+                Using the Custom Element in HTML
+            </h3>
+<p>Once registered, the component can be used like any native HTML element:</p>
 <code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -159,20 +292,20 @@
 
 <section>
 
-
-	            <h2 id="component-lifecycle">
-	                <a name="component-lifecycle" class="anchor" href="#component-lifecycle">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Component Lifecycle
-	            </h2><p>UIElement manages the <strong>Web Component lifecycle</strong> from creation to removal. Here&#39;s what happens.</p>
-
-	            <h3 id="component-creation">
-	                <a name="component-creation" class="anchor" href="#component-creation">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Component Creation
-	            </h3><p>In the <code>constructor()</code> reactive properties are initialized. You pass a second argument to the <code>component()</code> function to defines initial values for <strong>component states</strong>.</p>
+<h2 id="component-lifecycle">
+                <a name="component-lifecycle" class="anchor" href="#component-lifecycle">
+	                <span class="permalink">🔗</span>
+                </a>
+                Component Lifecycle
+            </h2>
+<p>UIElement manages the <strong>Web Component lifecycle</strong> from creation to removal. Here&#39;s what happens.</p>
+<h3 id="component-creation">
+                <a name="component-creation" class="anchor" href="#component-creation">
+	                <span class="permalink">🔗</span>
+                </a>
+                Component Creation
+            </h3>
+<p>In the <code>constructor()</code> reactive properties are initialized. You pass a second argument to the <code>component()</code> function to defines initial values for <strong>component states</strong>.</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -210,13 +343,13 @@
 <p><strong>Note</strong>: Property initialization runs <strong>before the element is attached to the DOM</strong>. You can&#39;t access not yet defined properties or child elements here.</p>
 </callout-box>
 
-
-	            <h3 id="mounted-in-the-dom">
-	                <a name="mounted-in-the-dom" class="anchor" href="#mounted-in-the-dom">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Mounted in the DOM
-	            </h3><p>Runs when the component is added to the page (<code>connectedCallback()</code>). This is where you:</p>
+<h3 id="mounted-in-the-dom">
+                <a name="mounted-in-the-dom" class="anchor" href="#mounted-in-the-dom">
+	                <span class="permalink">🔗</span>
+                </a>
+                Mounted in the DOM
+            </h3>
+<p>Runs when the component is added to the page (<code>connectedCallback()</code>). This is where you:</p>
 <ul>
 <li><strong>Access sub-elements</strong></li>
 <li><strong>Set up event listeners</strong></li>
@@ -264,13 +397,13 @@
 	</input-button>
 	<button type="button" class="overlay">Expand</button>
 </code-block>
-
-	            <h3 id="removed-from-the-dom">
-	                <a name="removed-from-the-dom" class="anchor" href="#removed-from-the-dom">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Removed from the DOM
-	            </h3><p>Runs when the component is removed (<code>disconnectedCallback()</code>). UIElement will run all cleanup functions returned by event listeners and effects during the setup phase (<code>connectedCallback()</code>). This will unsubscribe all signals the component is subscribed to, so you don&#39;t need to worry about memory leaks.</p>
+<h3 id="removed-from-the-dom">
+                <a name="removed-from-the-dom" class="anchor" href="#removed-from-the-dom">
+	                <span class="permalink">🔗</span>
+                </a>
+                Removed from the DOM
+            </h3>
+<p>Runs when the component is removed (<code>disconnectedCallback()</code>). UIElement will run all cleanup functions returned by event listeners and effects during the setup phase (<code>connectedCallback()</code>). This will unsubscribe all signals the component is subscribed to, so you don&#39;t need to worry about memory leaks.</p>
 <p>If you added <strong>event listeners</strong> outside the scope of your component or <strong>subscribed manually to external APIs</strong>, you need to return a cleanup function:</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
@@ -297,24 +430,24 @@
 	</input-button>
 	<button type="button" class="overlay">Expand</button>
 </code-block>
-
-	            <h3 id="observed-attributes">
-	                <a name="observed-attributes" class="anchor" href="#observed-attributes">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Observed Attributes
-	            </h3><p>UIElement automatically observes and converts attributes with an associated <strong>parser function</strong> in the init block and updates them whenever the attribute changes (<code>attributeChangedCallback()</code>).</p>
+<h3 id="observed-attributes">
+                <a name="observed-attributes" class="anchor" href="#observed-attributes">
+	                <span class="permalink">🔗</span>
+                </a>
+                Observed Attributes
+            </h3>
+<p>UIElement automatically observes and converts attributes with an associated <strong>parser function</strong> in the init block and updates them whenever the attribute changes (<code>attributeChangedCallback()</code>).</p>
 </section>
 
 <section>
 
-
-	            <h2 id="managing-state-with-signals">
-	                <a name="managing-state-with-signals" class="anchor" href="#managing-state-with-signals">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Managing State with Signals
-	            </h2><p>UIElement manages state using <strong>signals</strong>, which are atomic reactive states that trigger updates when they change. We use regular properties to access or update them:</p>
+<h2 id="managing-state-with-signals">
+                <a name="managing-state-with-signals" class="anchor" href="#managing-state-with-signals">
+	                <span class="permalink">🔗</span>
+                </a>
+                Managing State with Signals
+            </h2>
+<p>UIElement manages state using <strong>signals</strong>, which are atomic reactive states that trigger updates when they change. We use regular properties to access or update them:</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -331,13 +464,13 @@
 	</input-button>
 	
 </code-block>
-
-	            <h3 id="characteristics-and-special-values">
-	                <a name="characteristics-and-special-values" class="anchor" href="#characteristics-and-special-values">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Characteristics and Special Values
-	            </h3><p>Signals in UIElement are of a <strong>static type</strong> and <strong>non-nullable</strong>. This allows to <strong>simplify the logic</strong> as you will never have to check the type or perform null-checks.</p>
+<h3 id="characteristics-and-special-values">
+                <a name="characteristics-and-special-values" class="anchor" href="#characteristics-and-special-values">
+	                <span class="permalink">🔗</span>
+                </a>
+                Characteristics and Special Values
+            </h3>
+<p>Signals in UIElement are of a <strong>static type</strong> and <strong>non-nullable</strong>. This allows to <strong>simplify the logic</strong> as you will never have to check the type or perform null-checks.</p>
 <ul>
 <li>If you use <strong>TypeScript</strong> (recommended), <strong>you will be warned</strong> that <code>null</code> or <code>undefined</code> cannot be assigned to a signal or if you try to assign a value of a wrong type.</li>
 <li>If you use vanilla <strong>JavaScript</strong> without a build step, setting a signal to <code>null</code> or <code>undefined</code> <strong>will log an error to the console and abort</strong>. However, strict type checking is not enforced at runtime.</li>
@@ -347,13 +480,13 @@
 <li><strong><code>RESET</code></strong>: Will <strong>reset to the server-rendered version</strong> that was there before UIElement took control. This is what you want to do most of the times when a signal lacks a specific value.</li>
 <li><strong><code>UNSET</code></strong>: Will <strong>delete the signal</strong>, <strong>unsubscribe its watchers</strong> and also <strong>delete related attributes or style properties</strong> in effects. Use this with special care!</li>
 </ul>
-
-	            <h3 id="initializing-state-from-attributes">
-	                <a name="initializing-state-from-attributes" class="anchor" href="#initializing-state-from-attributes">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Initializing State from Attributes
-	            </h3><p>The standard way to set initial state in UIElement is via <strong>server-rendered attributes</strong> on the component that needs it. No props drilling as in other frameworks. UIElements provides some bundled attribute parsers to convert attribute values to the desired type. And you can also define your own custom parsers.</p>
+<h3 id="initializing-state-from-attributes">
+                <a name="initializing-state-from-attributes" class="anchor" href="#initializing-state-from-attributes">
+	                <span class="permalink">🔗</span>
+                </a>
+                Initializing State from Attributes
+            </h3>
+<p>The standard way to set initial state in UIElement is via <strong>server-rendered attributes</strong> on the component that needs it. No props drilling as in other frameworks. UIElements provides some bundled attribute parsers to convert attribute values to the desired type. And you can also define your own custom parsers.</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -387,13 +520,13 @@
 </ul>
 </callout-box>
 
-
-	            <h3 id="bundled-attribute-parsers">
-	                <a name="bundled-attribute-parsers" class="anchor" href="#bundled-attribute-parsers">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Bundled Attribute Parsers
-	            </h3><table>
+<h3 id="bundled-attribute-parsers">
+                <a name="bundled-attribute-parsers" class="anchor" href="#bundled-attribute-parsers">
+	                <span class="permalink">🔗</span>
+                </a>
+                Bundled Attribute Parsers
+            </h3>
+<table>
 <thead>
 <tr>
 <th>Function</th>
@@ -432,20 +565,20 @@
 
 <section>
 
-
-	            <h2 id="selecting-elements">
-	                <a name="selecting-elements" class="anchor" href="#selecting-elements">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Selecting Elements
-	            </h2><p>Use the provided selector utilities to find elements within your component:</p>
-
-	            <h3 id="first">
-	                <a name="first" class="anchor" href="#first">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                first()
-	            </h3><p>Selects the first matching element and applies effects:</p>
+<h2 id="selecting-elements">
+                <a name="selecting-elements" class="anchor" href="#selecting-elements">
+	                <span class="permalink">🔗</span>
+                </a>
+                Selecting Elements
+            </h2>
+<p>Use the provided selector utilities to find elements within your component:</p>
+<h3 id="first">
+                <a name="first" class="anchor" href="#first">
+	                <span class="permalink">🔗</span>
+                </a>
+                first()
+            </h3>
+<p>Selects the first matching element and applies effects:</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -474,13 +607,13 @@
 	</input-button>
 	<button type="button" class="overlay">Expand</button>
 </code-block>
-
-	            <h3 id="all">
-	                <a name="all" class="anchor" href="#all">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                all()
-	            </h3><p>Selects all matching elements and applies effects to each:</p>
+<h3 id="all">
+                <a name="all" class="anchor" href="#all">
+	                <span class="permalink">🔗</span>
+                </a>
+                all()
+            </h3>
+<p>Selects all matching elements and applies effects to each:</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -533,13 +666,13 @@
 
 <section>
 
-
-	            <h2 id="adding-event-listeners">
-	                <a name="adding-event-listeners" class="anchor" href="#adding-event-listeners">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Adding Event Listeners
-	            </h2><p>Event listeners allow to respond to user interactions. They are the cause of changes in the component&#39;s state.</p>
+<h2 id="adding-event-listeners">
+                <a name="adding-event-listeners" class="anchor" href="#adding-event-listeners">
+	                <span class="permalink">🔗</span>
+                </a>
+                Adding Event Listeners
+            </h2>
+<p>Event listeners allow to respond to user interactions. They are the cause of changes in the component&#39;s state.</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -575,20 +708,20 @@
 
 <section>
 
-
-	            <h2 id="synchronizing-state-with-effects">
-	                <a name="synchronizing-state-with-effects" class="anchor" href="#synchronizing-state-with-effects">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Synchronizing State with Effects
-	            </h2><p>Effects <strong>automatically update the DOM</strong> when signals change, avoiding manual DOM manipulation.</p>
-
-	            <h3 id="applying-effects">
-	                <a name="applying-effects" class="anchor" href="#applying-effects">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Applying Effects
-	            </h3><p>Apply one or multiple effects in the setup function (for component itself) or in element selector functions:</p>
+<h2 id="synchronizing-state-with-effects">
+                <a name="synchronizing-state-with-effects" class="anchor" href="#synchronizing-state-with-effects">
+	                <span class="permalink">🔗</span>
+                </a>
+                Synchronizing State with Effects
+            </h2>
+<p>Effects <strong>automatically update the DOM</strong> when signals change, avoiding manual DOM manipulation.</p>
+<h3 id="applying-effects">
+                <a name="applying-effects" class="anchor" href="#applying-effects">
+	                <span class="permalink">🔗</span>
+                </a>
+                Applying Effects
+            </h3>
+<p>Apply one or multiple effects in the setup function (for component itself) or in element selector functions:</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -614,13 +747,13 @@
 	<button type="button" class="overlay">Expand</button>
 </code-block>
 <p>Again, the order of effects is not important. Feel free to apply them in any order that suits your needs.</p>
-
-	            <h3 id="bundled-effects">
-	                <a name="bundled-effects" class="anchor" href="#bundled-effects">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Bundled Effects
-	            </h3><table>
+<h3 id="bundled-effects">
+                <a name="bundled-effects" class="anchor" href="#bundled-effects">
+	                <span class="permalink">🔗</span>
+                </a>
+                Bundled Effects
+            </h3>
+<table>
 <thead>
 <tr>
 <th>Function</th>
@@ -665,13 +798,13 @@
 <p><strong>Tip</strong>: TypeScript will check whether a value of a given type is assignable to a certain element type. You might have to pass a type hint for the queried element type. Prefer <code>setProperty()</code> over <code>setAttribute()</code> for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.</p>
 </callout-box>
 
-
-	            <h3 id="simplifying-effect-notation">
-	                <a name="simplifying-effect-notation" class="anchor" href="#simplifying-effect-notation">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Simplifying Effect Notation
-	            </h3><p>For effects that take two arguments, <strong>the second argument can be omitted</strong> if the signal key matches the targeted property name, attribute, class, or style property.</p>
+<h3 id="simplifying-effect-notation">
+                <a name="simplifying-effect-notation" class="anchor" href="#simplifying-effect-notation">
+	                <span class="permalink">🔗</span>
+                </a>
+                Simplifying Effect Notation
+            </h3>
+<p>For effects that take two arguments, <strong>the second argument can be omitted</strong> if the signal key matches the targeted property name, attribute, class, or style property.</p>
 <p>When signal key matches property name:</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
@@ -688,13 +821,13 @@
 	
 </code-block>
 <p>Here, <code>toggleClass(&quot;even&quot;)</code> automatically uses the <code>&quot;even&quot;</code> signal.</p>
-
-	            <h3 id="using-local-signals-for-protected-state">
-	                <a name="using-local-signals-for-protected-state" class="anchor" href="#using-local-signals-for-protected-state">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Using Local Signals for Protected State
-	            </h3><p>Local signals are useful for storing state that should not be exposed to the outside world. They can be used to manage internal state within a component:</p>
+<h3 id="using-local-signals-for-protected-state">
+                <a name="using-local-signals-for-protected-state" class="anchor" href="#using-local-signals-for-protected-state">
+	                <span class="permalink">🔗</span>
+                </a>
+                Using Local Signals for Protected State
+            </h3>
+<p>Local signals are useful for storing state that should not be exposed to the outside world. They can be used to manage internal state within a component:</p>
 <code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -723,13 +856,13 @@
 	<button type="button" class="overlay">Expand</button>
 </code-block>
 <p>Outside components cannot access the <code>count</code> or <code>double</code> signals.</p>
-
-	            <h3 id="using-functions-for-ad-hoc-derived-state">
-	                <a name="using-functions-for-ad-hoc-derived-state" class="anchor" href="#using-functions-for-ad-hoc-derived-state">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Using Functions for Ad-hoc Derived State
-	            </h3><p>Instead of a signal key or a local signal, you can <strong>pass a function</strong> that derives a value dynamically:</p>
+<h3 id="using-functions-for-ad-hoc-derived-state">
+                <a name="using-functions-for-ad-hoc-derived-state" class="anchor" href="#using-functions-for-ad-hoc-derived-state">
+	                <span class="permalink">🔗</span>
+                </a>
+                Using Functions for Ad-hoc Derived State
+            </h3>
+<p>Instead of a signal key or a local signal, you can <strong>pass a function</strong> that derives a value dynamically:</p>
 <code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -762,13 +895,13 @@
 <p>Ad-hoc derived state is more efficient than the overhead of a memoized computed signal for simple functions like converting to a string or boolean, formatting a value or performing a calculation.</p>
 </callout-box>
 
-
-	            <h3 id="efficient-amp-fine-grained-updates">
-	                <a name="efficient-amp-fine-grained-updates" class="anchor" href="#efficient-amp-fine-grained-updates">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Efficient &amp; Fine-Grained Updates
-	            </h3><p>Unlike some frameworks that <strong>re-render entire components</strong>, UIElement updates only what changes:</p>
+<h3 id="efficient-amp-fine-grained-updates">
+                <a name="efficient-amp-fine-grained-updates" class="anchor" href="#efficient-amp-fine-grained-updates">
+	                <span class="permalink">🔗</span>
+                </a>
+                Efficient &amp; Fine-Grained Updates
+            </h3>
+<p>Unlike some frameworks that <strong>re-render entire components</strong>, UIElement updates only what changes:</p>
 <ul>
 <li><strong>No virtual DOM</strong> – UIElement modifies the DOM directly.</li>
 <li><strong>Signals propagate automatically</strong> – No need to track dependencies manually.</li>
@@ -778,19 +911,21 @@
 
 <section>
 
-
-	            <h2 id="next-steps">
-	                <a name="next-steps" class="anchor" href="#next-steps">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Next Steps
-	            </h2><p>Now that you understand the basics, explore:</p>
+<h2 id="next-steps">
+                <a name="next-steps" class="anchor" href="#next-steps">
+	                <span class="permalink">🔗</span>
+                </a>
+                Next Steps
+            </h2>
+<p>Now that you understand the basics, explore:</p>
 <ul>
 <li><a href="styling-components.html">Styling Components</a> – Learn techniques to apply styles to components.</li>
 <li><a href="data-flow.html">Data Flow</a> – Learn about passing state between components.</li>
 </ul>
 </section>
-</main>
+</div>
+				 
+			</main>
 			<footer class="content-grid">
 				<div class="content">
 					<h2 class="visually-hidden">Footer</h2>

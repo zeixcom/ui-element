@@ -5,11 +5,143 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Introduction – UIElement Docs</title>
 		<meta name="description" content="Overview and key benefits of UIElement" />
-		<base href="./index.html" />
-		<link rel="stylesheet" href="assets/main.css" />
-		<script type="module" src="assets/main.js"></script>
+		<link rel="stylesheet" href="./assets/main.css" />
+		<script type="module" src="./assets/main.js"></script>
+		<style>
+			/* Section Navigation Styles */
+			.api-navigation,
+			.blog-navigation {
+				grid-area: sidebar;
+				position: sticky;
+				top: 2rem;
+				max-height: calc(100vh - 4rem);
+				overflow-y: auto;
+				padding: 1rem;
+				background: var(--color-background-soft, #f8f9fa);
+				border: 1px solid var(--color-border, #e1e5e9);
+				border-radius: 0.5rem;
+				margin-left: 2rem;
+				min-width: 280px;
+				max-width: 320px;
+			}
+
+			.api-menu section {
+				margin-bottom: 1.5rem;
+			}
+
+			.api-menu h3,
+			.blog-menu h3 {
+				font-size: 0.875rem;
+				font-weight: 600;
+				text-transform: uppercase;
+				color: var(--color-text-soft, #6b7280);
+				margin: 0 0 0.75rem 0;
+				padding-bottom: 0.25rem;
+				border-bottom: 1px solid var(--color-border, #e1e5e9);
+			}
+
+			.api-menu ul,
+			.blog-menu ul {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+
+			.api-menu li {
+				margin-bottom: 0.25rem;
+			}
+
+			.blog-menu li {
+				margin-bottom: 0.75rem;
+			}
+
+			.api-menu a {
+				display: block;
+				padding: 0.375rem 0.75rem;
+				color: var(--color-text, #374151);
+				text-decoration: none;
+				font-size: 0.875rem;
+				border-radius: 0.25rem;
+				transition: all 0.15s ease;
+			}
+
+			.blog-menu a {
+				display: block;
+				padding: 0.75rem;
+				color: var(--color-text, #374151);
+				text-decoration: none;
+				border-radius: 0.375rem;
+				border: 1px solid transparent;
+				transition: all 0.15s ease;
+			}
+
+			.api-menu a:hover {
+				background: var(--color-primary-soft, #eff6ff);
+				color: var(--color-primary, #2563eb);
+			}
+
+			.blog-menu a:hover {
+				border-color: var(--color-border, #e1e5e9);
+				background: var(--color-background, white);
+				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+			}
+
+			.api-menu a.active,
+			.blog-menu a.active {
+				background: var(--color-primary, #2563eb);
+				color: white;
+				font-weight: 500;
+			}
+
+			.blog-menu .title {
+				display: block;
+				font-weight: 500;
+				font-size: 0.875rem;
+				line-height: 1.25;
+				margin-bottom: 0.25rem;
+			}
+
+			.blog-menu .description {
+				display: block;
+				font-size: 0.75rem;
+				color: var(--color-text-soft, #6b7280);
+				line-height: 1.3;
+			}
+
+			/* Layout adjustments for pages with section navigation */
+			main.has-sidebar {
+				display: grid;
+				grid-template-areas: 'content sidebar';
+				grid-template-columns: 1fr auto;
+				gap: 2rem;
+				align-items: start;
+			}
+
+			main.has-sidebar .content {
+				grid-area: content;
+			}
+
+			@media (max-width: 1200px) {
+				.api-navigation,
+				.blog-navigation {
+					position: static;
+					margin-left: 0;
+					margin-top: 2rem;
+					max-height: none;
+					min-width: auto;
+					max-width: none;
+				}
+
+				main.has-sidebar {
+					grid-template-areas:
+						'content'
+						'sidebar';
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
 	</head>
-	<body>
+	<body class="section-">
 		<client-router>
 			<header class="content-grid">
 				<h1 class="content">
@@ -20,7 +152,7 @@
 		<ol>
 			
 				<li>
-					<a href="index.html" class="active">
+					<a href="index.html">
 						<span class="icon">📖</span>
 						<strong>Introduction</strong>
 						<small>Overview and key benefits of UIElement</small>
@@ -96,26 +228,27 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</callout-box>
 			</header>
-			<main><section class="hero">
+			<main class="content-grid ">
+				<div class="content"><section class="hero">
 
-
-	            <h1 id="introduction">
-	                <a name="introduction" class="anchor" href="#introduction">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                📖 Introduction
-	            </h1><p class="lead"><strong>Web development doesn't need to be complicated</strong>. UIElement offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
+<h1 id="introduction">
+                <a name="introduction" class="anchor" href="#introduction">
+	                <span class="permalink">🔗</span>
+                </a>
+                📖 Introduction
+            </h1>
+<p class="lead"><strong>Web development doesn't need to be complicated</strong>. UIElement offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
 </section>
 
 <section>
 
-
-	            <h2 id="what-is-uielement">
-	                <a name="what-is-uielement" class="anchor" href="#what-is-uielement">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                What is UIElement?
-	            </h2><p>UIElement is a lightweight TypeScript library (approximately 4kB gzipped) that brings signal-based reactivity to Web Components. It serves as a thin layer between standard web technologies and modern reactivity patterns, empowering you to:</p>
+<h2 id="what-is-uielement">
+                <a name="what-is-uielement" class="anchor" href="#what-is-uielement">
+	                <span class="permalink">🔗</span>
+                </a>
+                What is UIElement?
+            </h2>
+<p>UIElement is a lightweight TypeScript library (approximately 4kB gzipped) that brings signal-based reactivity to Web Components. It serves as a thin layer between standard web technologies and modern reactivity patterns, empowering you to:</p>
 <ul>
 <li>Transform ordinary HTML elements into reactive components</li>
 <li>Bind UI updates directly to state changes with minimal boilerplate</li>
@@ -144,19 +277,19 @@
 
 <section>
 
-
-	            <h2 id="philosophy-amp-design-goals">
-	                <a name="philosophy-amp-design-goals" class="anchor" href="#philosophy-amp-design-goals">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Philosophy &amp; Design Goals
-	            </h2>
-	            <h3 id="html-first-approach">
-	                <a name="html-first-approach" class="anchor" href="#html-first-approach">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                HTML-First Approach
-	            </h3><p>UIElement assumes you start with semantic HTML and want to enhance it with behavior:</p>
+<h2 id="philosophy-amp-design-goals">
+                <a name="philosophy-amp-design-goals" class="anchor" href="#philosophy-amp-design-goals">
+	                <span class="permalink">🔗</span>
+                </a>
+                Philosophy &amp; Design Goals
+            </h2>
+<h3 id="html-first-approach">
+                <a name="html-first-approach" class="anchor" href="#html-first-approach">
+	                <span class="permalink">🔗</span>
+                </a>
+                HTML-First Approach
+            </h3>
+<p>UIElement assumes you start with semantic HTML and want to enhance it with behavior:</p>
 <code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -174,24 +307,24 @@
 	
 </code-block>
 <p>This means better SEO, faster initial page loads, and progressive enhancement that works even when JavaScript fails.</p>
-
-	            <h3 id="reactive-by-design">
-	                <a name="reactive-by-design" class="anchor" href="#reactive-by-design">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Reactive by Design
-	            </h3><p>UIElement uses signals for efficient, targeted DOM updates. Only the parts that actually changed get updated - no virtual DOM overhead, no unnecessary re-renders.</p>
+<h3 id="reactive-by-design">
+                <a name="reactive-by-design" class="anchor" href="#reactive-by-design">
+	                <span class="permalink">🔗</span>
+                </a>
+                Reactive by Design
+            </h3>
+<p>UIElement uses signals for efficient, targeted DOM updates. Only the parts that actually changed get updated - no virtual DOM overhead, no unnecessary re-renders.</p>
 </section>
 
 <section>
 
-
-	            <h2 id="why-choose-uielement">
-	                <a name="why-choose-uielement" class="anchor" href="#why-choose-uielement">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Why Choose UIElement?
-	            </h2><p>UIElement shines when you want:</p>
+<h2 id="why-choose-uielement">
+                <a name="why-choose-uielement" class="anchor" href="#why-choose-uielement">
+	                <span class="permalink">🔗</span>
+                </a>
+                Why Choose UIElement?
+            </h2>
+<p>UIElement shines when you want:</p>
 <ul>
 <li><strong>Server-rendered content</strong> with client-side enhancements</li>
 <li><strong>High performance</strong> on all devices (no virtual DOM overhead)</li>
@@ -210,18 +343,20 @@
 
 <section>
 
-
-	            <h2 id="next-steps">
-	                <a name="next-steps" class="anchor" href="#next-steps">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Next Steps
-	            </h2><p>Now that you understand what UIElement is and its core philosophy, you&#39;re ready to:</p>
+<h2 id="next-steps">
+                <a name="next-steps" class="anchor" href="#next-steps">
+	                <span class="permalink">🔗</span>
+                </a>
+                Next Steps
+            </h2>
+<p>Now that you understand what UIElement is and its core philosophy, you&#39;re ready to:</p>
 <ul>
 <li>Move on to <a href="getting-started.html">Getting Started</a> to install the library and build your first component</li>
 </ul>
 </section>
-</main>
+</div>
+				 
+			</main>
 			<footer class="content-grid">
 				<div class="content">
 					<h2 class="visually-hidden">Footer</h2>

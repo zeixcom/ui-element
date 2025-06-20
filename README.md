@@ -2,7 +2,7 @@
 
 Version 0.13.1
 
-**UIElement** - the HTML-first microframework bringing reactivity to Web Components.
+**UIElement** - a HTML-first library for reactive Web Components
 
 UIElement is a set of functions to build reusable, loosely coupled Web Components with reactive properties. It provides structure through components and simplifies state management and DOM synchronization using declarative signals and effects, leading to more organized and maintainable code without a steep learning curve.
 

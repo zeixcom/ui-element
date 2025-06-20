@@ -5,11 +5,143 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Styling Components – UIElement Docs</title>
 		<meta name="description" content="Scoped styles, CSS custom properties" />
-		<base href="./styling-components.html" />
-		<link rel="stylesheet" href="assets/main.css" />
-		<script type="module" src="assets/main.js"></script>
+		<link rel="stylesheet" href="./assets/main.css" />
+		<script type="module" src="./assets/main.js"></script>
+		<style>
+			/* Section Navigation Styles */
+			.api-navigation,
+			.blog-navigation {
+				grid-area: sidebar;
+				position: sticky;
+				top: 2rem;
+				max-height: calc(100vh - 4rem);
+				overflow-y: auto;
+				padding: 1rem;
+				background: var(--color-background-soft, #f8f9fa);
+				border: 1px solid var(--color-border, #e1e5e9);
+				border-radius: 0.5rem;
+				margin-left: 2rem;
+				min-width: 280px;
+				max-width: 320px;
+			}
+
+			.api-menu section {
+				margin-bottom: 1.5rem;
+			}
+
+			.api-menu h3,
+			.blog-menu h3 {
+				font-size: 0.875rem;
+				font-weight: 600;
+				text-transform: uppercase;
+				color: var(--color-text-soft, #6b7280);
+				margin: 0 0 0.75rem 0;
+				padding-bottom: 0.25rem;
+				border-bottom: 1px solid var(--color-border, #e1e5e9);
+			}
+
+			.api-menu ul,
+			.blog-menu ul {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+
+			.api-menu li {
+				margin-bottom: 0.25rem;
+			}
+
+			.blog-menu li {
+				margin-bottom: 0.75rem;
+			}
+
+			.api-menu a {
+				display: block;
+				padding: 0.375rem 0.75rem;
+				color: var(--color-text, #374151);
+				text-decoration: none;
+				font-size: 0.875rem;
+				border-radius: 0.25rem;
+				transition: all 0.15s ease;
+			}
+
+			.blog-menu a {
+				display: block;
+				padding: 0.75rem;
+				color: var(--color-text, #374151);
+				text-decoration: none;
+				border-radius: 0.375rem;
+				border: 1px solid transparent;
+				transition: all 0.15s ease;
+			}
+
+			.api-menu a:hover {
+				background: var(--color-primary-soft, #eff6ff);
+				color: var(--color-primary, #2563eb);
+			}
+
+			.blog-menu a:hover {
+				border-color: var(--color-border, #e1e5e9);
+				background: var(--color-background, white);
+				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+			}
+
+			.api-menu a.active,
+			.blog-menu a.active {
+				background: var(--color-primary, #2563eb);
+				color: white;
+				font-weight: 500;
+			}
+
+			.blog-menu .title {
+				display: block;
+				font-weight: 500;
+				font-size: 0.875rem;
+				line-height: 1.25;
+				margin-bottom: 0.25rem;
+			}
+
+			.blog-menu .description {
+				display: block;
+				font-size: 0.75rem;
+				color: var(--color-text-soft, #6b7280);
+				line-height: 1.3;
+			}
+
+			/* Layout adjustments for pages with section navigation */
+			main.has-sidebar {
+				display: grid;
+				grid-template-areas: 'content sidebar';
+				grid-template-columns: 1fr auto;
+				gap: 2rem;
+				align-items: start;
+			}
+
+			main.has-sidebar .content {
+				grid-area: content;
+			}
+
+			@media (max-width: 1200px) {
+				.api-navigation,
+				.blog-navigation {
+					position: static;
+					margin-left: 0;
+					margin-top: 2rem;
+					max-height: none;
+					min-width: auto;
+					max-width: none;
+				}
+
+				main.has-sidebar {
+					grid-template-areas:
+						'content'
+						'sidebar';
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
 	</head>
-	<body>
+	<body class="section-">
 		<client-router>
 			<header class="content-grid">
 				<h1 class="content">
@@ -44,7 +176,7 @@
 				</li>
 
 				<li>
-					<a href="styling-components.html" class="active">
+					<a href="styling-components.html">
 						<span class="icon">🎨</span>
 						<strong>Styling Components</strong>
 						<small>Scoped styles, CSS custom properties</small>
@@ -96,26 +228,27 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</callout-box>
 			</header>
-			<main><section class="hero">
+			<main class="content-grid ">
+				<div class="content"><section class="hero">
 
-
-	            <h1 id="styling-components">
-	                <a name="styling-components" class="anchor" href="#styling-components">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                🎨 Styling Components
-	            </h1><p class="lead"><strong>Keep your components’ styles self-contained while supporting shared design tokens.</strong> UIElement does not enforce a specific styling method, but we recommend techniques that help balance encapsulation, reusability, and maintainability.</p>
+<h1 id="styling-components">
+                <a name="styling-components" class="anchor" href="#styling-components">
+	                <span class="permalink">🔗</span>
+                </a>
+                🎨 Styling Components
+            </h1>
+<p class="lead"><strong>Keep your components’ styles self-contained while supporting shared design tokens.</strong> UIElement does not enforce a specific styling method, but we recommend techniques that help balance encapsulation, reusability, and maintainability.</p>
 </section>
 
 <section>
 
-
-	            <h2 id="design-principles">
-	                <a name="design-principles" class="anchor" href="#design-principles">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Design Principles
-	            </h2><p>UIElement is focused on <strong>state management and reactivity</strong>, not styling. However, to <strong>ensure consistent, maintainable, and reusable styles</strong>, we recommend techniques that <strong>scope component styles properly while allowing shared design tokens</strong> (e.g., spacing, font sizes, colors, layout grids).</p>
+<h2 id="design-principles">
+                <a name="design-principles" class="anchor" href="#design-principles">
+	                <span class="permalink">🔗</span>
+                </a>
+                Design Principles
+            </h2>
+<p>UIElement is focused on <strong>state management and reactivity</strong>, not styling. However, to <strong>ensure consistent, maintainable, and reusable styles</strong>, we recommend techniques that <strong>scope component styles properly while allowing shared design tokens</strong> (e.g., spacing, font sizes, colors, layout grids).</p>
 <ul>
 <li>✅ <strong>Each component brings along its own specific styles.</strong></li>
 <li>✅ Component styles should be <strong>scoped or encapsulated</strong> so they don&#39;t leak out.</li>
@@ -126,13 +259,13 @@
 
 <section>
 
-
-	            <h2 id="scope-styles-to-custom-element">
-	                <a name="scope-styles-to-custom-element" class="anchor" href="#scope-styles-to-custom-element">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Scope Styles to Custom Element
-	            </h2><p>Use the <strong>custom element name</strong> to scope component styles if <strong>you control the page and the components within</strong>. This protects against component styles leaking out, while still allowing to use the CSS cascade. No need for Shadow DOM, no duplicate style rules.</p>
+<h2 id="scope-styles-to-custom-element">
+                <a name="scope-styles-to-custom-element" class="anchor" href="#scope-styles-to-custom-element">
+	                <span class="permalink">🔗</span>
+                </a>
+                Scope Styles to Custom Element
+            </h2>
+<p>Use the <strong>custom element name</strong> to scope component styles if <strong>you control the page and the components within</strong>. This protects against component styles leaking out, while still allowing to use the CSS cascade. No need for Shadow DOM, no duplicate style rules.</p>
 <code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -153,13 +286,13 @@
 	</input-button>
 	
 </code-block>
-
-	            <h3 id="advantages-of-custom-element-names">
-	                <a name="advantages-of-custom-element-names" class="anchor" href="#advantages-of-custom-element-names">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Advantages of Custom Element Names
-	            </h3><ul>
+<h3 id="advantages-of-custom-element-names">
+                <a name="advantages-of-custom-element-names" class="anchor" href="#advantages-of-custom-element-names">
+	                <span class="permalink">🔗</span>
+                </a>
+                Advantages of Custom Element Names
+            </h3>
+<ul>
 <li>✅ By definition <strong>unique within the document</strong> with a descriptive name.</li>
 <li>✅ <strong>Low specificity</strong>, making it easy to override when you need to with a single class.</li>
 </ul>
@@ -173,13 +306,13 @@
 
 <section>
 
-
-	            <h2 id="encapsulate-styles-with-shadow-dom">
-	                <a name="encapsulate-styles-with-shadow-dom" class="anchor" href="#encapsulate-styles-with-shadow-dom">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Encapsulate Styles with Shadow DOM
-	            </h2><p>Use <strong>Shadow DOM</strong> to encapsulate styles if your component is going to be used in a pages <strong>where you don&#39;t control the styles</strong>. This way you make sure page styles don&#39;t leak in and component styles don&#39;t leak out.</p>
+<h2 id="encapsulate-styles-with-shadow-dom">
+                <a name="encapsulate-styles-with-shadow-dom" class="anchor" href="#encapsulate-styles-with-shadow-dom">
+	                <span class="permalink">🔗</span>
+                </a>
+                Encapsulate Styles with Shadow DOM
+            </h2>
+<p>Use <strong>Shadow DOM</strong> to encapsulate styles if your component is going to be used in a pages <strong>where you don&#39;t control the styles</strong>. This way you make sure page styles don&#39;t leak in and component styles don&#39;t leak out.</p>
 <code-block collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -215,20 +348,20 @@
 
 <section>
 
-
-	            <h2 id="shared-design-tokens-with-css-custom-properties">
-	                <a name="shared-design-tokens-with-css-custom-properties" class="anchor" href="#shared-design-tokens-with-css-custom-properties">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Shared Design Tokens with CSS Custom Properties
-	            </h2><p>Web Components can’t inherit global styles inside <strong>Shadow DOM</strong>, but CSS custom properties allow components to remain <strong>flexible and themeable</strong>.</p>
-
-	            <h3 id="defining-design-tokens">
-	                <a name="defining-design-tokens" class="anchor" href="#defining-design-tokens">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Defining Design Tokens
-	            </h3><p>Set global tokens in a stylesheet:</p>
+<h2 id="shared-design-tokens-with-css-custom-properties">
+                <a name="shared-design-tokens-with-css-custom-properties" class="anchor" href="#shared-design-tokens-with-css-custom-properties">
+	                <span class="permalink">🔗</span>
+                </a>
+                Shared Design Tokens with CSS Custom Properties
+            </h2>
+<p>Web Components can’t inherit global styles inside <strong>Shadow DOM</strong>, but CSS custom properties allow components to remain <strong>flexible and themeable</strong>.</p>
+<h3 id="defining-design-tokens">
+                <a name="defining-design-tokens" class="anchor" href="#defining-design-tokens">
+	                <span class="permalink">🔗</span>
+                </a>
+                Defining Design Tokens
+            </h3>
+<p>Set global tokens in a stylesheet:</p>
 <code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -247,13 +380,13 @@
 	</input-button>
 	
 </code-block>
-
-	            <h3 id="using-tokens-in-a-component">
-	                <a name="using-tokens-in-a-component" class="anchor" href="#using-tokens-in-a-component">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Using Tokens in a Component
-	            </h3><code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<h3 id="using-tokens-in-a-component">
+                <a name="using-tokens-in-a-component" class="anchor" href="#using-tokens-in-a-component">
+	                <span class="permalink">🔗</span>
+                </a>
+                Using Tokens in a Component
+            </h3>
+<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">css</span>
@@ -274,13 +407,13 @@
 	</input-button>
 	
 </code-block>
-
-	            <h3 id="advantages-of-css-custom-properties">
-	                <a name="advantages-of-css-custom-properties" class="anchor" href="#advantages-of-css-custom-properties">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Advantages of CSS Custom Properties
-	            </h3><ul>
+<h3 id="advantages-of-css-custom-properties">
+                <a name="advantages-of-css-custom-properties" class="anchor" href="#advantages-of-css-custom-properties">
+	                <span class="permalink">🔗</span>
+                </a>
+                Advantages of CSS Custom Properties
+            </h3>
+<ul>
 <li>✅ <strong>Supports theming</strong> – Users can override styles globally.</li>
 <li>✅ <strong>Works inside Shadow DOM</strong> – Unlike normal CSS, custom properties are inherited inside the shadow tree.</li>
 </ul>
@@ -288,13 +421,13 @@
 
 <section>
 
-
-	            <h2 id="defined-variants-with-classes">
-	                <a name="defined-variants-with-classes" class="anchor" href="#defined-variants-with-classes">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Defined Variants with Classes
-	            </h2><p>Use <strong>classes</strong> if your components can appear in a <strong>limited set of specific manifestations</strong>. For example, buttons could come in certain sizes and have primary, secondary and tertiary variants.</p>
+<h2 id="defined-variants-with-classes">
+                <a name="defined-variants-with-classes" class="anchor" href="#defined-variants-with-classes">
+	                <span class="permalink">🔗</span>
+                </a>
+                Defined Variants with Classes
+            </h2>
+<p>Use <strong>classes</strong> if your components can appear in a <strong>limited set of specific manifestations</strong>. For example, buttons could come in certain sizes and have primary, secondary and tertiary variants.</p>
 <code-block collapsed language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -331,13 +464,13 @@
 
 <section>
 
-
-	            <h2 id="css-only-components">
-	                <a name="css-only-components" class="anchor" href="#css-only-components">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                CSS-only Components
-	            </h2><p>Just because UIElement is a JavaScript library doesn&#39;t mean you have to use JavaScript in every component. It&#39;s perfectly fine to use custom elements just for styling purposes.</p>
+<h2 id="css-only-components">
+                <a name="css-only-components" class="anchor" href="#css-only-components">
+	                <span class="permalink">🔗</span>
+                </a>
+                CSS-only Components
+            </h2>
+<p>Just because UIElement is a JavaScript library doesn&#39;t mean you have to use JavaScript in every component. It&#39;s perfectly fine to use custom elements just for styling purposes.</p>
 <p>Here&#39;s the example of the <code>&lt;callout-box&gt;</code> we&#39;re using in this documentation:</p>
 <component-demo>
 	<div class="preview">
@@ -362,19 +495,21 @@
 
 <section>
 
-
-	            <h2 id="next-steps">
-	                <a name="next-steps" class="anchor" href="#next-steps">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Next Steps
-	            </h2><p>Now that you know how to style components, explore:</p>
+<h2 id="next-steps">
+                <a name="next-steps" class="anchor" href="#next-steps">
+	                <span class="permalink">🔗</span>
+                </a>
+                Next Steps
+            </h2>
+<p>Now that you know how to style components, explore:</p>
 <ul>
 <li><a href="component-communication.html">Component Communication</a> – Learn about communication between components.</li>
 <li><a href="patterns-techniques.html">Patterns &amp; Techniques</a> – Explore best practices and advanced topics.</li>
 </ul>
 </section>
-</main>
+</div>
+				 
+			</main>
 			<footer class="content-grid">
 				<div class="content">
 					<h2 class="visually-hidden">Footer</h2>

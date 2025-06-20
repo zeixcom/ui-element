@@ -2,8 +2,19 @@ import { writeFile } from 'fs/promises'
 
 import { MENU_FILE, PAGE_ORDER } from './config'
 
+type PageInfo = {
+	filename: string
+	title: string
+	emoji: string
+	description: string
+	url: string
+	section?: string
+	relativePath: string
+	depth: number
+}
+
 // Function to generate a menu
-export const generateMenu = async pages => {
+export const generateMenu = async (pages: PageInfo[]) => {
 	// Sort pages according to the PAGE_ORDER array
 	pages.sort(
 		(a, b) =>

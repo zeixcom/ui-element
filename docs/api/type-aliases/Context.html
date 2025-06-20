@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Context\<K, V\> – UIElement Docs</title>
+		<meta name="description" content="" />
+		<link rel="stylesheet" href="../../assets/main.css" />
+		<script type="module" src="../../assets/main.js"></script>
+		<style>
+			/* Section Navigation Styles */
+			.api-navigation,
+			.blog-navigation {
+				grid-area: sidebar;
+				position: sticky;
+				top: 2rem;
+				max-height: calc(100vh - 4rem);
+				overflow-y: auto;
+				padding: 1rem;
+				background: var(--color-background-soft, #f8f9fa);
+				border: 1px solid var(--color-border, #e1e5e9);
+				border-radius: 0.5rem;
+				margin-left: 2rem;
+				min-width: 280px;
+				max-width: 320px;
+			}
+
+			.api-menu section {
+				margin-bottom: 1.5rem;
+			}
+
+			.api-menu h3,
+			.blog-menu h3 {
+				font-size: 0.875rem;
+				font-weight: 600;
+				text-transform: uppercase;
+				color: var(--color-text-soft, #6b7280);
+				margin: 0 0 0.75rem 0;
+				padding-bottom: 0.25rem;
+				border-bottom: 1px solid var(--color-border, #e1e5e9);
+			}
+
+			.api-menu ul,
+			.blog-menu ul {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+
+			.api-menu li {
+				margin-bottom: 0.25rem;
+			}
+
+			.blog-menu li {
+				margin-bottom: 0.75rem;
+			}
+
+			.api-menu a {
+				display: block;
+				padding: 0.375rem 0.75rem;
+				color: var(--color-text, #374151);
+				text-decoration: none;
+				font-size: 0.875rem;
+				border-radius: 0.25rem;
+				transition: all 0.15s ease;
+			}
+
+			.blog-menu a {
+				display: block;
+				padding: 0.75rem;
+				color: var(--color-text, #374151);
+				text-decoration: none;
+				border-radius: 0.375rem;
+				border: 1px solid transparent;
+				transition: all 0.15s ease;
+			}
+
+			.api-menu a:hover {
+				background: var(--color-primary-soft, #eff6ff);
+				color: var(--color-primary, #2563eb);
+			}
+
+			.blog-menu a:hover {
+				border-color: var(--color-border, #e1e5e9);
+				background: var(--color-background, white);
+				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+			}
+
+			.api-menu a.active,
+			.blog-menu a.active {
+				background: var(--color-primary, #2563eb);
+				color: white;
+				font-weight: 500;
+			}
+
+			.blog-menu .title {
+				display: block;
+				font-weight: 500;
+				font-size: 0.875rem;
+				line-height: 1.25;
+				margin-bottom: 0.25rem;
+			}
+
+			.blog-menu .description {
+				display: block;
+				font-size: 0.75rem;
+				color: var(--color-text-soft, #6b7280);
+				line-height: 1.3;
+			}
+
+			/* Layout adjustments for pages with section navigation */
+			main.has-sidebar {
+				display: grid;
+				grid-template-areas: 'content sidebar';
+				grid-template-columns: 1fr auto;
+				gap: 2rem;
+				align-items: start;
+			}
+
+			main.has-sidebar .content {
+				grid-area: content;
+			}
+
+			@media (max-width: 1200px) {
+				.api-navigation,
+				.blog-navigation {
+					position: static;
+					margin-left: 0;
+					margin-top: 2rem;
+					max-height: none;
+					min-width: auto;
+					max-width: none;
+				}
+
+				main.has-sidebar {
+					grid-template-areas:
+						'content'
+						'sidebar';
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
+	</head>
+	<body class="section-api">
+		<client-router>
+			<header class="content-grid">
+				<h1 class="content">
+					UIElement Docs <small>Version 0.13.1</small>
+				</h1>
+				
+	<nav class="breakout">
+		<ol>
+			
+				<li>
+					<a href="../../index.html">
+						<span class="icon">📖</span>
+						<strong>Introduction</strong>
+						<small>Overview and key benefits of UIElement</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../getting-started.html">
+						<span class="icon">🚀</span>
+						<strong>Getting Started</strong>
+						<small>Installation, setup, and first steps</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../building-components.html">
+						<span class="icon">🏗️</span>
+						<strong>Building Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../styling-components.html">
+						<span class="icon">🎨</span>
+						<strong>Styling Components</strong>
+						<small>Scoped styles, CSS custom properties</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../data-flow.html">
+						<span class="icon">🔄</span>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../examples-recipes.html">
+						<span class="icon">🍽️</span>
+						<strong>Examples & Recipes</strong>
+						<small>Common use cases and demos</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../patterns-techniques.html">
+						<span class="icon">💡</span>
+						<strong>Patterns & Techniques</strong>
+						<small>Advanced patterns, testing strategies, and best practices</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../api-reference.html">
+						<span class="icon">📚</span>
+						<strong>API Reference</strong>
+						<small>Detailed documentation of types and functions</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../about-community.html">
+						<span class="icon">🤝</span>
+						<strong>About & Community</strong>
+						<small>License, versioning, getting involved</small>
+					</a>
+				</li>
+		</ol>
+	</nav>
+				<callout-box class="content danger" hidden>
+					<p class="error" role="alert" aria-live="polite"></p>
+				</callout-box>
+			</header>
+			<main class="content-grid has-sidebar">
+				<div class="content"><p><a href="../README.html"><strong>@zeix/ui-element</strong></a></p>
+<hr>
+<p><a href="../globals.html">@zeix/ui-element</a> / Context</p>
+<h1 id="type-alias-contextltk-vgt">
+                <a name="type-alias-contextltk-vgt" class="anchor" href="#type-alias-contextltk-vgt">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type Alias: Context&lt;K, V&gt;
+            </h1>
+<blockquote>
+<p><strong>Context</strong>&lt;<code>K</code>, <code>V</code>&gt; = <code>K</code> &amp; <code>object</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/fdee81c49c23952a5a7a3dbafc3562620a973123/src/core/context.ts#L22">src/core/context.ts:22</a></p>
+<p>A context key.</p>
+<p>A context key can be any type of object, including strings and symbols. The<br> Context type brands the key type with the <code>__context__</code> property that<br>carries the type of the value the context references.</p>
+<h2 id="type-declaration">
+                <a name="type-declaration" class="anchor" href="#type-declaration">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type declaration
+            </h2>
+<h3 id="__context__">
+                <a name="__context__" class="anchor" href="#__context__">
+	                <span class="permalink">🔗</span>
+                </a>
+                __context__
+            </h3>
+<blockquote>
+<p><strong>__context__</strong>: <code>V</code></p>
+</blockquote>
+<h2 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type Parameters
+            </h2>
+<h3 id="k">
+                <a name="k" class="anchor" href="#k">
+	                <span class="permalink">🔗</span>
+                </a>
+                K
+            </h3>
+<p><code>K</code></p>
+<h3 id="v">
+                <a name="v" class="anchor" href="#v">
+	                <span class="permalink">🔗</span>
+                </a>
+                V
+            </h3>
+<p><code>V</code></p>
+</div>
+				<aside class="api-navigation">
+  <nav class="api-menu">
+    <section>
+      <h3>Overview</h3>
+      <ul>
+        <li><a href="README.html">API Reference</a></li>
+        <li><a href="globals.html">@zeix/ui-element</a></li>
+      </ul>
+    </section>
+    <section>
+      <h3>Functions</h3>
+      <ul>
+        <li><a href="functions/asEnum.html">asEnum()</a></li>
+        <li><a href="functions/asInteger.html">asInteger()</a></li>
+        <li><a href="functions/asJSON.html">asJSON()</a></li>
+        <li><a href="functions/asNumber.html">asNumber()</a></li>
+        <li><a href="functions/asString.html">asString()</a></li>
+        <li><a href="functions/batch.html">batch()</a></li>
+        <li><a href="functions/component.html">component()</a></li>
+        <li><a href="functions/computed.html">computed()</a></li>
+        <li><a href="functions/consume.html">consume()</a></li>
+        <li><a href="functions/dangerouslySetInnerHTML.html">dangerouslySetInnerHTML()</a></li>
+        <li><a href="functions/effect.html">effect()</a></li>
+        <li><a href="functions/emit.html">emit()</a></li>
+        <li><a href="functions/enqueue.html">enqueue()</a></li>
+        <li><a href="functions/fromChild.html">fromChild()</a></li>
+        <li><a href="functions/fromChildren.html">fromChildren()</a></li>
+        <li><a href="functions/fromEvent.html">fromEvent()</a></li>
+        <li><a href="functions/fromSelector.html">fromSelector()</a></li>
+        <li><a href="functions/insertOrRemoveElement.html">insertOrRemoveElement()</a></li>
+        <li><a href="functions/isComputed.html">isComputed()</a></li>
+        <li><a href="functions/isSignal.html">isSignal()</a></li>
+        <li><a href="functions/isState.html">isState()</a></li>
+        <li><a href="functions/log.html">log()</a></li>
+        <li><a href="functions/on.html">on()</a></li>
+        <li><a href="functions/pass.html">pass()</a></li>
+        <li><a href="functions/provide.html">provide()</a></li>
+        <li><a href="functions/read.html">read()</a></li>
+        <li><a href="functions/selection.html">selection()</a></li>
+        <li><a href="functions/sensor.html">sensor()</a></li>
+        <li><a href="functions/setAttribute.html">setAttribute()</a></li>
+        <li><a href="functions/setProperty.html">setProperty()</a></li>
+        <li><a href="functions/setStyle.html">setStyle()</a></li>
+        <li><a href="functions/setText.html">setText()</a></li>
+        <li><a href="functions/show.html">show()</a></li>
+        <li><a href="functions/state.html">state()</a></li>
+        <li><a href="functions/toggleAttribute.html">toggleAttribute()</a></li>
+        <li><a href="functions/toggleClass.html">toggleClass()</a></li>
+        <li><a href="functions/toSignal.html">toSignal()</a></li>
+        <li><a href="functions/updateElement.html">updateElement()</a></li>
+      </ul>
+    </section>
+    <section>
+      <h3>Types</h3>
+      <ul>
+        <li><a href="type-aliases/AttributeParser.html">AttributeParser()\<T, C\></a></li>
+        <li><a href="type-aliases/Cleanup.html">Cleanup</a></li>
+        <li><a href="type-aliases/Component.html">Component\<P\></a></li>
+        <li><a href="type-aliases/ComponentProps.html">ComponentProps</a></li>
+        <li><a href="type-aliases/Computed.html">Computed\<T\></a></li>
+        <li><a href="type-aliases/ComputedCallback.html">ComputedCallback\<T\></a></li>
+        <li><a href="type-aliases/Context.html" class="active">Context\<K, V\></a></li>
+        <li><a href="type-aliases/ContextType.html">ContextType\<T\></a></li>
+        <li><a href="type-aliases/DangerouslySetInnerHTMLOptions.html">DangerouslySetInnerHTMLOptions</a></li>
+        <li><a href="type-aliases/EffectMatcher.html">EffectMatcher\<S\></a></li>
+        <li><a href="type-aliases/ElementEventMap.html">ElementEventMap\<E\></a></li>
+        <li><a href="type-aliases/ElementEventType.html">ElementEventType\<E, K\></a></li>
+        <li><a href="type-aliases/ElementFromSelector.html">ElementFromSelector\<K, E\></a></li>
+        <li><a href="type-aliases/ElementInserter.html">ElementInserter\<E\></a></li>
+        <li><a href="type-aliases/ElementUpdater.html">ElementUpdater\<E, T\></a></li>
+        <li><a href="type-aliases/FxFunction.html">FxFunction()\<P, E\></a></li>
+        <li><a href="type-aliases/Initializer.html">Initializer\<T, C\></a></li>
+        <li><a href="type-aliases/LogLevel.html">LogLevel</a></li>
+        <li><a href="type-aliases/MaybeSignal.html">MaybeSignal\<T\></a></li>
+        <li><a href="type-aliases/MethodProducer.html">MethodProducer()\<C\></a></li>
+        <li><a href="type-aliases/PassedSignals.html">PassedSignals\<P, Q\></a></li>
+        <li><a href="type-aliases/ReservedWords.html">ReservedWords</a></li>
+        <li><a href="type-aliases/SelectorFunctions.html">SelectorFunctions\<P\></a></li>
+        <li><a href="type-aliases/Signal.html">Signal\<T\></a></li>
+        <li><a href="type-aliases/SignalLike.html">SignalLike\<P, T, E\></a></li>
+        <li><a href="type-aliases/SignalProducer.html">SignalProducer()\<T, C\></a></li>
+        <li><a href="type-aliases/State.html">State\<T\></a></li>
+        <li><a href="type-aliases/UnknownContext.html">UnknownContext</a></li>
+        <li><a href="type-aliases/UpdateOperation.html">UpdateOperation</a></li>
+        <li><a href="type-aliases/ValidEventName.html">ValidEventName\<E\></a></li>
+        <li><a href="type-aliases/ValidPropertyKey.html">ValidPropertyKey\<T\></a></li>
+      </ul>
+    </section>
+    <section>
+      <h3>Variables</h3>
+      <ul>
+        <li><a href="variables/asBoolean.html">asBoolean</a></li>
+        <li><a href="variables/LOG_DEBUG.html">LOG\_DEBUG</a></li>
+        <li><a href="variables/LOG_ERROR.html">LOG\_ERROR</a></li>
+        <li><a href="variables/LOG_INFO.html">LOG\_INFO</a></li>
+        <li><a href="variables/LOG_WARN.html">LOG\_WARN</a></li>
+        <li><a href="variables/RESET.html">RESET</a></li>
+        <li><a href="variables/UNSET.html">UNSET</a></li>
+      </ul>
+    </section>
+  </nav>
+</aside>
+ 
+			</main>
+			<footer class="content-grid">
+				<div class="content">
+					<h2 class="visually-hidden">Footer</h2>
+					<p>© 2024 – 2025 Zeix AG</p>
+				</div>
+			</footer>
+		</client-router>
+	</body>
+</html>
