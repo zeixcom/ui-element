@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Hello World Component Tests</title>
+	</head>
+	<body>
+		<!-- Test fixtures -->
+		<hello-world id="test1">
+			<label
+				>Your name<br />
+				<input type="text" />
+			</label>
+			<p>Hello, <span>World</span>!</p>
+		</hello-world>
+
+		<hello-world id="test2" name="Alice">
+			<label
+				>Your name<br />
+				<input type="text" />
+			</label>
+			<p>Hello, <span>World</span>!</p>
+		</hello-world>
+
+		<hello-world id="test3" name="">
+			<label
+				>Your name<br />
+				<input type="text" />
+			</label>
+			<p>Hello, <span>World</span>!</p>
+		</hello-world>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import '../../../docs/assets/main.js' // Built components bundle
+
+			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+			const animationFrame = () => new Promise(requestAnimationFrame)
+
+			runTests(() => {
+				describe('Hello World Component', () => {
+					it('should display default greeting', () => {
+						const el = document.getElementById('test1')
+						const span = el.querySelector('span')
+						assert.equal(span.textContent, 'World')
+					})
+
+					it('should initialize with name attribute but show default until programmatically set', async () => {
+						const el = document.getElementById('test2')
+						const span = el.querySelector('span')
+
+						await animationFrame()
+
+						// Component uses RESET, so it shows the initial DOM content "World"
+						// The attribute doesn't automatically become the property value
+						assert.equal(span.textContent, 'World')
+						assert.equal(el.getAttribute('name'), 'Alice')
+
+						// When we set the property programmatically, it should work
+						el.name = 'Alice'
+						await animationFrame() // Wait for scheduled effect execution
+						assert.equal(span.textContent, 'Alice')
+					})
+
+					it('should show default when name attribute is empty string', async () => {
+						const el = document.getElementById('test3')
+						const span = el.querySelector('span')
+
+						await animationFrame()
+
+						// Even with empty name attribute, shows default "World"
+						assert.equal(span.textContent, 'World')
+						assert.equal(el.getAttribute('name'), '')
+					})
+
+					it('should update greeting when name property changes', async () => {
+						const el = document.getElementById('test1')
+						const span = el.querySelector('span')
+
+						el.name = 'Bob'
+						await animationFrame() // Wait for scheduled effect execution
+
+						assert.equal(span.textContent, 'Bob')
+						assert.equal(el.name, 'Bob')
+					})
+
+					it('should update greeting when input changes', async () => {
+						const el = document.getElementById('test1')
+						const input = el.querySelector('input')
+						const span = el.querySelector('span')
+
+						input.value = 'Charlie'
+						input.dispatchEvent(
+							new Event('input', { bubbles: true }),
+						)
+						await animationFrame() // Wait for event handling and effect execution
+
+						assert.equal(span.textContent, 'Charlie')
+						assert.equal(el.name, 'Charlie')
+					})
+
+					it('should reset name when input is cleared', async () => {
+						const el = document.getElementById('test1')
+						const input = el.querySelector('input')
+						const span = el.querySelector('span')
+
+						input.value = ''
+						input.dispatchEvent(
+							new Event('input', { bubbles: true }),
+						)
+						await animationFrame() // Wait for event handling and effect execution
+
+						assert.equal(span.textContent, 'World')
+					})
+
+					it('should handle programmatic property updates', async () => {
+						const el = document.getElementById('test1')
+						const span = el.querySelector('span')
+
+						el.name = 'David'
+						await animationFrame() // Wait for scheduled effect execution
+						assert.equal(span.textContent, 'David')
+
+						el.name = 'Eve'
+						await animationFrame() // Wait for scheduled effect execution
+						assert.equal(span.textContent, 'Eve')
+					})
+
+					it('should handle bidirectional sync between property and input', async () => {
+						const el = document.getElementById('test1')
+						const input = el.querySelector('input')
+						const span = el.querySelector('span')
+
+						// Set property programmatically
+						el.name = 'Frank'
+						await animationFrame() // Wait for scheduled effect execution
+						assert.equal(el.name, 'Frank')
+						assert.equal(span.textContent, 'Frank')
+
+						// Component doesn't automatically sync input.value with property changes
+						// Input only updates the property, not vice versa
+						input.value = 'Grace'
+						input.dispatchEvent(
+							new Event('input', { bubbles: true }),
+						)
+						await animationFrame() // Wait for event handling and effect execution
+						assert.equal(el.name, 'Grace')
+						assert.equal(span.textContent, 'Grace')
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

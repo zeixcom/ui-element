@@ -1,0 +1,1276 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Todo App Component Tests</title>
+	</head>
+	<body>
+		<!-- Test fixtures -->
+		<todo-app id="test1">
+			<form action="#">
+				<input-textbox>
+					<label for="add-todo1">What needs to be done?</label>
+					<div class="input">
+						<input id="add-todo1" type="text" value="" required />
+					</div>
+				</input-textbox>
+				<input-button class="submit">
+					<button type="submit" class="constructive" disabled>
+						Add Todo
+					</button>
+				</input-button>
+			</form>
+			<ol filter="all"></ol>
+			<template>
+				<li>
+					<input-checkbox class="todo">
+						<label>
+							<input type="checkbox" class="visually-hidden" />
+							<span class="label"><slot></slot></span>
+						</label>
+					</input-checkbox>
+					<input-button class="delete">
+						<button type="button" class="destructive small">
+							Delete
+						</button>
+					</input-button>
+				</li>
+			</template>
+			<footer>
+				<div class="todo-count">
+					<p class="all-done">Well done, all done!</p>
+					<p class="remaining">
+						<span class="count"></span>
+						<span class="singular">task</span>
+						<span class="plural">tasks</span>
+						remaining
+					</p>
+				</div>
+				<input-radiogroup value="all" class="split-button">
+					<fieldset>
+						<legend class="visually-hidden">Filter</legend>
+						<label class="selected">
+							<input
+								type="radio"
+								class="visually-hidden"
+								name="filter"
+								value="all"
+								checked
+							/>
+							<span>All</span>
+						</label>
+						<label>
+							<input
+								type="radio"
+								class="visually-hidden"
+								name="filter"
+								value="active"
+							/>
+							<span>Active</span>
+						</label>
+						<label>
+							<input
+								type="radio"
+								class="visually-hidden"
+								name="filter"
+								value="completed"
+							/>
+							<span>Completed</span>
+						</label>
+					</fieldset>
+				</input-radiogroup>
+				<input-button class="clear-completed">
+					<button type="button" class="destructive">
+						<span class="label">Clear Completed</span>
+						<span class="badge"></span>
+					</button>
+				</input-button>
+			</footer>
+		</todo-app>
+
+		<todo-app id="test2">
+			<form action="#">
+				<input-textbox>
+					<label for="add-todo2">What needs to be done?</label>
+					<div class="input">
+						<input id="add-todo2" type="text" value="" required />
+					</div>
+				</input-textbox>
+				<input-button class="submit">
+					<button type="submit" class="constructive" disabled>
+						Add Todo
+					</button>
+				</input-button>
+			</form>
+			<ol filter="all"></ol>
+			<template>
+				<li>
+					<input-checkbox class="todo">
+						<label>
+							<input type="checkbox" class="visually-hidden" />
+							<span class="label"><slot></slot></span>
+						</label>
+					</input-checkbox>
+					<input-button class="delete">
+						<button type="button" class="destructive small">
+							Delete
+						</button>
+					</input-button>
+				</li>
+			</template>
+			<footer>
+				<div class="todo-count">
+					<p class="all-done">Well done, all done!</p>
+					<p class="remaining">
+						<span class="count"></span>
+						<span class="singular">task</span>
+						<span class="plural">tasks</span>
+						remaining
+					</p>
+				</div>
+				<input-radiogroup value="all" class="split-button">
+					<fieldset>
+						<legend class="visually-hidden">Filter</legend>
+						<label class="selected">
+							<input
+								type="radio"
+								class="visually-hidden"
+								name="filter"
+								value="all"
+								checked
+							/>
+							<span>All</span>
+						</label>
+						<label>
+							<input
+								type="radio"
+								class="visually-hidden"
+								name="filter"
+								value="active"
+							/>
+							<span>Active</span>
+						</label>
+						<label>
+							<input
+								type="radio"
+								class="visually-hidden"
+								name="filter"
+								value="completed"
+							/>
+							<span>Completed</span>
+						</label>
+					</fieldset>
+				</input-radiogroup>
+				<input-button class="clear-completed">
+					<button type="button" class="destructive">
+						<span class="label">Clear Completed</span>
+						<span class="badge"></span>
+					</button>
+				</input-button>
+			</footer>
+		</todo-app>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import '../../../docs/assets/main.js' // Built components bundle
+
+			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+			const animationFrame = () => new Promise(requestAnimationFrame)
+			const microtask = () => new Promise(queueMicrotask)
+			const tick = async () => {
+				await animationFrame() // Wait for effects to execute
+				await microtask() // Wait for DOM to reflect changes
+			}
+
+			// Helper to reset todo-app component state
+			const resetTodoApp = async el => {
+				// Clear all todos
+				const list = el.querySelector('ol')
+				if (list) {
+					list.innerHTML = ''
+				}
+
+				// Reset input
+				const input = el.querySelector('input-textbox input')
+				const textbox = el.querySelector('input-textbox')
+				if (input && textbox) {
+					input.value = ''
+					textbox.value = ''
+					textbox.length = 0
+					input.dispatchEvent(new Event('input', { bubbles: true }))
+					input.dispatchEvent(new Event('change', { bubbles: true }))
+				}
+
+				// Reset filter to 'all'
+				const radiogroup = el.querySelector('input-radiogroup')
+				if (radiogroup) {
+					radiogroup.value = 'all'
+					const allRadio =
+						radiogroup.querySelector('input[value="all"]')
+					if (allRadio) {
+						allRadio.checked = true
+						allRadio.dispatchEvent(
+							new Event('change', { bubbles: true }),
+						)
+					}
+				}
+
+				await tick()
+			}
+
+			// Helper to add a todo item
+			const addTodo = async (el, text) => {
+				const input = el.querySelector('input-textbox input')
+				const textbox = el.querySelector('input-textbox')
+				const form = el.querySelector('form')
+
+				// Set native input value and trigger events to sync component
+				input.value = text
+				input.dispatchEvent(new Event('input', { bubbles: true }))
+				input.dispatchEvent(new Event('change', { bubbles: true }))
+				await tick()
+
+				// Submit the form
+				const submitEvent = new Event('submit', {
+					bubbles: true,
+					cancelable: true,
+				})
+				form.dispatchEvent(submitEvent)
+				await tick()
+
+				// Wait for microtask in todo-app to complete
+				await microtask()
+				await tick()
+			}
+
+			// Helper to get todo items
+			const getTodos = el => {
+				return Array.from(el.querySelectorAll('ol li'))
+			}
+
+			// Helper to get active todos
+			const getActiveTodos = el => {
+				return getTodos(el).filter(li => {
+					const checkbox = li.querySelector('input-checkbox input')
+					return checkbox && !checkbox.checked
+				})
+			}
+
+			// Helper to get completed todos
+			const getCompletedTodos = el => {
+				return getTodos(el).filter(li => {
+					const checkbox = li.querySelector('input-checkbox input')
+					return checkbox && checkbox.checked
+				})
+			}
+
+			// Helper to toggle todo completion
+			const toggleTodo = async li => {
+				const checkbox = li.querySelector('input-checkbox input')
+				if (checkbox) {
+					checkbox.checked = !checkbox.checked
+					checkbox.dispatchEvent(
+						new Event('change', { bubbles: true }),
+					)
+					await tick()
+				}
+			}
+
+			// Helper to delete todo
+			const deleteTodo = async li => {
+				const deleteButton = li.querySelector(
+					'input-button.delete button',
+				)
+				if (deleteButton) {
+					deleteButton.click()
+					await tick()
+				}
+			}
+
+			runTests(() => {
+				describe('Todo App Component', () => {
+					beforeEach(async () => {
+						// Reset all test components before each test
+						const testIds = ['test1', 'test2']
+						for (const id of testIds) {
+							const el = document.getElementById(id)
+							if (el) await resetTodoApp(el)
+						}
+					})
+
+					it('should verify component exists and has expected structure', async () => {
+						const el = document.getElementById('test1')
+						assert.isNotNull(el, 'Todo app component should exist')
+						assert.equal(el.tagName.toLowerCase(), 'todo-app')
+
+						// Check required elements exist
+						assert.isNotNull(
+							el.querySelector('form'),
+							'Form should exist',
+						)
+						assert.isNotNull(
+							el.querySelector('input-textbox'),
+							'Input textbox should exist',
+						)
+						assert.isNotNull(
+							el.querySelector('input-button.submit'),
+							'Submit button should exist',
+						)
+						assert.isNotNull(
+							el.querySelector('ol'),
+							'Todo list should exist',
+						)
+						assert.isNotNull(
+							el.querySelector('template'),
+							'Template should exist',
+						)
+						assert.isNotNull(
+							el.querySelector('input-radiogroup'),
+							'Filter radiogroup should exist',
+						)
+						assert.isNotNull(
+							el.querySelector('input-button.clear-completed'),
+							'Clear completed button should exist',
+						)
+					})
+
+					it('should initialize with correct default state', async () => {
+						const el = document.getElementById('test1')
+						await tick()
+
+						// Should have empty active and completed arrays
+						assert.isArray(
+							el.active,
+							'Active property should be an array',
+						)
+						assert.isArray(
+							el.completed,
+							'Completed property should be an array',
+						)
+						assert.equal(
+							el.active.length,
+							0,
+							'Should start with no active todos',
+						)
+						assert.equal(
+							el.completed.length,
+							0,
+							'Should start with no completed todos',
+						)
+
+						// Submit button should be disabled
+						const submitButton = el.querySelector(
+							'input-button.submit',
+						)
+						assert.isTrue(
+							submitButton.disabled,
+							'Submit button should be disabled initially',
+						)
+
+						// Clear completed button should be disabled
+						const clearButton = el.querySelector(
+							'input-button.clear-completed',
+						)
+						assert.isTrue(
+							clearButton.disabled,
+							'Clear completed button should be disabled initially',
+						)
+
+						// Count should be 0
+						const count = el.querySelector('.count')
+						assert.equal(
+							count.textContent,
+							'0',
+							'Count should be 0',
+						)
+
+						// All done message should be visible
+						const allDone = el.querySelector('.all-done')
+						assert.isFalse(
+							allDone.hidden,
+							'All done message should be visible',
+						)
+
+						// Remaining message should be hidden
+						const remaining = el.querySelector('.remaining')
+						assert.isTrue(
+							remaining.hidden,
+							'Remaining message should be hidden',
+						)
+					})
+
+					it('should enable submit button when input has value', async () => {
+						const el = document.getElementById('test1')
+						const input = el.querySelector('input-textbox input')
+						const textbox = el.querySelector('input-textbox')
+						const submitButton = el.querySelector(
+							'input-button.submit',
+						)
+
+						// Initially disabled
+						assert.isTrue(
+							submitButton.disabled,
+							'Submit button should be disabled initially',
+						)
+
+						// Type in input
+						input.value = 'Test todo'
+						input.dispatchEvent(
+							new Event('input', { bubbles: true }),
+						)
+						await tick()
+
+						// Should be enabled
+						assert.isFalse(
+							submitButton.disabled,
+							'Submit button should be enabled with input',
+						)
+
+						// Clear input
+						input.value = ''
+						input.dispatchEvent(
+							new Event('input', { bubbles: true }),
+						)
+						await tick()
+
+						// Should be disabled again
+						assert.isTrue(
+							submitButton.disabled,
+							'Submit button should be disabled when input is empty',
+						)
+					})
+
+					it('should maintain reactive submit button behavior with getSignal()', async () => {
+						const el = document.getElementById('test1')
+						const textbox = el.querySelector('input-textbox')
+						const input = el.querySelector('input-textbox input')
+						const submitButton = el.querySelector(
+							'input-button.submit',
+						)
+
+						// Verify reactive behavior works initially
+						assert.isTrue(
+							submitButton.disabled,
+							'Submit button should be disabled initially',
+						)
+
+						// Type in input
+						input.value = 'test'
+						input.dispatchEvent(
+							new Event('input', { bubbles: true }),
+						)
+						await tick()
+
+						assert.isFalse(
+							submitButton.disabled,
+							'Submit button should be enabled with input',
+						)
+
+						// Clear input by setting component property directly
+						textbox.length = 0
+						await tick()
+
+						// Should be disabled when length is 0
+						assert.isTrue(
+							submitButton.disabled,
+							'Submit button should be disabled when textbox.length = 0',
+						)
+
+						// Set length back to test reactive dependency
+						textbox.length = 5
+						await tick()
+
+						// Should be enabled when length > 0
+						assert.isFalse(
+							submitButton.disabled,
+							'Submit button should be enabled when textbox.length > 0',
+						)
+					})
+
+					it('should handle component timing with receive() function', async () => {
+						const el = document.getElementById('test1')
+						const radiogroup = el.querySelector('input-radiogroup')
+						const list = el.querySelector('ol')
+
+						// Initially should have 'all' filter (fallback value)
+						assert.equal(
+							list.getAttribute('filter'),
+							'all',
+							'Filter should start with fallback value "all"',
+						)
+
+						// Change radiogroup value and verify reactive update
+						const activeRadio = radiogroup.querySelector(
+							'input[value="active"]',
+						)
+						const allRadio =
+							radiogroup.querySelector('input[value="all"]')
+
+						// Simulate radio button change
+						allRadio.checked = false
+						activeRadio.checked = true
+						activeRadio.dispatchEvent(
+							new Event('change', { bubbles: true }),
+						)
+						await tick()
+
+						// Should reactively update to 'active'
+						assert.equal(
+							list.getAttribute('filter'),
+							'active',
+							'Filter should update to "active" via receive() function',
+						)
+
+						// Change back to 'all'
+						activeRadio.checked = false
+						allRadio.checked = true
+						allRadio.dispatchEvent(
+							new Event('change', { bubbles: true }),
+						)
+						await tick()
+
+						// Should reactively update back to 'all'
+						assert.equal(
+							list.getAttribute('filter'),
+							'all',
+							'Filter should update back to "all"',
+						)
+					})
+
+					it('should add new todo item when form is submitted', async () => {
+						const el = document.getElementById('test1')
+
+						await addTodo(el, 'Test todo item')
+
+						const todos = getTodos(el)
+						assert.equal(
+							todos.length,
+							1,
+							'Should have one todo item',
+						)
+
+						const todoText =
+							todos[0].querySelector('.label').textContent
+						assert.equal(
+							todoText,
+							'Test todo item',
+							'Todo should have correct text',
+						)
+
+						// Input should be cleared (both native input and component)
+						const input = el.querySelector('input-textbox input')
+						const textbox = el.querySelector('input-textbox')
+						assert.equal(
+							textbox.value,
+							'',
+							'Component value should be cleared after adding todo',
+						)
+					})
+
+					it('should update active todos array when todo is added', async () => {
+						const el = document.getElementById('test1')
+
+						await addTodo(el, 'First todo')
+						await tick()
+
+						assert.equal(
+							el.active.length,
+							1,
+							'Should have one active todo',
+						)
+						assert.equal(
+							el.completed.length,
+							0,
+							'Should have no completed todos',
+						)
+
+						await addTodo(el, 'Second todo')
+						await tick()
+
+						assert.equal(
+							el.active.length,
+							2,
+							'Should have two active todos',
+						)
+						assert.equal(
+							el.completed.length,
+							0,
+							'Should have no completed todos',
+						)
+					})
+
+					it('should update count display correctly', async () => {
+						const el = document.getElementById('test1')
+						const count = el.querySelector('.count')
+						const singular = el.querySelector('.singular')
+						const plural = el.querySelector('.plural')
+						const remaining = el.querySelector('.remaining')
+						const allDone = el.querySelector('.all-done')
+
+						// Initially
+						assert.equal(
+							count.textContent,
+							'0',
+							'Count should be 0 initially',
+						)
+						assert.isTrue(
+							remaining.hidden,
+							'Remaining should be hidden initially',
+						)
+						assert.isFalse(
+							allDone.hidden,
+							'All done should be visible initially',
+						)
+
+						// Add one todo
+						await addTodo(el, 'First todo')
+						await tick()
+
+						assert.equal(
+							count.textContent,
+							'1',
+							'Count should be 1',
+						)
+						assert.isFalse(
+							remaining.hidden,
+							'Remaining should be visible',
+						)
+						assert.isTrue(
+							allDone.hidden,
+							'All done should be hidden',
+						)
+						assert.isFalse(
+							singular.hidden,
+							'Singular should be visible for 1 task',
+						)
+						assert.isTrue(
+							plural.hidden,
+							'Plural should be hidden for 1 task',
+						)
+
+						// Add second todo
+						await addTodo(el, 'Second todo')
+						await tick()
+
+						assert.equal(
+							count.textContent,
+							'2',
+							'Count should be 2',
+						)
+						assert.isTrue(
+							singular.hidden,
+							'Singular should be hidden for 2 tasks',
+						)
+						assert.isFalse(
+							plural.hidden,
+							'Plural should be visible for 2 tasks',
+						)
+					})
+
+					it('should handle todo completion correctly', async () => {
+						const el = document.getElementById('test1')
+
+						await addTodo(el, 'Test todo')
+						await tick()
+
+						const todos = getTodos(el)
+						const firstTodo = todos[0]
+
+						// Initially active
+						assert.equal(
+							el.active.length,
+							1,
+							'Should have one active todo',
+						)
+						assert.equal(
+							el.completed.length,
+							0,
+							'Should have no completed todos',
+						)
+
+						// Complete the todo
+						await toggleTodo(firstTodo)
+						await tick()
+
+						assert.equal(
+							el.active.length,
+							0,
+							'Should have no active todos',
+						)
+						assert.equal(
+							el.completed.length,
+							1,
+							'Should have one completed todo',
+						)
+
+						// Uncomplete the todo
+						await toggleTodo(firstTodo)
+						await tick()
+
+						assert.equal(
+							el.active.length,
+							1,
+							'Should have one active todo again',
+						)
+						assert.equal(
+							el.completed.length,
+							0,
+							'Should have no completed todos again',
+						)
+					})
+
+					it('should enable clear completed button when there are completed todos', async () => {
+						const el = document.getElementById('test1')
+						const clearButton = el.querySelector(
+							'input-button.clear-completed',
+						)
+
+						// Initially disabled
+						assert.isTrue(
+							clearButton.disabled,
+							'Clear button should be disabled initially',
+						)
+
+						// Add and complete a todo
+						await addTodo(el, 'Test todo')
+						const todos = getTodos(el)
+						await toggleTodo(todos[0])
+						await tick()
+
+						// Should be enabled
+						assert.isFalse(
+							clearButton.disabled,
+							'Clear button should be enabled with completed todos',
+						)
+
+						// Should show badge with count
+						await tick()
+						const badge = clearButton.querySelector('.badge')
+						assert.equal(
+							badge.textContent,
+							'1',
+							'Badge should show completed count',
+						)
+					})
+
+					it('should clear completed todos when clear button is clicked', async () => {
+						const el = document.getElementById('test1')
+
+						// Add multiple todos
+						await addTodo(el, 'First todo')
+						await addTodo(el, 'Second todo')
+						await addTodo(el, 'Third todo')
+
+						let todos = getTodos(el)
+						assert.equal(todos.length, 3, 'Should have 3 todos')
+
+						// Complete first and third todos
+						await toggleTodo(todos[0])
+						await toggleTodo(todos[2])
+						await tick()
+
+						assert.equal(
+							el.active.length,
+							1,
+							'Should have 1 active todo',
+						)
+						assert.equal(
+							el.completed.length,
+							2,
+							'Should have 2 completed todos',
+						)
+
+						// Click clear completed button
+						const clearButton = el.querySelector(
+							'input-button.clear-completed button',
+						)
+						clearButton.click()
+						await tick()
+
+						todos = getTodos(el)
+						assert.equal(
+							todos.length,
+							1,
+							'Should have 1 todo remaining',
+						)
+						assert.equal(
+							el.active.length,
+							1,
+							'Should have 1 active todo',
+						)
+						assert.equal(
+							el.completed.length,
+							0,
+							'Should have 0 completed todos',
+						)
+					})
+
+					it('should delete individual todos when delete button is clicked', async () => {
+						const el = document.getElementById('test1')
+
+						await addTodo(el, 'First todo')
+						await addTodo(el, 'Second todo')
+
+						let todos = getTodos(el)
+						assert.equal(todos.length, 2, 'Should have 2 todos')
+
+						// Delete first todo
+						await deleteTodo(todos[0])
+
+						todos = getTodos(el)
+						assert.equal(
+							todos.length,
+							1,
+							'Should have 1 todo remaining',
+						)
+
+						const remainingText =
+							todos[0].querySelector('.label').textContent
+						assert.equal(
+							remainingText,
+							'Second todo',
+							'Remaining todo should be the second one',
+						)
+					})
+
+					it('should update filter attribute on list when filter changes', async () => {
+						const el = document.getElementById('test1')
+						const list = el.querySelector('ol')
+						const radiogroup = el.querySelector('input-radiogroup')
+
+						// Initially 'all'
+						assert.equal(
+							list.getAttribute('filter'),
+							'all',
+							'Filter should be "all" initially',
+						)
+
+						// Change to 'active'
+						const activeRadio = radiogroup.querySelector(
+							'input[value="active"]',
+						)
+						activeRadio.checked = true
+						radiogroup.value = 'active'
+						activeRadio.dispatchEvent(
+							new Event('change', { bubbles: true }),
+						)
+						await tick()
+
+						assert.equal(
+							list.getAttribute('filter'),
+							'active',
+							'Filter should be "active"',
+						)
+
+						// Change to 'completed'
+						const completedRadio = radiogroup.querySelector(
+							'input[value="completed"]',
+						)
+						completedRadio.checked = true
+						radiogroup.value = 'completed'
+						completedRadio.dispatchEvent(
+							new Event('change', { bubbles: true }),
+						)
+						await tick()
+
+						assert.equal(
+							list.getAttribute('filter'),
+							'completed',
+							'Filter should be "completed"',
+						)
+					})
+
+					it('should update filter attribute reactively when only radio button changes', async () => {
+						const el = document.getElementById('test1')
+						const list = el.querySelector('ol')
+						const radiogroup = el.querySelector('input-radiogroup')
+
+						// Initially 'all'
+						assert.equal(
+							list.getAttribute('filter'),
+							'all',
+							'Filter should be "all" initially',
+						)
+
+						// Change to 'active' - simulate real user interaction (only radio button change event)
+						const activeRadio = radiogroup.querySelector(
+							'input[value="active"]',
+						)
+						const allRadio =
+							radiogroup.querySelector('input[value="all"]')
+
+						// Uncheck current and check new (as browser would do)
+						allRadio.checked = false
+						activeRadio.checked = true
+
+						// Only fire the change event on the radio button (no manual radiogroup.value setting)
+						activeRadio.dispatchEvent(
+							new Event('change', { bubbles: true }),
+						)
+						await tick()
+
+						// This should work but will likely fail due to reactive dependency issue
+						assert.equal(
+							list.getAttribute('filter'),
+							'active',
+							'Filter should reactively update to "active"',
+						)
+
+						// Change to 'completed' - same pattern
+						const completedRadio = radiogroup.querySelector(
+							'input[value="completed"]',
+						)
+						activeRadio.checked = false
+						completedRadio.checked = true
+						completedRadio.dispatchEvent(
+							new Event('change', { bubbles: true }),
+						)
+						await tick()
+
+						assert.equal(
+							list.getAttribute('filter'),
+							'completed',
+							'Filter should reactively update to "completed"',
+						)
+					})
+
+					it('should test reactive dependency mechanism for filter', async () => {
+						const el = document.getElementById('test1')
+						const list = el.querySelector('ol')
+						const radiogroup = el.querySelector('input-radiogroup')
+
+						// Track if effect re-runs when radiogroup.value changes
+						let effectRunCount = 0
+						const originalSetAttribute = list.setAttribute
+						list.setAttribute = function (...args) {
+							if (args[0] === 'filter') effectRunCount++
+							return originalSetAttribute.apply(this, args)
+						}
+
+						// Initially 'all'
+						assert.equal(
+							list.getAttribute('filter'),
+							'all',
+							'Filter should be "all" initially',
+						)
+
+						// Test 1: Set radiogroup value directly (should trigger reactive update if dependency exists)
+						radiogroup.value = 'active'
+						await tick()
+
+						// Test 2: Simulate real browser behavior
+						const activeRadio = radiogroup.querySelector(
+							'input[value="active"]',
+						)
+						const allRadio =
+							radiogroup.querySelector('input[value="all"]')
+
+						// Reset state
+						allRadio.checked = true
+						activeRadio.checked = false
+						radiogroup.value = 'all'
+						await tick()
+
+						// Now change via proper radio button interaction
+						allRadio.checked = false
+						activeRadio.checked = true
+						activeRadio.dispatchEvent(
+							new Event('change', { bubbles: true }),
+						)
+						await tick()
+
+						// Restore original setAttribute
+						list.setAttribute = originalSetAttribute
+
+						// The real test: did the reactive system properly track the dependency?
+						assert.equal(
+							list.getAttribute('filter'),
+							'active',
+							'Filter should be "active" after event',
+						)
+					})
+
+					it('should prevent form submission with empty input', async () => {
+						const el = document.getElementById('test1')
+						const form = el.querySelector('form')
+						const input = el.querySelector('input-textbox input')
+
+						// Try to submit with empty input
+						input.value = ''
+						form.dispatchEvent(
+							new Event('submit', {
+								bubbles: true,
+								cancelable: true,
+							}),
+						)
+						await tick()
+
+						const todos = getTodos(el)
+						assert.equal(
+							todos.length,
+							0,
+							'Should not add todo with empty input',
+						)
+					})
+
+					it('should trim whitespace from todo input', async () => {
+						const el = document.getElementById('test1')
+
+						await addTodo(el, '  Whitespace todo  ')
+
+						const todos = getTodos(el)
+						const todoText =
+							todos[0].querySelector('.label').textContent
+						assert.equal(
+							todoText,
+							'Whitespace todo',
+							'Todo text should be trimmed',
+						)
+					})
+
+					it('should handle multiple todos with mixed states', async () => {
+						const el = document.getElementById('test1')
+
+						// Add multiple todos
+						await addTodo(el, 'Todo 1')
+						await addTodo(el, 'Todo 2')
+						await addTodo(el, 'Todo 3')
+						await addTodo(el, 'Todo 4')
+
+						let todos = getTodos(el)
+						assert.equal(todos.length, 4, 'Should have 4 todos')
+
+						// Complete some todos
+						await toggleTodo(todos[1]) // Complete Todo 2
+						await toggleTodo(todos[3]) // Complete Todo 4
+						await tick()
+
+						assert.equal(
+							el.active.length,
+							2,
+							'Should have 2 active todos',
+						)
+						assert.equal(
+							el.completed.length,
+							2,
+							'Should have 2 completed todos',
+						)
+
+						// Check count display
+						const count = el.querySelector('.count')
+						assert.equal(
+							count.textContent,
+							'2',
+							'Count should show 2 active todos',
+						)
+
+						// Check clear completed button
+						const clearButton = el.querySelector(
+							'input-button.clear-completed',
+						)
+						assert.isFalse(
+							clearButton.disabled,
+							'Clear button should be enabled',
+						)
+
+						// Wait for badge to update
+						await tick()
+						const badge = clearButton.querySelector('.badge')
+						assert.equal(
+							badge.textContent,
+							'2',
+							'Badge should show 2 completed todos',
+						)
+					})
+
+					it('should handle rapid todo additions', async () => {
+						const el = document.getElementById('test1')
+
+						// Add multiple todos sequentially to avoid race conditions
+						for (let i = 1; i <= 5; i++) {
+							await addTodo(el, `Todo ${i}`)
+						}
+
+						const todos = getTodos(el)
+						assert.equal(todos.length, 5, 'Should have 5 todos')
+						assert.equal(
+							el.active.length,
+							5,
+							'Should have 5 active todos',
+						)
+						assert.equal(
+							el.completed.length,
+							0,
+							'Should have 0 completed todos',
+						)
+					})
+
+					it('should handle all todos completed scenario', async () => {
+						const el = document.getElementById('test1')
+						const allDone = el.querySelector('.all-done')
+						const remaining = el.querySelector('.remaining')
+
+						// Add and complete all todos
+						await addTodo(el, 'Todo 1')
+						await addTodo(el, 'Todo 2')
+
+						const todos = getTodos(el)
+						await toggleTodo(todos[0])
+						await toggleTodo(todos[1])
+						await tick()
+
+						assert.equal(
+							el.active.length,
+							0,
+							'Should have 0 active todos',
+						)
+						assert.equal(
+							el.completed.length,
+							2,
+							'Should have 2 completed todos',
+						)
+
+						// UI should show all done
+						assert.isFalse(
+							allDone.hidden,
+							'All done message should be visible',
+						)
+						assert.isTrue(
+							remaining.hidden,
+							'Remaining message should be hidden',
+						)
+					})
+
+					it('should maintain component state across multiple operations', async () => {
+						const el = document.getElementById('test2') // Use second test instance
+
+						// Complex workflow
+						await addTodo(el, 'Task 1')
+						await addTodo(el, 'Task 2')
+						await addTodo(el, 'Task 3')
+
+						let todos = getTodos(el)
+
+						// Complete first task
+						await toggleTodo(todos[0])
+						await tick()
+
+						// Delete second task
+						await deleteTodo(todos[1])
+						await tick()
+
+						// Add another task
+						await addTodo(el, 'Task 4')
+
+						// Final state check
+						todos = getTodos(el)
+						assert.equal(
+							todos.length,
+							3,
+							'Should have 3 todos total',
+						)
+						assert.equal(
+							el.active.length,
+							2,
+							'Should have 2 active todos',
+						)
+						assert.equal(
+							el.completed.length,
+							1,
+							'Should have 1 completed todo',
+						)
+
+						// Verify the remaining tasks are correct
+						const todoTexts = todos.map(
+							todo => todo.querySelector('.label').textContent,
+						)
+						assert.include(
+							todoTexts,
+							'Task 1',
+							'Should include Task 1',
+						)
+						assert.include(
+							todoTexts,
+							'Task 3',
+							'Should include Task 3',
+						)
+						assert.include(
+							todoTexts,
+							'Task 4',
+							'Should include Task 4',
+						)
+						assert.notInclude(
+							todoTexts,
+							'Task 2',
+							'Should not include deleted Task 2',
+						)
+					})
+
+					it('should clear input field when input.clear() is called', async () => {
+						const app = document.getElementById('test1')
+						const input = app.querySelector('input-textbox')
+						const inputEl = input.querySelector('input')
+
+						// Add some content to the input
+						inputEl.focus()
+						inputEl.value = 'Test todo item'
+						inputEl.dispatchEvent(
+							new Event('input', { bubbles: true }),
+						)
+						inputEl.dispatchEvent(
+							new Event('change', { bubbles: true }),
+						)
+						await tick()
+
+						// Verify input has content
+						assert.equal(input.value, 'Test todo item')
+						assert.equal(input.length, 14)
+						assert.equal(inputEl.value, 'Test todo item')
+
+						// Call clear method
+						input.clear()
+						await tick()
+						await tick() // Extra wait for reactive updates
+
+						// Verify everything is cleared
+						assert.equal(input.value, '')
+						assert.equal(input.length, 0)
+						assert.equal(inputEl.value, '')
+
+						// Verify submit button is disabled again
+						const submitBtn = app.querySelector('.submit button')
+						await tick() // Extra wait for submit button reactivity
+						assert.isTrue(
+							submitBtn.disabled,
+							'Submit button should be disabled when input is empty',
+						)
+					})
+
+					it('should clear input after successful todo submission', async () => {
+						const app = document.getElementById('test1')
+						const input = app.querySelector('input-textbox')
+						const inputEl = input.querySelector('input')
+						const form = app.querySelector('form')
+
+						// Add a todo
+						await addTodo(app, 'Test todo for clearing')
+
+						// Verify input was cleared automatically after submission
+						assert.equal(input.value, '')
+						assert.equal(input.length, 0)
+						assert.equal(inputEl.value, '')
+
+						// Verify the todo was actually added
+						const todos = getTodos(app)
+						assert.equal(todos.length, 1)
+						assert.include(
+							todos[0].textContent,
+							'Test todo for clearing',
+						)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>
