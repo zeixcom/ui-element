@@ -46,14 +46,14 @@ my-component {
 - ✅ By definition **unique within the document** with a descriptive name.
 - ✅ **Low specificity**, making it easy to override when you need to with a single class.
 
-<callout-box class="tip">
+<card-callout class="tip">
 
 **When to use**
 
 ✅ **Best when** you control the page and need styles to cascade naturally.
 ❌ **Avoid if** you expect style clashes from third-party styles.
 
-</callout-box>
+</card-callout>
 
 </section>
 
@@ -78,14 +78,14 @@ Use **Shadow DOM** to encapsulate styles if your component is going to be used i
 </my-component>
 ```
 
-<callout-box class="tip">
+<card-callout class="tip">
 
 **When to use**
 
 ✅ **Best when** your component is used in environments where you don’t control styles.
 ❌ **Avoid if** you need global styles to apply inside the component.
 
-</callout-box>
+</card-callout>
 
 </section>
 
@@ -163,26 +163,26 @@ my-button {
 
 Just because UIElement is a JavaScript library doesn't mean you have to use JavaScript in every component. It's perfectly fine to use custom elements just for styling purposes.
 
-Here's the example of the `<callout-box>` we're using in this documentation:
+Here's the example of the `<card-callout>` we're using in this documentation:
 
-<component-demo>
+<module-demo>
 	<div class="preview">
-		<callout-box>This is an informational message.</callout-box>
-		<callout-box class="tip">Remember to hydrate while coding!</callout-box>
-		<callout-box class="caution">Be careful with this operation.</callout-box>
-		<callout-box class="danger">This action is irreversible!</callout-box>
-		<callout-box class="note">This is just a side note.</callout-box>
+		<card-callout>This is an informational message.</card-callout>
+		<card-callout class="tip">Remember to hydrate while coding!</card-callout>
+		<card-callout class="caution">Be careful with this operation.</card-callout>
+		<card-callout class="danger">This action is irreversible!</card-callout>
+		<card-callout class="note">This is just a side note.</card-callout>
 	</div>
 	<details>
 		<summary>Source Code</summary>
-		<lazy-load src="./examples/callout-box.html">
-			<callout-box>
+		<module-lazy src="./examples/card-callout.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
-</component-demo>
+</module-demo>
 
 </section>
 

@@ -142,15 +142,15 @@
 		</style>
 	</head>
 	<body class="section-{{ section }}">
-		<client-router>
+		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
 					UIElement Docs <small>Version 0.13.1</small>
 				</h1>
 				{{ include 'menu.html' }}
-				<callout-box class="content danger" hidden>
+				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="polite"></p>
-				</callout-box>
+				</card-callout>
 			</header>
 			<main class="content-grid {{ has-sidebar }}">
 				<div class="content">{{ content }}</div>
@@ -162,6 +162,6 @@
 					{{ include 'footer.html' }}
 				</div>
 			</footer>
-		</client-router>
+		</context-router>
 	</body>
 </html>

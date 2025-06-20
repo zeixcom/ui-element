@@ -1,42 +1,59 @@
-
-<tab-group>
+<module-tabgroup>
 	<div role="tablist">
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_input-textbox.html"
-				aria-controls="panel_input-textbox.html"
-				aria-selected="false"
-				tabindex="-1"
-			>HTML</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_input-textbox.css"
-				aria-controls="panel_input-textbox.css"
-				aria-selected="false"
-				tabindex="-1"
-			>CSS</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_input-textbox.ts"
-				aria-controls="panel_input-textbox.ts"
-				aria-selected="true"
-				tabindex="0"
-			>TypeScript</button>
+		<button
+			type="button"
+			role="tab"
+			id="trigger_form-textbox.html"
+			aria-controls="panel_form-textbox.html"
+			aria-selected="false"
+			tabindex="-1"
+		>
+			HTML
+		</button>
+
+		<button
+			type="button"
+			role="tab"
+			id="trigger_form-textbox.css"
+			aria-controls="panel_form-textbox.css"
+			aria-selected="false"
+			tabindex="-1"
+		>
+			CSS
+		</button>
+
+		<button
+			type="button"
+			role="tab"
+			id="trigger_form-textbox.ts"
+			aria-controls="panel_form-textbox.ts"
+			aria-selected="true"
+			tabindex="0"
+		>
+			TypeScript
+		</button>
 	</div>
-	
-<div role="tabpanel" id="panel_input-textbox.html" aria-labelledby="trigger_input-textbox.html" hidden>
-	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-		<p class="meta">
-			<span class="file">input-textbox.html</span>
-			<span class="language">html</span>
-		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">input-textbox</span><span style="color:#F8F8F2">></span></span>
+
+	<div
+		role="tabpanel"
+		id="panel_form-textbox.html"
+		aria-labelledby="trigger_form-textbox.html"
+		hidden
+	>
+		<module-codeblock
+			language="html"
+			copy-success="Copied!"
+			copy-error="Error trying to copy to clipboard!"
+		>
+			<p class="meta">
+				<span class="file">form-textbox.html</span>
+				<span class="language">html</span>
+			</p>
+			<pre
+				class="shiki monokai"
+				style="background-color: #272822; color: #f8f8f2"
+				tabindex="0"
+			><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">form-textbox</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> for</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"name-input"</span><span style="color:#F8F8F2">>Name&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"input"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">input</span></span>
@@ -51,9 +68,9 @@
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"description"</span><span style="color:#A6E22E"> aria-live</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"polite"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"city-description"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		Tell us how you want us to call you in our communications.</span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">input-textbox</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">form-textbox</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">input-textbox</span><span style="color:#A6E22E"> clearable</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">form-textbox</span><span style="color:#A6E22E"> clearable</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> for</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"query-input"</span><span style="color:#F8F8F2">>Search terms&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"input"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">input</span></span>
@@ -69,9 +86,9 @@
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"error"</span><span style="color:#A6E22E"> aria-live</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"assertive"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"query-error"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">input-textbox</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">form-textbox</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">input-textbox</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">form-textbox</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> for</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"comment-input"</span><span style="color:#F8F8F2">>Comment&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"input"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">textarea</span></span>
@@ -88,23 +105,36 @@
 <span class="line"><span style="color:#A6E22E">		id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"comment-description"</span></span>
 <span class="line"><span style="color:#A6E22E">		data-remaining</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"${n} characters remaining"</span></span>
 <span class="line"><span style="color:#F8F8F2">	>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">input-textbox</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">form-textbox</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
-			<button type="button" class="secondary small">
-				<span class="label">Copy</span>
-			</button>
-		</input-button>
-	</code-block>
-</div>
+			<basic-button class="copy">
+				<button type="button" class="secondary small">
+					<span class="label">Copy</span>
+				</button>
+			</basic-button>
+		</module-codeblock>
+	</div>
 
-<div role="tabpanel" id="panel_input-textbox.css" aria-labelledby="trigger_input-textbox.css" hidden>
-	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-		<p class="meta">
-			<span class="file">input-textbox.css</span>
-			<span class="language">css</span>
-		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">input-textbox</span><span style="color:#F8F8F2"> {</span></span>
+	<div
+		role="tabpanel"
+		id="panel_form-textbox.css"
+		aria-labelledby="trigger_form-textbox.css"
+		hidden
+	>
+		<module-codeblock
+			language="css"
+			copy-success="Copied!"
+			copy-error="Error trying to copy to clipboard!"
+		>
+			<p class="meta">
+				<span class="file">form-textbox.css</span>
+				<span class="language">css</span>
+			</p>
+			<pre
+				class="shiki monokai"
+				style="background-color: #272822; color: #f8f8f2"
+				tabindex="0"
+			><code><span class="line"><span style="color:#F92672">form-textbox</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">100</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#66D9EF;font-style:italic">label</span><span style="color:#F8F8F2">,</span></span>
@@ -209,21 +239,33 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
-			<button type="button" class="secondary small">
-				<span class="label">Copy</span>
-			</button>
-		</input-button>
-	</code-block>
-</div>
+			<basic-button class="copy">
+				<button type="button" class="secondary small">
+					<span class="label">Copy</span>
+				</button>
+			</basic-button>
+		</module-codeblock>
+	</div>
 
-<div role="tabpanel" id="panel_input-textbox.ts" aria-labelledby="trigger_input-textbox.ts">
-	<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-		<p class="meta">
-			<span class="file">input-textbox.ts</span>
-			<span class="language">ts</span>
-		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
+	<div
+		role="tabpanel"
+		id="panel_form-textbox.ts"
+		aria-labelledby="trigger_form-textbox.ts"
+	>
+		<module-codeblock
+			language="ts"
+			copy-success="Copied!"
+			copy-error="Error trying to copy to clipboard!"
+		>
+			<p class="meta">
+				<span class="file">form-textbox.ts</span>
+				<span class="language">ts</span>
+			</p>
+			<pre
+				class="shiki monokai"
+				style="background-color: #272822; color: #f8f8f2"
+				tabindex="0"
+			><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	RESET,</span></span>
 <span class="line"><span style="color:#F8F8F2">	UNSET,</span></span>
@@ -246,7 +288,7 @@
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputTextboxProps</span><span style="color:#F8F8F2">>(</span></span>
-<span class="line"><span style="color:#E6DB74">	'input-textbox'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">	'form-textbox'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
 <span class="line"><span style="color:#F8F8F2">		value: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		length: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
@@ -323,15 +365,15 @@
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#E6DB74">		'input-textbox'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputTextboxProps</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#E6DB74">		'form-textbox'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputTextboxProps</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
-			<button type="button" class="secondary small">
-				<span class="label">Copy</span>
-			</button>
-		</input-button>
-	</code-block>
-</div>
-</tab-group>
+			<basic-button class="copy">
+				<button type="button" class="secondary small">
+					<span class="label">Copy</span>
+				</button>
+			</basic-button>
+		</module-codeblock>
+	</div>
+</module-tabgroup>

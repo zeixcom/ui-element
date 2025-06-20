@@ -1,5 +1,5 @@
 
-<tab-group>
+<module-tabgroup>
 	<div role="tablist">
 		
 			<button
@@ -31,7 +31,7 @@
 	</div>
 	
 <div role="tabpanel" id="panel_rating-feedback.html" aria-labelledby="trigger_rating-feedback.html" hidden>
-	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">rating-feedback.html</span>
 			<span class="language">html</span>
@@ -75,23 +75,23 @@
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">fieldset</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> for</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating-feedback"</span><span style="color:#F8F8F2">>Describe your experience (optional)&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">textarea</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating-feedback"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">textarea</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">input-button</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">basic-button</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"submit"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"primary"</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">>Submit&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">input-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">basic-button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">fieldset</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">form</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">rating-feedback</span><span style="color:#F8F8F2">></span></span></code></pre>
-		<input-button class="copy">
+		<basic-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>
 			</button>
-		</input-button>
-	</code-block>
+		</basic-button>
+	</module-codeblock>
 </div>
 
 <div role="tabpanel" id="panel_rating-feedback.css" aria-labelledby="trigger_rating-feedback.css" hidden>
-	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<module-codeblock language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">rating-feedback.css</span>
 			<span class="language">css</span>
@@ -169,16 +169,16 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
+		<basic-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>
 			</button>
-		</input-button>
-	</code-block>
+		</basic-button>
+	</module-codeblock>
 </div>
 
 <div role="tabpanel" id="panel_rating-feedback.ts" aria-labelledby="trigger_rating-feedback.ts">
-	<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">rating-feedback.ts</span>
 			<span class="language">ts</span>
@@ -233,15 +233,15 @@
 <span class="line"><span style="color:#A6E22E">		all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.feedback p'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">, hasDifferentKey)),</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Effect on empty state</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input-button'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">, empty)),</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'basic-button'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">, empty)),</span></span>
 <span class="line"><span style="color:#F8F8F2">	]</span></span>
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
+		<basic-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>
 			</button>
-		</input-button>
-	</code-block>
+		</basic-button>
+	</module-codeblock>
 </div>
-</tab-group>
+</module-tabgroup>

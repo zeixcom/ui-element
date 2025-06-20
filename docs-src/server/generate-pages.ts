@@ -1,5 +1,5 @@
 import { join } from 'path'
-import { readFile, readdir, writeFile, stat, mkdir } from 'fs/promises'
+import { mkdir, readFile, readdir, stat, writeFile } from 'fs/promises'
 import matter from 'gray-matter'
 import { marked } from 'marked'
 
@@ -10,12 +10,12 @@ import {
 	OUTPUT_DIR,
 	PAGES_DIR,
 } from './config'
-import { generateMenu } from './generate-menu'
-import { generateSitemap } from './generate-sitemap'
 import { generateApiMenu } from './generate-api-menu'
 import { generateBlogMenu } from './generate-blog-menu'
+import { generateMenu } from './generate-menu'
+import { generateSitemap } from './generate-sitemap'
 import { replaceAsync } from './replace-async'
-import { transformCodeBlocks } from './transform-code-blocks'
+import { transformCodeBlocks } from './transform-codeblocks'
 
 marked.setOptions({
 	gfm: true, // Enables tables, task lists, and strikethroughs
@@ -125,13 +125,13 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
                 </a>
                 ${text}
             </h${level}>`
-		}
+		},
 	)
 
 	// Fix internal .md links to .html
 	htmlContent = htmlContent.replace(
 		/href="([^"]*\.md)"/g,
-		(_match, href) => `href="${href.replace(/\.md$/, '.html')}"`
+		(_match, href) => `href="${href.replace(/\.md$/, '.html')}"`,
 	)
 
 	// Replace placeholders with actual Shiki code blocks
@@ -156,7 +156,9 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 	// Extract title from first heading if no frontmatter title (common for API docs)
 	let title = frontmatter.title
 	if (!title && section === 'api') {
-		const headingMatch = content.match(/^#\s+(Function|Type Alias|Variable):\s*(.+?)(?:\(\))?$/m)
+		const headingMatch = content.match(
+			/^#\s+(Function|Type Alias|Variable):\s*(.+?)(?:\(\))?$/m,
+		)
 		if (headingMatch) {
 			title = headingMatch[2].trim() // Extract the actual function/type name
 		} else {
@@ -177,7 +179,10 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 
 	// Fix menu links to be relative to current page depth
 	if (depth > 0) {
-		menuHtml = menuHtml.replace(/href="([^"]*\.html)"/g, `href="${basePath}$1"`)
+		menuHtml = menuHtml.replace(
+			/href="([^"]*\.html)"/g,
+			`href="${basePath}$1"`,
+		)
 	}
 
 	// Mark active page in main menu
@@ -200,7 +205,10 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 				new RegExp(`(<a href="${currentPageInMenu}")`, 'g'),
 				'$1 class="active"',
 			)
-			layout = layout.replace("{{ include 'api-menu.html' }}", apiMenuHtml)
+			layout = layout.replace(
+				"{{ include 'api-menu.html' }}",
+				apiMenuHtml,
+			)
 		} catch {
 			layout = layout.replace("{{ include 'api-menu.html' }}", '')
 		}
@@ -216,7 +224,10 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 				new RegExp(`(<a href="${currentPageInMenu}")`, 'g'),
 				'$1 class="active"',
 			)
-			layout = layout.replace("{{ include 'blog-menu.html' }}", blogMenuHtml)
+			layout = layout.replace(
+				"{{ include 'blog-menu.html' }}",
+				blogMenuHtml,
+			)
 		} catch {
 			layout = layout.replace("{{ include 'blog-menu.html' }}", '')
 		}
@@ -239,7 +250,8 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 	layout = layout.replace(/{{ (.*?) }}/g, (_, key) => {
 		if (key === 'url') return url
 		if (key === 'section') return section || ''
-		if (key === 'has-sidebar') return (section === 'api' || section === 'blog') ? 'has-sidebar' : ''
+		if (key === 'has-sidebar')
+			return section === 'api' || section === 'blog' ? 'has-sidebar' : ''
 		if (key === 'base-path') return basePath
 		if (key === 'title') return title || ''
 		return frontmatter[key] || ''

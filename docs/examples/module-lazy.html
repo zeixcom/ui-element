@@ -1,0 +1,125 @@
+
+<module-tabgroup>
+	<div role="tablist">
+		
+			<button
+				type="button"
+				role="tab"
+				id="trigger_module-lazy.html"
+				aria-controls="panel_module-lazy.html"
+				aria-selected="false"
+				tabindex="-1"
+			>HTML</button>
+		
+			<button
+				type="button"
+				role="tab"
+				id="trigger_module-lazy.ts"
+				aria-controls="panel_module-lazy.ts"
+				aria-selected="true"
+				tabindex="0"
+			>TypeScript</button>
+	</div>
+	
+<div role="tabpanel" id="panel_module-lazy.html" aria-labelledby="trigger_module-lazy.html" hidden>
+	<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">module-lazy.html</span>
+			<span class="language">html</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">module-lazy</span><span style="color:#A6E22E"> src</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"./examples/snippets/snippet.html"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">card-callout</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"loading"</span><span style="color:#A6E22E"> role</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"status"</span><span style="color:#F8F8F2">>Loading...&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"error"</span><span style="color:#A6E22E"> role</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"alert"</span><span style="color:#A6E22E"> aria-live</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"polite"</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">card-callout</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">module-lazy</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+		<basic-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</basic-button>
+	</module-codeblock>
+</div>
+
+<div role="tabpanel" id="panel_module-lazy.ts" aria-labelledby="trigger_module-lazy.ts">
+	<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">module-lazy.ts</span>
+			<span class="language">ts</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
+<span class="line"><span style="color:#F8F8F2">	UNSET,</span></span>
+<span class="line"><span style="color:#F8F8F2">	component,</span></span>
+<span class="line"><span style="color:#F8F8F2">	computed,</span></span>
+<span class="line"><span style="color:#F8F8F2">	dangerouslySetInnerHTML,</span></span>
+<span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
+<span class="line"><span style="color:#F8F8F2">	setText,</span></span>
+<span class="line"><span style="color:#F8F8F2">	state,</span></span>
+<span class="line"><span style="color:#F8F8F2">	toggleClass,</span></span>
+<span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asURL } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/attribute-parser/as-url'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { fetchWithCache } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/shared/fetch-with-cache'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">ModuleLazyProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	src</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">	'module-lazy'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	{</span></span>
+<span class="line"><span style="color:#F8F8F2">		src: asURL,</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
+<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> error </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> content </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> computed</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">async</span><span style="color:#FD971F;font-style:italic"> abort</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> url </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.src.value</span></span>
+<span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (el.src.error </span><span style="color:#F92672">||</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">url) {</span></span>
+<span class="line"><span style="color:#F8F8F2">				error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(el.src.error </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> 'No URL provided'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">				return</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">			try</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">				error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">				el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.loading'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">remove</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> { content } </span><span style="color:#F92672">=</span><span style="color:#F92672"> await</span><span style="color:#A6E22E"> fetchWithCache</span><span style="color:#F8F8F2">(url, abort)</span></span>
+<span class="line"><span style="color:#F92672">				return</span><span style="color:#F8F8F2"> content</span></span>
+<span class="line"><span style="color:#F8F8F2">			} </span><span style="color:#F92672">catch</span><span style="color:#F8F8F2"> (err) {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> errorMessage </span><span style="color:#F92672">=</span></span>
+<span class="line"><span style="color:#F8F8F2">					err </span><span style="color:#F92672">instanceof</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Error</span><span style="color:#F92672"> ?</span><span style="color:#F8F8F2"> err.message </span><span style="color:#F92672">:</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(err)</span></span>
+<span class="line"><span style="color:#F8F8F2">				error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(errorMessage)</span></span>
+<span class="line"><span style="color:#F92672">				return</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">			dangerouslySetInnerHTML</span><span style="color:#F8F8F2">(content),</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">				'card-callout'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">					'hidden'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">					() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">error.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> content.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">!==</span><span style="color:#F8F8F2"> UNSET,</span></span>
+<span class="line"><span style="color:#F8F8F2">				),</span></span>
+<span class="line"><span style="color:#A6E22E">				toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'danger'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">error.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()),</span></span>
+<span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.error'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(error)),</span></span>
+<span class="line"><span style="color:#F8F8F2">		]</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#E6DB74">		'module-lazy'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">ModuleLazyProps</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+		<basic-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</basic-button>
+	</module-codeblock>
+</div>
+</module-tabgroup>

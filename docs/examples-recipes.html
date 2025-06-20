@@ -142,7 +142,7 @@
 		</style>
 	</head>
 	<body class="section-">
-		<client-router>
+		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
 					UIElement Docs <small>Version 0.13.1</small>
@@ -224,9 +224,9 @@
 				</li>
 		</ol>
 	</nav>
-				<callout-box class="content danger" hidden>
+				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="polite"></p>
-				</callout-box>
+				</card-callout>
 			</header>
 			<main class="content-grid ">
 				<div class="content"><section class="hero">
@@ -257,7 +257,7 @@
 <li>Dynamic CSS classes based on state</li>
 <li>Functions for computed values</li>
 </ul>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -295,14 +295,14 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+</module-codeblock>
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
@@ -314,13 +314,13 @@
 <span class="line"><span style="color:#F8F8F2">  &#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">click-counter</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p><strong>New concepts introduced:</strong></p>
 <ul>
 <li><code>asInteger()</code> for numeric properties</li>
@@ -348,7 +348,7 @@
 <li>Event handling for user clicks</li>
 <li>Server-side rendering hydration</li>
 </ul>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -374,14 +374,14 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+</module-codeblock>
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
@@ -393,13 +393,13 @@
 <span class="line"><span style="color:#F8F8F2">  &#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">show-appreciation</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p><strong>Key patterns:</strong></p>
 <ul>
 <li>Using <code>RESET</code> to hydrate from server-rendered content</li>
@@ -438,22 +438,22 @@
 </blockquote>
 </blockquote>
 </blockquote>
-<component-demo>
+<module-demo>
   <div class="preview">
-    <my-counter>
+    <basic-counter>
      	<button type="button">💐 <span>5</span></button>
-    </my-counter>
+    </basic-counter>
   </div>
   <details>
 		<summary>Source Code</summary>
-		<lazy-load src="./examples/my-counter.html">
-			<callout-box>
+		<module-lazy src="./examples/basic-counter.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
-</component-demo>
+</module-demo>
 
 </section>
 
@@ -465,9 +465,9 @@
                 </a>
                 Simple Carousel Component
             </h2>
-<component-demo>
+<module-demo>
 	<div class="preview">
-		<my-carousel>
+		<module-carousel>
 			<h2 class="visually-hidden">Slides</h2>
 			<div class="slides">
 				<div id="slide1" role="tabpanel" aria-current="true">
@@ -494,7 +494,7 @@
 					<calc-table rows="3" columns="3">
 						<div class="rows">
 							<p>Number of rows:</p>
-							<spin-button value="3" zero-label="Add Row" increment-label="Increment">
+							<form-spinbutton value="3" zero-label="Add Row" increment-label="Increment">
 								<button type="button" class="decrement" aria-label="Decrement">
 									−
 								</button>
@@ -502,11 +502,11 @@
 								<button type="button" class="increment" aria-label="Increment">
 									+
 								</button>
-							</spin-button>
+							</form-spinbutton>
 						</div>
 						<div class="columns">
 							<p>Number of columns:</p>
-							<spin-button
+							<form-spinbutton
 								value="3"
 								zero-label="Add Column"
 								increment-label="Increment"
@@ -518,7 +518,7 @@
 								<button type="button" class="increment" aria-label="Increment">
 									+
 								</button>
-							</spin-button>
+							</form-spinbutton>
 						</div>
 						<table>
 							<thead>
@@ -596,9 +596,9 @@
 								<fieldset>
 									<label for="rating-feedback">Describe your experience (optional)</label>
 									<textarea id="rating-feedback"></textarea>
-									<input-button disabled>
+									<basic-button disabled>
 										<button type="submit" class="primary" disabled>Submit</button>
-									</input-button>
+									</basic-button>
 								</fieldset>
 							</div>
 						</form>
@@ -641,18 +641,18 @@
 					</button>
 				</div>
 			</nav>
-		</my-carousel>
+		</module-carousel>
 	</div>
 	<details>
 		<summary>Source Code</summary>
-		<lazy-load src="./examples/my-carousel.html">
-			<callout-box>
+		<module-lazy src="./examples/module-carousel.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
-</component-demo>
+</module-demo>
 
 </section>
 
@@ -664,9 +664,9 @@
                 </a>
                 Combobox
             </h2>
-<component-demo>
+<module-demo>
 	<div class="preview">
-		<input-combobox value="">
+		<form-combobox value="">
 			<label for="city-input">Choose a city</label>
 			<div class="input">
 				<input
@@ -713,18 +713,18 @@
 			</div>
 			<p class="error" aria-live="assertive" id="city-error"></p>
 			<p class="description" aria-live="polite" id="city-description">Tell us where you live so we can set your timezone for our calendar and notification features.</p>
-		</input-combobox>
+		</form-combobox>
 	</div>
 	<details>
 		<summary>Source Code</summary>
-		<lazy-load src="./examples/input-combobox.html">
-			<callout-box>
+		<module-lazy src="./examples/form-combobox.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
-</component-demo>
+</module-demo>
 
 </section>
 
@@ -736,34 +736,34 @@
                 </a>
                 Todo App
             </h2>
-<component-demo>
+<module-demo>
 	<div class="preview">
-		<todo-app>
+		<module-todo>
 			<form action="#">
-				<input-textbox>
+				<form-textbox>
 					<label for="add-todo">What needs to be done?</label>
 					<div class="input">
 						<input id="add-todo" type="text" value="" />
 					</div>
-				</input-textbox>
-				<input-button class="submit">
+				</form-textbox>
+				<basic-button class="submit">
 					<button type="submit" class="constructive" disabled>
 						Add Todo
 					</button>
-				</input-button>
+				</basic-button>
 			</form>
 			<ol filter="all"></ol>
 			<template>
 				<li>
-					<input-checkbox class="todo">
+					<form-checkbox class="todo">
 						<label>
 							<input type="checkbox" class="visually-hidden" />
 							<span class="label"><slot></slot></span>
 						</label>
-					</input-checkbox>
-					<input-button class="delete">
+					</form-checkbox>
+					<basic-button class="delete">
 						<button type="button" class="destructive small">Delete</button>
-					</input-button>
+					</basic-button>
 				</li>
 			</template>
 			<footer>
@@ -776,7 +776,7 @@
 						remaining
 					</p>
 				</div>
-				<input-radiogroup value="all" class="split-button">
+				<form-radiogroup value="all" class="split-button">
 					<fieldset>
 						<legend class="visually-hidden">Filter</legend>
 						<label class="selected">
@@ -808,62 +808,62 @@
 							<span>Completed</span>
 						</label>
 					</fieldset>
-				</input-radiogroup>
-				<input-button class="clear-completed">
+				</form-radiogroup>
+				<basic-button class="clear-completed">
 					<button type="button" class="destructive">
 						<span class="label">Clear Completed</span>
 						<span class="badge"></span>
 					</button>
-				</input-button>
+				</basic-button>
 			</footer>
-		</todo-app>
+		</module-todo>
 	</div>
 	<details>
 		<summary>TodoApp Source Code</summary>
-		<lazy-load src="./examples/todo-app.html">
-			<callout-box>
+		<module-lazy src="./examples/module-todo.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
 	<details>
 		<summary>InputTextbox Source Code</summary>
-		<lazy-load src="./examples/input-textbox.html">
-			<callout-box>
+		<module-lazy src="./examples/form-textbox.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
 	<details>
 		<summary>InputButton Source Code</summary>
-		<lazy-load src="./examples/input-button.html">
-			<callout-box>
+		<module-lazy src="./examples/basic-button.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
 	<details>
 		<summary>InputCheckbox Source Code</summary>
-		<lazy-load src="./examples/input-checkbox.html">
-			<callout-box>
+		<module-lazy src="./examples/form-checkbox.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
 	<details>
 		<summary>InputRadiogroup Source Code</summary>
-		<lazy-load src="./examples/input-radiogroup.html">
-			<callout-box>
+		<module-lazy src="./examples/form-radiogroup.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
-</component-demo>
+</module-demo>
 
 </section>
 
@@ -883,7 +883,7 @@
 <li>Custom attribute parsers and effects</li>
 <li>Keyboard accessibility</li>
 </ul>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -976,14 +976,14 @@
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
-<code-block collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+</module-codeblock>
+<module-codeblock collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
@@ -1005,13 +1005,13 @@
 <span class="line"><span style="color:#F8F8F2">  &#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">my-slider</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p><strong>Advanced patterns shown:</strong></p>
 <ul>
 <li>Derived state calculations with functions</li>
@@ -1038,7 +1038,7 @@
 <li>Error state management</li>
 <li>User experience patterns</li>
 </ul>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -1162,13 +1162,13 @@
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p><strong>Patterns demonstrated:</strong></p>
 <ul>
 <li>Custom reusable validation effects</li>
@@ -1194,13 +1194,13 @@
 <li>Loading states and error handling</li>
 <li>Content replacement patterns</li>
 </ul>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">  'lazy-load'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">  'module-lazy'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  {</span></span>
 <span class="line"><span style="color:#F8F8F2">    src: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#F8F8F2">    loaded: </span><span style="color:#A6E22E">asBoolean</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">false</span><span style="color:#F8F8F2">),</span></span>
@@ -1267,31 +1267,31 @@
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+</module-codeblock>
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">lazy-load</span><span style="color:#A6E22E"> src</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"/api/user-profile"</span><span style="color:#F8F8F2">></span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">module-lazy</span><span style="color:#A6E22E"> src</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"/api/user-profile"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"loading"</span><span style="color:#F8F8F2">>Loading user profile...&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"error"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"content"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">lazy-load</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">module-lazy</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p><strong>Key techniques:</strong></p>
 <ul>
 <li>Intersection Observer for performance</li>
@@ -1316,7 +1316,7 @@
                 </a>
                 Tab System
             </h3>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -1351,20 +1351,20 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="accordion-component">
                 <a name="accordion-component" class="anchor" href="#accordion-component">
 	                <span class="permalink">🔗</span>
                 </a>
                 Accordion Component
             </h3>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -1389,13 +1389,13 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p><strong>Composition benefits:</strong></p>
 <ul>
 <li>Each component has a single responsibility</li>
@@ -1421,7 +1421,7 @@
                 Testing Reactive Updates
             </h3>
 <p>UIElement schedules DOM updates for performance, so tests need to wait for effects to apply:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -1438,13 +1438,13 @@
 <span class="line"><span style="color:#A6E22E">  expect</span><span style="color:#F8F8F2">(component.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">).textContent).</span><span style="color:#A6E22E">toBe</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'5'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="testing-component-state-persistence">
                 <a name="testing-component-state-persistence" class="anchor" href="#testing-component-state-persistence">
 	                <span class="permalink">🔗</span>
@@ -1452,7 +1452,7 @@
                 Testing Component State Persistence
             </h3>
 <p>Components maintain state between interactions, which affects testing:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -1476,13 +1476,13 @@
 <span class="line"><span style="color:#F8F8F2">  component.count </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 0</span></span>
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="testing-components-with-browser-apis">
                 <a name="testing-components-with-browser-apis" class="anchor" href="#testing-components-with-browser-apis">
 	                <span class="permalink">🔗</span>
@@ -1490,7 +1490,7 @@
                 Testing Components with Browser APIs
             </h3>
 <p>When components use browser APIs, mock individual methods rather than entire objects:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -1509,7 +1509,7 @@
 <span class="line"><span style="color:#F8F8F2">  }</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">  // Test the component</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> codeBlock </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'code-block'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> codeBlock </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'module-codeblock'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> copyButton </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> codeBlock.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.copy-btn'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">  copyButton.</span><span style="color:#A6E22E">click</span><span style="color:#F8F8F2">()</span></span>
@@ -1523,13 +1523,13 @@
 <span class="line"><span style="color:#F8F8F2">  }</span></span>
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="component-isolation-best-practices">
                 <a name="component-isolation-best-practices" class="anchor" href="#component-isolation-best-practices">
 	                <span class="permalink">🔗</span>
@@ -1537,7 +1537,7 @@
                 Component Isolation Best Practices
             </h3>
 <p>Ensure tests don&#39;t interfere with each other:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -1561,13 +1561,13 @@
 <span class="line"><span style="color:#F8F8F2">  })</span></span>
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 </section>
 
 <section>
@@ -1594,6 +1594,6 @@
 					<p>© 2024 – 2025 Zeix AG</p>
 				</div>
 			</footer>
-		</client-router>
+		</context-router>
 	</body>
 </html>

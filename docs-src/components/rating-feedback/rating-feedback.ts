@@ -48,6 +48,6 @@ export default component('rating-feedback', {}, (el, { all, first }) => {
 		all('.feedback p', setProperty('hidden', hasDifferentKey)),
 
 		// Effect on empty state
-		first('input-button', setProperty('disabled', empty)),
+		first('basic-button', setProperty('disabled', empty)),
 	]
 })

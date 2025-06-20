@@ -69,11 +69,11 @@ In this example you see all four ways to define a reactive property:
 - An **attribute parser** that may provide a fallback value (e.g., `value: asInteger(5)`)
 - A **context consumer** that emits a `ContextRequestEvent` (e.g., `name: consume("display-name")`)
 
-<callout-box class="caution">
+<card-callout class="caution">
 
 **Note**: Property initialization runs **before the element is attached to the DOM**. You can't access not yet defined properties or child elements here.
 
-</callout-box>
+</card-callout>
 
 ### Mounted in the DOM
 
@@ -185,7 +185,7 @@ component(
 )
 ```
 
-<callout-box class="caution">
+<card-callout class="caution">
 
 **Careful**: Attributes **may not be present** on the element or **parsing to the desired type may fail**. To ensure **non-nullability** of signals, UIElement falls back to neutral defaults:
 
@@ -193,7 +193,7 @@ component(
 - `0` for `number`
 - `{}` (empty object) for objects of any kind
 
-</callout-box>
+</card-callout>
 
 ### Bundled Attribute Parsers
 
@@ -226,7 +226,7 @@ Selects the first matching element and applies effects:
 
 ```js
 component(
-  'my-counter',
+  'basic-counter',
   {
     count: asInteger(),
   },
@@ -248,7 +248,7 @@ Selects all matching elements and applies effects to each:
 
 ```js
 component(
-  'tab-group',
+  'module-tabgroup',
   {
     selected: '',
   },
@@ -281,11 +281,11 @@ The `first()` function expects the matched element to be present at connection t
 
 On the other hand, the `all()` function creates a dynamic array of elements that will be updated whenever the matching elements are added or removed from the component's DOM branch. UIElement will apply the given setup functions to added elements and run the cleanup functions on removed elements.
 
-<callout-box class="tip">
+<card-callout class="tip">
 
 **Tip**: The `all()` function is more flexible but also more resource-intensive than `first()`. Prefer `first()` when targeting a single element known to be present at connection time.
 
-</callout-box>
+</card-callout>
 
 </section>
 
@@ -357,11 +357,11 @@ Again, the order of effects is not important. Feel free to apply them in any ord
 | `dangerouslySetInnerHTML()` | Sets **HTML content** with a `string` signal value.                                             |
 | `insertOrRemoveElement()`   | Inserts (positive integer) or removes (negative integer) elements with a `number` signal value. |
 
-<callout-box class="tip">
+<card-callout class="tip">
 
 **Tip**: TypeScript will check whether a value of a given type is assignable to a certain element type. You might have to pass a type hint for the queried element type. Prefer `setProperty()` over `setAttribute()` for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.
 
-</callout-box>
+</card-callout>
 
 ### Simplifying Effect Notation
 
@@ -414,7 +414,7 @@ component("my-component", {
 });
 ```
 
-<callout-box class="tip">
+<card-callout class="tip">
 
 **When to use**
 
@@ -423,7 +423,7 @@ component("my-component", {
 
 Ad-hoc derived state is more efficient than the overhead of a memoized computed signal for simple functions like converting to a string or boolean, formatting a value or performing a calculation.
 
-</callout-box>
+</card-callout>
 
 ### Efficient & Fine-Grained Updates
 

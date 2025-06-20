@@ -142,7 +142,7 @@
 		</style>
 	</head>
 	<body class="section-blog">
-		<client-router>
+		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
 					UIElement Docs <small>Version 0.13.1</small>
@@ -224,9 +224,9 @@
 				</li>
 		</ol>
 	</nav>
-				<callout-box class="content danger" hidden>
+				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="polite"></p>
-				</callout-box>
+				</card-callout>
 			</header>
 			<main class="content-grid has-sidebar">
 				<div class="content"><section class="hero">
@@ -275,22 +275,22 @@
             </h2>
 <p>Frameworks like React, Vue, or Svelte give you component models out of the box – but they aren&#39;t the only way. In fact, the Web Platform itself has a native component model: <strong>Web Components</strong>.</p>
 <p>Web Components allow you to define your own HTML tags with scoped or encapsulated behavior and styles. Let&#39;s look at a simple example:</p>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">>Hello, world!&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p>Underwhelmed because it&#39;s just HTML? – Well, that&#39;s the whole point! For now, it&#39;s just a custom element. But it gives you already a way to unambiguously scope your styles to your components.</p>
-<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">css</span>
@@ -302,15 +302,15 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">  border-radius</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0.25</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p>Let&#39;s add some interactivity:</p>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
@@ -323,15 +323,15 @@
 <span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>world&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p>Add the following to your JavaScript for the page:</p>
-<code-block language="javascript" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="javascript" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">javascript</span>
@@ -346,13 +346,13 @@
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"><span style="color:#F8F8F2">customElements.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">, HelloWorld)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p>Web Components are registered using <code>customElements.define()</code> and automatically upgrade when they appear in the DOM – no bundler magic or runtime library required. Now, our <code>hello-world</code> component reacts to user input and updates the greeting accordingly. No external dependencies, just plain JavaScript and the browser&#39;s built-in APIs and it works – everywhere!</p>
 </section>
 
@@ -367,7 +367,7 @@
 <p><strong>UIElement</strong> builds on the Web Platform rather than abstracting over it. We embrace semantic HTML as the foundation. Add CSS to your components however you like and make them look great. Use Web Components to add reusable behavior.</p>
 <p>While native Web Components are powerful, they require you to wire things together manually – querying elements, adding event listeners, and managing updates. This works great for simple interactions, but what if we want other components or JavaScript code to control our component&#39;s state? Let&#39;s add a public API.</p>
 <p>To achieve this, we can expose an observed attribute and a public property. Observed attributes allow our component to react when the attribute changes. Element properties usually mirror attributes, but they can be of any type, not just strings. We need a setter function to react to changes in the property.</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -400,30 +400,30 @@
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"><span style="color:#F8F8F2">customElements.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">, HelloWorld)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p>Hooray, now we can set the name from outside the component in HTML:</p>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Ada"</span><span style="color:#F8F8F2">></span><span style="color:#88846F">&#x3C;!-- contents --></span><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p>... or via JavaScript:</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -431,13 +431,13 @@
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> helloWorld </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">helloWorld.name </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'Betty'</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p>This manual wiring works, but notice how much boilerplate we needed for a simple reactive property. As components grow more complex, this pattern becomes harder to maintain. This is where <strong>UIElement</strong> shines – it provides the reactivity patterns you need while staying close to the platform.</p>
 <p>Here&#39;s the same component rewritten using UIElement. Notice how the concerns are cleanly separated:</p>
 <ul>
@@ -445,7 +445,7 @@
 <li><strong>Input handling</strong>: The <code>on(&#39;input&#39;, ...)</code> handler updates state declaratively</li>
 <li><strong>DOM updates</strong>: <code>setText(&#39;name&#39;)</code> automatically keeps the display in sync</li>
 </ul>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -468,13 +468,13 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p>This scales much better as complexity grows. You could add default values, validation rules, attribute reflection, or derived values – all while keeping effects and state management declarative and contained.</p>
 <p>The functions we use:</p>
 <ul>
@@ -566,6 +566,6 @@
 					<p>© 2024 – 2025 Zeix AG</p>
 				</div>
 			</footer>
-		</client-router>
+		</context-router>
 	</body>
 </html>

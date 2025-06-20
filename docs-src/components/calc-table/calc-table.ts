@@ -10,7 +10,7 @@ import {
 	state,
 } from '../../../'
 
-import { SpinButtonProps } from '../spin-button/spin-button'
+import { SpinButtonProps } from '../form-spinbutton/form-spinbutton'
 
 export type CalcTableProps = {
 	columns: number
@@ -60,14 +60,14 @@ export default component(
 				'rows',
 				() =>
 					el.querySelector<Component<SpinButtonProps>>(
-						'.rows spin-button',
+						'.rows form-spinbutton',
 					)?.value,
 			),
 			setProperty(
 				'columns',
 				() =>
 					el.querySelector<Component<SpinButtonProps>>(
-						'.columns spin-button',
+						'.columns form-spinbutton',
 					)?.value,
 			),
 

@@ -300,12 +300,12 @@ Components maintain state between test runs, which can cause interference:
 // ❌ Tests can interfere with each other
 describe('Counter Component', () => {
   it('starts at zero', () => {
-    const counter = document.querySelector('my-counter')
+    const counter = document.querySelector('basic-counter')
     expect(counter.count).toBe(0)
   })
 
   it('increments when clicked', async () => {
-    const counter = document.querySelector('my-counter')
+    const counter = document.querySelector('basic-counter')
     // This test might start with count=1 from previous test!
     counter.querySelector('button').click()
     await animationFrame()
@@ -320,12 +320,12 @@ describe('Counter Component', () => {
   beforeEach(() => {
     // Create fresh component for each test
     document.body.innerHTML = `
-            <my-counter data-test="${Date.now()}">
+            <basic-counter data-test="${Date.now()}">
                 <span class="count">0</span>
                 <button>+</button>
-            </my-counter>
+            </basic-counter>
         `
-    counter = document.querySelector('my-counter')
+    counter = document.querySelector('basic-counter')
   })
 
   afterEach(() => {

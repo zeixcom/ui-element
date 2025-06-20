@@ -142,7 +142,7 @@
 		</style>
 	</head>
 	<body class="section-">
-		<client-router>
+		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
 					UIElement Docs <small>Version 0.13.1</small>
@@ -224,9 +224,9 @@
 				</li>
 		</ol>
 	</nav>
-				<callout-box class="content danger" hidden>
+				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="polite"></p>
-				</callout-box>
+				</card-callout>
 			</header>
 			<main class="content-grid ">
 				<div class="content"><section class="hero">
@@ -250,7 +250,7 @@
             </h2>
 <p>UIElement builds on <strong>Web Components</strong>, extending <code>HTMLElement</code> to provide <strong>built-in state management and reactive updates</strong>.</p>
 <p>A UIElement creates components using the <code>component()</code> function:</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -259,13 +259,13 @@
 <span class="line"><span style="color:#88846F">  // Component setup</span></span>
 <span class="line"><span style="color:#F8F8F2">])</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p>Every UIElement component must be registered with a valid custom element tag name (two or more words joined with <code>-</code>) as the first parameter.</p>
 <h3 id="using-the-custom-element-in-html">
                 <a name="using-the-custom-element-in-html" class="anchor" href="#using-the-custom-element-in-html">
@@ -274,20 +274,20 @@
                 Using the Custom Element in HTML
             </h3>
 <p>Once registered, the component can be used like any native HTML element:</p>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">my-component</span><span style="color:#F8F8F2">>Content goes here&#x3C;/</span><span style="color:#F92672">my-component</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 </section>
 
 <section>
@@ -306,7 +306,7 @@
                 Component Creation
             </h3>
 <p>In the <code>constructor()</code> reactive properties are initialized. You pass a second argument to the <code>component()</code> function to defines initial values for <strong>component states</strong>.</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -324,13 +324,13 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p>In this example you see all four ways to define a reactive property:</p>
 <ul>
 <li>A <strong>static initial value</strong> for a <code>State</code> signal (e.g., <code>count: 0</code>)</li>
@@ -338,10 +338,10 @@
 <li>An <strong>attribute parser</strong> that may provide a fallback value (e.g., <code>value: asInteger(5)</code>)</li>
 <li>A <strong>context consumer</strong> that emits a <code>ContextRequestEvent</code> (e.g., <code>name: consume(&quot;display-name&quot;)</code>)</li>
 </ul>
-<callout-box class="caution">
+<card-callout class="caution">
 
 <p><strong>Note</strong>: Property initialization runs <strong>before the element is attached to the DOM</strong>. You can&#39;t access not yet defined properties or child elements here.</p>
-</callout-box>
+</card-callout>
 
 <h3 id="mounted-in-the-dom">
                 <a name="mounted-in-the-dom" class="anchor" href="#mounted-in-the-dom">
@@ -364,7 +364,7 @@
 </ol>
 <p>UIElement expects you to return an array of partially applied functions to be executed during the setup phase. The order doesn&#39;t matter, as each function targets a specific element or event. So feel free to organize your code in a way that makes sense to you.</p>
 <p>Each of these functions will return a cleanup function that will be executed during the <code>disconnectedCallback()</code> lifecycle method.</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -390,13 +390,13 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="removed-from-the-dom">
                 <a name="removed-from-the-dom" class="anchor" href="#removed-from-the-dom">
 	                <span class="permalink">🔗</span>
@@ -405,7 +405,7 @@
             </h3>
 <p>Runs when the component is removed (<code>disconnectedCallback()</code>). UIElement will run all cleanup functions returned by event listeners and effects during the setup phase (<code>connectedCallback()</code>). This will unsubscribe all signals the component is subscribed to, so you don&#39;t need to worry about memory leaks.</p>
 <p>If you added <strong>event listeners</strong> outside the scope of your component or <strong>subscribed manually to external APIs</strong>, you need to return a cleanup function:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -423,13 +423,13 @@
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">])</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="observed-attributes">
                 <a name="observed-attributes" class="anchor" href="#observed-attributes">
 	                <span class="permalink">🔗</span>
@@ -448,7 +448,7 @@
                 Managing State with Signals
             </h2>
 <p>UIElement manages state using <strong>signals</strong>, which are atomic reactive states that trigger updates when they change. We use regular properties to access or update them:</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -457,13 +457,13 @@
 <span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(el.count) </span><span style="color:#88846F">// Read the signal value</span></span>
 <span class="line"><span style="color:#F8F8F2">el.count </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 42</span><span style="color:#88846F"> // Update the signal value</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <h3 id="characteristics-and-special-values">
                 <a name="characteristics-and-special-values" class="anchor" href="#characteristics-and-special-values">
 	                <span class="permalink">🔗</span>
@@ -487,7 +487,7 @@
                 Initializing State from Attributes
             </h3>
 <p>The standard way to set initial state in UIElement is via <strong>server-rendered attributes</strong> on the component that needs it. No props drilling as in other frameworks. UIElements provides some bundled attribute parsers to convert attribute values to the desired type. And you can also define your own custom parsers.</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -503,14 +503,14 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
-<callout-box class="caution">
+</module-codeblock>
+<card-callout class="caution">
 
 <p><strong>Careful</strong>: Attributes <strong>may not be present</strong> on the element or <strong>parsing to the desired type may fail</strong>. To ensure <strong>non-nullability</strong> of signals, UIElement falls back to neutral defaults:</p>
 <ul>
@@ -518,7 +518,7 @@
 <li><code>0</code> for <code>number</code></li>
 <li><code>{}</code> (empty object) for objects of any kind</li>
 </ul>
-</callout-box>
+</card-callout>
 
 <h3 id="bundled-attribute-parsers">
                 <a name="bundled-attribute-parsers" class="anchor" href="#bundled-attribute-parsers">
@@ -579,13 +579,13 @@
                 first()
             </h3>
 <p>Selects the first matching element and applies effects:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">  'my-counter'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">  'basic-counter'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  {</span></span>
 <span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(),</span></span>
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
@@ -600,13 +600,13 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="all">
                 <a name="all" class="anchor" href="#all">
 	                <span class="permalink">🔗</span>
@@ -614,13 +614,13 @@
                 all()
             </h3>
 <p>Selects all matching elements and applies effects to each:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">  'tab-group'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">  'module-tabgroup'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  {</span></span>
 <span class="line"><span style="color:#F8F8F2">    selected: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
@@ -648,19 +648,19 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p>The <code>first()</code> function expects the matched element to be present at connection time. If not, it will silently ignore the call.</p>
 <p>On the other hand, the <code>all()</code> function creates a dynamic array of elements that will be updated whenever the matching elements are added or removed from the component&#39;s DOM branch. UIElement will apply the given setup functions to added elements and run the cleanup functions on removed elements.</p>
-<callout-box class="tip">
+<card-callout class="tip">
 
 <p><strong>Tip</strong>: The <code>all()</code> function is more flexible but also more resource-intensive than <code>first()</code>. Prefer <code>first()</code> when targeting a single element known to be present at connection time.</p>
-</callout-box>
+</card-callout>
 
 </section>
 
@@ -673,7 +673,7 @@
                 Adding Event Listeners
             </h2>
 <p>Event listeners allow to respond to user interactions. They are the cause of changes in the component&#39;s state.</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -697,13 +697,13 @@
 <span class="line"><span style="color:#F8F8F2">	)</span></span>
 <span class="line"><span style="color:#F8F8F2">]</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 </section>
 
 <section>
@@ -722,7 +722,7 @@
                 Applying Effects
             </h3>
 <p>Apply one or multiple effects in the setup function (for component itself) or in element selector functions:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -739,13 +739,13 @@
 <span class="line"><span style="color:#F8F8F2">  ),</span></span>
 <span class="line"><span style="color:#F8F8F2">]</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p>Again, the order of effects is not important. Feel free to apply them in any order that suits your needs.</p>
 <h3 id="bundled-effects">
                 <a name="bundled-effects" class="anchor" href="#bundled-effects">
@@ -793,10 +793,10 @@
 <td>Inserts (positive integer) or removes (negative integer) elements with a <code>number</code> signal value.</td>
 </tr>
 </tbody></table>
-<callout-box class="tip">
+<card-callout class="tip">
 
 <p><strong>Tip</strong>: TypeScript will check whether a value of a given type is assignable to a certain element type. You might have to pass a type hint for the queried element type. Prefer <code>setProperty()</code> over <code>setAttribute()</code> for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.</p>
-</callout-box>
+</card-callout>
 
 <h3 id="simplifying-effect-notation">
                 <a name="simplifying-effect-notation" class="anchor" href="#simplifying-effect-notation">
@@ -806,20 +806,20 @@
             </h3>
 <p>For effects that take two arguments, <strong>the second argument can be omitted</strong> if the signal key matches the targeted property name, attribute, class, or style property.</p>
 <p>When signal key matches property name:</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'even'</span><span style="color:#F8F8F2">))</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p>Here, <code>toggleClass(&quot;even&quot;)</code> automatically uses the <code>&quot;even&quot;</code> signal.</p>
 <h3 id="using-local-signals-for-protected-state">
                 <a name="using-local-signals-for-protected-state" class="anchor" href="#using-local-signals-for-protected-state">
@@ -828,7 +828,7 @@
                 Using Local Signals for Protected State
             </h3>
 <p>Local signals are useful for storing state that should not be exposed to the outside world. They can be used to manage internal state within a component:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -848,13 +848,13 @@
 <span class="line"><span style="color:#F8F8F2">  ]</span></span>
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p>Outside components cannot access the <code>count</code> or <code>double</code> signals.</p>
 <h3 id="using-functions-for-ad-hoc-derived-state">
                 <a name="using-functions-for-ad-hoc-derived-state" class="anchor" href="#using-functions-for-ad-hoc-derived-state">
@@ -863,7 +863,7 @@
                 Using Functions for Ad-hoc Derived State
             </h3>
 <p>Instead of a signal key or a local signal, you can <strong>pass a function</strong> that derives a value dynamically:</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -878,14 +878,14 @@
 <span class="line"><span style="color:#F8F8F2">	];</span></span>
 <span class="line"><span style="color:#F8F8F2">});</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
-<callout-box class="tip">
+</module-codeblock>
+<card-callout class="tip">
 
 <p><strong>When to use</strong></p>
 <ul>
@@ -893,7 +893,7 @@
 <li><strong>Use a function</strong> to <strong>derive a value on the fly</strong> when it is needed only in this one place.</li>
 </ul>
 <p>Ad-hoc derived state is more efficient than the overhead of a memoized computed signal for simple functions like converting to a string or boolean, formatting a value or performing a calculation.</p>
-</callout-box>
+</card-callout>
 
 <h3 id="efficient-amp-fine-grained-updates">
                 <a name="efficient-amp-fine-grained-updates" class="anchor" href="#efficient-amp-fine-grained-updates">
@@ -932,6 +932,6 @@
 					<p>© 2024 – 2025 Zeix AG</p>
 				</div>
 			</footer>
-		</client-router>
+		</context-router>
 	</body>
 </html>

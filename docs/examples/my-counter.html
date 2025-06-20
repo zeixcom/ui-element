@@ -1,60 +1,90 @@
-
-<tab-group>
+<module-tabgroup>
 	<div role="tablist">
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_my-counter.html"
-				aria-controls="panel_my-counter.html"
-				aria-selected="false"
-				tabindex="-1"
-			>HTML</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_my-counter.css"
-				aria-controls="panel_my-counter.css"
-				aria-selected="false"
-				tabindex="-1"
-			>CSS</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_my-counter.ts"
-				aria-controls="panel_my-counter.ts"
-				aria-selected="true"
-				tabindex="0"
-			>TypeScript</button>
-	</div>
-	
-<div role="tabpanel" id="panel_my-counter.html" aria-labelledby="trigger_my-counter.html" hidden>
-	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-		<p class="meta">
-			<span class="file">my-counter.html</span>
-			<span class="language">html</span>
-		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">my-counter</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">>💐 &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>42&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">my-counter</span><span style="color:#F8F8F2">></span></span>
-<span class="line"></span></code></pre>
-		<input-button class="copy">
-			<button type="button" class="secondary small">
-				<span class="label">Copy</span>
-			</button>
-		</input-button>
-	</code-block>
-</div>
+		<button
+			type="button"
+			role="tab"
+			id="trigger_basic-counter.html"
+			aria-controls="panel_basic-counter.html"
+			aria-selected="false"
+			tabindex="-1"
+		>
+			HTML
+		</button>
 
-<div role="tabpanel" id="panel_my-counter.css" aria-labelledby="trigger_my-counter.css" hidden>
-	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-		<p class="meta">
-			<span class="file">my-counter.css</span>
-			<span class="language">css</span>
-		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">my-counter</span><span style="color:#F8F8F2"> {</span></span>
+		<button
+			type="button"
+			role="tab"
+			id="trigger_basic-counter.css"
+			aria-controls="panel_basic-counter.css"
+			aria-selected="false"
+			tabindex="-1"
+		>
+			CSS
+		</button>
+
+		<button
+			type="button"
+			role="tab"
+			id="trigger_basic-counter.ts"
+			aria-controls="panel_basic-counter.ts"
+			aria-selected="true"
+			tabindex="0"
+		>
+			TypeScript
+		</button>
+	</div>
+
+	<div
+		role="tabpanel"
+		id="panel_basic-counter.html"
+		aria-labelledby="trigger_basic-counter.html"
+		hidden
+	>
+		<module-codeblock
+			language="html"
+			copy-success="Copied!"
+			copy-error="Error trying to copy to clipboard!"
+		>
+			<p class="meta">
+				<span class="file">basic-counter.html</span>
+				<span class="language">html</span>
+			</p>
+			<pre
+				class="shiki monokai"
+				style="background-color: #272822; color: #f8f8f2"
+				tabindex="0"
+			><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">basic-counter</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">>💐 &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>42&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">basic-counter</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+			<basic-button class="copy">
+				<button type="button" class="secondary small">
+					<span class="label">Copy</span>
+				</button>
+			</basic-button>
+		</module-codeblock>
+	</div>
+
+	<div
+		role="tabpanel"
+		id="panel_basic-counter.css"
+		aria-labelledby="trigger_basic-counter.css"
+		hidden
+	>
+		<module-codeblock
+			language="css"
+			copy-success="Copied!"
+			copy-error="Error trying to copy to clipboard!"
+		>
+			<p class="meta">
+				<span class="file">basic-counter.css</span>
+				<span class="language">css</span>
+			</p>
+			<pre
+				class="shiki monokai"
+				style="background-color: #272822; color: #f8f8f2"
+				tabindex="0"
+			><code><span class="line"><span style="color:#F92672">basic-counter</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x26; button {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> solid</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--color-border);</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		border-radius</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs);</span></span>
@@ -76,21 +106,33 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
-			<button type="button" class="secondary small">
-				<span class="label">Copy</span>
-			</button>
-		</input-button>
-	</code-block>
-</div>
+			<basic-button class="copy">
+				<button type="button" class="secondary small">
+					<span class="label">Copy</span>
+				</button>
+			</basic-button>
+		</module-codeblock>
+	</div>
 
-<div role="tabpanel" id="panel_my-counter.ts" aria-labelledby="trigger_my-counter.ts">
-	<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-		<p class="meta">
-			<span class="file">my-counter.ts</span>
-			<span class="language">ts</span>
-		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
+	<div
+		role="tabpanel"
+		id="panel_basic-counter.ts"
+		aria-labelledby="trigger_basic-counter.ts"
+	>
+		<module-codeblock
+			language="ts"
+			copy-success="Copied!"
+			copy-error="Error trying to copy to clipboard!"
+		>
+			<p class="meta">
+				<span class="file">basic-counter.ts</span>
+				<span class="language">ts</span>
+			</p>
+			<pre
+				class="shiki monokai"
+				style="background-color: #272822; color: #f8f8f2"
+				tabindex="0"
+			><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	RESET,</span></span>
 <span class="line"><span style="color:#F8F8F2">	asInteger,</span></span>
@@ -104,7 +146,7 @@
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">	'my-counter'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">	'basic-counter'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
 <span class="line"><span style="color:#F8F8F2">		count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(RESET),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
@@ -121,15 +163,15 @@
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#E6DB74">		'my-counter'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">MyCounterProps</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#E6DB74">		'basic-counter'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">MyCounterProps</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
-			<button type="button" class="secondary small">
-				<span class="label">Copy</span>
-			</button>
-		</input-button>
-	</code-block>
-</div>
-</tab-group>
+			<basic-button class="copy">
+				<button type="button" class="secondary small">
+					<span class="label">Copy</span>
+				</button>
+			</basic-button>
+		</module-codeblock>
+	</div>
+</module-tabgroup>

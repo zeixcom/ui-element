@@ -25,13 +25,13 @@ UIElement is an **open-source project**, actively developed by [Zeix AG](https:/
 
 ### Sponsors
 
-<callout-box class="note">
+<card-callout class="note">
 
 **Become a Sponsor**
 
 UIElement is free and open-source. If your organization finds it valuable, consider [sponsoring its development](info@zeix.com) to help make web development **lightweight, accessible, and fun** again!
 
-</callout-box>
+</card-callout>
 
 </section>
 
@@ -51,13 +51,13 @@ A copy of the license can be found in the [LICENSE](https://github.com/zeixcom/u
 
 ### Current Version: 0.13.0
 
-<callout-box class="caution">
+<card-callout class="caution">
 
 **Release candidate**
 
 This version is a **pre-release** of UIElement, meaning **breaking changes** may still occur before the official release of version 1.0. Please check the [release notes](https://github.com/zeixcom/ui-element/releases) before updating.
 
-</callout-box>
+</card-callout>
 
 ### Versioning Scheme
 

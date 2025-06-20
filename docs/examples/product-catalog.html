@@ -1,5 +1,5 @@
 
-<tab-group>
+<module-tabgroup>
 	<div role="tablist">
 		
 			<button
@@ -31,7 +31,7 @@
 	</div>
 	
 <div role="tabpanel" id="panel_product-catalog.html" aria-labelledby="trigger_product-catalog.html" hidden>
-	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">product-catalog.html</span>
 			<span class="language">html</span>
@@ -39,17 +39,17 @@
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">product-catalog</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">header</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Shop&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">input-button</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">basic-button</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>🛒 Shopping Cart&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"badge"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">input-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">basic-button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">header</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">ul</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Product 1&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">spin-button</span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">form-spinbutton</span></span>
 <span class="line"><span style="color:#A6E22E">				value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"0"</span></span>
 <span class="line"><span style="color:#A6E22E">				zero-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Add to Cart"</span></span>
 <span class="line"><span style="color:#A6E22E">				increment-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Increment"</span></span>
@@ -64,11 +64,11 @@
 <span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"value"</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">>0&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"increment"</span><span style="color:#F8F8F2">>Add to Cart&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">spin-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">form-spinbutton</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Product 2&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">spin-button</span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">form-spinbutton</span></span>
 <span class="line"><span style="color:#A6E22E">				value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"0"</span></span>
 <span class="line"><span style="color:#A6E22E">				zero-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Add to Cart"</span></span>
 <span class="line"><span style="color:#A6E22E">				increment-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Increment"</span></span>
@@ -83,11 +83,11 @@
 <span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"value"</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">>0&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"increment"</span><span style="color:#F8F8F2">>Add to Cart&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">spin-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">form-spinbutton</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Product 3&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">spin-button</span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">form-spinbutton</span></span>
 <span class="line"><span style="color:#A6E22E">				value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"0"</span></span>
 <span class="line"><span style="color:#A6E22E">				zero-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Add to Cart"</span></span>
 <span class="line"><span style="color:#A6E22E">				increment-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Increment"</span></span>
@@ -102,21 +102,21 @@
 <span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"value"</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">>0&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"increment"</span><span style="color:#F8F8F2">>Add to Cart&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">spin-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">form-spinbutton</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">ul</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">product-catalog</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
+		<basic-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>
 			</button>
-		</input-button>
-	</code-block>
+		</basic-button>
+	</module-codeblock>
 </div>
 
 <div role="tabpanel" id="panel_product-catalog.css" aria-labelledby="trigger_product-catalog.css" hidden>
-	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<module-codeblock language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">product-catalog.css</span>
 			<span class="language">css</span>
@@ -144,16 +144,16 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
+		<basic-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>
 			</button>
-		</input-button>
-	</code-block>
+		</basic-button>
+	</module-codeblock>
 </div>
 
 <div role="tabpanel" id="panel_product-catalog.ts" aria-labelledby="trigger_product-catalog.ts">
-	<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">product-catalog.ts</span>
 			<span class="language">ts</span>
@@ -168,14 +168,14 @@
 <span class="line"><span style="color:#E6DB74">	'product-catalog'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
 <span class="line"><span style="color:#F8F8F2">		total: </span><span style="color:#A6E22E">fromChildren</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">number</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F92672"> &#x26;</span><span style="color:#F8F8F2"> { value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2"> }>(</span></span>
-<span class="line"><span style="color:#E6DB74">			'spin-button'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">			'form-spinbutton'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">			(</span><span style="color:#FD971F;font-style:italic">sum</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">item</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> sum </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> item.value,</span></span>
 <span class="line"><span style="color:#AE81FF">			0</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">			'input-button'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">			'basic-button'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">			pass</span><span style="color:#F8F8F2">({</span></span>
 <span class="line"><span style="color:#A6E22E">				badge</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (el.total </span><span style="color:#F92672">></span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> ?</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(el.total) </span><span style="color:#F92672">:</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#A6E22E">				disabled</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.total,</span></span>
@@ -190,11 +190,11 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
+		<basic-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>
 			</button>
-		</input-button>
-	</code-block>
+		</basic-button>
+	</module-codeblock>
 </div>
-</tab-group>
+</module-tabgroup>

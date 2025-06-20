@@ -142,7 +142,7 @@
 		</style>
 	</head>
 	<body class="section-blog">
-		<client-router>
+		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
 					UIElement Docs <small>Version 0.13.1</small>
@@ -224,9 +224,9 @@
 				</li>
 		</ol>
 	</nav>
-				<callout-box class="content danger" hidden>
+				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="polite"></p>
-				</callout-box>
+				</card-callout>
 			</header>
 			<main class="content-grid has-sidebar">
 				<div class="content"><section class="hero">
@@ -268,7 +268,7 @@
 </li>
 <li>Two <code>&lt;span&gt;</code> elements that display these values.</li>
 </ul>
-<code-block collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
@@ -290,13 +290,13 @@
 <span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>User name: &#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"user-name"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">greeting-config</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p>Now try writing a Web Component that keeps all of that in sync manually. You&#39;ll need:</p>
 <ul>
 <li>Change event listeners on both fields.</li>
@@ -306,7 +306,7 @@
 <li>Guards against inconsistent state during updates.</li>
 </ul>
 <p>It gets surprisingly tricky – even though the logic is simple.</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -348,13 +348,13 @@
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"><span style="color:#F8F8F2">customElements.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'greeting-config'</span><span style="color:#F8F8F2">, GreetingConfig)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p>This imperative approach works, but notice the problems:</p>
 <ul>
 <li><strong>Repetitive event handling</strong>: Every input needs its own listener</li>
@@ -379,7 +379,7 @@
 <li>Vue uses <code>ref()</code> and <code>computed()</code>.</li>
 </ul>
 <p>Their underlying reactivity systems track dependencies, re-run derivations, and update the DOM efficiently. Here&#39;s what the example looks like in React or Vue:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -436,14 +436,14 @@
 <span class="line"><span style="color:#F8F8F2">  )</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+</module-codeblock>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -484,13 +484,13 @@
 <span class="line"><span style="color:#F92672">	}</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p>These solutions work well and have powered countless applications. However, they come with trade-offs that may not fit every project:</p>
 <ul>
 <li><strong>Bundle size</strong>: Framework code must be downloaded and parsed before your app starts.</li>
@@ -518,7 +518,7 @@
 </ul>
 <p>That&#39;s possible – <strong>with just a few functions</strong>. We call these reactive primitives that track dependencies and trigger updates <strong>signals</strong>.</p>
 <p>Here&#39;s what a minimal signal-based reactivity system might look like:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -546,13 +546,13 @@
 <span class="line"><span style="color:#F8F8F2">  console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(userName.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">())</span></span>
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p>Notice:</p>
 <ul>
 <li>All necessary recalculations and DOM updates are performed automatically.</li>
@@ -585,7 +585,7 @@
             </h2>
 <p>The idea behind signals (a reactive primitive with <code>.get()</code> and <code>.set()</code> methods) is so powerful that it&#39;s making its way into the JavaScript language itself. The TC39 signals proposal is currently at Stage 1, meaning the syntax and API are still evolving. However, the core concepts are well-established and unlikely to change significantly.</p>
 <p>Here&#39;s a preview of what native signals might look like:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -606,13 +606,13 @@
 <span class="line"><span style="color:#88846F">// State updates</span></span>
 <span class="line"><span style="color:#F8F8F2">first.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Betty'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p>This is the future of reactivity – minimal, composable, efficient, and framework-agnostic.</p>
 <p>The native signals proposal focuses on the reactive primitives (<code>Signal.State</code> and <code>Signal.Computed</code>) but doesn&#39;t standardize effects. This is intentional – different frameworks and libraries can implement effects in ways that best fit their needs while sharing the same underlying signal system.</p>
 </section>
@@ -684,6 +684,6 @@
 					<p>© 2024 – 2025 Zeix AG</p>
 				</div>
 			</footer>
-		</client-router>
+		</context-router>
 	</body>
 </html>

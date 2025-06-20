@@ -12,8 +12,8 @@ This document tracks issues encountered while working with the UIElement library
 
 ```html
 <hello-world name="Alice">
-	<span>Alice</span>
-	<!-- Expected this -->
+  <span>Alice</span>
+  <!-- Expected this -->
 </hello-world>
 ```
 
@@ -21,8 +21,8 @@ This document tracks issues encountered while working with the UIElement library
 
 ```html
 <hello-world name="Alice">
-	<span>World</span>
-	<!-- Got this instead -->
+  <span>World</span>
+  <!-- Got this instead -->
 </hello-world>
 ```
 
@@ -51,7 +51,7 @@ This behavior is actually correct for components that want to preserve server-re
 ## Issue #2: Lazy Load Component Testing Challenges
 
 **Date**: Initial component testing setup
-**Component**: `lazy-load`
+**Component**: `module-lazy`
 **Issue**: Multiple test failures due to misunderstanding the component's URL validation and async behavior.
 
 ### Problem 1: Cross-Origin URL Rejection
@@ -75,8 +75,8 @@ else error = 'Invalid URL origin'
 
 **Root Cause**:
 
-- Library tests: Define simplified `lazy-load` component with shadow DOM
-- Component tests: Use actual `lazy-load` component from docs-src with different behavior
+- Library tests: Define simplified `module-lazy` component with shadow DOM
+- Component tests: Use actual `module-lazy` component from docs-src with different behavior
 
 **Solution**: Understand that real components may behave differently than test fixtures. Test the actual component behavior, not assumed behavior.
 
@@ -152,9 +152,9 @@ Component testing requires understanding both the test infrastructure and the ac
 - Component tests need different strategies than library tests
 - Real components have security and validation constraints
 - UIElement's scheduled effect system requires proper async timing:
-    - Use `animationFrame()` for reactive updates
-    - Use configurable delays for truly async operations
-    - Don't assume immediate DOM updates
+  - Use `animationFrame()` for reactive updates
+  - Use configurable delays for truly async operations
+  - Don't assume immediate DOM updates
 
 ### 3. Library Design Questions
 
@@ -166,8 +166,8 @@ Component testing requires understanding both the test infrastructure and the ac
 
 ## Issue #4: Test Isolation and State Persistence
 
-**Date**: Tab-group component testing
-**Component**: `tab-group`
+**Date**: module-tabgroup component testing
+**Component**: `module-tabgroup`
 **Issue**: Component state persisting between tests, causing unexpected behavior when tests share DOM elements.
 
 ### Expected Behavior
@@ -204,8 +204,8 @@ Component testing requires proper test isolation. Components maintain state and 
 
 ## Issue #5: Browser API Mocking and Clipboard Testing
 
-**Date**: Code-block component testing
-**Component**: `code-block`
+**Date**: module-codeblock component testing
+**Component**: `module-codeblock`
 **Issue**: Testing clipboard functionality requires mocking browser APIs that have restricted access or read-only properties.
 
 ### Expected Behavior
@@ -230,21 +230,21 @@ const originalWriteText = navigator.clipboard?.writeText
 
 // Replace just the method
 const setupClipboardMock = (shouldFail = false) => {
-	const mockWriteText = async text => {
-		if (shouldFail) throw new Error('Clipboard write failed')
-		mockClipboard.lastWrittenText = text
-		return Promise.resolve()
-	}
-	if (navigator.clipboard) {
-		navigator.clipboard.writeText = mockWriteText
-	}
+  const mockWriteText = async text => {
+    if (shouldFail) throw new Error('Clipboard write failed')
+    mockClipboard.lastWrittenText = text
+    return Promise.resolve()
+  }
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText = mockWriteText
+  }
 }
 
 // Restore in cleanup
 const restoreClipboard = () => {
-	if (navigator.clipboard && originalWriteText) {
-		navigator.clipboard.writeText = originalWriteText
-	}
+  if (navigator.clipboard && originalWriteText) {
+    navigator.clipboard.writeText = originalWriteText
+  }
 }
 ```
 
@@ -254,8 +254,8 @@ When testing components that use browser APIs, mock individual methods rather th
 
 ## Issue #6: Client Router Testing Challenges
 
-**Date**: Client-router component testing
-**Component**: `client-router`
+**Date**: context-router component testing
+**Component**: `context-router`
 **Issue**: Components that fundamentally change browser navigation behavior are extremely difficult to test in standard test environments.
 
 ### Expected Behavior
@@ -272,7 +272,7 @@ Should be able to test SPA navigation functionality including:
 
 ### Actual Behavior
 
-The client-router component causes the test page itself to navigate away from the test environment, breaking the test runner and causing errors like:
+The context-router component causes the test page itself to navigate away from the test environment, breaking the test runner and causing errors like:
 
 ```
 Navigation to "about:blank" is interrupted by another navigation to "chrome-error://chromewebdata/"
@@ -280,7 +280,7 @@ Navigation to "about:blank" is interrupted by another navigation to "chrome-erro
 
 ### Root Cause
 
-The client-router component:
+The context-router component:
 
 1. Listens for all link clicks in its container
 2. Intercepts same-origin navigation and prevents default
@@ -304,7 +304,7 @@ Test components without causing navigation:
 
 #### ❌ **Iframe Isolation** (Attempted)
 
-Create tests that run client-router inside iframe to contain navigation.
+Create tests that run context-router inside iframe to contain navigation.
 
 **Issues encountered**:
 
@@ -377,8 +377,8 @@ Created a unified timing helper used consistently across all component tests:
 
 ```javascript
 const tick = async () => {
-	await animationFrame() // Wait for effects to execute
-	await microtask() // Wait for DOM to reflect changes
+  await animationFrame() // Wait for effects to execute
+  await microtask() // Wait for DOM to reflect changes
 }
 ```
 
@@ -394,9 +394,9 @@ const tick = async () => {
 
 ```javascript
 const typeInInput = async (input, text) => {
-	input.value = text
-	input.dispatchEvent(new Event('input', { bubbles: true }))
-	await tick() // Ensure reactive updates complete
+  input.value = text
+  input.dispatchEvent(new Event('input', { bubbles: true }))
+  await tick() // Ensure reactive updates complete
 }
 ```
 
@@ -411,7 +411,7 @@ await tick() // Extra tick for clear button visibility updates
 
 ### Special Cases Discovered
 
-#### Input-Combobox Clear Button
+#### form-combobox Clear Button
 
 The clear button visibility depends on `el.length` property, which is updated by the `input` event but the `setProperty('hidden', () => !el.length)` reactive effect needs additional time:
 
@@ -459,20 +459,20 @@ await animationFrame() // Incomplete - doesn't wait for DOM updates
 
 ```javascript
 const tick = async () => {
-	await animationFrame() // Wait for effects to execute
-	await microtask() // Wait for DOM to reflect changes
+  await animationFrame() // Wait for effects to execute
+  await microtask() // Wait for DOM to reflect changes
 }
 
 const resetComponent = async el => {
-	// Reset component state
-	el.value = ''
-	await tick()
+  // Reset component state
+  el.value = ''
+  await tick()
 }
 
 const typeInInput = async (input, text) => {
-	input.value = text
-	input.dispatchEvent(new Event('input', { bubbles: true }))
-	await tick()
+  input.value = text
+  input.dispatchEvent(new Event('input', { bubbles: true }))
+  await tick()
 }
 ```
 
@@ -480,11 +480,11 @@ const typeInInput = async (input, text) => {
 
 ```javascript
 beforeEach(async () => {
-	const testIds = ['test1', 'test2', 'test3']
-	for (const id of testIds) {
-		const el = document.getElementById(id)
-		if (el) await resetComponent(el)
-	}
+  const testIds = ['test1', 'test2', 'test3']
+  for (const id of testIds) {
+    const el = document.getElementById(id)
+    if (el) await resetComponent(el)
+  }
 })
 ```
 
@@ -527,23 +527,23 @@ Parent components needed to access reactive signals from child components before
 ```typescript
 // Current implementation in dom.ts
 const read = <Q extends ComponentProps, K extends keyof Q>(
-	source: Component<Q> | null,
-	prop: K,
-	fallback: Q[K],
+  source: Component<Q> | null,
+  prop: K,
+  fallback: Q[K],
 ): (() => Q[K]) => {
-	if (!source) return () => fallback
-	if (!isComponent(source))
-		throw new TypeError(`Target element must be a custom element`)
+  if (!source) return () => fallback
+  if (!isComponent(source))
+    throw new TypeError(`Target element must be a custom element`)
 
-	const awaited = computed(async () => {
-		await customElements.whenDefined(source.localName)
-		return source.getSignal(prop)
-	})
+  const awaited = computed(async () => {
+    await customElements.whenDefined(source.localName)
+    return source.getSignal(prop)
+  })
 
-	return () => {
-		const value = awaited.get()
-		return value === UNSET ? fallback : (value.get() as Q[K])
-	}
+  return () => {
+    const value = awaited.get()
+    return value === UNSET ? fallback : (value.get() as Q[K])
+  }
 }
 ```
 
@@ -577,10 +577,10 @@ setAttribute('filter', radioValue)
 
 When external components need to modify child component state (like clearing an input), simply setting properties doesn't always properly sync all related state and native DOM elements.
 
-**Example issue in todo-app:**
+**Example issue in module-todo:**
 
 ```typescript
-// In todo-app form submission
+// In module-todo form submission
 input.value = '' // ❌ Only sets component property
 // Missing: length update, error validation, native input sync
 ```
@@ -596,32 +596,32 @@ Setting component properties directly bypasses the component's internal synchron
 
 ### Solution: Component Methods Pattern
 
-Added `.clear()` method to input-textbox component that handles all synchronization:
+Added `.clear()` method to form-textbox component that handles all synchronization:
 
 ```typescript
 export type InputTextboxProps = {
-	value: string
-	length: number
-	error: string
-	description: string
-	clear(): void // Method for external components
+  value: string
+  length: number
+  error: string
+  description: string
+  clear(): void // Method for external components
 }
 
 // Implementation in component setup
 el.clear = () => {
-	input.value = '' // Update native element
-	batch(() => {
-		el.value = ''
-		el.error = input.validationMessage ?? ''
-		el.length = 0
-	})
+  input.value = '' // Update native element
+  batch(() => {
+    el.value = ''
+    el.error = input.validationMessage ?? ''
+    el.length = 0
+  })
 }
 ```
 
 **Usage in external components:**
 
 ```typescript
-// In todo-app form submission
+// In module-todo form submission
 input.clear() // ✅ Properly clears everything
 ```
 
@@ -680,24 +680,21 @@ Implemented enhanced type safety with conditional types that map element types t
 ```typescript
 // Map common element types to their typical events
 type ElementEventMap<E extends Element> = E extends
-	| HTMLInputElement
-	| HTMLTextAreaElement
-	| HTMLSelectElement
-	? Pick<
-			HTMLElementEventMap,
-			'input' | 'change' | 'focus' | 'blur' | 'invalid'
-		>
-	: E extends HTMLFormElement
-		? Pick<HTMLElementEventMap, 'submit' | 'reset' | 'formdata'>
-		: E extends HTMLButtonElement
-			? Pick<HTMLElementEventMap, 'click' | 'focus' | 'blur'>
-			: // ... more element types
-				HTMLElementEventMap // fallback to all events
+  | HTMLInputElement
+  | HTMLTextAreaElement
+  | HTMLSelectElement
+  ? Pick<HTMLElementEventMap, 'input' | 'change' | 'focus' | 'blur' | 'invalid'>
+  : E extends HTMLFormElement
+    ? Pick<HTMLElementEventMap, 'submit' | 'reset' | 'formdata'>
+    : E extends HTMLButtonElement
+      ? Pick<HTMLElementEventMap, 'click' | 'focus' | 'blur'>
+      : // ... more element types
+        HTMLElementEventMap // fallback to all events
 
 // Helper types for enhanced type safety
 type ElementEventType<
-	E extends Element,
-	K extends string,
+  E extends Element,
+  K extends string,
 > = K extends keyof ElementEventMap<E> ? ElementEventMap<E>[K] : Event
 type ValidEventName<E extends Element> = keyof ElementEventMap<E> & string
 ```
@@ -735,30 +732,30 @@ const sensor = <
 ```typescript
 // ✅ Valid: input elements support 'input' events, event properly typed as InputEvent
 const inputValue = fromEvent<string, HTMLInputElement, 'input'>(
-	'input[type="text"]',
-	'input',
-	(_, source, event) => {
-		console.log('Input type:', event.inputType) // event is InputEvent
-		return source.value
-	},
-	'',
+  'input[type="text"]',
+  'input',
+  (_, source, event) => {
+    console.log('Input type:', event.inputType) // event is InputEvent
+    return source.value
+  },
+  '',
 )
 
 // ✅ Valid: form elements support 'submit' events, event properly typed as SubmitEvent
 const formData = fromEvent<FormData, HTMLFormElement, 'submit'>(
-	'form',
-	'submit',
-	(_, source, event) => {
-		event.preventDefault() // event is SubmitEvent
-		return new FormData(source)
-	},
-	new FormData(),
+  'form',
+  'submit',
+  (_, source, event) => {
+    event.preventDefault() // event is SubmitEvent
+    return new FormData(source)
+  },
+  new FormData(),
 )
 
 // ❌ TypeScript error: input elements don't typically have 'submit' events
 const invalid = fromEvent<string, HTMLInputElement, 'submit'>( // <- Error here
-	'input',
-	'submit', // ...
+  'input',
+  'submit', // ...
 )
 ```
 
@@ -766,7 +763,7 @@ const invalid = fromEvent<string, HTMLInputElement, 'submit'>( // <- Error here
 
 - **Updated**: `sensor()` and `fromEvent()` functions with enhanced type constraints
 - **Added**: Three new exported utility types: `ElementEventMap`, `ElementEventType`, `ValidEventName`
-- **Fixed**: Existing `input-textbox` component to use new type signature
+- **Fixed**: Existing `form-textbox` component to use new type signature
 - **Updated**: All TypeScript declaration files and exports
 - **Tested**: All existing tests pass without changes
 - **Created**: Comprehensive example file demonstrating type safety features
@@ -809,11 +806,11 @@ Component tests failing massively (~30 tests) due to running against outdated co
 
 ```bash
 # Before rebuild - 28+ failing tests
-npx web-test-runner "test/components/input-textbox-test.html"
+npx web-test-runner "test/components/form-textbox-test.html"
 
 # After rebuild - 28 passing, 1 unrelated failure
 bun run build:test-components
-npx web-test-runner "test/components/input-textbox-test.html"
+npx web-test-runner "test/components/form-textbox-test.html"
 ```
 
 ### Solution

@@ -545,7 +545,11 @@
 							const cleanup = show(() => false)(host, element)
 							await animationFrame()
 
-							assert.equal(element.hidden, true, 'Element should be hidden when predicate is false')
+							assert.equal(
+								element.hidden,
+								true,
+								'Element should be hidden when predicate is false',
+							)
 
 							cleanup()
 						} finally {
@@ -570,7 +574,11 @@
 							const cleanup = show(() => true)(host, element)
 							await animationFrame()
 
-							assert.equal(element.hidden, false, 'Element should be visible when predicate is true')
+							assert.equal(
+								element.hidden,
+								false,
+								'Element should be visible when predicate is true',
+							)
 
 							cleanup()
 						} finally {
@@ -578,16 +586,16 @@
 						}
 					})
 
-					it('should work with reactive signals like todo-app pattern', async function () {
+					it('should work with reactive signals like module-todo pattern', async function () {
 						// Create reactive signals for active tasks
 						const activeSignal = state([])
 
 						const singularElement = document.createElement('span')
 						singularElement.className = 'singular'
 						singularElement.textContent = 'task'
-						
+
 						const pluralElement = document.createElement('span')
-						pluralElement.className = 'plural' 
+						pluralElement.className = 'plural'
 						pluralElement.textContent = 'tasks'
 
 						const remainingElement = document.createElement('div')
@@ -604,39 +612,97 @@
 
 						try {
 							// Create a mock host component
-							const host = { getSignal: () => ({ get: () => true }) }
+							const host = {
+								getSignal: () => ({ get: () => true }),
+							}
 
-							// Apply show effects like in todo-app using reactive signals
-							const cleanup1 = show(() => activeSignal.get().length === 1)(host, singularElement)
-							const cleanup2 = show(() => activeSignal.get().length > 1)(host, pluralElement)  
-							const cleanup3 = show(() => !!activeSignal.get().length)(host, remainingElement)
-							const cleanup4 = show(() => !activeSignal.get().length)(host, allDoneElement)
+							// Apply show effects like in module-todo using reactive signals
+							const cleanup1 = show(
+								() => activeSignal.get().length === 1,
+							)(host, singularElement)
+							const cleanup2 = show(
+								() => activeSignal.get().length > 1,
+							)(host, pluralElement)
+							const cleanup3 = show(
+								() => !!activeSignal.get().length,
+							)(host, remainingElement)
+							const cleanup4 = show(
+								() => !activeSignal.get().length,
+							)(host, allDoneElement)
 
 							await animationFrame()
 
 							// Initially no active tasks
-							assert.equal(singularElement.hidden, true, 'Singular should be hidden with 0 tasks')
-							assert.equal(pluralElement.hidden, true, 'Plural should be hidden with 0 tasks')
-							assert.equal(remainingElement.hidden, true, 'Remaining should be hidden with 0 tasks')
-							assert.equal(allDoneElement.hidden, false, 'All done should be visible with 0 tasks')
+							assert.equal(
+								singularElement.hidden,
+								true,
+								'Singular should be hidden with 0 tasks',
+							)
+							assert.equal(
+								pluralElement.hidden,
+								true,
+								'Plural should be hidden with 0 tasks',
+							)
+							assert.equal(
+								remainingElement.hidden,
+								true,
+								'Remaining should be hidden with 0 tasks',
+							)
+							assert.equal(
+								allDoneElement.hidden,
+								false,
+								'All done should be visible with 0 tasks',
+							)
 
 							// Add one task
 							activeSignal.set(['task1'])
 							await animationFrame()
 
-							assert.equal(singularElement.hidden, false, 'Singular should be visible with 1 task')
-							assert.equal(pluralElement.hidden, true, 'Plural should be hidden with 1 task')
-							assert.equal(remainingElement.hidden, false, 'Remaining should be visible with 1 task')
-							assert.equal(allDoneElement.hidden, true, 'All done should be hidden with 1 task')
+							assert.equal(
+								singularElement.hidden,
+								false,
+								'Singular should be visible with 1 task',
+							)
+							assert.equal(
+								pluralElement.hidden,
+								true,
+								'Plural should be hidden with 1 task',
+							)
+							assert.equal(
+								remainingElement.hidden,
+								false,
+								'Remaining should be visible with 1 task',
+							)
+							assert.equal(
+								allDoneElement.hidden,
+								true,
+								'All done should be hidden with 1 task',
+							)
 
 							// Add more tasks
 							activeSignal.set(['task1', 'task2', 'task3'])
 							await animationFrame()
 
-							assert.equal(singularElement.hidden, true, 'Singular should be hidden with 3 tasks')
-							assert.equal(pluralElement.hidden, false, 'Plural should be visible with 3 tasks')
-							assert.equal(remainingElement.hidden, false, 'Remaining should be visible with 3 tasks')
-							assert.equal(allDoneElement.hidden, true, 'All done should be hidden with 3 tasks')
+							assert.equal(
+								singularElement.hidden,
+								true,
+								'Singular should be hidden with 3 tasks',
+							)
+							assert.equal(
+								pluralElement.hidden,
+								false,
+								'Plural should be visible with 3 tasks',
+							)
+							assert.equal(
+								remainingElement.hidden,
+								false,
+								'Remaining should be visible with 3 tasks',
+							)
+							assert.equal(
+								allDoneElement.hidden,
+								true,
+								'All done should be hidden with 3 tasks',
+							)
 
 							cleanup1()
 							cleanup2()
@@ -655,10 +721,11 @@
 						const visibilitySignal = state(true)
 						const component = {
 							isVisible: true,
-							getSignal: function(prop) {
-								if (prop === 'isVisible') return visibilitySignal
+							getSignal: function (prop) {
+								if (prop === 'isVisible')
+									return visibilitySignal
 								return { get: () => this[prop] }
-							}
+							},
 						}
 
 						const element = document.createElement('div')
@@ -666,16 +733,27 @@
 
 						try {
 							// Use property name string
-							const cleanup = show('isVisible')(component, element)
+							const cleanup = show('isVisible')(
+								component,
+								element,
+							)
 							await animationFrame()
 
-							assert.equal(element.hidden, false, 'Element should be visible when isVisible is true')
+							assert.equal(
+								element.hidden,
+								false,
+								'Element should be visible when isVisible is true',
+							)
 
 							// Change signal value (not direct property)
 							visibilitySignal.set(false)
 							await animationFrame()
 
-							assert.equal(element.hidden, true, 'Element should be hidden when isVisible is false')
+							assert.equal(
+								element.hidden,
+								true,
+								'Element should be hidden when isVisible is false',
+							)
 
 							cleanup()
 						} finally {
@@ -695,19 +773,31 @@
 							const cleanup = show(signal)(host, element)
 							await animationFrame()
 
-							assert.equal(element.hidden, false, 'Element should be visible when signal is true')
+							assert.equal(
+								element.hidden,
+								false,
+								'Element should be visible when signal is true',
+							)
 
 							// Change signal value
 							signal.set(false)
 							await animationFrame()
 
-							assert.equal(element.hidden, true, 'Element should be hidden when signal is false')
+							assert.equal(
+								element.hidden,
+								true,
+								'Element should be hidden when signal is false',
+							)
 
 							// Change back
 							signal.set(true)
 							await animationFrame()
 
-							assert.equal(element.hidden, false, 'Element should be visible again when signal is true')
+							assert.equal(
+								element.hidden,
+								false,
+								'Element should be visible again when signal is true',
+							)
 
 							cleanup()
 						} finally {
@@ -715,7 +805,7 @@
 						}
 					})
 
-					it('should handle clear button pattern from input-textbox', async function () {
+					it('should handle clear button pattern from form-textbox', async function () {
 						// Create reactive signal for input length
 						const lengthSignal = state(0)
 
@@ -727,26 +817,43 @@
 
 						try {
 							// Create a mock host component
-							const host = { getSignal: () => ({ get: () => true }) }
+							const host = {
+								getSignal: () => ({ get: () => true }),
+							}
 
-							// Apply show effect like in input-textbox using reactive signal
-							const cleanup = show(() => !!lengthSignal.get())(host, clearButton)
+							// Apply show effect like in form-textbox using reactive signal
+							const cleanup = show(() => !!lengthSignal.get())(
+								host,
+								clearButton,
+							)
 							await animationFrame()
 
 							// Initially no input, button should be hidden
-							assert.equal(clearButton.hidden, true, 'Clear button should be hidden when input is empty')
+							assert.equal(
+								clearButton.hidden,
+								true,
+								'Clear button should be hidden when input is empty',
+							)
 
 							// Type some text
 							lengthSignal.set(5)
 							await animationFrame()
 
-							assert.equal(clearButton.hidden, false, 'Clear button should be visible when input has text')
+							assert.equal(
+								clearButton.hidden,
+								false,
+								'Clear button should be visible when input has text',
+							)
 
 							// Clear input
 							lengthSignal.set(0)
 							await animationFrame()
 
-							assert.equal(clearButton.hidden, true, 'Clear button should be hidden when input is cleared')
+							assert.equal(
+								clearButton.hidden,
+								true,
+								'Clear button should be hidden when input is cleared',
+							)
 
 							cleanup()
 						} finally {
@@ -761,20 +868,30 @@
 
 						try {
 							// Create a mock host component
-							const host = { getSignal: () => ({ get: () => true }) }
+							const host = {
+								getSignal: () => ({ get: () => true }),
+							}
 
 							// Test RESET - should revert to original DOM value
 							const cleanup1 = show(() => RESET)(host, element)
 							await animationFrame()
 
-							assert.equal(element.hidden, true, 'RESET should maintain original hidden state')
+							assert.equal(
+								element.hidden,
+								true,
+								'RESET should maintain original hidden state',
+							)
 							cleanup1()
 
 							// Test UNSET - should delete/fallback
 							const cleanup2 = show(() => UNSET)(host, element)
 							await animationFrame()
 
-							assert.equal(element.hidden, true, 'UNSET should fallback to original hidden state')
+							assert.equal(
+								element.hidden,
+								true,
+								'UNSET should fallback to original hidden state',
+							)
 							cleanup2()
 						} finally {
 							element.remove()
@@ -1262,8 +1379,8 @@
 								update: (el, value) => {
 									// This should throw due to safeSetAttribute
 									if (
-										value.includes('data:') &&
-										value.includes('script')
+										value.includes('data:')
+										&& value.includes('script')
 									)
 										throw new Error(
 											`Unsafe URL for src: ${value}`,

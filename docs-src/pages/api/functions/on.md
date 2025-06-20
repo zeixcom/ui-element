@@ -8,7 +8,7 @@
 
 > **on**\<`E`, `K`\>(`type`, `listener`, `options`): \<`P`\>(`host`, `target`) => [`Cleanup`](../type-aliases/Cleanup.md)
 
-Defined in: [src/core/dom.ts:298](https://github.com/zeixcom/ui-element/blob/fdee81c49c23952a5a7a3dbafc3562620a973123/src/core/dom.ts#L298)
+Defined in: [src/core/dom.ts:298](https://github.com/zeixcom/ui-element/blob/019cf77c80beb600bfb17e452913f013b9d638c1/src/core/dom.ts#L298)
 
 Attach an event listener to an element
 

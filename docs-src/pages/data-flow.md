@@ -34,14 +34,14 @@ So `ProductCatalog` **coordinates the data flow between them**.
 
 The **parent component (`ProductCatalog`) knows about its children**, meaning it can **retrieve state from and pass state to** them.
 
-First, we need to observe the quantities of all `SpinButton` components. For this, we create a signal of all children matching the `spin-button` selector:
+First, we need to observe the quantities of all `SpinButton` components. For this, we create a signal of all children matching the `form-spinbutton` selector:
 
 ```js
 component(
   'product-catalog',
   {
     total: el => () =>
-      selection(el, 'spin-button')
+      selection(el, 'form-spinbutton')
         .get()
         .reduce((sum, item) => sum + item.value, 0),
   },
@@ -58,13 +58,13 @@ component(
   'product-catalog',
   {
     total: el => () =>
-      selection(el, 'spin-button')
+      selection(el, 'form-spinbutton')
         .get()
         .reduce((sum, item) => sum + item.value, 0),
   },
   (el, { first }) => [
     first(
-      'input-button',
+      'basic-button',
       pass({
         badge: () => (el.total > 0 ? String(el.total) : ''),
         disabled: () => !el.total,
@@ -76,7 +76,7 @@ component(
 
 Allright, that's it!
 
-- ✅ Whenever one of the `value` signals of a `<spin-button>` updates, the total in the badge of `<input-button>` automatically updates.
+- ✅ Whenever one of the `value` signals of a `<form-spinbutton>` updates, the total in the badge of `<basic-button>` automatically updates.
 - ✅ No need for event listeners or manual updates!
 
 ### Child Component: InputButton
@@ -85,7 +85,7 @@ The `InputButton` component **displays a badge when needed** – it does not kno
 
 ```js
 component(
-  'input-button',
+  'basic-button',
   {
     badge: asString(RESET),
   },
@@ -102,7 +102,7 @@ The `SpinButton` component reacts to user interactions and exposes a reactive pr
 
 ```js
 component(
-  'spin-button',
+  'form-spinbutton',
   {
     value: asInteger(),
   },
@@ -155,74 +155,74 @@ Here's how everything comes together:
 
 **No custom events are needed – state flows naturally!**
 
-<component-demo>
+<module-demo>
 	<div class="preview">
 		<product-catalog>
 			<header>
 				<p>Shop</p>
-				<input-button disabled>
+				<basic-button disabled>
 					<button type="button" disabled>
 						<span class="label">🛒 Shopping Cart</span>
 						<span class="badge"></span>
 					</button>
-				</input-button>
+				</basic-button>
 			</header>
 			<ul>
 				<li>
 					<p>Product 1</p>
-					<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
+					<form-spinbutton value="0" zero-label="Add to Cart" increment-label="Increment">
 						<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
 						<p class="value" hidden>0</p>
 						<button type="button" class="increment">Add to Cart</button>
-					</spin-button>
+					</form-spinbutton>
 				</li>
 				<li>
 					<p>Product 2</p>
-					<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
+					<form-spinbutton value="0" zero-label="Add to Cart" increment-label="Increment">
 						<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
 						<p class="value" hidden>0</p>
 						<button type="button" class="increment">Add to Cart</button>
-					</spin-button>
+					</form-spinbutton>
 				</li>
 				<li>
 					<p>Product 3</p>
-					<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
+					<form-spinbutton value="0" zero-label="Add to Cart" increment-label="Increment">
 						<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
 						<p class="value" hidden>0</p>
 						<button type="button" class="increment">Add to Cart</button>
-					</spin-button>
+					</form-spinbutton>
 				</li>
 			</ul>
 		</product-catalog>
 	</div>
 	<details>
 		<summary>ProductCatalog Source Code</summary>
-		<lazy-load src="./examples/product-catalog.html">
-			<callout-box>
+		<module-lazy src="./examples/product-catalog.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
 	<details>
 		<summary>InputButton Source Code</summary>
-		<lazy-load src="./examples/input-button.html">
-			<callout-box>
+		<module-lazy src="./examples/basic-button.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
 	<details>
 		<summary>SpinButton Source Code</summary>
-		<lazy-load src="./examples/spin-button.html">
-			<callout-box>
+		<module-lazy src="./examples/form-spinbutton.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
-</component-demo>
+</module-demo>
 
 </section>
 

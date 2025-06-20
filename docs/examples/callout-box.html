@@ -1,52 +1,79 @@
-
-<tab-group>
+<module-tabgroup>
 	<div role="tablist">
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_callout-box.html"
-				aria-controls="panel_callout-box.html"
-				aria-selected="false"
-				tabindex="-1"
-			>HTML</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_callout-box.css"
-				aria-controls="panel_callout-box.css"
-				aria-selected="true"
-				tabindex="0"
-			>CSS</button>
-	</div>
-	
-<div role="tabpanel" id="panel_callout-box.html" aria-labelledby="trigger_callout-box.html" hidden>
-	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-		<p class="meta">
-			<span class="file">callout-box.html</span>
-			<span class="language">html</span>
-		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">callout-box</span><span style="color:#F8F8F2">>This is an informational message.&#x3C;/</span><span style="color:#F92672">callout-box</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">callout-box</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"tip"</span><span style="color:#F8F8F2">>Remember to hydrate while coding!&#x3C;/</span><span style="color:#F92672">callout-box</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">callout-box</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"caution"</span><span style="color:#F8F8F2">>Be careful with this operation.&#x3C;/</span><span style="color:#F92672">callout-box</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">callout-box</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"danger"</span><span style="color:#F8F8F2">>This action is irreversible!&#x3C;/</span><span style="color:#F92672">callout-box</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">callout-box</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"note"</span><span style="color:#F8F8F2">>This is just a side note.&#x3C;/</span><span style="color:#F92672">callout-box</span><span style="color:#F8F8F2">></span></span></code></pre>
-		<input-button class="copy">
-			<button type="button" class="secondary small">
-				<span class="label">Copy</span>
-			</button>
-		</input-button>
-	</code-block>
-</div>
+		<button
+			type="button"
+			role="tab"
+			id="trigger_card-callout.html"
+			aria-controls="panel_card-callout.html"
+			aria-selected="false"
+			tabindex="-1"
+		>
+			HTML
+		</button>
 
-<div role="tabpanel" id="panel_callout-box.css" aria-labelledby="trigger_callout-box.css">
-	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-		<p class="meta">
-			<span class="file">callout-box.css</span>
-			<span class="language">css</span>
-		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">callout-box</span><span style="color:#F8F8F2"> {</span></span>
+		<button
+			type="button"
+			role="tab"
+			id="trigger_card-callout.css"
+			aria-controls="panel_card-callout.css"
+			aria-selected="true"
+			tabindex="0"
+		>
+			CSS
+		</button>
+	</div>
+
+	<div
+		role="tabpanel"
+		id="panel_card-callout.html"
+		aria-labelledby="trigger_card-callout.html"
+		hidden
+	>
+		<module-codeblock
+			language="html"
+			copy-success="Copied!"
+			copy-error="Error trying to copy to clipboard!"
+		>
+			<p class="meta">
+				<span class="file">card-callout.html</span>
+				<span class="language">html</span>
+			</p>
+			<pre
+				class="shiki monokai"
+				style="background-color: #272822; color: #f8f8f2"
+				tabindex="0"
+			><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">card-callout</span><span style="color:#F8F8F2">>This is an informational message.&#x3C;/</span><span style="color:#F92672">card-callout</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">card-callout</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"tip"</span><span style="color:#F8F8F2">>Remember to hydrate while coding!&#x3C;/</span><span style="color:#F92672">card-callout</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">card-callout</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"caution"</span><span style="color:#F8F8F2">>Be careful with this operation.&#x3C;/</span><span style="color:#F92672">card-callout</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">card-callout</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"danger"</span><span style="color:#F8F8F2">>This action is irreversible!&#x3C;/</span><span style="color:#F92672">card-callout</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">card-callout</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"note"</span><span style="color:#F8F8F2">>This is just a side note.&#x3C;/</span><span style="color:#F92672">card-callout</span><span style="color:#F8F8F2">></span></span></code></pre>
+			<basic-button class="copy">
+				<button type="button" class="secondary small">
+					<span class="label">Copy</span>
+				</button>
+			</basic-button>
+		</module-codeblock>
+	</div>
+
+	<div
+		role="tabpanel"
+		id="panel_card-callout.css"
+		aria-labelledby="trigger_card-callout.css"
+	>
+		<module-codeblock
+			language="css"
+			copy-success="Copied!"
+			copy-error="Error trying to copy to clipboard!"
+		>
+			<p class="meta">
+				<span class="file">card-callout.css</span>
+				<span class="language">css</span>
+			</p>
+			<pre
+				class="shiki monokai"
+				style="background-color: #272822; color: #f8f8f2"
+				tabindex="0"
+			><code><span class="line"><span style="color:#F92672">card-callout</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">block</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	position</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">relative</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	padding</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xl);</span></span>
@@ -105,7 +132,7 @@
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">@media</span><span style="color:#F8F8F2"> (prefers-color-scheme: dark) {</span></span>
-<span class="line"><span style="color:#F92672">	callout-box</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">	card-callout</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		background</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">#18338f</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		border-color</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">#325df1</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"></span>
@@ -131,11 +158,11 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
-			<button type="button" class="secondary small">
-				<span class="label">Copy</span>
-			</button>
-		</input-button>
-	</code-block>
-</div>
-</tab-group>
+			<basic-button class="copy">
+				<button type="button" class="secondary small">
+					<span class="label">Copy</span>
+				</button>
+			</basic-button>
+		</module-codeblock>
+	</div>
+</module-tabgroup>

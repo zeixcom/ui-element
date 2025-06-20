@@ -142,7 +142,7 @@
 		</style>
 	</head>
 	<body class="section-">
-		<client-router>
+		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
 					UIElement Docs <small>Version 0.13.1</small>
@@ -224,9 +224,9 @@
 				</li>
 		</ol>
 	</nav>
-				<callout-box class="content danger" hidden>
+				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="polite"></p>
-				</callout-box>
+				</card-callout>
 			</header>
 			<main class="content-grid ">
 				<div class="content"><section class="hero">
@@ -274,8 +274,8 @@
                 Parent Component: ProductCatalog
             </h3>
 <p>The <strong>parent component (<code>ProductCatalog</code>) knows about its children</strong>, meaning it can <strong>retrieve state from and pass state to</strong> them.</p>
-<p>First, we need to observe the quantities of all <code>SpinButton</code> components. For this, we create a signal of all children matching the <code>spin-button</code> selector:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<p>First, we need to observe the quantities of all <code>SpinButton</code> components. For this, we create a signal of all children matching the <code>form-spinbutton</code> selector:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -284,23 +284,23 @@
 <span class="line"><span style="color:#E6DB74">  'product-catalog'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  {</span></span>
 <span class="line"><span style="color:#A6E22E">    total</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span></span>
-<span class="line"><span style="color:#A6E22E">      selection</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">'spin-button'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#A6E22E">      selection</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">'form-spinbutton'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">        .</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">        .</span><span style="color:#A6E22E">reduce</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F;font-style:italic">sum</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">item</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> sum </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> item.value, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">  () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p>The <code>selection()</code> function returns a signal that emits an array of all matching elements. In contrast to a static <code>querySelectorAll()</code> call, the <code>selection()</code> function is reactive and updates whenever new elements are added or removed from the DOM.</p>
 <p>Then, we need to calculate the total of all product quantities and pass it on to the <code>InputButton</code> component. In UIElement we use the <code>pass()</code> function to share state across components:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -309,13 +309,13 @@
 <span class="line"><span style="color:#E6DB74">  'product-catalog'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  {</span></span>
 <span class="line"><span style="color:#A6E22E">    total</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span></span>
-<span class="line"><span style="color:#A6E22E">      selection</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">'spin-button'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#A6E22E">      selection</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">'form-spinbutton'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">        .</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">        .</span><span style="color:#A6E22E">reduce</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F;font-style:italic">sum</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">item</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> sum </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> item.value, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">      'input-button'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">      'basic-button'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">      pass</span><span style="color:#F8F8F2">({</span></span>
 <span class="line"><span style="color:#A6E22E">        badge</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (el.total </span><span style="color:#F92672">></span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> ?</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(el.total) </span><span style="color:#F92672">:</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#A6E22E">        disabled</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.total,</span></span>
@@ -324,16 +324,16 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p>Allright, that&#39;s it!</p>
 <ul>
-<li>✅ Whenever one of the <code>value</code> signals of a <code>&lt;spin-button&gt;</code> updates, the total in the badge of <code>&lt;input-button&gt;</code> automatically updates.</li>
+<li>✅ Whenever one of the <code>value</code> signals of a <code>&lt;form-spinbutton&gt;</code> updates, the total in the badge of <code>&lt;basic-button&gt;</code> automatically updates.</li>
 <li>✅ No need for event listeners or manual updates!</li>
 </ul>
 <h3 id="child-component-inputbutton">
@@ -343,26 +343,26 @@
                 Child Component: InputButton
             </h3>
 <p>The <code>InputButton</code> component <strong>displays a badge when needed</strong> – it does not know about any other component nor track state itself. It just exposes a reactive property <code>badge</code> of type <code>string</code> and has an effect to react to state changes that updates the DOM subtree.</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">  'input-button'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">  'basic-button'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  {</span></span>
 <span class="line"><span style="color:#F8F8F2">    badge: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(RESET),</span></span>
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.badge'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'badge'</span><span style="color:#F8F8F2">))],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <ul>
 <li>✅ Whenever the <code>badge</code> property is updated by a parent component, the badge text updates.</li>
 <li>✅ If <code>badge</code> is an empty string, the badge indicator is hidden (via CSS).</li>
@@ -374,13 +374,13 @@
                 ChildComponent: SpinButton
             </h3>
 <p>The <code>SpinButton</code> component reacts to user interactions and exposes a reactive property <code>value</code> of type <code>number</code>. It updates its own internal DOM subtree, but doesn&#39;t know about any other component nor where the value is used.</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">  'spin-button'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">  'form-spinbutton'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  {</span></span>
 <span class="line"><span style="color:#F8F8F2">    value: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(),</span></span>
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
@@ -419,13 +419,13 @@
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <ul>
 <li>✅ Whenever the user clicks a button or presses a handled key, the value property is updated.</li>
 <li>✅ The component sets hidden and disabled states of buttons and updates the text of the <code>.value</code> element.</li>
@@ -443,74 +443,74 @@
 <li>The <code>InputButton</code> displays the total if it&#39;s greater than zero.</li>
 </ul>
 <p><strong>No custom events are needed – state flows naturally!</strong></p>
-<component-demo>
+<module-demo>
 	<div class="preview">
 		<product-catalog>
 			<header>
 				<p>Shop</p>
-				<input-button disabled>
+				<basic-button disabled>
 					<button type="button" disabled>
 						<span class="label">🛒 Shopping Cart</span>
 						<span class="badge"></span>
 					</button>
-				</input-button>
+				</basic-button>
 			</header>
 			<ul>
 				<li>
 					<p>Product 1</p>
-					<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
+					<form-spinbutton value="0" zero-label="Add to Cart" increment-label="Increment">
 						<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
 						<p class="value" hidden>0</p>
 						<button type="button" class="increment">Add to Cart</button>
-					</spin-button>
+					</form-spinbutton>
 				</li>
 				<li>
 					<p>Product 2</p>
-					<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
+					<form-spinbutton value="0" zero-label="Add to Cart" increment-label="Increment">
 						<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
 						<p class="value" hidden>0</p>
 						<button type="button" class="increment">Add to Cart</button>
-					</spin-button>
+					</form-spinbutton>
 				</li>
 				<li>
 					<p>Product 3</p>
-					<spin-button value="0" zero-label="Add to Cart" increment-label="Increment">
+					<form-spinbutton value="0" zero-label="Add to Cart" increment-label="Increment">
 						<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
 						<p class="value" hidden>0</p>
 						<button type="button" class="increment">Add to Cart</button>
-					</spin-button>
+					</form-spinbutton>
 				</li>
 			</ul>
 		</product-catalog>
 	</div>
 	<details>
 		<summary>ProductCatalog Source Code</summary>
-		<lazy-load src="./examples/product-catalog.html">
-			<callout-box>
+		<module-lazy src="./examples/product-catalog.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
 	<details>
 		<summary>InputButton Source Code</summary>
-		<lazy-load src="./examples/input-button.html">
-			<callout-box>
+		<module-lazy src="./examples/basic-button.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
 	<details>
 		<summary>SpinButton Source Code</summary>
-		<lazy-load src="./examples/spin-button.html">
-			<callout-box>
+		<module-lazy src="./examples/form-spinbutton.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
-</component-demo>
+</module-demo>
 
 </section>
 
@@ -563,6 +563,6 @@
 					<p>© 2024 – 2025 Zeix AG</p>
 				</div>
 			</footer>
-		</client-router>
+		</context-router>
 	</body>
 </html>

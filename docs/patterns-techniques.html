@@ -142,7 +142,7 @@
 		</style>
 	</head>
 	<body class="section-">
-		<client-router>
+		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
 					UIElement Docs <small>Version 0.13.1</small>
@@ -224,9 +224,9 @@
 				</li>
 		</ol>
 	</nav>
-				<callout-box class="content danger" hidden>
+				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="polite"></p>
-				</callout-box>
+				</card-callout>
 			</header>
 			<main class="content-grid ">
 				<div class="content"><section class="hero">
@@ -255,7 +255,7 @@
                 Composite Components
             </h3>
 <p>Build complex UIs by composing multiple focused components:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -326,13 +326,13 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="state-machine-pattern">
                 <a name="state-machine-pattern" class="anchor" href="#state-machine-pattern">
 	                <span class="permalink">🔗</span>
@@ -340,7 +340,7 @@
                 State Machine Pattern
             </h3>
 <p>Implement complex component states using local signals:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -445,13 +445,13 @@
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="plugin-architecture">
                 <a name="plugin-architecture" class="anchor" href="#plugin-architecture">
 	                <span class="permalink">🔗</span>
@@ -459,7 +459,7 @@
                 Plugin Architecture
             </h3>
 <p>Create extensible components using composition:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -525,13 +525,13 @@
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 </section>
 
 <section>
@@ -549,7 +549,7 @@
                 Understanding UIElement&#39;s Timing
             </h3>
 <p>UIElement uses a scheduled effect system that impacts how you write tests:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -574,13 +574,13 @@
 <span class="line"><span style="color:#A6E22E">  expect</span><span style="color:#F8F8F2">(component.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">).textContent).</span><span style="color:#A6E22E">toBe</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'5'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="component-state-isolation">
                 <a name="component-state-isolation" class="anchor" href="#component-state-isolation">
 	                <span class="permalink">🔗</span>
@@ -588,7 +588,7 @@
                 Component State Isolation
             </h3>
 <p>Components maintain state between test runs, which can cause interference:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -596,12 +596,12 @@
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// ❌ Tests can interfere with each other</span></span>
 <span class="line"><span style="color:#A6E22E">describe</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Counter Component'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#A6E22E">  it</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'starts at zero'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> counter </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-counter'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> counter </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'basic-counter'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#A6E22E">    expect</span><span style="color:#F8F8F2">(counter.count).</span><span style="color:#A6E22E">toBe</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">  })</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#A6E22E">  it</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'increments when clicked'</span><span style="color:#F8F8F2">, </span><span style="color:#F92672">async</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> counter </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-counter'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> counter </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'basic-counter'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#88846F">    // This test might start with count=1 from previous test!</span></span>
 <span class="line"><span style="color:#F8F8F2">    counter.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'button'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">click</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F92672">    await</span><span style="color:#A6E22E"> animationFrame</span><span style="color:#F8F8F2">()</span></span>
@@ -616,12 +616,12 @@
 <span class="line"><span style="color:#A6E22E">  beforeEach</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#88846F">    // Create fresh component for each test</span></span>
 <span class="line"><span style="color:#F8F8F2">    document.body.innerHTML </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> `</span></span>
-<span class="line"><span style="color:#E6DB74">            &#x3C;my-counter data-test="</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">Date.</span><span style="color:#A6E22E">now</span><span style="color:#F8F8F2">()</span><span style="color:#F92672">}</span><span style="color:#E6DB74">"></span></span>
+<span class="line"><span style="color:#E6DB74">            &#x3C;basic-counter data-test="</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">Date.</span><span style="color:#A6E22E">now</span><span style="color:#F8F8F2">()</span><span style="color:#F92672">}</span><span style="color:#E6DB74">"></span></span>
 <span class="line"><span style="color:#E6DB74">                &#x3C;span class="count">0&#x3C;/span></span></span>
 <span class="line"><span style="color:#E6DB74">                &#x3C;button>+&#x3C;/button></span></span>
-<span class="line"><span style="color:#E6DB74">            &#x3C;/my-counter></span></span>
+<span class="line"><span style="color:#E6DB74">            &#x3C;/basic-counter></span></span>
 <span class="line"><span style="color:#E6DB74">        `</span></span>
-<span class="line"><span style="color:#F8F8F2">    counter </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-counter'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">    counter </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'basic-counter'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">  })</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#A6E22E">  afterEach</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
@@ -644,13 +644,13 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> animationFrame</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span></span>
 <span class="line"><span style="color:#F92672">  new</span><span style="color:#66D9EF;font-style:italic"> Promise</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">resolve</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> requestAnimationFrame</span><span style="color:#F8F8F2">(resolve))</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="testing-async-components">
                 <a name="testing-async-components" class="anchor" href="#testing-async-components">
 	                <span class="permalink">🔗</span>
@@ -658,7 +658,7 @@
                 Testing Async Components
             </h3>
 <p>Components with async behavior need different timing strategies:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -722,13 +722,13 @@
 <span class="line"><span style="color:#A6E22E">  expect</span><span style="color:#F8F8F2">(loader.loading).</span><span style="color:#A6E22E">toBe</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">false</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="mocking-browser-apis">
                 <a name="mocking-browser-apis" class="anchor" href="#mocking-browser-apis">
 	                <span class="permalink">🔗</span>
@@ -736,7 +736,7 @@
                 Mocking Browser APIs
             </h3>
 <p>Many components interact with browser APIs that need careful mocking:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -814,13 +814,13 @@
 <span class="line"><span style="color:#F8F8F2">  })</span></span>
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 </section>
 
 <section>
@@ -838,7 +838,7 @@
                 Efficient List Rendering
             </h3>
 <p>Handle large lists with virtual scrolling and efficient updates:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -898,13 +898,13 @@
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="debounced-updates">
                 <a name="debounced-updates" class="anchor" href="#debounced-updates">
 	                <span class="permalink">🔗</span>
@@ -912,7 +912,7 @@
                 Debounced Updates
             </h3>
 <p>Optimize expensive operations with debouncing:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -964,13 +964,13 @@
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 </section>
 
 <section>
@@ -988,7 +988,7 @@
                 Graceful Error Boundaries
             </h3>
 <p>Implement error handling patterns that don&#39;t break the entire application:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -1046,13 +1046,13 @@
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="development-vs-production-patterns">
                 <a name="development-vs-production-patterns" class="anchor" href="#development-vs-production-patterns">
 	                <span class="permalink">🔗</span>
@@ -1060,7 +1060,7 @@
                 Development vs Production Patterns
             </h3>
 <p>Create components that behave differently in development:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -1114,13 +1114,13 @@
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 </section>
 
 <section>
@@ -1138,7 +1138,7 @@
                 Working with CSS Frameworks
             </h3>
 <p>Integrate UIElement components with popular CSS frameworks:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -1222,13 +1222,13 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="server-side-rendering-ssr">
                 <a name="server-side-rendering-ssr" class="anchor" href="#server-side-rendering-ssr">
 	                <span class="permalink">🔗</span>
@@ -1236,7 +1236,7 @@
                 Server-Side Rendering (SSR)
             </h3>
 <p>Design components that work well with SSR:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -1272,13 +1272,13 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 </section>
 
 <section>
@@ -1375,6 +1375,6 @@
 					<p>© 2024 – 2025 Zeix AG</p>
 				</div>
 			</footer>
-		</client-router>
+		</context-router>
 	</body>
 </html>

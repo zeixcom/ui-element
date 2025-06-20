@@ -126,7 +126,7 @@ input-field {
 		height: 100%;
 	}
 
-	::-webkit-inner-spin-button {
+	::-webkit-inner-form-spinbutton {
 		appearance: none;
 	}
 

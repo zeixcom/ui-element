@@ -142,7 +142,7 @@
 		</style>
 	</head>
 	<body class="section-">
-		<client-router>
+		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
 					UIElement Docs <small>Version 0.13.1</small>
@@ -224,9 +224,9 @@
 				</li>
 		</ol>
 	</nav>
-				<callout-box class="content danger" hidden>
+				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="polite"></p>
-				</callout-box>
+				</card-callout>
 			</header>
 			<main class="content-grid ">
 				<div class="content"><section class="hero">
@@ -255,7 +255,7 @@
 <li>Create reusable component patterns without complex abstractions</li>
 <li>Progressively enhance server-rendered content with client-side interactivity</li>
 </ul>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -265,13 +265,13 @@
 <span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
 <span class="line"><span style="color:#F8F8F2">])</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p>UIElement augments what the platform already provides. It leverages the Web Components standard while adding just enough convenience functions to make reactive UI behaviors easy to implement.</p>
 </section>
 
@@ -290,7 +290,7 @@
                 HTML-First Approach
             </h3>
 <p>UIElement assumes you start with semantic HTML and want to enhance it with behavior:</p>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
@@ -299,13 +299,13 @@
 <span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>Alice&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p>This means better SEO, faster initial page loads, and progressive enhancement that works even when JavaScript fails.</p>
 <h3 id="reactive-by-design">
                 <a name="reactive-by-design" class="anchor" href="#reactive-by-design">
@@ -363,6 +363,6 @@
 					<p>© 2024 – 2025 Zeix AG</p>
 				</div>
 			</footer>
-		</client-router>
+		</context-router>
 	</body>
 </html>

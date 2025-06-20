@@ -15,7 +15,7 @@
 				overflow: hidden;
 			}
 
-			my-counter {
+			basic-counter {
 				display: flex;
 				flex-direction: row;
 				gap: 1rem;
@@ -25,7 +25,7 @@
 				}
 			}
 
-			tab-group > [role='tablist'] {
+			module-tabgroup > [role='tablist'] {
 				display: flex;
 				gap: 0.2rem;
 				padding: 0;
@@ -35,7 +35,7 @@
 				}
 			}
 
-			lazy-load .error {
+			module-lazy .error {
 				color: red;
 			}
 
@@ -84,7 +84,7 @@
 			<h1>Hello from Server</h1>
 			<p>Number of unread messages: <span></span></p>
 		</updating-component>
-		<my-counter value="42">
+		<basic-counter value="42">
 			<p>Count: <span class="value">42</span></p>
 			<p>Parity: <span class="parity">even</span></p>
 			<p>Double: <span class="double">84</span></p>
@@ -92,17 +92,17 @@
 				<button class="decrement">–</button>
 				<button class="increment">+</button>
 			</div>
-		</my-counter>
+		</basic-counter>
 		<greeting-configurator>
-			<input-textbox class="first">
+			<form-textbox class="first">
 				<input type="text" name="first" value="Jane" />
-			</input-textbox>
-			<input-textbox class="last">
+			</form-textbox>
+			<form-textbox class="last">
 				<input type="text" name="last" value="Doe" />
-			</input-textbox>
-			<input-checkbox>
+			</form-textbox>
+			<form-checkbox>
 				<input type="checkbox" name="fullname" />
-			</input-checkbox>
+			</form-checkbox>
 			<hello-world>
 				<p>
 					<span class="greeting">Hello</span>
@@ -110,23 +110,23 @@
 				</p>
 			</hello-world>
 		</greeting-configurator>
-		<lazy-load src="/test/mock/lazy-load.html" id="lazy-success">
-			<callout-box>
+		<module-lazy src="/test/mock/module-lazy.html" id="lazy-success">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite" hidden></p>
-			</callout-box>
-		</lazy-load>
-		<lazy-load src="/test/mock/404.html" id="lazy-error">
-			<callout-box>
+			</card-callout>
+		</module-lazy>
+		<module-lazy src="/test/mock/404.html" id="lazy-error">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite" hidden></p>
-			</callout-box>
-		</lazy-load>
-		<lazy-load src="/test/mock/recursion.html" id="lazy-recursion">
+			</card-callout>
+		</module-lazy>
+		<module-lazy src="/test/mock/recursion.html" id="lazy-recursion">
 			<p class="loading" role="status">Loading...</p>
 			<p class="error" role="alert" aria-live="polite" hidden></p>
-		</lazy-load>
-		<tab-group>
+		</module-lazy>
+		<module-tabgroup>
 			<div role="tablist">
 				<button
 					type="button"
@@ -168,7 +168,7 @@
 			<div role="tabpanel" id="panel3" aria-labelledby="trigger3" hidden>
 				Tab 3 content
 			</div>
-		</tab-group>
+		</module-tabgroup>
 		<template id="post-reply-template">
 			<div>
 				<p></p>
@@ -259,7 +259,7 @@
 			)
 
 			component(
-				'my-counter',
+				'basic-counter',
 				{
 					value: asInteger(),
 				},
@@ -295,7 +295,7 @@
 						name: () => {
 							const firstName = el.querySelector('.first')
 							const lastName = el.querySelector('.last')
-							return el.querySelector('input-checkbox').checked
+							return el.querySelector('form-checkbox').checked
 								? `${firstName.value} ${lastName.value}`
 								: firstName.value
 						},
@@ -316,7 +316,7 @@
 			)
 
 			component(
-				'input-textbox',
+				'form-textbox',
 				{
 					value: asString(RESET),
 				},
@@ -332,7 +332,7 @@
 			)
 
 			component(
-				'input-checkbox',
+				'form-checkbox',
 				{
 					checked: asBoolean,
 				},
@@ -348,7 +348,7 @@
 			)
 
 			component(
-				'lazy-load',
+				'module-lazy',
 				{
 					error: '',
 					src: (el, v) => {
@@ -404,7 +404,7 @@
 			)
 
 			component(
-				'tab-group',
+				'module-tabgroup',
 				{
 					selected: '',
 				},
@@ -767,7 +767,7 @@
 
 				describe('My counter', function () {
 					it('should increment and decrement', async function () {
-						const counter = document.querySelector('my-counter')
+						const counter = document.querySelector('basic-counter')
 						const decrement = counter.querySelector('.decrement')
 						const increment = counter.querySelector('.increment')
 						const value = counter.querySelector('.value')
@@ -808,7 +808,7 @@
 					})
 
 					it('should update derived values', async function () {
-						const counter = document.querySelector('my-counter')
+						const counter = document.querySelector('basic-counter')
 						const decrement = counter.querySelector('.decrement')
 						const parity = counter.querySelector('.parity')
 						const double = counter.querySelector('.double')
@@ -902,7 +902,7 @@
 							'greeting-configurator',
 						)
 						const fullname =
-							configurator.querySelector('input-checkbox')
+							configurator.querySelector('form-checkbox')
 						const input = fullname.querySelector('input')
 						const helloWorld =
 							configurator.querySelector('hello-world')
@@ -998,7 +998,7 @@
 							'Should have a shadow root',
 						)
 						const lazySubComponent =
-							shadow.querySelector('lazy-load')
+							shadow.querySelector('module-lazy')
 						const errorElement =
 							lazySubComponent.querySelector('.error')
 						assert.isFalse(
@@ -1015,7 +1015,8 @@
 
 				describe('Tab Group', function () {
 					it('should mark the first button as active', async function () {
-						const tabGroup = document.querySelector('tab-group')
+						const tabGroup =
+							document.querySelector('module-tabgroup')
 						const buttons = tabGroup.querySelectorAll('button')
 						await animationFrame()
 						assert.equal(
@@ -1026,7 +1027,8 @@
 					})
 
 					it('should change the active tab when a button is clicked', async function () {
-						const tabGroup = document.querySelector('tab-group')
+						const tabGroup =
+							document.querySelector('module-tabgroup')
 						const buttons = tabGroup.querySelectorAll('button')
 						buttons[1].click()
 						await animationFrame()
@@ -1043,7 +1045,8 @@
 					})
 
 					it('should display the content of the active tab', async function () {
-						const tabGroup = document.querySelector('tab-group')
+						const tabGroup =
+							document.querySelector('module-tabgroup')
 						const buttons = tabGroup.querySelectorAll('button')
 						await animationFrame()
 						assert.equal(

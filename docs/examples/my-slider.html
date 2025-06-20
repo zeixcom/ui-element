@@ -1,42 +1,59 @@
-
-<tab-group>
+<module-tabgroup>
 	<div role="tablist">
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_my-slider.html"
-				aria-controls="panel_my-slider.html"
-				aria-selected="false"
-				tabindex="-1"
-			>HTML</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_my-slider.css"
-				aria-controls="panel_my-slider.css"
-				aria-selected="false"
-				tabindex="-1"
-			>CSS</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_my-slider.ts"
-				aria-controls="panel_my-slider.ts"
-				aria-selected="true"
-				tabindex="0"
-			>TypeScript</button>
+		<button
+			type="button"
+			role="tab"
+			id="trigger_my-slider.html"
+			aria-controls="panel_my-slider.html"
+			aria-selected="false"
+			tabindex="-1"
+		>
+			HTML
+		</button>
+
+		<button
+			type="button"
+			role="tab"
+			id="trigger_my-slider.css"
+			aria-controls="panel_my-slider.css"
+			aria-selected="false"
+			tabindex="-1"
+		>
+			CSS
+		</button>
+
+		<button
+			type="button"
+			role="tab"
+			id="trigger_my-slider.ts"
+			aria-controls="panel_my-slider.ts"
+			aria-selected="true"
+			tabindex="0"
+		>
+			TypeScript
+		</button>
 	</div>
-	
-<div role="tabpanel" id="panel_my-slider.html" aria-labelledby="trigger_my-slider.html" hidden>
-	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-		<p class="meta">
-			<span class="file">my-slider.html</span>
-			<span class="language">html</span>
-		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">my-slider</span><span style="color:#F8F8F2">></span></span>
+
+	<div
+		role="tabpanel"
+		id="panel_my-slider.html"
+		aria-labelledby="trigger_my-slider.html"
+		hidden
+	>
+		<module-codeblock
+			language="html"
+			copy-success="Copied!"
+			copy-error="Error trying to copy to clipboard!"
+		>
+			<p class="meta">
+				<span class="file">my-slider.html</span>
+				<span class="language">html</span>
+			</p>
+			<pre
+				class="shiki monokai"
+				style="background-color: #272822; color: #f8f8f2"
+				tabindex="0"
+			><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">my-slider</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">h2</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#F8F8F2">>Slides&#x3C;/</span><span style="color:#F92672">h2</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"slides"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"slide active"</span><span style="color:#A6E22E"> data-index</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"0"</span><span style="color:#F8F8F2">></span></span>
@@ -54,7 +71,7 @@
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">calc-table</span><span style="color:#A6E22E"> rows</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span><span style="color:#A6E22E"> columns</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rows"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Number of rows:&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">spin-button</span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">form-spinbutton</span></span>
 <span class="line"><span style="color:#A6E22E">						value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span></span>
 <span class="line"><span style="color:#A6E22E">						zero-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Add Row"</span></span>
 <span class="line"><span style="color:#A6E22E">						increment-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Increment"</span></span>
@@ -74,11 +91,11 @@
 <span class="line"><span style="color:#F8F8F2">						></span></span>
 <span class="line"><span style="color:#F8F8F2">							+</span></span>
 <span class="line"><span style="color:#F8F8F2">						&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">spin-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">form-spinbutton</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"columns"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Number of columns:&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">spin-button</span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">form-spinbutton</span></span>
 <span class="line"><span style="color:#A6E22E">						value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span></span>
 <span class="line"><span style="color:#A6E22E">						zero-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Add Column"</span></span>
 <span class="line"><span style="color:#A6E22E">						increment-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Increment"</span></span>
@@ -98,7 +115,7 @@
 <span class="line"><span style="color:#F8F8F2">						></span></span>
 <span class="line"><span style="color:#F8F8F2">							+</span></span>
 <span class="line"><span style="color:#F8F8F2">						&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">spin-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">form-spinbutton</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">table</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">thead</span><span style="color:#F8F8F2">></span></span>
@@ -229,11 +246,11 @@
 <span class="line"><span style="color:#F8F8F2">								>Describe your experience (optional)&#x3C;/</span><span style="color:#F92672">label</span></span>
 <span class="line"><span style="color:#F8F8F2">							></span></span>
 <span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">textarea</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rating-feedback"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">textarea</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">input-button</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;</span><span style="color:#F92672">basic-button</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">								&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"submit"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"primary"</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">									Submit</span></span>
 <span class="line"><span style="color:#F8F8F2">								&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">							&#x3C;/</span><span style="color:#F92672">input-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">							&#x3C;/</span><span style="color:#F92672">basic-button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">						&#x3C;/</span><span style="color:#F92672">fieldset</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">form</span><span style="color:#F8F8F2">></span></span>
@@ -249,21 +266,34 @@
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">my-slider</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
-			<button type="button" class="secondary small">
-				<span class="label">Copy</span>
-			</button>
-		</input-button>
-	</code-block>
-</div>
+			<basic-button class="copy">
+				<button type="button" class="secondary small">
+					<span class="label">Copy</span>
+				</button>
+			</basic-button>
+		</module-codeblock>
+	</div>
 
-<div role="tabpanel" id="panel_my-slider.css" aria-labelledby="trigger_my-slider.css" hidden>
-	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-		<p class="meta">
-			<span class="file">my-slider.css</span>
-			<span class="language">css</span>
-		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">my-slider</span><span style="color:#F8F8F2"> {</span></span>
+	<div
+		role="tabpanel"
+		id="panel_my-slider.css"
+		aria-labelledby="trigger_my-slider.css"
+		hidden
+	>
+		<module-codeblock
+			language="css"
+			copy-success="Copied!"
+			copy-error="Error trying to copy to clipboard!"
+		>
+			<p class="meta">
+				<span class="file">my-slider.css</span>
+				<span class="language">css</span>
+			</p>
+			<pre
+				class="shiki monokai"
+				style="background-color: #272822; color: #f8f8f2"
+				tabindex="0"
+			><code><span class="line"><span style="color:#F92672">my-slider</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	overflow</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">hidden</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	aspect-ratio</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">16</span><span style="color:#F8F8F2"> / </span><span style="color:#AE81FF">9</span><span style="color:#F8F8F2">;</span></span>
@@ -341,21 +371,33 @@
 <span class="line"><span style="color:#F8F8F2">        }</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span></code></pre>
-		<input-button class="copy">
-			<button type="button" class="secondary small">
-				<span class="label">Copy</span>
-			</button>
-		</input-button>
-	</code-block>
-</div>
+			<basic-button class="copy">
+				<button type="button" class="secondary small">
+					<span class="label">Copy</span>
+				</button>
+			</basic-button>
+		</module-codeblock>
+	</div>
 
-<div role="tabpanel" id="panel_my-slider.ts" aria-labelledby="trigger_my-slider.ts">
-	<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-		<p class="meta">
-			<span class="file">my-slider.ts</span>
-			<span class="language">ts</span>
-		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { component, on, state, toggleClass } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
+	<div
+		role="tabpanel"
+		id="panel_my-slider.ts"
+		aria-labelledby="trigger_my-slider.ts"
+	>
+		<module-codeblock
+			language="ts"
+			copy-success="Copied!"
+			copy-error="Error trying to copy to clipboard!"
+		>
+			<p class="meta">
+				<span class="file">my-slider.ts</span>
+				<span class="language">ts</span>
+			</p>
+			<pre
+				class="shiki monokai"
+				style="background-color: #272822; color: #f8f8f2"
+				tabindex="0"
+			><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { component, on, state, toggleClass } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-slider'</span><span style="color:#F8F8F2">, {}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> active </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
@@ -381,11 +423,11 @@
 <span class="line"><span style="color:#F8F8F2">	]</span></span>
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
-			<button type="button" class="secondary small">
-				<span class="label">Copy</span>
-			</button>
-		</input-button>
-	</code-block>
-</div>
-</tab-group>
+			<basic-button class="copy">
+				<button type="button" class="secondary small">
+					<span class="label">Copy</span>
+				</button>
+			</basic-button>
+		</module-codeblock>
+	</div>
+</module-tabgroup>

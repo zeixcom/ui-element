@@ -56,7 +56,7 @@ Remember to keep the hosted file updated to use the latest features and bug fixe
 
 If you’re using a **bundler** like **Vite, Webpack, or Rollup**, install UIElement via NPM or Bun:
 
-<tab-group>
+<module-tabgroup>
 <div role="tablist">
 <button role="tab" id="trigger_installation-npm" aria-controls="panel_installation-npm" aria-selected="true" tabindex="0">NPM</button>
 <button role="tab" id="trigger_installation-bun" aria-controls="panel_installation-bun" aria-selected="false" tabindex="-1">Bun</button>
@@ -75,7 +75,7 @@ bun add @zeix/ui-element
 ```
 
 </div>
-</tab-group>
+</module-tabgroup>
 
 Then import the needed functions in your JavaScript:
 
@@ -206,7 +206,7 @@ If everything is set up correctly, you should see:
 - A greeting (Hello, World!)
 - The greeting updates as you type
 
-<component-demo>
+<module-demo>
 	<div class="preview">
 		<hello-world>
 			<template shadowrootmode="open">
@@ -217,7 +217,7 @@ If everything is set up correctly, you should see:
 			</template>
 		</hello-world>
 	</div>
-</component-demo>
+</module-demo>
 
 If it's not working:
 

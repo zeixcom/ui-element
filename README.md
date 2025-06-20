@@ -123,7 +123,7 @@ An example demonstrating how to create a fully accessible tab navigation.
 Server-rendered markup:
 
 ```html
-<tab-group>
+<module-tabgroup>
   <div role="tablist">
     <button
       type="button"
@@ -165,7 +165,7 @@ Server-rendered markup:
   <div role="tabpanel" id="panel3" aria-labelledby="trigger3" hidden>
     Tab 3 content
   </div>
-</tab-group>
+</module-tabgroup>
 ```
 
 UIElement component:
@@ -174,7 +174,7 @@ UIElement component:
 import { component, on, setProperty, show } from '@zeix/ui-element'
 import { manageArrowKeyFocus } from './manage-arrow-key-focus'
 
-export default component('tab-group', {
+export default component('module-tabgroup', {
 	selected: '',
 },
 (el, { all, first }) => {
@@ -244,7 +244,7 @@ export const manageArrowKeyFocus = (elements, index) => e => {
 Example styles:
 
 ```css
-tab-group {
+module-tabgroup {
   display: block;
   margin-bottom: var(--space-l);
 
@@ -301,12 +301,12 @@ tab-group {
 An example demonstrating how to use a custom attribute parser (sanitize an URL) and a signal producer (async fetch) to implement lazy loading.
 
 ```html
-<lazy-load src="/lazy-load/snippet.html">
-  <callout-box>
+<module-lazy src="/module-lazy/snippet.html">
+  <card-callout>
     <div class="loading" role="status">Loading...</div>
     <div class="error" role="alert" aria-live="polite"></div>
-  </callout-box>
-</lazy-load>
+  </card-callout>
+</module-lazy>
 ```
 
 ```js
@@ -347,7 +347,7 @@ const asURL = (el, v) => {
 
 // Component
 export default component(
-  'lazy-load',
+  'module-lazy',
   {
     src: asURL,
   },
@@ -377,7 +377,7 @@ export default component(
     return [
       dangerouslySetInnerHTML(content),
       first(
-        'callout-box',
+        'card-callout',
         setProperty('hidden', () => !error.get() && content.get() !== UNSET),
         toggleClass('danger', () => !error.get()),
       ),

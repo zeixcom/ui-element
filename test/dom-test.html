@@ -535,8 +535,8 @@
 							}
 						})
 
-						it('should work with todo-app pattern reading input length', async () => {
-							// Simulate the todo-app pattern with input-textbox
+						it('should work with module-todo pattern reading input length', async () => {
+							// Simulate the module-todo pattern with form-textbox
 							class MockInputTextbox extends HTMLElement {
 								constructor() {
 									super()
@@ -580,12 +580,12 @@
 							}
 
 							customElements.define(
-								'mock-input-textbox',
+								'mock-form-textbox',
 								MockInputTextbox,
 							)
 
 							const input =
-								document.createElement('mock-input-textbox')
+								document.createElement('mock-form-textbox')
 							document.body.appendChild(input)
 
 							try {
@@ -596,7 +596,7 @@
 
 								// Wait for component to be defined
 								await customElements.whenDefined(
-									'mock-input-textbox',
+									'mock-form-textbox',
 								)
 								await microtask()
 								await animationFrame()
@@ -1842,7 +1842,7 @@
 							const host =
 								container.querySelector('.test-component')
 
-							// Create fromEvent producers like in input-textbox component
+							// Create fromEvent producers like in form-textbox component
 							const lengthProducer = fromEvent(
 								'#comp-input',
 								'input',

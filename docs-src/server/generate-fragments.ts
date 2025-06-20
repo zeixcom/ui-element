@@ -1,7 +1,7 @@
 import { join } from 'path'
 import { readFile, readdir, stat, writeFile } from 'fs/promises'
 import { COMPONENTS_DIR, FRAGMENTS_DIR } from './config'
-import { highlightedCode } from './transform-code-blocks'
+import { highlightedCode } from './transform-codeblocks'
 
 type PanelType = {
 	type: string
@@ -31,18 +31,18 @@ const generatePanel = async (name: string, panelType: PanelType) => {
 
 	return `
 <div role="tabpanel" id="panel_${name}.${type}" aria-labelledby="trigger_${name}.${type}"${hidden}>
-	<code-block language="${type}" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<module-codeblock language="${type}" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">${name}.${type}</span>
 			<span class="language">${type}</span>
 		</p>
 		${highlighted}
-		<input-button class="copy">
+		<basic-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>
 			</button>
-		</input-button>
-	</code-block>
+		</basic-button>
+	</module-codeblock>
 </div>`
 }
 
@@ -75,7 +75,7 @@ const processComponent = async (name: string) => {
 	)
 
 	const fragment = `
-<tab-group>
+<module-tabgroup>
 	<div role="tablist">
 		${panelTypes
 			.map(
@@ -92,7 +92,7 @@ const processComponent = async (name: string) => {
 			.join('\n\t\t')}
 	</div>
 	${panels.join('\n')}
-</tab-group>`
+</module-tabgroup>`
 
 	await writeFile(join(FRAGMENTS_DIR, `${name}.html`), fragment, 'utf8')
 	console.log(`✅ Generated: ${name}.html`)

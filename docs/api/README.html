@@ -142,7 +142,7 @@
 		</style>
 	</head>
 	<body class="section-api">
-		<client-router>
+		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
 					UIElement Docs <small>Version 0.13.1</small>
@@ -224,9 +224,9 @@
 				</li>
 		</ol>
 	</nav>
-				<callout-box class="content danger" hidden>
+				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="polite"></p>
-				</callout-box>
+				</card-callout>
 			</header>
 			<main class="content-grid has-sidebar">
 				<div class="content"><p><strong>@zeix/ui-element</strong></p>
@@ -263,7 +263,7 @@
                 </a>
                 Installation
             </h2>
-<code-block language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">bash</span>
@@ -274,13 +274,13 @@
 <span class="line"><span style="color:#88846F"># or with bun</span></span>
 <span class="line"><span style="color:#A6E22E">bun</span><span style="color:#E6DB74"> add</span><span style="color:#E6DB74"> @zeix/ui-element</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <h2 id="documentation">
                 <a name="documentation" class="anchor" href="#documentation">
 	                <span class="permalink">🔗</span>
@@ -309,7 +309,7 @@
                 Show Appreciation
             </h3>
 <p>Server-rendered markup:</p>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
@@ -321,15 +321,15 @@
 <span class="line"><span style="color:#F8F8F2">  &#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">show-appreciation</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p>UIElement component:</p>
-<code-block collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -355,15 +355,15 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p>Example styles:</p>
-<code-block collapsed language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">css</span>
@@ -399,13 +399,13 @@
 <span class="line"><span style="color:#F8F8F2">  }</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <h3 id="tab-group">
                 <a name="tab-group" class="anchor" href="#tab-group">
 	                <span class="permalink">🔗</span>
@@ -414,12 +414,12 @@
             </h3>
 <p>An example demonstrating how to create a fully accessible tab navigation.</p>
 <p>Server-rendered markup:</p>
-<code-block collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">tab-group</span><span style="color:#F8F8F2">></span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">module-tabgroup</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> role</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"tablist"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">button</span></span>
 <span class="line"><span style="color:#A6E22E">      type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span></span>
@@ -461,15 +461,15 @@
 <span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> role</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"tabpanel"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"panel3"</span><span style="color:#A6E22E"> aria-labelledby</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"trigger3"</span><span style="color:#A6E22E"> hidden</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">    Tab 3 content</span></span>
 <span class="line"><span style="color:#F8F8F2">  &#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">tab-group</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">module-tabgroup</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p>UIElement component:</p>
 <p>`js<br>export const manageArrowKeyFocus = (elements, index) =&gt; e =&gt; {<br>	if (!(e instanceof KeyboardEvent))<br>		throw new TypeError(&#39;Event is not a KeyboardEvent&#39;)<br>	const handledKeys = [<br>		&#39;ArrowLeft&#39;,<br>		&#39;ArrowRight&#39;,<br>		&#39;ArrowUp&#39;,<br>		&#39;ArrowDown&#39;,<br>		&#39;Home&#39;,<br>		&#39;End&#39;,<br>	]<br>	if (handledKeys.includes(e.key)) {<br>		e.preventDefault()<br>		switch (e.key) {<br>			case &#39;ArrowLeft&#39;:<br>			case &#39;ArrowUp&#39;:<br>				index = index &lt; 1 ? elements.length - 1 : index - 1<br>				break<br>			case &#39;ArrowRight&#39;:<br>			case &#39;ArrowDown&#39;:<br>				index = index &gt;= elements.length - 1 ? 0 : index + 1<br>				break<br>			case &#39;Home&#39;:<br>				index = 0<br>				break<br>			case &#39;End&#39;:<br>				index = elements.length - 1<br>				break<br>		}<br>		if (elements[index]) elements[index].focus()<br>	}<br>}</p>
 <pre><code>
@@ -604,6 +604,6 @@ License: [MIT](_media/LICENSE)
 					<p>© 2024 – 2025 Zeix AG</p>
 				</div>
 			</footer>
-		</client-router>
+		</context-router>
 	</body>
 </html>

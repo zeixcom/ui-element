@@ -14,6 +14,7 @@ description: 'Common use cases and demos'
 <section>
 
 <<<<<<< HEAD
+
 ## Simple Click Counter
 
 This example demonstrates basic state management and user interactions, building on the concepts from Getting Started.
@@ -137,26 +138,29 @@ component(
 <section>
 
 ## Combobox
-=======
-## Simple Counter
->>>>>>> 3960718687d895827d215e1a484959dbbb958c5c
 
-<component-demo>
+=======
+
+## Simple Counter
+
+> > > > > > > 3960718687d895827d215e1a484959dbbb958c5c
+
+<module-demo>
   <div class="preview">
-    <my-counter>
+    <basic-counter>
      	<button type="button">💐 <span>5</span></button>
-    </my-counter>
+    </basic-counter>
   </div>
   <details>
 		<summary>Source Code</summary>
-		<lazy-load src="./examples/my-counter.html">
-			<callout-box>
+		<module-lazy src="./examples/basic-counter.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
-</component-demo>
+</module-demo>
 
 </section>
 
@@ -164,9 +168,9 @@ component(
 
 ## Simple Carousel Component
 
-<component-demo>
+<module-demo>
 	<div class="preview">
-		<my-carousel>
+		<module-carousel>
 			<h2 class="visually-hidden">Slides</h2>
 			<div class="slides">
 				<div id="slide1" role="tabpanel" aria-current="true">
@@ -183,7 +187,7 @@ component(
 					<calc-table rows="3" columns="3">
 						<div class="rows">
 							<p>Number of rows:</p>
-							<spin-button value="3" zero-label="Add Row" increment-label="Increment">
+							<form-spinbutton value="3" zero-label="Add Row" increment-label="Increment">
 								<button type="button" class="decrement" aria-label="Decrement">
 									−
 								</button>
@@ -191,11 +195,11 @@ component(
 								<button type="button" class="increment" aria-label="Increment">
 									+
 								</button>
-							</spin-button>
+							</form-spinbutton>
 						</div>
 						<div class="columns">
 							<p>Number of columns:</p>
-							<spin-button
+							<form-spinbutton
 								value="3"
 								zero-label="Add Column"
 								increment-label="Increment"
@@ -207,7 +211,7 @@ component(
 								<button type="button" class="increment" aria-label="Increment">
 									+
 								</button>
-							</spin-button>
+							</form-spinbutton>
 						</div>
 						<table>
 							<thead>
@@ -280,9 +284,9 @@ component(
 								<fieldset>
 									<label for="rating-feedback">Describe your experience (optional)</label>
 									<textarea id="rating-feedback"></textarea>
-									<input-button disabled>
+									<basic-button disabled>
 										<button type="submit" class="primary" disabled>Submit</button>
-									</input-button>
+									</basic-button>
 								</fieldset>
 							</div>
 						</form>
@@ -325,18 +329,18 @@ component(
 					</button>
 				</div>
 			</nav>
-		</my-carousel>
+		</module-carousel>
 	</div>
 	<details>
 		<summary>Source Code</summary>
-		<lazy-load src="./examples/my-carousel.html">
-			<callout-box>
+		<module-lazy src="./examples/module-carousel.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
-</component-demo>
+</module-demo>
 
 </section>
 
@@ -344,9 +348,9 @@ component(
 
 ## Combobox
 
-<component-demo>
+<module-demo>
 	<div class="preview">
-		<input-combobox value="">
+		<form-combobox value="">
 			<label for="city-input">Choose a city</label>
 			<div class="input">
 				<input
@@ -393,18 +397,18 @@ component(
 			</div>
 			<p class="error" aria-live="assertive" id="city-error"></p>
 			<p class="description" aria-live="polite" id="city-description">Tell us where you live so we can set your timezone for our calendar and notification features.</p>
-		</input-combobox>
+		</form-combobox>
 	</div>
 	<details>
 		<summary>Source Code</summary>
-		<lazy-load src="./examples/input-combobox.html">
-			<callout-box>
+		<module-lazy src="./examples/form-combobox.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
-</component-demo>
+</module-demo>
 
 </section>
 
@@ -412,34 +416,34 @@ component(
 
 ## Todo App
 
-<component-demo>
+<module-demo>
 	<div class="preview">
-		<todo-app>
+		<module-todo>
 			<form action="#">
-				<input-textbox>
+				<form-textbox>
 					<label for="add-todo">What needs to be done?</label>
 					<div class="input">
 						<input id="add-todo" type="text" value="" />
 					</div>
-				</input-textbox>
-				<input-button class="submit">
+				</form-textbox>
+				<basic-button class="submit">
 					<button type="submit" class="constructive" disabled>
 						Add Todo
 					</button>
-				</input-button>
+				</basic-button>
 			</form>
 			<ol filter="all"></ol>
 			<template>
 				<li>
-					<input-checkbox class="todo">
+					<form-checkbox class="todo">
 						<label>
 							<input type="checkbox" class="visually-hidden" />
 							<span class="label"><slot></slot></span>
 						</label>
-					</input-checkbox>
-					<input-button class="delete">
+					</form-checkbox>
+					<basic-button class="delete">
 						<button type="button" class="destructive small">Delete</button>
-					</input-button>
+					</basic-button>
 				</li>
 			</template>
 			<footer>
@@ -452,7 +456,7 @@ component(
 						remaining
 					</p>
 				</div>
-				<input-radiogroup value="all" class="split-button">
+				<form-radiogroup value="all" class="split-button">
 					<fieldset>
 						<legend class="visually-hidden">Filter</legend>
 						<label class="selected">
@@ -484,62 +488,62 @@ component(
 							<span>Completed</span>
 						</label>
 					</fieldset>
-				</input-radiogroup>
-				<input-button class="clear-completed">
+				</form-radiogroup>
+				<basic-button class="clear-completed">
 					<button type="button" class="destructive">
 						<span class="label">Clear Completed</span>
 						<span class="badge"></span>
 					</button>
-				</input-button>
+				</basic-button>
 			</footer>
-		</todo-app>
+		</module-todo>
 	</div>
 	<details>
 		<summary>TodoApp Source Code</summary>
-		<lazy-load src="./examples/todo-app.html">
-			<callout-box>
+		<module-lazy src="./examples/module-todo.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
 	<details>
 		<summary>InputTextbox Source Code</summary>
-		<lazy-load src="./examples/input-textbox.html">
-			<callout-box>
+		<module-lazy src="./examples/form-textbox.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
 	<details>
 		<summary>InputButton Source Code</summary>
-		<lazy-load src="./examples/input-button.html">
-			<callout-box>
+		<module-lazy src="./examples/basic-button.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
 	<details>
 		<summary>InputCheckbox Source Code</summary>
-		<lazy-load src="./examples/input-checkbox.html">
-			<callout-box>
+		<module-lazy src="./examples/form-checkbox.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
 	<details>
 		<summary>InputRadiogroup Source Code</summary>
-		<lazy-load src="./examples/input-radiogroup.html">
-			<callout-box>
+		<module-lazy src="./examples/form-radiogroup.html">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
-			</callout-box>
-		</lazy-load>
+			</card-callout>
+		</module-lazy>
 	</details>
-</component-demo>
+</module-demo>
 
 </section>
 
@@ -833,7 +837,7 @@ This example shows how to handle asynchronous data loading and error states.
 
 ```js
 component(
-  'lazy-load',
+  'module-lazy',
   {
     src: asString(''),
     loaded: asBoolean(false),
@@ -902,11 +906,11 @@ component(
 ```
 
 ```html
-<lazy-load src="/api/user-profile">
+<module-lazy src="/api/user-profile">
   <div class="loading">Loading user profile...</div>
   <div class="error"></div>
   <div class="content"></div>
-</lazy-load>
+</module-lazy>
 ```
 
 **Key techniques:**
@@ -1059,7 +1063,7 @@ it('copies code to clipboard', async () => {
   }
 
   // Test the component
-  const codeBlock = document.querySelector('code-block')
+  const codeBlock = document.querySelector('module-codeblock')
   const copyButton = codeBlock.querySelector('.copy-btn')
 
   copyButton.click()

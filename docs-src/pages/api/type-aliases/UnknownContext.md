@@ -8,6 +8,6 @@
 
 > **UnknownContext** = [`Context`](Context.md)\<`unknown`, `unknown`\>
 
-Defined in: [src/core/context.ts:27](https://github.com/zeixcom/ui-element/blob/fdee81c49c23952a5a7a3dbafc3562620a973123/src/core/context.ts#L27)
+Defined in: [src/core/context.ts:27](https://github.com/zeixcom/ui-element/blob/019cf77c80beb600bfb17e452913f013b9d638c1/src/core/context.ts#L27)
 
 An unknown context type

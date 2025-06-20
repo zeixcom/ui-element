@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Basic Button Component Tests</title>
+	</head>
+	<body>
+		<!-- Test fixtures -->
+		<basic-button id="test1">
+			<button type="button">
+				<span class="label">Click Me</span>
+				<span class="badge">5</span>
+			</button>
+		</basic-button>
+
+		<basic-button id="test2" disabled>
+			<button type="submit" class="primary" disabled>Submit</button>
+		</basic-button>
+
+		<basic-button id="test3">
+			<button type="button">
+				<span class="label">Shopping Cart</span>
+			</button>
+		</basic-button>
+
+		<basic-button id="test4">
+			<button type="button">
+				<span class="badge">99</span>
+			</button>
+		</basic-button>
+
+		<basic-button id="test5">
+			<button type="button">Simple Button</button>
+		</basic-button>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import '../../../docs/assets/main.js' // Built components bundle
+
+			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+			const animationFrame = () => new Promise(requestAnimationFrame)
+			const microtask = () => new Promise(queueMicrotask)
+			const tick = async () => {
+				await animationFrame() // Wait for effects to execute
+				await microtask() // Wait for DOM to reflect changes
+			}
+
+			// Helper to reset button component state
+			const resetButton = async el => {
+				el.disabled = false
+				el.label = ''
+				el.badge = ''
+				await tick()
+			}
+
+			runTests(() => {
+				describe('Basic Button Component', () => {
+					beforeEach(async () => {
+						// Reset all test components before each test
+						const testIds = [
+							'test1',
+							'test2',
+							'test3',
+							'test4',
+							'test5',
+						]
+						for (const id of testIds) {
+							const el = document.getElementById(id)
+							if (el) await resetButton(el)
+						}
+					})
+
+					it('should verify component exists and has expected structure', () => {
+						const el = document.getElementById('test1')
+
+						assert.isNotNull(el)
+						assert.equal(el.tagName.toLowerCase(), 'basic-button')
+
+						// Check for required elements
+						const button = el.querySelector('button')
+						const label = el.querySelector('.label')
+						const badge = el.querySelector('.badge')
+
+						assert.isNotNull(button)
+						assert.isNotNull(label)
+						assert.isNotNull(badge)
+
+						// Check initial properties exist
+						assert.isDefined(el.disabled)
+						assert.isDefined(el.label)
+						assert.isDefined(el.badge)
+					})
+
+					it('should initialize with correct default state', async () => {
+						const el = document.getElementById('test1')
+						const button = el.querySelector('button')
+
+						await tick()
+
+						assert.equal(el.disabled, false)
+						assert.equal(el.label, '')
+						assert.equal(el.badge, '')
+						assert.equal(button.disabled, false)
+					})
+
+					it('should handle disabled state correctly', async () => {
+						const el = document.getElementById('test1')
+						const button = el.querySelector('button')
+
+						await tick()
+
+						// Initially should not be disabled
+						assert.equal(el.disabled, false)
+						assert.equal(button.disabled, false)
+
+						// Setting the property should sync to button
+						el.disabled = true
+						await tick()
+
+						assert.equal(button.disabled, true)
+						assert.equal(el.disabled, true)
+					})
+
+					it('should sync disabled property to button element', async () => {
+						const el = document.getElementById('test1')
+						const button = el.querySelector('button')
+
+						// Set disabled programmatically
+						el.disabled = true
+						await tick()
+
+						assert.equal(button.disabled, true)
+
+						// Unset disabled
+						el.disabled = false
+						await tick()
+
+						assert.equal(button.disabled, false)
+					})
+
+					it('should sync label property to label element', async () => {
+						const el = document.getElementById('test1')
+						const labelEl = el.querySelector('.label')
+
+						// Set label programmatically
+						el.label = 'New Label'
+						await tick()
+
+						assert.equal(labelEl.textContent, 'New Label')
+
+						// Clear label
+						el.label = ''
+						await tick()
+
+						assert.equal(labelEl.textContent, '')
+					})
+
+					it('should sync badge property to badge element', async () => {
+						const el = document.getElementById('test1')
+						const badgeEl = el.querySelector('.badge')
+
+						// Set badge programmatically
+						el.badge = '10'
+						await tick()
+
+						assert.equal(badgeEl.textContent, '10')
+
+						// Clear badge
+						el.badge = ''
+						await tick()
+
+						assert.equal(badgeEl.textContent, '')
+					})
+
+					it('should handle multiple property updates', async () => {
+						const el = document.getElementById('test1')
+						const button = el.querySelector('button')
+						const labelEl = el.querySelector('.label')
+						const badgeEl = el.querySelector('.badge')
+
+						// Set multiple properties
+						el.disabled = true
+						el.label = 'Submit Form'
+						el.badge = '3'
+
+						await tick()
+
+						assert.equal(button.disabled, true)
+						assert.equal(labelEl.textContent, 'Submit Form')
+						assert.equal(badgeEl.textContent, '3')
+					})
+
+					it('should work with button that has only label', async () => {
+						const el = document.getElementById('test3')
+						const labelEl = el.querySelector('.label')
+						const badgeEl = el.querySelector('.badge')
+
+						assert.isNotNull(labelEl)
+						assert.isNull(badgeEl)
+
+						// Should work normally with just label
+						el.label = 'Add to Cart'
+						await tick()
+
+						assert.equal(labelEl.textContent, 'Add to Cart')
+					})
+
+					it('should work with button that has only badge', async () => {
+						const el = document.getElementById('test4')
+						const labelEl = el.querySelector('.label')
+						const badgeEl = el.querySelector('.badge')
+
+						assert.isNull(labelEl)
+						assert.isNotNull(badgeEl)
+
+						// Should work normally with just badge
+						el.badge = '42'
+						await tick()
+
+						assert.equal(badgeEl.textContent, '42')
+					})
+
+					it('should work with simple button without label or badge elements', async () => {
+						const el = document.getElementById('test5')
+						const button = el.querySelector('button')
+						const labelEl = el.querySelector('.label')
+						const badgeEl = el.querySelector('.badge')
+
+						assert.isNotNull(button)
+						assert.isNull(labelEl)
+						assert.isNull(badgeEl)
+
+						// Should still handle disabled state
+						el.disabled = true
+						await tick()
+
+						assert.equal(button.disabled, true)
+
+						// Label and badge properties should not cause errors
+						el.label = 'Will not show'
+						el.badge = 'Will not show'
+						await tick()
+
+						// Should not throw errors, even though elements don't exist
+						assert.equal(el.label, 'Will not show')
+						assert.equal(el.badge, 'Will not show')
+					})
+
+					it('should handle boolean disabled values correctly', async () => {
+						const el = document.getElementById('test1')
+						const button = el.querySelector('button')
+
+						// Test truthy values
+						el.disabled = true
+						await tick()
+						assert.equal(button.disabled, true)
+
+						el.disabled = 'true'
+						await tick()
+						assert.equal(button.disabled, true)
+
+						el.disabled = 1
+						await tick()
+						assert.equal(button.disabled, true)
+
+						// Test falsy values
+						el.disabled = false
+						await tick()
+						assert.equal(button.disabled, false)
+
+						el.disabled = ''
+						await tick()
+						assert.equal(button.disabled, false)
+
+						el.disabled = 0
+						await tick()
+						assert.equal(button.disabled, false)
+					})
+
+					it('should handle string label values correctly', async () => {
+						const el = document.getElementById('test1')
+						const labelEl = el.querySelector('.label')
+
+						// Test various string values
+						el.label = 'Simple text'
+						await tick()
+						assert.equal(labelEl.textContent, 'Simple text')
+
+						el.label = '123'
+						await tick()
+						assert.equal(labelEl.textContent, '123')
+
+						el.label = 'Special chars: !@#$%'
+						await tick()
+						assert.equal(
+							labelEl.textContent,
+							'Special chars: !@#$%',
+						)
+
+						// Test number conversion
+						el.label = 42
+						await tick()
+						assert.equal(labelEl.textContent, '42')
+					})
+
+					it('should handle string badge values correctly', async () => {
+						const el = document.getElementById('test1')
+						const badgeEl = el.querySelector('.badge')
+
+						// Test various string values
+						el.badge = 'NEW'
+						await tick()
+						assert.equal(badgeEl.textContent, 'NEW')
+
+						el.badge = '999+'
+						await tick()
+						assert.equal(badgeEl.textContent, '999+')
+
+						// Test number conversion
+						el.badge = 0
+						await tick()
+						assert.equal(badgeEl.textContent, '0')
+					})
+
+					it('should handle rapid property changes', async () => {
+						const el = document.getElementById('test1')
+						const button = el.querySelector('button')
+						const labelEl = el.querySelector('.label')
+						const badgeEl = el.querySelector('.badge')
+
+						// Rapid changes
+						for (let i = 0; i < 5; i++) {
+							el.disabled = i % 2 === 0
+							el.label = `Label ${i}`
+							el.badge = `${i}`
+						}
+
+						await tick()
+
+						// Should have final values (i=4, 4%2===0 is true)
+						assert.equal(button.disabled, true)
+						assert.equal(labelEl.textContent, 'Label 4')
+						assert.equal(badgeEl.textContent, '4')
+					})
+
+					it('should maintain button functionality', async () => {
+						const el = document.getElementById('test1')
+						const button = el.querySelector('button')
+
+						let clickCount = 0
+						button.addEventListener('click', () => clickCount++)
+
+						// Button should be clickable when enabled
+						button.click()
+						assert.equal(clickCount, 1)
+
+						// Button should not be clickable when disabled
+						el.disabled = true
+						await tick()
+
+						button.click()
+						// Click count should remain the same for disabled button
+						assert.equal(clickCount, 1)
+					})
+
+					it('should preserve button type and classes', async () => {
+						const el = document.getElementById('test2')
+						const button = el.querySelector('button')
+
+						// Should preserve original button attributes
+						assert.equal(button.type, 'submit')
+						assert.isTrue(button.classList.contains('primary'))
+
+						// Property changes should not affect these
+						el.disabled = false
+						el.label = 'Changed'
+						await tick()
+
+						assert.equal(button.type, 'submit')
+						assert.isTrue(button.classList.contains('primary'))
+					})
+
+					it('should handle component without button element gracefully', () => {
+						// Create a minimal component structure for edge case testing
+						const tempDiv = document.createElement('div')
+						tempDiv.innerHTML = `
+                        <basic-button>
+                            <div>Not a button</div>
+                        </basic-button>
+                    `
+						document.body.appendChild(tempDiv)
+
+						const tempEl = tempDiv.querySelector('basic-button')
+
+						// Component should initialize without throwing
+						assert.isNotNull(tempEl)
+
+						// Setting properties should not cause errors
+						tempEl.disabled = true
+						tempEl.label = 'Test'
+						tempEl.badge = 'Test'
+
+						// Cleanup
+						document.body.removeChild(tempDiv)
+					})
+
+					it('should handle RESET values correctly', async () => {
+						const el = document.getElementById('test1')
+						const labelEl = el.querySelector('.label')
+						const badgeEl = el.querySelector('.badge')
+
+						// Set initial values
+						el.label = 'Initial Label'
+						el.badge = 'Initial Badge'
+						await tick()
+
+						assert.equal(labelEl.textContent, 'Initial Label')
+						assert.equal(badgeEl.textContent, 'Initial Badge')
+
+						// Reset to original DOM content (RESET behavior)
+						el.label = ''
+						el.badge = ''
+						await tick()
+
+						// Should be empty (since our test fixture starts empty)
+						assert.equal(labelEl.textContent, '')
+						assert.equal(badgeEl.textContent, '')
+					})
+
+					it('should sync disabled property to button element', async () => {
+						const el = document.getElementById('test1')
+						const button = el.querySelector('button')
+
+						// Set via property
+						el.disabled = true
+						await tick()
+
+						assert.equal(button.disabled, true)
+
+						// Unset via property
+						el.disabled = false
+						await tick()
+
+						assert.equal(button.disabled, false)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

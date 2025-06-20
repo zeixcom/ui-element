@@ -1,42 +1,59 @@
-
-<tab-group>
+<module-tabgroup>
 	<div role="tablist">
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_input-text.html"
-				aria-controls="panel_input-text.html"
-				aria-selected="false"
-				tabindex="-1"
-			>HTML</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_input-text.css"
-				aria-controls="panel_input-text.css"
-				aria-selected="false"
-				tabindex="-1"
-			>CSS</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_input-text.ts"
-				aria-controls="panel_input-text.ts"
-				aria-selected="true"
-				tabindex="0"
-			>TypeScript</button>
+		<button
+			type="button"
+			role="tab"
+			id="trigger_input-text.html"
+			aria-controls="panel_input-text.html"
+			aria-selected="false"
+			tabindex="-1"
+		>
+			HTML
+		</button>
+
+		<button
+			type="button"
+			role="tab"
+			id="trigger_input-text.css"
+			aria-controls="panel_input-text.css"
+			aria-selected="false"
+			tabindex="-1"
+		>
+			CSS
+		</button>
+
+		<button
+			type="button"
+			role="tab"
+			id="trigger_input-text.ts"
+			aria-controls="panel_input-text.ts"
+			aria-selected="true"
+			tabindex="0"
+		>
+			TypeScript
+		</button>
 	</div>
-	
-<div role="tabpanel" id="panel_input-text.html" aria-labelledby="trigger_input-text.html" hidden>
-	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-		<p class="meta">
-			<span class="file">input-text.html</span>
-			<span class="language">html</span>
-		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">input-text</span><span style="color:#F8F8F2">></span></span>
+
+	<div
+		role="tabpanel"
+		id="panel_input-text.html"
+		aria-labelledby="trigger_input-text.html"
+		hidden
+	>
+		<module-codeblock
+			language="html"
+			copy-success="Copied!"
+			copy-error="Error trying to copy to clipboard!"
+		>
+			<p class="meta">
+				<span class="file">input-text.html</span>
+				<span class="language">html</span>
+			</p>
+			<pre
+				class="shiki monokai"
+				style="background-color: #272822; color: #f8f8f2"
+				tabindex="0"
+			><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">input-text</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">label</span><span style="color:#A6E22E"> for</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"name-input"</span><span style="color:#F8F8F2">>Name&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"row"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"group auto"</span><span style="color:#F8F8F2">></span></span>
@@ -45,21 +62,34 @@
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"error"</span><span style="color:#A6E22E"> aria-live</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"assertive"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"name-error"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">input-text</span><span style="color:#F8F8F2">></span></span></code></pre>
-		<input-button class="copy">
-			<button type="button" class="secondary small">
-				<span class="label">Copy</span>
-			</button>
-		</input-button>
-	</code-block>
-</div>
+			<basic-button class="copy">
+				<button type="button" class="secondary small">
+					<span class="label">Copy</span>
+				</button>
+			</basic-button>
+		</module-codeblock>
+	</div>
 
-<div role="tabpanel" id="panel_input-text.css" aria-labelledby="trigger_input-text.css" hidden>
-	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-		<p class="meta">
-			<span class="file">input-text.css</span>
-			<span class="language">css</span>
-		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">input-text</span><span style="color:#F8F8F2"> {</span></span>
+	<div
+		role="tabpanel"
+		id="panel_input-text.css"
+		aria-labelledby="trigger_input-text.css"
+		hidden
+	>
+		<module-codeblock
+			language="css"
+			copy-success="Copied!"
+			copy-error="Error trying to copy to clipboard!"
+		>
+			<p class="meta">
+				<span class="file">input-text.css</span>
+				<span class="language">css</span>
+			</p>
+			<pre
+				class="shiki monokai"
+				style="background-color: #272822; color: #f8f8f2"
+				tabindex="0"
+			><code><span class="line"><span style="color:#F92672">input-text</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">100</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">	&#x26;[value="0"] input {</span></span>
@@ -200,21 +230,33 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
-			<button type="button" class="secondary small">
-				<span class="label">Copy</span>
-			</button>
-		</input-button>
-	</code-block>
-</div>
+			<basic-button class="copy">
+				<button type="button" class="secondary small">
+					<span class="label">Copy</span>
+				</button>
+			</basic-button>
+		</module-codeblock>
+	</div>
 
-<div role="tabpanel" id="panel_input-text.ts" aria-labelledby="trigger_input-text.ts">
-	<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-		<p class="meta">
-			<span class="file">input-text.ts</span>
-			<span class="language">ts</span>
-		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
+	<div
+		role="tabpanel"
+		id="panel_input-text.ts"
+		aria-labelledby="trigger_input-text.ts"
+	>
+		<module-codeblock
+			language="ts"
+			copy-success="Copied!"
+			copy-error="Error trying to copy to clipboard!"
+		>
+			<p class="meta">
+				<span class="file">input-text.ts</span>
+				<span class="language">ts</span>
+			</p>
+			<pre
+				class="shiki monokai"
+				style="background-color: #272822; color: #f8f8f2"
+				tabindex="0"
+			><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	asString,</span></span>
 <span class="line"><span style="color:#F8F8F2">	component,</span></span>
@@ -286,11 +328,11 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
-			<button type="button" class="secondary small">
-				<span class="label">Copy</span>
-			</button>
-		</input-button>
-	</code-block>
-</div>
-</tab-group>
+			<basic-button class="copy">
+				<button type="button" class="secondary small">
+					<span class="label">Copy</span>
+				</button>
+			</basic-button>
+		</module-codeblock>
+	</div>
+</module-tabgroup>

@@ -142,7 +142,7 @@
 		</style>
 	</head>
 	<body class="section-">
-		<client-router>
+		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
 					UIElement Docs <small>Version 0.13.1</small>
@@ -224,9 +224,9 @@
 				</li>
 		</ol>
 	</nav>
-				<callout-box class="content danger" hidden>
+				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="polite"></p>
-				</callout-box>
+				</card-callout>
 			</header>
 			<main class="content-grid ">
 				<div class="content"><section class="hero">
@@ -256,20 +256,20 @@
                 Using a CDN
             </h3>
 <p>For the easiest setup, include <strong>UIElement</strong> via a CDN. This is ideal for <strong>testing or quick projects</strong> where you want lightweight interactivity without additional tooling.</p>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> src</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 </section>
 
 <section>
@@ -283,20 +283,20 @@
 <p>For production use, you may want to <strong>self-host UIElement</strong> to avoid relying on a CDN. You can download the latest version from:</p>
 <p><a href="https://github.com/zeixcom/ui-element/blob/main/index.js" target="_blank">Github Repository</a></p>
 <p>Simply host the file on your server and include it like this:</p>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> src</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"/path/to/your/hosted/ui-element.js"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p><strong>Why self-host?</strong></p>
 <ul>
 <li>You <strong>control updates</strong> and avoid breaking changes from external CDNs.</li>
@@ -314,62 +314,62 @@
                 Installing via Package Managers
             </h3>
 <p>If you’re using a <strong>bundler</strong> like <strong>Vite, Webpack, or Rollup</strong>, install UIElement via NPM or Bun:</p>
-<tab-group>
+<module-tabgroup>
 <div role="tablist">
 <button role="tab" id="trigger_installation-npm" aria-controls="panel_installation-npm" aria-selected="true" tabindex="0">NPM</button>
 <button role="tab" id="trigger_installation-bun" aria-controls="panel_installation-bun" aria-selected="false" tabindex="-1">Bun</button>
 </div>
 <div role="tabpanel" id="panel_installation-npm" aria-labelledby="trigger_installation-npm">
 
-<code-block language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">bash</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">npm</span><span style="color:#E6DB74"> install</span><span style="color:#E6DB74"> @zeix/ui-element</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 </div>
 <div role="tabpanel" id="panel_installation-bun" aria-labelledby="trigger_installation-bun">
 
-<code-block language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">bash</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">bun</span><span style="color:#E6DB74"> add</span><span style="color:#E6DB74"> @zeix/ui-element</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 </div>
-</tab-group>
+</module-tabgroup>
 
 <p>Then import the needed functions in your JavaScript:</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { component, on, RESET, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 </section>
 
 <section>
@@ -393,7 +393,7 @@
                 Markup
             </h3>
 <p>Include the following in your server-rendered HTML:</p>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
@@ -406,13 +406,13 @@
 <span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>World&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <h3 id="component-definition">
                 <a name="component-definition" class="anchor" href="#component-definition">
 	                <span class="permalink">🔗</span>
@@ -420,7 +420,7 @@
                 Component Definition
             </h3>
 <p>Save the following inside a <code>&lt;script type=&quot;module&quot;&gt;</code> tag or an external JavaScript file.</p>
-<code-block collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
@@ -454,13 +454,13 @@
 <span class="line"><span style="color:#F8F8F2">  )</span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p><strong>What Happens Here?</strong></p>
 <ul>
 <li>The <code>name: RESET</code> property <strong>gets its initial value from the server-rendered content</strong> (the <code>&lt;span&gt;</code> text).</li>
@@ -481,7 +481,7 @@
                 </a>
                 Reactive Properties
             </h3>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -490,13 +490,13 @@
 <span class="line"><span style="color:#F8F8F2">  name: RESET</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p>This creates a reactive property called <code>name</code>:</p>
 <ul>
 <li><code>RESET</code> means &quot;use whatever text is already in the HTML&quot; as the starting value</li>
@@ -511,7 +511,7 @@
                 Setup Function
             </h3>
 <p>Returns an array of effects:</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
@@ -521,13 +521,13 @@
 <span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> { </span><span style="color:#F92672">...</span><span style="color:#F8F8F2"> }))</span></span>
 <span class="line"><span style="color:#F8F8F2">]</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p>Effects define component behaviors:</p>
 <ul>
 <li><code>first(&#39;span&#39;, setText(&#39;name&#39;))</code> finds the first <code>&lt;span&gt;</code> and keeps its text in sync with the <code>name</code> property</li>
@@ -555,7 +555,7 @@
 <li>A greeting (Hello, World!)</li>
 <li>The greeting updates as you type</li>
 </ul>
-<component-demo>
+<module-demo>
 	<div class="preview">
 		<hello-world>
 			<template shadowrootmode="open">
@@ -566,7 +566,7 @@
 			</template>
 		</hello-world>
 	</div>
-</component-demo>
+</module-demo>
 
 <p>If it&#39;s not working:</p>
 <ul>
@@ -596,6 +596,6 @@
 					<p>© 2024 – 2025 Zeix AG</p>
 				</div>
 			</footer>
-		</client-router>
+		</context-router>
 	</body>
 </html>
