@@ -53,7 +53,7 @@ export default component('context-router', {}, (el, { all, first }) => {
 			'a[href]',
 			toggleClass('active', target => {
 				const href = target.getAttribute('href')
-				if (!href) return false
+				if (!href || href.startsWith('#')) return false
 				try {
 					return (
 						pathname.get() ===
@@ -64,7 +64,11 @@ export default component('context-router', {}, (el, { all, first }) => {
 				}
 			}),
 			on('click', (e: Event) => {
-				if (!(e.target instanceof HTMLAnchorElement)) return
+				if (
+					!(e.target instanceof HTMLAnchorElement) ||
+					e.target.getAttribute('href')?.startsWith('#')
+				)
+					return
 				const url = new URL(e.target.href)
 				if (url.origin === window.location.origin) {
 					e.preventDefault()

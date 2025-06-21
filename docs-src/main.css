@@ -13,7 +13,10 @@
 @import "./components/module-codeblock/module-codeblock.css";
 @import "./components/module-demo/module-demo.css";
 @import "./components/module-tabgroup/module-tabgroup.css";
+@import "./components/module-toc/module-toc.css";
 @import "./components/module-todo/module-todo.css";
+@import "./components/section-menu/section-menu.css";
+@import "./components/section-hero/section-hero.css";
 @import "./components/rating-stars/rating-stars.css";
 @import "./components/rating-feedback/rating-feedback.css";
 @import "./components/calc-table/calc-table.css";

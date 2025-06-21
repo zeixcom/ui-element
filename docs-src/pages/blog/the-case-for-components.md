@@ -4,12 +4,15 @@ emoji: ''
 description: 'Components are a proven way to reduce complexity, encourage reuse, and allow teams to scale their work across independent user interface parts.'
 ---
 
-<section class="hero">
+<section-hero>
 
 # The Case for Components
 
-<p class="lead"><strong>Components are a proven way to reduce complexity, encourage reuse, and allow teams to scale their work across independent user interface parts</strong>. But you don't need a framework to get these benefits. Let's explore how components help us build better interfaces – and how native Web Components and UIElement fit into that picture.</p>
-</section>
+<div>
+  <p class="lead"><strong>Components are a proven way to reduce complexity, encourage reuse, and allow teams to scale their work across independent user interface parts</strong>. But you don't need a framework to get these benefits. Let's explore how components help us build better interfaces – and how native Web Components and UIElement fit into that picture.</p>
+  {{ toc }}
+</div>
+</section-hero>
 
 <section>
 
@@ -90,7 +93,7 @@ Web Components are registered using `customElements.define()` and automatically 
 
 <section>
 
-## Building on a Solid Foundation
+## A Solid Foundation
 
 **UIElement** builds on the Web Platform rather than abstracting over it. We embrace semantic HTML as the foundation. Add CSS to your components however you like and make them look great. Use Web Components to add reusable behavior.
 

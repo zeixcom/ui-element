@@ -4,11 +4,11 @@ emoji: '📚'
 description: 'Detailed documentation of types and functions'
 ---
 
-<section class="hero">
+<section-hero>
 
 # 📚 API Reference
 
-</section>
+</section-hero>
 
 <section class="breakout">
   <iframe src="api/index.html" width="100%" height="600px"></iframe>

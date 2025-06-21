@@ -4,12 +4,14 @@ emoji: '📖'
 description: 'Overview and key benefits of UIElement'
 ---
 
-<section class="hero">
+<section-hero>
 
 # 📖 Introduction
 
-<p class="lead"><strong>Web development doesn't need to be complicated</strong>. UIElement offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
-</section>
+<div>
+  <p class="lead"><strong>Web development doesn't need to be complicated</strong>. UIElement offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
+  {{ toc }}</div>
+</section-hero>
 
 <section>
 

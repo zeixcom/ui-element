@@ -23,7 +23,9 @@ export const generateMenu = async (pages: PageInfo[]) => {
 	)
 
 	const menuHtml = `
-	<nav class="breakout">
+<section-menu>
+	<nav>
+		<h2 class="visually-hidden">Main Menu</h2>
 		<ol>
 			${pages
 				.map(
@@ -38,7 +40,8 @@ export const generateMenu = async (pages: PageInfo[]) => {
 				)
 				.join('\n')}
 		</ol>
-	</nav>`
+	</nav>
+</section-menu>`
 
 	await writeFile(MENU_FILE, menuHtml, 'utf8')
 	console.log('✅ Generated: menu.html')

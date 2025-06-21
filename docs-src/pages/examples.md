@@ -1,149 +1,22 @@
 ---
-title: 'Examples & Recipes'
+title: 'Examples'
 emoji: '🍽️'
 description: 'Common use cases and demos'
 ---
 
-<section class="hero">
+<section-hero>
 
 # 🍽️ Examples & Recipes
 
-<p class="lead">Discover practical examples and patterns for building reactive, modular components with UIElement. Each example focuses on showcasing a specific feature or best practice, guiding you through real-world use cases.</p>
-</section>
+<div>
+  <p class="lead">Discover practical examples and patterns for building reactive, modular components with UIElement. Each example focuses on showcasing a specific feature or best practice, guiding you through real-world use cases.</p>
+  {{ toc }}
+</div>
+</section-hero>
 
 <section>
 
-<<<<<<< HEAD
-
-## Simple Click Counter
-
-This example demonstrates basic state management and user interactions, building on the concepts from Getting Started.
-
-**What it shows:**
-
-- Numeric properties with `asInteger()`
-- Multiple effects on the same element
-- Dynamic CSS classes based on state
-- Functions for computed values
-
-```js
-import {
-  asInteger,
-  component,
-  first,
-  on,
-  RESET,
-  setText,
-  toogleClass,
-} from '@zeix/ui-element'
-
-component(
-  'click-counter',
-  {
-    count: asInteger(RESET), // Get initial count from HTML
-  },
-  (el, { first }) => [
-    // Apply multiple effects to the same button
-    first(
-      'button',
-      // Update the count display (nested selector)
-      first('.count', setText('count')),
-
-      // Handle clicks to increment
-      on('click', () => {
-        el.count++
-      }),
-
-      // Update button style based on count
-      toogleClass('popular', () => el.count >= 10),
-    ),
-  ],
-)
-```
-
-```html
-<click-counter>
-  <button type="button">
-    Click me!
-    <span class="count">0</span> clicks
-  </button>
-</click-counter>
-```
-
-**New concepts introduced:**
-
-- `asInteger()` for numeric properties
-- Multiple effects on the same element (button)
-- Nested selectors (`first(".count", ...)` inside `first("button", ...)`)
-- Dynamic CSS classes based on state (`toogleClass`)
-- Functions for computed values (`() => el.count >= 10`)
-
-This example shows how UIElement scales from simple text updates to more complex interactions while keeping the code readable and declarative.
-
-</section>
-
-<section>
-
-## Interactive Appreciation Button
-
-This example demonstrates state management, conditional rendering, and user interactions in a single component.
-
-**What it shows:**
-
-- Reactive state with `asInteger(RESET)`
-- Conditional DOM updates based on state
-- Event handling for user clicks
-- Server-side rendering hydration
-
-```js
-import { asInteger, component, on, RESET, setText } from '@zeix/ui-element'
-
-component(
-  'show-appreciation',
-  {
-    count: asInteger(RESET), // Get initial value from .count element
-  },
-  (el, { first }) => [
-    // Update count display when state changes
-    first('.count', setText('count')),
-
-    // Handle click events to change state
-    first(
-      'button',
-      on('click', () => {
-        el.count++
-      }),
-    ),
-  ],
-)
-```
-
-```html
-<show-appreciation aria-label="Show appreciation">
-  <button type="button">
-    <span class="emoji">💐</span>
-    <span class="count">5</span>
-  </button>
-</show-appreciation>
-```
-
-**Key patterns:**
-
-- Using `RESET` to hydrate from server-rendered content
-- Simple state mutations with automatic DOM updates
-- Semantic HTML structure with progressive enhancement
-
-</section>
-
-<section>
-
-## Combobox
-
-=======
-
-## Simple Counter
-
-> > > > > > > 3960718687d895827d215e1a484959dbbb958c5c
+## Simple Counter Component
 
 <module-demo>
   <div class="preview">

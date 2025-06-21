@@ -4,12 +4,15 @@ emoji: '🚀'
 description: 'Installation, setup, and first steps'
 ---
 
-<section class="hero">
+<section-hero>
 
 # 🚀 Getting Started
 
-<p class="lead"><strong>Set up UIElement in minutes – no build tools required</strong>. Whether you’re enhancing server-rendered HTML with lightweight interactivity or integrating Web Components into a modern JavaScript project, UIElement makes it simple to get started.</p>
-</section>
+<div>
+  <p class="lead"><strong>Set up UIElement in minutes – no build tools required</strong>. Whether you’re enhancing server-rendered HTML with lightweight interactivity or integrating Web Components into a modern JavaScript project, UIElement makes it simple to get started.</p>
+  {{ toc }}
+</div>
+</section-hero>
 
 <section>
 

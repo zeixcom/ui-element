@@ -8,7 +8,7 @@
 
 > **fromChildren**\<`T`, `E`\>(`selectors`, `reducer`, `initialValue`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`T`\>
 
-Defined in: [src/core/dom.ts:273](https://github.com/zeixcom/ui-element/blob/019cf77c80beb600bfb17e452913f013b9d638c1/src/core/dom.ts#L273)
+Defined in: [src/core/dom.ts:273](https://github.com/zeixcom/ui-element/blob/bd4ae3ed0a4d2790834ffe22cb9cd0696e3104c4/src/core/dom.ts#L273)
 
 Produce a computed signal from reduced properties of child elements
 

@@ -4,13 +4,15 @@ emoji: ''
 description: 'Reactivity ensures that your user interface stays up to date automatically. It simplifies the code when we need multiple inputs, derived values, and complex state relationships.'
 ---
 
-<section class="hero">
+<section-hero>
 
 # Rethinking Reactivity
 
-<p class="lead">In our previous post, we saw how components help organize frontend code into manageable, encapsulated pieces. But what happens when we need <strong>multiple inputs, derived values, and complex state relationships</strong>?</p>
-
-</section>
+<div>
+  <p class="lead">In our previous post, we saw how components help organize frontend code into manageable, encapsulated pieces. But what happens when we need <strong>multiple inputs, derived values, and complex state relationships</strong>?</p>
+  {{ toc }}
+</div>
+</section-hero>
 
 <section>
 

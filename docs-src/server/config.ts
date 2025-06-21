@@ -14,11 +14,11 @@ export const FRAGMENTS_DIR = './docs/examples'
 export const PAGE_ORDER = [
 	'index',
 	'getting-started',
-	'building-components',
-	'styling-components',
+	'components',
+	'styling',
 	'data-flow',
-	'examples-recipes',
-	'patterns-techniques',
-	'api-reference',
-	'about-community',
+	'examples',
+	'blog',
+	'api',
+	'about',
 ]

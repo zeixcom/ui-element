@@ -3,152 +3,21 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Examples & Recipes – UIElement Docs</title>
+		<title>Examples – UIElement Docs</title>
 		<meta name="description" content="Common use cases and demos" />
 		<link rel="stylesheet" href="./assets/main.css" />
 		<script type="module" src="./assets/main.js"></script>
-		<style>
-			/* Section Navigation Styles */
-			.api-navigation,
-			.blog-navigation {
-				grid-area: sidebar;
-				position: sticky;
-				top: 2rem;
-				max-height: calc(100vh - 4rem);
-				overflow-y: auto;
-				padding: 1rem;
-				background: var(--color-background-soft, #f8f9fa);
-				border: 1px solid var(--color-border, #e1e5e9);
-				border-radius: 0.5rem;
-				margin-left: 2rem;
-				min-width: 280px;
-				max-width: 320px;
-			}
-
-			.api-menu section {
-				margin-bottom: 1.5rem;
-			}
-
-			.api-menu h3,
-			.blog-menu h3 {
-				font-size: 0.875rem;
-				font-weight: 600;
-				text-transform: uppercase;
-				color: var(--color-text-soft, #6b7280);
-				margin: 0 0 0.75rem 0;
-				padding-bottom: 0.25rem;
-				border-bottom: 1px solid var(--color-border, #e1e5e9);
-			}
-
-			.api-menu ul,
-			.blog-menu ul {
-				list-style: none;
-				margin: 0;
-				padding: 0;
-			}
-
-			.api-menu li {
-				margin-bottom: 0.25rem;
-			}
-
-			.blog-menu li {
-				margin-bottom: 0.75rem;
-			}
-
-			.api-menu a {
-				display: block;
-				padding: 0.375rem 0.75rem;
-				color: var(--color-text, #374151);
-				text-decoration: none;
-				font-size: 0.875rem;
-				border-radius: 0.25rem;
-				transition: all 0.15s ease;
-			}
-
-			.blog-menu a {
-				display: block;
-				padding: 0.75rem;
-				color: var(--color-text, #374151);
-				text-decoration: none;
-				border-radius: 0.375rem;
-				border: 1px solid transparent;
-				transition: all 0.15s ease;
-			}
-
-			.api-menu a:hover {
-				background: var(--color-primary-soft, #eff6ff);
-				color: var(--color-primary, #2563eb);
-			}
-
-			.blog-menu a:hover {
-				border-color: var(--color-border, #e1e5e9);
-				background: var(--color-background, white);
-				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-			}
-
-			.api-menu a.active,
-			.blog-menu a.active {
-				background: var(--color-primary, #2563eb);
-				color: white;
-				font-weight: 500;
-			}
-
-			.blog-menu .title {
-				display: block;
-				font-weight: 500;
-				font-size: 0.875rem;
-				line-height: 1.25;
-				margin-bottom: 0.25rem;
-			}
-
-			.blog-menu .description {
-				display: block;
-				font-size: 0.75rem;
-				color: var(--color-text-soft, #6b7280);
-				line-height: 1.3;
-			}
-
-			/* Layout adjustments for pages with section navigation */
-			main.has-sidebar {
-				display: grid;
-				grid-template-areas: 'content sidebar';
-				grid-template-columns: 1fr auto;
-				gap: 2rem;
-				align-items: start;
-			}
-
-			main.has-sidebar .content {
-				grid-area: content;
-			}
-
-			@media (max-width: 1200px) {
-				.api-navigation,
-				.blog-navigation {
-					position: static;
-					margin-left: 0;
-					margin-top: 2rem;
-					max-height: none;
-					min-width: auto;
-					max-width: none;
-				}
-
-				main.has-sidebar {
-					grid-template-areas:
-						'content'
-						'sidebar';
-					grid-template-columns: 1fr;
-				}
-			}
-		</style>
 	</head>
-	<body class="section-">
+	<body class="">
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
 					UIElement Docs <small>Version 0.13.1</small>
 				</h1>
 				
-	<nav class="breakout">
+<section-menu>
+	<nav>
+		<h2 class="visually-hidden">Main Menu</h2>
 		<ol>
 			
 				<li>
@@ -168,17 +37,17 @@
 				</li>
 
 				<li>
-					<a href="building-components.html">
+					<a href="components.html">
 						<span class="icon">🏗️</span>
-						<strong>Building Components</strong>
+						<strong>Components</strong>
 						<small>Anatomy, lifecycle, signals, effects</small>
 					</a>
 				</li>
 
 				<li>
-					<a href="styling-components.html">
+					<a href="styling.html">
 						<span class="icon">🎨</span>
-						<strong>Styling Components</strong>
+						<strong>Styling</strong>
 						<small>Scoped styles, CSS custom properties</small>
 					</a>
 				</li>
@@ -192,23 +61,23 @@
 				</li>
 
 				<li>
-					<a href="examples-recipes.html">
+					<a href="examples.html">
 						<span class="icon">🍽️</span>
-						<strong>Examples & Recipes</strong>
+						<strong>Examples</strong>
 						<small>Common use cases and demos</small>
 					</a>
 				</li>
 
 				<li>
-					<a href="patterns-techniques.html">
-						<span class="icon">💡</span>
-						<strong>Patterns & Techniques</strong>
-						<small>Advanced patterns, testing strategies, and best practices</small>
+					<a href="blog.html">
+						<span class="icon">📜</span>
+						<strong>Blog</strong>
+						<small>Latest articles and updates</small>
 					</a>
 				</li>
 
 				<li>
-					<a href="api-reference.html">
+					<a href="api.html">
 						<span class="icon">📚</span>
 						<strong>API Reference</strong>
 						<small>Detailed documentation of types and functions</small>
@@ -216,20 +85,21 @@
 				</li>
 
 				<li>
-					<a href="about-community.html">
+					<a href="about.html">
 						<span class="icon">🤝</span>
-						<strong>About & Community</strong>
+						<strong>About</strong>
 						<small>License, versioning, getting involved</small>
 					</a>
 				</li>
 		</ol>
 	</nav>
+</section-menu>
 				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
 			<main class="content-grid ">
-				<div class="content"><section class="hero">
+				<section-hero>
 
 <h1 id="examples-amp-recipes">
                 <a name="examples-amp-recipes" class="anchor" href="#examples-amp-recipes">
@@ -237,207 +107,37 @@
                 </a>
                 🍽️ Examples &amp; Recipes
             </h1>
-<p class="lead">Discover practical examples and patterns for building reactive, modular components with UIElement. Each example focuses on showcasing a specific feature or best practice, guiding you through real-world use cases.</p>
-</section>
+<div>
+  <p class="lead">Discover practical examples and patterns for building reactive, modular components with UIElement. Each example focuses on showcasing a specific feature or best practice, guiding you through real-world use cases.</p>
+  
+<module-toc>
+	<nav>
+		<h2>In this Page</h2>
+		<ol>
+			<li><a href="#simple-counter-component">Simple Counter Component</a></li>
+			<li><a href="#simple-carousel-component">Simple Carousel Component</a></li>
+			<li><a href="#combobox">Combobox</a></li>
+			<li><a href="#todo-app">Todo App</a></li>
+			<li><a href="#advanced-slider-component">Advanced Slider Component</a></li>
+			<li><a href="#form-validation-with-real-time-feedback">Form Validation with Real-time Feedback</a></li>
+			<li><a href="#dynamic-content-loading">Dynamic Content Loading</a></li>
+			<li><a href="#component-composition-patterns">Component Composition Patterns</a></li>
+			<li><a href="#testing-uielement-components">Testing UIElement Components</a></li>
+			<li><a href="#next-steps">Next Steps</a></li>
+		</ol>
+	</nav>
+</module-toc>
+</div>
+</section-hero>
 
 <section>
 
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<h2 id="simple-click-counter">
-                <a name="simple-click-counter" class="anchor" href="#simple-click-counter">
+<h2 id="simple-counter-component">
+                <a name="simple-counter-component" class="anchor" href="#simple-counter-component">
 	                <span class="permalink">🔗</span>
                 </a>
-                Simple Click Counter
+                Simple Counter Component
             </h2>
-<p>This example demonstrates basic state management and user interactions, building on the concepts from Getting Started.</p>
-<p><strong>What it shows:</strong></p>
-<ul>
-<li>Numeric properties with <code>asInteger()</code></li>
-<li>Multiple effects on the same element</li>
-<li>Dynamic CSS classes based on state</li>
-<li>Functions for computed values</li>
-</ul>
-<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">  asInteger,</span></span>
-<span class="line"><span style="color:#F8F8F2">  component,</span></span>
-<span class="line"><span style="color:#F8F8F2">  first,</span></span>
-<span class="line"><span style="color:#F8F8F2">  on,</span></span>
-<span class="line"><span style="color:#F8F8F2">  RESET,</span></span>
-<span class="line"><span style="color:#F8F8F2">  setText,</span></span>
-<span class="line"><span style="color:#F8F8F2">  toogleClass,</span></span>
-<span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">  'click-counter'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">  {</span></span>
-<span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(RESET), </span><span style="color:#88846F">// Get initial count from HTML</span></span>
-<span class="line"><span style="color:#F8F8F2">  },</span></span>
-<span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">    // Apply multiple effects to the same button</span></span>
-<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">      'button'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#88846F">      // Update the count display (nested selector)</span></span>
-<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">      // Handle clicks to increment</span></span>
-<span class="line"><span style="color:#A6E22E">      on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">        el.count</span><span style="color:#F92672">++</span></span>
-<span class="line"><span style="color:#F8F8F2">      }),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">      // Update button style based on count</span></span>
-<span class="line"><span style="color:#A6E22E">      toogleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'popular'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.count </span><span style="color:#F92672">>=</span><span style="color:#AE81FF"> 10</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#F8F8F2">    ),</span></span>
-<span class="line"><span style="color:#F8F8F2">  ],</span></span>
-<span class="line"><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	<button type="button" class="overlay">Expand</button>
-</module-codeblock>
-<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">html</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">click-counter</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">    Click me!</span></span>
-<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"count"</span><span style="color:#F8F8F2">>0&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">> clicks</span></span>
-<span class="line"><span style="color:#F8F8F2">  &#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">click-counter</span><span style="color:#F8F8F2">></span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	
-</module-codeblock>
-<p><strong>New concepts introduced:</strong></p>
-<ul>
-<li><code>asInteger()</code> for numeric properties</li>
-<li>Multiple effects on the same element (button)</li>
-<li>Nested selectors (<code>first(&quot;.count&quot;, ...)</code> inside <code>first(&quot;button&quot;, ...)</code>)</li>
-<li>Dynamic CSS classes based on state (<code>toogleClass</code>)</li>
-<li>Functions for computed values (<code>() =&gt; el.count &gt;= 10</code>)</li>
-</ul>
-<p>This example shows how UIElement scales from simple text updates to more complex interactions while keeping the code readable and declarative.</p>
-</section>
-
-<section>
-
-<h2 id="interactive-appreciation-button">
-                <a name="interactive-appreciation-button" class="anchor" href="#interactive-appreciation-button">
-	                <span class="permalink">🔗</span>
-                </a>
-                Interactive Appreciation Button
-            </h2>
-<p>This example demonstrates state management, conditional rendering, and user interactions in a single component.</p>
-<p><strong>What it shows:</strong></p>
-<ul>
-<li>Reactive state with <code>asInteger(RESET)</code></li>
-<li>Conditional DOM updates based on state</li>
-<li>Event handling for user clicks</li>
-<li>Server-side rendering hydration</li>
-</ul>
-<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asInteger, component, on, RESET, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">  'show-appreciation'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">  {</span></span>
-<span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(RESET), </span><span style="color:#88846F">// Get initial value from .count element</span></span>
-<span class="line"><span style="color:#F8F8F2">  },</span></span>
-<span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">    // Update count display when state changes</span></span>
-<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">    // Handle click events to change state</span></span>
-<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">      'button'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">      on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">        el.count</span><span style="color:#F92672">++</span></span>
-<span class="line"><span style="color:#F8F8F2">      }),</span></span>
-<span class="line"><span style="color:#F8F8F2">    ),</span></span>
-<span class="line"><span style="color:#F8F8F2">  ],</span></span>
-<span class="line"><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	<button type="button" class="overlay">Expand</button>
-</module-codeblock>
-<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">html</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">show-appreciation</span><span style="color:#A6E22E"> aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Show appreciation"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"emoji"</span><span style="color:#F8F8F2">>💐&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"count"</span><span style="color:#F8F8F2">>5&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">  &#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">show-appreciation</span><span style="color:#F8F8F2">></span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	
-</module-codeblock>
-<p><strong>Key patterns:</strong></p>
-<ul>
-<li>Using <code>RESET</code> to hydrate from server-rendered content</li>
-<li>Simple state mutations with automatic DOM updates</li>
-<li>Semantic HTML structure with progressive enhancement</li>
-</ul>
-</section>
-
-<section>
-
-<h2 id="combobox">
-                <a name="combobox" class="anchor" href="#combobox">
-	                <span class="permalink">🔗</span>
-                </a>
-                Combobox
-            </h2>
-<p>=======</p>
-<h2 id="simple-counter">
-                <a name="simple-counter" class="anchor" href="#simple-counter">
-	                <span class="permalink">🔗</span>
-                </a>
-                Simple Counter
-            </h2>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>3960718687d895827d215e1a484959dbbb958c5c</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
 <module-demo>
   <div class="preview">
     <basic-counter>
@@ -1585,8 +1285,7 @@
 <li><strong><a href="styling-components.html">Styling Components</a></strong> - Add professional styling to your components</li>
 </ul>
 </section>
-</div>
-				 
+ 
 			</main>
 			<footer class="content-grid">
 				<div class="content">

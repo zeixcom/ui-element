@@ -4,12 +4,15 @@ emoji: '🔄'
 description: 'Passing state, events, context'
 ---
 
-<section class="hero">
+<section-hero>
 
 # 🔄 Data Flow
 
-<p class="lead"><strong>Learn how UIElement components can work together seamlessly.</strong> Start with simple parent-child relationships, then explore advanced patterns like custom events and shared state. Build modular, loosely coupled components that communicate efficiently.</p>
-</section>
+<div>
+  <p class="lead"><strong>Learn how UIElement components can work together seamlessly.</strong> Start with simple parent-child relationships, then explore advanced patterns like custom events and shared state. Build modular, loosely coupled components that communicate efficiently.</p>
+  {{ toc }}
+</div>
+</section-hero>
 
 <section>
 

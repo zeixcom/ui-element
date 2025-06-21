@@ -14,6 +14,8 @@ import { generateApiMenu } from './generate-api-menu'
 import { generateBlogMenu } from './generate-blog-menu'
 import { generateMenu } from './generate-menu'
 import { generateSitemap } from './generate-sitemap'
+import { generateSlug } from './generate-slug'
+import { generateTOC } from './generate-toc'
 import { replaceAsync } from './replace-async'
 import { transformCodeBlocks } from './transform-codeblocks'
 
@@ -22,7 +24,6 @@ marked.setOptions({
 	breaks: true, // Allows line breaks without needing double spaces
 })
 
-// Enhanced page type with section information
 type PageInfo = {
 	filename: string
 	title: string
@@ -113,11 +114,7 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 	htmlContent = htmlContent.replace(
 		/<h([1-6])>(.+?)<\/h[1-6]>/g,
 		(_match, level, text) => {
-			const slug = text
-				.toLowerCase()
-				.replace(/[^\w\- ]+/g, '')
-				.trim()
-				.replace(/\s+/g, '-')
+			const slug = generateSlug(text)
 
 			return `<h${level} id="${slug}">
                 <a name="${slug}" class="anchor" href="#${slug}">
@@ -127,6 +124,9 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
             </h${level}>`
 		},
 	)
+
+	// Generate TOC from processed HTML content (after heading anchors are added)
+	const tocHtml = await generateTOC(htmlContent)
 
 	// Fix internal .md links to .html
 	htmlContent = htmlContent.replace(
@@ -205,14 +205,10 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 				new RegExp(`(<a href="${currentPageInMenu}")`, 'g'),
 				'$1 class="active"',
 			)
-			layout = layout.replace(
-				"{{ include 'api-menu.html' }}",
-				apiMenuHtml,
-			)
+			layout = layout.replace('{{ sidebar }}', apiMenuHtml)
 		} catch {
-			layout = layout.replace("{{ include 'api-menu.html' }}", '')
+			layout = layout.replace('{{ sidebar }}', '')
 		}
-		layout = layout.replace("{{ include 'blog-menu.html' }}", '')
 	} else if (section === 'blog') {
 		// Load and process blog menu with active state
 		try {
@@ -224,18 +220,12 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 				new RegExp(`(<a href="${currentPageInMenu}")`, 'g'),
 				'$1 class="active"',
 			)
-			layout = layout.replace(
-				"{{ include 'blog-menu.html' }}",
-				blogMenuHtml,
-			)
+			layout = layout.replace('{{ sidebar }}', blogMenuHtml)
 		} catch {
-			layout = layout.replace("{{ include 'blog-menu.html' }}", '')
+			layout = layout.replace('{{ sidebar }}', '')
 		}
-		layout = layout.replace("{{ include 'api-menu.html' }}", '')
 	} else {
-		// Hide both section menus for root pages
-		layout = layout.replace("{{ include 'api-menu.html' }}", '')
-		layout = layout.replace("{{ include 'blog-menu.html' }}", '')
+		layout = layout.replace('{{ sidebar }}', '')
 	}
 
 	// 1️⃣ Process remaining includes
@@ -254,6 +244,7 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 			return section === 'api' || section === 'blog' ? 'has-sidebar' : ''
 		if (key === 'base-path') return basePath
 		if (key === 'title') return title || ''
+		if (key === 'toc') return tocHtml
 		return frontmatter[key] || ''
 	})
 

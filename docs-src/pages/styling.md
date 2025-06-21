@@ -1,15 +1,18 @@
 ---
-title: 'Styling Components'
+title: 'Styling'
 emoji: '🎨'
 description: 'Scoped styles, CSS custom properties'
 ---
 
-<section class="hero">
+<section-hero>
 
-# 🎨 Styling Components
+# 🎨 Styling
 
-<p class="lead"><strong>Keep your components’ styles self-contained while supporting shared design tokens.</strong> UIElement does not enforce a specific styling method, but we recommend techniques that help balance encapsulation, reusability, and maintainability.</p>
-</section>
+<div>
+  <p class="lead"><strong>Keep your components’ styles self-contained while supporting shared design tokens.</strong> UIElement offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
+  {{ toc }}
+</div>
+</section-hero>
 
 <section>
 

@@ -1,15 +1,18 @@
 ---
-title: 'About & Community'
+title: 'About'
 emoji: '🤝'
 description: 'License, versioning, getting involved'
 ---
 
-<section class="hero">
+<section-hero>
 
-# 🤝 About & Community
+# 🤝 About
 
-<p class="lead"><strong>Join the UIElement community!</strong> This page covers the people behind UIElement, how you can contribute, versioning details, and licensing. Whether you’re a developer, designer, or sponsor, there are many ways to get involved.</p>
-</section>
+<div>
+  <p class="lead"><strong>Join the UIElement community!</strong> This page covers the people behind UIElement, how you can contribute, versioning details, and licensing. Whether you’re a developer, designer, or sponsor, there are many ways to get involved.</p>
+  {{ toc }}
+</div>
+</section-hero>
 
 <section>
 

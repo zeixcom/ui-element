@@ -1,15 +1,18 @@
 ---
-title: 'Building Components'
+title: 'Components'
 emoji: '🏗️'
 description: 'Anatomy, lifecycle, signals, effects'
 ---
 
-<section class="hero">
+<section-hero>
 
-# 🏗️ Building Components
+# 🏗️ Components
 
-<p class="lead"><strong>Create lightweight, self-contained Web Components with built-in reactivity</strong>. UIElement lets you define custom elements that manage state efficiently, update the DOM automatically, and enhance server-rendered pages without an SPA framework.</p>
-</section>
+<div>
+  <p class="lead"><strong>Create lightweight, self-contained Web Components with built-in reactivity</strong>. UIElement lets you define custom elements that manage state efficiently, update the DOM automatically, and enhance server-rendered pages without an SPA framework.</p>
+  {{ toc }}
+</div>
+</section-hero>
 
 <section>
 
