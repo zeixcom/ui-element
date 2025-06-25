@@ -8,7 +8,7 @@
 
 > **pass**\<`P`, `Q`\>(`signals`): \<`E`\>(`host`, `target`) => `void`
 
-Defined in: [src/core/dom.ts:462](https://github.com/zeixcom/ui-element/blob/a6fb4a88fd37bb5ca41823947687e8a37d5f2e08/src/core/dom.ts#L462)
+Defined in: [src/core/dom.ts:462](https://github.com/zeixcom/ui-element/blob/6285025fa3b3778fb2f356dae80a5fa6250ac264/src/core/dom.ts#L462)
 
 Pass signals to a custom element
 

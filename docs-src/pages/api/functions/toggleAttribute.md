@@ -8,7 +8,7 @@
 
 > **toggleAttribute**\<`P`, `E`\>(`name`, `s`): [`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:379](https://github.com/zeixcom/ui-element/blob/a6fb4a88fd37bb5ca41823947687e8a37d5f2e08/src/lib/effects.ts#L379)
+Defined in: [src/lib/effects.ts:379](https://github.com/zeixcom/ui-element/blob/6285025fa3b3778fb2f356dae80a5fa6250ac264/src/lib/effects.ts#L379)
 
 Toggle a boolan attribute of an element
 

@@ -1,7 +1,6 @@
 import {
 	type Component,
 	type Context,
-	type SignalProducer,
 	type State,
 	component,
 	provide,
@@ -40,27 +39,27 @@ export default component(
 	'context-media',
 	{
 		// Context for reduced motion preference
-		[MEDIA_MOTION]: (() => {
+		[MEDIA_MOTION]: () => {
 			const mql = matchMedia('(prefers-reduced-motion: reduce)')
 			const reducedMotion = state(mql.matches)
 			mql.addEventListener('change', e => {
 				reducedMotion.set(e.matches)
 			})
 			return reducedMotion
-		}) as SignalProducer<HTMLElement, boolean>,
+		},
 
 		// Context for preferred color scheme
-		[MEDIA_THEME]: (() => {
+		[MEDIA_THEME]: () => {
 			const mql = matchMedia('(prefers-color-scheme: dark)')
 			const colorScheme = state(mql.matches ? 'dark' : 'light')
 			mql.addEventListener('change', e => {
 				colorScheme.set(e.matches ? 'dark' : 'light')
 			})
 			return colorScheme
-		}) as SignalProducer<HTMLElement, 'light' | 'dark'>,
+		},
 
 		// Context for screen viewport size
-		[MEDIA_VIEWPORT]: (el => {
+		[MEDIA_VIEWPORT]: el => {
 			const getBreakpoint = (attr: string, fallback: string) => {
 				const value = el.getAttribute(attr)
 				const trimmed = value?.trim()
@@ -102,17 +101,17 @@ export default component(
 				viewport.set(getViewport())
 			})
 			return viewport
-		}) as SignalProducer<HTMLElement, 'xs' | 'sm' | 'md' | 'lg' | 'xl'>,
+		},
 
 		// Context for screen orientation
-		[MEDIA_ORIENTATION]: (() => {
+		[MEDIA_ORIENTATION]: () => {
 			const mql = matchMedia('(orientation: landscape)')
 			const orientation = state(mql.matches ? 'landscape' : 'portrait')
 			mql.addEventListener('change', e => {
 				orientation.set(e.matches ? 'landscape' : 'portrait')
 			})
 			return orientation
-		}) as SignalProducer<HTMLElement, 'landscape' | 'portrait'>,
+		},
 	},
 	() => [
 		provide([MEDIA_MOTION, MEDIA_THEME, MEDIA_VIEWPORT, MEDIA_ORIENTATION]),

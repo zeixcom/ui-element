@@ -8,7 +8,7 @@
 
 > **PassedSignals**\<`P`, `Q`\> = \{ \[K in keyof Q\]?: Signal\<Q\[K\]\> \| ((element: Component\<Q\>) =\> Q\[K\]) \| keyof P \}
 
-Defined in: [src/core/dom.ts:85](https://github.com/zeixcom/ui-element/blob/a6fb4a88fd37bb5ca41823947687e8a37d5f2e08/src/core/dom.ts#L85)
+Defined in: [src/core/dom.ts:85](https://github.com/zeixcom/ui-element/blob/6285025fa3b3778fb2f356dae80a5fa6250ac264/src/core/dom.ts#L85)
 
 ## Type Parameters
 

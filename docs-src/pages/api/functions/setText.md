@@ -8,7 +8,7 @@
 
 > **setText**\<`P`, `E`\>(`s`): [`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:290](https://github.com/zeixcom/ui-element/blob/a6fb4a88fd37bb5ca41823947687e8a37d5f2e08/src/lib/effects.ts#L290)
+Defined in: [src/lib/effects.ts:290](https://github.com/zeixcom/ui-element/blob/6285025fa3b3778fb2f356dae80a5fa6250ac264/src/lib/effects.ts#L290)
 
 Set text content of an element
 

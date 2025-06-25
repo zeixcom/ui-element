@@ -8,4 +8,4 @@
 
 > `const` **RESET**: `any`
 
-Defined in: [src/component.ts:105](https://github.com/zeixcom/ui-element/blob/a6fb4a88fd37bb5ca41823947687e8a37d5f2e08/src/component.ts#L105)
+Defined in: [src/component.ts:105](https://github.com/zeixcom/ui-element/blob/6285025fa3b3778fb2f356dae80a5fa6250ac264/src/component.ts#L105)

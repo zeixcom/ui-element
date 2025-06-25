@@ -8,7 +8,7 @@
 
 > **consume**\<`T`, `C`\>(`context`, `fallback`): (`host`) => [`Signal`](../type-aliases/Signal.md)\<`T`\>
 
-Defined in: [src/core/context.ts:124](https://github.com/zeixcom/ui-element/blob/a6fb4a88fd37bb5ca41823947687e8a37d5f2e08/src/core/context.ts#L124)
+Defined in: [src/core/context.ts:124](https://github.com/zeixcom/ui-element/blob/6285025fa3b3778fb2f356dae80a5fa6250ac264/src/core/context.ts#L124)
 
 Consume a context value for a component.
 
