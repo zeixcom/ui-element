@@ -8,7 +8,7 @@
 
 > **emit**\<`T`\>(`type`, `detail`): \<`P`\>(`host`, `target`) => `void`
 
-Defined in: [src/core/dom.ts:439](https://github.com/zeixcom/ui-element/blob/bd4ae3ed0a4d2790834ffe22cb9cd0696e3104c4/src/core/dom.ts#L439)
+Defined in: [src/core/dom.ts:439](https://github.com/zeixcom/ui-element/blob/a6fb4a88fd37bb5ca41823947687e8a37d5f2e08/src/core/dom.ts#L439)
 
 Emit a custom event with the given detail
 

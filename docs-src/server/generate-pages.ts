@@ -10,8 +10,6 @@ import {
 	OUTPUT_DIR,
 	PAGES_DIR,
 } from './config'
-import { generateApiMenu } from './generate-api-menu'
-import { generateBlogMenu } from './generate-blog-menu'
 import { generateMenu } from './generate-menu'
 import { generateSitemap } from './generate-sitemap'
 import { generateSlug } from './generate-slug'
@@ -102,9 +100,27 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 	const { data: frontmatter, content } = matter(mdContent)
 	// console.log(`📝 Frontmatter:`, frontmatter);
 
+	// Determine section and depth early for API processing
+	const pathParts = relativePath.split(/[/\\]/) // Handle both Unix and Windows paths
+	const section = pathParts.length > 1 ? pathParts[0] : undefined
+	const depth = pathParts.length - 1
+
+	// Clean up API content: remove everything above the first H1 heading
+	let processedContent = content
+	if (section === 'api') {
+		const h1Match = content.match(/^(#\s+.+)$/m)
+		if (h1Match) {
+			const h1Index = content.indexOf(h1Match[0])
+			processedContent = content.substring(h1Index)
+			console.log(
+				`🧹 Cleaned API content: removed ${h1Index} characters before H1`,
+			)
+		}
+	}
+
 	// Convert Markdown content to HTML and process code blocks
 	const { processedMarkdown, codeBlockMap } =
-		await transformCodeBlocks(content)
+		await transformCodeBlocks(processedContent)
 
 	// Convert Markdown to HTML first
 	let htmlContent = await marked.parse(processedMarkdown)
@@ -142,13 +158,13 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 		)
 	})
 
+	// Wrap API pages in a section tag for layout purposes
+	if (section === 'api') {
+		htmlContent = `<section class="api-content">\n${htmlContent}\n</section>`
+	}
+
 	// Generate output URL (preserve directory structure)
 	const url = relativePath.replace('.md', '.html')
-
-	// Determine section and depth
-	const pathParts = relativePath.split(/[/\\]/) // Handle both Unix and Windows paths
-	const section = pathParts.length > 1 ? pathParts[0] : undefined
-	const depth = pathParts.length - 1
 
 	// Calculate base href for assets and navigation
 	const basePath = depth > 0 ? '../'.repeat(depth) : './'
@@ -156,14 +172,14 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 	// Extract title from first heading if no frontmatter title (common for API docs)
 	let title = frontmatter.title
 	if (!title && section === 'api') {
-		const headingMatch = content.match(
+		const headingMatch = processedContent.match(
 			/^#\s+(Function|Type Alias|Variable):\s*(.+?)(?:\(\))?$/m,
 		)
 		if (headingMatch) {
 			title = headingMatch[2].trim() // Extract the actual function/type name
 		} else {
 			// Fallback to generic heading extraction
-			const fallbackMatch = content.match(/^#\s+(.+)$/m)
+			const fallbackMatch = processedContent.match(/^#\s+(.+)$/m)
 			if (fallbackMatch) {
 				title = fallbackMatch[1].replace(/\(.*?\)$/, '').trim()
 			}
@@ -193,41 +209,6 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 	)
 	layout = layout.replace("{{ include 'menu.html' }}", menuHtml)
 
-	// Handle section-specific includes
-	if (section === 'api') {
-		// Load and process API menu with active state
-		try {
-			const apiMenuPath = join(INCLUDES_DIR, 'api-menu.html')
-			let apiMenuHtml = await readFile(apiMenuPath, 'utf8')
-			// Mark current page as active in API menu
-			const currentPageInMenu = url.replace('api/', '')
-			apiMenuHtml = apiMenuHtml.replace(
-				new RegExp(`(<a href="${currentPageInMenu}")`, 'g'),
-				'$1 class="active"',
-			)
-			layout = layout.replace('{{ sidebar }}', apiMenuHtml)
-		} catch {
-			layout = layout.replace('{{ sidebar }}', '')
-		}
-	} else if (section === 'blog') {
-		// Load and process blog menu with active state
-		try {
-			const blogMenuPath = join(INCLUDES_DIR, 'blog-menu.html')
-			let blogMenuHtml = await readFile(blogMenuPath, 'utf8')
-			// Mark current page as active in blog menu
-			const currentPageInMenu = url.replace('blog/', '')
-			blogMenuHtml = blogMenuHtml.replace(
-				new RegExp(`(<a href="${currentPageInMenu}")`, 'g'),
-				'$1 class="active"',
-			)
-			layout = layout.replace('{{ sidebar }}', blogMenuHtml)
-		} catch {
-			layout = layout.replace('{{ sidebar }}', '')
-		}
-	} else {
-		layout = layout.replace('{{ sidebar }}', '')
-	}
-
 	// 1️⃣ Process remaining includes
 	layout = await loadIncludes(layout)
 	// console.log(`📎 After Includes Processing:`, layout);
@@ -240,8 +221,6 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 	layout = layout.replace(/{{ (.*?) }}/g, (_, key) => {
 		if (key === 'url') return url
 		if (key === 'section') return section || ''
-		if (key === 'has-sidebar')
-			return section === 'api' || section === 'blog' ? 'has-sidebar' : ''
 		if (key === 'base-path') return basePath
 		if (key === 'title') return title || ''
 		if (key === 'toc') return tocHtml
@@ -278,22 +257,8 @@ const run = async () => {
 	// Process all Markdown files
 	const pages = await Promise.all(markdownFiles.map(processMarkdownFile))
 
-	// Separate pages by section
-	const rootPages = pages.filter(p => !p.section)
-	const apiPages = pages.filter(p => p.section === 'api')
-	const blogPages = pages.filter(p => p.section === 'blog')
-
 	// Generate main menu (only root pages)
-	await generateMenu(rootPages)
-
-	// Generate section-specific menus
-	if (apiPages.length > 0) {
-		await generateApiMenu(apiPages)
-	}
-
-	if (blogPages.length > 0) {
-		await generateBlogMenu(blogPages)
-	}
+	await generateMenu(pages.filter(p => !p.section))
 
 	// Generate sitemap with all pages
 	await generateSitemap(pages)

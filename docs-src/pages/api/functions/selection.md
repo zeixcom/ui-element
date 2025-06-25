@@ -8,7 +8,7 @@
 
 > **selection**\<`E`\>(`parent`, `selectors`): [`Computed`](../type-aliases/Computed.md)\<`E`[]\>
 
-Defined in: [src/core/dom.ts:195](https://github.com/zeixcom/ui-element/blob/bd4ae3ed0a4d2790834ffe22cb9cd0696e3104c4/src/core/dom.ts#L195)
+Defined in: [src/core/dom.ts:195](https://github.com/zeixcom/ui-element/blob/a6fb4a88fd37bb5ca41823947687e8a37d5f2e08/src/core/dom.ts#L195)
 
 Create a element selection signal from a query selector
 

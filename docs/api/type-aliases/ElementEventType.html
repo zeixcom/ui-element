@@ -80,7 +80,7 @@
 					<a href="../../api.html">
 						<span class="icon">📚</span>
 						<strong>API Reference</strong>
-						<small>Detailed documentation of types and functions</small>
+						<small>Functions, types, and constants</small>
 					</a>
 				</li>
 
@@ -98,10 +98,7 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid has-sidebar">
-				<p><a href="../README.html"><strong>@zeix/ui-element</strong></a></p>
-<hr>
-<p><a href="../globals.html">@zeix/ui-element</a> / ElementEventType</p>
+			<main class="content-grid"><section class="api-content">
 <h1 id="type-alias-elementeventtypelte-kgt">
                 <a name="type-alias-elementeventtypelte-kgt" class="anchor" href="#type-alias-elementeventtypelte-kgt">
 	                <span class="permalink">🔗</span>
@@ -111,7 +108,7 @@
 <blockquote>
 <p><strong>ElementEventType</strong>&lt;<code>E</code>, <code>K</code>&gt; = <code>K</code> <em>extends</em> keyof <a href="ElementEventMap.html"><code>ElementEventMap</code></a>&lt;<code>E</code>&gt; ? <a href="ElementEventMap.html"><code>ElementEventMap</code></a>&lt;<code>E</code>&gt;[<code>K</code>] : <code>Event</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/bd4ae3ed0a4d2790834ffe22cb9cd0696e3104c4/src/core/dom.ts#L77">src/core/dom.ts:77</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/a6fb4a88fd37bb5ca41823947687e8a37d5f2e08/src/core/dom.ts#L77">src/core/dom.ts:77</a></p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -132,110 +129,8 @@
                 K
             </h3>
 <p><code>K</code> <em>extends</em> <code>string</code></p>
- <aside class="api-navigation">
-  <nav class="api-menu">
-    <section>
-      <h3>Overview</h3>
-      <ul>
-        <li><a href="README.html">API Reference</a></li>
-        <li><a href="globals.html">@zeix/ui-element</a></li>
-      </ul>
-    </section>
-    <section>
-      <h3>Functions</h3>
-      <ul>
-        <li><a href="functions/asEnum.html">asEnum()</a></li>
-        <li><a href="functions/asInteger.html">asInteger()</a></li>
-        <li><a href="functions/asJSON.html">asJSON()</a></li>
-        <li><a href="functions/asNumber.html">asNumber()</a></li>
-        <li><a href="functions/asString.html">asString()</a></li>
-        <li><a href="functions/batch.html">batch()</a></li>
-        <li><a href="functions/component.html">component()</a></li>
-        <li><a href="functions/computed.html">computed()</a></li>
-        <li><a href="functions/consume.html">consume()</a></li>
-        <li><a href="functions/dangerouslySetInnerHTML.html">dangerouslySetInnerHTML()</a></li>
-        <li><a href="functions/effect.html">effect()</a></li>
-        <li><a href="functions/emit.html">emit()</a></li>
-        <li><a href="functions/enqueue.html">enqueue()</a></li>
-        <li><a href="functions/fromChild.html">fromChild()</a></li>
-        <li><a href="functions/fromChildren.html">fromChildren()</a></li>
-        <li><a href="functions/fromEvent.html">fromEvent()</a></li>
-        <li><a href="functions/fromSelector.html">fromSelector()</a></li>
-        <li><a href="functions/insertOrRemoveElement.html">insertOrRemoveElement()</a></li>
-        <li><a href="functions/isComputed.html">isComputed()</a></li>
-        <li><a href="functions/isSignal.html">isSignal()</a></li>
-        <li><a href="functions/isState.html">isState()</a></li>
-        <li><a href="functions/log.html">log()</a></li>
-        <li><a href="functions/on.html">on()</a></li>
-        <li><a href="functions/pass.html">pass()</a></li>
-        <li><a href="functions/provide.html">provide()</a></li>
-        <li><a href="functions/read.html">read()</a></li>
-        <li><a href="functions/selection.html">selection()</a></li>
-        <li><a href="functions/sensor.html">sensor()</a></li>
-        <li><a href="functions/setAttribute.html">setAttribute()</a></li>
-        <li><a href="functions/setProperty.html">setProperty()</a></li>
-        <li><a href="functions/setStyle.html">setStyle()</a></li>
-        <li><a href="functions/setText.html">setText()</a></li>
-        <li><a href="functions/show.html">show()</a></li>
-        <li><a href="functions/state.html">state()</a></li>
-        <li><a href="functions/toggleAttribute.html">toggleAttribute()</a></li>
-        <li><a href="functions/toggleClass.html">toggleClass()</a></li>
-        <li><a href="functions/toSignal.html">toSignal()</a></li>
-        <li><a href="functions/updateElement.html">updateElement()</a></li>
-      </ul>
-    </section>
-    <section>
-      <h3>Types</h3>
-      <ul>
-        <li><a href="type-aliases/AttributeParser.html">AttributeParser()\<T, C\></a></li>
-        <li><a href="type-aliases/Cleanup.html">Cleanup</a></li>
-        <li><a href="type-aliases/Component.html">Component\<P\></a></li>
-        <li><a href="type-aliases/ComponentProps.html">ComponentProps</a></li>
-        <li><a href="type-aliases/Computed.html">Computed\<T\></a></li>
-        <li><a href="type-aliases/ComputedCallback.html">ComputedCallback\<T\></a></li>
-        <li><a href="type-aliases/Context.html">Context\<K, V\></a></li>
-        <li><a href="type-aliases/ContextType.html">ContextType\<T\></a></li>
-        <li><a href="type-aliases/DangerouslySetInnerHTMLOptions.html">DangerouslySetInnerHTMLOptions</a></li>
-        <li><a href="type-aliases/EffectMatcher.html">EffectMatcher\<S\></a></li>
-        <li><a href="type-aliases/ElementEventMap.html">ElementEventMap\<E\></a></li>
-        <li><a href="type-aliases/ElementEventType.html" class="active">ElementEventType\<E, K\></a></li>
-        <li><a href="type-aliases/ElementFromSelector.html">ElementFromSelector\<K, E\></a></li>
-        <li><a href="type-aliases/ElementInserter.html">ElementInserter\<E\></a></li>
-        <li><a href="type-aliases/ElementUpdater.html">ElementUpdater\<E, T\></a></li>
-        <li><a href="type-aliases/FxFunction.html">FxFunction()\<P, E\></a></li>
-        <li><a href="type-aliases/Initializer.html">Initializer\<T, C\></a></li>
-        <li><a href="type-aliases/LogLevel.html">LogLevel</a></li>
-        <li><a href="type-aliases/MaybeSignal.html">MaybeSignal\<T\></a></li>
-        <li><a href="type-aliases/MethodProducer.html">MethodProducer()\<C\></a></li>
-        <li><a href="type-aliases/PassedSignals.html">PassedSignals\<P, Q\></a></li>
-        <li><a href="type-aliases/ReservedWords.html">ReservedWords</a></li>
-        <li><a href="type-aliases/SelectorFunctions.html">SelectorFunctions\<P\></a></li>
-        <li><a href="type-aliases/Signal.html">Signal\<T\></a></li>
-        <li><a href="type-aliases/SignalLike.html">SignalLike\<P, T, E\></a></li>
-        <li><a href="type-aliases/SignalProducer.html">SignalProducer()\<T, C\></a></li>
-        <li><a href="type-aliases/State.html">State\<T\></a></li>
-        <li><a href="type-aliases/UnknownContext.html">UnknownContext</a></li>
-        <li><a href="type-aliases/UpdateOperation.html">UpdateOperation</a></li>
-        <li><a href="type-aliases/ValidEventName.html">ValidEventName\<E\></a></li>
-        <li><a href="type-aliases/ValidPropertyKey.html">ValidPropertyKey\<T\></a></li>
-      </ul>
-    </section>
-    <section>
-      <h3>Variables</h3>
-      <ul>
-        <li><a href="variables/asBoolean.html">asBoolean</a></li>
-        <li><a href="variables/LOG_DEBUG.html">LOG\_DEBUG</a></li>
-        <li><a href="variables/LOG_ERROR.html">LOG\_ERROR</a></li>
-        <li><a href="variables/LOG_INFO.html">LOG\_INFO</a></li>
-        <li><a href="variables/LOG_WARN.html">LOG\_WARN</a></li>
-        <li><a href="variables/RESET.html">RESET</a></li>
-        <li><a href="variables/UNSET.html">UNSET</a></li>
-      </ul>
-    </section>
-  </nav>
-</aside>
 
-			</main>
+</section></main>
 			<footer class="content-grid">
 				<div class="content">
 					<h2 class="visually-hidden">Footer</h2>

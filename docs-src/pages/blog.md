@@ -8,5 +8,16 @@ description: 'Latest articles and updates'
 
 # 📜 Blog
 
-<p class="lead">Lead</p>
+<div>
+  <p class="lead">Latest articles and updates</p>
+</div>
 </section-hero>
+
+<section>
+
+## Introducing UIElement
+
+- [The Case for Components](./blog/the-case-for-components.md)
+- [Rethinking Reactivity](./blog/rethinking-reactivity.md)
+
+</section>

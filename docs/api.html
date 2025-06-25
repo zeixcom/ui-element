@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>API Reference – UIElement Docs</title>
-		<meta name="description" content="Detailed documentation of types and functions" />
+		<meta name="description" content="Functions, types, and constants" />
 		<link rel="stylesheet" href="./assets/main.css" />
 		<script type="module" src="./assets/main.js"></script>
 	</head>
@@ -80,7 +80,7 @@
 					<a href="api.html">
 						<span class="icon">📚</span>
 						<strong>API Reference</strong>
-						<small>Detailed documentation of types and functions</small>
+						<small>Functions, types, and constants</small>
 					</a>
 				</li>
 
@@ -98,8 +98,7 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid ">
-				<section-hero>
+			<main class="content-grid"><section-hero>
 
 <h1 id="api-reference">
                 <a name="api-reference" class="anchor" href="#api-reference">
@@ -107,13 +106,126 @@
                 </a>
                 📚 API Reference
             </h1>
+<div>
+  <p class="lead">Functions, types, and constants</p>
+  
+<module-toc>
+	<nav>
+		<h2>In this Page</h2>
+		<ol>
+			<li><a href="#component">Component</a></li>
+			<li><a href="#signals">Signals</a></li>
+			<li><a href="#attribute-parsers">Attribute Parsers</a></li>
+			<li><a href="#signal-initializers">Signal Initializers</a></li>
+			<li><a href="#effects">Effects</a></li>
+		</ol>
+	</nav>
+</module-toc>
+</div>
+
 </section-hero>
 
-<section class="breakout">
-  <iframe src="api/index.html" width="100%" height="600px"></iframe>
+<section>
+
+<h2 id="component">
+                <a name="component" class="anchor" href="#component">
+	                <span class="permalink">🔗</span>
+                </a>
+                Component
+            </h2>
+<p>Create a Web Component of type <a href="api/type-aliases/Component.html">Component</a>:</p>
+<ul>
+<li><a href="api/functions/component.html">component</a></li>
+</ul>
 </section>
- 
-			</main>
+
+<section>
+
+<h2 id="signals">
+                <a name="signals" class="anchor" href="#signals">
+	                <span class="permalink">🔗</span>
+                </a>
+                Signals
+            </h2>
+<p>Create a signal of type <a href="api/type-aliases/Signal.html">Signal</a>:</p>
+<ul>
+<li><a href="api/functions/computed.html">computed</a></li>
+<li><a href="api/functions/selection.html">selection</a></li>
+<li><a href="api/functions/sensor.html">sensor</a></li>
+<li><a href="api/functions/state.html">state</a></li>
+</ul>
+<p>Helper functions:</p>
+<ul>
+<li><a href="api/functions/isComputed.html">isComputed</a></li>
+<li><a href="api/functions/isSignal.html">isSignal</a></li>
+<li><a href="api/functions/isState.html">isState</a></li>
+</ul>
+</section>
+
+<section>
+
+<h2 id="attribute-parsers">
+                <a name="attribute-parsers" class="anchor" href="#attribute-parsers">
+	                <span class="permalink">🔗</span>
+                </a>
+                Attribute Parsers
+            </h2>
+<p>Declare how attributes are parsed. Variable of type or function returning <a href="api/type-aliases/AttributeParser.html">AttributeParser</a>:</p>
+<ul>
+<li><a href="api/variables/asBoolean.html">asBoolean</a></li>
+<li><a href="api/functions/asEnum.html">asEnum</a></li>
+<li><a href="api/functions/asInteger.html">asInteger</a></li>
+<li><a href="api/functions/asJSON.html">asJSON</a></li>
+<li><a href="api/functions/asNumber.html">asNumber</a></li>
+<li><a href="api/functions/asString.html">asString</a></li>
+</ul>
+</section>
+
+<section>
+
+<h2 id="signal-initializers">
+                <a name="signal-initializers" class="anchor" href="#signal-initializers">
+	                <span class="permalink">🔗</span>
+                </a>
+                Signal Initializers
+            </h2>
+<p>Declare how signals are initialized. Variable of type or function returning <a href="api/type-aliases/SignalInitializer.html">SignalInitializer</a>:</p>
+<ul>
+<li><a href="api/functions/consume.html">consume</a></li>
+<li><a href="api/functions/fromChild.html">fromChild</a></li>
+<li><a href="api/functions/fromChildren.html">fromChildren</a></li>
+<li><a href="api/functions/fromEvent.html">fromEvent</a></li>
+<li><a href="api/functions/fromSelector.html">fromSelector</a></li>
+</ul>
+</section>
+
+<section>
+
+<h2 id="effects">
+                <a name="effects" class="anchor" href="#effects">
+	                <span class="permalink">🔗</span>
+                </a>
+                Effects
+            </h2>
+<p>Declare effects of type <a href="api/type-aliases/FxFunction.html">FxFunction</a> to be applied when signals change:</p>
+<ul>
+<li><a href="api/functions/dangerouslySetInnerHTML.html">dangerouslySetInnerHTML</a></li>
+<li><a href="api/functions/emit.html">emit</a></li>
+<li><a href="api/functions/insertOrRemoveElement.html">insertOrRemoveElement</a></li>
+<li><a href="api/functions/on.html">on</a></li>
+<li><a href="api/functions/pass.html">pass</a></li>
+<li><a href="api/functions/provide.html">provide</a></li>
+<li><a href="api/functions/setAttribute.html">setAttribute</a></li>
+<li><a href="api/functions/setProperty.html">setProperty</a></li>
+<li><a href="api/functions/setStyle.html">setStyle</a></li>
+<li><a href="api/functions/setText.html">setText</a></li>
+<li><a href="api/functions/show.html">show</a></li>
+<li><a href="api/functions/toggleAttribute.html">toggleAttribute</a></li>
+<li><a href="api/functions/toggleClass.html">toggleClass</a></li>
+<li><a href="api/functions/updateElement.html">updateElement</a></li>
+</ul>
+</section>
+</main>
 			<footer class="content-grid">
 				<div class="content">
 					<h2 class="visually-hidden">Footer</h2>

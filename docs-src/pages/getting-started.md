@@ -212,12 +212,10 @@ If everything is set up correctly, you should see:
 <module-demo>
 	<div class="preview">
 		<hello-world>
-			<template shadowrootmode="open">
-				<label>Your name<br>
-					<input type="text">
-				</label>
-				<p>Hello, <span>World</span>!</p>
-			</template>
+			<label>Your name<br>
+				<input type="text">
+			</label>
+			<p>Hello, <span>World</span>!</p>
 		</hello-world>
 	</div>
 </module-demo>

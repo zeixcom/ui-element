@@ -8,7 +8,7 @@
 
 > **read**\<`Q`, `K`\>(`source`, `prop`, `fallback`): () => `Q`\[`K`\]
 
-Defined in: [src/core/dom.ts:503](https://github.com/zeixcom/ui-element/blob/bd4ae3ed0a4d2790834ffe22cb9cd0696e3104c4/src/core/dom.ts#L503)
+Defined in: [src/core/dom.ts:503](https://github.com/zeixcom/ui-element/blob/a6fb4a88fd37bb5ca41823947687e8a37d5f2e08/src/core/dom.ts#L503)
 
 Read a signal property from a custom element safely after it's defined
 Returns a function that provides the signal value with fallback until component is ready
