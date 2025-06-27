@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Client Router Component Tests</title>
+	</head>
+	<body>
+		<div id="structural-tests">
+			<context-router id="test1">
+				<nav>
+					<a href="#home">Home</a>
+					<a href="#about">About</a>
+					<a href="https://external.example.com">External</a>
+				</nav>
+				<main>
+					<h1>Initial Content</h1>
+					<p>This is the initial content before navigation.</p>
+				</main>
+				<card-callout hidden>
+					<p class="error" role="alert" aria-live="polite"></p>
+				</card-callout>
+			</context-router>
+
+			<context-router id="test2" outlet="section#content">
+				<nav>
+					<a href="#home">Home</a>
+				</nav>
+				<section id="content">
+					<h2>Custom Outlet Initial Content</h2>
+					<p>This uses a custom outlet selector.</p>
+				</section>
+				<card-callout hidden>
+					<p class="error" role="alert" aria-live="polite"></p>
+				</card-callout>
+			</context-router>
+		</div>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import '../../../docs/assets/main.js'
+
+			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+			const animationFrame = () => new Promise(requestAnimationFrame)
+
+			runTests(() => {
+				describe('Client Router Component - Structure', () => {
+					it('should verify component exists and has expected structure', () => {
+						const el = document.getElementById('test1')
+
+						assert.isNotNull(el)
+						assert.equal(el.tagName.toLowerCase(), 'context-router')
+
+						const nav = el.querySelector('nav')
+						const main = el.querySelector('main')
+						const calloutBox = el.querySelector('card-callout')
+
+						assert.isNotNull(nav)
+						assert.isNotNull(main)
+						assert.isNotNull(calloutBox)
+					})
+
+					it('should have default outlet as main', () => {
+						const el = document.getElementById('test1')
+						const main = el.querySelector('main')
+
+						// Should find main element as default outlet
+						assert.isNotNull(main)
+						assert.equal(el.getAttribute('outlet'), null) // Uses default
+					})
+
+					it('should support custom outlet configuration', () => {
+						const el = document.getElementById('test2')
+						const customOutlet = el.querySelector('section#content')
+
+						// Should respect custom outlet attribute
+						assert.equal(
+							el.getAttribute('outlet'),
+							'section#content',
+						)
+						assert.isNotNull(customOutlet)
+					})
+
+					it('should maintain proper ARIA structure for errors', () => {
+						const el = document.getElementById('test1')
+						const calloutBox = el.querySelector('card-callout')
+						const errorEl = el.querySelector('.error')
+
+						assert.isNotNull(calloutBox)
+						assert.isNotNull(errorEl)
+						assert.equal(errorEl.getAttribute('role'), 'alert')
+						assert.equal(
+							errorEl.getAttribute('aria-live'),
+							'polite',
+						)
+						assert.isTrue(calloutBox.hidden) // Initially hidden
+					})
+
+					it('should handle anchor links without href attribute', () => {
+						const el = document.getElementById('test1')
+
+						// Create anchor without href
+						const anchorWithoutHref = document.createElement('a')
+						anchorWithoutHref.textContent = 'No href'
+						el.querySelector('nav').appendChild(anchorWithoutHref)
+
+						const clickEvent = new MouseEvent('click', {
+							bubbles: true,
+							cancelable: true,
+						})
+
+						// Should not crash when clicking anchor without href
+						assert.doesNotThrow(() => {
+							anchorWithoutHref.dispatchEvent(clickEvent)
+						})
+
+						// Clean up
+						anchorWithoutHref.remove()
+					})
+
+					it('should handle invalid href attributes gracefully', async () => {
+						const el = document.getElementById('test1')
+
+						// Create link with invalid href
+						const invalidLink = document.createElement('a')
+						invalidLink.href = 'not-a-valid-url'
+						el.querySelector('nav').appendChild(invalidLink)
+
+						await animationFrame()
+
+						// Should not crash and should not be marked as active
+						assert.isFalse(invalidLink.classList.contains('active'))
+
+						// Clean up
+						invalidLink.remove()
+					})
+
+					it('should have proper component structure', () => {
+						const el = document.getElementById('test1')
+
+						// Should have navigation links
+						const links = el.querySelectorAll('a[href]')
+						assert.isAtLeast(links.length, 2)
+
+						// Should have content area
+						const main = el.querySelector('main')
+						assert.isNotNull(main)
+						assert.isNotEmpty(main.textContent.trim())
+
+						// Should have error display
+						const calloutBox = el.querySelector('card-callout')
+						assert.isNotNull(calloutBox)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

@@ -15,7 +15,7 @@
 				overflow: hidden;
 			}
 
-			my-counter {
+			basic-counter {
 				display: flex;
 				flex-direction: row;
 				gap: 1rem;
@@ -25,7 +25,7 @@
 				}
 			}
 
-			tab-group > [role='tablist'] {
+			module-tabgroup > [role='tablist'] {
 				display: flex;
 				gap: 0.2rem;
 				padding: 0;
@@ -35,7 +35,7 @@
 				}
 			}
 
-			lazy-load .error {
+			module-lazy .error {
 				color: red;
 			}
 
@@ -84,7 +84,7 @@
 			<h1>Hello from Server</h1>
 			<p>Number of unread messages: <span></span></p>
 		</updating-component>
-		<my-counter value="42">
+		<basic-counter value="42">
 			<p>Count: <span class="value">42</span></p>
 			<p>Parity: <span class="parity">even</span></p>
 			<p>Double: <span class="double">84</span></p>
@@ -92,17 +92,17 @@
 				<button class="decrement">–</button>
 				<button class="increment">+</button>
 			</div>
-		</my-counter>
+		</basic-counter>
 		<greeting-configurator>
-			<input-field class="first">
+			<form-textbox class="first">
 				<input type="text" name="first" value="Jane" />
-			</input-field>
-			<input-field class="last">
+			</form-textbox>
+			<form-textbox class="last">
 				<input type="text" name="last" value="Doe" />
-			</input-field>
-			<input-checkbox>
+			</form-textbox>
+			<form-checkbox>
 				<input type="checkbox" name="fullname" />
-			</input-checkbox>
+			</form-checkbox>
 			<hello-world>
 				<p>
 					<span class="greeting">Hello</span>
@@ -110,23 +110,23 @@
 				</p>
 			</hello-world>
 		</greeting-configurator>
-		<lazy-load src="/test/mock/lazy-load.html" id="lazy-success">
-			<callout-box>
+		<module-lazy src="/test/mock/module-lazy.html" id="lazy-success">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite" hidden></p>
-			</callout-box>
-		</lazy-load>
-		<lazy-load src="/test/mock/404.html" id="lazy-error">
-			<callout-box>
+			</card-callout>
+		</module-lazy>
+		<module-lazy src="/test/mock/404.html" id="lazy-error">
+			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite" hidden></p>
-			</callout-box>
-		</lazy-load>
-		<lazy-load src="/test/mock/recursion.html" id="lazy-recursion">
+			</card-callout>
+		</module-lazy>
+		<module-lazy src="/test/mock/recursion.html" id="lazy-recursion">
 			<p class="loading" role="status">Loading...</p>
 			<p class="error" role="alert" aria-live="polite" hidden></p>
-		</lazy-load>
-		<tab-group>
+		</module-lazy>
+		<module-tabgroup>
 			<div role="tablist">
 				<button
 					type="button"
@@ -168,7 +168,7 @@
 			<div role="tabpanel" id="panel3" aria-labelledby="trigger3" hidden>
 				Tab 3 content
 			</div>
-		</tab-group>
+		</module-tabgroup>
 		<template id="post-reply-template">
 			<div>
 				<p></p>
@@ -211,6 +211,7 @@
 				setText,
 				setProperty,
 				setAttribute,
+				show,
 				toggleAttribute,
 				toggleClass,
 				setStyle,
@@ -248,7 +249,7 @@
 							: parseFloat(value)
 						return Number.isFinite(parsed) ? parsed : RESET
 					},
-					selected: asBoolean,
+					selected: asBoolean(),
 				},
 				(_, { first }) => [
 					first('h1', setText('heading'), toggleClass('selected')),
@@ -258,7 +259,7 @@
 			)
 
 			component(
-				'my-counter',
+				'basic-counter',
 				{
 					value: asInteger(),
 				},
@@ -294,9 +295,7 @@
 						name: () => {
 							const firstName = el.querySelector('.first')
 							const lastName = el.querySelector('.last')
-							const useFullname =
-								el.querySelector('input-checkbox')
-							return useFullname.checked
+							return el.querySelector('form-checkbox').checked
 								? `${firstName.value} ${lastName.value}`
 								: firstName.value
 						},
@@ -317,7 +316,7 @@
 			)
 
 			component(
-				'input-field',
+				'form-textbox',
 				{
 					value: asString(RESET),
 				},
@@ -333,9 +332,9 @@
 			)
 
 			component(
-				'input-checkbox',
+				'form-checkbox',
 				{
-					checked: asBoolean,
+					checked: asBoolean(),
 				},
 				(el, { first }) => [
 					first(
@@ -349,7 +348,7 @@
 			)
 
 			component(
-				'lazy-load',
+				'module-lazy',
 				{
 					error: '',
 					src: (el, v) => {
@@ -396,7 +395,7 @@
 					first(
 						'.error',
 						setText('error'),
-						setProperty('hidden', () => !el.error),
+						show(() => !!el.error),
 					),
 					dangerouslySetInnerHTML('content', {
 						shadowRootMode: 'open',
@@ -405,7 +404,7 @@
 			)
 
 			component(
-				'tab-group',
+				'module-tabgroup',
 				{
 					selected: '',
 				},
@@ -455,12 +454,12 @@
 
 			component('post-reply', {}, (el, { first }) => {
 				const message = state('')
-				const formIsHidden = state(true)
+				const formVisible = state(false)
 				return [
 					first(
 						'button',
 						on('click', () => {
-							formIsHidden.set(false)
+							formVisible.set(true)
 						}),
 					),
 					first(
@@ -468,9 +467,9 @@
 						on('submit', e => {
 							e.preventDefault()
 							message.set(el.querySelector('textarea').value)
-							formIsHidden.set(true)
+							formVisible.set(false)
 						}),
-						setProperty('hidden', formIsHidden),
+						show(formVisible),
 					),
 					insertOrRemoveElement(() => !!message.get(), {
 						create: () => {
@@ -768,7 +767,7 @@
 
 				describe('My counter', function () {
 					it('should increment and decrement', async function () {
-						const counter = document.querySelector('my-counter')
+						const counter = document.querySelector('basic-counter')
 						const decrement = counter.querySelector('.decrement')
 						const increment = counter.querySelector('.increment')
 						const value = counter.querySelector('.value')
@@ -809,7 +808,7 @@
 					})
 
 					it('should update derived values', async function () {
-						const counter = document.querySelector('my-counter')
+						const counter = document.querySelector('basic-counter')
 						const decrement = counter.querySelector('.decrement')
 						const parity = counter.querySelector('.parity')
 						const double = counter.querySelector('.double')
@@ -903,7 +902,7 @@
 							'greeting-configurator',
 						)
 						const fullname =
-							configurator.querySelector('input-checkbox')
+							configurator.querySelector('form-checkbox')
 						const input = fullname.querySelector('input')
 						const helloWorld =
 							configurator.querySelector('hello-world')
@@ -999,7 +998,7 @@
 							'Should have a shadow root',
 						)
 						const lazySubComponent =
-							shadow.querySelector('lazy-load')
+							shadow.querySelector('module-lazy')
 						const errorElement =
 							lazySubComponent.querySelector('.error')
 						assert.isFalse(
@@ -1016,7 +1015,8 @@
 
 				describe('Tab Group', function () {
 					it('should mark the first button as active', async function () {
-						const tabGroup = document.querySelector('tab-group')
+						const tabGroup =
+							document.querySelector('module-tabgroup')
 						const buttons = tabGroup.querySelectorAll('button')
 						await animationFrame()
 						assert.equal(
@@ -1027,7 +1027,8 @@
 					})
 
 					it('should change the active tab when a button is clicked', async function () {
-						const tabGroup = document.querySelector('tab-group')
+						const tabGroup =
+							document.querySelector('module-tabgroup')
 						const buttons = tabGroup.querySelectorAll('button')
 						buttons[1].click()
 						await animationFrame()
@@ -1044,7 +1045,8 @@
 					})
 
 					it('should display the content of the active tab', async function () {
-						const tabGroup = document.querySelector('tab-group')
+						const tabGroup =
+							document.querySelector('module-tabgroup')
 						const buttons = tabGroup.querySelectorAll('button')
 						await animationFrame()
 						assert.equal(
@@ -1094,80 +1096,141 @@
 
 				describe('Component Constructor Edge Cases', function () {
 					it('should throw error for reserved property names', function () {
-						const TestComponent = component('invalid-reserved', {
-							validProp: asString('valid')
-						}, () => [])
-						
+						const TestComponent = component(
+							'invalid-reserved',
+							{
+								validProp: asString('valid'),
+							},
+							() => [],
+						)
+
 						const instance = new TestComponent()
-						
-						assert.throws(() => {
-							instance.setSignal('constructor', state('invalid'))
-						}, TypeError, 'Property name "constructor" is a reserved word')
+
+						assert.throws(
+							() => {
+								instance.setSignal(
+									'constructor',
+									state('invalid'),
+								)
+							},
+							TypeError,
+							'Property name "constructor" is a reserved word',
+						)
 					})
 
 					it('should throw error for HTMLElement property conflicts', function () {
 						// Test that innerHTML property is properly blocked
-						const TestComponent = component('invalid-htmlelement', {
-							validProp: asString('valid')
-						}, () => [])
-						
+						const TestComponent = component(
+							'invalid-htmlelement',
+							{
+								validProp: asString('valid'),
+							},
+							() => [],
+						)
+
 						const instance = new TestComponent()
-						
+
 						// innerHTML should be blocked as it's an HTMLElement property
-						assert.throws(() => {
-							instance.setSignal('innerHTML', state('invalid'))
-						}, TypeError, 'Property name "innerHTML" conflicts with inherited HTMLElement property')
+						assert.throws(
+							() => {
+								instance.setSignal(
+									'innerHTML',
+									state('invalid'),
+								)
+							},
+							TypeError,
+							'Property name "innerHTML" conflicts with inherited HTMLElement property',
+						)
 					})
 
 					it('should handle setSignal with invalid signal type', function () {
-						const TestComponent = component('test-setsignal', {}, () => [])
+						const TestComponent = component(
+							'test-setsignal',
+							{},
+							() => [],
+						)
 						const instance = new TestComponent()
-						
-						assert.throws(() => {
-							instance.setSignal('invalidProp', 'not a signal')
-						}, TypeError, 'Expected signal as value')
+
+						assert.throws(
+							() => {
+								instance.setSignal(
+									'invalidProp',
+									'not a signal',
+								)
+							},
+							TypeError,
+							'Expected signal as value',
+						)
 					})
 
 					it('should handle multiple signal assignments to same property', function () {
-						const TestComponent = component('test-multiple-signals', {
-							value: asString('initial')
-						}, () => [])
-						
+						const TestComponent = component(
+							'test-multiple-signals',
+							{
+								value: asString('initial'),
+							},
+							() => [],
+						)
+
 						const instance = new TestComponent()
 						const newSignal = state('new value')
-						
+
 						// Should not throw when reassigning signal
 						assert.doesNotThrow(() => {
 							instance.setSignal('value', newSignal)
 						})
-						
+
 						assert.equal(instance.value, 'new value')
 					})
 
 					it('should throw error for reserved property names during component definition', function () {
-						assert.throws(() => {
-							component('invalid-reserved-def', {
-								constructor: asString('invalid')
-							}, () => [])
-						}, TypeError, 'Property name "constructor" is a reserved word in component "invalid-reserved-def"')
+						assert.throws(
+							() => {
+								component(
+									'invalid-reserved-def',
+									{
+										constructor: asString('invalid'),
+									},
+									() => [],
+								)
+							},
+							TypeError,
+							'Property name "constructor" is a reserved word in component "invalid-reserved-def"',
+						)
 					})
 
 					it('should throw error for HTMLElement property conflicts during component definition', function () {
-						assert.throws(() => {
-							component('invalid-htmlelement-def', {
-								innerHTML: asString('invalid')
-							}, () => [])
-						}, TypeError, 'Property name "innerHTML" conflicts with inherited HTMLElement property in component "invalid-htmlelement-def"')
+						assert.throws(
+							() => {
+								component(
+									'invalid-htmlelement-def',
+									{
+										innerHTML: asString('invalid'),
+									},
+									() => [],
+								)
+							},
+							TypeError,
+							'Property name "innerHTML" conflicts with inherited HTMLElement property in component "invalid-htmlelement-def"',
+						)
 					})
 
 					it('should throw error for multiple invalid properties during component definition', function () {
-						assert.throws(() => {
-							component('invalid-multiple-def', {
-								validProp: asString('valid'),
-								className: asString('invalid'),
-								anotherValid: asString('valid')
-							}, () => [])
-						}, TypeError, 'Property name "className" conflicts with inherited HTMLElement property in component "invalid-multiple-def"')
+						assert.throws(
+							() => {
+								component(
+									'invalid-multiple-def',
+									{
+										validProp: asString('valid'),
+										className: asString('invalid'),
+										anotherValid: asString('valid'),
+									},
+									() => [],
+								)
+							},
+							TypeError,
+							'Property name "className" conflicts with inherited HTMLElement property in component "invalid-multiple-def"',
+						)
 					})
 				})
 
@@ -1176,229 +1239,323 @@
 						let initCalled = false
 						let connectedCalled = false
 						let disconnectedCalled = false
-						
-						const TestComponent = component('test-disconnect', {}, () => {
-							initCalled = true
-							return []
-						})
-						
+
+						const TestComponent = component(
+							'test-disconnect',
+							{},
+							() => {
+								initCalled = true
+								return []
+							},
+						)
+
 						const instance = new TestComponent()
 						document.body.appendChild(instance)
-						
+
 						// Override callbacks to track calls
 						const originalConnected = instance.connectedCallback
-						const originalDisconnected = instance.disconnectedCallback
-						
-						instance.connectedCallback = function() {
+						const originalDisconnected =
+							instance.disconnectedCallback
+
+						instance.connectedCallback = function () {
 							connectedCalled = true
 							originalConnected.call(this)
 						}
-						
-						instance.disconnectedCallback = function() {
+
+						instance.disconnectedCallback = function () {
 							disconnectedCalled = true
 							originalDisconnected.call(this)
 						}
-						
+
 						// Trigger connection
 						instance.connectedCallback()
-						assert.isTrue(connectedCalled, 'Connected callback should be called')
+						assert.isTrue(
+							connectedCalled,
+							'Connected callback should be called',
+						)
 						assert.isTrue(initCalled, 'Init should be called')
-						
+
 						// Trigger disconnection
 						instance.disconnectedCallback()
-						assert.isTrue(disconnectedCalled, 'Disconnected callback should be called')
-						
+						assert.isTrue(
+							disconnectedCalled,
+							'Disconnected callback should be called',
+						)
+
 						document.body.removeChild(instance)
 					})
 
 					it('should handle attribute changes before connection', function () {
 						let parseCount = 0
-						
-						const TestComponent = component('test-early-attr', {
-							value: (host, value) => {
-								parseCount++
-								return value || 'default'
-							}
-						}, () => [])
-						
+
+						const TestComponent = component(
+							'test-early-attr',
+							{
+								value: (host, value) => {
+									parseCount++
+									return value || 'default'
+								},
+							},
+							() => [],
+						)
+
 						const instance = new TestComponent()
 						const initialCount = parseCount
-						
+
 						// Change attribute before connecting
-						instance.attributeChangedCallback('value', null, 'early')
-						assert.equal(parseCount - initialCount, 1, 'Parser should be called once more')
+						instance.attributeChangedCallback(
+							'value',
+							null,
+							'early',
+						)
+						assert.equal(
+							parseCount - initialCount,
+							1,
+							'Parser should be called once more',
+						)
 						assert.equal(instance.value, 'early')
 					})
 
 					it('should handle multiple connect/disconnect cycles', function () {
 						let connectCount = 0
 						let disconnectCount = 0
-						
-						const TestComponent = component('test-cycles', {}, () => {
-							connectCount++
-							return [() => { disconnectCount++ }]
-						})
-						
+
+						const TestComponent = component(
+							'test-cycles',
+							{},
+							() => {
+								connectCount++
+								return [
+									() => {
+										disconnectCount++
+									},
+								]
+							},
+						)
+
 						const instance = new TestComponent()
 						document.body.appendChild(instance)
-						
+
 						const initialConnectCount = connectCount
 						const initialDisconnectCount = disconnectCount
-						
+
 						// Multiple cycles
 						for (let i = 0; i < 3; i++) {
 							instance.connectedCallback()
 							instance.disconnectedCallback()
 						}
-						
-						assert.equal(connectCount - initialConnectCount, 3, 'Should handle multiple connections')
-						assert.equal(disconnectCount - initialDisconnectCount, 3, 'Should handle multiple disconnections')
-						
+
+						assert.equal(
+							connectCount - initialConnectCount,
+							3,
+							'Should handle multiple connections',
+						)
+						assert.equal(
+							disconnectCount - initialDisconnectCount,
+							3,
+							'Should handle multiple disconnections',
+						)
+
 						document.body.removeChild(instance)
 					})
 				})
 
 				describe('Attribute Parser Edge Cases', function () {
 					it('should handle parser functions that throw errors', function () {
-						const TestComponent = component('test-parser-error', {
-							errorProp: (host, value) => {
-								if (value === 'error') {
-									throw new Error('Parser error')
-								}
-								return value
-							}
-						}, () => [])
-						
+						const TestComponent = component(
+							'test-parser-error',
+							{
+								errorProp: (host, value) => {
+									if (value === 'error') {
+										throw new Error('Parser error')
+									}
+									return value
+								},
+							},
+							() => [],
+						)
+
 						const instance = new TestComponent()
-						
+
 						// Parser should throw, but component should handle it gracefully
 						try {
-							instance.attributeChangedCallback('errorProp', null, 'error')
+							instance.attributeChangedCallback(
+								'errorProp',
+								null,
+								'error',
+							)
 						} catch (error) {
 							assert.equal(error.message, 'Parser error')
 						}
 					})
 
 					it('should handle computed signals in attribute parsing', function () {
-						const TestComponent = component('test-computed-attr', {
-							base: asString('base'),
-							computedProp: (host) => {
-								// Create computed signal manually since computed might not be imported
-								const signal = state(`computed-${host.base}`)
-								return signal
-							}
-						}, () => [])
-						
+						const TestComponent = component(
+							'test-computed-attr',
+							{
+								base: asString('base'),
+								computedProp: host => {
+									// Create computed signal manually since computed might not be imported
+									const signal = state(
+										`computed-${host.base}`,
+									)
+									return signal
+								},
+							},
+							() => [],
+						)
+
 						const instance = new TestComponent()
 						document.body.appendChild(instance)
-						
+
 						// Signal should be set correctly
-						assert.isString(instance.computedProp, 'Computed property should have string value')
-						
+						assert.isString(
+							instance.computedProp,
+							'Computed property should have string value',
+						)
+
 						document.body.removeChild(instance)
 					})
 
 					it('should handle null and undefined attribute values', function () {
 						let nullCount = 0
-						
-						const TestComponent = component('test-null-undefined', {
-							nullProp: (host, value) => {
-								if (value === null) nullCount++
-								return value || 'null-default'
-							}
-						}, () => [])
-						
+
+						const TestComponent = component(
+							'test-null-undefined',
+							{
+								nullProp: (host, value) => {
+									if (value === null) nullCount++
+									return value || 'null-default'
+								},
+							},
+							() => [],
+						)
+
 						const instance = new TestComponent()
 						const initialCount = nullCount
-						
-						instance.attributeChangedCallback('nullProp', 'old', null)
-						
-						assert.equal(nullCount - initialCount, 1, 'Should handle null values')
+
+						instance.attributeChangedCallback(
+							'nullProp',
+							'old',
+							null,
+						)
+
+						assert.equal(
+							nullCount - initialCount,
+							1,
+							'Should handle null values',
+						)
 						assert.equal(instance.nullProp, 'null-default')
 					})
 				})
 
 				describe('Selector Function Edge Cases', function () {
 					it('should handle complex CSS selectors with first()', function () {
-						const TestComponent = component('test-complex-selector', {}, (_, { first }) => [
-							first('div[data-test="value"]:not(.hidden)', () => {
-								// Complex selector should work
-							})
-						])
-						
+						const TestComponent = component(
+							'test-complex-selector',
+							{},
+							(_, { first }) => [
+								first(
+									'div[data-test="value"]:not(.hidden)',
+									() => {
+										// Complex selector should work
+									},
+								),
+							],
+						)
+
 						const instance = new TestComponent()
 						instance.innerHTML = `
 							<div data-test="value" class="visible">Target</div>
 							<div data-test="value" class="hidden">Hidden</div>
 							<div data-test="other">Other</div>
 						`
-						
+
 						document.body.appendChild(instance)
-						
+
 						// Should not throw with complex selector
 						assert.doesNotThrow(() => {
 							instance.connectedCallback()
 						})
-						
+
 						document.body.removeChild(instance)
 					})
 
 					it('should handle dynamic DOM changes with all()', async function () {
 						let attachCount = 0
 						let detachCount = 0
-						
-						const TestComponent = component('test-dynamic-all', {}, (_, { all }) => [
-							all('.dynamic-item', () => {
-								attachCount++
-								return () => { detachCount++ }
-							})
-						])
-						
+
+						const TestComponent = component(
+							'test-dynamic-all',
+							{},
+							(_, { all }) => [
+								all('.dynamic-item', () => {
+									attachCount++
+									return () => {
+										detachCount++
+									}
+								}),
+							],
+						)
+
 						const instance = new TestComponent()
 						document.body.appendChild(instance)
 						instance.connectedCallback()
-						
+
 						// Add elements dynamically
 						const item1 = document.createElement('div')
 						item1.className = 'dynamic-item'
 						instance.appendChild(item1)
-						
+
 						await animationFrame()
-						
+
 						const item2 = document.createElement('div')
 						item2.className = 'dynamic-item'
 						instance.appendChild(item2)
-						
+
 						await animationFrame()
-						
+
 						// Remove elements
 						item1.remove()
 						await animationFrame()
-						
-						assert.isAtLeast(attachCount, 2, 'Should attach to dynamically added elements')
-						assert.isAtLeast(detachCount, 1, 'Should detach from removed elements')
-						
+
+						assert.isAtLeast(
+							attachCount,
+							2,
+							'Should attach to dynamically added elements',
+						)
+						assert.isAtLeast(
+							detachCount,
+							1,
+							'Should detach from removed elements',
+						)
+
 						instance.disconnectedCallback()
 						document.body.removeChild(instance)
 					})
 
 					it('should handle shadow DOM boundaries', function () {
-						const TestComponent = component('test-shadow-selector', {}, (_, { first }) => [
-							first('.shadow-target', () => {
-								// Should work with shadow DOM
-							})
-						])
-						
+						const TestComponent = component(
+							'test-shadow-selector',
+							{},
+							(_, { first }) => [
+								first('.shadow-target', () => {
+									// Should work with shadow DOM
+								}),
+							],
+						)
+
 						const instance = new TestComponent()
 						instance.attachShadow({ mode: 'open' })
-						instance.shadowRoot.innerHTML = '<div class="shadow-target">Shadow content</div>'
-						
+						instance.shadowRoot.innerHTML =
+							'<div class="shadow-target">Shadow content</div>'
+
 						document.body.appendChild(instance)
-						
+
 						assert.doesNotThrow(() => {
 							instance.connectedCallback()
 						})
-						
+
 						document.body.removeChild(instance)
 					})
 				})
@@ -1406,49 +1563,72 @@
 				describe('Error Handling', function () {
 					it('should handle setup function returning non-array', function () {
 						// Test that setup function with non-array return is handled
-						const TestComponent = component('test-non-array-fixed', {}, () => {
-							return 'not an array' // Invalid return type
-						})
-						
+						const TestComponent = component(
+							'test-non-array-fixed',
+							{},
+							() => {
+								return 'not an array' // Invalid return type
+							},
+						)
+
 						const instance = new TestComponent()
-						assert.instanceOf(instance, HTMLElement, 'Component should be created despite setup error')
-						
+						assert.instanceOf(
+							instance,
+							HTMLElement,
+							'Component should be created despite setup error',
+						)
+
 						// Verify the component was created successfully
 						assert.equal(instance.localName, 'test-non-array-fixed')
-						
+
 						// Note: connectedCallback will throw when added to DOM, but this is expected
 						// The error is caught by the test framework as an uncaught error
 					})
 
 					it('should handle invalid initializers gracefully', function () {
-						const TestComponent = component('test-invalid-init', {
-							validProp: asString('valid'),
-							invalidProp: undefined, // Invalid initializer
-						}, () => [])
-						
+						const TestComponent = component(
+							'test-invalid-init',
+							{
+								validProp: asString('valid'),
+								invalidProp: undefined, // Invalid initializer
+							},
+							() => [],
+						)
+
 						const instance = new TestComponent()
-						
+
 						// Should not crash with invalid initializer
 						assert.doesNotThrow(() => {
 							// Constructor should handle undefined initializers
 						})
-						
+
 						assert.equal(instance.validProp, 'valid')
 						assert.isUndefined(instance.invalidProp)
 					})
 
 					it('should handle setup function errors', function () {
 						// Test that setup function with errors is handled
-						const TestComponent = component('test-setup-error-fixed', {}, () => {
-							throw new Error('Setup error')
-						})
-						
+						const TestComponent = component(
+							'test-setup-error-fixed',
+							{},
+							() => {
+								throw new Error('Setup error')
+							},
+						)
+
 						const instance = new TestComponent()
-						assert.instanceOf(instance, HTMLElement, 'Component should be created despite setup error')
-						
+						assert.instanceOf(
+							instance,
+							HTMLElement,
+							'Component should be created despite setup error',
+						)
+
 						// Verify the component was created successfully
-						assert.equal(instance.localName, 'test-setup-error-fixed')
-						
+						assert.equal(
+							instance.localName,
+							'test-setup-error-fixed',
+						)
+
 						// Note: connectedCallback will throw when added to DOM, but this is expected
 						// The error is caught by the test framework as an uncaught error
 					})
@@ -1456,39 +1636,54 @@
 
 				describe('Debug Mode', function () {
 					it('should handle debug attribute', function () {
-						const TestComponent = component('test-debug', {
-							value: asString('test')
-						}, () => [])
-						
+						const TestComponent = component(
+							'test-debug',
+							{
+								value: asString('test'),
+							},
+							() => [],
+						)
+
 						const instance = new TestComponent()
 						instance.setAttribute('debug', '')
 						document.body.appendChild(instance)
-						
+
 						// Debug mode should be enabled
 						instance.connectedCallback()
-						assert.isTrue(instance.debug, 'Debug should be enabled with debug attribute')
-						
+						assert.isTrue(
+							instance.debug,
+							'Debug should be enabled with debug attribute',
+						)
+
 						document.body.removeChild(instance)
 					})
 
 					it('should handle debug logging without crashing', function () {
-						const TestComponent = component('test-debug-logging', {
-							value: asString('initial')
-						}, () => [])
-						
+						const TestComponent = component(
+							'test-debug-logging',
+							{
+								value: asString('initial'),
+							},
+							() => [],
+						)
+
 						const instance = new TestComponent()
 						instance.setAttribute('debug', '')
 						document.body.appendChild(instance)
 						instance.connectedCallback()
-						
+
 						// Should not crash when logging debug info
 						assert.doesNotThrow(() => {
 							instance.getSignal('value')
 							instance.setSignal('value', state('new'))
-							instance.attributeChangedCallback('value', 'old', 'new')
+							instance.attributeChangedCallback(
+								'value',
+								'old',
+								'new',
+							)
 							instance.disconnectedCallback()
 						})
-						
+
 						document.body.removeChild(instance)
 					})
 				})
@@ -1497,19 +1692,23 @@
 					it('should handle large numbers of dynamic elements efficiently', async function () {
 						let attachCount = 0
 						const ELEMENT_COUNT = 50
-						
-						const TestComponent = component('test-performance', {}, (_, { all }) => [
-							all('.perf-item', () => {
-								attachCount++
-							})
-						])
-						
+
+						const TestComponent = component(
+							'test-performance',
+							{},
+							(_, { all }) => [
+								all('.perf-item', () => {
+									attachCount++
+								}),
+							],
+						)
+
 						const instance = new TestComponent()
 						document.body.appendChild(instance)
 						instance.connectedCallback()
-						
+
 						const initialCount = attachCount
-						
+
 						// Add many elements at once
 						for (let i = 0; i < ELEMENT_COUNT; i++) {
 							const item = document.createElement('div')
@@ -1517,20 +1716,28 @@
 							item.textContent = `Item ${i}`
 							instance.appendChild(item)
 						}
-						
+
 						await animationFrame()
-						
-						assert.isAtLeast(attachCount - initialCount, ELEMENT_COUNT, 'Should handle many elements efficiently')
-						
+
+						assert.isAtLeast(
+							attachCount - initialCount,
+							ELEMENT_COUNT,
+							'Should handle many elements efficiently',
+						)
+
 						instance.disconnectedCallback()
 						document.body.removeChild(instance)
 					})
 
 					it('should handle component cleanup without memory leaks', function () {
-						const TestComponent = component('test-memory-cleanup', {
-							value: asString('test')
-						}, () => [])
-						
+						const TestComponent = component(
+							'test-memory-cleanup',
+							{
+								value: asString('test'),
+							},
+							() => [],
+						)
+
 						// Create and destroy many components
 						for (let i = 0; i < 20; i++) {
 							const instance = new TestComponent()
@@ -1539,7 +1746,7 @@
 							instance.disconnectedCallback()
 							document.body.removeChild(instance)
 						}
-						
+
 						// Should not throw or cause memory issues
 						assert.isTrue(true, 'Memory cleanup should work')
 					})
@@ -1547,32 +1754,40 @@
 
 				describe('Real-world Integration', function () {
 					it('should handle nested component communication', function () {
-						const ParentComponent = component('integration-parent', {
-							data: asString('parent-data')
-						}, () => [])
-						
-						const ChildComponent = component('integration-child', {
-							inherited: asString('')
-						}, () => [])
-						
+						const ParentComponent = component(
+							'integration-parent',
+							{
+								data: asString('parent-data'),
+							},
+							() => [],
+						)
+
+						const ChildComponent = component(
+							'integration-child',
+							{
+								inherited: asString(''),
+							},
+							() => [],
+						)
+
 						const parent = new ParentComponent()
 						const child = new ChildComponent()
-						
+
 						parent.appendChild(child)
 						document.body.appendChild(parent)
-						
+
 						parent.connectedCallback()
 						child.connectedCallback()
-						
+
 						// Test signal sharing
 						child.setSignal('inherited', parent.getSignal('data'))
-						
+
 						assert.equal(child.inherited, 'parent-data')
-						
+
 						// Test reactive updates
 						parent.data = 'updated-data'
 						assert.equal(child.inherited, 'updated-data')
-						
+
 						child.disconnectedCallback()
 						parent.disconnectedCallback()
 						document.body.removeChild(parent)
@@ -1580,38 +1795,65 @@
 
 					it('should handle complex attribute parsing scenarios', function () {
 						let parseCallCount = 0
-						
-						const ComplexComponent = component('complex-parsing', {
-							jsonData: (host, value) => {
-								parseCallCount++
-								try {
-									return value ? JSON.parse(value) : {}
-								} catch {
-									return { error: 'Invalid JSON' }
-								}
+
+						const ComplexComponent = component(
+							'complex-parsing',
+							{
+								jsonData: (host, value) => {
+									parseCallCount++
+									try {
+										return value ? JSON.parse(value) : {}
+									} catch {
+										return { error: 'Invalid JSON' }
+									}
+								},
+								numericList: (host, value) => {
+									parseCallCount++
+									return value
+										? value
+												.split(',')
+												.map(Number)
+												.filter(n => !isNaN(n))
+										: []
+								},
 							},
-							numericList: (host, value) => {
-								parseCallCount++
-								return value ? value.split(',').map(Number).filter(n => !isNaN(n)) : []
-							}
-						}, () => [])
-						
+							() => [],
+						)
+
 						const instance = new ComplexComponent()
 						const initialCount = parseCallCount
-						
+
 						// Test JSON parsing
-						instance.attributeChangedCallback('jsonData', null, '{"test": true}')
+						instance.attributeChangedCallback(
+							'jsonData',
+							null,
+							'{"test": true}',
+						)
 						assert.deepEqual(instance.jsonData, { test: true })
-						
+
 						// Test invalid JSON handling
-						instance.attributeChangedCallback('jsonData', null, 'invalid json')
-						assert.deepEqual(instance.jsonData, { error: 'Invalid JSON' })
-						
+						instance.attributeChangedCallback(
+							'jsonData',
+							null,
+							'invalid json',
+						)
+						assert.deepEqual(instance.jsonData, {
+							error: 'Invalid JSON',
+						})
+
 						// Test numeric list parsing
-						instance.attributeChangedCallback('numericList', null, '1,2,3,invalid,4')
+						instance.attributeChangedCallback(
+							'numericList',
+							null,
+							'1,2,3,invalid,4',
+						)
 						assert.deepEqual(instance.numericList, [1, 2, 3, 4])
-						
-						assert.equal(parseCallCount - initialCount, 3, 'All parsers should be called')
+
+						assert.equal(
+							parseCallCount - initialCount,
+							3,
+							'All parsers should be called',
+						)
 					})
 				})
 			})

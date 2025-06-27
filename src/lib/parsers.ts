@@ -16,15 +16,13 @@ const parseNumber = (
 /**
  * Parse a boolean attribute as an actual boolean value
  *
- * @since 0.7.0
- * @param {C} _ - host element
- * @param {string} value - maybe string value
- * @returns {boolean}
+ * @since 0.13.1
+ * @returns {AttributeParser<boolean>}
  */
-const asBoolean: AttributeParser<HTMLElement, boolean> = (
-	_: HTMLElement,
-	value: string | null,
-): boolean => value !== 'false' && value != null
+const asBoolean =
+	(): AttributeParser<boolean> =>
+	(_: HTMLElement, value: string | null): boolean =>
+		value !== 'false' && value != null
 
 /**
  * Parse an attribute as as number forced to integer with a fallback
@@ -33,10 +31,10 @@ const asBoolean: AttributeParser<HTMLElement, boolean> = (
  *
  * @since 0.11.0
  * @param {number} [fallback=0] - fallback value
- * @returns {Parser<HTMLElement, number>} - parser function
+ * @returns {AttributeParser<number>} parser function
  */
 const asInteger =
-	(fallback: number = 0): AttributeParser<HTMLElement, number> =>
+	(fallback: number = 0): AttributeParser<number> =>
 	(_: HTMLElement, value: string | null): number => {
 		if (value == null) return fallback
 		const trimmed = value.trim()
@@ -58,10 +56,10 @@ const asInteger =
  *
  * @since 0.11.0
  * @param {number} [fallback=0] - fallback value
- * @returns {Parser<number, HTMLElement>} - parser function
+ * @returns {AttributeParser<number>} parser function
  */
 const asNumber =
-	(fallback: number = 0): AttributeParser<HTMLElement, number> =>
+	(fallback: number = 0): AttributeParser<number> =>
 	(_: HTMLElement, value: string | null): number =>
 		parseNumber(parseFloat, value) ?? fallback
 
@@ -70,10 +68,10 @@ const asNumber =
  *
  * @since 0.11.0
  * @param {string} [fallback=''] - fallback value
- * @returns {Parser<string, HTMLElement>} - parser function
+ * @returns {AttributeParser<string>} parser function
  */
 const asString =
-	(fallback: string = ''): AttributeParser<HTMLElement, string> =>
+	(fallback: string = ''): AttributeParser<string> =>
 	(_: HTMLElement, value: string | null): string =>
 		value ?? fallback
 
@@ -82,10 +80,10 @@ const asString =
  *
  * @since 0.9.0
  * @param {string[]} valid - array of valid values
- * @returns {Parser<string, HTMLElement>} - parser function
+ * @returns {AttributeParser<string>} parser function
  */
 const asEnum =
-	(valid: [string, ...string[]]): AttributeParser<HTMLElement, string> =>
+	(valid: [string, ...string[]]): AttributeParser<string> =>
 	(_: HTMLElement, value: string | null): string => {
 		if (value == null) return valid[0]
 		const lowerValue = value.toLowerCase()
@@ -98,12 +96,12 @@ const asEnum =
  *
  * @since 0.11.0
  * @param {T} fallback - fallback value
- * @returns {Parser<T, HTMLElement>} - parser function
- * @throws {ReferenceError} - if the value and fallback are both null or undefined
- * @throws {SyntaxError} - if the value is not a valid JSON object
+ * @returns {AttributeParser<T>} parser function
+ * @throws {ReferenceError} if the value and fallback are both null or undefined
+ * @throws {SyntaxError} if the value is not a valid JSON object
  */
 const asJSON =
-	<T extends {}>(fallback: T): AttributeParser<HTMLElement, T> =>
+	<T extends {}>(fallback: T): AttributeParser<T> =>
 	(_: HTMLElement, value: string | null): T => {
 		if ((value ?? fallback) == null)
 			throw new ReferenceError(

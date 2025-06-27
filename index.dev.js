@@ -395,11 +395,57 @@ var selection = (parent, selectors) => {
   };
   return s;
 };
-var on = (type, listener) => (host, target = host) => {
+var fromSelector = (selectors) => (host) => selection(host, selectors);
+var fromDescendants = (selectors, reducer, initialValue) => (host) => computed(() => selection(host, selectors).get().reduce(reducer, initialValue));
+var on = (type, listener, options = false) => (host, target = host) => {
   if (!isFunction(listener))
     throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
-  target.addEventListener(type, listener);
+  target.addEventListener(type, listener, options);
   return () => target.removeEventListener(type, listener);
+};
+var sensor = (host, source, type, transform, initialValue, options = false) => {
+  const watchers = new Set;
+  let value = initialValue;
+  let listener;
+  let cleanup;
+  const listen = () => {
+    listener = (event) => {
+      const newValue = transform(host, source, event, value);
+      if (!Object.is(newValue, value)) {
+        value = newValue;
+        if (watchers.size > 0)
+          notify(watchers);
+        else if (cleanup)
+          cleanup();
+      }
+    };
+    source.addEventListener(type, listener, options);
+    cleanup = () => {
+      if (listener) {
+        source.removeEventListener(type, listener);
+        listener = undefined;
+      }
+      cleanup = undefined;
+    };
+  };
+  const s = {
+    [Symbol.toStringTag]: TYPE_COMPUTED,
+    get: () => {
+      subscribe(watchers);
+      if (watchers.size && !listener)
+        listen();
+      return value;
+    }
+  };
+  return s;
+};
+var fromEvent = (selector, type, transform, initializer) => (host) => {
+  const source = host.querySelector(selector);
+  if (!source) {
+    throw new Error(`Element not found for selector "${selector}" in ${host.localName || "component"}`);
+  }
+  const initialValue = isFunction(initializer) ? initializer(host, source) : initializer;
+  return sensor(host, source, type, transform, initialValue);
 };
 var emit = (type, detail) => (host, target = host) => {
   target.dispatchEvent(new CustomEvent(type, {
@@ -408,20 +454,37 @@ var emit = (type, detail) => (host, target = host) => {
   }));
 };
 var pass = (signals) => (host, target) => {
-  const targetName = target.localName;
   if (!isComponent(target))
     throw new TypeError(`Target element must be a custom element`);
   const sources = isFunction(signals) ? signals(target) : signals;
   if (!isDefinedObject(sources))
     throw new TypeError(`Passed signals must be an object or a provider function`);
-  customElements.whenDefined(targetName).then(() => {
+  customElements.whenDefined(target.localName).then(() => {
     for (const [prop, source] of Object.entries(sources)) {
       const signal = isString(source) ? host.getSignal(prop) : toSignal(source);
       target.setSignal(prop, signal);
     }
   }).catch((error) => {
-    throw new Error(`Failed to pass signals to ${elementName(target)}}`, { cause: error });
+    throw new Error(`Failed to pass signals to ${elementName(target)}`, { cause: error });
   });
+};
+var read = (source, prop, fallback) => {
+  if (!source)
+    return () => fallback;
+  if (!isComponent(source))
+    throw new TypeError(`Target element must be a custom element`);
+  const awaited = computed(async () => {
+    await customElements.whenDefined(source.localName);
+    return source.getSignal(prop);
+  });
+  return () => {
+    const value = awaited.get();
+    return value === UNSET ? fallback : value.get();
+  };
+};
+var fromDescendant = (selector, prop, fallback) => (host) => {
+  const element = host.querySelector(selector);
+  return computed(read(element, prop, fallback));
 };
 
 // src/component.ts
@@ -613,8 +676,8 @@ var provide = (provided) => (host) => {
   host.addEventListener(CONTEXT_REQUEST, listener);
   return () => host.removeEventListener(CONTEXT_REQUEST, listener);
 };
-var consume = (context) => (host) => {
-  let consumed;
+var fromContext = (context, fallback) => (host) => {
+  let consumed = toSignal(fallback);
   host.dispatchEvent(new ContextRequestEvent(context, (value) => {
     consumed = value;
   }));
@@ -627,7 +690,7 @@ var parseNumber = (parseFn, value) => {
   const parsed = parseFn(value);
   return Number.isFinite(parsed) ? parsed : undefined;
 };
-var asBoolean = (_, value) => value !== "false" && value != null;
+var asBoolean = () => (_, value) => value !== "false" && value != null;
 var asInteger = (fallback = 0) => (_, value) => {
   if (value == null)
     return fallback;
@@ -691,8 +754,8 @@ var safeSetAttribute = (element, attr, value) => {
   element.setAttribute(attr, value);
 };
 var updateElement = (s, updater) => (host, target) => {
-  const { op, name = "", read, update } = updater;
-  const fallback = read(target);
+  const { op, name = "", read: read2, update } = updater;
+  const fallback = read2(target);
   const ops = {
     a: "attribute ",
     c: "class ",
@@ -732,7 +795,7 @@ var updateElement = (s, updater) => (host, target) => {
         return true;
       }, DELETE_DEDUPE).then(ok("Deleted")).catch(err("delete"));
     } else if (value != null) {
-      const current = read(target);
+      const current = read2(target);
       if (Object.is(value, current))
         return;
       enqueue(() => {
@@ -815,6 +878,14 @@ var setProperty = (key, s = key) => updateElement(s, {
     el[key] = value;
   }
 });
+var show = (s) => updateElement(s, {
+  op: "p",
+  name: "hidden",
+  read: (el) => !el.hidden,
+  update: (el, value) => {
+    el.hidden = !value;
+  }
+});
 var setAttribute = (name, s = name) => updateElement(s, {
   op: "a",
   name,
@@ -884,11 +955,14 @@ export {
   toggleAttribute,
   toSignal,
   state,
+  show,
   setText,
   setStyle,
   setProperty,
   setAttribute,
+  sensor,
   selection,
+  read,
   provide,
   pass,
   on,
@@ -897,11 +971,15 @@ export {
   isSignal,
   isComputed,
   insertOrRemoveElement,
+  fromSelector,
+  fromEvent,
+  fromDescendants,
+  fromDescendant,
+  fromContext,
   enqueue,
   emit,
   effect,
   dangerouslySetInnerHTML,
-  consume,
   computed,
   component,
   batch,

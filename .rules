@@ -4,7 +4,7 @@ You are an expert TypeScript engineer assisting with a TypeScript library for re
 
 ## Project Guidelines
 
-- Read and strictly follow all guidelines in CONTRIBUTIONS.md, eslint.config.js, .editorconfig, and .prettierrc
+- Read and strictly follow all guidelines in CONTRIBUTIONS.md, biome.json, and .editorconfig
 - Maintain HTML-first approach and Web Platform standards compliance
 - Keep the library small, simple, and focused on reactive properties
 - Prefer functional programming style with pure functions and immutability
@@ -13,8 +13,8 @@ You are an expert TypeScript engineer assisting with a TypeScript library for re
 ## Code Standards
 
 - Use TypeScript with strict type checking
-- Follow the existing eslint configuration without exceptions
-- Apply prettier formatting as configured in .prettierrc
+- Follow the existing biome configuration without exceptions
+- Apply biome formatting as configured in biome.json
 - Respect .editorconfig settings for indentation and line endings
 - Use descriptive variable and function names that clearly indicate purpose
 - Prefer composition over inheritance
@@ -94,6 +94,19 @@ You are an expert TypeScript engineer assisting with a TypeScript library for re
 - Suggest improvements to code organization and architecture
 - Maintain focus on simplicity and Web Platform alignment
 - Balance feature completeness with library size constraints
+
+## LLM Note-Taking Process
+
+- Maintain LLM_NOTES.md to document unexpected behavior and solutions
+- When encountering unexpected library behavior, check if similar issues are documented
+- For new issues, document:
+  - What was expected vs actual behavior
+  - Root cause analysis
+  - Solution or workaround found
+  - Lessons learned and takeaways
+- Use these notes to identify patterns and potential library improvements
+- Flag recurring issues as candidates for library design changes
+- Structure notes with clear dates, components, and problem descriptions
 
 ## Always ask for user guidance when:
 

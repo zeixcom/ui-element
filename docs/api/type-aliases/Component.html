@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Component\<P\> – UIElement Docs</title>
+		<meta name="description" content="" />
+		<link rel="stylesheet" href="../../assets/main.css" />
+		<script type="module" src="../../assets/main.js"></script>
+	</head>
+	<body class="api">
+		<context-router>
+			<header class="content-grid">
+				<h1 class="content">
+					UIElement Docs <small>Version 0.13.1</small>
+				</h1>
+				
+<section-menu>
+	<nav>
+		<h2 class="visually-hidden">Main Menu</h2>
+		<ol>
+			
+				<li>
+					<a href="../../index.html">
+						<span class="icon">📖</span>
+						<strong>Introduction</strong>
+						<small>Overview and key benefits of UIElement</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../getting-started.html">
+						<span class="icon">🚀</span>
+						<strong>Getting Started</strong>
+						<small>Installation, setup, and first steps</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../components.html">
+						<span class="icon">🏗️</span>
+						<strong>Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../styling.html">
+						<span class="icon">🎨</span>
+						<strong>Styling</strong>
+						<small>Scoped styles, CSS custom properties</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../data-flow.html">
+						<span class="icon">🔄</span>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../examples.html">
+						<span class="icon">🍽️</span>
+						<strong>Examples</strong>
+						<small>Common use cases and demos</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../blog.html">
+						<span class="icon">📜</span>
+						<strong>Blog</strong>
+						<small>Latest articles and updates</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../api.html">
+						<span class="icon">📚</span>
+						<strong>API Reference</strong>
+						<small>Functions, types, and constants</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../about.html">
+						<span class="icon">🤝</span>
+						<strong>About</strong>
+						<small>License, versioning, getting involved</small>
+					</a>
+				</li>
+		</ol>
+	</nav>
+</section-menu>
+				<card-callout class="content danger" hidden>
+					<p class="error" role="alert" aria-live="polite"></p>
+				</card-callout>
+			</header>
+			<main class="content-grid"><section class="api-content">
+<h1 id="type-alias-componentltpgt">
+                <a name="type-alias-componentltpgt" class="anchor" href="#type-alias-componentltpgt">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type Alias: Component&lt;P&gt;
+            </h1>
+<blockquote>
+<p><strong>Component</strong>&lt;<code>P</code>&gt; = <code>HTMLElement</code> &amp; <code>P</code> &amp; <code>object</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/fbfc14f2b364007b204dfef842cb4c272bdfad41/src/component.ts#L42">src/component.ts:42</a></p>
+<h2 id="type-declaration">
+                <a name="type-declaration" class="anchor" href="#type-declaration">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type declaration
+            </h2>
+<h3 id="debug">
+                <a name="debug" class="anchor" href="#debug">
+	                <span class="permalink">🔗</span>
+                </a>
+                debug?
+            </h3>
+<blockquote>
+<p><code>optional</code> <strong>debug</strong>: <code>boolean</code></p>
+</blockquote>
+<h3 id="shadowroot">
+                <a name="shadowroot" class="anchor" href="#shadowroot">
+	                <span class="permalink">🔗</span>
+                </a>
+                shadowRoot
+            </h3>
+<blockquote>
+<p><strong>shadowRoot</strong>: <code>ShadowRoot</code> | <code>null</code></p>
+</blockquote>
+<h3 id="adoptedcallback">
+                <a name="adoptedcallback" class="anchor" href="#adoptedcallback">
+	                <span class="permalink">🔗</span>
+                </a>
+                adoptedCallback()?
+            </h3>
+<blockquote>
+<p><code>optional</code> <strong>adoptedCallback</strong>(): <code>void</code></p>
+</blockquote>
+<h4 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h4>
+<p><code>void</code></p>
+<h3 id="attributechangedcallback">
+                <a name="attributechangedcallback" class="anchor" href="#attributechangedcallback">
+	                <span class="permalink">🔗</span>
+                </a>
+                attributeChangedCallback()
+            </h3>
+<blockquote>
+<p><strong>attributeChangedCallback</strong>(<code>name</code>, <code>oldValue</code>, <code>newValue</code>): <code>void</code></p>
+</blockquote>
+<h4 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Parameters
+            </h4>
+<h5 id="name">
+                <a name="name" class="anchor" href="#name">
+	                <span class="permalink">🔗</span>
+                </a>
+                name
+            </h5>
+<p><code>string</code></p>
+<h5 id="oldvalue">
+                <a name="oldvalue" class="anchor" href="#oldvalue">
+	                <span class="permalink">🔗</span>
+                </a>
+                oldValue
+            </h5>
+<p><code>null</code> | <code>string</code></p>
+<h5 id="newvalue">
+                <a name="newvalue" class="anchor" href="#newvalue">
+	                <span class="permalink">🔗</span>
+                </a>
+                newValue
+            </h5>
+<p><code>null</code> | <code>string</code></p>
+<h4 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h4>
+<p><code>void</code></p>
+<h3 id="connectedcallback">
+                <a name="connectedcallback" class="anchor" href="#connectedcallback">
+	                <span class="permalink">🔗</span>
+                </a>
+                connectedCallback()
+            </h3>
+<blockquote>
+<p><strong>connectedCallback</strong>(): <code>void</code></p>
+</blockquote>
+<h4 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h4>
+<p><code>void</code></p>
+<h3 id="disconnectedcallback">
+                <a name="disconnectedcallback" class="anchor" href="#disconnectedcallback">
+	                <span class="permalink">🔗</span>
+                </a>
+                disconnectedCallback()
+            </h3>
+<blockquote>
+<p><strong>disconnectedCallback</strong>(): <code>void</code></p>
+</blockquote>
+<h4 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h4>
+<p><code>void</code></p>
+<h3 id="getsignal">
+                <a name="getsignal" class="anchor" href="#getsignal">
+	                <span class="permalink">🔗</span>
+                </a>
+                getSignal()
+            </h3>
+<blockquote>
+<p><strong>getSignal</strong>(<code>prop</code>): <a href="Signal.html"><code>Signal</code></a>&lt;<code>P</code>[keyof <code>P</code>]&gt;</p>
+</blockquote>
+<h4 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Parameters
+            </h4>
+<h5 id="prop">
+                <a name="prop" class="anchor" href="#prop">
+	                <span class="permalink">🔗</span>
+                </a>
+                prop
+            </h5>
+<p>keyof <code>P</code></p>
+<h4 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h4>
+<p><a href="Signal.html"><code>Signal</code></a>&lt;<code>P</code>[keyof <code>P</code>]&gt;</p>
+<h3 id="setsignal">
+                <a name="setsignal" class="anchor" href="#setsignal">
+	                <span class="permalink">🔗</span>
+                </a>
+                setSignal()
+            </h3>
+<blockquote>
+<p><strong>setSignal</strong>(<code>prop</code>, <code>signal</code>): <code>void</code></p>
+</blockquote>
+<h4 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Parameters
+            </h4>
+<h5 id="prop">
+                <a name="prop" class="anchor" href="#prop">
+	                <span class="permalink">🔗</span>
+                </a>
+                prop
+            </h5>
+<p>keyof <code>P</code></p>
+<h5 id="signal">
+                <a name="signal" class="anchor" href="#signal">
+	                <span class="permalink">🔗</span>
+                </a>
+                signal
+            </h5>
+<p><a href="Signal.html"><code>Signal</code></a>&lt;<code>P</code>[keyof <code>P</code>]&gt;</p>
+<h4 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h4>
+<p><code>void</code></p>
+<h2 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type Parameters
+            </h2>
+<h3 id="p">
+                <a name="p" class="anchor" href="#p">
+	                <span class="permalink">🔗</span>
+                </a>
+                P
+            </h3>
+<p><code>P</code> <em>extends</em> <a href="ComponentProps.html"><code>ComponentProps</code></a></p>
+
+</section></main>
+			<footer class="content-grid">
+				<div class="content">
+					<h2 class="visually-hidden">Footer</h2>
+					<p>© 2024 – 2025 Zeix AG</p>
+				</div>
+			</footer>
+		</context-router>
+	</body>
+</html>

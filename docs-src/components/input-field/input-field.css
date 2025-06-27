@@ -15,7 +15,6 @@ input-field {
 	}
 
 	&:focus-within {
-
 		& label,
 		& p,
 		& span {
@@ -127,7 +126,7 @@ input-field {
 		height: 100%;
 	}
 
-	::-webkit-inner-spin-button {
+	::-webkit-inner-form-spinbutton {
 		appearance: none;
 	}
 
@@ -154,7 +153,6 @@ input-field {
 		}
 
 		&:not(:disabled) {
-
 			&:hover {
 				background-color: var(--color-secondary-hover);
 			}

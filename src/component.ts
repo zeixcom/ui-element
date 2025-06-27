@@ -1,24 +1,24 @@
 import {
+	type Cleanup,
 	type MaybeSignal,
 	type Signal,
-	type Cleanup,
 	UNSET,
-	isFunction,
 	isComputed,
+	isFunction,
 	isSignal,
 	isState,
 	toSignal,
 } from '@zeix/cause-effect'
 
+import { observeSubtree } from './core/dom'
 import {
 	DEV_MODE,
-	isElement,
 	elementName,
+	isElement,
 	log,
 	typeString,
 	valueString,
 } from './core/util'
-import { observeSubtree } from './core/dom'
 
 /* === Types === */
 
@@ -60,22 +60,22 @@ type Component<P extends ComponentProps> = HTMLElement &
 		setSignal(prop: keyof P, signal: Signal<P[keyof P]>): void
 	}
 
-type AttributeParser<C extends HTMLElement, T extends {}> = (
+type AttributeParser<T extends {}, C extends HTMLElement = HTMLElement> = (
 	host: C,
 	value: string | null,
 	old?: string | null,
 ) => T
 
-type SignalProducer<C extends HTMLElement, T extends {}> = (
+type SignalProducer<T extends {}, C extends HTMLElement = HTMLElement> = (
 	host: C,
 ) => MaybeSignal<T>
 
 type MethodProducer<C extends HTMLElement> = (host: C) => void
 
-type Initializer<C extends HTMLElement, T extends {}> =
+type Initializer<T extends {}, C extends HTMLElement> =
 	| T
-	| AttributeParser<C, T>
-	| SignalProducer<C, T>
+	| AttributeParser<T, C>
+	| SignalProducer<T, C>
 	| MethodProducer<C>
 
 type FxFunction<P extends ComponentProps, E extends Element> = (
@@ -138,9 +138,9 @@ const HTML_ELEMENT_PROPS = new Set([
 
 /* === Internal Functions === */
 
-const isAttributeParser = <C extends HTMLElement, T extends {}>(
+const isAttributeParser = <T extends {}, C extends HTMLElement = HTMLElement>(
 	value: unknown,
-): value is AttributeParser<C, T> => isFunction(value) && value.length >= 2
+): value is AttributeParser<T, C> => isFunction(value) && value.length >= 2
 
 /**
  * Simple fail-fast validation that checks for specific problematic cases
@@ -279,9 +279,9 @@ const select = <P extends ComponentProps>(): SelectorFunctions<P> => ({
 const component = <P extends ComponentProps>(
 	name: string,
 	init: {
-		[K in keyof P]: Initializer<Component<P>, P[K]>
+		[K in keyof P]: Initializer<P[K], Component<P>>
 	} = {} as {
-		[K in keyof P]: Initializer<Component<P>, P[K]>
+		[K in keyof P]: Initializer<P[K], Component<P>>
 	},
 	setup: (
 		host: Component<P>,
@@ -317,8 +317,8 @@ const component = <P extends ComponentProps>(
 			for (const [prop, ini] of Object.entries(init)) {
 				if (ini == null) continue
 				const result = isAttributeParser<
-					Component<P>,
-					Signal<P[keyof P]>
+					Signal<P[keyof P]>,
+					Component<P>
 				>(ini)
 					? ini(this as unknown as Component<P>, null)
 					: isFunction<Component<P>>(ini)
@@ -365,11 +365,8 @@ const component = <P extends ComponentProps>(
 			value: string | null,
 		) {
 			if (value === old || isComputed(this.#signals[attr])) return // unchanged or controlled by computed
-			const parse = init[attr] as AttributeParser<
-				Component<P>,
-				P[keyof P]
-			>
-			if (!isAttributeParser(parse)) return
+			const parse = init[attr as keyof P]
+			if (!isAttributeParser<P[keyof P]>(parse)) return
 			const parsed = parse(this as unknown as Component<P>, value, old)
 			if (DEV_MODE && this.debug)
 				log(

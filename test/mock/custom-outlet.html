@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Outlet Page</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/test/mock/home.html">Home</a>
+            <a href="/test/mock/about.html">About</a>
+            <a href="/test/mock/contact.html">Contact</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Main Content</h1>
+        <p>This is in the main element.</p>
+    </main>
+    <section id="content">
+        <h2>Custom Outlet Content</h2>
+        <p>This content is in a custom outlet (section#content) for testing different outlet configurations.</p>
+        <p>The context-router should extract this content when outlet="section#content" is specified.</p>
+        <a href="/test/mock/home.html">Navigate to Home</a>
+    </section>
+    <aside>
+        <h2>Sidebar</h2>
+        <p>This content is in the aside element and should not be extracted.</p>
+    </aside>
+</body>
+</html>

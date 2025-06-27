@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>State\<T\> – UIElement Docs</title>
+		<meta name="description" content="" />
+		<link rel="stylesheet" href="../../assets/main.css" />
+		<script type="module" src="../../assets/main.js"></script>
+	</head>
+	<body class="api">
+		<context-router>
+			<header class="content-grid">
+				<h1 class="content">
+					UIElement Docs <small>Version 0.13.1</small>
+				</h1>
+				
+<section-menu>
+	<nav>
+		<h2 class="visually-hidden">Main Menu</h2>
+		<ol>
+			
+				<li>
+					<a href="../../index.html">
+						<span class="icon">📖</span>
+						<strong>Introduction</strong>
+						<small>Overview and key benefits of UIElement</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../getting-started.html">
+						<span class="icon">🚀</span>
+						<strong>Getting Started</strong>
+						<small>Installation, setup, and first steps</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../components.html">
+						<span class="icon">🏗️</span>
+						<strong>Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../styling.html">
+						<span class="icon">🎨</span>
+						<strong>Styling</strong>
+						<small>Scoped styles, CSS custom properties</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../data-flow.html">
+						<span class="icon">🔄</span>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../examples.html">
+						<span class="icon">🍽️</span>
+						<strong>Examples</strong>
+						<small>Common use cases and demos</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../blog.html">
+						<span class="icon">📜</span>
+						<strong>Blog</strong>
+						<small>Latest articles and updates</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../api.html">
+						<span class="icon">📚</span>
+						<strong>API Reference</strong>
+						<small>Functions, types, and constants</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../about.html">
+						<span class="icon">🤝</span>
+						<strong>About</strong>
+						<small>License, versioning, getting involved</small>
+					</a>
+				</li>
+		</ol>
+	</nav>
+</section-menu>
+				<card-callout class="content danger" hidden>
+					<p class="error" role="alert" aria-live="polite"></p>
+				</card-callout>
+			</header>
+			<main class="content-grid"><section class="api-content">
+<h1 id="type-alias-statelttgt">
+                <a name="type-alias-statelttgt" class="anchor" href="#type-alias-statelttgt">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type Alias: State&lt;T&gt;
+            </h1>
+<blockquote>
+<p><strong>State</strong>&lt;<code>T</code>&gt; = <code>object</code></p>
+</blockquote>
+<p>Defined in: node_modules/@zeix/cause-effect/src/state.ts:7</p>
+<h2 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type Parameters
+            </h2>
+<h3 id="t">
+                <a name="t" class="anchor" href="#t">
+	                <span class="permalink">🔗</span>
+                </a>
+                T
+            </h3>
+<p><code>T</code> <em>extends</em> <code>object</code></p>
+<h2 id="properties">
+                <a name="properties" class="anchor" href="#properties">
+	                <span class="permalink">🔗</span>
+                </a>
+                Properties
+            </h2>
+<h3 id="tostringtag">
+                <a name="tostringtag" class="anchor" href="#tostringtag">
+	                <span class="permalink">🔗</span>
+                </a>
+                [toStringTag]
+            </h3>
+<blockquote>
+<p><strong>[toStringTag]</strong>: <code>&quot;State&quot;</code></p>
+</blockquote>
+<p>Defined in: node_modules/@zeix/cause-effect/src/state.ts:8</p>
+<h2 id="methods">
+                <a name="methods" class="anchor" href="#methods">
+	                <span class="permalink">🔗</span>
+                </a>
+                Methods
+            </h2>
+<h3 id="get">
+                <a name="get" class="anchor" href="#get">
+	                <span class="permalink">🔗</span>
+                </a>
+                get()
+            </h3>
+<blockquote>
+<p><strong>get</strong>(): <code>T</code></p>
+</blockquote>
+<p>Defined in: node_modules/@zeix/cause-effect/src/state.ts:9</p>
+<h4 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h4>
+<p><code>T</code></p>
+<hr>
+<h3 id="set">
+                <a name="set" class="anchor" href="#set">
+	                <span class="permalink">🔗</span>
+                </a>
+                set()
+            </h3>
+<blockquote>
+<p><strong>set</strong>(<code>v</code>): <code>void</code></p>
+</blockquote>
+<p>Defined in: node_modules/@zeix/cause-effect/src/state.ts:10</p>
+<h4 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Parameters
+            </h4>
+<h5 id="v">
+                <a name="v" class="anchor" href="#v">
+	                <span class="permalink">🔗</span>
+                </a>
+                v
+            </h5>
+<p><code>T</code></p>
+<h4 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h4>
+<p><code>void</code></p>
+<hr>
+<h3 id="update">
+                <a name="update" class="anchor" href="#update">
+	                <span class="permalink">🔗</span>
+                </a>
+                update()
+            </h3>
+<blockquote>
+<p><strong>update</strong>(<code>fn</code>): <code>void</code></p>
+</blockquote>
+<p>Defined in: node_modules/@zeix/cause-effect/src/state.ts:11</p>
+<h4 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Parameters
+            </h4>
+<h5 id="fn">
+                <a name="fn" class="anchor" href="#fn">
+	                <span class="permalink">🔗</span>
+                </a>
+                fn
+            </h5>
+<p>(<code>v</code>) =&gt; <code>T</code></p>
+<h4 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h4>
+<p><code>void</code></p>
+
+</section></main>
+			<footer class="content-grid">
+				<div class="content">
+					<h2 class="visually-hidden">Footer</h2>
+					<p>© 2024 – 2025 Zeix AG</p>
+				</div>
+			</footer>
+		</context-router>
+	</body>
+</html>

@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Rethinking Reactivity – UIElement Docs</title>
+		<meta name="description" content="Reactivity ensures that your user interface stays up to date automatically. It simplifies the code when we need multiple inputs, derived values, and complex state relationships." />
+		<link rel="stylesheet" href="../assets/main.css" />
+		<script type="module" src="../assets/main.js"></script>
+	</head>
+	<body class="blog">
+		<context-router>
+			<header class="content-grid">
+				<h1 class="content">
+					UIElement Docs <small>Version 0.13.1</small>
+				</h1>
+				
+<section-menu>
+	<nav>
+		<h2 class="visually-hidden">Main Menu</h2>
+		<ol>
+			
+				<li>
+					<a href="../index.html">
+						<span class="icon">📖</span>
+						<strong>Introduction</strong>
+						<small>Overview and key benefits of UIElement</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../getting-started.html">
+						<span class="icon">🚀</span>
+						<strong>Getting Started</strong>
+						<small>Installation, setup, and first steps</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../components.html">
+						<span class="icon">🏗️</span>
+						<strong>Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../styling.html">
+						<span class="icon">🎨</span>
+						<strong>Styling</strong>
+						<small>Scoped styles, CSS custom properties</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../data-flow.html">
+						<span class="icon">🔄</span>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../examples.html">
+						<span class="icon">🍽️</span>
+						<strong>Examples</strong>
+						<small>Common use cases and demos</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../blog.html">
+						<span class="icon">📜</span>
+						<strong>Blog</strong>
+						<small>Latest articles and updates</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../api.html">
+						<span class="icon">📚</span>
+						<strong>API Reference</strong>
+						<small>Functions, types, and constants</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../about.html">
+						<span class="icon">🤝</span>
+						<strong>About</strong>
+						<small>License, versioning, getting involved</small>
+					</a>
+				</li>
+		</ol>
+	</nav>
+</section-menu>
+				<card-callout class="content danger" hidden>
+					<p class="error" role="alert" aria-live="polite"></p>
+				</card-callout>
+			</header>
+			<main class="content-grid"><section-hero>
+
+<h1 id="rethinking-reactivity">
+                <a name="rethinking-reactivity" class="anchor" href="#rethinking-reactivity">
+	                <span class="permalink">🔗</span>
+                </a>
+                Rethinking Reactivity
+            </h1>
+<div>
+  <p class="lead">In our previous post, we saw how components help organize frontend code into manageable, encapsulated pieces. But what happens when we need <strong>multiple inputs, derived values, and complex state relationships</strong>?</p>
+  
+<module-toc>
+	<nav>
+		<h2>In this Page</h2>
+		<ol>
+			<li><a href="#what-is-reactivity-and-why-should-you-care">What Is Reactivity, and Why Should You Care?</a></li>
+			<li><a href="#frameworks-to-the-rescue">Frameworks to the Rescue</a></li>
+			<li><a href="#reactivity-without-a-framework">Reactivity Without a Framework</a></li>
+			<li><a href="#signals-are-going-native">Signals Are Going Native</a></li>
+			<li><a href="#a-thin-layer-you-can-use-today">A Thin Layer You Can Use Today</a></li>
+		</ol>
+	</nav>
+</module-toc>
+</div>
+</section-hero>
+
+<section>
+
+<h2 id="what-is-reactivity-and-why-should-you-care">
+                <a name="what-is-reactivity-and-why-should-you-care" class="anchor" href="#what-is-reactivity-and-why-should-you-care">
+	                <span class="permalink">🔗</span>
+                </a>
+                What Is Reactivity, and Why Should You Care?
+            </h2>
+<p>At its core, reactivity is a programming model where the system keeps your user interface up to date automatically. You declare what should happen when state changes, and the system ensures that it does – consistently and efficiently.</p>
+<p>Compared to imperative code, reactivity offers a few key benefits:</p>
+<ul>
+<li><strong>Declarative logic</strong>: You describe relationships between state and output, not the steps to manually keep them in sync.</li>
+<li><strong>Consistency</strong>: The system ensures derived values are always up to date.</li>
+<li><strong>Less wiring</strong>: You don&#39;t need to write handlers for every possible source of change.</li>
+</ul>
+<p>Let&#39;s illustrate this with a simple example.</p>
+<p>We have:</p>
+<ul>
+<li>Two input fields: <strong>First name</strong> and <strong>Last name</strong>.</li>
+<li>A checkbox: <strong>Use full name name as display name</strong>.</li>
+<li>Two derived values:<ul>
+<li><code>displayName</code>: first name or full name depending on checkbox.</li>
+<li><code>userName</code>: first initial + last name, lowercased.</li>
+</ul>
+</li>
+<li>Two <code>&lt;span&gt;</code> elements that display these values.</li>
+</ul>
+<module-codeblock collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">html</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">greeting-config</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">    First name</span></span>
+<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"first"</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">  &#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">    Last name</span></span>
+<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"last"</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">  &#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"full"</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"checkbox"</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">    Use full name as display name</span></span>
+<span class="line"><span style="color:#F8F8F2">  &#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Display name: &#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"display-name"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>User name: &#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"user-name"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">greeting-config</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>Now try writing a Web Component that keeps all of that in sync manually. You&#39;ll need:</p>
+<ul>
+<li>Change event listeners on both fields.</li>
+<li>A change listener on the checkbox.</li>
+<li>A <code>#updateDisplay()</code> method that gets called from every handler.</li>
+<li>Manual DOM updates.</li>
+<li>Guards against inconsistent state during updates.</li>
+</ul>
+<p>It gets surprisingly tricky – even though the logic is simple.</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#66D9EF;font-style:italic">class</span><span> </span><span style="color:#A6E22E;text-decoration:underline">GreetingConfig</span><span style="color:#F92672"> extends</span><span> </span><span style="color:#A6E22E;font-style:italic;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">  #first </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#F8F8F2">  #last </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#F8F8F2">  #full </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> false</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">  connectedCallback</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FD971F">    this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input[name="first"]'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">addEventListener</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">      this</span><span style="color:#F8F8F2">.#first </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value</span></span>
+<span class="line"><span style="color:#FD971F">      this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">#updateDisplay</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">    })</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FD971F">    this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input[name="last"]'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">addEventListener</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">      this</span><span style="color:#F8F8F2">.#last </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value</span></span>
+<span class="line"><span style="color:#FD971F">      this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">#updateDisplay</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">    })</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FD971F">    this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input[name="full"]'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">addEventListener</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FD971F">      this</span><span style="color:#F8F8F2">.#full </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.checked</span></span>
+<span class="line"><span style="color:#FD971F">      this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">#updateDisplay</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">    })</span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">  #</span><span style="color:#A6E22E">updateDisplay</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> displayName </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.#full</span></span>
+<span class="line"><span style="color:#F92672">      ?</span><span style="color:#E6DB74"> `</span><span style="color:#F92672">${</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.#first</span><span style="color:#F92672">}</span><span style="color:#F92672"> ${</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.#last</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span></span>
+<span class="line"><span style="color:#F92672">      :</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.#first</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> userName </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> `</span><span style="color:#F92672">${</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.#first[</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">] </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span><span style="color:#F92672">}${</span><span style="color:#FD971F">this</span><span style="color:#F8F8F2">.#last</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">toLowerCase</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> displayNameEl </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.display-name'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">    if</span><span style="color:#F8F8F2"> (displayNameEl) displayNameEl.textContent </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> displayName</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> userNameEl </span><span style="color:#F92672">=</span><span style="color:#FD971F"> this</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.user-name'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">    if</span><span style="color:#F8F8F2"> (userNameEl) userNameEl.textContent </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> userName</span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"><span style="color:#F8F8F2">customElements.</span><span style="color:#A6E22E">define</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'greeting-config'</span><span style="color:#F8F8F2">, GreetingConfig)</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>This imperative approach works, but notice the problems:</p>
+<ul>
+<li><strong>Repetitive event handling</strong>: Every input needs its own listener</li>
+<li><strong>Manual DOM updates</strong>: We have to remember to update the display everywhere</li>
+<li><strong>Coarse-grained updates</strong>: <code>#updateDisplay()</code> recalculates everything, even when avoidable</li>
+<li><strong>State synchronization bugs</strong>: It&#39;s easy to forget to call <code>#updateDisplay()</code> somewhere</li>
+</ul>
+<p>As components grow, these issues compound. This is exactly the problem reactivity solves.</p>
+</section>
+
+<section>
+
+<h2 id="frameworks-to-the-rescue">
+                <a name="frameworks-to-the-rescue" class="anchor" href="#frameworks-to-the-rescue">
+	                <span class="permalink">🔗</span>
+                </a>
+                Frameworks to the Rescue
+            </h2>
+<p>Now that we&#39;ve seen the manual approach, let&#39;s look at how frameworks address this. Frameworks like React and Vue were invented to solve this very problem. In both, you can express derived values directly:</p>
+<ul>
+<li>React uses <code>useState()</code> and <code>useMemo()</code>.</li>
+<li>Vue uses <code>ref()</code> and <code>computed()</code>.</li>
+</ul>
+<p>Their underlying reactivity systems track dependencies, re-run derivations, and update the DOM efficiently. Here&#39;s what the example looks like in React or Vue:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// React component</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> React, { useState, useMemo } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> 'react'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">function</span><span style="color:#A6E22E"> GreetingConfig</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> [first, setFirst] </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> useState</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> [last, setLast] </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> useState</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> [full, setFull] </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> useState</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">false</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> displayName </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> useMemo</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">    return</span><span style="color:#F8F8F2"> full </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> `</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">first</span><span style="color:#F92672">}</span><span style="color:#F92672"> ${</span><span style="color:#F8F8F2">last</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F92672"> :</span><span style="color:#F8F8F2"> first</span></span>
+<span class="line"><span style="color:#F8F8F2">  }, [first, last, full])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> userName </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> useMemo</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">    return</span><span style="color:#E6DB74"> `</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">first[</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">] </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span><span style="color:#F92672">}${</span><span style="color:#F8F8F2">last</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">toLowerCase</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">  }, [first, last])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">  return</span><span style="color:#F8F8F2"> (</span></span>
+<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">      &#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">        First name</span></span>
+<span class="line"><span style="color:#F8F8F2">        &#x3C;</span><span style="color:#F92672">input</span></span>
+<span class="line"><span style="color:#A6E22E">          type</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"text"</span></span>
+<span class="line"><span style="color:#A6E22E">          value</span><span style="color:#F92672">={</span><span style="color:#F8F8F2">first</span><span style="color:#F92672">}</span></span>
+<span class="line"><span style="color:#A6E22E">          onChange</span><span style="color:#F92672">={</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> setFirst</span><span style="color:#F8F8F2">(e.target.value)</span><span style="color:#F92672">}</span></span>
+<span class="line"><span style="color:#F8F8F2">        /></span></span>
+<span class="line"><span style="color:#F8F8F2">      &#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">      &#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">        Last name</span></span>
+<span class="line"><span style="color:#F8F8F2">        &#x3C;</span><span style="color:#F92672">input</span></span>
+<span class="line"><span style="color:#A6E22E">          type</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"text"</span></span>
+<span class="line"><span style="color:#A6E22E">          value</span><span style="color:#F92672">={</span><span style="color:#F8F8F2">last</span><span style="color:#F92672">}</span></span>
+<span class="line"><span style="color:#A6E22E">          onChange</span><span style="color:#F92672">={</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> setLast</span><span style="color:#F8F8F2">(e.target.value)</span><span style="color:#F92672">}</span></span>
+<span class="line"><span style="color:#F8F8F2">        /></span></span>
+<span class="line"><span style="color:#F8F8F2">      &#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">      &#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">        &#x3C;</span><span style="color:#F92672">input</span></span>
+<span class="line"><span style="color:#A6E22E">          type</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"checkbox"</span></span>
+<span class="line"><span style="color:#A6E22E">          checked</span><span style="color:#F92672">={</span><span style="color:#F8F8F2">full</span><span style="color:#F92672">}</span></span>
+<span class="line"><span style="color:#A6E22E">          onChange</span><span style="color:#F92672">={</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> setFull</span><span style="color:#F8F8F2">(e.target.checked)</span><span style="color:#F92672">}</span></span>
+<span class="line"><span style="color:#F8F8F2">        /></span></span>
+<span class="line"><span style="color:#F8F8F2">        Use full name as display name</span></span>
+<span class="line"><span style="color:#F8F8F2">      &#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">      &#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">        Display name: &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span><span style="color:#F92672">{</span><span style="color:#F8F8F2">displayName</span><span style="color:#F92672">}</span><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">      &#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">      &#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">        User name: &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span><span style="color:#F92672">{</span><span style="color:#F8F8F2">userName</span><span style="color:#F92672">}</span><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">      &#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">    &#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">  )</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Vue component</span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">template</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			First name</span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> v-model</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"first"</span><span style="color:#A6E22E"> type</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"text"</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			Last name</span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> v-model</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"last"</span><span style="color:#A6E22E"> type</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"text"</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> v-model</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"full"</span><span style="color:#A6E22E"> type</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"checkbox"</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">			Use full name as display name</span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Display name: &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span><span style="color:#F92672">{</span><span style="color:#F8F8F2">{ displayName }</span><span style="color:#F92672">}</span><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>User name: &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span><span style="color:#F92672">{</span><span style="color:#F8F8F2">{ userName }</span><span style="color:#F92672">}</span><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">template</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> setup</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	import </span><span style="color:#F92672">{</span><span style="color:#F8F8F2"> ref, computed </span><span style="color:#F92672">}</span><span style="color:#F8F8F2"> from 'vue'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	const first = ref('')</span></span>
+<span class="line"><span style="color:#F8F8F2">	const last = ref('')</span></span>
+<span class="line"><span style="color:#F8F8F2">	const full = ref(false)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	const displayName = computed(() => </span><span style="color:#F92672">{</span></span>
+<span class="line"><span style="color:#F8F8F2">		return full.value </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> `</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">first.value</span><span style="color:#F92672">}</span><span style="color:#F92672"> ${</span><span style="color:#F8F8F2">last.value</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F92672"> :</span><span style="color:#F8F8F2"> first.value</span></span>
+<span class="line"><span style="color:#F92672">	}</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	const userName = computed(() => </span><span style="color:#F92672">{</span></span>
+<span class="line"><span style="color:#F8F8F2">		return </span><span style="color:#E6DB74">`</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">first.value[</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">] </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span><span style="color:#F92672">}${</span><span style="color:#F8F8F2">last.value</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">toLowerCase</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F92672">	}</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>These solutions work well and have powered countless applications. However, they come with trade-offs that may not fit every project:</p>
+<ul>
+<li><strong>Bundle size</strong>: Framework code must be downloaded and parsed before your app starts.</li>
+<li><strong>Runtime overhead</strong>: Client-side rendering (CSR) adds computational cost that delays interaction and may cause layout shifts.</li>
+<li><strong>Complexity</strong>: Server-side rendering (SSR), hydration and build tooling add infrastructure complexity and imposes tighter coupling between frontend and backend.</li>
+<li><strong>Vendor lock-in</strong>: Components written for one framework can&#39;t easily move to another.</li>
+</ul>
+<p>For many applications, these trade-offs are worth it. But what if you could get the benefits of reactivity less costy?</p>
+</section>
+
+<section>
+
+<h2 id="reactivity-without-a-framework">
+                <a name="reactivity-without-a-framework" class="anchor" href="#reactivity-without-a-framework">
+	                <span class="permalink">🔗</span>
+                </a>
+                Reactivity Without a Framework
+            </h2>
+<p>While frameworks solve the reactivity problem, they introduce new challenges. What if reactivity wasn&#39;t tied to a rendering model?</p>
+<p>What if you could have:</p>
+<ul>
+<li>Fine-grained updates to the DOM,</li>
+<li>Automatic dependency tracking,</li>
+<li>Without needing a virtual DOM, compiler, or bundler?</li>
+</ul>
+<p>That&#39;s possible – <strong>with just a few functions</strong>. We call these reactive primitives that track dependencies and trigger updates <strong>signals</strong>.</p>
+<p>Here&#39;s what a minimal signal-based reactivity system might look like:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { state, computed, effect } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/cause-effect'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// State signals</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> first </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Ada'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> last </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Lovelace'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> full </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">false</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// Computed signals</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> fullName </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> computed</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#F8F8F2">  full.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> `</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">first.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span><span style="color:#F92672">}</span><span style="color:#F92672"> ${</span><span style="color:#F8F8F2">last.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F92672"> :</span><span style="color:#F8F8F2"> first.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(),</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> userName </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> computed</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#E6DB74">  `</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">first.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()[</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">] </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span><span style="color:#F92672">}${</span><span style="color:#F8F8F2">last.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">toLowerCase</span><span style="color:#F8F8F2">(),</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// Effects</span></span>
+<span class="line"><span style="color:#A6E22E">effect</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">  console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(fullName.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">())</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"><span style="color:#A6E22E">effect</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">  console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(userName.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">())</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>Notice:</p>
+<ul>
+<li>All necessary recalculations and DOM updates are performed automatically.</li>
+<li>Unnecessary updates are avoided:<ul>
+<li>When you change the last name, the effect that depends on <code>displayName</code> will only run if the checkbox is checked.</li>
+<li>When you change the first name, the effect that depends on <code>userName</code> will only run if the the first letter of the first name changes.</li>
+<li>When you toggle the full name checkbox, only the effect that depends on <code>fullName</code> will run.</li>
+</ul>
+</li>
+</ul>
+<p>This is <strong>fine-grained reactivity</strong> – the system tracks exactly what depends on what and updates only what&#39;s necessary.</p>
+<p>This model:</p>
+<ul>
+<li>Works with server-rendered HTML.</li>
+<li>Hydration is done by the browser.</li>
+<li>Performs only minimal reconciliation in the signal graph.</li>
+<li>Keeps JavaScript optional for initial rendering.</li>
+<li>Makes each state update cheap and predictable.</li>
+</ul>
+<p>And best of all – it&#39;s not hypothetical. This approach is already being standardized.</p>
+</section>
+
+<section>
+
+<h2 id="signals-are-going-native">
+                <a name="signals-are-going-native" class="anchor" href="#signals-are-going-native">
+	                <span class="permalink">🔗</span>
+                </a>
+                Signals Are Going Native
+            </h2>
+<p>The idea behind signals (a reactive primitive with <code>.get()</code> and <code>.set()</code> methods) is so powerful that it&#39;s making its way into the JavaScript language itself. The TC39 signals proposal is currently at Stage 1, meaning the syntax and API are still evolving. However, the core concepts are well-established and unlikely to change significantly.</p>
+<p>Here&#39;s a preview of what native signals might look like:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// State signals</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> first </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#F8F8F2"> Signal.</span><span style="color:#A6E22E">State</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Ada'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> last </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#F8F8F2"> Signal.</span><span style="color:#A6E22E">State</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Lovelace'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> full </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#F8F8F2"> Signal.</span><span style="color:#A6E22E">State</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">false</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// Computed signals</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> fullName </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#F8F8F2"> Signal.</span><span style="color:#A6E22E">Computed</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#F8F8F2">  full.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> `</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">first.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span><span style="color:#F92672">}</span><span style="color:#F92672"> ${</span><span style="color:#F8F8F2">last.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F92672"> :</span><span style="color:#F8F8F2"> first.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">(),</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> userName </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#F8F8F2"> Signal.</span><span style="color:#A6E22E">Computed</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#E6DB74">  `</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">first.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()[</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">]</span><span style="color:#F92672">}${</span><span style="color:#F8F8F2">last.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">toLowerCase</span><span style="color:#F8F8F2">(),</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">// State updates</span></span>
+<span class="line"><span style="color:#F8F8F2">first.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Betty'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>This is the future of reactivity – minimal, composable, efficient, and framework-agnostic.</p>
+<p>The native signals proposal focuses on the reactive primitives (<code>Signal.State</code> and <code>Signal.Computed</code>) but doesn&#39;t standardize effects. This is intentional – different frameworks and libraries can implement effects in ways that best fit their needs while sharing the same underlying signal system.</p>
+</section>
+
+<section>
+
+<h2 id="a-thin-layer-you-can-use-today">
+                <a name="a-thin-layer-you-can-use-today" class="anchor" href="#a-thin-layer-you-can-use-today">
+	                <span class="permalink">🔗</span>
+                </a>
+                A Thin Layer You Can Use Today
+            </h2>
+<p>While native signals are still being standardized, you can use this model right now. Libraries like <strong>Cause &amp; Effect</strong> (which powers UIElement) implement the same contract with near-zero overhead and an almost identical API.</p>
+<p>In the next article, we&#39;ll dive into <strong>how UIElement implements reactivity</strong> – not with a big framework, but with a minimal toolkit that:</p>
+<ul>
+<li>Tracks dependencies,</li>
+<li>Updates only what changed,</li>
+<li>And integrates seamlessly into Web Components and HTML-first user interfaces.</li>
+</ul>
+<p>Stay tuned – we&#39;ll revisit our example and show how reactivity becomes almost effortless with signals and effects.</p>
+</section>
+</main>
+			<footer class="content-grid">
+				<div class="content">
+					<h2 class="visually-hidden">Footer</h2>
+					<p>© 2024 – 2025 Zeix AG</p>
+				</div>
+			</footer>
+		</context-router>
+	</body>
+</html>

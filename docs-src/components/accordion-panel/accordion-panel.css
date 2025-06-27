@@ -2,12 +2,11 @@ accordion-panel {
 	display: block;
 
 	> details {
-
 		& summary {
 			cursor: pointer;
 			font-size: var(--font-size-m);
 			font-weight: var(--font-weight-bold);
-            margin: 0 0 var(--space-s);
+			margin: 0 0 var(--space-s);
 		}
 
 		::marker,
@@ -25,7 +24,6 @@ accordion-panel {
 		}
 
 		&[aria-disabled="true"] {
-			
 			& summary {
 				pointer-events: none;
 				display: block;
@@ -38,8 +36,8 @@ accordion-panel {
 			}
 
 			.summary {
-                margin-left: 0;
-            }
+				margin-left: 0;
+			}
 		}
 	}
 }

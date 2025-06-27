@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>component – UIElement Docs</title>
+		<meta name="description" content="" />
+		<link rel="stylesheet" href="../../assets/main.css" />
+		<script type="module" src="../../assets/main.js"></script>
+	</head>
+	<body class="api">
+		<context-router>
+			<header class="content-grid">
+				<h1 class="content">
+					UIElement Docs <small>Version 0.13.1</small>
+				</h1>
+				
+<section-menu>
+	<nav>
+		<h2 class="visually-hidden">Main Menu</h2>
+		<ol>
+			
+				<li>
+					<a href="../../index.html">
+						<span class="icon">📖</span>
+						<strong>Introduction</strong>
+						<small>Overview and key benefits of UIElement</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../getting-started.html">
+						<span class="icon">🚀</span>
+						<strong>Getting Started</strong>
+						<small>Installation, setup, and first steps</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../components.html">
+						<span class="icon">🏗️</span>
+						<strong>Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../styling.html">
+						<span class="icon">🎨</span>
+						<strong>Styling</strong>
+						<small>Scoped styles, CSS custom properties</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../data-flow.html">
+						<span class="icon">🔄</span>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../examples.html">
+						<span class="icon">🍽️</span>
+						<strong>Examples</strong>
+						<small>Common use cases and demos</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../blog.html">
+						<span class="icon">📜</span>
+						<strong>Blog</strong>
+						<small>Latest articles and updates</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../api.html">
+						<span class="icon">📚</span>
+						<strong>API Reference</strong>
+						<small>Functions, types, and constants</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="../../about.html">
+						<span class="icon">🤝</span>
+						<strong>About</strong>
+						<small>License, versioning, getting involved</small>
+					</a>
+				</li>
+		</ol>
+	</nav>
+</section-menu>
+				<card-callout class="content danger" hidden>
+					<p class="error" role="alert" aria-live="polite"></p>
+				</card-callout>
+			</header>
+			<main class="content-grid"><section class="api-content">
+<h1 id="function-component">
+                <a name="function-component" class="anchor" href="#function-component">
+	                <span class="permalink">🔗</span>
+                </a>
+                Function: component()
+            </h1>
+<blockquote>
+<p><strong>component</strong>&lt;<code>P</code>&gt;(<code>name</code>, <code>init</code>, <code>setup</code>): <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;</p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/fbfc14f2b364007b204dfef842cb4c272bdfad41/src/component.ts#L279">src/component.ts:279</a></p>
+<p>Define a component with its states and setup function (connectedCallback)</p>
+<h2 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type Parameters
+            </h2>
+<h3 id="p">
+                <a name="p" class="anchor" href="#p">
+	                <span class="permalink">🔗</span>
+                </a>
+                P
+            </h3>
+<p><code>P</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
+<h2 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Parameters
+            </h2>
+<h3 id="name">
+                <a name="name" class="anchor" href="#name">
+	                <span class="permalink">🔗</span>
+                </a>
+                name
+            </h3>
+<p><code>string</code></p>
+<p>name of the custom element</p>
+<h3 id="init">
+                <a name="init" class="anchor" href="#init">
+	                <span class="permalink">🔗</span>
+                </a>
+                init
+            </h3>
+<p>{ [K in string | number | symbol]: Initializer&lt;P[K], Component&lt;P&gt;&gt; } = <code>...</code></p>
+<p>signals of the component</p>
+<h3 id="setup">
+                <a name="setup" class="anchor" href="#setup">
+	                <span class="permalink">🔗</span>
+                </a>
+                setup
+            </h3>
+<p>(<code>host</code>, <code>select</code>) =&gt; <a href="../type-aliases/FxFunction.html"><code>FxFunction</code></a>&lt;<code>P</code>, <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;&gt;[]</p>
+<p>setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()</p>
+<h2 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h2>
+<p><a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;</p>
+<ul>
+<li>constructor function for the custom element</li>
+</ul>
+<h2 id="since">
+                <a name="since" class="anchor" href="#since">
+	                <span class="permalink">🔗</span>
+                </a>
+                Since
+            </h2>
+<p>0.12.0</p>
+
+</section></main>
+			<footer class="content-grid">
+				<div class="content">
+					<h2 class="visually-hidden">Footer</h2>
+					<p>© 2024 – 2025 Zeix AG</p>
+				</div>
+			</footer>
+		</context-router>
+	</body>
+</html>

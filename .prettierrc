@@ -3,5 +3,15 @@
 	"useTabs": true,
 	"tabWidth": 4,
 	"singleQuote": true,
-	"arrowParens": "avoid"
+	"arrowParens": "avoid",
+	"experimentalOperatorPosition": "start",
+	"overrides": [
+		{
+			"files": "*.md",
+			"options": {
+				"useTabs": false,
+				"tabWidth": 2
+			}
+		}
+	]
 }

@@ -22,7 +22,7 @@
 
 				describe('asBoolean', function () {
 					it('should be true for empty string', function () {
-						const result = asBoolean(body, '')
+						const result = asBoolean()(body, '')
 						assert.isTrue(
 							result,
 							'Should return true for boolean attribute',
@@ -30,7 +30,7 @@
 					})
 
 					it('should be true for any string', function () {
-						const result = asBoolean(body, 'any')
+						const result = asBoolean()(body, 'any')
 						assert.isTrue(
 							result,
 							'Should return true for any defined attribute',
@@ -38,7 +38,7 @@
 					})
 
 					it('should be false for undefined', function () {
-						const result = asBoolean()
+						const result = asBoolean()()
 						assert.isFalse(
 							result,
 							'Should return false for undefined attribute',
@@ -46,7 +46,7 @@
 					})
 
 					it('should be false for null', function () {
-						const result = asBoolean(body, null)
+						const result = asBoolean()(body, null)
 						assert.isFalse(
 							result,
 							'Should return false for null attribute',
@@ -54,7 +54,7 @@
 					})
 
 					it('should be false for "false" string', function () {
-						const result = asBoolean(body, 'false')
+						const result = asBoolean()(body, 'false')
 						assert.isFalse(
 							result,
 							'Should return false for "false" string',
@@ -62,7 +62,7 @@
 					})
 
 					it('should be true for "0" string', function () {
-						const result = asBoolean(body, '0')
+						const result = asBoolean()(body, '0')
 						assert.isTrue(
 							result,
 							'Should return true for "0" string (only "false" is falsy)',

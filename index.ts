@@ -1,6 +1,6 @@
 /**
  * @name UIElement
- * @version 0.13.0
+ * @version 0.13.1
  * @author Esther Brunner
  */
 
@@ -49,13 +49,28 @@ export {
 	LOG_ERROR,
 	log,
 } from './src/core/util'
-export { type PassedSignals, selection, on, emit, pass } from './src/core/dom'
+export {
+	type PassedSignals,
+	type ElementEventMap,
+	type ElementEventType,
+	type ValidEventName,
+	selection,
+	fromSelector,
+	fromDescendants,
+	on,
+	sensor,
+	fromEvent,
+	emit,
+	pass,
+	read,
+	fromDescendant,
+} from './src/core/dom'
 export {
 	type Context,
 	type UnknownContext,
 	type ContextType,
 	provide,
-	consume,
+	fromContext,
 } from './src/core/context'
 
 // Lib
@@ -77,6 +92,7 @@ export {
 	insertOrRemoveElement,
 	setText,
 	setProperty,
+	show,
 	setAttribute,
 	toggleAttribute,
 	toggleClass,

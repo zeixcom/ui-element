@@ -1,15 +1,17 @@
 ---
-title: "Introduction"
-emoji: "📖"
-description: "Overview and key benefits of UIElement"
+title: 'Introduction'
+emoji: '📖'
+description: 'Overview and key benefits of UIElement'
 ---
 
-<section class="hero">
+<section-hero>
 
 # 📖 Introduction
 
-<p class="lead">Web development doesn't need to be complicated. UIElement offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
-</section>
+<div>
+  <p class="lead"><strong>Web development doesn't need to be complicated</strong>. UIElement offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
+  {{ toc }}</div>
+</section-hero>
 
 <section>
 
@@ -17,26 +19,16 @@ description: "Overview and key benefits of UIElement"
 
 UIElement is a lightweight TypeScript library (approximately 4kB gzipped) that brings signal-based reactivity to Web Components. It serves as a thin layer between standard web technologies and modern reactivity patterns, empowering you to:
 
-* Transform ordinary HTML elements into reactive components
-* Bind UI updates directly to state changes with minimal boilerplate
-* Create reusable component patterns without complex abstractions
-* Progressively enhance server-rendered content with client-side interactivity
+- Transform ordinary HTML elements into reactive components
+- Bind UI updates directly to state changes with minimal boilerplate
+- Create reusable component patterns without complex abstractions
+- Progressively enhance server-rendered content with client-side interactivity
 
 ```js
-import { asInteger, component, on, RESET, setText } from "@zeix/ui-element";
-
-component("show-appreciation", {
-    count: asInteger(RESET) // Get initial value from .count element
-}, (el, { first }) => [
-
-    // Update count display when state changes
-    first(".count", setText("count")),
-
-    // Handle click events to change state
-    first("button", on("click", () => {
-        el.count++
-    }))
-]);
+// Transform HTML into reactive components with minimal code
+component('hello-world', { name: RESET }, (el, { first }) => [
+  first('span', setText('name')),
+])
 ```
 
 UIElement augments what the platform already provides. It leverages the Web Components standard while adding just enough convenience functions to make reactive UI behaviors easy to implement.
@@ -49,63 +41,40 @@ UIElement augments what the platform already provides. It leverages the Web Comp
 
 ### HTML-First Approach
 
-While many frameworks start with JavaScript and generate HTML, UIElement takes the opposite approach. It assumes you already have HTML (usually server-rendered) and want to enhance it with behavior:
+UIElement assumes you start with semantic HTML and want to enhance it with behavior:
 
 ```html
-<!-- Start with semantic HTML -->
-<show-appreciation aria-label="Show appreciation">
-    <button type="button">
-        <span class="emoji">💐</span>
-        <span class="count">5</span>
-    </button>
-</show-appreciation>
+<hello-world>
+  <p>Hello, <span>Alice</span>!</p>
+</hello-world>
 ```
 
-This philosophy means:
+This means better SEO, faster initial page loads, and progressive enhancement that works even when JavaScript fails.
 
-* Better SEO and initial page load performance
-* Progressive enhancement for resilient UIs
-* Less client-side rendering overhead
-* Simpler accessibility implementation
+### Reactive by Design
 
-### Performance By Design
-
-UIElement avoids the overhead of virtual DOM diffing, instead using precise, targeted DOM updates through a fine-grained reactivity system:
-
-* Efficient signal propagation that updates only what changed
-* Batch processing and scheduling of updates to minimize browser reflows
-* Minimal abstraction layers between your code and the browser
-
-### Developer Experience Without Compromise
-
-UIElement is designed to be intuitive and easy to use. It's built with type safety in mind, ensuring that your code is correct and that you don't miss any potential bugs.
-
-* **Type Safety**: Get early warnings when types don't match, improving code quality and reducing bugs.
-* **Minimal Boilerplate**: Write less code to achieve the same result.
-* **Declarative Syntax**: Define component behavior by composing small, reusable functions (attribute parsers and effects).
-* **Customizable**: UIElement is designed to be easily customizable and extensible. You can create your own custom attribute parsers and effects to suit your specific needs.
+UIElement uses signals for efficient, targeted DOM updates. Only the parts that actually changed get updated - no virtual DOM overhead, no unnecessary re-renders.
 
 </section>
 
 <section>
 
-## Why UIElement?
+## Why Choose UIElement?
 
-While there are many excellent JavaScript frameworks out there, UIElement embraces web standards without proprietary extensions. It deliberately eschews abstractions like HTML-in-JS (client-side rendering) or JS-in-HTML (logic in framework-specific attributes) in favor of directness. While it does state management and view updates the hard way internally, it provides the benefits of declarative reactivity with only a few functions to compose complex behavior for developers.
+UIElement shines when you want:
 
-UIElement differentiates itself through:
+- **Server-rendered content** with client-side enhancements
+- **High performance** on all devices (no virtual DOM overhead)
+- **Component reusability** without framework lock-in
+- **Future-proof** code built on web standards
+- **Easy integration** with existing codebases
 
-* **Simplicity**: Few, clear concepts (components, signals, element selectors, effects) allow developers to quickly build interactive components.
-* **Performance**: Fine-grained, direct DOM manipulation outperforms virtual DOM approaches with re-rendering.
-* **Minimalism**: As a thin layer over native web standards, it has no dependencies and minimal footprint with tree-shakable functions.
+**Key Benefits:**
 
-UIElement shines when:
-
-* You're working with server-rendered content that needs client-side enhancements
-* Performance is critical, especially on lower-powered devices
-* You want component reusability without framework lock-in
-* You prefer working with future-proof standard web technologies
-* You need to integrate with diverse tech stacks and existing codebases
+- ~4kB gzipped with no dependencies
+- TypeScript support with full type safety
+- Works with any backend or build setup
+- Progressive enhancement friendly
 
 </section>
 
@@ -115,8 +84,6 @@ UIElement shines when:
 
 Now that you understand what UIElement is and its core philosophy, you're ready to:
 
-* Move on to [Getting Started](getting-started.html) to install the library and build your first component
-* Learn more about [Building Components](building-components.html) to create reusable UI patterns
-* Explore [Data Flow](data-flow.html) to understand how to manage component communication
+- Move on to [Getting Started](getting-started.html) to install the library and build your first component
 
 </section>

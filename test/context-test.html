@@ -65,12 +65,13 @@
 			import {
 				RESET,
 				UNSET,
-				component,
-				state,
-				provide,
-				consume,
 				asString,
+				asInteger,
+				component,
+				fromContext,
+				provide,
 				setText,
+				state,
 			} from '../index.dev.js'
 
 			const animationFrame = async () =>
@@ -93,7 +94,7 @@
 			component(
 				'my-animation',
 				{
-					reducedMotion: consume('reduced-motion'),
+					reducedMotion: fromContext('reduced-motion', false),
 				},
 				(_, { first }) => [first('span', setText('reducedMotion'))],
 			)
@@ -109,7 +110,7 @@
 			component(
 				'hello-world',
 				{
-					displayName: consume('display-name'),
+					displayName: fromContext('display-name', 'World'),
 				},
 				(_, { first }) => [first('span', setText('displayName'))],
 			)
@@ -138,20 +139,15 @@
 			component(
 				'inner-consumer',
 				{
-					contextValue: consume('value'),
+					contextValue: fromContext('value', 'fallback'),
 				},
 				(_, { first }) => [first('span', setText('contextValue'))],
 			)
 
-			// Test subscription functionality
-			component('subscription-test', {}, (_, { first }) => [
-				first('reactive-provider'),
-			])
-
 			component(
 				'reactive-provider',
 				{
-					count: asString('0'),
+					count: asInteger(),
 				},
 				() => [provide(['count'])],
 			)
@@ -159,28 +155,26 @@
 			component(
 				'reactive-consumer',
 				{
-					count: consume('count'),
+					count: fromContext('count', 42),
 				},
-				(_, { first }) => [first('span', setText('count'))],
+				(el, { first }) => [
+					first(
+						'span',
+						setText(() => String(el.count)),
+					),
+				],
 			)
-
-			// Test error handling
-			component('error-handling-test', {}, (_, { first }) => [
-				first('orphan-consumer'),
-			])
 
 			component(
 				'orphan-consumer',
 				{
-					missingContext: consume('non-existent-context'),
+					missingContext: fromContext(
+						'non-existent-context',
+						'fallback',
+					),
 				},
 				(_, { first }) => [first('span', setText('missingContext'))],
 			)
-
-			// Test multiple providers
-			component('multiple-providers-test', {}, (_, { first }) => [
-				first('first-provider'),
-			])
 
 			component(
 				'first-provider',
@@ -201,15 +195,10 @@
 			component(
 				'theme-consumer',
 				{
-					theme: consume('theme'),
+					theme: fromContext('theme', 'light'),
 				},
 				(_, { first }) => [first('span', setText('theme'))],
 			)
-
-			// Test cleanup
-			component('cleanup-test', {}, (_, { first }) => [
-				first('removable-provider'),
-			])
 
 			component(
 				'removable-provider',
@@ -222,7 +211,7 @@
 			component(
 				'data-consumer',
 				{
-					data: consume('data'),
+					data: fromContext('data', 'fallback'),
 				},
 				(_, { first }) => [first('span', setText('data'))],
 			)
@@ -231,8 +220,8 @@
 				describe('Context provider', function () {
 					it('should have motion-context signal from media query list', async function () {
 						assert.equal(
-							'reduced-motion' in
-								document.querySelector('motion-context'),
+							'reduced-motion'
+								in document.querySelector('motion-context'),
 							true,
 						)
 					})
@@ -250,8 +239,8 @@
 				describe('Context consumer', function () {
 					it('should have consumed context in properties', async function () {
 						assert.equal(
-							'reducedMotion' in
-								document.querySelector('my-animation'),
+							'reducedMotion'
+								in document.querySelector('my-animation'),
 							true,
 						)
 					})
@@ -325,8 +314,8 @@
 							receivedContext = e.context
 						})
 
-						// Use the consume function which should dispatch the event
-						consume('test-context')(element)
+						// Use the fromContext function which should dispatch the event
+						fromContext('test-context')(element)
 
 						assert.equal(
 							eventFired,
@@ -353,7 +342,7 @@
 							}
 						})
 
-						const result = consume('test-context')(element)
+						const result = fromContext('test-context')(element)
 						assert.equal(
 							result,
 							'test-value',
@@ -421,7 +410,7 @@
 							'Should show initial count',
 						)
 
-						provider.count = '5'
+						provider.count = 5
 						await animationFrame()
 						textContent = normalizeText(
 							consumer.querySelector('span').textContent,
@@ -432,7 +421,7 @@
 							'Should update when provider changes',
 						)
 
-						provider.count = '10'
+						provider.count = 10
 						await animationFrame()
 						textContent = normalizeText(
 							consumer.querySelector('span').textContent,
@@ -451,11 +440,11 @@
 							document.querySelector('reactive-consumer')
 
 						// Rapid changes
-						provider.count = '1'
-						provider.count = '2'
-						provider.count = '3'
-						provider.count = '4'
-						provider.count = '5'
+						provider.count = 1
+						provider.count = 2
+						provider.count = 3
+						provider.count = 4
+						provider.count = 5
 
 						await animationFrame()
 						const textContent = normalizeText(
@@ -599,7 +588,7 @@
 							receivedContext = e.context
 						})
 
-						consume('')(element)
+						fromContext('')(element)
 						assert.equal(
 							receivedContext,
 							'',
@@ -616,7 +605,7 @@
 							receivedContext = e.context
 						})
 
-						consume(specialContext)(element)
+						fromContext(specialContext)(element)
 						assert.equal(
 							receivedContext,
 							specialContext,
@@ -633,7 +622,7 @@
 							receivedContext = e.context
 						})
 
-						consume(numericContext)(element)
+						fromContext(numericContext)(element)
 						assert.equal(
 							receivedContext,
 							numericContext,
@@ -649,7 +638,7 @@
 							receivedCallback = e.callback
 						})
 
-						consume('test')(element)
+						fromContext('test')(element)
 						assert.equal(
 							typeof receivedCallback,
 							'function',

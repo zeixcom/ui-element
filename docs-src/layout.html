@@ -5,28 +5,27 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{{ title }} – UIElement Docs</title>
 		<meta name="description" content="{{ description }}" />
-		<base href="./{{ url }}" />
-		<link rel="stylesheet" href="assets/main.css" />
-		<script type="module" src="assets/main.js"></script>
+		<link rel="stylesheet" href="{{ base-path }}assets/main.css" />
+		<script type="module" src="{{ base-path }}assets/main.js"></script>
 	</head>
-	<body>
-		<client-router>
+	<body class="{{ section }}">
+		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.0</small>
+					UIElement Docs <small>Version 0.13.1</small>
 				</h1>
 				{{ include 'menu.html' }}
-				<callout-box class="content danger" hidden>
+				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="polite"></p>
-				</callout-box>
+				</card-callout>
 			</header>
-			<main>{{ content }}</main>
+			<main class="content-grid">{{ content }}</main>
 			<footer class="content-grid">
 				<div class="content">
 					<h2 class="visually-hidden">Footer</h2>
 					{{ include 'footer.html' }}
 				</div>
 			</footer>
-		</client-router>
+		</context-router>
 	</body>
 </html>

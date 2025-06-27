@@ -5,18 +5,19 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Getting Started – UIElement Docs</title>
 		<meta name="description" content="Installation, setup, and first steps" />
-		<base href="./getting-started.html" />
-		<link rel="stylesheet" href="assets/main.css" />
-		<script type="module" src="assets/main.js"></script>
+		<link rel="stylesheet" href="./assets/main.css" />
+		<script type="module" src="./assets/main.js"></script>
 	</head>
-	<body>
-		<client-router>
+	<body class="">
+		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.0</small>
+					UIElement Docs <small>Version 0.13.1</small>
 				</h1>
 				
-	<nav class="breakout">
+<section-menu>
+	<nav>
+		<h2 class="visually-hidden">Main Menu</h2>
 		<ol>
 			
 				<li>
@@ -28,7 +29,7 @@
 				</li>
 
 				<li>
-					<a href="getting-started.html" class="active">
+					<a href="getting-started.html">
 						<span class="icon">🚀</span>
 						<strong>Getting Started</strong>
 						<small>Installation, setup, and first steps</small>
@@ -36,17 +37,17 @@
 				</li>
 
 				<li>
-					<a href="building-components.html">
+					<a href="components.html">
 						<span class="icon">🏗️</span>
-						<strong>Building Components</strong>
+						<strong>Components</strong>
 						<small>Anatomy, lifecycle, signals, effects</small>
 					</a>
 				</li>
 
 				<li>
-					<a href="styling-components.html">
+					<a href="styling.html">
 						<span class="icon">🎨</span>
-						<strong>Styling Components</strong>
+						<strong>Styling</strong>
 						<small>Scoped styles, CSS custom properties</small>
 					</a>
 				</li>
@@ -60,110 +61,126 @@
 				</li>
 
 				<li>
-					<a href="patterns-techniques.html">
-						<span class="icon">💡</span>
-						<strong>Patterns & Techniques</strong>
-						<small>Composition, scheduling, best practices</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="examples-recipes.html">
+					<a href="examples.html">
 						<span class="icon">🍽️</span>
-						<strong>Examples & Recipes</strong>
+						<strong>Examples</strong>
 						<small>Common use cases and demos</small>
 					</a>
 				</li>
 
 				<li>
-					<a href="api-reference.html">
-						<span class="icon">📚</span>
-						<strong>API Reference</strong>
-						<small>Detailed documentation of classes and functions</small>
+					<a href="blog.html">
+						<span class="icon">📜</span>
+						<strong>Blog</strong>
+						<small>Latest articles and updates</small>
 					</a>
 				</li>
 
 				<li>
-					<a href="about-community.html">
+					<a href="api.html">
+						<span class="icon">📚</span>
+						<strong>API Reference</strong>
+						<small>Functions, types, and constants</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="about.html">
 						<span class="icon">🤝</span>
-						<strong>About & Community</strong>
+						<strong>About</strong>
 						<small>License, versioning, getting involved</small>
 					</a>
 				</li>
 		</ol>
 	</nav>
-				<callout-box class="content danger" hidden>
+</section-menu>
+				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="polite"></p>
-				</callout-box>
+				</card-callout>
 			</header>
-			<main><section class="hero">
+			<main class="content-grid"><section-hero>
 
-
-	            <h1 id="getting-started">
-	                <a name="getting-started" class="anchor" href="#getting-started">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                🚀 Getting Started
-	            </h1><p class="lead"><strong>Set up UIElement in minutes – no build tools required</strong>. Whether you’re enhancing server-rendered HTML with lightweight interactivity or integrating Web Components into a modern JavaScript project, UIElement makes it simple to get started.</p>
-</section>
+<h1 id="getting-started">
+                <a name="getting-started" class="anchor" href="#getting-started">
+	                <span class="permalink">🔗</span>
+                </a>
+                🚀 Getting Started
+            </h1>
+<div>
+  <p class="lead"><strong>Set up UIElement in minutes – no build tools required</strong>. Whether you’re enhancing server-rendered HTML with lightweight interactivity or integrating Web Components into a modern JavaScript project, UIElement makes it simple to get started.</p>
+  
+<module-toc>
+	<nav>
+		<h2>In this Page</h2>
+		<ol>
+			<li><a href="#how-to-install-uielement">How to Install UIElement</a></li>
+			<li><a href="#creating-your-first-component">Creating Your First Component</a></li>
+			<li><a href="#understanding-your-first-component">Understanding Your First Component</a></li>
+			<li><a href="#verifying-your-installation">Verifying Your Installation</a></li>
+			<li><a href="#next-steps">Next Steps</a></li>
+		</ol>
+	</nav>
+</module-toc>
+</div>
+</section-hero>
 
 <section>
 
-
-	            <h2 id="how-to-install-uielement">
-	                <a name="how-to-install-uielement" class="anchor" href="#how-to-install-uielement">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                How to Install UIElement
-	            </h2><p>UIElement works <strong>without build tools</strong> but also supports <strong>NPM and module bundlers</strong> for larger projects. Choose the option that best fits your needs.</p>
-
-	            <h3 id="using-a-cdn">
-	                <a name="using-a-cdn" class="anchor" href="#using-a-cdn">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Using a CDN
-	            </h3><p>For the easiest setup, include <strong>UIElement</strong> via a CDN. This is ideal for <strong>testing or quick projects</strong> where you want lightweight interactivity without additional tooling.</p>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<h2 id="how-to-install-uielement">
+                <a name="how-to-install-uielement" class="anchor" href="#how-to-install-uielement">
+	                <span class="permalink">🔗</span>
+                </a>
+                How to Install UIElement
+            </h2>
+<p>UIElement works <strong>without build tools</strong> but also supports <strong>package managers and bundlers</strong> for larger projects. Choose the option that best fits your needs.</p>
+<h3 id="using-a-cdn">
+                <a name="using-a-cdn" class="anchor" href="#using-a-cdn">
+	                <span class="permalink">🔗</span>
+                </a>
+                Using a CDN
+            </h3>
+<p>For the easiest setup, include <strong>UIElement</strong> via a CDN. This is ideal for <strong>testing or quick projects</strong> where you want lightweight interactivity without additional tooling.</p>
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> src</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 </section>
 
 <section>
 
-
-	            <h3 id="self-hosting-uielement">
-	                <a name="self-hosting-uielement" class="anchor" href="#self-hosting-uielement">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Self-Hosting UIElement
-	            </h3><p>For production use, you may want to <strong>self-host UIElement</strong> to avoid relying on a CDN. You can download the latest version from:</p>
+<h3 id="self-hosting-uielement">
+                <a name="self-hosting-uielement" class="anchor" href="#self-hosting-uielement">
+	                <span class="permalink">🔗</span>
+                </a>
+                Self-Hosting UIElement
+            </h3>
+<p>For production use, you may want to <strong>self-host UIElement</strong> to avoid relying on a CDN. You can download the latest version from:</p>
 <p><a href="https://github.com/zeixcom/ui-element/blob/main/index.js" target="_blank">Github Repository</a></p>
 <p>Simply host the file on your server and include it like this:</p>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> src</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"/path/to/your/hosted/ui-element.js"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 <p><strong>Why self-host?</strong></p>
 <ul>
 <li>You <strong>control updates</strong> and avoid breaking changes from external CDNs.</li>
@@ -174,183 +191,264 @@
 
 <section>
 
-
-	            <h3 id="installing-via-package-managers">
-	                <a name="installing-via-package-managers" class="anchor" href="#installing-via-package-managers">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Installing via Package Managers
-	            </h3><p>If you’re using a <strong>bundler</strong> like <strong>Vite, Webpack, or Rollup</strong>, install UIElement via NPM or Bun:</p>
-<tab-group>
+<h3 id="installing-via-package-managers">
+                <a name="installing-via-package-managers" class="anchor" href="#installing-via-package-managers">
+	                <span class="permalink">🔗</span>
+                </a>
+                Installing via Package Managers
+            </h3>
+<p>If you’re using a <strong>bundler</strong> like <strong>Vite, Webpack, or Rollup</strong>, install UIElement via NPM or Bun:</p>
+<module-tabgroup>
 <div role="tablist">
 <button role="tab" id="trigger_installation-npm" aria-controls="panel_installation-npm" aria-selected="true" tabindex="0">NPM</button>
 <button role="tab" id="trigger_installation-bun" aria-controls="panel_installation-bun" aria-selected="false" tabindex="-1">Bun</button>
 </div>
 <div role="tabpanel" id="panel_installation-npm" aria-labelledby="trigger_installation-npm">
 
-<code-block language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">bash</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">npm</span><span style="color:#E6DB74"> install</span><span style="color:#E6DB74"> @zeix/ui-element</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 </div>
 <div role="tabpanel" id="panel_installation-bun" aria-labelledby="trigger_installation-bun">
 
-<code-block language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">bash</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">bun</span><span style="color:#E6DB74"> add</span><span style="color:#E6DB74"> @zeix/ui-element</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 </div>
-</tab-group>
+</module-tabgroup>
 
 <p>Then import the needed functions in your JavaScript:</p>
-<code-block language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asString, component, first, on, RESET, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { component, on, RESET, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
+</module-codeblock>
 </section>
 
 <section>
 
-
-	            <h2 id="creating-your-first-component">
-	                <a name="creating-your-first-component" class="anchor" href="#creating-your-first-component">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Creating Your First Component
-	            </h2><p>Now, let&#39;s create an interactive Web Component to verify your setup.</p>
+<h2 id="creating-your-first-component">
+                <a name="creating-your-first-component" class="anchor" href="#creating-your-first-component">
+	                <span class="permalink">🔗</span>
+                </a>
+                Creating Your First Component
+            </h2>
+<p>Now, let&#39;s create an interactive Web Component to verify your setup.</p>
 <p><strong>What This Component Does</strong></p>
 <ul>
 <li>Displays <strong>“Hello, World!”</strong> by default.</li>
 <li>Updates dynamically when you <strong>type into the input field</strong>.</li>
 </ul>
-
-	            <h3 id="markup">
-	                <a name="markup" class="anchor" href="#markup">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Markup
-	            </h3><p>Include the following in your server-rendered HTML:</p>
-<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+<h3 id="markup">
+                <a name="markup" class="anchor" href="#markup">
+	                <span class="permalink">🔗</span>
+                </a>
+                Markup
+            </h3>
+<p>Include the following in your server-rendered HTML:</p>
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">>Your name&#x3C;</span><span style="color:#F92672">br</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>World&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">    Your name&#x3C;</span><span style="color:#F92672">br</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">  &#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>World&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	
-</code-block>
-
-	            <h3 id="component-definition">
-	                <a name="component-definition" class="anchor" href="#component-definition">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Component Definition
-	            </h3><p>Save the following inside a <code>&lt;script type=&quot;module&quot;&gt;</code> tag or an external JavaScript file.</p>
-<code-block collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+</module-codeblock>
+<h3 id="component-definition">
+                <a name="component-definition" class="anchor" href="#component-definition">
+	                <span class="permalink">🔗</span>
+                </a>
+                Component Definition
+            </h3>
+<p>Save the following inside a <code>&lt;script type=&quot;module&quot;&gt;</code> tag or an external JavaScript file.</p>
+<module-codeblock collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"module"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F92672">	import</span><span style="color:#F8F8F2"> { asString, component, on, RESET, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> "https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"</span></span>
+<span class="line"><span style="color:#F92672">  import</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">    component,</span></span>
+<span class="line"><span style="color:#F8F8F2">    on,</span></span>
+<span class="line"><span style="color:#F8F8F2">    RESET,</span></span>
+<span class="line"><span style="color:#F8F8F2">    setText,</span></span>
+<span class="line"><span style="color:#F8F8F2">  } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#A6E22E">	component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"hello-world"</span><span style="color:#F8F8F2">, {</span></span>
-<span class="line"><span style="color:#88846F">		// Parse "name" attribute, falling back to server-rendered content</span></span>
-<span class="line"><span style="color:#F8F8F2">		name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(RESET)</span></span>
-<span class="line"><span style="color:#F8F8F2">	}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">  component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">    'hello-world'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">    {</span></span>
+<span class="line"><span style="color:#88846F">      // Fall back to server-rendered content</span></span>
+<span class="line"><span style="color:#F8F8F2">      name: RESET,</span></span>
+<span class="line"><span style="color:#F8F8F2">    },</span></span>
+<span class="line"><span style="color:#F8F8F2">    (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#88846F">      // Update content dynamically based on the "name" signal</span></span>
+<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#88846F">		// Update content dynamically based on the "name" signal</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"span"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"name"</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">		// Handle user input to change the "name"</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"input"</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"input"</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">			el.name </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> RESET</span></span>
-<span class="line"><span style="color:#F8F8F2">		}))</span></span>
-<span class="line"><span style="color:#F8F8F2">	])</span></span>
+<span class="line"><span style="color:#88846F">      // Handle user input to change the "name"</span></span>
+<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">        'input'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">        on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">          el.name </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> RESET</span></span>
+<span class="line"><span style="color:#F8F8F2">        }),</span></span>
+<span class="line"><span style="color:#F8F8F2">      ),</span></span>
+<span class="line"><span style="color:#F8F8F2">    ],</span></span>
+<span class="line"><span style="color:#F8F8F2">  )</span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-	<input-button class="copy">
+	<basic-button class="copy">
 		<button type="button" class="secondary small">
 			<span class="label">Copy</span>
 		</button>
-	</input-button>
+	</basic-button>
 	<button type="button" class="overlay">Expand</button>
-</code-block>
+</module-codeblock>
 <p><strong>What Happens Here?</strong></p>
 <ul>
-<li>The <code>asString(RESET)</code> signal <strong>parses the &quot;name&quot; attribute</strong>, falling back to server-rendered value (constant <code>RESET</code>).</li>
+<li>The <code>name: RESET</code> property <strong>gets its initial value from the server-rendered content</strong> (the <code>&lt;span&gt;</code> text).</li>
 <li>The <code>setText(&#39;name&#39;)</code> effect <strong>syncs the state</strong> with the <code>&lt;span&gt;</code>.</li>
 <li>The <code>on(&#39;input&#39;)</code> event <strong>updates the state</strong> whenever you type in the first <code>&lt;input&gt;</code> field, falling back to server-rendered value if empty.</li>
 <li>The Web Component <strong>hydrates automatically</strong> when inserted into the page.</li>
+</ul>
+<h2 id="understanding-your-first-component">
+                <a name="understanding-your-first-component" class="anchor" href="#understanding-your-first-component">
+	                <span class="permalink">🔗</span>
+                </a>
+                Understanding Your First Component
+            </h2>
+<p>Let&#39;s break down each part of your <code>&lt;hello-world&gt;</code> component to understand how UIElement works:</p>
+<h3 id="reactive-properties">
+                <a name="reactive-properties" class="anchor" href="#reactive-properties">
+	                <span class="permalink">🔗</span>
+                </a>
+                Reactive Properties
+            </h3>
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">{</span></span>
+<span class="line"><span style="color:#F8F8F2">  name: RESET</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<p>This creates a reactive property called <code>name</code>:</p>
+<ul>
+<li><code>RESET</code> means &quot;use whatever text is already in the HTML&quot; as the starting value</li>
+<li>UIElement automatically reads &quot;World&quot; from the <code>&lt;span&gt;</code> element as the initial value</li>
+<li>When <code>name</code> changes, any effects that depend on it automatically update</li>
+</ul>
+<p>There are other ways to initialize state in UIElement. You&#39;ll learn about those approaches in <a href="core-concepts.html">Core Concepts</a>.</p>
+<h3 id="setup-function">
+                <a name="setup-function" class="anchor" href="#setup-function">
+	                <span class="permalink">🔗</span>
+                </a>
+                Setup Function
+            </h3>
+<p>Returns an array of effects:</p>
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> { </span><span style="color:#F92672">...</span><span style="color:#F8F8F2"> }))</span></span>
+<span class="line"><span style="color:#F8F8F2">]</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<p>Effects define component behaviors:</p>
+<ul>
+<li><code>first(&#39;span&#39;, setText(&#39;name&#39;))</code> finds the first <code>&lt;span&gt;</code> and keeps its text in sync with the <code>name</code> property</li>
+<li><code>first(&#39;input&#39;, on(&#39;input&#39;, ...))</code> finds the first <code>&lt;input&gt;</code> and adds an event listener</li>
+</ul>
+<p>Characteristics of Effects:</p>
+<ul>
+<li>Effects run when the component is added to the page</li>
+<li>Effects rerun when their dependencies change</li>
+<li>Effects may return a cleanup function to be executed when the component is removed from the page</li>
 </ul>
 </section>
 
 <section>
 
-
-	            <h2 id="verifying-your-installation">
-	                <a name="verifying-your-installation" class="anchor" href="#verifying-your-installation">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Verifying Your Installation
-	            </h2><p>If everything is set up correctly, you should see:</p>
+<h2 id="verifying-your-installation">
+                <a name="verifying-your-installation" class="anchor" href="#verifying-your-installation">
+	                <span class="permalink">🔗</span>
+                </a>
+                Verifying Your Installation
+            </h2>
+<p>If everything is set up correctly, you should see:</p>
 <ul>
 <li>A text input field</li>
 <li>A greeting (Hello, World!)</li>
 <li>The greeting updates as you type</li>
 </ul>
-<component-demo>
+<module-demo>
 	<div class="preview">
 		<hello-world>
-			<template shadowrootmode="open">
-				<label>Your name<br>
-					<input type="text">
-				</label>
-				<p>Hello, <span>World</span>!</p>
-			</template>
+			<label>Your name<br>
+				<input type="text">
+			</label>
+			<p>Hello, <span>World</span>!</p>
 		</hello-world>
 	</div>
-</component-demo>
+</module-demo>
 
 <p>If it&#39;s not working:</p>
 <ul>
@@ -362,20 +460,14 @@
 
 <section>
 
-
-	            <h2 id="next-steps">
-	                <a name="next-steps" class="anchor" href="#next-steps">
-		                <span class="permalink">🔗</span>
-	                </a>
-	                Next Steps
-	            </h2><p>Now that UIElement is installed, explore the core concepts for <a href="building-components.html">Building Components</a>:</p>
-<ul>
-<li>✅ <strong>Component anatomy and lifecycle</strong> (using Web Components)</li>
-<li>✅ <strong>Accessing sub-elements</strong> (select children)</li>
-<li>✅ <strong>Signals &amp; effects</strong> (state-driven DOM updates)</li>
-<li>✅ <strong>Event listeners</strong> (react to user interaction)</li>
-</ul>
-<p>Or jump straight to <a href="styling-components.html">Styling Components</a> for CSS best practices.</p>
+<h2 id="next-steps">
+                <a name="next-steps" class="anchor" href="#next-steps">
+	                <span class="permalink">🔗</span>
+                </a>
+                Next Steps
+            </h2>
+<p>You&#39;ve successfully created your first reactive component! Now you&#39;re ready to dive deeper into UIElement&#39;s core concepts:</p>
+<p><strong>Next: <a href="building-components.html">Building Components</a></strong><br>Learn the fundamental building blocks: component anatomy, element selection, basic state management, and event handling patterns.</p>
 </section>
 </main>
 			<footer class="content-grid">
@@ -384,6 +476,6 @@
 					<p>© 2024 – 2025 Zeix AG</p>
 				</div>
 			</footer>
-		</client-router>
+		</context-router>
 	</body>
 </html>

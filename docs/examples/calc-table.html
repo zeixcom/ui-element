@@ -1,5 +1,5 @@
 
-<tab-group>
+<module-tabgroup>
 	<div role="tablist">
 		
 			<button
@@ -31,7 +31,7 @@
 	</div>
 	
 <div role="tabpanel" id="panel_calc-table.html" aria-labelledby="trigger_calc-table.html" hidden>
-	<code-block language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">calc-table.html</span>
 			<span class="language">html</span>
@@ -39,7 +39,11 @@
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">calc-table</span><span style="color:#A6E22E"> rows</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span><span style="color:#A6E22E"> columns</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"rows"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Number of rows:&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">spin-button</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span><span style="color:#A6E22E"> zero-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Add Row"</span><span style="color:#A6E22E"> increment-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Increment"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">form-spinbutton</span></span>
+<span class="line"><span style="color:#A6E22E">			value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span></span>
+<span class="line"><span style="color:#A6E22E">			zero-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Add Row"</span></span>
+<span class="line"><span style="color:#A6E22E">			increment-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Increment"</span></span>
+<span class="line"><span style="color:#F8F8F2">		></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"decrement"</span><span style="color:#A6E22E"> aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Decrement"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				−</span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
@@ -47,11 +51,11 @@
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"increment"</span><span style="color:#A6E22E"> aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Increment"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				+</span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">spin-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">form-spinbutton</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"columns"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Number of columns:&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">spin-button</span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">form-spinbutton</span></span>
 <span class="line"><span style="color:#A6E22E">			value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"3"</span></span>
 <span class="line"><span style="color:#A6E22E">			zero-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Add Column"</span></span>
 <span class="line"><span style="color:#A6E22E">			increment-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Increment"</span></span>
@@ -63,7 +67,7 @@
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"increment"</span><span style="color:#A6E22E"> aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Increment"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				+</span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">spin-button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">form-spinbutton</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">table</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">thead</span><span style="color:#F8F8F2">></span></span>
@@ -96,16 +100,16 @@
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">template</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">calc-table</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
+		<basic-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>
 			</button>
-		</input-button>
-	</code-block>
+		</basic-button>
+	</module-codeblock>
 </div>
 
 <div role="tabpanel" id="panel_calc-table.css" aria-labelledby="trigger_calc-table.css" hidden>
-	<code-block language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<module-codeblock language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">calc-table.css</span>
 			<span class="language">css</span>
@@ -126,16 +130,16 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
+		<basic-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>
 			</button>
-		</input-button>
-	</code-block>
+		</basic-button>
+	</module-codeblock>
 </div>
 
 <div role="tabpanel" id="panel_calc-table.ts" aria-labelledby="trigger_calc-table.ts">
-	<code-block language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">calc-table.ts</span>
 			<span class="language">ts</span>
@@ -152,7 +156,7 @@
 <span class="line"><span style="color:#F8F8F2">	state,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { SpinButtonProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../spin-button/spin-button'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { SpinButtonProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../form-spinbutton/form-spinbutton'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">CalcTableProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">	columns</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span></span>
@@ -202,14 +206,14 @@
 <span class="line"><span style="color:#E6DB74">				'rows'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">				() </span><span style="color:#66D9EF;font-style:italic">=></span></span>
 <span class="line"><span style="color:#F8F8F2">					el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">SpinButtonProps</span><span style="color:#F8F8F2">>>(</span></span>
-<span class="line"><span style="color:#E6DB74">						'.rows spin-button'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">						'.rows form-spinbutton'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">					)?.value,</span></span>
 <span class="line"><span style="color:#F8F8F2">			),</span></span>
 <span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">				'columns'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">				() </span><span style="color:#66D9EF;font-style:italic">=></span></span>
 <span class="line"><span style="color:#F8F8F2">					el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">SpinButtonProps</span><span style="color:#F8F8F2">>>(</span></span>
-<span class="line"><span style="color:#E6DB74">						'.columns spin-button'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">						'.columns form-spinbutton'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">					)?.value,</span></span>
 <span class="line"><span style="color:#F8F8F2">			),</span></span>
 <span class="line"></span>
@@ -233,9 +237,9 @@
 <span class="line"><span style="color:#F8F8F2">								parent.</span><span style="color:#A6E22E">querySelectorAll</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tr'</span><span style="color:#F8F8F2">).length </span><span style="color:#F92672">+</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">							)</span></span>
 <span class="line"><span style="color:#F8F8F2">							row.dataset[</span><span style="color:#E6DB74">'key'</span><span style="color:#F8F8F2">] </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> rowKey</span></span>
-<span class="line"><span style="color:#F8F8F2">							row</span></span>
-<span class="line"><span style="color:#F8F8F2">								.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">								?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(document.</span><span style="color:#A6E22E">createTextNode</span><span style="color:#F8F8F2">(rowKey))</span></span>
+<span class="line"><span style="color:#F8F8F2">							row.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">								document.</span><span style="color:#A6E22E">createTextNode</span><span style="color:#F8F8F2">(rowKey),</span></span>
+<span class="line"><span style="color:#F8F8F2">							)</span></span>
 <span class="line"><span style="color:#F92672">							return</span><span style="color:#F8F8F2"> row</span></span>
 <span class="line"><span style="color:#F8F8F2">						},</span></span>
 <span class="line"><span style="color:#A6E22E">						resolve</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
@@ -269,9 +273,9 @@
 <span class="line"><span style="color:#F8F8F2">									parent.</span><span style="color:#A6E22E">querySelectorAll</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'th'</span><span style="color:#F8F8F2">).length </span><span style="color:#F92672">-</span><span style="color:#AE81FF"> 1</span></span>
 <span class="line"><span style="color:#F8F8F2">								]</span></span>
 <span class="line"><span style="color:#F8F8F2">							colSums.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(colKey, </span><span style="color:#A6E22E">state</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">))</span></span>
-<span class="line"><span style="color:#F8F8F2">							cell</span></span>
-<span class="line"><span style="color:#F8F8F2">								.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">								?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(document.</span><span style="color:#A6E22E">createTextNode</span><span style="color:#F8F8F2">(colKey))</span></span>
+<span class="line"><span style="color:#F8F8F2">							cell.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">								document.</span><span style="color:#A6E22E">createTextNode</span><span style="color:#F8F8F2">(colKey),</span></span>
+<span class="line"><span style="color:#F8F8F2">							)</span></span>
 <span class="line"><span style="color:#F92672">							return</span><span style="color:#F8F8F2"> cell</span></span>
 <span class="line"><span style="color:#F8F8F2">						},</span></span>
 <span class="line"><span style="color:#F8F8F2">					},</span></span>
@@ -303,13 +307,9 @@
 <span class="line"><span style="color:#E6DB74">									'No input found in cell template'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">								)</span></span>
 <span class="line"><span style="color:#F8F8F2">							input.dataset[</span><span style="color:#E6DB74">'key'</span><span style="color:#F8F8F2">] </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> colKey</span></span>
-<span class="line"><span style="color:#F8F8F2">							cell</span></span>
-<span class="line"><span style="color:#F8F8F2">								.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">								?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">									document.</span><span style="color:#A6E22E">createTextNode</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">										`</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">colKey</span><span style="color:#F92672">}${</span><span style="color:#F8F8F2">rowKey</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">									),</span></span>
-<span class="line"><span style="color:#F8F8F2">								)</span></span>
+<span class="line"><span style="color:#F8F8F2">							cell.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">								document.</span><span style="color:#A6E22E">createTextNode</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">`</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">colKey</span><span style="color:#F92672">}${</span><span style="color:#F8F8F2">rowKey</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">							)</span></span>
 <span class="line"><span style="color:#F92672">							return</span><span style="color:#F8F8F2"> cell</span></span>
 <span class="line"><span style="color:#F8F8F2">						},</span></span>
 <span class="line"><span style="color:#F8F8F2">					},</span></span>
@@ -362,11 +362,11 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-		<input-button class="copy">
+		<basic-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>
 			</button>
-		</input-button>
-	</code-block>
+		</basic-button>
+	</module-codeblock>
 </div>
-</tab-group>
+</module-tabgroup>

@@ -1,7 +1,11 @@
 <calc-table rows="3" columns="3">
 	<div class="rows">
 		<p>Number of rows:</p>
-		<spin-button value="3" zero-label="Add Row" increment-label="Increment">
+		<form-spinbutton
+			value="3"
+			zero-label="Add Row"
+			increment-label="Increment"
+		>
 			<button type="button" class="decrement" aria-label="Decrement">
 				−
 			</button>
@@ -9,11 +13,11 @@
 			<button type="button" class="increment" aria-label="Increment">
 				+
 			</button>
-		</spin-button>
+		</form-spinbutton>
 	</div>
 	<div class="columns">
 		<p>Number of columns:</p>
-		<spin-button
+		<form-spinbutton
 			value="3"
 			zero-label="Add Column"
 			increment-label="Increment"
@@ -25,7 +29,7 @@
 			<button type="button" class="increment" aria-label="Increment">
 				+
 			</button>
-		</spin-button>
+		</form-spinbutton>
 	</div>
 	<table>
 		<thead>

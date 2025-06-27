@@ -2,6 +2,7 @@ import {
 	type AttributeParser,
 	type Component,
 	type FxFunction,
+	UNSET,
 	component,
 	computed,
 	emit,
@@ -9,7 +10,6 @@ import {
 	setAttribute,
 	setProperty,
 	setText,
-	UNSET,
 } from '../../../'
 
 /* === Type === */
@@ -43,10 +43,7 @@ const countDecimals = (value: number): number => {
 
 /* === Attribute Parsers === */
 
-const asNumberOrString: AttributeParser<HTMLElement, string | number> = (
-	el,
-	v,
-) => {
+const asNumberOrString: AttributeParser<string | number> = (el, v) => {
 	const input = el.querySelector('input')
 	return input && input.type === 'number'
 		? parseNumber(v, el.hasAttribute('integer'), 0)
@@ -160,8 +157,8 @@ export default component(
 			fns.push(
 				first(
 					'input',
-					on('keydown', (e: Event) => {
-						const { key, shiftKey } = e as KeyboardEvent
+					on('keydown', (e: KeyboardEvent) => {
+						const { key, shiftKey } = e
 						if (['ArrowUp', 'ArrowDown'].includes(key)) {
 							e.stopPropagation()
 							e.preventDefault()

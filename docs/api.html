@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>API Reference – UIElement Docs</title>
+		<meta name="description" content="Functions, types, and constants" />
+		<link rel="stylesheet" href="./assets/main.css" />
+		<script type="module" src="./assets/main.js"></script>
+	</head>
+	<body class="">
+		<context-router>
+			<header class="content-grid">
+				<h1 class="content">
+					UIElement Docs <small>Version 0.13.1</small>
+				</h1>
+				
+<section-menu>
+	<nav>
+		<h2 class="visually-hidden">Main Menu</h2>
+		<ol>
+			
+				<li>
+					<a href="index.html">
+						<span class="icon">📖</span>
+						<strong>Introduction</strong>
+						<small>Overview and key benefits of UIElement</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="getting-started.html">
+						<span class="icon">🚀</span>
+						<strong>Getting Started</strong>
+						<small>Installation, setup, and first steps</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="components.html">
+						<span class="icon">🏗️</span>
+						<strong>Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="styling.html">
+						<span class="icon">🎨</span>
+						<strong>Styling</strong>
+						<small>Scoped styles, CSS custom properties</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="data-flow.html">
+						<span class="icon">🔄</span>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="examples.html">
+						<span class="icon">🍽️</span>
+						<strong>Examples</strong>
+						<small>Common use cases and demos</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="blog.html">
+						<span class="icon">📜</span>
+						<strong>Blog</strong>
+						<small>Latest articles and updates</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="api.html">
+						<span class="icon">📚</span>
+						<strong>API Reference</strong>
+						<small>Functions, types, and constants</small>
+					</a>
+				</li>
+
+				<li>
+					<a href="about.html">
+						<span class="icon">🤝</span>
+						<strong>About</strong>
+						<small>License, versioning, getting involved</small>
+					</a>
+				</li>
+		</ol>
+	</nav>
+</section-menu>
+				<card-callout class="content danger" hidden>
+					<p class="error" role="alert" aria-live="polite"></p>
+				</card-callout>
+			</header>
+			<main class="content-grid"><section-hero>
+
+<h1 id="api-reference">
+                <a name="api-reference" class="anchor" href="#api-reference">
+	                <span class="permalink">🔗</span>
+                </a>
+                📚 API Reference
+            </h1>
+<div>
+  <p class="lead">Functions, types, and constants</p>
+  
+<module-toc>
+	<nav>
+		<h2>In this Page</h2>
+		<ol>
+			<li><a href="#component">Component</a></li>
+			<li><a href="#signals">Signals</a></li>
+			<li><a href="#attribute-parsers">Attribute Parsers</a></li>
+			<li><a href="#signal-initializers">Signal Initializers</a></li>
+			<li><a href="#effects">Effects</a></li>
+		</ol>
+	</nav>
+</module-toc>
+</div>
+
+</section-hero>
+
+<section>
+
+<h2 id="component">
+                <a name="component" class="anchor" href="#component">
+	                <span class="permalink">🔗</span>
+                </a>
+                Component
+            </h2>
+<p>Create a Web Component of type <a href="api/type-aliases/Component.html">Component</a> with reactive properties that extend <a href="api/type-aliases/ComponentProps.html">ComponentProps</a>.</p>
+<ul>
+<li><a href="api/functions/component.html">component</a></li>
+</ul>
+</section>
+
+<section>
+
+<h2 id="signals">
+                <a name="signals" class="anchor" href="#signals">
+	                <span class="permalink">🔗</span>
+                </a>
+                Signals
+            </h2>
+<p>Create a signal of type <a href="api/type-aliases/Signal.html">Signal</a>.</p>
+<ul>
+<li><a href="api/functions/computed.html">computed</a> creates a <a href="api/type-aliases/Computed.html">Computed</a> signal derived from other signals</li>
+<li><a href="api/functions/selection.html">selection</a> creates a <a href="api/type-aliases/Computed.html">Computed</a> signal that updates according to a dynamic CSS selector</li>
+<li><a href="api/functions/sensor.html">sensor</a> creates a <a href="api/type-aliases/Computed.html">Computed</a> signal that updates according to events</li>
+<li><a href="api/functions/state.html">state</a> creates a <a href="api/type-aliases/State.html">State</a> signal</li>
+</ul>
+<p>Helper functions:</p>
+<ul>
+<li><a href="api/functions/isComputed.html">isComputed</a> checks whether a value is a <a href="api/type-aliases/Computed.html">Computed</a> signal</li>
+<li><a href="api/functions/isSignal.html">isSignal</a> checks whether a value is a <a href="api/type-aliases/Signal.html">Signal</a></li>
+<li><a href="api/functions/isState.html">isState</a> checks whether a value is a <a href="api/type-aliases/State.html">State</a> signal</li>
+</ul>
+</section>
+
+<section>
+
+<h2 id="attribute-parsers">
+                <a name="attribute-parsers" class="anchor" href="#attribute-parsers">
+	                <span class="permalink">🔗</span>
+                </a>
+                Attribute Parsers
+            </h2>
+<p>Declare how attributes are parsed. Functions returning <a href="api/type-aliases/AttributeParser.html">AttributeParser</a> that will be used to create <a href="api/type-aliases/State.html">State</a> signals as reactive properties on the component.</p>
+<ul>
+<li><a href="api/functions/asBoolean.html">asBoolean</a></li>
+<li><a href="api/functions/asEnum.html">asEnum</a></li>
+<li><a href="api/functions/asInteger.html">asInteger</a></li>
+<li><a href="api/functions/asJSON.html">asJSON</a></li>
+<li><a href="api/functions/asNumber.html">asNumber</a></li>
+<li><a href="api/functions/asString.html">asString</a></li>
+</ul>
+</section>
+
+<section>
+
+<h2 id="signal-initializers">
+                <a name="signal-initializers" class="anchor" href="#signal-initializers">
+	                <span class="permalink">🔗</span>
+                </a>
+                Signal Initializers
+            </h2>
+<p>Declare how signals are initialized. Variable of type or function returning <a href="api/type-aliases/SignalInitializer.html">SignalInitializer</a>:</p>
+<ul>
+<li><a href="api/functions/fromContext.html">fromContext</a> consumes a context value from nearest ancestor context provider component</li>
+<li><a href="api/functions/fromDescendant.html">fromDescendant</a> gets a reactive property of a descendant component</li>
+<li><a href="api/functions/fromDescendants.html">fromDescendants</a> reduces properties of a collection of descendant elements to a single value</li>
+<li><a href="api/functions/fromEvent.html">fromEvent</a> creates a computed signal from an event handler on a descendant element</li>
+<li><a href="api/functions/fromSelector.html">fromSelector</a> creates a computed signal of descentant elements matching a CSS selector</li>
+</ul>
+</section>
+
+<section>
+
+<h2 id="effects">
+                <a name="effects" class="anchor" href="#effects">
+	                <span class="permalink">🔗</span>
+                </a>
+                Effects
+            </h2>
+<p>Declare effects of type <a href="api/type-aliases/FxFunction.html">FxFunction</a> to be applied when signals change:</p>
+<ul>
+<li><a href="api/functions/dangerouslySetInnerHTML.html">dangerouslySetInnerHTML</a></li>
+<li><a href="api/functions/emit.html">emit</a></li>
+<li><a href="api/functions/insertOrRemoveElement.html">insertOrRemoveElement</a></li>
+<li><a href="api/functions/on.html">on</a></li>
+<li><a href="api/functions/pass.html">pass</a></li>
+<li><a href="api/functions/provide.html">provide</a></li>
+<li><a href="api/functions/setAttribute.html">setAttribute</a></li>
+<li><a href="api/functions/setProperty.html">setProperty</a></li>
+<li><a href="api/functions/setStyle.html">setStyle</a></li>
+<li><a href="api/functions/setText.html">setText</a></li>
+<li><a href="api/functions/show.html">show</a></li>
+<li><a href="api/functions/toggleAttribute.html">toggleAttribute</a></li>
+<li><a href="api/functions/toggleClass.html">toggleClass</a></li>
+<li><a href="api/functions/updateElement.html">updateElement</a></li>
+</ul>
+</section>
+</main>
+			<footer class="content-grid">
+				<div class="content">
+					<h2 class="visually-hidden">Footer</h2>
+					<p>© 2024 – 2025 Zeix AG</p>
+				</div>
+			</footer>
+		</context-router>
+	</body>
+</html>
