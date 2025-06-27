@@ -8,7 +8,7 @@
 
 > **fromSelector**\<`E`\>(`selectors`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`E`[]\>
 
-Defined in: [src/core/dom.ts:259](https://github.com/zeixcom/ui-element/blob/ef7525ef4fcd5329d68c2b65cc085220a29b7a4f/src/core/dom.ts#L259)
+Defined in: [src/core/dom.ts:259](https://github.com/zeixcom/ui-element/blob/0b9c1517fa2a3615fdcca3ecc679ebb5c5c255e7/src/core/dom.ts#L259)
 
 Produce a selection signal from a selector
 
@@ -24,13 +24,13 @@ Produce a selection signal from a selector
 
 `string`
 
-CSS selector for child elements
+CSS selector for descendant elements
 
 ## Returns
 
 [`SignalProducer`](../type-aliases/SignalProducer.md)\<`E`[]\>
 
-signal producer for child element collection from a selector
+signal producer for descendant element collection from a selector
 
 ## Since
 

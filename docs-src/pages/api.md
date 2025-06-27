@@ -19,7 +19,7 @@ description: 'Functions, types, and constants'
 
 ## Component
 
-Create a Web Component of type [Component](api/type-aliases/Component.html):
+Create a Web Component of type [Component](api/type-aliases/Component.html) with reactive properties that extend [ComponentProps](api/type-aliases/ComponentProps.html).
 
 - [component](api/functions/component.html)
 
@@ -29,18 +29,18 @@ Create a Web Component of type [Component](api/type-aliases/Component.html):
 
 ## Signals
 
-Create a signal of type [Signal](api/type-aliases/Signal.html):
+Create a signal of type [Signal](api/type-aliases/Signal.html).
 
-- [computed](api/functions/computed.html)
-- [selection](api/functions/selection.html)
-- [sensor](api/functions/sensor.html)
-- [state](api/functions/state.html)
+- [computed](api/functions/computed.html) creates a [Computed](api/type-aliases/Computed.html) signal derived from other signals
+- [selection](api/functions/selection.html) creates a [Computed](api/type-aliases/Computed.html) signal that updates according to a dynamic CSS selector
+- [sensor](api/functions/sensor.html) creates a [Computed](api/type-aliases/Computed.html) signal that updates according to events
+- [state](api/functions/state.html) creates a [State](api/type-aliases/State.html) signal
 
 Helper functions:
 
-- [isComputed](api/functions/isComputed.html)
-- [isSignal](api/functions/isSignal.html)
-- [isState](api/functions/isState.html)
+- [isComputed](api/functions/isComputed.html) checks whether a value is a [Computed](api/type-aliases/Computed.html) signal
+- [isSignal](api/functions/isSignal.html) checks whether a value is a [Signal](api/type-aliases/Signal.html)
+- [isState](api/functions/isState.html) checks whether a value is a [State](api/type-aliases/State.html) signal
 
 </section>
 
@@ -48,9 +48,9 @@ Helper functions:
 
 ## Attribute Parsers
 
-Declare how attributes are parsed. Variable of type or function returning [AttributeParser](api/type-aliases/AttributeParser.html):
+Declare how attributes are parsed. Functions returning [AttributeParser](api/type-aliases/AttributeParser.html) that will be used to create [State](api/type-aliases/State.html) signals as reactive properties on the component.
 
-- [asBoolean](api/variables/asBoolean.html)
+- [asBoolean](api/functions/asBoolean.html)
 - [asEnum](api/functions/asEnum.html)
 - [asInteger](api/functions/asInteger.html)
 - [asJSON](api/functions/asJSON.html)
@@ -65,11 +65,11 @@ Declare how attributes are parsed. Variable of type or function returning [Attri
 
 Declare how signals are initialized. Variable of type or function returning [SignalInitializer](api/type-aliases/SignalInitializer.html):
 
-- [consume](api/functions/consume.html)
-- [fromChild](api/functions/fromChild.html)
-- [fromChildren](api/functions/fromChildren.html)
-- [fromEvent](api/functions/fromEvent.html)
-- [fromSelector](api/functions/fromSelector.html)
+- [fromContext](api/functions/fromContext.html) consumes a context value from nearest ancestor context provider component
+- [fromDescendant](api/functions/fromDescendant.html) gets a reactive property of a descendant component
+- [fromDescendants](api/functions/fromDescendants.html) reduces properties of a collection of descendant elements to a single value
+- [fromEvent](api/functions/fromEvent.html) creates a computed signal from an event handler on a descendant element
+- [fromSelector](api/functions/fromSelector.html) creates a computed signal of descentant elements matching a CSS selector
 
 </section>
 

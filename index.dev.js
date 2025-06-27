@@ -396,7 +396,7 @@ var selection = (parent, selectors) => {
   return s;
 };
 var fromSelector = (selectors) => (host) => selection(host, selectors);
-var fromChildren = (selectors, reducer, initialValue) => (host) => computed(() => selection(host, selectors).get().reduce(reducer, initialValue));
+var fromDescendants = (selectors, reducer, initialValue) => (host) => computed(() => selection(host, selectors).get().reduce(reducer, initialValue));
 var on = (type, listener, options = false) => (host, target = host) => {
   if (!isFunction(listener))
     throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
@@ -482,7 +482,7 @@ var read = (source, prop, fallback) => {
     return value === UNSET ? fallback : value.get();
   };
 };
-var fromChild = (selector, prop, fallback) => (host) => {
+var fromDescendant = (selector, prop, fallback) => (host) => {
   const element = host.querySelector(selector);
   return computed(read(element, prop, fallback));
 };
@@ -973,9 +973,9 @@ export {
   insertOrRemoveElement,
   fromSelector,
   fromEvent,
+  fromDescendants,
+  fromDescendant,
   fromContext,
-  fromChildren,
-  fromChild,
   enqueue,
   emit,
   effect,

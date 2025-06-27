@@ -91,22 +91,22 @@ declare const selection: <E extends Element>(
  * Produce a selection signal from a selector
  *
  * @since 0.13.1
- * @param {string} selectors - CSS selector for child elements
- * @returns {SignalProducer<HTMLElement, E[]>} signal producer for child element collection from a selector
+ * @param {string} selectors - CSS selector for descendant elements
+ * @returns {SignalProducer<HTMLElement, E[]>} signal producer for descendant element collection from a selector
  */
 declare const fromSelector: <E extends Element>(
 	selectors: string,
 ) => SignalProducer<E[]>
 /**
- * Produce a computed signal from reduced properties of child elements
+ * Produce a computed signal from reduced properties of descendant elements
  *
  * @since 0.13.1
- * @param {string} selectors - CSS selector for child elements
+ * @param {string} selectors - CSS selector for descendant elements
  * @param {(accumulator: T, currentElement: E, currentIndex: number, array: E[]) => T} reducer - function to reduce values
  * @param {T} initialValue - initial value for reduction
  * @returns {SignalProducer<T>} signal producer that emits reduced value
  */
-declare const fromChildren: <T extends {}, E extends Element = HTMLElement>(
+declare const fromDescendants: <T extends {}, E extends Element = HTMLElement>(
 	selectors: string,
 	reducer: (
 		accumulator: T,
@@ -231,15 +231,15 @@ declare const read: <Q extends ComponentProps, K extends keyof Q>(
 	fallback: Q[K],
 ) => () => Q[K]
 /**
- * Produce a computed signal for projected reactive property from child component
+ * Produce a computed signal for projected reactive property from a descendant component
  *
  * @since 0.13.1
- * @param {string} selector - CSS selector for child element
+ * @param {string} selector - CSS selector for descendant element
  * @param {K} prop - property name to get signal for
  * @param {Q[K]} fallback - fallback value to use until component is ready
- * @returns {SignalProducer<Q[K]>} signal producer that emits value from child component
+ * @returns {SignalProducer<Q[K]>} signal producer that emits value from descendant component
  */
-declare const fromChild: <Q extends ComponentProps, K extends keyof Q>(
+declare const fromDescendant: <Q extends ComponentProps, K extends keyof Q>(
 	selector: string,
 	prop: K,
 	fallback: Q[K],
@@ -250,8 +250,8 @@ export {
 	type ValidEventName,
 	type PassedSignals,
 	emit,
-	fromChild,
-	fromChildren,
+	fromDescendant,
+	fromDescendants,
 	fromEvent,
 	fromSelector,
 	observeSubtree,

@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>asBoolean – UIElement Docs</title>
+		<title>fromDescendant – UIElement Docs</title>
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="../../assets/main.css" />
 		<script type="module" src="../../assets/main.js"></script>
@@ -99,44 +99,82 @@
 				</card-callout>
 			</header>
 			<main class="content-grid"><section class="api-content">
-<h1 id="variable-asboolean">
-                <a name="variable-asboolean" class="anchor" href="#variable-asboolean">
+<h1 id="function-fromdescendant">
+                <a name="function-fromdescendant" class="anchor" href="#function-fromdescendant">
 	                <span class="permalink">🔗</span>
                 </a>
-                Variable: asBoolean
+                Function: fromDescendant()
             </h1>
 <blockquote>
-<p><code>const</code> <strong>asBoolean</strong>: <a href="../type-aliases/AttributeParser.html"><code>AttributeParser</code></a>&lt;<code>boolean</code>&gt;</p>
+<p><strong>fromDescendant</strong>&lt;<code>Q</code>, <code>K</code>&gt;(<code>selector</code>, <code>prop</code>, <code>fallback</code>): <a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>Q</code>[<code>K</code>]&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/ef7525ef4fcd5329d68c2b65cc085220a29b7a4f/src/lib/parsers.ts#L24">src/lib/parsers.ts:24</a></p>
-<p>Parse a boolean attribute as an actual boolean value</p>
-<h2 id="since">
-                <a name="since" class="anchor" href="#since">
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/0b9c1517fa2a3615fdcca3ecc679ebb5c5c255e7/src/core/dom.ts#L533">src/core/dom.ts:533</a></p>
+<p>Produce a computed signal for projected reactive property from a descendant component</p>
+<h2 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
                 </a>
-                Since
+                Type Parameters
             </h2>
-<p>0.7.0</p>
-<h2 id="param">
-                <a name="param" class="anchor" href="#param">
+<h3 id="q">
+                <a name="q" class="anchor" href="#q">
 	                <span class="permalink">🔗</span>
                 </a>
-                Param
-            </h2>
-<p>host element</p>
-<h2 id="param">
-                <a name="param" class="anchor" href="#param">
+                Q
+            </h3>
+<p><code>Q</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
+<h3 id="k">
+                <a name="k" class="anchor" href="#k">
 	                <span class="permalink">🔗</span>
                 </a>
-                Param
+                K
+            </h3>
+<p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code></p>
+<h2 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Parameters
             </h2>
-<p>maybe string value</p>
+<h3 id="selector">
+                <a name="selector" class="anchor" href="#selector">
+	                <span class="permalink">🔗</span>
+                </a>
+                selector
+            </h3>
+<p><code>string</code></p>
+<p>CSS selector for descendant element</p>
+<h3 id="prop">
+                <a name="prop" class="anchor" href="#prop">
+	                <span class="permalink">🔗</span>
+                </a>
+                prop
+            </h3>
+<p><code>K</code></p>
+<p>property name to get signal for</p>
+<h3 id="fallback">
+                <a name="fallback" class="anchor" href="#fallback">
+	                <span class="permalink">🔗</span>
+                </a>
+                fallback
+            </h3>
+<p><code>Q</code>[<code>K</code>]</p>
+<p>fallback value to use until component is ready</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
+<p><a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>Q</code>[<code>K</code>]&gt;</p>
+<p>signal producer that emits value from descendant component</p>
+<h2 id="since">
+                <a name="since" class="anchor" href="#since">
+	                <span class="permalink">🔗</span>
+                </a>
+                Since
+            </h2>
+<p>0.13.1</p>
 
 </section></main>
 			<footer class="content-grid">

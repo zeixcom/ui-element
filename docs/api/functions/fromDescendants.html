@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>fromChild – UIElement Docs</title>
+		<title>fromDescendants – UIElement Docs</title>
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="../../assets/main.css" />
 		<script type="module" src="../../assets/main.js"></script>
@@ -99,75 +99,75 @@
 				</card-callout>
 			</header>
 			<main class="content-grid"><section class="api-content">
-<h1 id="function-fromchild">
-                <a name="function-fromchild" class="anchor" href="#function-fromchild">
+<h1 id="function-fromdescendants">
+                <a name="function-fromdescendants" class="anchor" href="#function-fromdescendants">
 	                <span class="permalink">🔗</span>
                 </a>
-                Function: fromChild()
+                Function: fromDescendants()
             </h1>
 <blockquote>
-<p><strong>fromChild</strong>&lt;<code>Q</code>, <code>K</code>&gt;(<code>selector</code>, <code>prop</code>, <code>fallback</code>): <a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>Q</code>[<code>K</code>]&gt;</p>
+<p><strong>fromDescendants</strong>&lt;<code>T</code>, <code>E</code>&gt;(<code>selectors</code>, <code>reducer</code>, <code>initialValue</code>): <a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>T</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/ef7525ef4fcd5329d68c2b65cc085220a29b7a4f/src/core/dom.ts#L533">src/core/dom.ts:533</a></p>
-<p>Produce a computed signal for projected reactive property from child component</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/0b9c1517fa2a3615fdcca3ecc679ebb5c5c255e7/src/core/dom.ts#L273">src/core/dom.ts:273</a></p>
+<p>Produce a computed signal from reduced properties of descendant elements</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Type Parameters
             </h2>
-<h3 id="q">
-                <a name="q" class="anchor" href="#q">
+<h3 id="t">
+                <a name="t" class="anchor" href="#t">
 	                <span class="permalink">🔗</span>
                 </a>
-                Q
+                T
             </h3>
-<p><code>Q</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
-<h3 id="k">
-                <a name="k" class="anchor" href="#k">
+<p><code>T</code> <em>extends</em> <code>object</code></p>
+<h3 id="e">
+                <a name="e" class="anchor" href="#e">
 	                <span class="permalink">🔗</span>
                 </a>
-                K
+                E
             </h3>
-<p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code></p>
+<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Parameters
             </h2>
-<h3 id="selector">
-                <a name="selector" class="anchor" href="#selector">
+<h3 id="selectors">
+                <a name="selectors" class="anchor" href="#selectors">
 	                <span class="permalink">🔗</span>
                 </a>
-                selector
+                selectors
             </h3>
 <p><code>string</code></p>
-<p>CSS selector for child element</p>
-<h3 id="prop">
-                <a name="prop" class="anchor" href="#prop">
+<p>CSS selector for descendant elements</p>
+<h3 id="reducer">
+                <a name="reducer" class="anchor" href="#reducer">
 	                <span class="permalink">🔗</span>
                 </a>
-                prop
+                reducer
             </h3>
-<p><code>K</code></p>
-<p>property name to get signal for</p>
-<h3 id="fallback">
-                <a name="fallback" class="anchor" href="#fallback">
+<p>(<code>accumulator</code>, <code>currentElement</code>, <code>currentIndex</code>, <code>array</code>) =&gt; <code>T</code></p>
+<p>function to reduce values</p>
+<h3 id="initialvalue">
+                <a name="initialvalue" class="anchor" href="#initialvalue">
 	                <span class="permalink">🔗</span>
                 </a>
-                fallback
+                initialValue
             </h3>
-<p><code>Q</code>[<code>K</code>]</p>
-<p>fallback value to use until component is ready</p>
+<p><code>T</code></p>
+<p>initial value for reduction</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<p><a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>Q</code>[<code>K</code>]&gt;</p>
-<p>signal producer that emits value from child component</p>
+<p><a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>T</code>&gt;</p>
+<p>signal producer that emits reduced value</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>

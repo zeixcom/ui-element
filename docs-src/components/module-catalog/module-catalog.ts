@@ -1,4 +1,4 @@
-import { type Component, component, fromChildren, pass } from '../../..'
+import { type Component, component, fromDescendants, pass } from '../../..'
 
 export type ModuleCatalogProps = {
 	total: number
@@ -7,7 +7,7 @@ export type ModuleCatalogProps = {
 export default component(
 	'product-catalog',
 	{
-		total: fromChildren<number, HTMLElement & { value: number }>(
+		total: fromDescendants<number, HTMLElement & { value: number }>(
 			'form-spinbutton',
 			(sum, item) => sum + item.value,
 			0,

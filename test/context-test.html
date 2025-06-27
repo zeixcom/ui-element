@@ -66,10 +66,11 @@
 				RESET,
 				UNSET,
 				asString,
-				setText,
+				asInteger,
 				component,
 				fromContext,
 				provide,
+				setText,
 				state,
 			} from '../index.dev.js'
 
@@ -313,7 +314,7 @@
 							receivedContext = e.context
 						})
 
-						// Use the consume function which should dispatch the event
+						// Use the fromContext function which should dispatch the event
 						fromContext('test-context')(element)
 
 						assert.equal(
@@ -409,7 +410,7 @@
 							'Should show initial count',
 						)
 
-						provider.count = '5'
+						provider.count = 5
 						await animationFrame()
 						textContent = normalizeText(
 							consumer.querySelector('span').textContent,
@@ -420,7 +421,7 @@
 							'Should update when provider changes',
 						)
 
-						provider.count = '10'
+						provider.count = 10
 						await animationFrame()
 						textContent = normalizeText(
 							consumer.querySelector('span').textContent,
@@ -439,11 +440,11 @@
 							document.querySelector('reactive-consumer')
 
 						// Rapid changes
-						provider.count = '1'
-						provider.count = '2'
-						provider.count = '3'
-						provider.count = '4'
-						provider.count = '5'
+						provider.count = 1
+						provider.count = 2
+						provider.count = 3
+						provider.count = 4
+						provider.count = 5
 
 						await animationFrame()
 						const textContent = normalizeText(

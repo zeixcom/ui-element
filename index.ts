@@ -56,14 +56,14 @@ export {
 	type ValidEventName,
 	selection,
 	fromSelector,
-	fromChildren,
+	fromDescendants,
 	on,
 	sensor,
 	fromEvent,
 	emit,
 	pass,
 	read,
-	fromChild,
+	fromDescendant,
 } from './src/core/dom'
 export {
 	type Context,

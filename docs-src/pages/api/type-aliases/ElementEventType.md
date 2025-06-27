@@ -8,7 +8,7 @@
 
 > **ElementEventType**\<`E`, `K`\> = `K` *extends* keyof [`ElementEventMap`](ElementEventMap.md)\<`E`\> ? [`ElementEventMap`](ElementEventMap.md)\<`E`\>\[`K`\] : `Event`
 
-Defined in: [src/core/dom.ts:77](https://github.com/zeixcom/ui-element/blob/ef7525ef4fcd5329d68c2b65cc085220a29b7a4f/src/core/dom.ts#L77)
+Defined in: [src/core/dom.ts:77](https://github.com/zeixcom/ui-element/blob/0b9c1517fa2a3615fdcca3ecc679ebb5c5c255e7/src/core/dom.ts#L77)
 
 ## Type Parameters
 

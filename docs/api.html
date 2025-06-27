@@ -133,7 +133,7 @@
                 </a>
                 Component
             </h2>
-<p>Create a Web Component of type <a href="api/type-aliases/Component.html">Component</a>:</p>
+<p>Create a Web Component of type <a href="api/type-aliases/Component.html">Component</a> with reactive properties that extend <a href="api/type-aliases/ComponentProps.html">ComponentProps</a>.</p>
 <ul>
 <li><a href="api/functions/component.html">component</a></li>
 </ul>
@@ -147,18 +147,18 @@
                 </a>
                 Signals
             </h2>
-<p>Create a signal of type <a href="api/type-aliases/Signal.html">Signal</a>:</p>
+<p>Create a signal of type <a href="api/type-aliases/Signal.html">Signal</a>.</p>
 <ul>
-<li><a href="api/functions/computed.html">computed</a></li>
-<li><a href="api/functions/selection.html">selection</a></li>
-<li><a href="api/functions/sensor.html">sensor</a></li>
-<li><a href="api/functions/state.html">state</a></li>
+<li><a href="api/functions/computed.html">computed</a> creates a <a href="api/type-aliases/Computed.html">Computed</a> signal derived from other signals</li>
+<li><a href="api/functions/selection.html">selection</a> creates a <a href="api/type-aliases/Computed.html">Computed</a> signal that updates according to a dynamic CSS selector</li>
+<li><a href="api/functions/sensor.html">sensor</a> creates a <a href="api/type-aliases/Computed.html">Computed</a> signal that updates according to events</li>
+<li><a href="api/functions/state.html">state</a> creates a <a href="api/type-aliases/State.html">State</a> signal</li>
 </ul>
 <p>Helper functions:</p>
 <ul>
-<li><a href="api/functions/isComputed.html">isComputed</a></li>
-<li><a href="api/functions/isSignal.html">isSignal</a></li>
-<li><a href="api/functions/isState.html">isState</a></li>
+<li><a href="api/functions/isComputed.html">isComputed</a> checks whether a value is a <a href="api/type-aliases/Computed.html">Computed</a> signal</li>
+<li><a href="api/functions/isSignal.html">isSignal</a> checks whether a value is a <a href="api/type-aliases/Signal.html">Signal</a></li>
+<li><a href="api/functions/isState.html">isState</a> checks whether a value is a <a href="api/type-aliases/State.html">State</a> signal</li>
 </ul>
 </section>
 
@@ -170,9 +170,9 @@
                 </a>
                 Attribute Parsers
             </h2>
-<p>Declare how attributes are parsed. Variable of type or function returning <a href="api/type-aliases/AttributeParser.html">AttributeParser</a>:</p>
+<p>Declare how attributes are parsed. Functions returning <a href="api/type-aliases/AttributeParser.html">AttributeParser</a> that will be used to create <a href="api/type-aliases/State.html">State</a> signals as reactive properties on the component.</p>
 <ul>
-<li><a href="api/variables/asBoolean.html">asBoolean</a></li>
+<li><a href="api/functions/asBoolean.html">asBoolean</a></li>
 <li><a href="api/functions/asEnum.html">asEnum</a></li>
 <li><a href="api/functions/asInteger.html">asInteger</a></li>
 <li><a href="api/functions/asJSON.html">asJSON</a></li>
@@ -191,11 +191,11 @@
             </h2>
 <p>Declare how signals are initialized. Variable of type or function returning <a href="api/type-aliases/SignalInitializer.html">SignalInitializer</a>:</p>
 <ul>
-<li><a href="api/functions/consume.html">consume</a></li>
-<li><a href="api/functions/fromChild.html">fromChild</a></li>
-<li><a href="api/functions/fromChildren.html">fromChildren</a></li>
-<li><a href="api/functions/fromEvent.html">fromEvent</a></li>
-<li><a href="api/functions/fromSelector.html">fromSelector</a></li>
+<li><a href="api/functions/fromContext.html">fromContext</a> consumes a context value from nearest ancestor context provider component</li>
+<li><a href="api/functions/fromDescendant.html">fromDescendant</a> gets a reactive property of a descendant component</li>
+<li><a href="api/functions/fromDescendants.html">fromDescendants</a> reduces properties of a collection of descendant elements to a single value</li>
+<li><a href="api/functions/fromEvent.html">fromEvent</a> creates a computed signal from an event handler on a descendant element</li>
+<li><a href="api/functions/fromSelector.html">fromSelector</a> creates a computed signal of descentant elements matching a CSS selector</li>
 </ul>
 </section>
 

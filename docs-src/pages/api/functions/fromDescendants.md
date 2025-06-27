@@ -2,15 +2,15 @@
 
 ***
 
-[@zeix/ui-element](../globals.md) / fromChildren
+[@zeix/ui-element](../globals.md) / fromDescendants
 
-# Function: fromChildren()
+# Function: fromDescendants()
 
-> **fromChildren**\<`T`, `E`\>(`selectors`, `reducer`, `initialValue`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`T`\>
+> **fromDescendants**\<`T`, `E`\>(`selectors`, `reducer`, `initialValue`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`T`\>
 
-Defined in: [src/core/dom.ts:273](https://github.com/zeixcom/ui-element/blob/ef7525ef4fcd5329d68c2b65cc085220a29b7a4f/src/core/dom.ts#L273)
+Defined in: [src/core/dom.ts:273](https://github.com/zeixcom/ui-element/blob/0b9c1517fa2a3615fdcca3ecc679ebb5c5c255e7/src/core/dom.ts#L273)
 
-Produce a computed signal from reduced properties of child elements
+Produce a computed signal from reduced properties of descendant elements
 
 ## Type Parameters
 
@@ -28,7 +28,7 @@ Produce a computed signal from reduced properties of child elements
 
 `string`
 
-CSS selector for child elements
+CSS selector for descendant elements
 
 ### reducer
 
