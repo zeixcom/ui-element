@@ -40,7 +40,6 @@
 
 ## Variables
 
-- [asBoolean](variables/asBoolean.md)
 - [LOG\_DEBUG](variables/LOG_DEBUG.md)
 - [LOG\_ERROR](variables/LOG_ERROR.md)
 - [LOG\_INFO](variables/LOG_INFO.md)
@@ -50,6 +49,7 @@
 
 ## Functions
 
+- [asBoolean](functions/asBoolean.md)
 - [asEnum](functions/asEnum.md)
 - [asInteger](functions/asInteger.md)
 - [asJSON](functions/asJSON.md)
@@ -58,13 +58,13 @@
 - [batch](functions/batch.md)
 - [component](functions/component.md)
 - [computed](functions/computed.md)
-- [consume](functions/consume.md)
 - [dangerouslySetInnerHTML](functions/dangerouslySetInnerHTML.md)
 - [effect](functions/effect.md)
 - [emit](functions/emit.md)
 - [enqueue](functions/enqueue.md)
 - [fromChild](functions/fromChild.md)
 - [fromChildren](functions/fromChildren.md)
+- [fromContext](functions/fromContext.md)
 - [fromEvent](functions/fromEvent.md)
 - [fromSelector](functions/fromSelector.md)
 - [insertOrRemoveElement](functions/insertOrRemoveElement.md)

@@ -15,7 +15,7 @@ export type ModuleCodeblockProps = {
 export default component(
 	'module-codeblock',
 	{
-		collapsed: asBoolean,
+		collapsed: asBoolean(),
 	},
 	(el, { first }) => {
 		const code = el.querySelector('code')

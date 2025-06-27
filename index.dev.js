@@ -676,7 +676,7 @@ var provide = (provided) => (host) => {
   host.addEventListener(CONTEXT_REQUEST, listener);
   return () => host.removeEventListener(CONTEXT_REQUEST, listener);
 };
-var consume = (context, fallback) => (host) => {
+var fromContext = (context, fallback) => (host) => {
   let consumed = toSignal(fallback);
   host.dispatchEvent(new ContextRequestEvent(context, (value) => {
     consumed = value;
@@ -690,7 +690,7 @@ var parseNumber = (parseFn, value) => {
   const parsed = parseFn(value);
   return Number.isFinite(parsed) ? parsed : undefined;
 };
-var asBoolean = (_, value) => value !== "false" && value != null;
+var asBoolean = () => (_, value) => value !== "false" && value != null;
 var asInteger = (fallback = 0) => (_, value) => {
   if (value == null)
     return fallback;
@@ -973,13 +973,13 @@ export {
   insertOrRemoveElement,
   fromSelector,
   fromEvent,
+  fromContext,
   fromChildren,
   fromChild,
   enqueue,
   emit,
   effect,
   dangerouslySetInnerHTML,
-  consume,
   computed,
   component,
   batch,

@@ -115,12 +115,12 @@ const provide =
 /**
  * Consume a context value for a component.
  *
- * @since 0.12.0
+ * @since 0.13.1
  * @param {Context<string, Signal<T>>} context - context key to consume
- * @param {T | () => T} fallback - fallback value to use if context is not provided
+ * @param {MaybeSignal<T>} fallback - fallback value to use if context is not provided
  * @returns {(host: C) => Signal<T>} - a function that returns the consumed context signal or a signal of the fallback value
  */
-const consume =
+const fromContext =
 	<T extends {}, C extends HTMLElement>(
 		context: Context<string, Signal<T>>,
 		fallback: MaybeSignal<T>,
@@ -142,5 +142,5 @@ export {
 	CONTEXT_REQUEST,
 	ContextRequestEvent,
 	provide,
-	consume,
+	fromContext,
 }

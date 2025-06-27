@@ -57,7 +57,7 @@ component(
     count: 0, // Initial value of "count" signal
     isEven: el => () => !(el.count % 2), // Computed signal based on "count" signal
     value: asInteger(5), // Parse "value" attribute as integer defaulting to 5
-    name: consume('display-name'), // Consume "display-name" signal from closest context provider
+    name: fromContext('display-name', 'World'), // Consume "display-name" signal from closest context provider
   },
   () => [
     // Component setup
@@ -70,7 +70,7 @@ In this example you see all four ways to define a reactive property:
 - A **static initial value** for a `State` signal (e.g., `count: 0`)
 - A **signal producer** that derives an initial value or a callback function from other properties of the element (e.g., `isEven: el => () => !(el.count % 2)`)
 - An **attribute parser** that may provide a fallback value (e.g., `value: asInteger(5)`)
-- A **context consumer** that emits a `ContextRequestEvent` (e.g., `name: consume("display-name")`)
+- A **context consumer** that emits a `ContextRequestEvent` (e.g., `name: fromContext('display-name', 'World')`)
 
 <card-callout class="caution">
 
@@ -202,7 +202,7 @@ component(
 
 | Function        | Description                                                                                                                                                                  |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `asBoolean`     | Converts `"true"` / `"false"` to a **boolean** (`true` / `false`). Also treats empty attributes (`checked`) as `true`.                                                       |
+| `asBoolean()`   | Converts `"true"` / `"false"` to a **boolean** (`true` / `false`). Also treats empty attributes (`checked`) as `true`.                                                       |
 | `asInteger()`   | Converts a numeric string (e.g., `"42"`) to an **integer** (`42`).                                                                                                           |
 | `asNumber()`    | Converts a numeric string (e.g., `"3.14"`) to a **floating-point number** (`3.14`).                                                                                          |
 | `asString()`    | Returns the attribute value as a **string** (unchanged).                                                                                                                     |

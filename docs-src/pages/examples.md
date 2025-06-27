@@ -712,10 +712,10 @@ This example shows how to handle asynchronous data loading and error states.
 component(
   'module-lazy',
   {
-    src: asString(''),
-    loaded: asBoolean(false),
-    loading: asBoolean(false),
-    error: asString(''),
+    src: asString(),
+    loaded: asBoolean(),
+    loading: asBoolean(),
+    error: asString(),
   },
   (el, { first }) => {
     let observer
@@ -841,7 +841,7 @@ component(
 component(
   'accordion-panel',
   {
-    open: asBoolean(false),
+    open: asBoolean(),
   },
   (el, { first }) => [
     first(

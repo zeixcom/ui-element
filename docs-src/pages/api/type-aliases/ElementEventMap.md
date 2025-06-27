@@ -8,7 +8,7 @@
 
 > **ElementEventMap**\<`E`\> = `E` *extends* `HTMLInputElement` \| `HTMLTextAreaElement` \| `HTMLSelectElement` ? `Pick`\<`HTMLElementEventMap`, `"input"` \| `"change"` \| `"focus"` \| `"blur"` \| `"invalid"` \| `"keydown"` \| `"keyup"` \| `"keypress"` \| `"click"` \| `"mousedown"` \| `"mouseup"` \| `"paste"` \| `"cut"` \| `"copy"`\> : `E` *extends* `HTMLFormElement` ? `Pick`\<`HTMLElementEventMap`, `"submit"` \| `"reset"` \| `"formdata"`\> : `E` *extends* `HTMLButtonElement` ? `Pick`\<`HTMLElementEventMap`, `"click"` \| `"focus"` \| `"blur"` \| `"keydown"` \| `"keyup"` \| `"keypress"`\> : `E` *extends* `HTMLAnchorElement` ? `Pick`\<`HTMLElementEventMap`, `"click"` \| `"focus"` \| `"blur"`\> : `E` *extends* `HTMLDetailsElement` ? `Pick`\<`HTMLElementEventMap`, `"toggle"`\> : `E` *extends* `HTMLDialogElement` ? `Pick`\<`HTMLElementEventMap`, `"close"` \| `"cancel"`\> : `E` *extends* `HTMLMediaElement` ? `Pick`\<`HTMLElementEventMap`, `"loadstart"` \| `"loadeddata"` \| `"canplay"` \| `"play"` \| `"pause"` \| `"ended"` \| `"volumechange"`\> : `E` *extends* `HTMLImageElement` ? `Pick`\<`HTMLElementEventMap`, `"load"` \| `"error"`\> : `HTMLElementEventMap`
 
-Defined in: [src/core/dom.ts:22](https://github.com/zeixcom/ui-element/blob/6285025fa3b3778fb2f356dae80a5fa6250ac264/src/core/dom.ts#L22)
+Defined in: [src/core/dom.ts:22](https://github.com/zeixcom/ui-element/blob/ef7525ef4fcd5329d68c2b65cc085220a29b7a4f/src/core/dom.ts#L22)
 
 ## Type Parameters
 

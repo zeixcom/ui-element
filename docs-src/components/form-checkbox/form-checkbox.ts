@@ -18,7 +18,7 @@ export type FormCheckboxProps = {
 export default component(
 	'form-checkbox',
 	{
-		checked: asBoolean,
+		checked: asBoolean(),
 		label: asString(RESET),
 	},
 	(el, { first }) => [

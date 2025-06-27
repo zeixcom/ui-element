@@ -203,7 +203,7 @@
 <span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#88846F">// Initial value of "count" signal</span></span>
 <span class="line"><span style="color:#A6E22E">    isEven</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">(el.count </span><span style="color:#F92672">%</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Computed signal based on "count" signal</span></span>
 <span class="line"><span style="color:#F8F8F2">    value: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">5</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Parse "value" attribute as integer defaulting to 5</span></span>
-<span class="line"><span style="color:#F8F8F2">    name: </span><span style="color:#A6E22E">consume</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display-name'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Consume "display-name" signal from closest context provider</span></span>
+<span class="line"><span style="color:#F8F8F2">    name: </span><span style="color:#A6E22E">fromContext</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display-name'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'World'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Consume "display-name" signal from closest context provider</span></span>
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">  () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">    // Component setup</span></span>
@@ -222,7 +222,7 @@
 <li>A <strong>static initial value</strong> for a <code>State</code> signal (e.g., <code>count: 0</code>)</li>
 <li>A <strong>signal producer</strong> that derives an initial value or a callback function from other properties of the element (e.g., <code>isEven: el =&gt; () =&gt; !(el.count % 2)</code>)</li>
 <li>An <strong>attribute parser</strong> that may provide a fallback value (e.g., <code>value: asInteger(5)</code>)</li>
-<li>A <strong>context consumer</strong> that emits a <code>ContextRequestEvent</code> (e.g., <code>name: consume(&quot;display-name&quot;)</code>)</li>
+<li>A <strong>context consumer</strong> that emits a <code>ContextRequestEvent</code> (e.g., <code>name: fromContext(&#39;display-name&#39;, &#39;World&#39;)</code>)</li>
 </ul>
 <card-callout class="caution">
 
@@ -420,7 +420,7 @@
 </tr>
 </thead>
 <tbody><tr>
-<td><code>asBoolean</code></td>
+<td><code>asBoolean()</code></td>
 <td>Converts <code>&quot;true&quot;</code> / <code>&quot;false&quot;</code> to a <strong>boolean</strong> (<code>true</code> / <code>false</code>). Also treats empty attributes (<code>checked</code>) as <code>true</code>.</td>
 </tr>
 <tr>

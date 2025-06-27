@@ -70,7 +70,7 @@ export {
 	type UnknownContext,
 	type ContextType,
 	provide,
-	consume,
+	fromContext,
 } from './src/core/context'
 
 // Lib

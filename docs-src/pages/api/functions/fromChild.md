@@ -8,7 +8,7 @@
 
 > **fromChild**\<`Q`, `K`\>(`selector`, `prop`, `fallback`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`Q`\[`K`\]\>
 
-Defined in: [src/core/dom.ts:533](https://github.com/zeixcom/ui-element/blob/6285025fa3b3778fb2f356dae80a5fa6250ac264/src/core/dom.ts#L533)
+Defined in: [src/core/dom.ts:533](https://github.com/zeixcom/ui-element/blob/ef7525ef4fcd5329d68c2b65cc085220a29b7a4f/src/core/dom.ts#L533)
 
 Produce a computed signal for projected reactive property from child component
 

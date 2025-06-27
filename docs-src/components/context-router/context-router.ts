@@ -19,7 +19,7 @@ import { isInternalLink } from '../../functions/shared/is-internal-link'
 
 export type ContextRouterProps = {
 	'router-pathname': string
-	'router-query': Map<string, State<string>>
+	'router-query': Record<string, string>
 }
 
 /* === Exported Contexts === */
@@ -31,7 +31,7 @@ export const ROUTER_PATHNAME = 'router-pathname' as Context<
 
 export const ROUTER_QUERY = 'router-query' as Context<
 	'router-query',
-	Computed<Map<string, State<string>>>
+	Computed<Record<string, string>>
 >
 
 /* === Component === */
@@ -41,42 +41,49 @@ export default component(
 	{
 		[ROUTER_PATHNAME]: window.location.pathname,
 		[ROUTER_QUERY]: () => {
-			const searchParams = new URLSearchParams(window.location.search)
 			const queryMap = new Map()
-			for (const [key, value] of searchParams.entries()) {
+			for (const [key, value] of new URLSearchParams(
+				window.location.search,
+			)) {
 				queryMap.set(key, state(value))
 			}
-			const queryProxy = new Proxy(
-				{},
-				{
-					has(_, prop: string) {
-						return queryMap.has(prop)
+			const getSetParam = (key: string, value?: string): string => {
+				if (!queryMap.has(key)) queryMap.set(key, state(value ?? UNSET))
+				else if (value != null) queryMap.get(key).set(value)
+				return queryMap.get(key).get()
+			}
+			const syncToURL = () => {
+				const params = new URLSearchParams()
+				for (const [key, signal] of queryMap) {
+					const value = signal.get()
+					if (value && value !== UNSET) params.set(key, value)
+				}
+				window.history.replaceState(
+					null,
+					'',
+					`${window.location.pathname}?${params.toString()}${window.location.hash}`,
+				)
+			}
+			return () =>
+				new Proxy(
+					{},
+					{
+						has(_, prop: string) {
+							return queryMap.has(prop)
+						},
+						get(_, prop: string) {
+							return getSetParam(prop)
+						},
+						set(_, prop: string, value: string) {
+							getSetParam(prop, value)
+							syncToURL()
+							return true
+						},
+						ownKeys() {
+							return [...queryMap.keys()]
+						},
 					},
-					get(_, prop: string) {
-						if (!queryMap.has(prop))
-							queryMap.set(prop, state(UNSET))
-						return queryMap.get(prop).get()
-					},
-					set(_, prop: string, value: string) {
-						if (!queryMap.has(prop))
-							queryMap.set(prop, state(value))
-						else queryMap.get(prop).set(value)
-						const params = new URLSearchParams()
-						for (const [key, signal] of queryMap) {
-							const value = signal.get()
-							if (value != null && value !== '')
-								params.set(key, value)
-						}
-						const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`
-						window.history.replaceState(null, '', newUrl)
-						return true
-					},
-					ownKeys() {
-						return [...queryMap.keys()]
-					},
-				},
-			)
-			return () => queryProxy
+				)
 		},
 	},
 	(el, { all, first }) => {

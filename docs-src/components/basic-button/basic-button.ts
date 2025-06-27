@@ -17,7 +17,7 @@ export type BasicButtonProps = {
 export default component(
 	'basic-button',
 	{
-		disabled: asBoolean,
+		disabled: asBoolean(),
 		label: asString(RESET),
 		badge: asString(RESET),
 	},

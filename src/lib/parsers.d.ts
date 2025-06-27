@@ -2,12 +2,10 @@ import type { AttributeParser } from '../component'
 /**
  * Parse a boolean attribute as an actual boolean value
  *
- * @since 0.7.0
- * @param {HTMLElement} _ - host element
- * @param {string} value - maybe string value
- * @returns {boolean}
+ * @since 0.13.1
+ * @returns {AttributeParser<boolean>}
  */
-declare const asBoolean: AttributeParser<boolean>
+declare const asBoolean: () => AttributeParser<boolean>
 /**
  * Parse an attribute as as number forced to integer with a fallback
  *

@@ -14,8 +14,8 @@ export type AccordionPanelProps = {
 export default component(
 	'accordion-panel',
 	{
-		open: asBoolean,
-		collapsible: asBoolean,
+		open: asBoolean(),
+		collapsible: asBoolean(),
 	},
 	(el, { first }) => [
 		toggleAttribute('open'),

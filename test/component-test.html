@@ -249,7 +249,7 @@
 							: parseFloat(value)
 						return Number.isFinite(parsed) ? parsed : RESET
 					},
-					selected: asBoolean,
+					selected: asBoolean(),
 				},
 				(_, { first }) => [
 					first('h1', setText('heading'), toggleClass('selected')),
@@ -334,7 +334,7 @@
 			component(
 				'form-checkbox',
 				{
-					checked: asBoolean,
+					checked: asBoolean(),
 				},
 				(el, { first }) => [
 					first(

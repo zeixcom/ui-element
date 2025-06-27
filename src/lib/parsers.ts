@@ -16,15 +16,13 @@ const parseNumber = (
 /**
  * Parse a boolean attribute as an actual boolean value
  *
- * @since 0.7.0
- * @param {HTMLElement} _ - host element
- * @param {string} value - maybe string value
- * @returns {boolean}
+ * @since 0.13.1
+ * @returns {AttributeParser<boolean>}
  */
-const asBoolean: AttributeParser<boolean> = (
-	_: HTMLElement,
-	value: string | null,
-): boolean => value !== 'false' && value != null
+const asBoolean =
+	(): AttributeParser<boolean> =>
+	(_: HTMLElement, value: string | null): boolean =>
+		value !== 'false' && value != null
 
 /**
  * Parse an attribute as as number forced to integer with a fallback
