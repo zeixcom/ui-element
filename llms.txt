@@ -1,0 +1,35 @@
+name: @zeix/ui-element
+description: A HTML-first library for building reactive Web Components using signals and declarative effects. UIElement allows developers to progressively enhance server-rendered HTML with encapsulated logic and state, avoiding virtual DOM complexity. It integrates with any backend or static site generator.
+
+entry_points: index.js, index.dev.js
+docs: https://zeixcom.github.io/ui-element/
+examples: https://zeixcom.github.io/ui-element/examples.html
+test: https://github.com/zeixcom/ui-element/tree/main/test
+dependencies: @zeix/cause-effect, typescript
+
+license: MIT
+author: Esther Brunner
+
+architecture_overview: >
+  UIElement is composed of small, composable modules:
+  - Core reactivity and signal system via @zeix/cause-effect.
+  - Component definition API (`component()`) in index.js.
+  - Declarative DOM effects (e.g., `setText`, `setProperty`, `show`).
+  - Attribute parsers for typed and safe prop initialization (e.g., `asInteger`, `asBoolean`).
+  - Optional shadow DOM support and lazy loading logic.
+  It promotes a “HTML-first” approach, working directly with the real DOM and supporting progressive enhancement.
+
+capabilities: >
+  - Create Web Components with reactive state and declarative updates.
+  - Write components using standard HTML enhanced with JavaScript.
+  - Share global state using context providers.
+  - Integrate seamlessly into static or SSR-rendered sites.
+  - Customize behaviors with reusable effects and attribute parsers.
+
+limitations: >
+  - Limited ecosystem compared to SPA frameworks (React, Vue).
+  - No built-in routing, state persistence, or advanced rendering features.
+  - Requires understanding of Web Components lifecycle.
+
+intended_use: >
+  Designed for developers who want fine-grained control over UI composition using Web Components, especially in performance-sensitive, progressively enhanced applications.
