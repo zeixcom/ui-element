@@ -8,7 +8,7 @@
 
 > **component**\<`P`\>(`name`, `init`, `setup`): [`Component`](../type-aliases/Component.md)\<`P`\>
 
-Defined in: [src/component.ts:279](https://github.com/zeixcom/ui-element/blob/0b9c1517fa2a3615fdcca3ecc679ebb5c5c255e7/src/component.ts#L279)
+Defined in: [src/component.ts:279](https://github.com/zeixcom/ui-element/blob/8a5f554f7f150bc30f3cc67f612a4c3067704cb6/src/component.ts#L279)
 
 Define a component with its states and setup function (connectedCallback)
 

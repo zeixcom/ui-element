@@ -130,7 +130,13 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 	htmlContent = htmlContent.replace(
 		/<h([1-6])>(.+?)<\/h[1-6]>/g,
 		(_match, level, text) => {
-			const slug = generateSlug(text)
+			// For slug generation, decode common HTML entities to match TOC slugs
+			const textForSlug = text
+				.replace(/&amp;/g, '&')
+				.replace(/&quot;/g, '"')
+				.replace(/&#39;/g, "'")
+
+			const slug = generateSlug(textForSlug)
 
 			return `<h${level} id="${slug}">
                 <a name="${slug}" class="anchor" href="#${slug}">
@@ -141,8 +147,8 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 		},
 	)
 
-	// Generate TOC from processed HTML content (after heading anchors are added)
-	const tocHtml = await generateTOC(htmlContent)
+	// Generate TOC from markdown content (before HTML conversion)
+	const tocHtml = await generateTOC(processedContent)
 
 	// Fix internal .md links to .html
 	htmlContent = htmlContent.replace(

@@ -1,9 +1,11 @@
-export const generateTOC = async (htmlContent: string): Promise<string> => {
-	// Extract H2 headings from HTML content
+import { generateSlug } from './generate-slug'
+
+export const generateTOC = async (markdownContent: string): Promise<string> => {
+	// Extract H2 headings directly from markdown content
 	const h2Headings: Record<string, string> = {}
 
-	// Match H2 headings with IDs from the processed HTML (handles multi-line)
-	const h2Matches = htmlContent.match(/<h2 id="([^"]+)"[^>]*>[\s\S]*?<\/h2>/g)
+	// Match H2 headings from markdown (## Heading)
+	const h2Matches = markdownContent.match(/^## (.+)$/gm)
 
 	if (!h2Matches || h2Matches.length === 0) {
 		return '' // Return empty string if no H2 headings found
@@ -11,21 +13,26 @@ export const generateTOC = async (htmlContent: string): Promise<string> => {
 
 	// Process each H2 heading to extract slug and title pairs
 	h2Matches.forEach(match => {
-		const idMatch = match.match(/id="([^"]+)"/)
-		// Extract text after closing </a> tag until closing </h2> tag
-		const titleMatch = match.match(/<\/a>\s*([\s\S]*?)\s*<\/h2>/)
+		// Extract heading text (remove ## prefix)
+		const headingText = match.replace(/^## /, '').trim()
 
-		if (idMatch && titleMatch) {
-			const slug = idMatch[1]
-			const title = titleMatch[1]
-				.replace(/<[^>]*>/g, '') // Strip any remaining HTML tags
-				.replace(/\s+/g, ' ') // Normalize whitespace
-				.trim()
-			h2Headings[slug] = title
+		// Generate slug using the same logic as the heading processor
+		const slug = generateSlug(headingText)
+
+		// Clean the heading text - remove markdown formatting
+		const cleanTitle = headingText
+			.replace(/`([^`]+)`/g, '$1') // Remove backticks but keep content
+			.replace(/\*\*([^*]+)\*\*/g, '$1') // Remove bold formatting
+			.replace(/\*([^*]+)\*/g, '$1') // Remove italic formatting
+			.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove links but keep text
+			.trim()
+
+		if (cleanTitle) {
+			h2Headings[slug] = cleanTitle
 		}
 	})
 
-	// Generate TOC HTML
+	// Generate TOC HTML with proper escaping
 	return `
 <module-toc>
 	<nav>
