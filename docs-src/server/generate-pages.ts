@@ -132,9 +132,9 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 		(_match, level, text) => {
 			// For slug generation, decode common HTML entities to match TOC slugs
 			const textForSlug = text
-				.replace(/&amp;/g, '&')
 				.replace(/&quot;/g, '"')
 				.replace(/&#39;/g, "'")
+				.replace(/&amp;/g, '&')
 
 			const slug = generateSlug(textForSlug)
 

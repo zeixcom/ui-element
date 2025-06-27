@@ -8,7 +8,7 @@
 
 > **Context**\<`K`, `V`\> = `K` & `object`
 
-Defined in: [src/core/context.ts:22](https://github.com/zeixcom/ui-element/blob/8a5f554f7f150bc30f3cc67f612a4c3067704cb6/src/core/context.ts#L22)
+Defined in: [src/core/context.ts:22](https://github.com/zeixcom/ui-element/blob/fbfc14f2b364007b204dfef842cb4c272bdfad41/src/core/context.ts#L22)
 
 A context key.
 
