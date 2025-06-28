@@ -11,25 +11,60 @@ license: MIT
 author: Esther Brunner
 
 architecture_overview: >
-  UIElement is composed of small, composable modules:
-  - Core reactivity and signal system via @zeix/cause-effect.
-  - Component definition API (`component()`) in index.js.
-  - Declarative DOM effects (e.g., `setText`, `setProperty`, `show`).
-  - Attribute parsers for typed and safe prop initialization (e.g., `asInteger`, `asBoolean`).
-  - Optional shadow DOM support and lazy loading logic.
-  It promotes a “HTML-first” approach, working directly with the real DOM and supporting progressive enhancement.
+  UIElement extends HTMLElement to create reactive Web Components with three main parts:
+  1. Reactive properties defined with initializers (direct values, attribute parsers like asBoolean/asInteger, or signal producers)
+  2. A setup function that returns an array of effect functions to run on component connection
+  3. A rich effects system for declarative DOM manipulation (setText, toggleClass, on, etc.)
+
+  Built on @zeix/cause-effect signals for efficient reactivity. Supports both Light DOM (default) and Shadow DOM.
+  Components follow standard Web Components lifecycle with connectedCallback/disconnectedCallback.
+
+core_api: >
+  component(name, init, setup) - Main function to define components
+  - name: Custom element tag name (kebab-case)
+  - init: Object defining reactive properties with their parsers/initializers
+  - setup: (host, {first, all}) => FxFunction[] - returns array of effects to apply
+
+  Element selection helpers:
+  - first(selector, ...effects) - apply effects to first matching element
+  - all(selector, ...effects) - apply effects to all matching elements
+
+  Common effects: setText(), setProperty(), show(), setAttribute(), toggleClass(), setStyle(), on()
+
+attribute_parsers: >
+  Type-safe parsers that convert HTML attributes to typed component properties:
+  - asString() - string values
+  - asInteger() - integer parsing with validation
+  - asBoolean() - boolean attributes (presence = true)
+  - asEnum(options) - constrained string values
+  - asJSON() - JSON.parse() for complex data
+  - RESET - special symbol to read initial value from DOM
+
+context_system: >
+  Global state sharing between components:
+  - provide(context, signal) - provide state to descendant components
+  - fromContext(context) - consume state from ancestor providers
+  - Context<name, SignalType> - typed context definitions
 
 capabilities: >
-  - Create Web Components with reactive state and declarative updates.
-  - Write components using standard HTML enhanced with JavaScript.
-  - Share global state using context providers.
-  - Integrate seamlessly into static or SSR-rendered sites.
-  - Customize behaviors with reusable effects and attribute parsers.
+  - Create reactive Web Components with declarative DOM updates
+  - Progressive enhancement of server-rendered HTML
+  - Type-safe reactive properties with automatic attribute synchronization
+  - Event handling with on() helper
+  - Global state management via context providers
+  - Light DOM by default, Shadow DOM when needed for encapsulation
+  - Integration with any backend, SSG, or existing HTML
 
 limitations: >
-  - Limited ecosystem compared to SPA frameworks (React, Vue).
-  - No built-in routing, state persistence, or advanced rendering features.
-  - Requires understanding of Web Components lifecycle.
+  - Smaller ecosystem compared to React/Vue
+  - No built-in routing or state persistence
+  - Requires understanding of Web Components and signal-based reactivity
+  - Limited to modern browsers that support Custom Elements
 
 intended_use: >
-  Designed for developers who want fine-grained control over UI composition using Web Components, especially in performance-sensitive, progressively enhanced applications.
+  Perfect for developers building performance-critical applications who want:
+  - Fine-grained reactivity without virtual DOM overhead
+  - Progressive enhancement of existing HTML
+  - Type-safe component APIs
+  - Integration with server-rendered content
+  - Standards-based Web Components that work anywhere
