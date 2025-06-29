@@ -3,7 +3,7 @@ section-hero {
 	grid-column: fullwidth;
 	grid-template-columns: inherit;
 	background-color: var(--color-primary);
-	color: var(--color-white);
+	color: var(--color-primary-text);
 	margin-block: 0;
 	padding-block: var(--space-xxl);
 

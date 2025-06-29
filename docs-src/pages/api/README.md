@@ -40,10 +40,10 @@ The full documentation is still work in progress. The following chapters are alr
 
 - [Introduction](https://zeixcom.github.io/ui-element/index.html)
 - [Getting Started](https://zeixcom.github.io/ui-element/getting-started.html)
-- [Building Components](https://zeixcom.github.io/ui-element/building-components.html)
-- [Styling Components](https://zeixcom.github.io/ui-element/styling-components.html)
+- [Components](https://zeixcom.github.io/ui-element/components.html)
+- [Styling](https://zeixcom.github.io/ui-element/styling.html)
 - [Data Flow](https://zeixcom.github.io/ui-element/data-flow.html)
-- [About & Community](https://zeixcom.github.io/ui-element/about-community.html)
+- [About](https://zeixcom.github.io/ui-element/about.html)
 
 ## Basic Usage
 

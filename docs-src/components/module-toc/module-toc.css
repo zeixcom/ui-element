@@ -1,4 +1,5 @@
 module-toc {
+	display: block;
 	background: color-mix(in srgb, var(--color-background) 80%, transparent);
 	color: var(--color-text);
 	padding: var(--space-m);

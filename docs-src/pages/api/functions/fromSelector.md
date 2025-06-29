@@ -8,7 +8,7 @@
 
 > **fromSelector**\<`E`\>(`selectors`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`E`[]\>
 
-Defined in: [src/core/dom.ts:259](https://github.com/zeixcom/ui-element/blob/fbfc14f2b364007b204dfef842cb4c272bdfad41/src/core/dom.ts#L259)
+Defined in: [src/core/dom.ts:259](https://github.com/zeixcom/ui-element/blob/ca211b4b90c507d609f4e96effa3624e9208d00e/src/core/dom.ts#L259)
 
 Produce a selection signal from a selector
 

@@ -107,7 +107,7 @@
                 🚀 Getting Started
             </h1>
 <div>
-  <p class="lead"><strong>Set up UIElement in minutes – no build tools required</strong>. Whether you’re enhancing server-rendered HTML with lightweight interactivity or integrating Web Components into a modern JavaScript project, UIElement makes it simple to get started.</p>
+  <p class="lead"><strong>Set up UIElement in minutes – no build tools required</strong>. Or use any package manager and bundler to take advantage of TypeScript support and optimize frontend assets.</p>
   
 <module-toc>
 	<nav>
@@ -139,7 +139,7 @@
                 </a>
                 Using a CDN
             </h3>
-<p>For the easiest setup, include <strong>UIElement</strong> via a CDN. This is ideal for <strong>testing or quick projects</strong> where you want lightweight interactivity without additional tooling.</p>
+<p>For the easiest setup, include UIElement via a CDN. This is ideal for <strong>testing or quick projects</strong> where you want lightweight interactivity without additional tooling.</p>
 <module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -197,7 +197,7 @@
                 </a>
                 Installing via Package Managers
             </h3>
-<p>If you’re using a <strong>bundler</strong> like <strong>Vite, Webpack, or Rollup</strong>, install UIElement via NPM or Bun:</p>
+<p>If you&#39;re using a <strong>bundler</strong> like <strong>Vite, Webpack, or Rollup</strong>, install UIElement via NPM or Bun:</p>
 <module-tabgroup>
 <div role="tablist">
 <button role="tab" id="trigger_installation-npm" aria-controls="panel_installation-npm" aria-selected="true" tabindex="0">NPM</button>
@@ -267,8 +267,8 @@
 <p>Now, let&#39;s create an interactive Web Component to verify your setup.</p>
 <p><strong>What This Component Does</strong></p>
 <ul>
-<li>Displays <strong>“Hello, World!”</strong> by default.</li>
-<li>Updates dynamically when you <strong>type into the input field</strong>.</li>
+<li>Displays <code>Hello, World!</code> by default.</li>
+<li>Updates dynamically when you type into the input field.</li>
 </ul>
 <h3 id="markup">
                 <a name="markup" class="anchor" href="#markup">
@@ -387,7 +387,7 @@
 <li>UIElement automatically reads &quot;World&quot; from the <code>&lt;span&gt;</code> element as the initial value</li>
 <li>When <code>name</code> changes, any effects that depend on it automatically update</li>
 </ul>
-<p>There are other ways to initialize state in UIElement. You&#39;ll learn about those approaches in <a href="core-concepts.html">Core Concepts</a>.</p>
+<p>There are other ways to initialize state in UIElement. You&#39;ll learn about those approaches in the section about <a href="components.html">components</a>.</p>
 <h3 id="setup-function">
                 <a name="setup-function" class="anchor" href="#setup-function">
 	                <span class="permalink">🔗</span>
@@ -412,7 +412,7 @@
 	</basic-button>
 	
 </module-codeblock>
-<p>Effects define component behaviors:</p>
+<p>Effects define <strong>component behaviors</strong>:</p>
 <ul>
 <li><code>first(&#39;span&#39;, setText(&#39;name&#39;))</code> finds the first <code>&lt;span&gt;</code> and keeps its text in sync with the <code>name</code> property</li>
 <li><code>first(&#39;input&#39;, on(&#39;input&#39;, ...))</code> finds the first <code>&lt;input&gt;</code> and adds an event listener</li>
@@ -436,7 +436,7 @@
 <p>If everything is set up correctly, you should see:</p>
 <ul>
 <li>A text input field</li>
-<li>A greeting (Hello, World!)</li>
+<li>A greeting (<code>Hello, World!</code>)</li>
 <li>The greeting updates as you type</li>
 </ul>
 <module-demo>
@@ -467,7 +467,7 @@
                 Next Steps
             </h2>
 <p>You&#39;ve successfully created your first reactive component! Now you&#39;re ready to dive deeper into UIElement&#39;s core concepts:</p>
-<p><strong>Next: <a href="building-components.html">Building Components</a></strong><br>Learn the fundamental building blocks: component anatomy, element selection, basic state management, and event handling patterns.</p>
+<p><strong>Next: Building <a href="components.html">Components</a></strong><br>Learn the fundamental building blocks: component anatomy, element selection, basic state management, and event handling patterns.</p>
 </section>
 </main>
 			<footer class="content-grid">

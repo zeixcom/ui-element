@@ -5,8 +5,8 @@ card-callout {
 	margin: 0 0 var(--space-l);
 	font-size: var(--font-size-m);
 	line-height: var(--line-height-l);
-	background: #a5bbf1;
-	border-left: var(--space-xxs) solid #4f7cfd;
+	background: var(--color-blue-20);
+	border-left: var(--space-xxs) solid var(--color-blue-50);
 	border-radius: var(--space-xs);
 
 	&::before {
@@ -20,8 +20,8 @@ card-callout {
 	}
 
 	&.tip {
-		background: #aaca95;
-		border-color: #5d9934;
+		background: var(--color-green-20);
+		border-color: var(--color-green-50);
 
 		&::before {
 			content: "💡";
@@ -29,8 +29,8 @@ card-callout {
 	}
 
 	&.note {
-		background: var(--color-gray-20);
-		border-color: var(--color-gray-40);
+		background: var(--color-neutral-20);
+		border-color: var(--color-neutral-50);
 
 		&::before {
 			content: "💬";
@@ -38,8 +38,8 @@ card-callout {
 	}
 
 	&.caution {
-		background: var(--color-gray-20);
-		border-color: var(--color-gray-40);
+		background: var(--color-orange-20);
+		border-color: var(--color-orange-50);
 
 		&::before {
 			content: "⚠️";
@@ -47,8 +47,8 @@ card-callout {
 	}
 
 	&.danger {
-		background: #fdab92;
-		border-color: #e55a32;
+		background: var(--color-pink-20);
+		border-color: var(--color-pink-50);
 
 		&::before {
 			content: "🚨";
@@ -58,27 +58,22 @@ card-callout {
 
 @media (prefers-color-scheme: dark) {
 	card-callout {
-		background: #18338f;
-		border-color: #325df1;
+		background: var(--color-blue-80);
 
 		&.tip {
-			background: #234905;
-			border-color: #417f11;
+			background: var(--color-green-80);
 		}
 
 		&.note {
-			background: var(--color-gray-80);
-			border-color: var(--color-gray-60);
+			background: var(--color-neutral-80);
 		}
 
 		&.caution {
-			background: var(--color-gray-80);
-			border-color: var(--color-gray-60);
+			background: var(--color-orange-80);
 		}
 
 		&.danger {
-			background: #792109;
-			border-color: #c83c15;
+			background: var(--color-pink-80);
 		}
 	}
 }

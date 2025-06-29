@@ -21,8 +21,8 @@ module-codeblock {
 
 	& pre {
 		font-size: var(--font-size-s);
-		color: var(--color-gray-10);
-		background: var(--color-gray-90);
+		color: var(--color-neutral-10);
+		background: var(--color-neutral-90);
 		padding: var(--space-s);
 		margin: var(--space-xs) 0;
 		overflow: auto;
@@ -50,12 +50,9 @@ module-codeblock {
 			bottom: 0;
 			width: 100%;
 			height: var(--space-m);
-			background: linear-gradient(
-					-135deg,
-					var(--color-secondary) 0.5rem,
-					transparent 0
-				)
-				0 0.5rem,
+			background:
+				linear-gradient(-135deg, var(--color-secondary) 0.5rem, transparent 0) 0
+				0.5rem,
 				linear-gradient(
 					135deg,
 					var(--color-secondary) 0.5rem,
@@ -87,14 +84,12 @@ module-codeblock {
 			padding: var(--space-xs) var(--space-s);
 			margin-bottom: var(--space-m);
 			font-size: var(--font-size-s);
-			transition: background-color var(--transition-short)
-				var(--easing-inout);
+			transition: background-color var(--transition-short) var(--easing-inout);
 			text-shadow: var(--color-background) 1px 0 var(--space-xs);
 
 			&:hover,
 			&:active {
-				text-shadow: var(--color-text-inverted) var(--space-xs) 0
-					var(--space-s);
+				text-shadow: var(--color-text-inverted) var(--space-xs) 0 var(--space-s);
 			}
 		}
 	}

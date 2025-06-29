@@ -20,7 +20,7 @@ description: 'Anatomy, lifecycle, signals, effects'
 
 UIElement builds on **Web Components**, extending `HTMLElement` to provide **built-in state management and reactive updates**.
 
-A UIElement creates components using the `component()` function:
+UIElement creates components using the `component()` function:
 
 ```js
 component('my-component', {}, () => [
@@ -433,8 +433,8 @@ Ad-hoc derived state is more efficient than the overhead of a memoized computed 
 Unlike some frameworks that **re-render entire components**, UIElement updates only what changes:
 
 - **No virtual DOM** – UIElement modifies the DOM directly.
-- **Signals propagate automatically** – No need to track dependencies manually.
-- **Optimized with a scheduler** – Multiple updates are batched efficiently.
+- **Signals propagate automatically** – no need to track dependencies manually.
+- **Optimized with a scheduler** – multiple updates are batched efficiently.
 
 </section>
 

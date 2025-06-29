@@ -8,7 +8,7 @@
 
 > **Initializer**\<`T`, `C`\> = `T` \| [`AttributeParser`](AttributeParser.md)\<`T`, `C`\> \| [`SignalProducer`](SignalProducer.md)\<`T`, `C`\> \| [`MethodProducer`](MethodProducer.md)\<`C`\>
 
-Defined in: [src/component.ts:75](https://github.com/zeixcom/ui-element/blob/fbfc14f2b364007b204dfef842cb4c272bdfad41/src/component.ts#L75)
+Defined in: [src/component.ts:75](https://github.com/zeixcom/ui-element/blob/ca211b4b90c507d609f4e96effa3624e9208d00e/src/component.ts#L75)
 
 ## Type Parameters
 

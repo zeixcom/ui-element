@@ -4,7 +4,7 @@ module-tabgroup {
 
 	> [role="tablist"] {
 		display: flex;
-		border-bottom: 1px solid var(--color-gray-50);
+		border-bottom: 1px solid var(--color-border);
 		padding: 0;
 		margin-bottom: 0;
 

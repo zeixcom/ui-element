@@ -8,7 +8,7 @@
 
 > **updateElement**\<`P`, `T`, `E`\>(`s`, `updater`): [`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:111](https://github.com/zeixcom/ui-element/blob/fbfc14f2b364007b204dfef842cb4c272bdfad41/src/lib/effects.ts#L111)
+Defined in: [src/lib/effects.ts:111](https://github.com/zeixcom/ui-element/blob/ca211b4b90c507d609f4e96effa3624e9208d00e/src/lib/effects.ts#L111)
 
 Effect for setting properties of a target element according to a given SignalLike
 
