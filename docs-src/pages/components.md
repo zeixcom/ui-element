@@ -55,8 +55,8 @@ component(
   'my-component',
   {
     count: 0, // Initial value of "count" signal
-    isEven: el => () => !(el.count % 2), // Computed signal based on "count" signal
     value: asInteger(5), // Parse "value" attribute as integer defaulting to 5
+    isEven: el => () => !(el.count % 2), // Computed signal based on "count" signal
     name: fromContext('display-name', 'World'), // Consume "display-name" signal from closest context provider
   },
   () => [
@@ -65,12 +65,11 @@ component(
 )
 ```
 
-In this example you see all four ways to define a reactive property:
+In this example you see all three ways to define a reactive property:
 
 - A **static initial value** for a `State` signal (e.g., `count: 0`)
-- A **signal producer** that derives an initial value or a callback function from other properties of the element (e.g., `isEven: el => () => !(el.count % 2)`)
 - An **attribute parser** that may provide a fallback value (e.g., `value: asInteger(5)`)
-- A **context consumer** that emits a `ContextRequestEvent` (e.g., `name: fromContext('display-name', 'World')`)
+- A **signal producer** function that derives an initial value or a callback function from other properties of the element (e.g., `isEven: el => () => !(el.count % 2)`) or bundled signal producers (e.g. `fromContext(context, fallback)`)
 
 <card-callout class="caution">
 
@@ -200,14 +199,14 @@ component(
 
 ### Bundled Attribute Parsers
 
-| Function        | Description                                                                                                                                                                  |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `asBoolean()`   | Converts `"true"` / `"false"` to a **boolean** (`true` / `false`). Also treats empty attributes (`checked`) as `true`.                                                       |
-| `asInteger()`   | Converts a numeric string (e.g., `"42"`) to an **integer** (`42`).                                                                                                           |
-| `asNumber()`    | Converts a numeric string (e.g., `"3.14"`) to a **floating-point number** (`3.14`).                                                                                          |
-| `asString()`    | Returns the attribute value as a **string** (unchanged).                                                                                                                     |
-| `asEnum([...])` | Ensures the string matches **one of the allowed values**. Example: `asEnum(["small", "medium", "large"])`. If the value is not in the list, it defaults to the first option. |
-| `asJSON({...})` | Parses a JSON string (e.g., `'["a", "b", "c"]'`) into an **array** or **object**. If invalid, returns the fallback object.                                                   |
+| Function                                      | Description                                                                                                                                                                  |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [asBoolean()](api/functions/asBoolean.html)   | Converts `"true"` / `"false"` to a **boolean** (`true` / `false`). Also treats empty attributes (`checked`) as `true`.                                                       |
+| [asInteger()](api/functions/asInteger.html)   | Converts a numeric string (e.g., `"42"`) to an **integer** (`42`).                                                                                                           |
+| [asNumber()](api/functions/asNumber.html)     | Converts a numeric string (e.g., `"3.14"`) to a **floating-point number** (`3.14`).                                                                                          |
+| [asString()](api/functions/asString.html)     | Returns the attribute value as a **string** (unchanged).                                                                                                                     |
+| [asEnum(values)](api/functions/asEnum.html)   | Ensures the string matches **one of the allowed values**. Example: `asEnum(["small", "medium", "large"])`. If the value is not in the list, it defaults to the first option. |
+| [asJSON(fallback)](api/functions/asJSON.html) | Parses a JSON string (e.g., `'["a", "b", "c"]'`) into an **array** or **object**. If invalid, returns the fallback object.                                                   |
 
 The pre-defined parsers `asInteger()`, `asNumber()` and `asString()` allow to set a custom fallback value as parameter.
 
@@ -304,14 +303,14 @@ component("my-component", {
 	value: ''
 }, (el, { all, first }) => [
 	all("button",
-		on("click", (e) => {
+		on("click", e => {
 			// Set "active" signal to value of data-index attribute of button
 			const index = parseInt(e.target.dataset['index'], 10);
 			el.active = Number.isInteger(index) ? index : 0;
 		})
 	),
 	first("input",
-		on("change", (e) => {
+		on("change", e => {
 			// Set "value" signal to value of input element
 			el.value = e.target.value;
 		})
@@ -349,16 +348,17 @@ Again, the order of effects is not important. Feel free to apply them in any ord
 
 ### Bundled Effects
 
-| Function                    | Description                                                                                     |
-| --------------------------- | ----------------------------------------------------------------------------------------------- |
-| `setText()`                 | Updates **text content** with a `string` signal value (while preserving comment nodes).         |
-| `setProperty()`             | Updates a given **property** with any signal value.\*                                           |
-| `setAttribute()`            | Updates a given **attribute** with a `string` signal value.                                     |
-| `toggleAttribute()`         | Toggles a given **boolean attribute** with a `boolean` signal value.                            |
-| `toggleClass()`             | Toggles a given **CSS class** with a `boolean` signal value.                                    |
-| `setStyle()`                | Updates a given **CSS property** with a `string` signal value.                                  |
-| `dangerouslySetInnerHTML()` | Sets **HTML content** with a `string` signal value.                                             |
-| `insertOrRemoveElement()`   | Inserts (positive integer) or removes (negative integer) elements with a `number` signal value. |
+| Function                                                                | Description                                                                                     |
+| ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| [setText()](api/functions/setText.html)                                 | Updates **text content** with a `string` signal value (while preserving comment nodes).         |
+| [setProperty()](api/functions/setProperty.html)                         | Updates a given **property** with any signal value.                                             |
+| [show()](api/functions/show.html)                                       | Updates the **visibility** of an element with a `boolean` signal value.                         |
+| [setAttribute()](api/functions/setAttribute.html)                       | Updates a given **attribute** with a `string` signal value.                                     |
+| [toggleAttribute()](api/functions/toggleAttribute.html)                 | Toggles a given **boolean attribute** with a `boolean` signal value.                            |
+| [toggleClass()](api/functions/toggleClass.html)                         | Toggles a given **CSS class** with a `boolean` signal value.                                    |
+| [setStyle()](api/functions/setStyle.html)                               | Updates a given **CSS property** with a `string` signal value.                                  |
+| [dangerouslySetInnerHTML()](api/functions/dangerouslySetInnerHTML.html) | Sets **HTML content** with a `string` signal value.                                             |
+| [insertOrRemoveElement()](api/functions/insertOrRemoveElement.html)     | Inserts (positive integer) or removes (negative integer) elements with a `number` signal value. |
 
 <card-callout class="tip">
 
@@ -444,7 +444,7 @@ Unlike some frameworks that **re-render entire components**, UIElement updates o
 
 Now that you understand the basics, explore:
 
-- [Styling Components](styling-components.html) – Learn techniques to apply styles to components.
+- [Styling](styling.html) – Learn techniques to apply styles to components.
 - [Data Flow](data-flow.html) – Learn about passing state between components.
 
 </section>

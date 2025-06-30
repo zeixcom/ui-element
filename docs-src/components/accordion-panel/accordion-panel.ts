@@ -3,6 +3,7 @@ import {
 	asBoolean,
 	component,
 	setProperty,
+	show,
 	toggleAttribute,
 } from '../../../'
 
@@ -20,7 +21,7 @@ export default component(
 	(el, { first }) => [
 		toggleAttribute('open'),
 		toggleAttribute('collapsible'),
-		setProperty('hidden', () => !el.open && !el.collapsible),
+		show(() => el.open || el.collapsible),
 		first(
 			'details',
 			setProperty('open'),

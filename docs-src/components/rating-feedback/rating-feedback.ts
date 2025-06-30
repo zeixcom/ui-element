@@ -1,4 +1,12 @@
-import { type Component, component, on, setProperty, state } from '../../../'
+import {
+	type Component,
+	component,
+	on,
+	setProperty,
+	show,
+	state,
+} from '../../../'
+import type { BasicButtonProps } from '../basic-button/basic-button'
 import type { RatingStarsProps } from '../rating-stars/rating-stars'
 
 export default component('rating-feedback', {}, (el, { all, first }) => {
@@ -7,12 +15,10 @@ export default component('rating-feedback', {}, (el, { all, first }) => {
 	const submitted = state(false)
 	const stars = el.querySelector<Component<RatingStarsProps>>('rating-stars')
 	if (!stars) throw new Error('No rating-stars component found')
-	const hasDifferentKey = (element: HTMLElement): boolean =>
-		rating.get() !== parseInt(element.dataset['key'] || '0')
 
 	return [
 		// Event listeners for rating changes and form submission
-		on<CustomEvent<number>>('change-rating', e => {
+		on<HTMLElement, CustomEvent<number>>('change-rating', e => {
 			rating.set(e.detail)
 		}),
 		on('submit', e => {
@@ -33,7 +39,7 @@ export default component('rating-feedback', {}, (el, { all, first }) => {
 		// Event listener for textarea
 		first(
 			'textarea',
-			on('input', (e: Event) => {
+			on('input', e => {
 				empty.set(
 					(e.target as HTMLTextAreaElement)?.value.trim() === '',
 				)
@@ -43,11 +49,20 @@ export default component('rating-feedback', {}, (el, { all, first }) => {
 		// Effects on rating changes
 		first(
 			'.feedback',
-			setProperty('hidden', () => submitted.get() || !rating.get()),
+			show(() => !submitted.get() && !!rating.get()),
 		),
-		all('.feedback p', setProperty('hidden', hasDifferentKey)),
+		all(
+			'.feedback p',
+			show(
+				target =>
+					rating.get() === parseInt(target.dataset['key'] || '0'),
+			),
+		),
 
 		// Effect on empty state
-		first('basic-button', setProperty('disabled', empty)),
+		first<Component<BasicButtonProps>>(
+			'basic-button',
+			setProperty('disabled', empty),
+		),
 	]
 })

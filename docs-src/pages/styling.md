@@ -96,7 +96,7 @@ Use **Shadow DOM** to encapsulate styles if your component is going to be used i
 
 ## Shared Design Tokens with CSS Custom Properties
 
-Web Components can’t inherit global styles inside **Shadow DOM**, but CSS custom properties allow components to remain **flexible and themeable**.
+Web Components can't inherit global styles inside **Shadow DOM**, but CSS custom properties allow components to remain **flexible and themeable**.
 
 ### Defining Design Tokens
 
@@ -125,7 +125,7 @@ my-component {
 
 ### Advantages of CSS Custom Properties
 
-- **Supports theming** – Users can override styles globally.
+- **Supports theming** – users can override styles globally.
 - **Works inside Shadow DOM** – unlike normal CSS, custom properties are inherited inside the shadow tree.
 
 </section>
@@ -195,7 +195,7 @@ Here's the example of the `<card-callout>` we're using in this documentation:
 
 Now that you know how to style components, explore:
 
-- [Data Flow](data-flow.html) – Learn about communication between components.
-- [Examples](examples.html) – Explore common examples.
+- [Data Flow](data-flow.html) – learn about communication between components.
+- [Examples](examples.html) – explore common examples.
 
 </section>

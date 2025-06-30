@@ -5,6 +5,7 @@ import {
 	on,
 	setProperty,
 	setText,
+	show,
 } from '../../../'
 
 export type FormSpinbuttonProps = {
@@ -20,26 +21,22 @@ export default component(
 		const zeroLabel = el.getAttribute('zero-label') || 'Add to Cart'
 		const incrementLabel = el.getAttribute('increment-label') || 'Increment'
 		const max = asInteger(9)(el, el.getAttribute('max'))
-		const isZero = () => el.value === 0
+		const nonZero = () => el.value !== 0
 
 		return [
-			first<HTMLButtonElement>(
-				'.value',
-				setText('value'),
-				setProperty('hidden', isZero),
-			),
+			first<HTMLButtonElement>('.value', setText('value'), show(nonZero)),
 			first<HTMLButtonElement>(
 				'.decrement',
-				setProperty('hidden', isZero),
+				show(nonZero),
 				on('click', () => {
 					el.value--
 				}),
 			),
 			first<HTMLButtonElement>(
 				'.increment',
-				setText(() => (isZero() ? zeroLabel : '+')),
+				setText(() => (nonZero() ? '+' : zeroLabel)),
 				setProperty('ariaLabel', () =>
-					isZero() ? zeroLabel : incrementLabel,
+					nonZero() ? incrementLabel : zeroLabel,
 				),
 				setProperty('disabled', () => el.value >= max),
 				on('click', () => {

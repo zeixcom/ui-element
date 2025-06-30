@@ -13,10 +13,15 @@ module-carousel {
 
 	[role="tabpanel"] {
 		width: 100%;
+		height: 100%;
 		text-align: center;
 
 		&[aria-current="false"] {
 			display: none;
+		}
+
+		& h3 {
+			display: block;
 		}
 	}
 

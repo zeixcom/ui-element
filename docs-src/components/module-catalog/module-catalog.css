@@ -1,4 +1,4 @@
-product-catalog {
+module-catalog {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-l);

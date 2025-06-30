@@ -3,7 +3,7 @@ description: A HTML-first library for building reactive Web Components using sig
 
 entry_points: index.js, index.dev.js
 docs: https://zeixcom.github.io/ui-element/
-examples: https://zeixcom.github.io/ui-element/examples.html
+examples: https://github.com/zeixcom/ui-element/tree/main/docs-src/components
 test: https://github.com/zeixcom/ui-element/tree/main/test
 dependencies: @zeix/cause-effect, typescript
 
@@ -12,12 +12,12 @@ author: Esther Brunner
 
 architecture_overview: >
   UIElement extends HTMLElement to create reactive Web Components with three main parts:
-  1. Reactive properties defined with initializers (direct values, attribute parsers like asBoolean/asInteger, or signal producers)
+  1. Reactive properties defined with initializers (direct values, attribute parsers like asBoolean / asInteger, or signal producers)
   2. A setup function that returns an array of effect functions to run on component connection
   3. A rich effects system for declarative DOM manipulation (setText, toggleClass, on, etc.)
 
-  Built on @zeix/cause-effect signals for efficient reactivity. Supports both Light DOM (default) and Shadow DOM.
-  Components follow standard Web Components lifecycle with connectedCallback/disconnectedCallback.
+  Built on @zeix/cause-effect signals for efficient reactivity. Supports both Light DOM and Shadow DOM.
+  Components follow standard Web Components lifecycle with connectedCallback / disconnectedCallback.
 
 core_api: >
   component(name, init, setup) - Main function to define components
@@ -38,12 +38,12 @@ attribute_parsers: >
   - asBoolean() - boolean attributes (presence = true)
   - asEnum(options) - constrained string values
   - asJSON() - JSON.parse() for complex data
-  - RESET - special symbol to read initial value from DOM
+  - RESET - special symbol to read initial value from DOM: string
 
 context_system: >
   Global state sharing between components:
   - provide(context, signal) - provide state to descendant components
-  - fromContext(context) - consume state from ancestor providers
+  - fromContext(context, fallback) - consume state from ancestor providers
   - Context<name, SignalType> - typed context definitions
 
 capabilities: >
@@ -56,8 +56,8 @@ capabilities: >
   - Integration with any backend, SSG, or existing HTML
 
 limitations: >
-  - Smaller ecosystem compared to React/Vue
-  - No built-in routing or state persistence
+  - Smaller ecosystem compared to React / Vue / Angular
+  - No built-in routing or state persistence (but possible to implement as components)
   - Requires understanding of Web Components and signal-based reactivity
   - Limited to modern browsers that support Custom Elements
 

@@ -29,8 +29,8 @@
 <span class="line"><span style="color:#F8F8F2">	dangerouslySetInnerHTML,</span></span>
 <span class="line"><span style="color:#F8F8F2">	on,</span></span>
 <span class="line"><span style="color:#F8F8F2">	provide,</span></span>
-<span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setText,</span></span>
+<span class="line"><span style="color:#F8F8F2">	show,</span></span>
 <span class="line"><span style="color:#F8F8F2">	state,</span></span>
 <span class="line"><span style="color:#F8F8F2">	toggleClass,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
@@ -109,7 +109,6 @@
 <span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> outlet </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'outlet'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> 'main'</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> error </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#A6E22E"> hasError</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">error.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Convert all relative links to absolute URLs during setup</span></span>
 <span class="line"><span style="color:#F92672">		for</span><span style="color:#F8F8F2"> (</span><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> link </span><span style="color:#F92672">of</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelectorAll</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'a[href]'</span><span style="color:#F8F8F2">)) {</span></span>
@@ -185,8 +184,7 @@
 <span class="line"><span style="color:#88846F">			// Error display with aria-live</span></span>
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">				'card-callout'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">, hasError),</span></span>
-<span class="line"><span style="color:#A6E22E">				toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'danger'</span><span style="color:#F8F8F2">, hasError),</span></span>
+<span class="line"><span style="color:#A6E22E">				show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !!</span><span style="color:#F8F8F2">error.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()),</span></span>
 <span class="line"><span style="color:#F8F8F2">			),</span></span>
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.error'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(error)),</span></span>
 <span class="line"></span>

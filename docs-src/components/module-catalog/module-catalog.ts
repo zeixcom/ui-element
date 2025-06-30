@@ -5,7 +5,7 @@ export type ModuleCatalogProps = {
 }
 
 export default component(
-	'product-catalog',
+	'module-catalog',
 	{
 		total: fromDescendants<number, HTMLElement & { value: number }>(
 			'form-spinbutton',
@@ -26,6 +26,6 @@ export default component(
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'product-catalog': Component<ModuleCatalogProps>
+		'module-catalog': Component<ModuleCatalogProps>
 	}
 }

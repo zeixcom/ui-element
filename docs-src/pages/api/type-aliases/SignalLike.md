@@ -8,7 +8,7 @@
 
 > **SignalLike**\<`P`, `T`, `E`\> = keyof `P` \| [`Signal`](Signal.md)\<`NonNullable`\<`T`\>\> \| (`element`) => `T` \| `null` \| `undefined`
 
-Defined in: [src/lib/effects.ts:29](https://github.com/zeixcom/ui-element/blob/ca211b4b90c507d609f4e96effa3624e9208d00e/src/lib/effects.ts#L29)
+Defined in: [src/lib/effects.ts:29](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/lib/effects.ts#L29)
 
 ## Type Parameters
 

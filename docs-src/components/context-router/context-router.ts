@@ -9,8 +9,8 @@ import {
 	dangerouslySetInnerHTML,
 	on,
 	provide,
-	setProperty,
 	setText,
+	show,
 	state,
 	toggleClass,
 } from '../../..'
@@ -89,7 +89,6 @@ export default component(
 	(el, { all, first }) => {
 		const outlet = el.getAttribute('outlet') ?? 'main'
 		const error = state('')
-		const hasError = () => !error.get()
 
 		// Convert all relative links to absolute URLs during setup
 		for (const link of el.querySelectorAll('a[href]')) {
@@ -165,8 +164,7 @@ export default component(
 			// Error display with aria-live
 			first(
 				'card-callout',
-				setProperty('hidden', hasError),
-				toggleClass('danger', hasError),
+				show(() => !!error.get()),
 			),
 			first('.error', setText(error)),
 
