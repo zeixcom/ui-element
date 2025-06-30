@@ -202,7 +202,7 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">input</span><span style="color:#F8F8F2">[</span><span style="color:#A6E22E">aria-invalid</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"true"</span><span style="color:#F8F8F2">] {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		box-shadow</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#AE81FF"> 0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-xxs) </span><span style="color:#AE81FF">2</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--color-error);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		box-shadow</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#AE81FF"> 0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-xxs) </span><span style="color:#AE81FF">2</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--color-error-invalid);</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">span</span><span style="color:#F8F8F2"> {</span></span>
@@ -305,6 +305,7 @@
 <span class="line"><span style="color:#F8F8F2">	setAttribute,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setText,</span></span>
+<span class="line"><span style="color:#F8F8F2">	show,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">/* === Type === */</span></span>
@@ -523,7 +524,7 @@
 <span class="line"><span style="color:#F8F8F2">						el.</span><span style="color:#A6E22E">clear</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#A6E22E">						triggerChange</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">					}),</span></span>
-<span class="line"><span style="color:#A6E22E">					setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.length),</span></span>
+<span class="line"><span style="color:#A6E22E">					show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !!</span><span style="color:#F8F8F2">el.length),</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
 <span class="line"><span style="color:#F8F8F2">			)</span></span>
 <span class="line"><span style="color:#F8F8F2">		}</span></span>

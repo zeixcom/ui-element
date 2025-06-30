@@ -136,9 +136,9 @@
             </h2>
 <p>UIElement is focused on <strong>state management and reactivity</strong>, not styling. However, to <strong>ensure consistent, maintainable, and reusable styles</strong>, we recommend techniques that <strong>scope component styles properly while allowing shared design tokens</strong> (e.g., spacing, font sizes, colors, layout grids).</p>
 <ul>
-<li>✅ <strong>Each component brings along its own specific styles.</strong></li>
-<li>✅ Component styles should be <strong>scoped or encapsulated</strong> so they don&#39;t leak out.</li>
-<li>✅ <strong>Allow customizations</strong> via CSS custom properties or pre-defined classes.</li>
+<li><strong>Each component brings along its own specific styles.</strong></li>
+<li>Component styles should be <strong>scoped or encapsulated</strong> so they don&#39;t leak out.</li>
+<li><strong>Allow customizations</strong> via CSS custom properties or pre-defined classes.</li>
 </ul>
 <p>Parent components may apply styles to the wrapper element of known sub-components for layout purposes. But avoid styling inner elements of sub-components directly. This would tightly couple the styles of the outer and inner components.</p>
 </section>
@@ -179,13 +179,13 @@
                 Advantages of Custom Element Names
             </h3>
 <ul>
-<li>✅ By definition <strong>unique within the document</strong> with a descriptive name.</li>
-<li>✅ <strong>Low specificity</strong>, making it easy to override when you need to with a single class.</li>
+<li>By definition <strong>unique within the document</strong> with a descriptive name.</li>
+<li><strong>Low specificity</strong>, making it easy to override when you need to with a single class.</li>
 </ul>
 <card-callout class="tip">
 
 <p><strong>When to use</strong></p>
-<p>✅ <strong>Best when</strong> you control the page and need styles to cascade naturally.<br>❌ <strong>Avoid if</strong> you expect style clashes from third-party styles.</p>
+<p><strong>Best when</strong> you control the page and need styles to cascade naturally.<br><strong>Avoid if</strong> you expect style clashes from third-party styles.</p>
 </card-callout>
 
 </section>
@@ -227,7 +227,7 @@
 <card-callout class="tip">
 
 <p><strong>When to use</strong></p>
-<p>✅ <strong>Best when</strong> your component is used in environments where you don’t control styles.<br>❌ <strong>Avoid if</strong> you need global styles to apply inside the component.</p>
+<p><strong>Best when</strong> your component is used in environments where you don’t control styles.<br><strong>Avoid if</strong> you need global styles to apply inside the component.</p>
 </card-callout>
 
 </section>
@@ -240,7 +240,7 @@
                 </a>
                 Shared Design Tokens with CSS Custom Properties
             </h2>
-<p>Web Components can’t inherit global styles inside <strong>Shadow DOM</strong>, but CSS custom properties allow components to remain <strong>flexible and themeable</strong>.</p>
+<p>Web Components can&#39;t inherit global styles inside <strong>Shadow DOM</strong>, but CSS custom properties allow components to remain <strong>flexible and themeable</strong>.</p>
 <h3 id="defining-design-tokens">
                 <a name="defining-design-tokens" class="anchor" href="#defining-design-tokens">
 	                <span class="permalink">🔗</span>
@@ -300,8 +300,8 @@
                 Advantages of CSS Custom Properties
             </h3>
 <ul>
-<li>✅ <strong>Supports theming</strong> – Users can override styles globally.</li>
-<li>✅ <strong>Works inside Shadow DOM</strong> – Unlike normal CSS, custom properties are inherited inside the shadow tree.</li>
+<li><strong>Supports theming</strong> – users can override styles globally.</li>
+<li><strong>Works inside Shadow DOM</strong> – unlike normal CSS, custom properties are inherited inside the shadow tree.</li>
 </ul>
 </section>
 
@@ -389,8 +389,8 @@
             </h2>
 <p>Now that you know how to style components, explore:</p>
 <ul>
-<li><a href="component-communication.html">Component Communication</a> – Learn about communication between components.</li>
-<li><a href="patterns-techniques.html">Patterns &amp; Techniques</a> – Explore best practices and advanced topics.</li>
+<li><a href="data-flow.html">Data Flow</a> – learn about communication between components.</li>
+<li><a href="examples.html">Examples</a> – explore common examples.</li>
 </ul>
 </section>
 </main>

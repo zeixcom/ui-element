@@ -8,7 +8,7 @@
 
 > **FxFunction**\<`P`, `E`\> = (`host`, `element`) => [`Cleanup`](Cleanup.md) \| `void`
 
-Defined in: [src/component.ts:81](https://github.com/zeixcom/ui-element/blob/fbfc14f2b364007b204dfef842cb4c272bdfad41/src/component.ts#L81)
+Defined in: [src/component.ts:81](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/component.ts#L81)
 
 ## Type Parameters
 

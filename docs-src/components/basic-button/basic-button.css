@@ -6,9 +6,9 @@ basic-button {
 	& button {
 		height: var(--input-height);
 		min-width: var(--input-height);
-		border: 1px solid var(--color-border);
 		border-radius: var(--space-xs);
 		background-color: var(--color-secondary);
+		border: 1px solid var(--color-border);
 		color: var(--color-text);
 		padding: 0 var(--space-s);
 		font-size: var(--font-size-s);
@@ -35,7 +35,7 @@ basic-button {
 		}
 
 		&.primary {
-			color: var(--color-text-inverted);
+			color: var(--color-primary-text);
 			background-color: var(--color-primary);
 			border-color: var(--color-primary-active);
 
@@ -53,7 +53,7 @@ basic-button {
 		}
 
 		&.destructive {
-			color: var(--color-text-inverted);
+			color: var(--color-error-text);
 			background-color: var(--color-error);
 			border-color: var(--color-error-active);
 
@@ -71,7 +71,7 @@ basic-button {
 		}
 
 		&.constructive {
-			color: var(--color-text-inverted);
+			color: var(--color-success-text);
 			background-color: var(--color-success);
 			border-color: var(--color-success-active);
 

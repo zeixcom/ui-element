@@ -4,8 +4,8 @@ import {
 	component,
 	computed,
 	dangerouslySetInnerHTML,
-	setProperty,
 	setText,
+	show,
 	state,
 	toggleClass,
 } from '../../..'
@@ -48,10 +48,7 @@ export default component(
 			dangerouslySetInnerHTML(content),
 			first(
 				'card-callout',
-				setProperty(
-					'hidden',
-					() => !error.get() && content.get() !== UNSET,
-				),
+				show(() => !!error.get() || content.get() === UNSET),
 				toggleClass('danger', () => !error.get()),
 			),
 			first('.error', setText(error)),

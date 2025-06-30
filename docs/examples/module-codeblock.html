@@ -92,8 +92,8 @@
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">pre</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-s);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-gray-10);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-gray-90);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-neutral-10);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-neutral-90);</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		overflow</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">auto</span><span style="color:#F8F8F2">;</span></span>
@@ -121,12 +121,9 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">			bottom</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">			width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">100</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">			height</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-m);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">linear-gradient</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#AE81FF">					-135</span><span style="color:#F92672">deg</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#66D9EF">					var</span><span style="color:#F8F8F2">(--color-secondary) </span><span style="color:#AE81FF">0.5</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#66D9EF">					transparent</span><span style="color:#AE81FF"> 0</span></span>
-<span class="line"><span style="color:#F8F8F2">				)</span></span>
-<span class="line"><span style="color:#AE81FF">				0</span><span style="color:#AE81FF"> 0.5</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background</span><span style="color:#F8F8F2">:</span></span>
+<span class="line"><span style="color:#66D9EF">				linear-gradient</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">-135</span><span style="color:#F92672">deg</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary) </span><span style="color:#AE81FF">0.5</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">, </span><span style="color:#66D9EF">transparent</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">) </span><span style="color:#AE81FF">0</span></span>
+<span class="line"><span style="color:#AE81FF">				0.5</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#66D9EF">				linear-gradient</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#AE81FF">					135</span><span style="color:#F92672">deg</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#66D9EF">					var</span><span style="color:#F8F8F2">(--color-secondary) </span><span style="color:#AE81FF">0.5</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">,</span></span>
@@ -158,14 +155,12 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">			padding</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">			margin-bottom</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-m);</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">			font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-s);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			transition</span><span style="color:#F8F8F2">: background-color </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--transition-short)</span></span>
-<span class="line"><span style="color:#66D9EF">				var</span><span style="color:#F8F8F2">(--easing-inout);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			transition</span><span style="color:#F8F8F2">: background-color </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--transition-short) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--easing-inout);</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">			text-shadow</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-background) </span><span style="color:#AE81FF">1</span><span style="color:#F92672">px</span><span style="color:#AE81FF"> 0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-xs);</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">			&#x26;:hover,</span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x26;:</span><span style="color:#66D9EF">active</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">				text-shadow: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text-inverted) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#AE81FF">0</span></span>
-<span class="line"><span style="color:#66D9EF">					var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#F8F8F2">				text-shadow: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text-inverted) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#AE81FF">0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-s);</span></span>
 <span class="line"><span style="color:#F8F8F2">			}</span></span>
 <span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>

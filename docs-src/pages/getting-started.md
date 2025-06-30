@@ -9,7 +9,7 @@ description: 'Installation, setup, and first steps'
 # 🚀 Getting Started
 
 <div>
-  <p class="lead"><strong>Set up UIElement in minutes – no build tools required</strong>. Whether you’re enhancing server-rendered HTML with lightweight interactivity or integrating Web Components into a modern JavaScript project, UIElement makes it simple to get started.</p>
+  <p class="lead"><strong>Set up UIElement in minutes – no build tools required</strong>. Or use any package manager and bundler to take advantage of TypeScript support and optimize frontend assets.</p>
   {{ toc }}
 </div>
 </section-hero>
@@ -22,7 +22,7 @@ UIElement works **without build tools** but also supports **package managers and
 
 ### Using a CDN
 
-For the easiest setup, include <strong>UIElement</strong> via a CDN. This is ideal for **testing or quick projects** where you want lightweight interactivity without additional tooling.
+For the easiest setup, include UIElement via a CDN. This is ideal for **testing or quick projects** where you want lightweight interactivity without additional tooling.
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"></script>
@@ -57,7 +57,7 @@ Remember to keep the hosted file updated to use the latest features and bug fixe
 
 ### Installing via Package Managers
 
-If you’re using a **bundler** like **Vite, Webpack, or Rollup**, install UIElement via NPM or Bun:
+If you're using a **bundler** like **Vite, Webpack, or Rollup**, install UIElement via NPM or Bun:
 
 <module-tabgroup>
 <div role="tablist">
@@ -96,8 +96,8 @@ Now, let's create an interactive Web Component to verify your setup.
 
 **What This Component Does**
 
-- Displays **“Hello, World!”** by default.
-- Updates dynamically when you **type into the input field**.
+- Displays `Hello, World!` by default.
+- Updates dynamically when you type into the input field.
 
 ### Markup
 
@@ -173,7 +173,7 @@ This creates a reactive property called `name`:
 - UIElement automatically reads "World" from the `<span>` element as the initial value
 - When `name` changes, any effects that depend on it automatically update
 
-There are other ways to initialize state in UIElement. You'll learn about those approaches in [Core Concepts](core-concepts.html).
+There are other ways to initialize state in UIElement. You'll learn about those approaches in the section about [components](components.html).
 
 ### Setup Function
 
@@ -186,7 +186,7 @@ Returns an array of effects:
 ]
 ```
 
-Effects define component behaviors:
+Effects define **component behaviors**:
 
 - `first('span', setText('name'))` finds the first `<span>` and keeps its text in sync with the `name` property
 - `first('input', on('input', ...))` finds the first `<input>` and adds an event listener
@@ -206,7 +206,7 @@ Characteristics of Effects:
 If everything is set up correctly, you should see:
 
 - A text input field
-- A greeting (Hello, World!)
+- A greeting (`Hello, World!`)
 - The greeting updates as you type
 
 <module-demo>
@@ -234,7 +234,7 @@ If it's not working:
 
 You've successfully created your first reactive component! Now you're ready to dive deeper into UIElement's core concepts:
 
-**Next: [Building Components](building-components.html)**
+**Next: Building [Components](components.html)**
 Learn the fundamental building blocks: component anatomy, element selection, basic state management, and event handling patterns.
 
 </section>

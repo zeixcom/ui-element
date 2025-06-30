@@ -8,7 +8,7 @@
 
 > **fromContext**\<`T`, `C`\>(`context`, `fallback`): (`host`) => [`Signal`](../type-aliases/Signal.md)\<`T`\>
 
-Defined in: [src/core/context.ts:124](https://github.com/zeixcom/ui-element/blob/fbfc14f2b364007b204dfef842cb4c272bdfad41/src/core/context.ts#L124)
+Defined in: [src/core/context.ts:124](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/context.ts#L124)
 
 Consume a context value for a component.
 

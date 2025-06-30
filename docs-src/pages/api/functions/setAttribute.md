@@ -8,7 +8,7 @@
 
 > **setAttribute**\<`P`, `E`\>(`name`, `s`): [`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:353](https://github.com/zeixcom/ui-element/blob/fbfc14f2b364007b204dfef842cb4c272bdfad41/src/lib/effects.ts#L353)
+Defined in: [src/lib/effects.ts:353](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/lib/effects.ts#L353)
 
 Set attribute of an element
 

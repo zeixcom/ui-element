@@ -8,7 +8,7 @@
 
 > **sensor**\<`T`, `E`, `K`, `C`\>(`host`, `source`, `type`, `transform`, `initialValue`, `options`): [`Computed`](../type-aliases/Computed.md)\<`T`\>
 
-Defined in: [src/core/dom.ts:331](https://github.com/zeixcom/ui-element/blob/fbfc14f2b364007b204dfef842cb4c272bdfad41/src/core/dom.ts#L331)
+Defined in: [src/core/dom.ts:331](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L331)
 
 Create a computed signal that listens to an event on an element
 

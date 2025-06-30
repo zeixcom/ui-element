@@ -10,6 +10,7 @@ import {
 	setAttribute,
 	setProperty,
 	setText,
+	show,
 } from '../../../'
 
 /* === Type === */
@@ -228,7 +229,7 @@ export default component(
 						el.clear()
 						triggerChange('')
 					}),
-					setProperty('hidden', () => !el.length),
+					show(() => !!el.length),
 				),
 			)
 		}

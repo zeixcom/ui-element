@@ -135,7 +135,7 @@
                 Defining a Component
             </h2>
 <p>UIElement builds on <strong>Web Components</strong>, extending <code>HTMLElement</code> to provide <strong>built-in state management and reactive updates</strong>.</p>
-<p>A UIElement creates components using the <code>component()</code> function:</p>
+<p>UIElement creates components using the <code>component()</code> function:</p>
 <module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -201,8 +201,8 @@
 <span class="line"><span style="color:#E6DB74">  'my-component'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  {</span></span>
 <span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#88846F">// Initial value of "count" signal</span></span>
-<span class="line"><span style="color:#A6E22E">    isEven</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">(el.count </span><span style="color:#F92672">%</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Computed signal based on "count" signal</span></span>
 <span class="line"><span style="color:#F8F8F2">    value: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">5</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Parse "value" attribute as integer defaulting to 5</span></span>
+<span class="line"><span style="color:#A6E22E">    isEven</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">(el.count </span><span style="color:#F92672">%</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Computed signal based on "count" signal</span></span>
 <span class="line"><span style="color:#F8F8F2">    name: </span><span style="color:#A6E22E">fromContext</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display-name'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'World'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Consume "display-name" signal from closest context provider</span></span>
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">  () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
@@ -217,12 +217,11 @@
 	</basic-button>
 	<button type="button" class="overlay">Expand</button>
 </module-codeblock>
-<p>In this example you see all four ways to define a reactive property:</p>
+<p>In this example you see all three ways to define a reactive property:</p>
 <ul>
 <li>A <strong>static initial value</strong> for a <code>State</code> signal (e.g., <code>count: 0</code>)</li>
-<li>A <strong>signal producer</strong> that derives an initial value or a callback function from other properties of the element (e.g., <code>isEven: el =&gt; () =&gt; !(el.count % 2)</code>)</li>
 <li>An <strong>attribute parser</strong> that may provide a fallback value (e.g., <code>value: asInteger(5)</code>)</li>
-<li>A <strong>context consumer</strong> that emits a <code>ContextRequestEvent</code> (e.g., <code>name: fromContext(&#39;display-name&#39;, &#39;World&#39;)</code>)</li>
+<li>A <strong>signal producer</strong> function that derives an initial value or a callback function from other properties of the element (e.g., <code>isEven: el =&gt; () =&gt; !(el.count % 2)</code>) or bundled signal producers (e.g. <code>fromContext(context, fallback)</code>)</li>
 </ul>
 <card-callout class="caution">
 
@@ -420,27 +419,27 @@
 </tr>
 </thead>
 <tbody><tr>
-<td><code>asBoolean()</code></td>
+<td><a href="api/functions/asBoolean.html">asBoolean()</a></td>
 <td>Converts <code>&quot;true&quot;</code> / <code>&quot;false&quot;</code> to a <strong>boolean</strong> (<code>true</code> / <code>false</code>). Also treats empty attributes (<code>checked</code>) as <code>true</code>.</td>
 </tr>
 <tr>
-<td><code>asInteger()</code></td>
+<td><a href="api/functions/asInteger.html">asInteger()</a></td>
 <td>Converts a numeric string (e.g., <code>&quot;42&quot;</code>) to an <strong>integer</strong> (<code>42</code>).</td>
 </tr>
 <tr>
-<td><code>asNumber()</code></td>
+<td><a href="api/functions/asNumber.html">asNumber()</a></td>
 <td>Converts a numeric string (e.g., <code>&quot;3.14&quot;</code>) to a <strong>floating-point number</strong> (<code>3.14</code>).</td>
 </tr>
 <tr>
-<td><code>asString()</code></td>
+<td><a href="api/functions/asString.html">asString()</a></td>
 <td>Returns the attribute value as a <strong>string</strong> (unchanged).</td>
 </tr>
 <tr>
-<td><code>asEnum([...])</code></td>
+<td><a href="api/functions/asEnum.html">asEnum(values)</a></td>
 <td>Ensures the string matches <strong>one of the allowed values</strong>. Example: <code>asEnum([&quot;small&quot;, &quot;medium&quot;, &quot;large&quot;])</code>. If the value is not in the list, it defaults to the first option.</td>
 </tr>
 <tr>
-<td><code>asJSON({...})</code></td>
+<td><a href="api/functions/asJSON.html">asJSON(fallback)</a></td>
 <td>Parses a JSON string (e.g., <code>&#39;[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]&#39;</code>) into an <strong>array</strong> or <strong>object</strong>. If invalid, returns the fallback object.</td>
 </tr>
 </tbody></table>
@@ -569,14 +568,14 @@
 <span class="line"><span style="color:#F8F8F2">	value: </span><span style="color:#E6DB74">''</span></span>
 <span class="line"><span style="color:#F8F8F2">}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#A6E22E">	all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"click"</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#88846F">			// Set "active" signal to value of data-index attribute of button</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> index </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> parseInt</span><span style="color:#F8F8F2">(e.target.dataset[</span><span style="color:#E6DB74">'index'</span><span style="color:#F8F8F2">], </span><span style="color:#AE81FF">10</span><span style="color:#F8F8F2">);</span></span>
 <span class="line"><span style="color:#F8F8F2">			el.active </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> Number.</span><span style="color:#A6E22E">isInteger</span><span style="color:#F8F8F2">(index) </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> index </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#F8F8F2">		})</span></span>
 <span class="line"><span style="color:#F8F8F2">	),</span></span>
 <span class="line"><span style="color:#A6E22E">	first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"input"</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"change"</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"change"</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#88846F">			// Set "value" signal to value of input element</span></span>
 <span class="line"><span style="color:#F8F8F2">			el.value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value;</span></span>
 <span class="line"><span style="color:#F8F8F2">		})</span></span>
@@ -647,35 +646,39 @@
 </tr>
 </thead>
 <tbody><tr>
-<td><code>setText()</code></td>
+<td><a href="api/functions/setText.html">setText()</a></td>
 <td>Updates <strong>text content</strong> with a <code>string</code> signal value (while preserving comment nodes).</td>
 </tr>
 <tr>
-<td><code>setProperty()</code></td>
-<td>Updates a given <strong>property</strong> with any signal value.*</td>
+<td><a href="api/functions/setProperty.html">setProperty()</a></td>
+<td>Updates a given <strong>property</strong> with any signal value.</td>
 </tr>
 <tr>
-<td><code>setAttribute()</code></td>
+<td><a href="api/functions/show.html">show()</a></td>
+<td>Updates the <strong>visibility</strong> of an element with a <code>boolean</code> signal value.</td>
+</tr>
+<tr>
+<td><a href="api/functions/setAttribute.html">setAttribute()</a></td>
 <td>Updates a given <strong>attribute</strong> with a <code>string</code> signal value.</td>
 </tr>
 <tr>
-<td><code>toggleAttribute()</code></td>
+<td><a href="api/functions/toggleAttribute.html">toggleAttribute()</a></td>
 <td>Toggles a given <strong>boolean attribute</strong> with a <code>boolean</code> signal value.</td>
 </tr>
 <tr>
-<td><code>toggleClass()</code></td>
+<td><a href="api/functions/toggleClass.html">toggleClass()</a></td>
 <td>Toggles a given <strong>CSS class</strong> with a <code>boolean</code> signal value.</td>
 </tr>
 <tr>
-<td><code>setStyle()</code></td>
+<td><a href="api/functions/setStyle.html">setStyle()</a></td>
 <td>Updates a given <strong>CSS property</strong> with a <code>string</code> signal value.</td>
 </tr>
 <tr>
-<td><code>dangerouslySetInnerHTML()</code></td>
+<td><a href="api/functions/dangerouslySetInnerHTML.html">dangerouslySetInnerHTML()</a></td>
 <td>Sets <strong>HTML content</strong> with a <code>string</code> signal value.</td>
 </tr>
 <tr>
-<td><code>insertOrRemoveElement()</code></td>
+<td><a href="api/functions/insertOrRemoveElement.html">insertOrRemoveElement()</a></td>
 <td>Inserts (positive integer) or removes (negative integer) elements with a <code>number</code> signal value.</td>
 </tr>
 </tbody></table>
@@ -790,8 +793,8 @@
 <p>Unlike some frameworks that <strong>re-render entire components</strong>, UIElement updates only what changes:</p>
 <ul>
 <li><strong>No virtual DOM</strong> – UIElement modifies the DOM directly.</li>
-<li><strong>Signals propagate automatically</strong> – No need to track dependencies manually.</li>
-<li><strong>Optimized with a scheduler</strong> – Multiple updates are batched efficiently.</li>
+<li><strong>Signals propagate automatically</strong> – no need to track dependencies manually.</li>
+<li><strong>Optimized with a scheduler</strong> – multiple updates are batched efficiently.</li>
 </ul>
 </section>
 
@@ -805,7 +808,7 @@
             </h2>
 <p>Now that you understand the basics, explore:</p>
 <ul>
-<li><a href="styling-components.html">Styling Components</a> – Learn techniques to apply styles to components.</li>
+<li><a href="styling.html">Styling</a> – Learn techniques to apply styles to components.</li>
 <li><a href="data-flow.html">Data Flow</a> – Learn about passing state between components.</li>
 </ul>
 </section>

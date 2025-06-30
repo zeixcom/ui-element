@@ -20,50 +20,51 @@ description: 'Passing state, events, context'
 
 Let's consider a **product catalog** where users can add items to a shopping cart. We have **three independent components** that work together:
 
-- `ProductCatalog` **(Parent)**:
+- `ModuleCatalog` **(Parent)**:
   - **Tracks all `SpinButton` components** in its subtree and calculates the total count of items in the shopping cart.
-  - **Passes that total** to a `InputButton`.
-- `InputButton` **(Child)**:
+  - **Passes that total** to a `BasicButton`.
+- `BasicButton` **(Child)**:
   - Displays a **badge** in the top-right corner when the `badge` property is set.
   - **Does not track any state** – it simply renders whatever value is passed to it.
-- `SpinButton` **(Child)**:
+- `FormSpinbutton` **(Child)**:
   - Displays an **Add to Cart** button initially.
   - When an item is added, it transforms into a **stepper** (increment/decrement buttons).
 
-Although `InputButton` and `SpinButton` are completely independent, they need to work together.
-So `ProductCatalog` **coordinates the data flow between them**.
+Although `BasicButton` and `FormSpinbutton` are completely independent, they need to work together. So `ModuleCatalog` **coordinates the data flow between them**.
 
-### Parent Component: ProductCatalog
+### Parent Component: ModuleCatalog
 
-The **parent component (`ProductCatalog`) knows about its children**, meaning it can **retrieve state from and pass state to** them.
+The **parent component (`ModuleCatalog`) knows about its children**, meaning it can **read state from and pass state to** them.
 
-First, we need to observe the quantities of all `SpinButton` components. For this, we create a signal of all children matching the `form-spinbutton` selector:
+First, we need to observe the quantities of all `FormSpinbutton` components. For this, we create a signal of all children matching the `form-spinbutton` selector:
 
 ```js
 component(
-  'product-catalog',
+  'module-catalog',
   {
-    total: el => () =>
-      selection(el, 'form-spinbutton')
-        .get()
-        .reduce((sum, item) => sum + item.value, 0),
+    total: fromDescendants(
+      'form-spinbutton',
+      (sum, item) => sum + item.value,
+      0,
+    ),
   },
   () => [],
 )
 ```
 
-The `selection()` function returns a signal that emits an array of all matching elements. In contrast to a static `querySelectorAll()` call, the `selection()` function is reactive and updates whenever new elements are added or removed from the DOM.
+The `fromDescendants()` function returns a signal of the reduced array of all matching elements. In contrast to a static `querySelectorAll()` call, the `fromDescendants()` function is reactive and updates whenever new elements are added or removed from the DOM.
 
-Then, we need to calculate the total of all product quantities and pass it on to the `InputButton` component. In UIElement we use the `pass()` function to share state across components:
+Then, we need to convert the total of all product quantities to a string and pass it on to the `BasicButton` component. In UIElement we use the `pass()` function to share state across components:
 
 ```js
 component(
-  'product-catalog',
+  'module-catalog',
   {
-    total: el => () =>
-      selection(el, 'form-spinbutton')
-        .get()
-        .reduce((sum, item) => sum + item.value, 0),
+    total: fromDescendants(
+      'form-spinbutton',
+      (sum, item) => sum + item.value,
+      0,
+    ),
   },
   (el, { first }) => [
     first(
@@ -79,29 +80,34 @@ component(
 
 Allright, that's it!
 
-- ✅ Whenever one of the `value` signals of a `<form-spinbutton>` updates, the total in the badge of `<basic-button>` automatically updates.
-- ✅ No need for event listeners or manual updates!
+- Whenever one of the `value` signals of a `<form-spinbutton>` updates, the total in the badge of `<basic-button>` automatically updates.
+- No need for event listeners or manual updates!
 
-### Child Component: InputButton
+### Child Component: BasicButton
 
-The `InputButton` component **displays a badge when needed** – it does not know about any other component nor track state itself. It just exposes a reactive property `badge` of type `string` and has an effect to react to state changes that updates the DOM subtree.
+The `BasicButton` component **displays a badge when needed** – it does not know about any other component nor track state itself. It just exposes a reactive properties `badge` of type `string` and `disabled` of type `boolean` and has effects to react to state changes that updates the DOM subtree.
 
 ```js
 component(
   'basic-button',
   {
+    disabled: asBoolean(),
     badge: asString(RESET),
   },
-  (_, { first }) => [first('.badge', setText('badge'))],
+  (_, { first }) => [
+    first('button', setProperty('disabled')),
+    first('.badge', setText('badge')),
+  ],
 )
 ```
 
-- ✅ Whenever the `badge` property is updated by a parent component, the badge text updates.
-- ✅ If `badge` is an empty string, the badge indicator is hidden (via CSS).
+- Whenever the `disabled` property is updated by a parent component, the button is disabled or enabled.
+- Whenever the `badge` property is updated by a parent component, the badge text updates.
+- If `badge` is an empty string, the badge indicator is hidden (via CSS).
 
-### ChildComponent: SpinButton
+### Child Component: FormSpinbutton
 
-The `SpinButton` component reacts to user interactions and exposes a reactive property `value` of type `number`. It updates its own internal DOM subtree, but doesn't know about any other component nor where the value is used.
+The `FormSpinbutton` component reacts to user interactions and exposes a reactive property `value` of type `number`. It updates its own internal DOM subtree, but doesn't know about any other component nor where the value is used.
 
 ```js
 component(
@@ -110,19 +116,26 @@ component(
     value: asInteger(),
   },
   (el, { all, first }) => {
+    const zeroLabel = el.getAttribute('zero-label') || 'Add to Cart'
+    const incrementLabel = el.getAttribute('increment-label') || 'Increment'
     const max = asInteger(9)(el, el.getAttribute('max'))
-    const isZero = () => el.value === 0
+    const nonZero = () => el.value !== 0
+
     return [
-      first('.value', setText('value'), setProperty('hidden', isZero)),
+      first('.value', setText('value'), show(nonZero)),
       first(
         '.decrement',
-        setProperty('hidden', isZero),
+        show(nonZero),
         on('click', () => {
           el.value--
         }),
       ),
       first(
         '.increment',
+        setText(() => (nonZero() ? '+' : zeroLabel)),
+        setProperty('ariaLabel', () =>
+          nonZero() ? incrementLabel : zeroLabel,
+        ),
         setProperty('disabled', () => el.value >= max),
         on('click', () => {
           el.value++
@@ -145,62 +158,95 @@ component(
 )
 ```
 
-- ✅ Whenever the user clicks a button or presses a handled key, the value property is updated.
-- ✅ The component sets hidden and disabled states of buttons and updates the text of the `.value` element.
+- Whenever the user clicks a button or presses a handled key, the value property is updated.
+- The component sets hidden and disabled states of buttons and updates the text of the `.value` element.
 
 ### Full Example
 
 Here's how everything comes together:
 
-- Each `SpinButton` tracks its own value.
-- The `ProductCatalog` sums all quantities and passes the total to `InputButton`.
-- The `InputButton` displays the total if it's greater than zero.
+- Each `FormSpinbutton` tracks its own value.
+- The `ModuleCatalog` sums all quantities and passes the total to `BasicButton`.
+- The `BasicButton` displays the total if it's greater than zero.
 
 **No custom events are needed – state flows naturally!**
 
 <module-demo>
 	<div class="preview">
-		<product-catalog>
-			<header>
-				<p>Shop</p>
-				<basic-button disabled>
-					<button type="button" disabled>
-						<span class="label">🛒 Shopping Cart</span>
-						<span class="badge"></span>
-					</button>
-				</basic-button>
-			</header>
-			<ul>
-				<li>
-					<p>Product 1</p>
-					<form-spinbutton value="0" zero-label="Add to Cart" increment-label="Increment">
-						<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
-						<p class="value" hidden>0</p>
-						<button type="button" class="increment">Add to Cart</button>
-					</form-spinbutton>
-				</li>
-				<li>
-					<p>Product 2</p>
-					<form-spinbutton value="0" zero-label="Add to Cart" increment-label="Increment">
-						<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
-						<p class="value" hidden>0</p>
-						<button type="button" class="increment">Add to Cart</button>
-					</form-spinbutton>
-				</li>
-				<li>
-					<p>Product 3</p>
-					<form-spinbutton value="0" zero-label="Add to Cart" increment-label="Increment">
-						<button type="button" class="decrement" aria-label="Decrement" hidden>−</button>
-						<p class="value" hidden>0</p>
-						<button type="button" class="increment">Add to Cart</button>
-					</form-spinbutton>
-				</li>
-			</ul>
-		</product-catalog>
+  	<module-catalog>
+  		<header>
+  			<p>Shop</p>
+  			<basic-button disabled>
+  				<button type="button" disabled>
+  					<span class="label">🛒 Shopping Cart</span>
+  					<span class="badge"></span>
+  				</button>
+  			</basic-button>
+  		</header>
+  		<ul>
+  			<li>
+  				<p>Product 1</p>
+  				<form-spinbutton
+  					value="0"
+  					zero-label="Add to Cart"
+  					increment-label="Increment"
+  				>
+  					<button
+  						type="button"
+  						class="decrement"
+  						aria-label="Decrement"
+  						hidden
+  					>
+  						−
+  					</button>
+  					<p class="value" hidden>0</p>
+  					<button type="button" class="increment">Add to Cart</button>
+  				</form-spinbutton>
+  			</li>
+  			<li>
+  				<p>Product 2</p>
+  				<form-spinbutton
+  					value="0"
+  					zero-label="Add to Cart"
+  					increment-label="Increment"
+  				>
+  					<button
+  						type="button"
+  						class="decrement"
+  						aria-label="Decrement"
+  						hidden
+  					>
+  						−
+  					</button>
+  					<p class="value" hidden>0</p>
+  					<button type="button" class="increment">Add to Cart</button>
+  				</form-spinbutton>
+  			</li>
+  			<li>
+  				<p>Product 3</p>
+  				<form-spinbutton
+  					value="0"
+  					zero-label="Add to Cart"
+  					increment-label="Increment"
+  				>
+  					<button
+  						type="button"
+  						class="decrement"
+  						aria-label="Decrement"
+  						hidden
+  					>
+  						−
+  					</button>
+  					<p class="value" hidden>0</p>
+  					<button type="button" class="increment">Add to Cart</button>
+  				</form-spinbutton>
+  			</li>
+  		</ul>
+	  </module-catalog>
 	</div>
 	<details>
-		<summary>ProductCatalog Source Code</summary>
-		<module-lazy src="./examples/product-catalog.html">
+		<summary>ModuleCatalog Source Code</summary>
+		<module-lazy src="./examples/module-catalog.html">
 			<card-callout>
 				<p class="loading" role="status">Loading...</p>
 				<p class="error" role="alert" aria-live="polite"></p>
@@ -208,7 +254,7 @@ Here's how everything comes together:
 		</module-lazy>
 	</details>
 	<details>
-		<summary>InputButton Source Code</summary>
+		<summary>BasicButton Source Code</summary>
 		<module-lazy src="./examples/basic-button.html">
 			<card-callout>
 				<p class="loading" role="status">Loading...</p>
@@ -217,7 +263,7 @@ Here's how everything comes together:
 		</module-lazy>
 	</details>
 	<details>
-		<summary>SpinButton Source Code</summary>
+		<summary>FormSpinbutton Source Code</summary>
 		<module-lazy src="./examples/form-spinbutton.html">
 			<card-callout>
 				<p class="loading" role="status">Loading...</p>
@@ -235,17 +281,35 @@ Here's how everything comes together:
 
 Passing state down works well when a **parent component can directly observe child state**, but sometimes a **child needs to notify its parent** about an action **without managing shared state itself**.
 
+<card-callout class="caution">
+
+**TODO**: Add example
+
+</card-callout>
+
 </section>
 
 <section>
 
 ## Providing Context
 
+<card-callout class="caution">
+
+**TODO**: Add example
+
+</card-callout>
+
 </section>
 
 <section>
 
 ## Consuming Context
+
+<card-callout class="caution">
+
+**TODO**: Add example
+
+</card-callout>
 
 </section>
 

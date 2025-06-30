@@ -36,39 +36,36 @@ The full documentation is still work in progress. The following chapters are alr
 
 - [Introduction](https://zeixcom.github.io/ui-element/index.html)
 - [Getting Started](https://zeixcom.github.io/ui-element/getting-started.html)
-- [Building Components](https://zeixcom.github.io/ui-element/building-components.html)
-- [Styling Components](https://zeixcom.github.io/ui-element/styling-components.html)
+- [Components](https://zeixcom.github.io/ui-element/components.html)
+- [Styling](https://zeixcom.github.io/ui-element/styling.html)
 - [Data Flow](https://zeixcom.github.io/ui-element/data-flow.html)
-- [About & Community](https://zeixcom.github.io/ui-element/about-community.html)
+- [About](https://zeixcom.github.io/ui-element/about.html)
 
 ## Basic Usage
 
-### Show Appreciation
+### Counter
 
 Server-rendered markup:
 
 ```html
-<show-appreciation aria-label="Show appreciation">
-  <button type="button">
-    <span class="emoji">💐</span>
-    <span class="count">5</span>
-  </button>
-</show-appreciation>
+<basic-counter count="5">
+  <button type="button">💐 <span>5</span></button>
+</basic-counter>
 ```
 
 UIElement component:
 
 ```js
-import { asInteger, component, on, RESET, setText } from '@zeix/ui-element'
+import { asInteger, component, on, setText } from '@zeix/ui-element'
 
-component(
-  'show-appreciation',
+export default component(
+  'basic-counter',
   {
-    count: asInteger(RESET), // Get initial value from .count element
+    count: asInteger(), // Get initial value from count attribute
   },
   (el, { first }) => [
     // Update count display when state changes
-    first('.count', setText('count')),
+    first('span', setText('count')),
 
     // Handle click events to change state
     first(
@@ -84,22 +81,17 @@ component(
 Example styles:
 
 ```css
-show-appreciation {
-  display: inline-block;
-
+basic-counter {
   & button {
-    display: flex;
-    flex-direction: row;
-    gap: var(--space-s);
     border: 1px solid var(--color-border);
     border-radius: var(--space-xs);
     background-color: var(--color-secondary);
-    color: var(--color-text);
     padding: var(--space-xs) var(--space-s);
     cursor: pointer;
+    color: var(--color-text);
     font-size: var(--font-size-m);
     line-height: var(--line-height-xs);
-    transition: transform var(--transition-short) var(--easing-inout);
+    transition: background-color var(--transition-short) var(--easing-inout);
 
     &:hover {
       background-color: var(--color-secondary-hover);
@@ -107,10 +99,6 @@ show-appreciation {
 
     &:active {
       background-color: var(--color-secondary-active);
-
-      .emoji {
-        transform: scale(1.1);
-      }
     }
   }
 }
@@ -309,17 +297,67 @@ An example demonstrating how to use a custom attribute parser (sanitize an URL) 
 </module-lazy>
 ```
 
+UIElement component:
+
 ```js
 import {
-  component,
-  dangerouslySetInnerHTML,
-  setProperty,
-  setText,
   UNSET,
+  component,
+  computed,
+  dangerouslySetInnerHTML,
+  setText,
+  show,
+  state,
+  toggleClass,
 } from '@zeix/ui-element'
+import { asURL } from './as-url'
 
+export default component(
+  'module-lazy',
+  {
+    src: asURL,
+  },
+  (el, { first }) => {
+    const error = state('')
+
+    const content = computed(async abort => {
+      const url = el.src.value
+      if (el.src.error || !url) {
+        error.set(el.src.error ?? 'No URL provided')
+        return ''
+      }
+
+      try {
+        error.set('')
+        el.querySelector('.loading')?.remove()
+        const response = await fetch(url, { signal: abort })
+        if (response.ok) return response.text()
+        else error.set(response.statusText)
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : String(err)
+        error.set(errorMessage)
+        return ''
+      }
+    })
+
+    return [
+      dangerouslySetInnerHTML(content),
+      first(
+        'card-callout',
+        show(() => !!error.get() || content.get() === UNSET),
+        toggleClass('danger', () => !error.get()),
+      ),
+      first('.error', setText(error)),
+    ]
+  },
+)
+```
+
+Custom attribute parser:
+
+```js
 // Attribute Parser uses current element to detect recursion and set error message
-const asURL = (el, v) => {
+export const asURL = (el, v) => {
   let value = ''
   let error = ''
   if (!v) {
@@ -344,47 +382,6 @@ const asURL = (el, v) => {
   }
   return { value, error }
 }
-
-// Component
-export default component(
-  'module-lazy',
-  {
-    src: asURL,
-  },
-  (el, { first }) => {
-    const error = state('')
-
-    const content = computed(async abort => {
-      if (el.src.error) {
-        error.set(el.src.error)
-        return ''
-      }
-      const url = el.src.value
-
-      try {
-        error.set('')
-        el.querySelector('.loading')?.remove()
-        const response = await fetch(url, { signal: abort })
-        if (response.ok) return response.text()
-        else error.set(response.statusText)
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : String(err)
-        error.set(errorMessage)
-        return ''
-      }
-    })
-
-    return [
-      dangerouslySetInnerHTML(content),
-      first(
-        'card-callout',
-        setProperty('hidden', () => !error.get() && content.get() !== UNSET),
-        toggleClass('danger', () => !error.get()),
-      ),
-      first('.error', setText(error)),
-    ]
-  },
-)
 ```
 
 ## Contributing & License

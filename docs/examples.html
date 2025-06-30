@@ -113,16 +113,11 @@
 	<nav>
 		<h2>In this Page</h2>
 		<ol>
-			<li><a href="#simple-counter-component">Simple Counter Component</a></li>
-			<li><a href="#simple-carousel-component">Simple Carousel Component</a></li>
+			<li><a href="#counter">Counter</a></li>
+			<li><a href="#carousel">Carousel</a></li>
 			<li><a href="#combobox">Combobox</a></li>
 			<li><a href="#todo-app">Todo App</a></li>
-			<li><a href="#advanced-slider-component">Advanced Slider Component</a></li>
-			<li><a href="#form-validation-with-real-time-feedback">Form Validation with Real-time Feedback</a></li>
-			<li><a href="#dynamic-content-loading">Dynamic Content Loading</a></li>
-			<li><a href="#component-composition-patterns">Component Composition Patterns</a></li>
-			<li><a href="#testing-uielement-components">Testing UIElement Components</a></li>
-			<li><a href="#next-steps">Next Steps</a></li>
+			<li><a href="#lazy-loading">Lazy Loading</a></li>
 		</ol>
 	</nav>
 </module-toc>
@@ -131,11 +126,11 @@
 
 <section>
 
-<h2 id="simple-counter-component">
-                <a name="simple-counter-component" class="anchor" href="#simple-counter-component">
+<h2 id="counter">
+                <a name="counter" class="anchor" href="#counter">
 	                <span class="permalink">🔗</span>
                 </a>
-                Simple Counter Component
+                Counter
             </h2>
 <module-demo>
   <div class="preview">
@@ -158,18 +153,18 @@
 
 <section>
 
-<h2 id="simple-carousel-component">
-                <a name="simple-carousel-component" class="anchor" href="#simple-carousel-component">
+<h2 id="carousel">
+                <a name="carousel" class="anchor" href="#carousel">
 	                <span class="permalink">🔗</span>
                 </a>
-                Simple Carousel Component
+                Carousel
             </h2>
 <module-demo>
 	<div class="preview">
 		<module-carousel>
 			<h2 class="visually-hidden">Slides</h2>
 			<div class="slides">
-				<div id="slide1" role="tabpanel" aria-current="true">
+				<div id="slide1" role="tabpanel" aria-current="true" style="background: var(--color-blue-20);">
 					<h3 id="slide-1">
                 <a name="slide-1" class="anchor" href="#slide-1">
 	                <span class="permalink">🔗</span>
@@ -183,125 +178,37 @@
 						<p>Hello, <span>World</span>!</p>
 					</hello-world>
 				</div>
-				<div id="slide2" role="tabpanel" aria-current="false">
+				<div id="slide2" role="tabpanel" aria-current="false" style="background: var(--color-purple-20);">
 					<h3 id="slide-2">
                 <a name="slide-2" class="anchor" href="#slide-2">
 	                <span class="permalink">🔗</span>
                 </a>
                 Slide 2
             </h3>
-					<calc-table rows="3" columns="3">
-						<div class="rows">
-							<p>Number of rows:</p>
-							<form-spinbutton value="3" zero-label="Add Row" increment-label="Increment">
-								<button type="button" class="decrement" aria-label="Decrement">
-									−
-								</button>
-								<p class="value">3</p>
-								<button type="button" class="increment" aria-label="Increment">
-									+
-								</button>
-							</form-spinbutton>
-						</div>
-						<div class="columns">
-							<p>Number of columns:</p>
-							<form-spinbutton
-								value="3"
-								zero-label="Add Column"
-								increment-label="Increment"
-							>
-								<button type="button" class="decrement" aria-label="Decrement">
-									−
-								</button>
-								<p class="value">3</p>
-								<button type="button" class="increment" aria-label="Increment">
-									+
-								</button>
-							</form-spinbutton>
-						</div>
-						<table>
-							<thead>
-								<tr>
-									<th scope="col">Row</th>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-							<tfoot>
-								<tr>
-									<th scope="row">Sum</th>
-								</tr>
-							</tfoot>
-						</table>
-						<template class="calc-table-row">
-							<tr><th scope="row"><slot></slot></th></tr>
-						</template>
-						<template class="calc-table-colhead">
-							<th scope="col"><slot></slot></th>
-						</template>
-						<template class="calc-table-cell">
-							<td>
-								<label>
-									<span class="visually-hidden"><slot></slot></span>
-									<input type="number" min="0" max="100" step="1" value="" />
-								</label>
-							</td>
-						</template>
-					</calc-table>
 				</div>
-				<div id="slide3" role="tabpanel" aria-current="false">
+				<div id="slide3" role="tabpanel" aria-current="false" style="background: var(--color-pink-20);">
 					<h3 id="slide-3">
                 <a name="slide-3" class="anchor" href="#slide-3">
 	                <span class="permalink">🔗</span>
                 </a>
                 Slide 3
             </h3>
-					<rating-feedback>
-						<form>
-							<rating-stars>
-								<fieldset>
-									<legend class="visually-hidden">Rate</legend>
-									<label>
-										<input type="radio" class="visually-hidden" name="rating" value="1">
-										<span class="label">☆</span>
-									</label>
-									<label>
-										<input type="radio" class="visually-hidden" name="rating" value="2">
-										<span class="label">☆</span>
-									</label>
-									<label>
-										<input type="radio" class="visually-hidden" name="rating" value="3">
-										<span class="label">☆</span>
-									</label>
-									<label>
-										<input type="radio" class="visually-hidden" name="rating" value="4">
-										<span class="label">☆</span>
-									</label>
-									<label>
-										<input type="radio" class="visually-hidden" name="rating" value="5">
-										<span class="label">☆</span>
-									</label>
-								</fieldset>
-							</rating-stars>
-							<div class="feedback" hidden>
-								<header>
-									<button button="button" class="hide" aria-label="Hide">×</button>
-									<p hidden>We're sorry to hear that! Your feedback is important, and we'd love to improve. Let us know how we can do better.</p>
-									<p hidden>Thank you for your honesty. We appreciate your feedback and will work on making things better.</p>
-									<p hidden>Thanks for your rating! If there's anything we can improve, we'd love to hear your thoughts.</p>
-									<p hidden>We're glad you had a good experience! If there's anything that could make it even better, let us know.</p>
-									<p hidden>Thank you for your support! We're thrilled you had a great experience. Your feedback keeps us motivated!</p>
-								</header>
-								<fieldset>
-									<label for="rating-feedback">Describe your experience (optional)</label>
-									<textarea id="rating-feedback"></textarea>
-									<basic-button disabled>
-										<button type="submit" class="primary" disabled>Submit</button>
-									</basic-button>
-								</fieldset>
-							</div>
-						</form>
-					</rating-feedback>
+				</div>
+				<div id="slide4" role="tabpanel" aria-current="false" style="background: var(--color-orange-20);">
+					<h3 id="slide-4">
+                <a name="slide-4" class="anchor" href="#slide-4">
+	                <span class="permalink">🔗</span>
+                </a>
+                Slide 4
+            </h3>
+				</div>
+				<div id="slide5" role="tabpanel" aria-current="false" style="background: var(--color-green-20);">
+					<h3 id="slide-5">
+                <a name="slide-5" class="anchor" href="#slide-5">
+	                <span class="permalink">🔗</span>
+                </a>
+                Slide 5
+            </h3>
 				</div>
 			</div>
 			<nav aria-label="Carousel Navigation">
@@ -334,6 +241,26 @@
 						aria-controls="slide3"
 						aria-label="Slide 3"
 						data-index="2"
+						tabindex="-1"
+					>
+						●
+					</button>
+					<button
+						role="tab"
+						aria-current="false"
+						aria-controls="slide4"
+						aria-label="Slide 4"
+						data-index="3"
+						tabindex="-1"
+					>
+						●
+					</button>
+					<button
+						role="tab"
+						aria-current="false"
+						aria-controls="slide5"
+						aria-label="Slide 5"
+						data-index="4"
 						tabindex="-1"
 					>
 						●
@@ -518,7 +445,7 @@
 		</module-todo>
 	</div>
 	<details>
-		<summary>TodoApp Source Code</summary>
+		<summary>ModuleTodo Source Code</summary>
 		<module-lazy src="./examples/module-todo.html">
 			<card-callout>
 				<p class="loading" role="status">Loading...</p>
@@ -568,323 +495,11 @@
 
 <section>
 
-<h2 id="advanced-slider-component">
-                <a name="advanced-slider-component" class="anchor" href="#advanced-slider-component">
+<h2 id="lazy-loading">
+                <a name="lazy-loading" class="anchor" href="#lazy-loading">
 	                <span class="permalink">🔗</span>
                 </a>
-                Advanced Slider Component
-            </h2>
-<p>This example shows complex state management, multiple effects, and custom validation.</p>
-<p><strong>What it demonstrates:</strong></p>
-<ul>
-<li>Multiple reactive properties with validation</li>
-<li>Complex derived state calculations</li>
-<li>Custom attribute parsers and effects</li>
-<li>Keyboard accessibility</li>
-</ul>
-<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">  'my-slider'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">  {</span></span>
-<span class="line"><span style="color:#F8F8F2">    value: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">50</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#F8F8F2">    min: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#F8F8F2">    max: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">100</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#F8F8F2">    step: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#F8F8F2">  },</span></span>
-<span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#88846F">    // Derived calculations</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#A6E22E"> percentage</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> ((el.value </span><span style="color:#F92672">-</span><span style="color:#F8F8F2"> el.min) </span><span style="color:#F92672">/</span><span style="color:#F8F8F2"> (el.max </span><span style="color:#F92672">-</span><span style="color:#F8F8F2"> el.min)) </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 100</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#A6E22E"> isAtMin</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">&#x3C;=</span><span style="color:#F8F8F2"> el.min</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#A6E22E"> isAtMax</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">>=</span><span style="color:#F8F8F2"> el.max</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">    // Validation function</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#A6E22E"> clampValue</span><span style="color:#F92672"> =</span><span style="color:#FD971F;font-style:italic"> newValue</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F92672">      return</span><span style="color:#F8F8F2"> Math.</span><span style="color:#A6E22E">max</span><span style="color:#F8F8F2">(el.min, Math.</span><span style="color:#A6E22E">min</span><span style="color:#F8F8F2">(el.max, newValue))</span></span>
-<span class="line"><span style="color:#F8F8F2">    }</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F92672">    return</span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">      // Update visual progress</span></span>
-<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">        '.progress'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">        setStyle</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'width'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#E6DB74"> `</span><span style="color:#F92672">${</span><span style="color:#A6E22E">percentage</span><span style="color:#F8F8F2">()</span><span style="color:#F92672">}</span><span style="color:#E6DB74">%`</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#F8F8F2">      ),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">      // Update text displays</span></span>
-<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.current-value'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.min-value'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'min'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.max-value'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'max'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">      // Handle button interactions</span></span>
-<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">        '.decrease'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">        setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">, isAtMin),</span></span>
-<span class="line"><span style="color:#A6E22E">        on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">          el.value </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> clampValue</span><span style="color:#F8F8F2">(el.value </span><span style="color:#F92672">-</span><span style="color:#F8F8F2"> el.step)</span></span>
-<span class="line"><span style="color:#F8F8F2">        }),</span></span>
-<span class="line"><span style="color:#F8F8F2">      ),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">        '.increase'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">        setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">, isAtMax),</span></span>
-<span class="line"><span style="color:#A6E22E">        on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">          el.value </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> clampValue</span><span style="color:#F8F8F2">(el.value </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> el.step)</span></span>
-<span class="line"><span style="color:#F8F8F2">        }),</span></span>
-<span class="line"><span style="color:#F8F8F2">      ),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">      // Keyboard support</span></span>
-<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">        '.slider-track'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">        setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tabindex'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'0'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">        setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'role'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'slider'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">        setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-valuemin'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'min'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">        setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-valuemax'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'max'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">        setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-valuenow'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#A6E22E">        on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'keydown'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">          let</span><span style="color:#F8F8F2"> newValue </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.value</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F92672">          switch</span><span style="color:#F8F8F2"> (e.key) {</span></span>
-<span class="line"><span style="color:#F92672">            case</span><span style="color:#E6DB74"> 'ArrowLeft'</span><span style="color:#F8F8F2">:</span></span>
-<span class="line"><span style="color:#F92672">            case</span><span style="color:#E6DB74"> 'ArrowDown'</span><span style="color:#F8F8F2">:</span></span>
-<span class="line"><span style="color:#F8F8F2">              newValue </span><span style="color:#F92672">-=</span><span style="color:#F8F8F2"> el.step</span></span>
-<span class="line"><span style="color:#F92672">              break</span></span>
-<span class="line"><span style="color:#F92672">            case</span><span style="color:#E6DB74"> 'ArrowRight'</span><span style="color:#F8F8F2">:</span></span>
-<span class="line"><span style="color:#F92672">            case</span><span style="color:#E6DB74"> 'ArrowUp'</span><span style="color:#F8F8F2">:</span></span>
-<span class="line"><span style="color:#F8F8F2">              newValue </span><span style="color:#F92672">+=</span><span style="color:#F8F8F2"> el.step</span></span>
-<span class="line"><span style="color:#F92672">              break</span></span>
-<span class="line"><span style="color:#F92672">            case</span><span style="color:#E6DB74"> 'Home'</span><span style="color:#F8F8F2">:</span></span>
-<span class="line"><span style="color:#F8F8F2">              newValue </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.min</span></span>
-<span class="line"><span style="color:#F92672">              break</span></span>
-<span class="line"><span style="color:#F92672">            case</span><span style="color:#E6DB74"> 'End'</span><span style="color:#F8F8F2">:</span></span>
-<span class="line"><span style="color:#F8F8F2">              newValue </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.max</span></span>
-<span class="line"><span style="color:#F92672">              break</span></span>
-<span class="line"><span style="color:#F92672">            default</span><span style="color:#F8F8F2">:</span></span>
-<span class="line"><span style="color:#F92672">              return</span><span style="color:#88846F"> // Don't prevent default for other keys</span></span>
-<span class="line"><span style="color:#F8F8F2">          }</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F8F8F2">          e.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">          el.value </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> clampValue</span><span style="color:#F8F8F2">(newValue)</span></span>
-<span class="line"><span style="color:#F8F8F2">        }),</span></span>
-<span class="line"><span style="color:#F8F8F2">      ),</span></span>
-<span class="line"><span style="color:#F8F8F2">    ]</span></span>
-<span class="line"><span style="color:#F8F8F2">  },</span></span>
-<span class="line"><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	<button type="button" class="overlay">Expand</button>
-</module-codeblock>
-<module-codeblock collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">html</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">my-slider</span><span style="color:#A6E22E"> value</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"75"</span><span style="color:#A6E22E"> min</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"0"</span><span style="color:#A6E22E"> max</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"100"</span><span style="color:#A6E22E"> step</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"5"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"slider-container"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"slider-track"</span><span style="color:#A6E22E"> tabindex</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"0"</span><span style="color:#A6E22E"> role</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"slider"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">      &#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"progress"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">    &#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"controls"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">      &#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"decrease"</span><span style="color:#F8F8F2">>-&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">      &#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"current-value"</span><span style="color:#F8F8F2">>75&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">      &#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"increase"</span><span style="color:#F8F8F2">>+&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">    &#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"range"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">      &#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"min-value"</span><span style="color:#F8F8F2">>0&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">      &#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"max-value"</span><span style="color:#F8F8F2">>100&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">    &#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">  &#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">my-slider</span><span style="color:#F8F8F2">></span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	<button type="button" class="overlay">Expand</button>
-</module-codeblock>
-<p><strong>Advanced patterns shown:</strong></p>
-<ul>
-<li>Derived state calculations with functions</li>
-<li>Input validation and clamping</li>
-<li>Full keyboard accessibility</li>
-<li>Multiple coordinated effects</li>
-<li>ARIA attributes for screen readers</li>
-</ul>
-</section>
-
-<section>
-
-<h2 id="form-validation-with-real-time-feedback">
-                <a name="form-validation-with-real-time-feedback" class="anchor" href="#form-validation-with-real-time-feedback">
-	                <span class="permalink">🔗</span>
-                </a>
-                Form Validation with Real-time Feedback
-            </h2>
-<p>This example demonstrates client-side validation, async operations, and error handling.</p>
-<p><strong>What it covers:</strong></p>
-<ul>
-<li>Custom validation effects</li>
-<li>Async server-side validation</li>
-<li>Error state management</li>
-<li>User experience patterns</li>
-</ul>
-<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Custom validation effect</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> validateField</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">validationFn</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">errorMessage</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">element</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">signal</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#A6E22E"> update</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> isValid </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> validationFn</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">signal</span><span style="color:#F8F8F2">())</span></span>
-<span class="line"><span style="color:#F8F8F2">    element.classList.</span><span style="color:#A6E22E">toggle</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'error'</span><span style="color:#F8F8F2">, </span><span style="color:#F92672">!</span><span style="color:#F8F8F2">isValid)</span></span>
-<span class="line"><span style="color:#F8F8F2">    element.</span><span style="color:#A6E22E">setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-invalid'</span><span style="color:#F8F8F2">, isValid </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'false'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'true'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">    let</span><span style="color:#F8F8F2"> errorEl </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> element.nextElementSibling</span></span>
-<span class="line"><span style="color:#F92672">    if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">errorEl?.classList.</span><span style="color:#A6E22E">contains</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'error-message'</span><span style="color:#F8F8F2">)) {</span></span>
-<span class="line"><span style="color:#F8F8F2">      errorEl </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">createElement</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'div'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">      errorEl.className </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'error-message'</span></span>
-<span class="line"><span style="color:#F8F8F2">      element.</span><span style="color:#A6E22E">after</span><span style="color:#F8F8F2">(errorEl)</span></span>
-<span class="line"><span style="color:#F8F8F2">    }</span></span>
-<span class="line"><span style="color:#F8F8F2">    errorEl.textContent </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> isValid </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> ''</span><span style="color:#F92672"> :</span><span style="color:#F8F8F2"> errorMessage</span></span>
-<span class="line"><span style="color:#F8F8F2">  }</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#A6E22E">  update</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F92672">  return</span><span style="color:#F8F8F2"> update</span></span>
-<span class="line"><span style="color:#F8F8F2">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">// Async username availability checker</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> checkUsernameAvailability</span><span style="color:#F92672"> =</span><span style="color:#F92672"> async</span><span style="color:#FD971F;font-style:italic"> username</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F92672">  if</span><span style="color:#F8F8F2"> (username.length </span><span style="color:#F92672">&#x3C;</span><span style="color:#AE81FF"> 3</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">return</span><span style="color:#F8F8F2"> { available: </span><span style="color:#AE81FF">false</span><span style="color:#F8F8F2">, message: </span><span style="color:#E6DB74">'Too short'</span><span style="color:#F8F8F2"> }</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">  // Simulate API call</span></span>
-<span class="line"><span style="color:#F92672">  await</span><span style="color:#F92672"> new</span><span style="color:#66D9EF;font-style:italic"> Promise</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">resolve</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> setTimeout</span><span style="color:#F8F8F2">(resolve, </span><span style="color:#AE81FF">500</span><span style="color:#F8F8F2">))</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> taken </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#E6DB74">'admin'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'user'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'test'</span><span style="color:#F8F8F2">].</span><span style="color:#A6E22E">includes</span><span style="color:#F8F8F2">(username.</span><span style="color:#A6E22E">toLowerCase</span><span style="color:#F8F8F2">())</span></span>
-<span class="line"><span style="color:#F92672">  return</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">    available: </span><span style="color:#F92672">!</span><span style="color:#F8F8F2">taken,</span></span>
-<span class="line"><span style="color:#F8F8F2">    message: taken </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'Username already taken'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'Username available'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">  }</span></span>
-<span class="line"><span style="color:#F8F8F2">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">  'registration-form'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">  {</span></span>
-<span class="line"><span style="color:#F8F8F2">    email: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#F8F8F2">    username: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#F8F8F2">    password: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#F8F8F2">  },</span></span>
-<span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#88846F">    // Local state for async validation</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> usernameStatus </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> signal</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'idle'</span><span style="color:#F8F8F2">) </span><span style="color:#88846F">// idle, checking, available, taken</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> usernameMessage </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> signal</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">    let</span><span style="color:#F8F8F2"> usernameTimeout</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F92672">    return</span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">      // Email validation</span></span>
-<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">        '.email-input'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">        setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'email'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">        on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> (el.email </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value)),</span></span>
-<span class="line"><span style="color:#A6E22E">        validateField</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#FD971F;font-style:italic">          email</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#E6DB74"> /</span><span style="color:#F92672">^</span><span style="color:#AE81FF">[</span><span style="color:#F92672">^</span><span style="color:#AE81FF">\s@]</span><span style="color:#F92672">+</span><span style="color:#E6DB74">@</span><span style="color:#AE81FF">[</span><span style="color:#F92672">^</span><span style="color:#AE81FF">\s@]</span><span style="color:#F92672">+</span><span style="color:#AE81FF">\.[</span><span style="color:#F92672">^</span><span style="color:#AE81FF">\s@]</span><span style="color:#F92672">+$</span><span style="color:#E6DB74">/</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">test</span><span style="color:#F8F8F2">(email),</span></span>
-<span class="line"><span style="color:#E6DB74">          'Please enter a valid email address'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">        ),</span></span>
-<span class="line"><span style="color:#F8F8F2">      ),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">      // Username with async validation</span></span>
-<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">        '.username-input'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">        setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'username'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">        toogleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'checking'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> usernameStatus</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'checking'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">        toogleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'available'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> usernameStatus</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'available'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">        toogleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'taken'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> usernameStatus</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'taken'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#A6E22E">        on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#F92672">async</span><span style="color:#FD971F;font-style:italic"> e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">          el.username </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#A6E22E">          clearTimeout</span><span style="color:#F8F8F2">(usernameTimeout)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F92672">          if</span><span style="color:#F8F8F2"> (el.username.length </span><span style="color:#F92672">&#x3C;</span><span style="color:#AE81FF"> 3</span><span style="color:#F8F8F2">) {</span></span>
-<span class="line"><span style="color:#F8F8F2">            usernameStatus.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'idle'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">            usernameMessage.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">            return</span></span>
-<span class="line"><span style="color:#F8F8F2">          }</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F8F8F2">          usernameStatus.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'checking'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">          usernameMessage.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Checking availability...'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F8F8F2">          usernameTimeout </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> setTimeout</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">async</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">            const</span><span style="color:#F8F8F2"> result </span><span style="color:#F92672">=</span><span style="color:#F92672"> await</span><span style="color:#A6E22E"> checkUsernameAvailability</span><span style="color:#F8F8F2">(el.username)</span></span>
-<span class="line"><span style="color:#F8F8F2">            usernameStatus.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(result.available </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'available'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'taken'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">            usernameMessage.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(result.message)</span></span>
-<span class="line"><span style="color:#F8F8F2">          }, </span><span style="color:#AE81FF">300</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">        }),</span></span>
-<span class="line"><span style="color:#F8F8F2">      ),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">      // Username status display</span></span>
-<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.username-status'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(usernameMessage)),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">      // Password validation</span></span>
-<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">        '.password-input'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">        setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'password'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">        on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> (el.password </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value)),</span></span>
-<span class="line"><span style="color:#A6E22E">        validateField</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#FD971F;font-style:italic">          password</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> password.length </span><span style="color:#F92672">>=</span><span style="color:#AE81FF"> 8</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#E6DB74">          'Password must be at least 8 characters'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">        ),</span></span>
-<span class="line"><span style="color:#F8F8F2">      ),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">      // Submit button state</span></span>
-<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">        '.submit-button'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">        setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">          const</span><span style="color:#F8F8F2"> emailValid </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> /</span><span style="color:#F92672">^</span><span style="color:#AE81FF">[</span><span style="color:#F92672">^</span><span style="color:#AE81FF">\s@]</span><span style="color:#F92672">+</span><span style="color:#E6DB74">@</span><span style="color:#AE81FF">[</span><span style="color:#F92672">^</span><span style="color:#AE81FF">\s@]</span><span style="color:#F92672">+</span><span style="color:#AE81FF">\.[</span><span style="color:#F92672">^</span><span style="color:#AE81FF">\s@]</span><span style="color:#F92672">+$</span><span style="color:#E6DB74">/</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">test</span><span style="color:#F8F8F2">(el.email)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">          const</span><span style="color:#F8F8F2"> usernameValid </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> usernameStatus</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'available'</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">          const</span><span style="color:#F8F8F2"> passwordValid </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.password.length </span><span style="color:#F92672">>=</span><span style="color:#AE81FF"> 8</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F92672">          return</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">(emailValid </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> usernameValid </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> passwordValid)</span></span>
-<span class="line"><span style="color:#F8F8F2">        }),</span></span>
-<span class="line"><span style="color:#F8F8F2">      ),</span></span>
-<span class="line"><span style="color:#F8F8F2">    ]</span></span>
-<span class="line"><span style="color:#F8F8F2">  },</span></span>
-<span class="line"><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	<button type="button" class="overlay">Expand</button>
-</module-codeblock>
-<p><strong>Patterns demonstrated:</strong></p>
-<ul>
-<li>Custom reusable validation effects</li>
-<li>Debounced async validation</li>
-<li>Complex form state management</li>
-<li>Real-time user feedback</li>
-<li>Accessibility considerations</li>
-</ul>
-</section>
-
-<section>
-
-<h2 id="dynamic-content-loading">
-                <a name="dynamic-content-loading" class="anchor" href="#dynamic-content-loading">
-	                <span class="permalink">🔗</span>
-                </a>
-                Dynamic Content Loading
+                Lazy Loading
             </h2>
 <p>This example shows how to handle asynchronous data loading and error states.</p>
 <p><strong>Features:</strong></p>
@@ -991,298 +606,6 @@
 	</basic-button>
 	
 </module-codeblock>
-<p><strong>Key techniques:</strong></p>
-<ul>
-<li>Intersection Observer for performance</li>
-<li>Async/await for clean error handling</li>
-<li>Progressive enhancement with loading states</li>
-<li>Proper cleanup in lifecycle hooks</li>
-</ul>
-</section>
-
-<section>
-
-<h2 id="component-composition-patterns">
-                <a name="component-composition-patterns" class="anchor" href="#component-composition-patterns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Component Composition Patterns
-            </h2>
-<p>These examples show how to build complex UIs by composing simple components.</p>
-<h3 id="tab-system">
-                <a name="tab-system" class="anchor" href="#tab-system">
-	                <span class="permalink">🔗</span>
-                </a>
-                Tab System
-            </h3>
-<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Tab container manages active state</span></span>
-<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">  'tab-list'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">  {</span></span>
-<span class="line"><span style="color:#F8F8F2">    active: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tab1'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#F8F8F2">  },</span></span>
-<span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">    // Update tab buttons</span></span>
-<span class="line"><span style="color:#A6E22E">    all</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">      '.tab-button'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">      toogleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'active'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">button</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> button.dataset.tab </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> el.active),</span></span>
-<span class="line"><span style="color:#A6E22E">      setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-selected'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">button</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
-<span class="line"><span style="color:#F8F8F2">        button.dataset.tab </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> el.active </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'true'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'false'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">      ),</span></span>
-<span class="line"><span style="color:#A6E22E">      on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">        el.active </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.dataset.tab</span></span>
-<span class="line"><span style="color:#F8F8F2">      }),</span></span>
-<span class="line"><span style="color:#F8F8F2">    ),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">    // Update tab panels</span></span>
-<span class="line"><span style="color:#A6E22E">    all</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">      '.tab-panel'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">      setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">panel</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> panel.dataset.tab </span><span style="color:#F92672">!==</span><span style="color:#F8F8F2"> el.active),</span></span>
-<span class="line"><span style="color:#A6E22E">      setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-hidden'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">panel</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
-<span class="line"><span style="color:#F8F8F2">        panel.dataset.tab </span><span style="color:#F92672">!==</span><span style="color:#F8F8F2"> el.active </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'true'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'false'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">      ),</span></span>
-<span class="line"><span style="color:#F8F8F2">    ),</span></span>
-<span class="line"><span style="color:#F8F8F2">  ],</span></span>
-<span class="line"><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	<button type="button" class="overlay">Expand</button>
-</module-codeblock>
-<h3 id="accordion-component">
-                <a name="accordion-component" class="anchor" href="#accordion-component">
-	                <span class="permalink">🔗</span>
-                </a>
-                Accordion Component
-            </h3>
-<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">  'accordion-panel'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">  {</span></span>
-<span class="line"><span style="color:#F8F8F2">    open: </span><span style="color:#A6E22E">asBoolean</span><span style="color:#F8F8F2">(),</span></span>
-<span class="line"><span style="color:#F8F8F2">  },</span></span>
-<span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">      '.toggle'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">      setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-expanded'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (el.open </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'true'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'false'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"><span style="color:#A6E22E">      on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (el.open </span><span style="color:#F92672">=</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.open)),</span></span>
-<span class="line"><span style="color:#F8F8F2">    ),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">      '.content'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">      setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hidden'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.open),</span></span>
-<span class="line"><span style="color:#A6E22E">      setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-hidden'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (el.open </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'false'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'true'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"><span style="color:#F8F8F2">    ),</span></span>
-<span class="line"><span style="color:#F8F8F2">  ],</span></span>
-<span class="line"><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	<button type="button" class="overlay">Expand</button>
-</module-codeblock>
-<p><strong>Composition benefits:</strong></p>
-<ul>
-<li>Each component has a single responsibility</li>
-<li>Components can be reused in different contexts</li>
-<li>Easy to test and maintain</li>
-<li>Clear data flow between components</li>
-</ul>
-</section>
-
-<section>
-
-<h2 id="testing-uielement-components">
-                <a name="testing-uielement-components" class="anchor" href="#testing-uielement-components">
-	                <span class="permalink">🔗</span>
-                </a>
-                Testing UIElement Components
-            </h2>
-<p>Testing reactive components requires understanding UIElement&#39;s scheduled effect system and component lifecycle.</p>
-<h3 id="testing-reactive-updates">
-                <a name="testing-reactive-updates" class="anchor" href="#testing-reactive-updates">
-	                <span class="permalink">🔗</span>
-                </a>
-                Testing Reactive Updates
-            </h3>
-<p>UIElement schedules DOM updates for performance, so tests need to wait for effects to apply:</p>
-<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Test reactive property changes</span></span>
-<span class="line"><span style="color:#A6E22E">it</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'updates display when count changes'</span><span style="color:#F8F8F2">, </span><span style="color:#F92672">async</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> component </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click-counter'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F8F8F2">  component.count </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 5</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">  // Wait for scheduled effect to run</span></span>
-<span class="line"><span style="color:#F92672">  await</span><span style="color:#F92672"> new</span><span style="color:#66D9EF;font-style:italic"> Promise</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">resolve</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> requestAnimationFrame</span><span style="color:#F8F8F2">(resolve))</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#A6E22E">  expect</span><span style="color:#F8F8F2">(component.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">).textContent).</span><span style="color:#A6E22E">toBe</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'5'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">})</span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	<button type="button" class="overlay">Expand</button>
-</module-codeblock>
-<h3 id="testing-component-state-persistence">
-                <a name="testing-component-state-persistence" class="anchor" href="#testing-component-state-persistence">
-	                <span class="permalink">🔗</span>
-                </a>
-                Testing Component State Persistence
-            </h3>
-<p>Components maintain state between interactions, which affects testing:</p>
-<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Components remember their state</span></span>
-<span class="line"><span style="color:#A6E22E">it</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'maintains count between clicks'</span><span style="color:#F8F8F2">, </span><span style="color:#F92672">async</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> component </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click-counter'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> button </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> component.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'button'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">  // First click</span></span>
-<span class="line"><span style="color:#F8F8F2">  button.</span><span style="color:#A6E22E">click</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F92672">  await</span><span style="color:#F92672"> new</span><span style="color:#66D9EF;font-style:italic"> Promise</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">resolve</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> requestAnimationFrame</span><span style="color:#F8F8F2">(resolve))</span></span>
-<span class="line"><span style="color:#A6E22E">  expect</span><span style="color:#F8F8F2">(component.count).</span><span style="color:#A6E22E">toBe</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">  // Second click - state persists</span></span>
-<span class="line"><span style="color:#F8F8F2">  button.</span><span style="color:#A6E22E">click</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F92672">  await</span><span style="color:#F92672"> new</span><span style="color:#66D9EF;font-style:italic"> Promise</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">resolve</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> requestAnimationFrame</span><span style="color:#F8F8F2">(resolve))</span></span>
-<span class="line"><span style="color:#A6E22E">  expect</span><span style="color:#F8F8F2">(component.count).</span><span style="color:#A6E22E">toBe</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">2</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">  // Reset for next test</span></span>
-<span class="line"><span style="color:#F8F8F2">  component.count </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 0</span></span>
-<span class="line"><span style="color:#F8F8F2">})</span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	<button type="button" class="overlay">Expand</button>
-</module-codeblock>
-<h3 id="testing-components-with-browser-apis">
-                <a name="testing-components-with-browser-apis" class="anchor" href="#testing-components-with-browser-apis">
-	                <span class="permalink">🔗</span>
-                </a>
-                Testing Components with Browser APIs
-            </h3>
-<p>When components use browser APIs, mock individual methods rather than entire objects:</p>
-<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Mock clipboard API for copy functionality</span></span>
-<span class="line"><span style="color:#A6E22E">it</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'copies code to clipboard'</span><span style="color:#F8F8F2">, </span><span style="color:#F92672">async</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> originalWriteText </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> navigator.clipboard?.writeText</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">  let</span><span style="color:#F8F8F2"> copiedText </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> ''</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">  // Mock the specific method</span></span>
-<span class="line"><span style="color:#F92672">  if</span><span style="color:#F8F8F2"> (navigator.clipboard) {</span></span>
-<span class="line"><span style="color:#F8F8F2">    navigator.clipboard.</span><span style="color:#A6E22E">writeText</span><span style="color:#F92672"> =</span><span style="color:#F92672"> async</span><span style="color:#FD971F;font-style:italic"> text</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">      copiedText </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> text</span></span>
-<span class="line"><span style="color:#F92672">      return</span><span style="color:#66D9EF;font-style:italic"> Promise</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">resolve</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">    }</span></span>
-<span class="line"><span style="color:#F8F8F2">  }</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">  // Test the component</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> codeBlock </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'module-codeblock'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> copyButton </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> codeBlock.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.copy-btn'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F8F8F2">  copyButton.</span><span style="color:#A6E22E">click</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F92672">  await</span><span style="color:#F92672"> new</span><span style="color:#66D9EF;font-style:italic"> Promise</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">resolve</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> requestAnimationFrame</span><span style="color:#F8F8F2">(resolve))</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#A6E22E">  expect</span><span style="color:#F8F8F2">(copiedText).</span><span style="color:#A6E22E">toBe</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'console.log("Hello, world!");'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">  // Restore original method</span></span>
-<span class="line"><span style="color:#F92672">  if</span><span style="color:#F8F8F2"> (navigator.clipboard </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> originalWriteText) {</span></span>
-<span class="line"><span style="color:#F8F8F2">    navigator.clipboard.writeText </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> originalWriteText</span></span>
-<span class="line"><span style="color:#F8F8F2">  }</span></span>
-<span class="line"><span style="color:#F8F8F2">})</span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	<button type="button" class="overlay">Expand</button>
-</module-codeblock>
-<h3 id="component-isolation-best-practices">
-                <a name="component-isolation-best-practices" class="anchor" href="#component-isolation-best-practices">
-	                <span class="permalink">🔗</span>
-                </a>
-                Component Isolation Best Practices
-            </h3>
-<p>Ensure tests don&#39;t interfere with each other:</p>
-<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Use unique identifiers for test components</span></span>
-<span class="line"><span style="color:#A6E22E">beforeEach</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">  document.body.innerHTML </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> `</span></span>
-<span class="line"><span style="color:#E6DB74">        &#x3C;test-component data-test="unique-</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">Date.</span><span style="color:#A6E22E">now</span><span style="color:#F8F8F2">()</span><span style="color:#F92672">}</span><span style="color:#E6DB74">"></span></span>
-<span class="line"><span style="color:#E6DB74">            &#x3C;span class="output">0&#x3C;/span></span></span>
-<span class="line"><span style="color:#E6DB74">        &#x3C;/test-component></span></span>
-<span class="line"><span style="color:#E6DB74">    `</span></span>
-<span class="line"><span style="color:#F8F8F2">})</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">// Or reset component state between tests</span></span>
-<span class="line"><span style="color:#A6E22E">afterEach</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> components </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">querySelectorAll</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">  components.</span><span style="color:#A6E22E">forEach</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">comp</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">    comp.count </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 0</span></span>
-<span class="line"><span style="color:#F8F8F2">    comp.text </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> ''</span></span>
-<span class="line"><span style="color:#88846F">    // Reset other properties as needed</span></span>
-<span class="line"><span style="color:#F8F8F2">  })</span></span>
-<span class="line"><span style="color:#F8F8F2">})</span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	<button type="button" class="overlay">Expand</button>
-</module-codeblock>
-</section>
-
-<section>
-
-<h2 id="next-steps">
-                <a name="next-steps" class="anchor" href="#next-steps">
-	                <span class="permalink">🔗</span>
-                </a>
-                Next Steps
-            </h2>
-<p>These examples demonstrate UIElement&#39;s flexibility and power. To continue learning:</p>
-<ul>
-<li><strong><a href="patterns-techniques.html">Patterns &amp; Techniques</a></strong> - Advanced architectural patterns and optimization strategies</li>
-<li><strong><a href="component-communication.html">Component Communication</a></strong> - Learn how these examples can work together</li>
-<li><strong><a href="styling-components.html">Styling Components</a></strong> - Add professional styling to your components</li>
-</ul>
 </section>
 </main>
 			<footer class="content-grid">

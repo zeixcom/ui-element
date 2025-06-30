@@ -9,7 +9,7 @@ description: 'Overview and key benefits of UIElement'
 # 📖 Introduction
 
 <div>
-  <p class="lead"><strong>Web development doesn't need to be complicated</strong>. UIElement offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
+  <p class="lead"><strong>Web development doesn't need to be complicated</strong>. UIElement lets you create reactive Web Components that enhance your existing HTML.</p>
   {{ toc }}</div>
 </section-hero>
 
@@ -53,7 +53,7 @@ This means better SEO, faster initial page loads, and progressive enhancement th
 
 ### Reactive by Design
 
-UIElement uses signals for efficient, targeted DOM updates. Only the parts that actually changed get updated - no virtual DOM overhead, no unnecessary re-renders.
+UIElement uses signals for efficient, targeted DOM updates. Only the parts that actually changed get updated – no virtual DOM overhead, no unnecessary re-renders.
 
 </section>
 

@@ -1,0 +1,70 @@
+name: @zeix/ui-element
+description: A HTML-first library for building reactive Web Components using signals and declarative effects. UIElement allows developers to progressively enhance server-rendered HTML with encapsulated logic and state, avoiding virtual DOM complexity. It integrates with any backend or static site generator.
+
+entry_points: index.js, index.dev.js
+docs: https://zeixcom.github.io/ui-element/
+examples: https://github.com/zeixcom/ui-element/tree/main/docs-src/components
+test: https://github.com/zeixcom/ui-element/tree/main/test
+dependencies: @zeix/cause-effect, typescript
+
+license: MIT
+author: Esther Brunner
+
+architecture_overview: >
+  UIElement extends HTMLElement to create reactive Web Components with three main parts:
+  1. Reactive properties defined with initializers (direct values, attribute parsers like asBoolean / asInteger, or signal producers)
+  2. A setup function that returns an array of effect functions to run on component connection
+  3. A rich effects system for declarative DOM manipulation (setText, toggleClass, on, etc.)
+
+  Built on @zeix/cause-effect signals for efficient reactivity. Supports both Light DOM and Shadow DOM.
+  Components follow standard Web Components lifecycle with connectedCallback / disconnectedCallback.
+
+core_api: >
+  component(name, init, setup) - Main function to define components
+  - name: Custom element tag name (kebab-case)
+  - init: Object defining reactive properties with their parsers/initializers
+  - setup: (host, {first, all}) => FxFunction[] - returns array of effects to apply
+
+  Element selection helpers:
+  - first(selector, ...effects) - apply effects to first matching element
+  - all(selector, ...effects) - apply effects to all matching elements
+
+  Common effects: setText(), setProperty(), show(), setAttribute(), toggleClass(), setStyle(), on()
+
+attribute_parsers: >
+  Type-safe parsers that convert HTML attributes to typed component properties:
+  - asString() - string values
+  - asInteger() - integer parsing with validation
+  - asBoolean() - boolean attributes (presence = true)
+  - asEnum(options) - constrained string values
+  - asJSON() - JSON.parse() for complex data
+  - RESET - special symbol to read initial value from DOM: string
+
+context_system: >
+  Global state sharing between components:
+  - provide(context, signal) - provide state to descendant components
+  - fromContext(context, fallback) - consume state from ancestor providers
+  - Context<name, SignalType> - typed context definitions
+
+capabilities: >
+  - Create reactive Web Components with declarative DOM updates
+  - Progressive enhancement of server-rendered HTML
+  - Type-safe reactive properties with automatic attribute synchronization
+  - Event handling with on() helper
+  - Global state management via context providers
+  - Light DOM by default, Shadow DOM when needed for encapsulation
+  - Integration with any backend, SSG, or existing HTML
+
+limitations: >
+  - Smaller ecosystem compared to React / Vue / Angular
+  - No built-in routing or state persistence (but possible to implement as components)
+  - Requires understanding of Web Components and signal-based reactivity
+  - Limited to modern browsers that support Custom Elements
+
+intended_use: >
+  Perfect for developers building performance-critical applications who want:
+  - Fine-grained reactivity without virtual DOM overhead
+  - Progressive enhancement of existing HTML
+  - Type-safe component APIs
+  - Integration with server-rendered content
+  - Standards-based Web Components that work anywhere

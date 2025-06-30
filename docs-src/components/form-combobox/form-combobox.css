@@ -30,7 +30,7 @@ form-combobox {
 		transition: color var(--transition-short) var(--easing-inout);
 
 		&[aria-invalid="true"] {
-			box-shadow: 0 0 var(--space-xxs) 2px var(--color-error);
+			box-shadow: 0 0 var(--space-xxs) 2px var(--color-error-invalid);
 		}
 
 		&::placeholder {

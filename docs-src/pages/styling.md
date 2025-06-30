@@ -20,9 +20,9 @@ description: 'Scoped styles, CSS custom properties'
 
 UIElement is focused on **state management and reactivity**, not styling. However, to **ensure consistent, maintainable, and reusable styles**, we recommend techniques that **scope component styles properly while allowing shared design tokens** (e.g., spacing, font sizes, colors, layout grids).
 
-- ✅ **Each component brings along its own specific styles.**
-- ✅ Component styles should be **scoped or encapsulated** so they don't leak out.
-- ✅ **Allow customizations** via CSS custom properties or pre-defined classes.
+- **Each component brings along its own specific styles.**
+- Component styles should be **scoped or encapsulated** so they don't leak out.
+- **Allow customizations** via CSS custom properties or pre-defined classes.
 
 Parent components may apply styles to the wrapper element of known sub-components for layout purposes. But avoid styling inner elements of sub-components directly. This would tightly couple the styles of the outer and inner components.
 
@@ -46,15 +46,15 @@ my-component {
 
 ### Advantages of Custom Element Names
 
-- ✅ By definition **unique within the document** with a descriptive name.
-- ✅ **Low specificity**, making it easy to override when you need to with a single class.
+- By definition **unique within the document** with a descriptive name.
+- **Low specificity**, making it easy to override when you need to with a single class.
 
 <card-callout class="tip">
 
 **When to use**
 
-✅ **Best when** you control the page and need styles to cascade naturally.
-❌ **Avoid if** you expect style clashes from third-party styles.
+**Best when** you control the page and need styles to cascade naturally.
+**Avoid if** you expect style clashes from third-party styles.
 
 </card-callout>
 
@@ -85,8 +85,8 @@ Use **Shadow DOM** to encapsulate styles if your component is going to be used i
 
 **When to use**
 
-✅ **Best when** your component is used in environments where you don’t control styles.
-❌ **Avoid if** you need global styles to apply inside the component.
+**Best when** your component is used in environments where you don’t control styles.
+**Avoid if** you need global styles to apply inside the component.
 
 </card-callout>
 
@@ -96,7 +96,7 @@ Use **Shadow DOM** to encapsulate styles if your component is going to be used i
 
 ## Shared Design Tokens with CSS Custom Properties
 
-Web Components can’t inherit global styles inside **Shadow DOM**, but CSS custom properties allow components to remain **flexible and themeable**.
+Web Components can't inherit global styles inside **Shadow DOM**, but CSS custom properties allow components to remain **flexible and themeable**.
 
 ### Defining Design Tokens
 
@@ -125,8 +125,8 @@ my-component {
 
 ### Advantages of CSS Custom Properties
 
-- ✅ **Supports theming** – Users can override styles globally.
-- ✅ **Works inside Shadow DOM** – Unlike normal CSS, custom properties are inherited inside the shadow tree.
+- **Supports theming** – users can override styles globally.
+- **Works inside Shadow DOM** – unlike normal CSS, custom properties are inherited inside the shadow tree.
 
 </section>
 
@@ -195,7 +195,7 @@ Here's the example of the `<card-callout>` we're using in this documentation:
 
 Now that you know how to style components, explore:
 
-- [Component Communication](component-communication.html) – Learn about communication between components.
-- [Patterns & Techniques](patterns-techniques.html) – Explore best practices and advanced topics.
+- [Data Flow](data-flow.html) – learn about communication between components.
+- [Examples](examples.html) – explore common examples.
 
 </section>
