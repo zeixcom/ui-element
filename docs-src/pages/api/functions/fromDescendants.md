@@ -8,7 +8,7 @@
 
 > **fromDescendants**\<`T`, `E`\>(`selectors`, `reducer`, `initialValue`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`T`\>
 
-Defined in: [src/core/dom.ts:273](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L273)
+Defined in: [src/core/dom.ts:279](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L279)
 
 Produce a computed signal from reduced properties of descendant elements
 

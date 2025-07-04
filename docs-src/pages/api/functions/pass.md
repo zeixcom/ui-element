@@ -6,11 +6,11 @@
 
 # Function: pass()
 
-> **pass**\<`P`, `Q`\>(`signals`): \<`E`\>(`host`, `target`) => `void`
+> **pass**\<`P`, `Q`\>(`signals`): [`Effect`](../type-aliases/Effect.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`Q`\>\>
 
-Defined in: [src/core/dom.ts:462](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L462)
+Defined in: [src/core/dom.ts:445](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L445)
 
-Pass signals to a custom element
+Pass signals to a UIElement component
 
 ## Type Parameters
 
@@ -26,46 +26,24 @@ Pass signals to a custom element
 
 ### signals
 
-signals to be passed to the custom element
+Signals to be passed to descendent components
 
 [`PassedSignals`](../type-aliases/PassedSignals.md)\<`P`, `Q`\> | (`target`) => [`PassedSignals`](../type-aliases/PassedSignals.md)\<`P`, `Q`\>
 
 ## Returns
 
-> \<`E`\>(`host`, `target`): `void`
+[`Effect`](../type-aliases/Effect.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`Q`\>\>
 
-### Type Parameters
-
-#### E
-
-`E` *extends* `Element`
-
-### Parameters
-
-#### host
-
-[`Component`](../type-aliases/Component.md)\<`P`\>
-
-#### target
-
-`E`
-
-### Returns
-
-`void`
+- Effect to be used in ancestor component
 
 ## Since
 
-0.12.0
+0.13.2
 
 ## Throws
 
-- if the target element is not a custom element
+if the provided signals are not an object or a provider function
 
 ## Throws
 
-- if the provided signals are not an object or a provider function
-
-## Throws
-
-- if it fails to pass signals to the target element
+if the target component is not a UIElement component

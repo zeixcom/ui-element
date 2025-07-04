@@ -56,8 +56,8 @@ type Component<P extends ComponentProps> = HTMLElement &
 		shadowRoot: ShadowRoot | null
 
 		// Component-specific signal methods
-		getSignal(prop: keyof P): Signal<P[keyof P]>
-		setSignal(prop: keyof P, signal: Signal<P[keyof P]>): void
+		getSignal<K extends keyof P>(prop: K): Signal<P[K]>
+		setSignal<K extends keyof P>(prop: K, signal: Signal<P[K]>): void
 	}
 
 type AttributeParser<T extends {}, C extends HTMLElement = HTMLElement> = (
@@ -78,7 +78,7 @@ type Initializer<T extends {}, C extends HTMLElement> =
 	| SignalProducer<T, C>
 	| MethodProducer<C>
 
-type FxFunction<P extends ComponentProps, E extends Element> = (
+type Effect<P extends ComponentProps, E extends Element> = (
 	host: Component<P>,
 	element: E,
 ) => Cleanup | void
@@ -91,11 +91,11 @@ type ElementFromSelector<
 type SelectorFunctions<P extends ComponentProps> = {
 	first: <E extends Element = never, K extends string = string>(
 		selector: K,
-		...fns: FxFunction<P, ElementFromSelector<K, E>>[]
+		...fns: Effect<P, ElementFromSelector<K, E>>[]
 	) => (host: Component<P>) => Cleanup | void
 	all: <E extends Element = never, K extends string = string>(
 		selector: K,
-		...fns: FxFunction<P, ElementFromSelector<K, E>>[]
+		...fns: Effect<P, ElementFromSelector<K, E>>[]
 	) => (host: Component<P>) => Cleanup
 }
 
@@ -166,13 +166,13 @@ const validatePropertyName = (prop: string): string | null => {
  * Run one or more functions on a component's element
  *
  * @since 0.12.0
- * @param {FxFunction<P, E>[]} fns - functions to run
+ * @param {Effect<P, E>[]} fns - functions to run
  * @param {Component<P>} host - component host element
  * @param {E} target - target element
  * @returns {Cleanup} - a cleanup function that runs collected cleanup functions
  */
 const run = <P extends ComponentProps, E extends Element = Component<P>>(
-	fns: FxFunction<P, E>[],
+	fns: Effect<P, E>[],
 	host: Component<P>,
 	target: E = host as unknown as E,
 ): Cleanup => {
@@ -199,7 +199,7 @@ const select = <P extends ComponentProps>(): SelectorFunctions<P> => ({
 	first:
 		<E extends Element = never, K extends string = string>(
 			selector: K,
-			...fns: FxFunction<P, ElementFromSelector<K, E>>[]
+			...fns: Effect<P, ElementFromSelector<K, E>>[]
 		) =>
 		(host: Component<P>): Cleanup | void => {
 			const el = (host.shadowRoot || host).querySelector<
@@ -217,7 +217,7 @@ const select = <P extends ComponentProps>(): SelectorFunctions<P> => ({
 	all:
 		<E extends Element = never, K extends string = string>(
 			selector: K,
-			...fns: FxFunction<P, ElementFromSelector<K, E>>[]
+			...fns: Effect<P, ElementFromSelector<K, E>>[]
 		) =>
 		(host: Component<P>): Cleanup => {
 			const cleanups = new Map<ElementFromSelector<K, E>, Cleanup>()
@@ -265,16 +265,16 @@ const select = <P extends ComponentProps>(): SelectorFunctions<P> => ({
 		},
 })
 
-/* === Exported Function === */
+/* === Exported Functions === */
 
 /**
  * Define a component with its states and setup function (connectedCallback)
  *
  * @since 0.12.0
- * @param {string} name - name of the custom element
- * @param {{ [K in keyof S]: Initializer<S[K], Component<P>> }} init - signals of the component
- * @param {FxFunction<S>[]} setup - setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
- * @returns {typeof HTMLElement & P} - constructor function for the custom element
+ * @param {string} name - Name of the custom element
+ * @param {{ [K in keyof S]: Initializer<S[K], Component<P>> }} init - Signals of the component
+ * @param {FxFunction<S>[]} setup - Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
+ * @returns: void
  */
 const component = <P extends ComponentProps>(
 	name: string,
@@ -286,8 +286,8 @@ const component = <P extends ComponentProps>(
 	setup: (
 		host: Component<P>,
 		select: SelectorFunctions<P>,
-	) => FxFunction<P, Component<P>>[],
-): Component<P> => {
+	) => Effect<P, Component<P>>[],
+): void => {
 	for (const prop of Object.keys(init)) {
 		const error = validatePropertyName(prop)
 		if (error) {
@@ -295,140 +295,151 @@ const component = <P extends ComponentProps>(
 		}
 	}
 
-	class CustomElement extends HTMLElement {
-		debug?: boolean
-		#signals: {
-			[K in keyof P]: Signal<P[keyof P]>
-		} = {} as {
-			[K in keyof P]: Signal<P[keyof P]>
-		}
-		#cleanup: Cleanup | undefined
-
-		static observedAttributes =
-			Object.entries(init)
-				?.filter(([, ini]) => isAttributeParser(ini))
-				.map(([prop]) => prop) ?? []
-
-		/**
-		 * Constructor function for the custom element: initializes signals
-		 */
-		constructor() {
-			super()
-			for (const [prop, ini] of Object.entries(init)) {
-				if (ini == null) continue
-				const result = isAttributeParser<
-					Signal<P[keyof P]>,
-					Component<P>
-				>(ini)
-					? ini(this as unknown as Component<P>, null)
-					: isFunction<Component<P>>(ini)
-						? ini(this as unknown as Component<P>)
-						: ini
-				if (result != null) this.setSignal(prop, toSignal(result))
+	customElements.define(
+		name,
+		class extends HTMLElement {
+			debug?: boolean
+			#signals: {
+				[K in keyof P]: Signal<P[K]>
+			} = {} as {
+				[K in keyof P]: Signal<P[K]>
 			}
-		}
+			#cleanup: Cleanup | undefined
 
-		/**
-		 * Native callback function when the custom element is first connected to the document
-		 */
-		connectedCallback() {
-			if (DEV_MODE) {
-				this.debug = this.hasAttribute('debug')
-				if (this.debug) log(this, 'Connected')
+			static observedAttributes =
+				Object.entries(init)
+					?.filter(([, ini]) => isAttributeParser(ini))
+					.map(([prop]) => prop) ?? []
+
+			static isComponent(instance: any): instance is Component<P> {
+				return #signals in instance
 			}
-			const fns = setup(this as unknown as Component<P>, select())
-			if (!Array.isArray(fns))
-				throw new TypeError(
-					`Expected array of functions as return value of setup function in ${elementName(this)}`,
-				)
-			this.#cleanup = run(fns, this as unknown as Component<P>)
-		}
 
-		/**
-		 * Native callback function when the custom element is disconnected from the document
-		 */
-		disconnectedCallback() {
-			if (isFunction(this.#cleanup)) this.#cleanup()
-			if (DEV_MODE && this.debug) log(this, 'Disconnected')
-		}
+			/**
+			 * Constructor function for the custom element: initializes signals
+			 */
+			constructor() {
+				super()
+				for (const [prop, ini] of Object.entries(init)) {
+					if (ini == null) continue
+					const result = isAttributeParser<
+						Signal<P[keyof P]>,
+						Component<P>
+					>(ini)
+						? ini(this as unknown as Component<P>, null)
+						: isFunction<Component<P>>(ini)
+							? ini(this as unknown as Component<P>)
+							: ini
+					if (result != null) this.setSignal(prop, toSignal(result))
+				}
+			}
 
-		/**
-		 * Native callback function when an observed attribute of the custom element changes
-		 *
-		 * @param {string} attr - name of the modified attribute
-		 * @param {string | null} old - old value of the modified attribute
-		 * @param {string | null} value - new value of the modified attribute
-		 */
-		attributeChangedCallback(
-			attr: string,
-			old: string | null,
-			value: string | null,
-		) {
-			if (value === old || isComputed(this.#signals[attr])) return // unchanged or controlled by computed
-			const parse = init[attr as keyof P]
-			if (!isAttributeParser<P[keyof P]>(parse)) return
-			const parsed = parse(this as unknown as Component<P>, value, old)
-			if (DEV_MODE && this.debug)
-				log(
+			/**
+			 * Native callback function when the custom element is first connected to the document
+			 */
+			connectedCallback() {
+				if (DEV_MODE) {
+					this.debug = this.hasAttribute('debug')
+					if (this.debug) log(this, 'Connected')
+				}
+				const fns = setup(this as unknown as Component<P>, select())
+				if (!Array.isArray(fns))
+					throw new TypeError(
+						`Expected array of functions as return value of setup function in ${elementName(this)}`,
+					)
+				this.#cleanup = run(fns, this as unknown as Component<P>)
+			}
+
+			/**
+			 * Native callback function when the custom element is disconnected from the document
+			 */
+			disconnectedCallback() {
+				if (isFunction(this.#cleanup)) this.#cleanup()
+				if (DEV_MODE && this.debug) log(this, 'Disconnected')
+			}
+
+			/**
+			 * Native callback function when an observed attribute of the custom element changes
+			 *
+			 * @param {string} attr - name of the modified attribute
+			 * @param {string | null} old - old value of the modified attribute
+			 * @param {string | null} value - new value of the modified attribute
+			 */
+			attributeChangedCallback(
+				attr: string,
+				old: string | null,
+				value: string | null,
+			) {
+				if (value === old || isComputed(this.#signals[attr])) return // unchanged or controlled by computed
+				const parse = init[attr as keyof P]
+				if (!isAttributeParser<P[keyof P]>(parse)) return
+				const parsed = parse(
+					this as unknown as Component<P>,
 					value,
-					`Attribute "${attr}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`,
+					old,
 				)
-			;(this as unknown as P)[attr as keyof P] = parsed
-		}
+				if (DEV_MODE && this.debug)
+					log(
+						value,
+						`Attribute "${attr}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`,
+					)
+				;(this as unknown as P)[attr as keyof P] = parsed
+			}
 
-		/**
-		 * Get the the signal for a given key
-		 *
-		 * @since 0.12.0
-		 * @param {K} key - key to get signal for
-		 * @returns {S[K]} current value of signal; undefined if state does not exist
-		 */
-		getSignal(key: keyof P): Signal<P[keyof P]> {
-			const signal = this.#signals[key]
-			if (DEV_MODE && this.debug)
-				log(
-					signal,
-					`Get ${typeString(signal)} "${String(key)}" in ${elementName(this)}`,
-				)
-			return signal
-		}
+			/**
+			 * Get the the signal for a given key
+			 *
+			 * @since 0.12.0
+			 * @param {K} key - key to get signal for
+			 * @returns {S[K]} current value of signal; undefined if state does not exist
+			 */
+			getSignal(key: keyof P): Signal<P[keyof P]> {
+				const signal = this.#signals[key]
+				if (DEV_MODE && this.debug)
+					log(
+						signal,
+						`Get ${typeString(signal)} "${String(key)}" in ${elementName(this)}`,
+					)
+				return signal
+			}
 
-		/**
-		 * Set the signal for a given key
-		 *
-		 * @since 0.12.0
-		 * @param {keyof P} key - key to set signal for
-		 * @param {Signal<P[keyof P]>} signal - signal to set value to
-		 * @throws {TypeError} if key is not a valid property key
-		 * @throws {TypeError} if signal is not a valid signal
-		 * @returns {void}
-		 */
-		setSignal(key: keyof P, signal: Signal<P[keyof P]>): void {
-			const error = validatePropertyName(String(key))
-			if (error) throw new TypeError(`${error} on ${elementName(this)}.`)
-			if (!isSignal(signal))
-				throw new TypeError(
-					`Expected signal as value for property "${String(key)}" on ${elementName(this)}.`,
-				)
-			const prev = this.#signals[key]
-			const writable = isState(signal)
-			this.#signals[key] = signal
-			Object.defineProperty(this, key, {
-				get: signal.get,
-				set: writable ? signal.set : undefined,
-				enumerable: true,
-				configurable: writable,
-			})
-			if (prev && isState(prev)) prev.set(UNSET)
-			if (DEV_MODE && this.debug)
-				log(
-					signal,
-					`Set ${typeString(signal)} "${String(key)} in ${elementName(this)}`,
-				)
-		}
-	}
-	customElements.define(name, CustomElement)
-	return CustomElement as unknown as Component<P>
+			/**
+			 * Set the signal for a given key
+			 *
+			 * @since 0.12.0
+			 * @param {keyof P} key - key to set signal for
+			 * @param {Signal<P[keyof P]>} signal - signal to set value to
+			 * @throws {TypeError} if key is not a valid property key
+			 * @throws {TypeError} if signal is not a valid signal
+			 * @returns {void}
+			 */
+			setSignal(key: keyof P, signal: Signal<P[keyof P]>): void {
+				const error = validatePropertyName(String(key))
+				if (error)
+					throw new TypeError(`${error} on ${elementName(this)}.`)
+				if (!isSignal(signal))
+					throw new TypeError(
+						`Expected signal as value for property "${String(key)}" on ${elementName(this)}.`,
+					)
+				const prev = this.#signals[key]
+				const writable = isState(signal)
+				this.#signals[key] = signal
+				Object.defineProperty(this, key, {
+					get: signal.get,
+					set: writable ? signal.set : undefined,
+					enumerable: true,
+					configurable: writable,
+				})
+				if (prev && isState(prev)) prev.set(UNSET)
+				if (DEV_MODE && this.debug)
+					log(
+						signal,
+						`Set ${typeString(signal)} "${String(key)} in ${elementName(this)}`,
+					)
+			}
+		},
+	)
+	// return customElements.get(name) as unknown as Component<P>
 }
 
 export {
@@ -440,7 +451,7 @@ export {
 	type AttributeParser,
 	type SignalProducer,
 	type MethodProducer,
-	type FxFunction,
+	type Effect,
 	type ElementFromSelector,
 	type SelectorFunctions,
 	RESET,

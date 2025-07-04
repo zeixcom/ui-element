@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Signal\<T\> – UIElement Docs</title>
+		<title>Reactive\<T, P, E\> – UIElement Docs</title>
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="../../assets/main.css" />
 		<script type="module" src="../../assets/main.js"></script>
@@ -99,16 +99,16 @@
 				</card-callout>
 			</header>
 			<main class="content-grid"><section class="api-content">
-<h1 id="type-alias-signallttgt">
-                <a name="type-alias-signallttgt" class="anchor" href="#type-alias-signallttgt">
+<h1 id="type-alias-reactiveltt-p-egt">
+                <a name="type-alias-reactiveltt-p-egt" class="anchor" href="#type-alias-reactiveltt-p-egt">
 	                <span class="permalink">🔗</span>
                 </a>
-                Type Alias: Signal&lt;T&gt;
+                Type Alias: Reactive&lt;T, P, E&gt;
             </h1>
 <blockquote>
-<p><strong>Signal</strong>&lt;<code>T</code>&gt; = <code>object</code></p>
+<p><strong>Reactive</strong>&lt;<code>T</code>, <code>P</code>, <code>E</code>&gt; = keyof <code>P</code> | <a href="Signal.html"><code>Signal</code></a>&lt;<code>NonNullable</code>&lt;<code>T</code>&gt;&gt; | (<code>element</code>) =&gt; <code>T</code> | <code>null</code> | <code>undefined</code></p>
 </blockquote>
-<p>Defined in: node_modules/@zeix/cause-effect/src/signal.ts:11</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/effects.ts#L29">src/lib/effects.ts:29</a></p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -121,30 +121,21 @@
                 </a>
                 T
             </h3>
-<p><code>T</code> <em>extends</em> <code>object</code></p>
-<h2 id="methods">
-                <a name="methods" class="anchor" href="#methods">
-	                <span class="permalink">🔗</span>
-                </a>
-                Methods
-            </h2>
-<h3 id="get">
-                <a name="get" class="anchor" href="#get">
-	                <span class="permalink">🔗</span>
-                </a>
-                get()
-            </h3>
-<blockquote>
-<p><strong>get</strong>(): <code>T</code></p>
-</blockquote>
-<p>Defined in: node_modules/@zeix/cause-effect/src/signal.ts:12</p>
-<h4 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h4>
 <p><code>T</code></p>
+<h3 id="p">
+                <a name="p" class="anchor" href="#p">
+	                <span class="permalink">🔗</span>
+                </a>
+                P
+            </h3>
+<p><code>P</code> <em>extends</em> <a href="ComponentProps.html"><code>ComponentProps</code></a></p>
+<h3 id="e">
+                <a name="e" class="anchor" href="#e">
+	                <span class="permalink">🔗</span>
+                </a>
+                E
+            </h3>
+<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
 
 </section></main>
 			<footer class="content-grid">

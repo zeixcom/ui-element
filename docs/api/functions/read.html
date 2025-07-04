@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.1</small>
+					UIElement Docs <small>Version 0.13.2</small>
 				</h1>
 				
 <section-menu>
@@ -108,7 +108,7 @@
 <blockquote>
 <p><strong>read</strong>&lt;<code>Q</code>, <code>K</code>&gt;(<code>source</code>, <code>prop</code>, <code>fallback</code>): () =&gt; <code>Q</code>[<code>K</code>]</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L503">src/core/dom.ts:503</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L508">src/core/dom.ts:508</a></p>
 <p>Read a signal property from a custom element safely after it&#39;s defined<br>Returns a function that provides the signal value with fallback until component is ready</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
@@ -142,8 +142,8 @@
                 </a>
                 source
             </h3>
-<p>source custom element to read signal from</p>
-<p><code>null</code> | <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>Q</code>&gt;</p>
+<p>Source custom element to read signal from</p>
+<p><code>null</code> | <code>HTMLElement</code> &amp; <code>Q</code></p>
 <h3 id="prop">
                 <a name="prop" class="anchor" href="#prop">
 	                <span class="permalink">🔗</span>
@@ -166,7 +166,7 @@
                 </a>
                 Returns
             </h2>
-<p>function that returns signal value or fallback</p>
+<p>function that returns current value or fallback</p>
 <blockquote>
 <p>(): <code>Q</code>[<code>K</code>]</p>
 </blockquote>
@@ -184,6 +184,13 @@
                 Since
             </h2>
 <p>0.13.1</p>
+<h2 id="throws">
+                <a name="throws" class="anchor" href="#throws">
+	                <span class="permalink">🔗</span>
+                </a>
+                Throws
+            </h2>
+<p>if source is not a custom element</p>
 
 </section></main>
 			<footer class="content-grid">

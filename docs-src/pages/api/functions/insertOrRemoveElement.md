@@ -6,11 +6,11 @@
 
 # Function: insertOrRemoveElement()
 
-> **insertOrRemoveElement**\<`P`, `E`\>(`s`, `inserter?`): [`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+> **insertOrRemoveElement**\<`P`, `E`\>(`s`, `inserter?`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:197](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/lib/effects.ts#L197)
+Defined in: [src/lib/effects.ts:197](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/effects.ts#L197)
 
-Effect for inserting or removing elements according to a given SignalLike
+Effect for inserting or removing elements according to a given Reactive
 
 ## Type Parameters
 
@@ -26,7 +26,7 @@ Effect for inserting or removing elements according to a given SignalLike
 
 ### s
 
-[`SignalLike`](../type-aliases/SignalLike.md)\<`P`, `number`, `E`\>
+[`Reactive`](../type-aliases/Reactive.md)\<`number`, `P`, `E`\>
 
 state bound to the number of elements to insert (positive) or remove (negative)
 
@@ -38,7 +38,7 @@ inserter object containing position, insert, and remove methods
 
 ## Returns
 
-[`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+[`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
 ## Since
 

@@ -82,18 +82,21 @@
 				></span>
 			</div>
 		</unset-test>
+		<emit-test value="test-detail">
+			<div>Content</div>
+		</emit-test>
 
 		<script type="module">
 			import { runTests } from '@web/test-runner-mocha'
 			import { assert } from '@esm-bundle/chai'
 			import {
+				RESET,
+				UNSET,
 				component,
 				on,
 				state,
 				computed,
 				effect,
-				RESET,
-				UNSET,
 				asBoolean,
 				asInteger,
 				asNumber,
@@ -108,6 +111,7 @@
 				dangerouslySetInnerHTML,
 				insertOrRemoveElement,
 				updateElement,
+				emit,
 			} from '../index.dev.js'
 
 			const animationFrame = async () =>
@@ -322,7 +326,7 @@
 					hrefValue: 'https://example.com',
 					onclickValue: "alert('xss')",
 				},
-				(_, { first }) => [first('div')],
+				() => [],
 			)
 
 			component(
@@ -331,7 +335,7 @@
 					value: 'test',
 					errorProp: 'error',
 				},
-				(_, { first }) => [first('div'), first('span')],
+				() => [],
 			)
 
 			component(
@@ -339,7 +343,7 @@
 				{
 					textValue: 'signal text',
 				},
-				(_, { first }) => [first('p'), first('span')],
+				() => [],
 			)
 
 			component(
@@ -349,7 +353,29 @@
 					classValue: RESET,
 					colorValue: RESET,
 				},
-				(_, { first }) => [first('div'), first('span')],
+				() => [],
+			)
+
+			component(
+				'emit-test',
+				{
+					value: asString(),
+					other: '',
+				},
+				(el, { first }) => [
+					emit('custom-event', 'value'),
+					on('other-event', e => {
+						el.other = e.detail
+					}),
+					first(
+						'div',
+						emit('other-event', 'value'),
+						emit(
+							'test-event',
+							target => el.value === target.textContent,
+						),
+					),
+				],
 			)
 
 			runTests(() => {
@@ -1455,7 +1481,7 @@
 					})
 				})
 
-				describe('SignalLike Type Variations', function () {
+				describe('Reactive Type Variations', function () {
 					let signalComponent
 
 					before(() => {
@@ -1481,7 +1507,7 @@
 						cleanup()
 					})
 
-					it('should work with function-based SignalLike', async function () {
+					it('should work with function-based Reactive', async function () {
 						const span = signalComponent.querySelector('span')
 
 						const cleanup = setText(
@@ -1786,6 +1812,65 @@
 						assert.equal(rejected, true)
 
 						cleanup()
+					})
+				})
+
+				describe('emit()', () => {
+					it('should emit an event', async () => {
+						const el = document.querySelector('emit-test')
+						let called = false
+						const handler = () => {
+							called = true
+						}
+
+						el.addEventListener('custom-event', handler)
+						el.value = 'new value' // Should update reactive property and emit event
+
+						assert.equal(called, true)
+
+						el.removeEventListener('custom-event', handler)
+					})
+
+					it('should emit an event with detail', async () => {
+						const el = document.querySelector('emit-test')
+						let detailReceived = null
+						const handler = event => {
+							detailReceived = event.detail
+						}
+						el.addEventListener('custom-event', handler)
+						el.value = 'updated value' // Should update reactive property and emit event
+
+						assert.equal(detailReceived, 'updated value')
+
+						el.removeEventListener('custom-event', handler)
+					})
+
+					it('should emit event with function detail', () => {
+						const el = document.querySelector('emit-test')
+						let eventDetail = null
+						const handler = e => {
+							eventDetail = e.detail
+						}
+						el.addEventListener('test-event', handler)
+
+						el.value = 'something else' // Should update reactive property and emit event
+						assert.isFalse(eventDetail)
+
+						el.value = 'Content'
+						assert.isTrue(eventDetail)
+
+						el.removeEventListener('test-event', handler)
+					})
+
+					it('should make events bubble by default', () => {
+						const el = document.querySelector('emit-test')
+						el.value = 'from other-event on div'
+
+						assert.equal(
+							el.other,
+							'from other-event on div',
+							'Event should bubble to parent',
+						)
 					})
 				})
 			})

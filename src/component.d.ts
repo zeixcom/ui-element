@@ -27,8 +27,8 @@ type Component<P extends ComponentProps> = HTMLElement &
 		disconnectedCallback(): void
 		debug?: boolean
 		shadowRoot: ShadowRoot | null
-		getSignal(prop: keyof P): Signal<P[keyof P]>
-		setSignal(prop: keyof P, signal: Signal<P[keyof P]>): void
+		getSignal<K extends keyof P>(prop: K): Signal<P[K]>
+		setSignal<K extends keyof P>(prop: K, signal: Signal<P[K]>): void
 	}
 type AttributeParser<T extends {}, C extends HTMLElement = HTMLElement> = (
 	host: C,
@@ -44,7 +44,7 @@ type Initializer<T extends {}, C extends HTMLElement> =
 	| AttributeParser<T, C>
 	| SignalProducer<T, C>
 	| MethodProducer<C>
-type FxFunction<P extends ComponentProps, E extends Element> = (
+type Effect<P extends ComponentProps, E extends Element> = (
 	host: Component<P>,
 	element: E,
 ) => Cleanup | void
@@ -55,11 +55,11 @@ type ElementFromSelector<
 type SelectorFunctions<P extends ComponentProps> = {
 	first: <E extends Element = never, K extends string = string>(
 		selector: K,
-		...fns: FxFunction<P, ElementFromSelector<K, E>>[]
+		...fns: Effect<P, ElementFromSelector<K, E>>[]
 	) => (host: Component<P>) => Cleanup | void
 	all: <E extends Element = never, K extends string = string>(
 		selector: K,
-		...fns: FxFunction<P, ElementFromSelector<K, E>>[]
+		...fns: Effect<P, ElementFromSelector<K, E>>[]
 	) => (host: Component<P>) => Cleanup
 }
 declare const RESET: any
@@ -67,10 +67,10 @@ declare const RESET: any
  * Define a component with its states and setup function (connectedCallback)
  *
  * @since 0.12.0
- * @param {string} name - name of the custom element
- * @param {{ [K in keyof S]: Initializer<S[K], Component<P>> }} init - signals of the component
- * @param {FxFunction<S>[]} setup - setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
- * @returns {typeof HTMLElement & P} - constructor function for the custom element
+ * @param {string} name - Name of the custom element
+ * @param {{ [K in keyof S]: Initializer<S[K], Component<P>> }} init - Signals of the component
+ * @param {FxFunction<S>[]} setup - Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
+ * @returns: void
  */
 declare const component: <P extends ComponentProps>(
 	name: string,
@@ -78,8 +78,8 @@ declare const component: <P extends ComponentProps>(
 	setup: (
 		host: Component<P>,
 		select: SelectorFunctions<P>,
-	) => FxFunction<P, Component<P>>[],
-) => Component<P>
+	) => Effect<P, Component<P>>[],
+) => void
 export {
 	type Component,
 	type ComponentProps,
@@ -89,7 +89,7 @@ export {
 	type AttributeParser,
 	type SignalProducer,
 	type MethodProducer,
-	type FxFunction,
+	type Effect,
 	type ElementFromSelector,
 	type SelectorFunctions,
 	RESET,

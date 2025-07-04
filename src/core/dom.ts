@@ -1,19 +1,22 @@
 import {
 	type Cleanup,
 	type Computed,
-	type MaybeSignal,
 	type Signal,
 	TYPE_COMPUTED,
 	UNSET,
 	type Watcher,
-	computed,
 	isFunction,
 	notify,
 	subscribe,
 	toSignal,
 } from '@zeix/cause-effect'
 
-import type { Component, ComponentProps, SignalProducer } from '../component'
+import type {
+	Component,
+	ComponentProps,
+	Effect,
+	SignalProducer,
+} from '../component'
 import { elementName, isDefinedObject, isString } from './util'
 
 /* === Types === */
@@ -98,16 +101,20 @@ class CircularMutationError extends Error {
 	}
 }
 
-/* === Internal Function === */
+/* === Internal === */
 
 /**
- * Check if a value is a Component
+ * Get whether a custom element is upgraded
  *
- * @param {unknown} value - value to check
- * @returns {boolean} - `true` if value is a valid custom element, otherwise `false`
+ * @param {E} element - Input element
+ * @returns {boolean} - True if the element is an upgraded custom element or a regular element
  */
-const isComponent = (value: unknown): value is Component<ComponentProps> =>
-	value instanceof HTMLElement && value.localName.includes('-')
+const isUpgraded = <E extends Element = HTMLElement>(element: E): boolean => {
+	const name = element.localName
+	if (!name.includes('-')) return true
+	const ctor = customElements.get(name)
+	return !!ctor && element instanceof ctor
+}
 
 /**
  * Extract attribute names from a CSS selector
@@ -235,7 +242,7 @@ const selection = <E extends Element>(
 		})
 	}
 
-	const s: Computed<E[]> = {
+	return {
 		[Symbol.toStringTag]: TYPE_COMPUTED,
 
 		get: (): E[] => {
@@ -245,7 +252,6 @@ const selection = <E extends Element>(
 			return value
 		},
 	}
-	return s
 }
 
 /**
@@ -281,9 +287,8 @@ const fromDescendants =
 		initialValue: T,
 	): SignalProducer<T> =>
 	(host: HTMLElement) =>
-		computed(() =>
-			selection<E>(host, selectors).get().reduce(reducer, initialValue),
-		)
+	() =>
+		selection<E>(host, selectors).get().reduce(reducer, initialValue)
 
 /**
  * Attach an event listener to an element
@@ -299,7 +304,7 @@ const on =
 		type: K,
 		listener: (event: ElementEventType<E, K>) => void,
 		options: boolean | AddEventListenerOptions = false,
-	) =>
+	): Effect<ComponentProps, E> =>
 	<P extends ComponentProps>(
 		host: Component<P>,
 		target: E = host as unknown as E,
@@ -376,7 +381,7 @@ const sensor = <
 		}
 	}
 
-	const s: Computed<T> = {
+	return {
 		[Symbol.toStringTag]: TYPE_COMPUTED,
 
 		get: (): T => {
@@ -385,7 +390,6 @@ const sensor = <
 			return value
 		},
 	}
-	return s
 }
 
 /**
@@ -419,7 +423,7 @@ const fromEvent =
 		const source = host.querySelector<E>(selector)
 		if (!source) {
 			throw new Error(
-				`Element not found for selector "${selector}" in ${host.localName || 'component'}`,
+				`Element not found for selector "${selector}" in ${elementName(host)}`,
 			)
 		}
 		const initialValue = isFunction<T>(initializer)
@@ -429,45 +433,24 @@ const fromEvent =
 	}
 
 /**
- * Emit a custom event with the given detail
+ * Pass signals to a UIElement component
  *
- * @since 0.12.0
- * @param {string} type - event type to emit
- * @param {T | ((element: Element) => T)} detail - event detail or provider function
- */
-const emit =
-	<T>(type: string, detail: T | ((element: Element) => T)) =>
-	<P extends ComponentProps>(
-		host: Component<P>,
-		target: Element = host,
-	): void => {
-		target.dispatchEvent(
-			new CustomEvent(type, {
-				detail: isFunction(detail) ? detail(target) : detail,
-				bubbles: true,
-			}),
-		)
-	}
-
-/**
- * Pass signals to a custom element
- *
- * @since 0.12.0
- * @param {PassedSignals<P, Q> | ((target: Component<Q>) => PassedSignals<P, Q>)} signals - signals to be passed to the custom element
- * @throws {TypeError} - if the target element is not a custom element
- * @throws {TypeError} - if the provided signals are not an object or a provider function
- * @throws {Error} - if it fails to pass signals to the target element
+ * @since 0.13.2
+ * @param {PassedSignals<P, Q> | ((target: Component<Q>) => PassedSignals<P, Q>)} signals - Signals to be passed to descendent components
+ * @returns {Effect<P, Component<Q>>} - Effect to be used in ancestor component
+ * @throws {TypeError} if the provided signals are not an object or a provider function
+ * @throws {TypeError} if the target component is not a UIElement component
  */
 const pass =
 	<P extends ComponentProps, Q extends ComponentProps>(
 		signals:
 			| PassedSignals<P, Q>
 			| ((target: Component<Q>) => PassedSignals<P, Q>),
-	) =>
-	<E extends Element>(host: Component<P>, target: E): void => {
-		if (!isComponent(target))
-			throw new TypeError(`Target element must be a custom element`)
-		const sources = isFunction(signals) ? signals(target) : signals
+	): Effect<P, Component<Q>> =>
+	<E extends Component<Q>>(host: Component<P>, target: E): void => {
+		const sources = isFunction<PassedSignals<P, Q>>(signals)
+			? signals(target)
+			: signals
 		if (!isDefinedObject(sources))
 			throw new TypeError(
 				`Passed signals must be an object or a provider function`,
@@ -476,10 +459,12 @@ const pass =
 			.whenDefined(target.localName)
 			.then(() => {
 				for (const [prop, source] of Object.entries(sources)) {
-					const signal = isString(source)
-						? host.getSignal(prop)
-						: toSignal(source as MaybeSignal<Q[keyof Q]>)
-					target.setSignal(prop, signal)
+					target.setSignal(
+						prop,
+						isString(source)
+							? host.getSignal(prop)
+							: toSignal(source),
+					)
 				}
 			})
 			.catch(error => {
@@ -495,30 +480,22 @@ const pass =
  * Returns a function that provides the signal value with fallback until component is ready
  *
  * @since 0.13.1
- * @param {Component<Q>} source - source custom element to read signal from
- * @param {K} prop - property name to get signal for
- * @param {Q[K]} fallback - fallback value to use until component is ready
- * @returns {() => Q[K]} function that returns signal value or fallback
+ * @param {E} source - Source custom element to read reactive property from
+ * @param {K} prop - Property name to get
+ * @param {E[K]} fallback - Fallback value to use until component is upgraded
+ * @returns {() => E[K]} Function that returns current value or fallback
  */
-const read = <Q extends ComponentProps, K extends keyof Q>(
-	source: Component<Q> | null,
-	prop: K,
-	fallback: Q[K],
-): (() => Q[K]) => {
-	if (!source) return () => fallback
-	if (!isComponent(source))
-		throw new TypeError(`Target element must be a custom element`)
-
-	const awaited = computed(async () => {
-		await customElements.whenDefined(source.localName)
-		return source.getSignal(prop)
-	})
-
-	return () => {
-		const value = awaited.get()
-		return value === UNSET ? fallback : (value.get() as Q[K])
+const read =
+	<E extends Element, K extends keyof E>(
+		source: E | null,
+		prop: K,
+		fallback: NonNullable<E[K]>,
+	): (() => NonNullable<E[K]>) =>
+	() => {
+		if (!source || !isUpgraded(source)) return fallback
+		const value = prop in source ? source[prop] : fallback
+		return value == null || value === UNSET ? fallback : value
 	}
-}
 
 /**
  * Produce a computed signal for projected reactive property from a descendant component
@@ -530,22 +507,19 @@ const read = <Q extends ComponentProps, K extends keyof Q>(
  * @returns {SignalProducer<Q[K]>} signal producer that emits value from descendant component
  */
 const fromDescendant =
-	<Q extends ComponentProps, K extends keyof Q>(
+	<E extends Element, K extends keyof E>(
 		selector: string,
 		prop: K,
-		fallback: Q[K],
-	): SignalProducer<Q[K]> =>
-	(host: HTMLElement) => {
-		const element = host.querySelector<Component<Q>>(selector)
-		return computed(read(element, prop, fallback))
-	}
+		fallback: NonNullable<E[K]>,
+	): SignalProducer<NonNullable<E[K]>> =>
+	(host: HTMLElement) =>
+		read(host.querySelector<E>(selector), prop, fallback)
 
 export {
 	type ElementEventMap,
 	type ElementEventType,
 	type ValidEventName,
 	type PassedSignals,
-	emit,
 	fromDescendant,
 	fromDescendants,
 	fromEvent,

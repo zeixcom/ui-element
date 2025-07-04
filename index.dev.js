@@ -305,7 +305,13 @@ class CircularMutationError extends Error {
     this.name = "CircularMutationError";
   }
 }
-var isComponent = (value) => value instanceof HTMLElement && value.localName.includes("-");
+var isUpgraded = (element) => {
+  const name = element.localName;
+  if (!name.includes("-"))
+    return true;
+  const ctor = customElements.get(name);
+  return !!ctor && element instanceof ctor;
+};
 var extractAttributes = (selector) => {
   const attributes = new Set;
   if (selector.includes("."))
@@ -382,7 +388,7 @@ var selection = (parent, selectors) => {
       }
     });
   };
-  const s = {
+  return {
     [Symbol.toStringTag]: TYPE_COMPUTED,
     get: () => {
       subscribe(watchers);
@@ -393,10 +399,9 @@ var selection = (parent, selectors) => {
       return value;
     }
   };
-  return s;
 };
 var fromSelector = (selectors) => (host) => selection(host, selectors);
-var fromDescendants = (selectors, reducer, initialValue) => (host) => computed(() => selection(host, selectors).get().reduce(reducer, initialValue));
+var fromDescendants = (selectors, reducer, initialValue) => (host) => () => selection(host, selectors).get().reduce(reducer, initialValue);
 var on = (type, listener, options = false) => (host, target = host) => {
   if (!isFunction(listener))
     throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
@@ -428,7 +433,7 @@ var sensor = (host, source, type, transform, initialValue, options = false) => {
       cleanup = undefined;
     };
   };
-  const s = {
+  return {
     [Symbol.toStringTag]: TYPE_COMPUTED,
     get: () => {
       subscribe(watchers);
@@ -437,55 +442,34 @@ var sensor = (host, source, type, transform, initialValue, options = false) => {
       return value;
     }
   };
-  return s;
 };
 var fromEvent = (selector, type, transform, initializer) => (host) => {
   const source = host.querySelector(selector);
   if (!source) {
-    throw new Error(`Element not found for selector "${selector}" in ${host.localName || "component"}`);
+    throw new Error(`Element not found for selector "${selector}" in ${elementName(host)}`);
   }
   const initialValue = isFunction(initializer) ? initializer(host, source) : initializer;
   return sensor(host, source, type, transform, initialValue);
 };
-var emit = (type, detail) => (host, target = host) => {
-  target.dispatchEvent(new CustomEvent(type, {
-    detail: isFunction(detail) ? detail(target) : detail,
-    bubbles: true
-  }));
-};
 var pass = (signals) => (host, target) => {
-  if (!isComponent(target))
-    throw new TypeError(`Target element must be a custom element`);
   const sources = isFunction(signals) ? signals(target) : signals;
   if (!isDefinedObject(sources))
     throw new TypeError(`Passed signals must be an object or a provider function`);
   customElements.whenDefined(target.localName).then(() => {
     for (const [prop, source] of Object.entries(sources)) {
-      const signal = isString(source) ? host.getSignal(prop) : toSignal(source);
-      target.setSignal(prop, signal);
+      target.setSignal(prop, isString(source) ? host.getSignal(prop) : toSignal(source));
     }
   }).catch((error) => {
     throw new Error(`Failed to pass signals to ${elementName(target)}`, { cause: error });
   });
 };
-var read = (source, prop, fallback) => {
-  if (!source)
-    return () => fallback;
-  if (!isComponent(source))
-    throw new TypeError(`Target element must be a custom element`);
-  const awaited = computed(async () => {
-    await customElements.whenDefined(source.localName);
-    return source.getSignal(prop);
-  });
-  return () => {
-    const value = awaited.get();
-    return value === UNSET ? fallback : value.get();
-  };
+var read = (source, prop, fallback) => () => {
+  if (!source || !isUpgraded(source))
+    return fallback;
+  const value = prop in source ? source[prop] : fallback;
+  return value == null || value === UNSET ? fallback : value;
 };
-var fromDescendant = (selector, prop, fallback) => (host) => {
-  const element = host.querySelector(selector);
-  return computed(read(element, prop, fallback));
-};
+var fromDescendant = (selector, prop, fallback) => (host) => read(host.querySelector(selector), prop, fallback);
 
 // src/component.ts
 var RESET = Symbol();
@@ -574,12 +558,14 @@ var component = (name, init = {}, setup) => {
       throw new TypeError(`${error} in component "${name}".`);
     }
   }
-
-  class CustomElement extends HTMLElement {
+  customElements.define(name, class extends HTMLElement {
     debug;
     #signals = {};
     #cleanup;
     static observedAttributes = Object.entries(init)?.filter(([, ini]) => isAttributeParser(ini)).map(([prop]) => prop) ?? [];
+    static isComponent(instance) {
+      return #signals in instance;
+    }
     constructor() {
       super();
       for (const [prop, ini] of Object.entries(init)) {
@@ -644,9 +630,7 @@ var component = (name, init = {}, setup) => {
       if (DEV_MODE && this.debug)
         log(signal, `Set ${typeString(signal)} "${String(key)} in ${elementName(this)}`);
     }
-  }
-  customElements.define(name, CustomElement);
-  return CustomElement;
+  });
 };
 // src/core/context.ts
 var CONTEXT_REQUEST = "context-request";
@@ -731,7 +715,7 @@ var asJSON = (fallback) => (_, value) => {
   return result ?? fallback;
 };
 // src/lib/effects.ts
-var resolveSignalLike = (s, host, target) => isString(s) ? host.getSignal(s).get() : isSignal(s) ? s.get() : isFunction(s) ? s(target) : RESET;
+var resolveReactive = (s, host, target) => isString(s) ? host.getSignal(s).get() : isSignal(s) ? s.get() : isFunction(s) ? s(target) : RESET;
 var isSafeURL = (value) => {
   if (/^(mailto|tel):/i.test(value))
     return true;
@@ -739,7 +723,7 @@ var isSafeURL = (value) => {
     try {
       const url = new URL(value, window.location.origin);
       return ["http:", "https:", "ftp:"].includes(url.protocol);
-    } catch (_error) {
+    } catch {
       return false;
     }
   }
@@ -780,7 +764,7 @@ var updateElement = (s, updater) => (host, target) => {
     const DELETE_DEDUPE = Symbol(`${op}-${name}`);
     let value = RESET;
     try {
-      value = resolveSignalLike(s, host, target);
+      value = resolveReactive(s, host, target);
     } catch (error) {
       log(error, `Failed to resolve value of ${valueString(s)} for ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
       return;
@@ -826,7 +810,7 @@ var insertOrRemoveElement = (s, inserter) => (host, target) => {
     const REMOVE_DEDUPE = Symbol("d");
     let diff = 0;
     try {
-      diff = resolveSignalLike(s, host, target);
+      diff = resolveReactive(s, host, target);
     } catch (error) {
       log(error, `Failed to resolve value of ${valueString(s)} for insertion or deletion in ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
       return;
@@ -948,6 +932,21 @@ var dangerouslySetInnerHTML = (s, options = {}) => updateElement(s, {
     });
     return " with scripts";
   }
+});
+var emit = (type, s) => (host, target = host) => effect(() => {
+  let detail;
+  try {
+    detail = resolveReactive(s, host, target);
+  } catch (error) {
+    log(error, `Failed to resolve value of ${valueString(s)} for custom event detail emitted on ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
+    return;
+  }
+  if (detail === RESET || detail === UNSET)
+    return;
+  target.dispatchEvent(new CustomEvent(type, {
+    detail,
+    bubbles: true
+  }));
 });
 export {
   updateElement,

@@ -1,5 +1,10 @@
-import { type Cleanup, type Computed, type Signal } from '@zeix/cause-effect'
-import type { Component, ComponentProps, SignalProducer } from '../component'
+import { type Computed, type Signal } from '@zeix/cause-effect'
+import type {
+	Component,
+	ComponentProps,
+	Effect,
+	SignalProducer,
+} from '../component'
 type ElementEventMap<E extends Element> = E extends
 	| HTMLInputElement
 	| HTMLTextAreaElement
@@ -129,7 +134,7 @@ declare const on: <E extends Element, K extends ValidEventName<E>>(
 	type: K,
 	listener: (event: ElementEventType<E, K>) => void,
 	options?: boolean | AddEventListenerOptions,
-) => <P extends ComponentProps>(host: Component<P>, target?: E) => Cleanup
+) => Effect<ComponentProps, E>
 /**
  * Create a computed signal that listens to an event on an element
  *
@@ -191,45 +196,34 @@ declare const fromEvent: <
 	initializer: T | ((host: C, source: E) => T),
 ) => SignalProducer<T, C>
 /**
- * Emit a custom event with the given detail
+ * Pass signals to a UIElement component
  *
- * @since 0.12.0
- * @param {string} type - event type to emit
- * @param {T | ((element: Element) => T)} detail - event detail or provider function
- */
-declare const emit: <T>(
-	type: string,
-	detail: T | ((element: Element) => T),
-) => <P extends ComponentProps>(host: Component<P>, target?: Element) => void
-/**
- * Pass signals to a custom element
- *
- * @since 0.12.0
- * @param {PassedSignals<P, Q> | ((target: Component<Q>) => PassedSignals<P, Q>)} signals - signals to be passed to the custom element
- * @throws {TypeError} - if the target element is not a custom element
- * @throws {TypeError} - if the provided signals are not an object or a provider function
- * @throws {Error} - if it fails to pass signals to the target element
+ * @since 0.13.2
+ * @param {PassedSignals<P, Q> | ((target: Component<Q>) => PassedSignals<P, Q>)} signals - Signals to be passed to descendent components
+ * @returns {Effect<P, Component<Q>>} - Effect to be used in ancestor component
+ * @throws {TypeError} if the provided signals are not an object or a provider function
+ * @throws {TypeError} if the target component is not a UIElement component
  */
 declare const pass: <P extends ComponentProps, Q extends ComponentProps>(
 	signals:
 		| PassedSignals<P, Q>
 		| ((target: Component<Q>) => PassedSignals<P, Q>),
-) => <E extends Element>(host: Component<P>, target: E) => void
+) => Effect<P, Component<Q>>
 /**
  * Read a signal property from a custom element safely after it's defined
  * Returns a function that provides the signal value with fallback until component is ready
  *
  * @since 0.13.1
- * @param {Component<Q>} source - source custom element to read signal from
- * @param {K} prop - property name to get signal for
- * @param {Q[K]} fallback - fallback value to use until component is ready
- * @returns {() => Q[K]} function that returns signal value or fallback
+ * @param {E} source - Source custom element to read reactive property from
+ * @param {K} prop - Property name to get
+ * @param {E[K]} fallback - Fallback value to use until component is upgraded
+ * @returns {() => E[K]} Function that returns current value or fallback
  */
-declare const read: <Q extends ComponentProps, K extends keyof Q>(
-	source: Component<Q> | null,
+declare const read: <E extends Element, K extends keyof E>(
+	source: E | null,
 	prop: K,
-	fallback: Q[K],
-) => () => Q[K]
+	fallback: NonNullable<E[K]>,
+) => () => NonNullable<E[K]>
 /**
  * Produce a computed signal for projected reactive property from a descendant component
  *
@@ -239,17 +233,16 @@ declare const read: <Q extends ComponentProps, K extends keyof Q>(
  * @param {Q[K]} fallback - fallback value to use until component is ready
  * @returns {SignalProducer<Q[K]>} signal producer that emits value from descendant component
  */
-declare const fromDescendant: <Q extends ComponentProps, K extends keyof Q>(
+declare const fromDescendant: <E extends Element, K extends keyof E>(
 	selector: string,
 	prop: K,
-	fallback: Q[K],
-) => SignalProducer<Q[K]>
+	fallback: NonNullable<E[K]>,
+) => SignalProducer<NonNullable<E[K]>>
 export {
 	type ElementEventMap,
 	type ElementEventType,
 	type ValidEventName,
 	type PassedSignals,
-	emit,
 	fromDescendant,
 	fromDescendants,
 	fromEvent,

@@ -6,17 +6,17 @@
 
 # Function: fromDescendant()
 
-> **fromDescendant**\<`Q`, `K`\>(`selector`, `prop`, `fallback`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`Q`\[`K`\]\>
+> **fromDescendant**\<`E`, `K`\>(`selector`, `prop`, `fallback`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`NonNullable`\<`E`\[`K`\]\>\>
 
-Defined in: [src/core/dom.ts:533](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L533)
+Defined in: [src/core/dom.ts:510](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L510)
 
 Produce a computed signal for projected reactive property from a descendant component
 
 ## Type Parameters
 
-### Q
+### E
 
-`Q` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
+`E` *extends* `Element`
 
 ### K
 
@@ -38,13 +38,13 @@ property name to get signal for
 
 ### fallback
 
-`Q`\[`K`\]
+`NonNullable`\<`E`\[`K`\]\>
 
 fallback value to use until component is ready
 
 ## Returns
 
-[`SignalProducer`](../type-aliases/SignalProducer.md)\<`Q`\[`K`\]\>
+[`SignalProducer`](../type-aliases/SignalProducer.md)\<`NonNullable`\<`E`\[`K`\]\>\>
 
 signal producer that emits value from descendant component
 

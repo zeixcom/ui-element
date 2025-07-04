@@ -6,11 +6,11 @@
 
 # Function: updateElement()
 
-> **updateElement**\<`P`, `T`, `E`\>(`s`, `updater`): [`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+> **updateElement**\<`P`, `T`, `E`\>(`s`, `updater`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:111](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/lib/effects.ts#L111)
+Defined in: [src/lib/effects.ts:111](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/effects.ts#L111)
 
-Effect for setting properties of a target element according to a given SignalLike
+Effect for setting properties of a target element according to a given Reactive
 
 ## Type Parameters
 
@@ -30,7 +30,7 @@ Effect for setting properties of a target element according to a given SignalLik
 
 ### s
 
-[`SignalLike`](../type-aliases/SignalLike.md)\<`P`, `T`, `E`\>
+[`Reactive`](../type-aliases/Reactive.md)\<`T`, `P`, `E`\>
 
 state bound to the element property
 
@@ -42,7 +42,7 @@ updater object containing key, read, update, and delete methods
 
 ## Returns
 
-[`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+[`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
 ## Since
 

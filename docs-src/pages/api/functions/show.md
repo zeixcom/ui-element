@@ -6,9 +6,9 @@
 
 # Function: show()
 
-> **show**\<`P`, `E`\>(`s`): [`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+> **show**\<`P`, `E`\>(`s`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:334](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/lib/effects.ts#L334)
+Defined in: [src/lib/effects.ts:334](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/effects.ts#L334)
 
 Set 'hidden' property of an element
 
@@ -26,13 +26,13 @@ Set 'hidden' property of an element
 
 ### s
 
-[`SignalLike`](../type-aliases/SignalLike.md)\<`P`, `boolean`, `E`\>
+[`Reactive`](../type-aliases/Reactive.md)\<`boolean`, `P`, `E`\>
 
 state bound to the 'hidden' property value
 
 ## Returns
 
-[`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+[`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
 ## Since
 

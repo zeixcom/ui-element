@@ -8,6 +8,10 @@ declare const isDefinedObject: (
 	value: unknown,
 ) => value is Record<string, unknown>
 declare const isString: (value: unknown) => value is string
+declare const hasMethod: <T extends object, K extends PropertyKey, R>(
+	obj: T,
+	methodName: K,
+) => obj is T & Record<K, (...args: any[]) => R>
 /**
  * Check if a node is an Element
  *
@@ -16,7 +20,7 @@ declare const isString: (value: unknown) => value is string
  */
 declare const isElement: (node: Node) => node is Element
 /**
- * Return a HyperScript string representation of the Element instance
+ * Return a string representation of the Element instance
  *
  * @since 0.7.0
  * @param {Element} el
@@ -51,6 +55,7 @@ declare const typeString: (value: unknown) => string
 declare const log: <T>(value: T, msg: string, level?: LogLevel) => T
 export {
 	type LogLevel,
+	hasMethod,
 	isString,
 	isDefinedObject,
 	isElement,

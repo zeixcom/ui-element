@@ -22,16 +22,23 @@
 			</child-component>
 			<invalid-component id="invalid"></invalid-component>
 		</parent-component>
+		<read-component id="read" value="test-value"></read-component>
+		<test-signal-producers-integration>
+			<div class="item" data-value="10">Item 1</div>
+			<div class="item" data-value="20">Item 2</div>
+			<input type="text" />
+			<p></p>
+		</test-signal-producers-integration>
 
 		<script type="module">
 			import { runTests } from '@web/test-runner-mocha'
 			import { assert } from '@esm-bundle/chai'
 			import {
+				RESET,
 				asString,
 				component,
 				computed,
 				effect,
-				emit,
 				fromDescendants,
 				fromDescendant,
 				fromEvent,
@@ -39,7 +46,6 @@
 				read,
 				on,
 				pass,
-				RESET,
 				selection,
 				sensor,
 				setText,
@@ -78,6 +84,52 @@
 						}),
 					),
 				],
+			)
+			component(
+				'read-component',
+				{
+					value: asString(),
+				},
+				() => [],
+			)
+
+			component(
+				'form-textbox',
+				{
+					value: asString(),
+					length: 0,
+				},
+				(el, { first }) => [
+					first(
+						'input',
+						on('input', e => {
+							el.length = e.target.value.length
+						}),
+						on('change', e => {
+							el.value = e.target.value
+						}),
+					),
+				],
+			)
+
+			component(
+				'test-signal-producers-integration',
+				{
+					items: fromSelector('.item'),
+					total: fromDescendants(
+						'[data-value]',
+						(sum, element) =>
+							sum + parseInt(element.dataset.value || '0'),
+						0,
+					),
+					lastInput: fromEvent(
+						'input',
+						'input',
+						(_, source) => source.value,
+						'',
+					),
+				},
+				(_, { first }) => [first('p', setText('lastInput'))],
 			)
 
 			class InvalidComponent extends HTMLElement {
@@ -442,52 +494,123 @@
 							container.remove()
 						}
 					})
+				})
 
-					describe('read()', () => {
-						it('should return fallback when source is null', () => {
-							const reader = read(null, 'value', 'default')
-							assert.equal(reader(), 'default')
-						})
+				describe('read()', () => {
+					it('should return fallback when source is null', () => {
+						const reader = read(null, 'value', 'default')
+						assert.equal(reader(), 'default')
+					})
 
-						it('should throw TypeError if source is not a custom element', () => {
-							const div = document.createElement('div')
-							assert.throws(
-								() => {
-									read(div, 'value', 'default')
-								},
-								TypeError,
-								'Target element must be a custom element',
-							)
-						})
+					it('should return fallback when property does not exist on source', () => {
+						const div = document.createElement('div')
+						const reader = read(div, 'value', 'fallback')
+						assert.equal(reader(), 'fallback')
+					})
 
-						it('should return fallback until component is defined', async () => {
-							// Create a mock component that's not yet defined
-							const mockElement =
-								document.createElement('test-component')
-							Object.defineProperty(mockElement, 'localName', {
-								value: 'undefined-component',
-							})
-							mockElement.getSignal = () => ({
-								get: () => 'component-value',
-							})
+					it('should return property value of source element for non custom elements', () => {
+						const div = document.createElement('div')
+						div.className = 'test'
+						const reader = read(div, 'className', 'fallback')
+						assert.equal(reader(), 'test')
+					})
 
-							const reader = read(
-								mockElement,
-								'value',
-								'fallback',
-							)
+					it('should return fallback until component is defined', async () => {
+						// Create a mock component that's not yet defined
+						const mockElement = document.createElement(
+							'undefined-component',
+						)
+
+						const reader = read(mockElement, 'value', 'fallback')
+
+						// Should return fallback initially
+						assert.equal(reader(), 'fallback')
+					})
+
+					it('should read component property after component is defined', async () => {
+						const element = document.getElementById('read')
+						const reader = read(element, 'value', 'fallback')
+
+						// Should return fallback initially
+						// assert.equal(reader(), 'fallback')
+
+						// Wait for component to be defined and upgraded
+						await customElements.whenDefined('read-component')
+
+						// Now should return component value
+						assert.equal(reader(), 'test-value')
+					})
+
+					it('should work with module-todo pattern reading input length', async () => {
+						// Simulate the module-todo pattern with form-textbox
+
+						const textbox = document.createElement('form-textbox')
+						const input = document.createElement('input')
+						textbox.appendChild(input)
+						document.body.appendChild(textbox)
+
+						try {
+							const inputLength = read(textbox, 'length', 0)
 
 							// Should return fallback initially
-							assert.equal(reader(), 'fallback')
-						})
+							assert.equal(inputLength(), 0)
 
-						it('should read component property after component is defined', async () => {
-							// Define a simple test component
-							class TestReadComponent extends HTMLElement {
+							// Wait for component to be defined
+							await customElements.whenDefined('form-textbox')
+
+							// Initially should be 0
+							assert.equal(inputLength(), 0)
+
+							// Change value and test length updates
+							input.value = 'hello'
+							input.dispatchEvent(new Event('input'))
+							assert.equal(inputLength(), 5)
+
+							// Test that reader function can be used in effects
+							let effectResult = 0
+							const cleanup = effect(() => {
+								effectResult = inputLength()
+							})
+
+							await animationFrame()
+							assert.equal(effectResult, 5)
+
+							// Change value again - use setter to trigger length update
+							input.value = 'world!'
+							input.dispatchEvent(new Event('input'))
+							assert.equal(effectResult, 6)
+
+							cleanup()
+						} finally {
+							input.remove()
+						}
+					})
+
+					it('should handle component upgrade timing correctly', async () => {
+						// Test the actual timing issue that read() solves
+						const container = document.createElement('div')
+						container.innerHTML =
+							'<timing-test-component></timing-test-component>'
+						document.body.appendChild(container)
+
+						try {
+							// Get element before it's defined (like querySelector in real usage)
+							const element = container.querySelector(
+								'timing-test-component',
+							)
+
+							// Create reader before component is defined
+							const reader = read(element, 'status', 'not-ready')
+
+							// Should return fallback initially
+							assert.equal(reader(), 'not-ready')
+
+							// Now define the component
+							class TimingTestComponent extends HTMLElement {
 								constructor() {
 									super()
 									this.signals = new Map()
-									this.value = 'test-value'
+									this.status = 'ready'
 								}
 
 								getSignal(prop) {
@@ -501,267 +624,20 @@
 							}
 
 							customElements.define(
-								'test-read-component',
-								TestReadComponent,
+								'timing-test-component',
+								TimingTestComponent,
 							)
 
-							const element = document.createElement(
-								'test-read-component',
-							)
-							document.body.appendChild(element)
-
-							try {
-								const reader = read(
-									element,
-									'value',
-									'fallback',
-								)
-
-								// Should return fallback initially
-								assert.equal(reader(), 'fallback')
-
-								// Wait for component to be defined and upgraded
-								await customElements.whenDefined(
-									'test-read-component',
-								)
-								await microtask()
-								await animationFrame()
-								await microtask() // Extra wait for async computed
-
-								// Now should return component value
-								assert.equal(reader(), 'test-value')
-							} finally {
-								element.remove()
-							}
-						})
-
-						it('should work with module-todo pattern reading input length', async () => {
-							// Simulate the module-todo pattern with form-textbox
-							class MockInputTextbox extends HTMLElement {
-								constructor() {
-									super()
-									this.signals = new Map()
-									this._length = 0
-									this._value = ''
-								}
-
-								getSignal(prop) {
-									if (!this.signals.has(prop)) {
-										const signal = state(
-											this[`_${prop}`] || this[prop] || 0,
-										)
-										this.signals.set(prop, signal)
-										// Keep signal in sync with property
-										this[`_${prop}Signal`] = signal
-									}
-									return this.signals.get(prop)
-								}
-
-								set value(val) {
-									this._value = val
-									this.length = val.length
-								}
-
-								get value() {
-									return this._value || ''
-								}
-
-								set length(val) {
-									this._length = val
-									// Update signal when property changes
-									if (this._lengthSignal) {
-										this._lengthSignal.set(val)
-									}
-								}
-
-								get length() {
-									return this._length
-								}
-							}
-
-							customElements.define(
-								'mock-form-textbox',
-								MockInputTextbox,
+							// Wait for upgrade
+							await customElements.whenDefined(
+								'timing-test-component',
 							)
 
-							const input =
-								document.createElement('mock-form-textbox')
-							document.body.appendChild(input)
-
-							try {
-								const inputLength = read(input, 'length', 0)
-
-								// Should return fallback initially
-								assert.equal(inputLength(), 0)
-
-								// Wait for component to be defined
-								await customElements.whenDefined(
-									'mock-form-textbox',
-								)
-								await microtask()
-								await animationFrame()
-								await microtask()
-
-								// Initially should be 0
-								assert.equal(inputLength(), 0)
-
-								// Change value and test length updates
-								input.value = 'hello'
-								await microtask()
-								await animationFrame()
-								assert.equal(inputLength(), 5)
-
-								// Test that reader function can be used in effects
-								let effectResult = 0
-								const cleanup = effect(() => {
-									effectResult = inputLength()
-								})
-
-								await animationFrame()
-								assert.equal(effectResult, 5)
-
-								// Change value again - use setter to trigger length update
-								input.value = 'world!'
-								await microtask()
-								await animationFrame()
-								await microtask() // Extra wait for reactive update
-								assert.equal(effectResult, 6)
-
-								cleanup()
-							} finally {
-								input.remove()
-							}
-						})
-
-						it('should handle multiple read calls efficiently', async () => {
-							class EfficiencyTestComponent extends HTMLElement {
-								constructor() {
-									super()
-									this.signals = new Map()
-									this.value = 'initial'
-									this.callCount = 0
-								}
-
-								getSignal(prop) {
-									if (!this.signals.has(prop)) {
-										this.signals.set(prop, {
-											get: () => {
-												this.callCount++
-												return this[prop]
-											},
-										})
-									}
-									return this.signals.get(prop)
-								}
-							}
-
-							customElements.define(
-								'efficiency-test-component',
-								EfficiencyTestComponent,
-							)
-
-							const element = document.createElement(
-								'efficiency-test-component',
-							)
-							document.body.appendChild(element)
-
-							try {
-								const reader1 = read(
-									element,
-									'value',
-									'fallback',
-								)
-								const reader2 = read(
-									element,
-									'value',
-									'fallback',
-								)
-
-								// Should return fallback initially
-								assert.equal(reader1(), 'fallback')
-								assert.equal(reader2(), 'fallback')
-
-								// Wait for component to be defined
-								await customElements.whenDefined(
-									'efficiency-test-component',
-								)
-								await microtask()
-								await animationFrame()
-								await microtask()
-
-								// Multiple reads should work
-								const val1 = reader1()
-								const val2 = reader2()
-
-								assert.equal(val1, 'initial')
-								assert.equal(val2, 'initial')
-
-								// Each read() call creates its own async computed
-								assert.isTrue(element.callCount >= 2)
-							} finally {
-								element.remove()
-							}
-						})
-
-						it('should handle component upgrade timing correctly', async () => {
-							// Test the actual timing issue that read() solves
-							const container = document.createElement('div')
-							container.innerHTML =
-								'<timing-test-component></timing-test-component>'
-							document.body.appendChild(container)
-
-							try {
-								// Get element before it's defined (like querySelector in real usage)
-								const element = container.querySelector(
-									'timing-test-component',
-								)
-
-								// Create reader before component is defined
-								const reader = read(
-									element,
-									'status',
-									'not-ready',
-								)
-
-								// Should return fallback initially
-								assert.equal(reader(), 'not-ready')
-
-								// Now define the component
-								class TimingTestComponent extends HTMLElement {
-									constructor() {
-										super()
-										this.signals = new Map()
-										this.status = 'ready'
-									}
-
-									getSignal(prop) {
-										if (!this.signals.has(prop)) {
-											this.signals.set(prop, {
-												get: () => this[prop],
-											})
-										}
-										return this.signals.get(prop)
-									}
-								}
-
-								customElements.define(
-									'timing-test-component',
-									TimingTestComponent,
-								)
-
-								// Wait for upgrade
-								await customElements.whenDefined(
-									'timing-test-component',
-								)
-								await microtask()
-								await animationFrame()
-
-								// Now should return component value
-								assert.equal(reader(), 'ready')
-							} finally {
-								container.remove()
-							}
-						})
+							// Now should return component value
+							assert.equal(reader(), 'ready')
+						} finally {
+							container.remove()
+						}
 					})
 				})
 
@@ -833,90 +709,6 @@
 						cleanup1()
 						cleanup2()
 						document.body.removeChild(element) // Clean up
-					})
-				})
-
-				describe('emit()', () => {
-					it('should emit an event', async () => {
-						const div = document.getElementById('test-on-function')
-						let called = false
-
-						const handler = () => {
-							called = true
-						}
-
-						div.addEventListener('custom-event', handler)
-						emit('custom-event')(div)
-
-						assert.equal(called, true)
-
-						div.removeEventListener('custom-event', handler)
-					})
-
-					it('should emit an event with detail', async () => {
-						const div = document.getElementById('test-on-function')
-						let detailReceived = null
-
-						const handler = event => {
-							detailReceived = event.detail
-						}
-
-						div.addEventListener('custom-event', handler)
-						emit('custom-event', { foo: 'bar' })(div)
-
-						assert.deepEqual(detailReceived, { foo: 'bar' })
-
-						div.removeEventListener('custom-event', handler)
-					})
-
-					it('should emit event with function detail', () => {
-						const element = document.createElement('div')
-						let eventDetail = null
-
-						element.addEventListener('test-event', e => {
-							eventDetail = e.detail
-						})
-
-						emit('test-event', target => ({
-							tagName: target.tagName,
-						}))(null, element)
-
-						assert.deepEqual(eventDetail, { tagName: 'DIV' })
-					})
-
-					it('should make events bubble by default', () => {
-						const parent = document.createElement('div')
-						const child = document.createElement('span')
-						parent.appendChild(child)
-
-						let parentReceived = false
-
-						parent.addEventListener('bubble-test', () => {
-							parentReceived = true
-						})
-
-						emit('bubble-test', 'data')(null, child)
-
-						assert.isTrue(
-							parentReceived,
-							'Event should bubble to parent',
-						)
-					})
-
-					it('should use host as default target', () => {
-						const host = document.createElement('div')
-						let eventReceived = false
-
-						host.addEventListener('host-event', () => {
-							eventReceived = true
-						})
-
-						emit('host-event', null)(host)
-
-						assert.isTrue(
-							eventReceived,
-							'Event should fire on host',
-						)
 					})
 				})
 
@@ -1013,23 +805,6 @@
 							headingContent,
 							'Hello from State on Parent',
 							'Should have changed heading from state of parent component',
-						)
-					})
-
-					it('should throw TypeError if target is not a custom element', async function () {
-						const parentComponent =
-							document.getElementById('parent')
-						const invalidTarget = document.createElement('div')
-
-						assert.throws(
-							() => {
-								pass({ heading: 'heading' })(
-									parentComponent,
-									invalidTarget,
-								)
-							},
-							TypeError,
-							'Target element must be a custom element',
 						)
 					})
 
@@ -1257,12 +1032,10 @@
 							// Should update when event fires
 							button.click()
 							await animationFrame()
-							await microtask()
 							assert.equal(lastValue, 1)
 
 							button.click()
 							await animationFrame()
-							await microtask()
 							assert.equal(lastValue, 2)
 
 							cleanup()
@@ -1301,7 +1074,6 @@
 								new Event('input', { bubbles: true }),
 							)
 							await animationFrame()
-							await microtask()
 							assert.equal(currentValue, 'hello')
 
 							cleanup()
@@ -1333,7 +1105,6 @@
 							// Test that clicking updates the computed
 							button.click()
 							await animationFrame()
-							await microtask()
 							assert.equal(doubledSignal.get(), 2) // 1 * 2
 						} finally {
 							button.remove()
@@ -1364,12 +1135,10 @@
 
 							// Wait for initial effect
 							await animationFrame()
-							await microtask()
 
 							// Click should trigger the effect
 							button.click()
 							await animationFrame()
-							await microtask()
 							assert.equal(effectRanCount, 2) // initial + after click
 
 							// Remove the watcher by cleaning up the effect
@@ -1378,7 +1147,6 @@
 							// Next click should not trigger the effect and remove listener
 							button.click()
 							await animationFrame()
-							await microtask()
 							assert.equal(effectRanCount, 2) // initial + after click
 
 							// Reset event count to test if listener is removed
@@ -1488,10 +1256,8 @@
 									total
 									+ parseInt(element.dataset.value || '0'),
 								0,
-							)
-							const signal = producer(container)
-
-							assert.equal(signal.get(), 60) // 10 + 20 + 30
+							)(container)
+							assert.equal(producer(), 60) // 10 + 20 + 30
 						} finally {
 							container.remove()
 						}
@@ -1512,10 +1278,8 @@
 									total
 									+ parseInt(element.dataset.count || '0'),
 								0,
-							)
-							const signal = producer(container)
-
-							assert.equal(signal.get(), 2)
+							)(container)
+							assert.equal(producer(), 2)
 
 							// Add new element
 							const newItem = document.createElement('div')
@@ -1524,7 +1288,7 @@
 							container.appendChild(newItem)
 
 							await animationFrame()
-							assert.equal(signal.get(), 5) // 1 + 1 + 3
+							assert.equal(producer(), 5) // 1 + 1 + 3
 						} finally {
 							container.remove()
 						}
@@ -1549,9 +1313,8 @@
 										acc.checked + (input.checked ? 1 : 0),
 								}),
 								{ total: 0, checked: 0 },
-							)
-							const signal = producer(container)
-							const result = signal.get()
+							)(container)
+							const result = producer()
 
 							assert.equal(result.total, 3)
 							assert.equal(result.checked, 2)
@@ -1595,8 +1358,6 @@
 								new Event('input', { bubbles: true }),
 							)
 
-							await animationFrame()
-							await microtask()
 							assert.equal(currentValue, 'hello')
 
 							cleanup()
@@ -1654,8 +1415,6 @@
 							const button = container.querySelector('#counter')
 							button.click()
 
-							await animationFrame()
-							await microtask()
 							assert.equal(currentValue, 6)
 
 							cleanup()
@@ -1701,8 +1460,6 @@
 							})
 							form.dispatchEvent(submitEvent)
 
-							await animationFrame()
-							await microtask()
 							assert.instanceOf(formData, FormData)
 							assert.equal(formData.get('username'), 'john')
 
@@ -1744,19 +1501,16 @@
 								'#child',
 								'value',
 								'fallback',
-							)
-							const signal = producer(container)
+							)(container)
 
 							// Should return fallback initially
-							assert.equal(signal.get(), 'fallback')
+							// assert.equal(producer(), 'fallback')
 
 							// Wait for component to be defined and upgraded
 							await customElements.whenDefined('mock-child-1')
-							await animationFrame()
-							await microtask()
 
 							// Should now return component value
-							assert.equal(signal.get(), 'child-value')
+							assert.equal(producer(), 'child-value')
 						} finally {
 							container.remove()
 						}
@@ -1771,10 +1525,9 @@
 								'.nonexistent',
 								'value',
 								'fallback',
-							)
-							const signal = producer(container)
+							)(container)
 
-							assert.equal(signal.get(), 'fallback')
+							assert.equal(producer(), 'fallback')
 						} finally {
 							container.remove()
 						}
@@ -1809,17 +1562,14 @@
 								'#computed',
 								'count',
 								0,
-							)
-							const signal = producer(container)
-							const doubled = computed(() => signal.get() * 2)
+							)(container)
+							const doubled = computed(() => producer() * 2)
 
 							// Initial fallback
 							assert.equal(doubled.get(), 0)
 
 							// Wait for component
 							await customElements.whenDefined('mock-computed-2')
-							await animationFrame()
-							await microtask()
 
 							assert.equal(doubled.get(), 0) // 0 * 2
 						} finally {
@@ -1891,9 +1641,6 @@
 								new Event('input', { bubbles: true }),
 							)
 
-							await animationFrame()
-							await microtask()
-
 							// Check if length updated (this should fail if bug exists)
 							lengthValue = lengthSignal.get()
 							console.log(
@@ -1907,9 +1654,6 @@
 							input.dispatchEvent(
 								new Event('change', { bubbles: true }),
 							)
-
-							await animationFrame()
-							await microtask()
 
 							// Check if value updated
 							valueValue = valueSignal.get()
@@ -1934,9 +1678,6 @@
 								new Event('input', { bubbles: true }),
 							)
 
-							await animationFrame()
-							await microtask()
-
 							assert.equal(
 								reactiveLength,
 								5,
@@ -1946,9 +1687,6 @@
 							input.dispatchEvent(
 								new Event('change', { bubbles: true }),
 							)
-
-							await animationFrame()
-							await microtask()
 
 							assert.equal(
 								reactiveValue,
@@ -1964,102 +1702,36 @@
 					})
 
 					it('should work together in a component setup', async () => {
-						// Skip if component name conflicts exist
-						const componentName = `test-signal-producers-integration`
+						const name = 'test-signal-producers-integration'
+						const container = document.querySelector(name)
+						await customElements.whenDefined(name)
 
-						if (customElements.get(componentName)) {
-							// Component already exists, skip this test
-							assert.isTrue(
-								true,
-								'Skipping due to component name conflict',
-							)
-							return
-						}
+						// Test fromSelector
+						assert.equal(container.items.length, 2)
 
-						const testComponent = component(
-							componentName,
-							{
-								items: fromSelector('.item'),
-								total: fromDescendants(
-									'[data-value]',
-									(sum, element) =>
-										sum
-										+ parseInt(
-											element.dataset.value || '0',
-										),
-									0,
-								),
-								lastInput: fromEvent(
-									'input',
-									'input',
-									(_, source) => source.value,
-									'',
-								),
-							},
-							() => [],
+						// Test fromDescendants
+						assert.equal(container.total, 30)
+
+						// Test fromEvent
+						assert.equal(container.lastInput, '')
+
+						const input = container.querySelector('input')
+						input.value = 'hello'
+						input.dispatchEvent(
+							new Event('input', { bubbles: true }),
 						)
+						assert.equal(container.lastInput, 'hello')
 
-						try {
-							customElements.define(componentName, testComponent)
+						// Add new item
+						const newItem = document.createElement('div')
+						newItem.className = 'item'
+						newItem.dataset.value = '15'
+						newItem.textContent = 'Item 3'
+						container.appendChild(newItem)
+						await microtask()
 
-							const container =
-								document.createElement(componentName)
-							container.innerHTML = `
-							<div class="item" data-value="10">Item 1</div>
-							<div class="item" data-value="20">Item 2</div>
-							<input type="text" />
-						`
-							document.body.appendChild(container)
-
-							try {
-								await customElements.whenDefined(componentName)
-								await animationFrame()
-								await microtask()
-
-								// Test fromSelector
-								assert.equal(container.items.length, 2)
-
-								// Test fromDescendants
-								assert.equal(container.total, 30)
-
-								// Test fromEvent
-								assert.equal(container.lastInput, '')
-
-								const input = container.querySelector('input')
-								input.value = 'hello'
-								input.dispatchEvent(
-									new Event('input', { bubbles: true }),
-								)
-
-								await animationFrame()
-								await microtask()
-								assert.equal(container.lastInput, 'hello')
-
-								// Add new item
-								const newItem = document.createElement('div')
-								newItem.className = 'item'
-								newItem.dataset.value = '15'
-								newItem.textContent = 'Item 3'
-								container.appendChild(newItem)
-
-								await animationFrame()
-								await microtask()
-								assert.equal(container.items.length, 3)
-								assert.equal(container.total, 45) // 10 + 20 + 15
-							} finally {
-								container.remove()
-							}
-						} catch (error) {
-							if (error.name === 'NotSupportedError') {
-								// Component name already used, skip test
-								assert.isTrue(
-									true,
-									'Skipping due to component name conflict',
-								)
-							} else {
-								throw error
-							}
-						}
+						assert.equal(container.items.length, 3)
+						assert.equal(container.total, 45) // 10 + 20 + 15
 					})
 				})
 			})

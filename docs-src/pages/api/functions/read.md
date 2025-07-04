@@ -6,18 +6,18 @@
 
 # Function: read()
 
-> **read**\<`Q`, `K`\>(`source`, `prop`, `fallback`): () => `Q`\[`K`\]
+> **read**\<`E`, `K`\>(`source`, `prop`, `fallback`): () => `NonNullable`\<`E`\[`K`\]\>
 
-Defined in: [src/core/dom.ts:503](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L503)
+Defined in: [src/core/dom.ts:489](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L489)
 
 Read a signal property from a custom element safely after it's defined
 Returns a function that provides the signal value with fallback until component is ready
 
 ## Type Parameters
 
-### Q
+### E
 
-`Q` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
+`E` *extends* `Element`
 
 ### K
 
@@ -27,31 +27,31 @@ Returns a function that provides the signal value with fallback until component 
 
 ### source
 
-source custom element to read signal from
+Source custom element to read reactive property from
 
-`null` | [`Component`](../type-aliases/Component.md)\<`Q`\>
+`null` | `E`
 
 ### prop
 
 `K`
 
-property name to get signal for
+Property name to get
 
 ### fallback
 
-`Q`\[`K`\]
+`NonNullable`\<`E`\[`K`\]\>
 
-fallback value to use until component is ready
+Fallback value to use until component is upgraded
 
 ## Returns
 
-function that returns signal value or fallback
+Function that returns current value or fallback
 
-> (): `Q`\[`K`\]
+> (): `NonNullable`\<`E`\[`K`\]\>
 
 ### Returns
 
-`Q`\[`K`\]
+`NonNullable`\<`E`\[`K`\]\>
 
 ## Since
 

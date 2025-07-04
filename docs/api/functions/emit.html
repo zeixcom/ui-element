@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.1</small>
+					UIElement Docs <small>Version 0.13.2</small>
 				</h1>
 				
 <section-menu>
@@ -106,9 +106,9 @@
                 Function: emit()
             </h1>
 <blockquote>
-<p><strong>emit</strong>&lt;<code>T</code>&gt;(<code>type</code>, <code>detail</code>): &lt;<code>P</code>&gt;(<code>host</code>, <code>target</code>) =&gt; <code>void</code></p>
+<p><strong>emit</strong>&lt;<code>T</code>, <code>P</code>, <code>E</code>&gt;(<code>type</code>, <code>s</code>): (<code>host</code>, <code>target</code>) =&gt; <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L439">src/core/dom.ts:439</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/effects.ts#L491">src/lib/effects.ts:491</a></p>
 <p>Emit a custom event with the given detail</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
@@ -123,6 +123,20 @@
                 T
             </h3>
 <p><code>T</code></p>
+<h3 id="p">
+                <a name="p" class="anchor" href="#p">
+	                <span class="permalink">🔗</span>
+                </a>
+                P
+            </h3>
+<p><code>P</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
+<h3 id="e">
+                <a name="e" class="anchor" href="#e">
+	                <span class="permalink">🔗</span>
+                </a>
+                E
+            </h3>
+<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -137,14 +151,14 @@
             </h3>
 <p><code>string</code></p>
 <p>event type to emit</p>
-<h3 id="detail">
-                <a name="detail" class="anchor" href="#detail">
+<h3 id="s">
+                <a name="s" class="anchor" href="#s">
 	                <span class="permalink">🔗</span>
                 </a>
-                detail
+                s
             </h3>
-<p>event detail or provider function</p>
-<p><code>T</code> | (<code>element</code>) =&gt; <code>T</code></p>
+<p><a href="../type-aliases/Reactive.html"><code>Reactive</code></a>&lt;<code>T</code>, <code>P</code>, <code>E</code>&gt;</p>
+<p>state bound to event detail</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
@@ -152,21 +166,8 @@
                 Returns
             </h2>
 <blockquote>
-<p>&lt;<code>P</code>&gt;(<code>host</code>, <code>target</code>): <code>void</code></p>
+<p>(<code>host</code>, <code>target</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 </blockquote>
-<h3 id="type-parameters">
-                <a name="type-parameters" class="anchor" href="#type-parameters">
-	                <span class="permalink">🔗</span>
-                </a>
-                Type Parameters
-            </h3>
-<h4 id="p">
-                <a name="p" class="anchor" href="#p">
-	                <span class="permalink">🔗</span>
-                </a>
-                P
-            </h4>
-<p><code>P</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
 <h3 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -186,21 +187,21 @@
                 </a>
                 target
             </h4>
-<p><code>Element</code> = <code>host</code></p>
+<p><code>E</code> = <code>...</code></p>
 <h3 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h3>
-<p><code>void</code></p>
+<p><a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
                 </a>
                 Since
             </h2>
-<p>0.12.0</p>
+<p>0.13.2</p>
 
 </section></main>
 			<footer class="content-grid">

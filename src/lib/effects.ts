@@ -12,7 +12,7 @@ import {
 import {
 	type Component,
 	type ComponentProps,
-	type FxFunction,
+	type Effect,
 	RESET,
 } from '../component'
 import {
@@ -26,7 +26,7 @@ import {
 
 /* === Types === */
 
-type SignalLike<P extends ComponentProps, T, E extends Element = HTMLElement> =
+type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 	| keyof P
 	| Signal<NonNullable<T>>
 	| ((element: E) => T | null | undefined)
@@ -55,14 +55,14 @@ type DangerouslySetInnerHTMLOptions = {
 	allowScripts?: boolean
 }
 
-/* === Internal === */
+/* === Internal Functions === */
 
-const resolveSignalLike = /*#__PURE__*/ <
-	P extends ComponentProps,
+const resolveReactive = <
 	T extends {},
+	P extends ComponentProps,
 	E extends Element = Component<P>,
 >(
-	s: SignalLike<P, T, E>,
+	s: Reactive<T, P, E>,
 	host: Component<P>,
 	target: E,
 ): T =>
@@ -80,14 +80,14 @@ const isSafeURL = /*#__PURE__*/ (value: string): boolean => {
 		try {
 			const url = new URL(value, window.location.origin)
 			return ['http:', 'https:', 'ftp:'].includes(url.protocol)
-		} catch (_error) {
+		} catch {
 			return false
 		}
 	}
 	return true
 }
 
-const safeSetAttribute = /*#__PURE__*/ (
+const safeSetAttribute = (
 	element: Element,
 	attr: string,
 	value: string,
@@ -101,17 +101,17 @@ const safeSetAttribute = /*#__PURE__*/ (
 /* === Exported Functions === */
 
 /**
- * Effect for setting properties of a target element according to a given SignalLike
+ * Effect for setting properties of a target element according to a given Reactive
  *
  * @since 0.9.0
- * @param {SignalLike<T>} s - state bound to the element property
+ * @param {Reactive<T, P, E>} s - state bound to the element property
  * @param {ElementUpdater} updater - updater object containing key, read, update, and delete methods
  */
 const updateElement =
 	<P extends ComponentProps, T extends {}, E extends Element = HTMLElement>(
-		s: SignalLike<P, T, E>,
+		s: Reactive<T, P, E>,
 		updater: ElementUpdater<E, T>,
-	): FxFunction<P, E> =>
+	): Effect<P, E> =>
 	(host: Component<P>, target: E): Cleanup => {
 		const { op, name = '', read, update } = updater
 		const fallback = read(target)
@@ -151,7 +151,7 @@ const updateElement =
 			const DELETE_DEDUPE = Symbol(`${op}-${name}`)
 			let value = RESET
 			try {
-				value = resolveSignalLike(s, host, target)
+				value = resolveReactive(s, host, target)
 			} catch (error) {
 				log(
 					error,
@@ -187,17 +187,17 @@ const updateElement =
 	}
 
 /**
- * Effect for inserting or removing elements according to a given SignalLike
+ * Effect for inserting or removing elements according to a given Reactive
  *
  * @since 0.12.1
- * @param {SignalLike<P, E, number>} s - state bound to the number of elements to insert (positive) or remove (negative)
+ * @param {Reactive<number, P, E>} s - state bound to the number of elements to insert (positive) or remove (negative)
  * @param {ElementInserter<E>} inserter - inserter object containing position, insert, and remove methods
  */
 const insertOrRemoveElement =
 	<P extends ComponentProps, E extends Element = HTMLElement>(
-		s: SignalLike<P, number, E>,
+		s: Reactive<number, P, E>,
 		inserter?: ElementInserter<E>,
-	): FxFunction<P, E> =>
+	): Effect<P, E> =>
 	(host: Component<P>, target: E) => {
 		const ok = (verb: string) => () => {
 			if (DEV_MODE && host.debug)
@@ -230,7 +230,7 @@ const insertOrRemoveElement =
 			const REMOVE_DEDUPE = Symbol('d')
 			let diff = 0
 			try {
-				diff = resolveSignalLike(s, host, target)
+				diff = resolveReactive(s, host, target)
 			} catch (error) {
 				log(
 					error,
@@ -285,11 +285,11 @@ const insertOrRemoveElement =
  * Set text content of an element
  *
  * @since 0.8.0
- * @param {SignalLike<string>} s - state bound to the text content
+ * @param {Reactive<string, P, E>} s - state bound to the text content
  */
 const setText = <P extends ComponentProps, E extends Element = HTMLElement>(
-	s: SignalLike<P, string, E>,
-): FxFunction<P, E> =>
+	s: Reactive<string, P, E>,
+): Effect<P, E> =>
 	updateElement(s, {
 		op: 't',
 		read: el => el.textContent,
@@ -306,7 +306,7 @@ const setText = <P extends ComponentProps, E extends Element = HTMLElement>(
  *
  * @since 0.8.0
  * @param {string} key - name of property to be set
- * @param {SignalLike<E[K]>} s - state bound to the property value
+ * @param {Reactive<E[K], P, E>} s - state bound to the property value
  */
 const setProperty = <
 	P extends ComponentProps,
@@ -314,8 +314,8 @@ const setProperty = <
 	E extends Element = HTMLElement,
 >(
 	key: K,
-	s: SignalLike<P, E[K], E> = key as SignalLike<P, E[K], E>,
-): FxFunction<P, E> =>
+	s: Reactive<E[K], P, E> = key as Reactive<E[K], P, E>,
+): Effect<P, E> =>
 	updateElement(s, {
 		op: 'p',
 		name: String(key),
@@ -329,11 +329,11 @@ const setProperty = <
  * Set 'hidden' property of an element
  *
  * @since 0.13.1
- * @param {SignalLike<boolean>} s - state bound to the 'hidden' property value
+ * @param {Reactive<boolean, P, E>} s - state bound to the 'hidden' property value
  */
 const show = <P extends ComponentProps, E extends HTMLElement = HTMLElement>(
-	s: SignalLike<P, boolean, E>,
-): FxFunction<P, E> =>
+	s: Reactive<boolean, P, E>,
+): Effect<P, E> =>
 	updateElement(s, {
 		op: 'p',
 		name: 'hidden',
@@ -348,15 +348,15 @@ const show = <P extends ComponentProps, E extends HTMLElement = HTMLElement>(
  *
  * @since 0.8.0
  * @param {string} name - name of attribute to be set
- * @param {SignalLike<string>} s - state bound to the attribute value
+ * @param {Reactive<string, P, E>} s - state bound to the attribute value
  */
 const setAttribute = <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
 	name: string,
-	s: SignalLike<P, string, E> = name,
-): FxFunction<P, E> =>
+	s: Reactive<string, P, E> = name,
+): Effect<P, E> =>
 	updateElement(s, {
 		op: 'a',
 		name,
@@ -374,15 +374,15 @@ const setAttribute = <
  *
  * @since 0.8.0
  * @param {string} name - name of attribute to be toggled
- * @param {SignalLike<boolean>} s - state bound to the attribute existence
+ * @param {Reactive<boolean, P, E>} s - state bound to the attribute existence
  */
 const toggleAttribute = <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
 	name: string,
-	s: SignalLike<P, boolean, E> = name,
-): FxFunction<P, E> =>
+	s: Reactive<boolean, P, E> = name,
+): Effect<P, E> =>
 	updateElement(s, {
 		op: 'a',
 		name,
@@ -397,12 +397,12 @@ const toggleAttribute = <
  *
  * @since 0.8.0
  * @param {string} token - class token to be toggled
- * @param {SignalLike<boolean>} s - state bound to the class existence
+ * @param {Reactive<boolean, P, E>} s - state bound to the class existence
  */
 const toggleClass = <P extends ComponentProps, E extends Element = HTMLElement>(
 	token: string,
-	s: SignalLike<P, boolean, E> = token,
-): FxFunction<P, E> =>
+	s: Reactive<boolean, P, E> = token,
+): Effect<P, E> =>
 	updateElement(s, {
 		op: 'c',
 		name: token,
@@ -417,15 +417,15 @@ const toggleClass = <P extends ComponentProps, E extends Element = HTMLElement>(
  *
  * @since 0.8.0
  * @param {string} prop - name of style property to be set
- * @param {SignalLike<string>} s - state bound to the style property value
+ * @param {Reactive<string, P, E>} s - state bound to the style property value
  */
 const setStyle = <
 	P extends ComponentProps,
 	E extends HTMLElement | SVGElement | MathMLElement,
 >(
 	prop: string,
-	s: SignalLike<P, string, E> = prop,
-): FxFunction<P, E> =>
+	s: Reactive<string, P, E> = prop,
+): Effect<P, E> =>
 	updateElement(s, {
 		op: 's',
 		name: prop,
@@ -442,16 +442,16 @@ const setStyle = <
  * Set inner HTML of an element
  *
  * @since 0.11.0
- * @param {SignalLike<string>} s - state bound to the inner HTML
+ * @param {Reactive<string, P, E>} s - state bound to the inner HTML
  * @param {DangerouslySetInnerHTMLOptions} options - options for setting inner HTML: shadowRootMode, allowScripts
  */
 const dangerouslySetInnerHTML = <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
-	s: SignalLike<P, string, E>,
+	s: Reactive<string, P, E>,
 	options: DangerouslySetInnerHTMLOptions = {},
-): FxFunction<P, E> =>
+): Effect<P, E> =>
 	updateElement(s, {
 		op: 'h',
 		read: el =>
@@ -480,10 +480,44 @@ const dangerouslySetInnerHTML = <
 		},
 	})
 
+/**
+ * Emit a custom event with the given detail
+ *
+ * @since 0.13.2
+ * @param {string} type - event type to emit
+ * @param {Reactive<T, P, E>} s - state bound to event detail
+ */
+const emit =
+	<T, P extends ComponentProps, E extends Element = HTMLElement>(
+		type: string,
+		s: Reactive<T, P, E>,
+	) =>
+	(host: Component<P>, target: E = host as unknown as E): Effect<P, E> =>
+		effect(() => {
+			let detail
+			try {
+				detail = resolveReactive(s, host, target)
+			} catch (error) {
+				log(
+					error,
+					`Failed to resolve value of ${valueString(s)} for custom event detail emitted on ${elementName(target)} in ${elementName(host)}`,
+					LOG_ERROR,
+				)
+				return
+			}
+			if (detail === RESET || detail === UNSET) return
+			target.dispatchEvent(
+				new CustomEvent(type, {
+					detail,
+					bubbles: true,
+				}),
+			)
+		})
+
 /* === Exported Types === */
 
 export {
-	type SignalLike,
+	type Reactive,
 	type UpdateOperation,
 	type ElementUpdater,
 	type ElementInserter,
@@ -498,4 +532,5 @@ export {
 	toggleClass,
 	setStyle,
 	dangerouslySetInnerHTML,
+	emit,
 }

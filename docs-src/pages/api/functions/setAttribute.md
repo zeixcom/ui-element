@@ -6,9 +6,9 @@
 
 # Function: setAttribute()
 
-> **setAttribute**\<`P`, `E`\>(`name`, `s`): [`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+> **setAttribute**\<`P`, `E`\>(`name`, `s`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:353](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/lib/effects.ts#L353)
+Defined in: [src/lib/effects.ts:353](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/effects.ts#L353)
 
 Set attribute of an element
 
@@ -32,13 +32,13 @@ name of attribute to be set
 
 ### s
 
-[`SignalLike`](../type-aliases/SignalLike.md)\<`P`, `string`, `E`\> = `name`
+[`Reactive`](../type-aliases/Reactive.md)\<`string`, `P`, `E`\> = `name`
 
 state bound to the attribute value
 
 ## Returns
 
-[`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+[`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
 ## Since
 

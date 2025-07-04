@@ -1,5 +1,7 @@
 /* === Types === */
 
+import { isFunction } from '@zeix/cause-effect'
+
 type LogLevel = 'debug' | 'info' | 'warn' | 'error'
 
 /* === Constants === */
@@ -41,6 +43,14 @@ const isDefinedObject = /*#__PURE__*/ (
 const isString = /*#__PURE__*/ (value: unknown): value is string =>
 	typeof value === 'string'
 
+const hasMethod = /*#__PURE__*/ <T extends object, K extends PropertyKey, R>(
+	obj: T,
+	methodName: K,
+): obj is T & Record<K, (...args: any[]) => R> =>
+	isString(methodName) &&
+	methodName in obj &&
+	isFunction<R>((obj as any)[methodName])
+
 /**
  * Check if a node is an Element
  *
@@ -51,7 +61,7 @@ const isElement = (node: Node): node is Element =>
 	node.nodeType === Node.ELEMENT_NODE
 
 /**
- * Return a HyperScript string representation of the Element instance
+ * Return a string representation of the Element instance
  *
  * @since 0.7.0
  * @param {Element} el
@@ -112,6 +122,7 @@ const log = <T>(value: T, msg: string, level: LogLevel = LOG_DEBUG): T => {
 
 export {
 	type LogLevel,
+	hasMethod,
 	isString,
 	isDefinedObject,
 	isElement,

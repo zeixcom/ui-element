@@ -1,7 +1,7 @@
 import {
 	type AttributeParser,
 	type Component,
-	type FxFunction,
+	type Effect,
 	UNSET,
 	component,
 	computed,
@@ -74,8 +74,7 @@ export default component(
 		},
 	},
 	(el: Component<InputFieldProps>, { first }) => {
-		const fns: FxFunction<InputFieldProps, Component<InputFieldProps>>[] =
-			[]
+		const fns: Effect<InputFieldProps, Component<InputFieldProps>>[] = []
 		const input = el.querySelector('input')
 		if (!input) throw new Error('No input element found')
 		const typeNumber = input.type === 'number'

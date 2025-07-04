@@ -6,9 +6,9 @@
 
 # Function: on()
 
-> **on**\<`E`, `K`\>(`type`, `listener`, `options`): \<`P`\>(`host`, `target`) => [`Cleanup`](../type-aliases/Cleanup.md)
+> **on**\<`E`, `K`\>(`type`, `listener`, `options`): [`Effect`](../type-aliases/Effect.md)\<[`ComponentProps`](../type-aliases/ComponentProps.md), `E`\>
 
-Defined in: [src/core/dom.ts:298](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L298)
+Defined in: [src/core/dom.ts:303](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L303)
 
 Attach an event listener to an element
 
@@ -44,27 +44,7 @@ event listener options
 
 ## Returns
 
-> \<`P`\>(`host`, `target`): [`Cleanup`](../type-aliases/Cleanup.md)
-
-### Type Parameters
-
-#### P
-
-`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
-
-### Parameters
-
-#### host
-
-[`Component`](../type-aliases/Component.md)\<`P`\>
-
-#### target
-
-`E` = `...`
-
-### Returns
-
-[`Cleanup`](../type-aliases/Cleanup.md)
+[`Effect`](../type-aliases/Effect.md)\<[`ComponentProps`](../type-aliases/ComponentProps.md), `E`\>
 
 ## Since
 

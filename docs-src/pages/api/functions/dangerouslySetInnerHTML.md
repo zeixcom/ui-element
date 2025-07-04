@@ -6,9 +6,9 @@
 
 # Function: dangerouslySetInnerHTML()
 
-> **dangerouslySetInnerHTML**\<`P`, `E`\>(`s`, `options`): [`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+> **dangerouslySetInnerHTML**\<`P`, `E`\>(`s`, `options`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:448](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/lib/effects.ts#L448)
+Defined in: [src/lib/effects.ts:448](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/effects.ts#L448)
 
 Set inner HTML of an element
 
@@ -26,7 +26,7 @@ Set inner HTML of an element
 
 ### s
 
-[`SignalLike`](../type-aliases/SignalLike.md)\<`P`, `string`, `E`\>
+[`Reactive`](../type-aliases/Reactive.md)\<`string`, `P`, `E`\>
 
 state bound to the inner HTML
 
@@ -38,7 +38,7 @@ options for setting inner HTML: shadowRootMode, allowScripts
 
 ## Returns
 
-[`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+[`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
 ## Since
 
