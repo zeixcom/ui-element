@@ -7,6 +7,7 @@ import {
 	isFunction,
 	isSignal,
 	isState,
+	toSignal,
 } from '@zeix/cause-effect'
 
 import {
@@ -19,6 +20,9 @@ import {
 	DEV_MODE,
 	LOG_ERROR,
 	elementName,
+	hasMethod,
+	isCustomElement,
+	isDefinedObject,
 	isString,
 	log,
 	valueString,
@@ -30,6 +34,10 @@ type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 	| keyof P
 	| Signal<NonNullable<T>>
 	| ((element: E) => T | null | undefined)
+
+type PassedReactives<P extends ComponentProps, E extends Element> = {
+	[K in keyof E]?: Reactive<E[K], P, E>
+}
 
 type UpdateOperation = 'a' | 'c' | 'h' | 'p' | 's' | 't'
 
@@ -74,7 +82,7 @@ const resolveReactive = <
 				? s(target)
 				: RESET
 
-const isSafeURL = /*#__PURE__*/ (value: string): boolean => {
+const isSafeURL = (value: string): boolean => {
 	if (/^(mailto|tel):/i.test(value)) return true
 	if (value.includes('://')) {
 		try {
@@ -514,10 +522,75 @@ const emit =
 			)
 		})
 
+/**
+ * Pass reactives to a descendent element
+ *
+ * @since 0.13.2
+ * @param {PassedReactives<P, E> | ((target: E) => PassedReactives<P, E>)} reactives - Reactives to be passed to descendent element
+ * @returns {Effect<P, E>} - Effect to be used in ancestor component
+ * @throws {TypeError} If the provided signals are not an object or a provider function
+ */
+const pass =
+	<P extends ComponentProps, E extends Element>(
+		reactives:
+			| PassedReactives<P, E>
+			| ((target: E) => PassedReactives<P, E>),
+	): Effect<P, E> =>
+	(host: Component<P>, target: E): void => {
+		const sources = isFunction<PassedReactives<P, E>>(reactives)
+			? reactives(target)
+			: reactives
+		if (!isDefinedObject(sources))
+			throw new TypeError(
+				`Passed signals must be an object or a provider function`,
+			)
+
+		const setProperties = effect(() => {
+			for (const [prop, source] of Object.entries(sources)) {
+				let value
+				try {
+					value = resolveReactive<NonNullable<E[keyof E]>, P, E>(
+						source,
+						host,
+						target,
+					)
+				} catch (error) {
+					throw new Error(
+						`Failed to resolve signal ${prop} for ${elementName(target)}`,
+						{ cause: error },
+					)
+				}
+				if (value == null || value === RESET) continue
+				target[prop as keyof E] = value
+			}
+		})
+		if (!isCustomElement(target)) return setProperties()
+		customElements
+			.whenDefined(target.localName)
+			.then(() => {
+				if (!hasMethod(target, 'setSignal')) return setProperties()
+				for (const [prop, source] of Object.entries(sources)) {
+					target.setSignal(
+						prop,
+						isString(source)
+							? host.getSignal(source)
+							: toSignal(source),
+					)
+				}
+			})
+			.catch(error => {
+				throw new Error(
+					`Failed to pass signals to ${elementName(target)}`,
+					{ cause: error },
+				)
+			})
+	}
+
 /* === Exported Types === */
 
 export {
 	type Reactive,
+	type PassedReactives,
 	type UpdateOperation,
 	type ElementUpdater,
 	type ElementInserter,
@@ -533,4 +606,5 @@ export {
 	setStyle,
 	dangerouslySetInnerHTML,
 	emit,
+	pass,
 }

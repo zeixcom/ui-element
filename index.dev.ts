@@ -50,7 +50,6 @@ export {
 	log,
 } from './src/core/util'
 export {
-	type PassedSignals,
 	type ElementEventMap,
 	type ElementEventType,
 	type ValidEventName,
@@ -60,7 +59,6 @@ export {
 	on,
 	sensor,
 	fromEvent,
-	pass,
 	read,
 	fromDescendant,
 } from './src/core/dom'
@@ -83,6 +81,7 @@ export {
 } from './src/lib/parsers'
 export {
 	type Reactive,
+	type PassedReactives,
 	type UpdateOperation,
 	type ElementUpdater,
 	type ElementInserter,
@@ -98,4 +97,5 @@ export {
 	setStyle,
 	dangerouslySetInnerHTML,
 	emit,
+	pass,
 } from './src/lib/effects'

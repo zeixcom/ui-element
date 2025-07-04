@@ -1,10 +1,5 @@
-import { type Computed, type Signal } from '@zeix/cause-effect'
-import type {
-	Component,
-	ComponentProps,
-	Effect,
-	SignalProducer,
-} from '../component'
+import { type Computed } from '@zeix/cause-effect'
+import type { ComponentProps, Effect, SignalProducer } from '../component'
 type ElementEventMap<E extends Element> = E extends
 	| HTMLInputElement
 	| HTMLTextAreaElement
@@ -63,9 +58,6 @@ type ElementEventType<
 	K extends string,
 > = K extends keyof ElementEventMap<E> ? ElementEventMap<E>[K] : Event
 type ValidEventName<E extends Element> = keyof ElementEventMap<E> & string
-type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
-	[K in keyof Q]?: Signal<Q[K]> | ((element: Component<Q>) => Q[K]) | keyof P
-}
 /**
  * Observe a DOM subtree with a mutation observer
  *
@@ -196,20 +188,6 @@ declare const fromEvent: <
 	initializer: T | ((host: C, source: E) => T),
 ) => SignalProducer<T, C>
 /**
- * Pass signals to a UIElement component
- *
- * @since 0.13.2
- * @param {PassedSignals<P, Q> | ((target: Component<Q>) => PassedSignals<P, Q>)} signals - Signals to be passed to descendent components
- * @returns {Effect<P, Component<Q>>} - Effect to be used in ancestor component
- * @throws {TypeError} if the provided signals are not an object or a provider function
- * @throws {TypeError} if the target component is not a UIElement component
- */
-declare const pass: <P extends ComponentProps, Q extends ComponentProps>(
-	signals:
-		| PassedSignals<P, Q>
-		| ((target: Component<Q>) => PassedSignals<P, Q>),
-) => Effect<P, Component<Q>>
-/**
  * Read a signal property from a custom element safely after it's defined
  * Returns a function that provides the signal value with fallback until component is ready
  *
@@ -242,14 +220,12 @@ export {
 	type ElementEventMap,
 	type ElementEventType,
 	type ValidEventName,
-	type PassedSignals,
 	fromDescendant,
 	fromDescendants,
 	fromEvent,
 	fromSelector,
 	observeSubtree,
 	on,
-	pass,
 	read,
 	selection,
 	sensor,

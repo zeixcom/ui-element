@@ -20,6 +20,20 @@ declare const hasMethod: <T extends object, K extends PropertyKey, R>(
  */
 declare const isElement: (node: Node) => node is Element
 /**
+ * Check whether an element is a custom element
+ *
+ * @param {E} element - Element to check
+ * @returns {boolean} - True if the element is a custom element
+ */
+declare const isCustomElement: <E extends Element>(element: E) => boolean
+/**
+ * Check whether a custom element is upgraded or a regular element
+ *
+ * @param {E} element - Element to check
+ * @returns {boolean} - True if the element is an upgraded custom element or a regular element
+ */
+declare const isUpgradedComponent: <E extends Element>(element: E) => boolean
+/**
  * Return a string representation of the Element instance
  *
  * @since 0.7.0
@@ -59,6 +73,8 @@ export {
 	isString,
 	isDefinedObject,
 	isElement,
+	isCustomElement,
+	isUpgradedComponent,
 	log,
 	elementName,
 	valueString,

@@ -1,14 +1,12 @@
 import {
 	type Cleanup,
 	type Computed,
-	type Signal,
 	TYPE_COMPUTED,
 	UNSET,
 	type Watcher,
 	isFunction,
 	notify,
 	subscribe,
-	toSignal,
 } from '@zeix/cause-effect'
 
 import type {
@@ -17,7 +15,7 @@ import type {
 	Effect,
 	SignalProducer,
 } from '../component'
-import { elementName, isDefinedObject, isString } from './util'
+import { elementName, isUpgradedComponent } from './util'
 
 /* === Types === */
 
@@ -85,10 +83,6 @@ type ElementEventType<
 // Helper type to constrain event names to element-appropriate ones
 type ValidEventName<E extends Element> = keyof ElementEventMap<E> & string
 
-type PassedSignals<P extends ComponentProps, Q extends ComponentProps> = {
-	[K in keyof Q]?: Signal<Q[K]> | ((element: Component<Q>) => Q[K]) | keyof P
-}
-
 /* === Error Class === */
 
 /**
@@ -102,19 +96,6 @@ class CircularMutationError extends Error {
 }
 
 /* === Internal === */
-
-/**
- * Get whether a custom element is upgraded
- *
- * @param {E} element - Input element
- * @returns {boolean} - True if the element is an upgraded custom element or a regular element
- */
-const isUpgraded = <E extends Element = HTMLElement>(element: E): boolean => {
-	const name = element.localName
-	if (!name.includes('-')) return true
-	const ctor = customElements.get(name)
-	return !!ctor && element instanceof ctor
-}
 
 /**
  * Extract attribute names from a CSS selector
@@ -433,49 +414,6 @@ const fromEvent =
 	}
 
 /**
- * Pass signals to a UIElement component
- *
- * @since 0.13.2
- * @param {PassedSignals<P, Q> | ((target: Component<Q>) => PassedSignals<P, Q>)} signals - Signals to be passed to descendent components
- * @returns {Effect<P, Component<Q>>} - Effect to be used in ancestor component
- * @throws {TypeError} if the provided signals are not an object or a provider function
- * @throws {TypeError} if the target component is not a UIElement component
- */
-const pass =
-	<P extends ComponentProps, Q extends ComponentProps>(
-		signals:
-			| PassedSignals<P, Q>
-			| ((target: Component<Q>) => PassedSignals<P, Q>),
-	): Effect<P, Component<Q>> =>
-	<E extends Component<Q>>(host: Component<P>, target: E): void => {
-		const sources = isFunction<PassedSignals<P, Q>>(signals)
-			? signals(target)
-			: signals
-		if (!isDefinedObject(sources))
-			throw new TypeError(
-				`Passed signals must be an object or a provider function`,
-			)
-		customElements
-			.whenDefined(target.localName)
-			.then(() => {
-				for (const [prop, source] of Object.entries(sources)) {
-					target.setSignal(
-						prop,
-						isString(source)
-							? host.getSignal(prop)
-							: toSignal(source),
-					)
-				}
-			})
-			.catch(error => {
-				throw new Error(
-					`Failed to pass signals to ${elementName(target)}`,
-					{ cause: error },
-				)
-			})
-	}
-
-/**
  * Read a signal property from a custom element safely after it's defined
  * Returns a function that provides the signal value with fallback until component is ready
  *
@@ -492,7 +430,7 @@ const read =
 		fallback: NonNullable<E[K]>,
 	): (() => NonNullable<E[K]>) =>
 	() => {
-		if (!source || !isUpgraded(source)) return fallback
+		if (!source || !isUpgradedComponent(source)) return fallback
 		const value = prop in source ? source[prop] : fallback
 		return value == null || value === UNSET ? fallback : value
 	}
@@ -519,14 +457,12 @@ export {
 	type ElementEventMap,
 	type ElementEventType,
 	type ValidEventName,
-	type PassedSignals,
 	fromDescendant,
 	fromDescendants,
 	fromEvent,
 	fromSelector,
 	observeSubtree,
 	on,
-	pass,
 	read,
 	selection,
 	sensor,

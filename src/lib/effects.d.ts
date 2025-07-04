@@ -4,6 +4,9 @@ type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 	| keyof P
 	| Signal<NonNullable<T>>
 	| ((element: E) => T | null | undefined)
+type PassedReactives<P extends ComponentProps, E extends Element> = {
+	[K in keyof E]?: Reactive<E[K], P, E>
+}
 type UpdateOperation = 'a' | 'c' | 'h' | 'p' | 's' | 't'
 type ElementUpdater<E extends Element, T> = {
 	op: UpdateOperation
@@ -177,8 +180,20 @@ declare const emit: <
 	type: string,
 	s: Reactive<T, P, E>,
 ) => (host: Component<P>, target?: E) => Effect<P, E>
+/**
+ * Pass reactives to a descendent element
+ *
+ * @since 0.13.2
+ * @param {PassedReactives<P, E> | ((target: E) => PassedReactives<P, E>)} reactives - Reactives to be passed to descendent element
+ * @returns {Effect<P, E>} - Effect to be used in ancestor component
+ * @throws {TypeError} If the provided signals are not an object or a provider function
+ */
+declare const pass: <P extends ComponentProps, E extends Element>(
+	reactives: PassedReactives<P, E> | ((target: E) => PassedReactives<P, E>),
+) => Effect<P, E>
 export {
 	type Reactive,
+	type PassedReactives,
 	type UpdateOperation,
 	type ElementUpdater,
 	type ElementInserter,
@@ -194,4 +209,5 @@ export {
 	setStyle,
 	dangerouslySetInnerHTML,
 	emit,
+	pass,
 }

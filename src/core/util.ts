@@ -57,8 +57,30 @@ const hasMethod = /*#__PURE__*/ <T extends object, K extends PropertyKey, R>(
  * @param {Node} node - node to check
  * @returns {boolean} - `true` if node is an element node, otherwise `false`
  */
-const isElement = (node: Node): node is Element =>
+const isElement = /*#__PURE__*/ (node: Node): node is Element =>
 	node.nodeType === Node.ELEMENT_NODE
+
+/**
+ * Check whether an element is a custom element
+ *
+ * @param {E} element - Element to check
+ * @returns {boolean} - True if the element is a custom element
+ */
+const isCustomElement = /*#__PURE__*/ <E extends Element>(
+	element: E,
+): boolean => element.localName.includes('-')
+
+/**
+ * Check whether a custom element is upgraded or a regular element
+ *
+ * @param {E} element - Element to check
+ * @returns {boolean} - True if the element is an upgraded custom element or a regular element
+ */
+const isUpgradedComponent = <E extends Element>(element: E): boolean => {
+	if (!isCustomElement(element)) return true
+	const ctor = customElements.get(element.localName)
+	return !!ctor && element instanceof ctor
+}
 
 /**
  * Return a string representation of the Element instance
@@ -67,7 +89,7 @@ const isElement = (node: Node): node is Element =>
  * @param {Element} el
  * @returns {string}
  */
-const elementName = (el: Element): string =>
+const elementName = /*#__PURE__*/ (el: Element): string =>
 	`<${el.localName}${idString(el.id)}${classString(el.classList)}>`
 
 /**
@@ -77,7 +99,7 @@ const elementName = (el: Element): string =>
  * @param {unknown} value
  * @returns {string}
  */
-const valueString = (value: unknown): string =>
+const valueString = /*#__PURE__*/ (value: unknown): string =>
 	isString(value)
 		? `"${value}"`
 		: isDefinedObject(value)
@@ -91,7 +113,7 @@ const valueString = (value: unknown): string =>
  * @param {unknown} value
  * @returns {string}
  */
-const typeString = (value: unknown): string => {
+const typeString = /*#__PURE__*/ (value: unknown): string => {
 	if (value === null) return 'null'
 	if (typeof value !== 'object') return typeof value
 	if (Array.isArray(value)) return 'Array'
@@ -126,6 +148,8 @@ export {
 	isString,
 	isDefinedObject,
 	isElement,
+	isCustomElement,
+	isUpgradedComponent,
 	log,
 	elementName,
 	valueString,

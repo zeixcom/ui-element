@@ -10,7 +10,7 @@ import { type Component, type ComponentProps } from '../component'
 
 /** @see https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md */
 
-/* === Type definitions === */
+/* === Types === */
 
 /**
  * A context key.
@@ -29,7 +29,7 @@ type UnknownContext = Context<unknown, unknown>
 /**
  * A helper type which can extract a Context value type from a Context type
  */
-type ContextType<T extends UnknownContext> = T extends Context<string, infer V>
+type ContextType<T extends UnknownContext> = T extends Context<infer _, infer V>
 	? V
 	: never
 
@@ -45,7 +45,7 @@ declare global {
 		 * A 'context-request' event can be emitted by any element which desires
 		 * a context value to be injected by an external provider.
 		 */
-		'context-request': ContextRequestEvent<Context<string, unknown>>
+		'context-request': ContextRequestEvent<Context<unknown, unknown>>
 	}
 }
 
@@ -91,7 +91,7 @@ class ContextRequestEvent<T extends UnknownContext> extends Event {
  * Provide a context for descendant component consumers
  *
  * @since 0.12.0
- * @param {Context<string, Signal<T>>[]} provided - array of contexts to provide
+ * @param {Context<K, Signal<P[K]>>[]} provided - array of contexts to provide
  * @returns {(host: Component<P>) => Cleanup} - function to add an event listener for ContextRequestEvent returning a cleanup function to remove the event listener
  */
 const provide =
@@ -99,25 +99,24 @@ const provide =
 		provided: Context<K, Signal<P[K]>>[],
 	): ((host: Component<P>) => Cleanup) =>
 	(host: Component<P>) => {
-		const listener = (e: Event) => {
-			const { context, callback } = e as ContextRequestEvent<
-				Context<K, Signal<P[K]>>
-			>
-			if (provided.includes(context) && isFunction(callback)) {
-				e.stopPropagation()
+		const listener = (e: ContextRequestEvent<UnknownContext>) => {
+			const { context, callback } = e
+			if (
+				provided.includes(context as Context<K, Signal<P[K]>>) &&
+				isFunction(callback)
+			) {
+				e.stopImmediatePropagation()
 				callback(host.getSignal(String(context)))
 			}
 		}
 		host.addEventListener(CONTEXT_REQUEST, listener)
 		return () => host.removeEventListener(CONTEXT_REQUEST, listener)
-	}
-
-/**
+	} /**
  * Consume a context value for a component.
  *
  * @since 0.13.1
- * @param {Context<string, Signal<T>>} context - context key to consume
- * @param {MaybeSignal<T>} fallback - fallback value to use if context is not provided
+ * @param {Context<K, Signal<P[K]>>} context - context key to consume
+ * @param {MaybeSignal<P[K]>} fallback - fallback value to use if context is not provided
  * @returns {(host: C) => Signal<T>} - a function that returns the consumed context signal or a signal of the fallback value
  */
 const fromContext =

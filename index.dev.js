@@ -277,7 +277,15 @@ var idString = (id) => id ? `#${id}` : "";
 var classString = (classList) => classList.length ? `.${Array.from(classList).join(".")}` : "";
 var isDefinedObject = (value) => !!value && typeof value === "object";
 var isString = (value) => typeof value === "string";
+var hasMethod = (obj, methodName) => isString(methodName) && (methodName in obj) && isFunction(obj[methodName]);
 var isElement = (node) => node.nodeType === Node.ELEMENT_NODE;
+var isCustomElement = (element) => element.localName.includes("-");
+var isUpgradedComponent = (element) => {
+  if (!isCustomElement(element))
+    return true;
+  const ctor = customElements.get(element.localName);
+  return !!ctor && element instanceof ctor;
+};
 var elementName = (el) => `<${el.localName}${idString(el.id)}${classString(el.classList)}>`;
 var valueString = (value) => isString(value) ? `"${value}"` : isDefinedObject(value) ? JSON.stringify(value) : String(value);
 var typeString = (value) => {
@@ -305,13 +313,6 @@ class CircularMutationError extends Error {
     this.name = "CircularMutationError";
   }
 }
-var isUpgraded = (element) => {
-  const name = element.localName;
-  if (!name.includes("-"))
-    return true;
-  const ctor = customElements.get(name);
-  return !!ctor && element instanceof ctor;
-};
 var extractAttributes = (selector) => {
   const attributes = new Set;
   if (selector.includes("."))
@@ -451,20 +452,8 @@ var fromEvent = (selector, type, transform, initializer) => (host) => {
   const initialValue = isFunction(initializer) ? initializer(host, source) : initializer;
   return sensor(host, source, type, transform, initialValue);
 };
-var pass = (signals) => (host, target) => {
-  const sources = isFunction(signals) ? signals(target) : signals;
-  if (!isDefinedObject(sources))
-    throw new TypeError(`Passed signals must be an object or a provider function`);
-  customElements.whenDefined(target.localName).then(() => {
-    for (const [prop, source] of Object.entries(sources)) {
-      target.setSignal(prop, isString(source) ? host.getSignal(prop) : toSignal(source));
-    }
-  }).catch((error) => {
-    throw new Error(`Failed to pass signals to ${elementName(target)}`, { cause: error });
-  });
-};
 var read = (source, prop, fallback) => () => {
-  if (!source || !isUpgraded(source))
+  if (!source || !isUpgradedComponent(source))
     return fallback;
   const value = prop in source ? source[prop] : fallback;
   return value == null || value === UNSET ? fallback : value;
@@ -653,7 +642,7 @@ var provide = (provided) => (host) => {
   const listener = (e) => {
     const { context, callback } = e;
     if (provided.includes(context) && isFunction(callback)) {
-      e.stopPropagation();
+      e.stopImmediatePropagation();
       callback(host.getSignal(String(context)));
     }
   };
@@ -948,6 +937,35 @@ var emit = (type, s) => (host, target = host) => effect(() => {
     bubbles: true
   }));
 });
+var pass = (reactives) => (host, target) => {
+  const sources = isFunction(reactives) ? reactives(target) : reactives;
+  if (!isDefinedObject(sources))
+    throw new TypeError(`Passed signals must be an object or a provider function`);
+  const setProperties = effect(() => {
+    for (const [prop, source] of Object.entries(sources)) {
+      let value;
+      try {
+        value = resolveReactive(source, host, target);
+      } catch (error) {
+        throw new Error(`Failed to resolve signal ${prop} for ${elementName(target)}`, { cause: error });
+      }
+      if (value == null || value === RESET)
+        continue;
+      target[prop] = value;
+    }
+  });
+  if (!isCustomElement(target))
+    return setProperties();
+  customElements.whenDefined(target.localName).then(() => {
+    if (!hasMethod(target, "setSignal"))
+      return setProperties();
+    for (const [prop, source] of Object.entries(sources)) {
+      target.setSignal(prop, isString(source) ? host.getSignal(source) : toSignal(source));
+    }
+  }).catch((error) => {
+    throw new Error(`Failed to pass signals to ${elementName(target)}`, { cause: error });
+  });
+};
 export {
   updateElement,
   toggleClass,
