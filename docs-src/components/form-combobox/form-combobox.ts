@@ -1,12 +1,13 @@
 import {
 	type Component,
+	type Computed,
 	RESET,
 	UNSET,
 	batch,
 	component,
 	effect,
+	fromSelector,
 	on,
-	selection,
 	setAttribute,
 	setProperty,
 	setText,
@@ -43,10 +44,9 @@ export default component<FormComboboxProps>(
 		const focusIndex = state(-1)
 		const filterText = state('')
 		const showPopup = state(false)
-		const options = selection<HTMLLIElement>(
-			el,
+		const options = fromSelector<HTMLLIElement>(
 			'[role="option"]:not([hidden])',
-		)
+		)(el) as Computed<HTMLLIElement[]>
 		const isExpanded = () => mode.get() === 'editing' && showPopup.get()
 
 		// Internal function

@@ -8,7 +8,7 @@
 
 > **updateElement**\<`P`, `T`, `E`\>(`s`, `updater`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:111](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/effects.ts#L111)
+Defined in: [src/lib/effects.ts:121](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L121)
 
 Effect for setting properties of a target element according to a given Reactive
 
@@ -32,17 +32,19 @@ Effect for setting properties of a target element according to a given Reactive
 
 [`Reactive`](../type-aliases/Reactive.md)\<`T`, `P`, `E`\>
 
-state bound to the element property
+Reactive bound to the element property
 
 ### updater
 
 [`ElementUpdater`](../type-aliases/ElementUpdater.md)\<`E`, `T`\>
 
-updater object containing key, read, update, and delete methods
+Updater object containing key, read, update, and delete methods
 
 ## Returns
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+
+Effect function that updates the element properties
 
 ## Since
 

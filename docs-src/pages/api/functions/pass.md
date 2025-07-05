@@ -6,11 +6,11 @@
 
 # Function: pass()
 
-> **pass**\<`P`, `Q`\>(`signals`): [`Effect`](../type-aliases/Effect.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`Q`\>\>
+> **pass**\<`P`, `E`\>(`reactives`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/core/dom.ts:445](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L445)
+Defined in: [src/lib/effects.ts:572](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L572)
 
-Pass signals to a UIElement component
+Pass reactives to a descendent element
 
 ## Type Parameters
 
@@ -18,23 +18,23 @@ Pass signals to a UIElement component
 
 `P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
 
-### Q
+### E
 
-`Q` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
+`E` *extends* `Element`
 
 ## Parameters
 
-### signals
+### reactives
 
-Signals to be passed to descendent components
+Reactives to be passed to descendent element
 
-[`PassedSignals`](../type-aliases/PassedSignals.md)\<`P`, `Q`\> | (`target`) => [`PassedSignals`](../type-aliases/PassedSignals.md)\<`P`, `Q`\>
+[`PassedReactives`](../type-aliases/PassedReactives.md)\<`P`, `E`\> | (`target`) => [`PassedReactives`](../type-aliases/PassedReactives.md)\<`P`, `E`\>
 
 ## Returns
 
-[`Effect`](../type-aliases/Effect.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`Q`\>\>
+[`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-- Effect to be used in ancestor component
+An effect function that passes the reactives to the descendent element
 
 ## Since
 
@@ -42,8 +42,4 @@ Signals to be passed to descendent components
 
 ## Throws
 
-if the provided signals are not an object or a provider function
-
-## Throws
-
-if the target component is not a UIElement component
+If the provided signals are not an object or a provider function

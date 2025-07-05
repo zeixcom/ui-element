@@ -8,7 +8,7 @@
 
 > **SelectorFunctions**\<`P`\> = `object`
 
-Defined in: [src/component.ts:91](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/component.ts#L91)
+Defined in: [src/component.ts:91](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/component.ts#L91)
 
 ## Type Parameters
 
@@ -22,7 +22,7 @@ Defined in: [src/component.ts:91](https://github.com/zeixcom/ui-element/blob/1b1
 
 > **all**: \<`E`, `K`\>(`selector`, ...`fns`) => (`host`) => [`Cleanup`](Cleanup.md)
 
-Defined in: [src/component.ts:96](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/component.ts#L96)
+Defined in: [src/component.ts:96](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/component.ts#L96)
 
 #### Type Parameters
 
@@ -64,7 +64,7 @@ Defined in: [src/component.ts:96](https://github.com/zeixcom/ui-element/blob/1b1
 
 > **first**: \<`E`, `K`\>(`selector`, ...`fns`) => (`host`) => [`Cleanup`](Cleanup.md) \| `void`
 
-Defined in: [src/component.ts:92](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/component.ts#L92)
+Defined in: [src/component.ts:92](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/component.ts#L92)
 
 #### Type Parameters
 

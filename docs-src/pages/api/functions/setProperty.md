@@ -8,7 +8,7 @@
 
 > **setProperty**\<`P`, `K`, `E`\>(`key`, `s`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:311](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/effects.ts#L311)
+Defined in: [src/lib/effects.ts:323](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L323)
 
 Set property of an element
 
@@ -32,17 +32,19 @@ Set property of an element
 
 `K`
 
-name of property to be set
+Name of property to be set
 
 ### s
 
 [`Reactive`](../type-aliases/Reactive.md)\<`E`\[`K`\], `P`, `E`\> = `...`
 
-state bound to the property value
+Reactive bound to the property value
 
 ## Returns
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+
+An effect function that sets the property of the element
 
 ## Since
 

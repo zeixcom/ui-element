@@ -6,22 +6,6 @@
 	</head>
 	<body>
 		<div class="test-element">Content</div>
-		<div id="host">
-			<div id="test-on-function"></div>
-			<div id="test-on-provider"></div>
-			<div id="test-on-invalid"></div>
-		</div>
-		<child-component id="orphan">
-			<h1>Hello from Server</h1>
-			<p>Text from Server</p>
-		</child-component>
-		<parent-component id="parent" heading="Hello from Attribute">
-			<child-component id="child">
-				<h1>Hello from Server</h1>
-				<p>Text from Server</p>
-			</child-component>
-			<invalid-component id="invalid"></invalid-component>
-		</parent-component>
 		<read-component id="read" value="test-value"></read-component>
 		<test-signal-producers-integration>
 			<div class="item" data-value="10">Item 1</div>
@@ -43,11 +27,7 @@
 				fromDescendant,
 				fromEvent,
 				fromSelector,
-				read,
 				on,
-				pass,
-				selection,
-				sensor,
 				setText,
 				state,
 			} from '../index.dev.js'
@@ -58,33 +38,6 @@
 			const microtask = async () => new Promise(queueMicrotask)
 			const normalizeText = text => text.replace(/\s+/g, ' ').trim()
 
-			component(
-				'child-component',
-				{
-					heading: asString(RESET),
-					text: asString(RESET),
-				},
-				(_, { first }) => [
-					first('h1', setText('heading')),
-					first('p', setText('text')),
-				],
-			)
-
-			component(
-				'parent-component',
-				{
-					heading: asString(RESET),
-				},
-				(el, { first }) => [
-					first(
-						'child-component',
-						pass({
-							heading: 'heading',
-							text: () => el.heading.toUpperCase(),
-						}),
-					),
-				],
-			)
 			component(
 				'read-component',
 				{
@@ -125,7 +78,7 @@
 					lastInput: fromEvent(
 						'input',
 						'input',
-						(_, source) => source.value,
+						({ source }) => source.value,
 						'',
 					),
 				},
@@ -141,14 +94,14 @@
 			customElements.define('invalid-component', InvalidComponent)
 
 			runTests(() => {
-				describe('selection()', () => {
+				describe('fromSelector()', () => {
 					it('should create a signal returning an empty array for no matching elements', () => {
-						const signal = selection(document, '.nonexistent')
+						const signal = fromSelector('.nonexistent')(document)
 						assert.deepEqual(signal.get(), [])
 					})
 
 					it('should return an array of elements matching the selector', () => {
-						const signal = selection(document, '.test-element')
+						const signal = fromSelector('.test-element')(document)
 						const elements = Array.from(
 							document.querySelectorAll('.test-element'),
 						)
@@ -156,7 +109,7 @@
 					})
 
 					it('should update the signal when elements are added or removed', () => {
-						const signal = selection(document, '.test-element')
+						const signal = fromSelector('.test-element')(document)
 
 						const newElement = document.createElement('div')
 						newElement.classList.add('test-element')
@@ -174,7 +127,7 @@
 					})
 
 					it('should update the signal when matching class is added or removed', () => {
-						const signal = selection(document.body, '.test-element')
+						const signal = fromSelector('.test-element')(document)
 						const newElement = document.createElement('div')
 						document.body.appendChild(newElement)
 						let elements = Array.from(
@@ -196,7 +149,7 @@
 					})
 
 					it('should update the signal when matching id is added or removed', () => {
-						const signal = selection(document, '#test-element')
+						const signal = fromSelector('#test-element')(document)
 						const newElement = document.createElement('div')
 						document.body.appendChild(newElement)
 						let elements = Array.from(
@@ -218,7 +171,7 @@
 					})
 
 					it('should update the computed signal watching the element selection when elements are added or removed', async () => {
-						const signal = selection(document, '.test-element')
+						const signal = fromSelector('.test-element')(document)
 						const contents = computed(elements =>
 							signal.get().map(element => element.textContent),
 						)
@@ -243,7 +196,7 @@
 					})
 
 					it('should apply the effect to an updated array of elements when elements are added or removed', async () => {
-						const signal = selection(document, '.test-element')
+						const signal = fromSelector('.test-element')(document)
 
 						// Reset hidden state first
 						document
@@ -300,10 +253,9 @@
 						document.body.appendChild(container)
 
 						try {
-							const signal = selection(
-								container,
-								'div[data-test="value"].active[role="button"]',
-							)
+							const signal = fromSelector(
+								'div.active[role="button"][data-test="value"]',
+							)(container)
 
 							// Initially empty
 							assert.deepEqual(signal.get(), [])
@@ -338,10 +290,9 @@
 						document.body.appendChild(container)
 
 						try {
-							const signal = selection(
-								container,
+							const signal = fromSelector(
 								'[data-prefix^="test"]',
-							)
+							)(container)
 
 							const element1 = document.createElement('div')
 							element1.setAttribute('data-prefix', 'testing')
@@ -371,7 +322,7 @@
 						document.body.appendChild(container)
 
 						try {
-							const signal = selection(container, '.test')
+							const signal = fromSelector('.test')(container)
 
 							// Get value to create observer
 							signal.get()
@@ -393,7 +344,8 @@
 						document.body.appendChild(container)
 
 						try {
-							const signal = selection(container, '.rapid-test')
+							const signal =
+								fromSelector('.rapid-test')(container)
 							let updateCount = 0
 
 							const cleanup = effect({
@@ -438,10 +390,8 @@
 							container.appendChild(initialElement)
 
 							// Create a selection signal watching for .circular-test elements
-							const signal = selection(
-								container,
-								'.circular-test',
-							)
+							const signal =
+								fromSelector('.circular-test')(container)
 
 							let errorCaught = false
 							let effectRanCount = 0
@@ -494,416 +444,85 @@
 							container.remove()
 						}
 					})
-				})
 
-				describe('read()', () => {
-					it('should return fallback when source is null', () => {
-						const reader = read(null, 'value', 'default')
-						assert.equal(reader(), 'default')
-					})
-
-					it('should return fallback when property does not exist on source', () => {
-						const div = document.createElement('div')
-						const reader = read(div, 'value', 'fallback')
-						assert.equal(reader(), 'fallback')
-					})
-
-					it('should return property value of source element for non custom elements', () => {
-						const div = document.createElement('div')
-						div.className = 'test'
-						const reader = read(div, 'className', 'fallback')
-						assert.equal(reader(), 'test')
-					})
-
-					it('should return fallback until component is defined', async () => {
-						// Create a mock component that's not yet defined
-						const mockElement = document.createElement(
-							'undefined-component',
-						)
-
-						const reader = read(mockElement, 'value', 'fallback')
-
-						// Should return fallback initially
-						assert.equal(reader(), 'fallback')
-					})
-
-					it('should read component property after component is defined', async () => {
-						const element = document.getElementById('read')
-						const reader = read(element, 'value', 'fallback')
-
-						// Should return fallback initially
-						// assert.equal(reader(), 'fallback')
-
-						// Wait for component to be defined and upgraded
-						await customElements.whenDefined('read-component')
-
-						// Now should return component value
-						assert.equal(reader(), 'test-value')
-					})
-
-					it('should work with module-todo pattern reading input length', async () => {
-						// Simulate the module-todo pattern with form-textbox
-
-						const textbox = document.createElement('form-textbox')
-						const input = document.createElement('input')
-						textbox.appendChild(input)
-						document.body.appendChild(textbox)
-
-						try {
-							const inputLength = read(textbox, 'length', 0)
-
-							// Should return fallback initially
-							assert.equal(inputLength(), 0)
-
-							// Wait for component to be defined
-							await customElements.whenDefined('form-textbox')
-
-							// Initially should be 0
-							assert.equal(inputLength(), 0)
-
-							// Change value and test length updates
-							input.value = 'hello'
-							input.dispatchEvent(new Event('input'))
-							assert.equal(inputLength(), 5)
-
-							// Test that reader function can be used in effects
-							let effectResult = 0
-							const cleanup = effect(() => {
-								effectResult = inputLength()
-							})
-
-							await animationFrame()
-							assert.equal(effectResult, 5)
-
-							// Change value again - use setter to trigger length update
-							input.value = 'world!'
-							input.dispatchEvent(new Event('input'))
-							assert.equal(effectResult, 6)
-
-							cleanup()
-						} finally {
-							input.remove()
-						}
-					})
-
-					it('should handle component upgrade timing correctly', async () => {
-						// Test the actual timing issue that read() solves
+					it('should create a signal producer that selects elements', () => {
 						const container = document.createElement('div')
-						container.innerHTML =
-							'<timing-test-component></timing-test-component>'
+						container.innerHTML = `
+						<div class="test-item">Item 1</div>
+						<div class="test-item">Item 2</div>
+						<div class="other">Other</div>
+					`
 						document.body.appendChild(container)
 
 						try {
-							// Get element before it's defined (like querySelector in real usage)
-							const element = container.querySelector(
-								'timing-test-component',
-							)
+							const signal = fromSelector('.test-item')(container)
+							const elements = signal.get()
 
-							// Create reader before component is defined
-							const reader = read(element, 'status', 'not-ready')
-
-							// Should return fallback initially
-							assert.equal(reader(), 'not-ready')
-
-							// Now define the component
-							class TimingTestComponent extends HTMLElement {
-								constructor() {
-									super()
-									this.signals = new Map()
-									this.status = 'ready'
-								}
-
-								getSignal(prop) {
-									if (!this.signals.has(prop)) {
-										this.signals.set(prop, {
-											get: () => this[prop],
-										})
-									}
-									return this.signals.get(prop)
-								}
-							}
-
-							customElements.define(
-								'timing-test-component',
-								TimingTestComponent,
-							)
-
-							// Wait for upgrade
-							await customElements.whenDefined(
-								'timing-test-component',
-							)
-
-							// Now should return component value
-							assert.equal(reader(), 'ready')
+							assert.equal(elements.length, 2)
+							assert.equal(elements[0].textContent, 'Item 1')
+							assert.equal(elements[1].textContent, 'Item 2')
 						} finally {
 							container.remove()
 						}
 					})
-				})
 
-				describe('on()', () => {
-					it('should attach and remove an event listener', async () => {
-						const div = document.getElementById('test-on-function')
-						let called = false
-
-						const off = on('click', () => {
-							called = true
-						})({}, div)
-
-						div.click()
-						const wasCalled = called
-
-						off() // Remove the event listener
-						called = false
-						div.click()
-
-						assert.equal(wasCalled, true)
-						assert.equal(called, false)
-					})
-
-					it('should throw TypeError for invalid handler', async () => {
-						const div = document.getElementById('test-on-invalid')
-						assert.throws(() => on('click', {})({}, div), TypeError)
-					})
-
-					it('should use host as default target', async () => {
-						const host = document.getElementById('host')
-						let called = false
-
-						const off = on('click', () => {
-							called = true
-						})(host)
-
-						host.click()
-						const wasCalled = called
-
-						off() // Remove the event listener
-						called = false
-						host.click()
-
-						assert.equal(wasCalled, true)
-						assert.equal(called, false)
-					})
-
-					it('should handle multiple event types', () => {
-						const element = document.createElement('input')
-						document.body.appendChild(element) // Add to DOM for focus/blur to work
-						let focusCount = 0
-						let blurCount = 0
-
-						const cleanup1 = on('focus', () => focusCount++)(
-							null,
-							element,
-						)
-						const cleanup2 = on('blur', () => blurCount++)(
-							null,
-							element,
-						)
-
-						element.focus()
-						element.blur()
-
-						assert.equal(focusCount, 1)
-						assert.equal(blurCount, 1)
-
-						cleanup1()
-						cleanup2()
-						document.body.removeChild(element) // Clean up
-					})
-				})
-
-				describe('Orphan child component', function () {
-					it('should do nothing at all', async function () {
-						const orphanComponent =
-							document.getElementById('orphan')
-						await animationFrame()
-						const headingContent = normalizeText(
-							orphanComponent.querySelector('h1').textContent,
-						)
-						const textContent = normalizeText(
-							orphanComponent.querySelector('p').textContent,
-						)
-						assert.equal(
-							headingContent,
-							'Hello from Server',
-							'Should not change server-side rendered heading',
-						)
-						assert.equal(
-							textContent,
-							'Text from Server',
-							'Should not change server-side rendered text',
-						)
-					})
-				})
-
-				describe('Child component', function () {
-					it('should receive state from attribute of parent component', async function () {
-						const childComponent = document.getElementById('child')
-						await customElements.whenDefined(
-							childComponent.localName,
-						)
-						const headingContent =
-							childComponent.querySelector('h1').textContent
-						assert.equal(
-							headingContent,
-							'Hello from Attribute',
-							'Should have initial heading from attribute of parent component',
-						)
-					})
-
-					it('should receive derived state from attribute of parent component', async function () {
-						const childComponent = document.getElementById('child')
-						await customElements.whenDefined(
-							childComponent.localName,
-						)
-						const textContent = normalizeText(
-							childComponent.querySelector('p').textContent,
-						)
-						assert.equal(
-							textContent,
-							'Hello from Attribute'.toUpperCase(),
-							'Should have initial text derived from attribute of parent component',
-						)
-					})
-
-					it('should receive passed and derived states from changed attribute of parent component', async function () {
-						const parentComponent =
-							document.getElementById('parent')
-						const childComponent = document.getElementById('child')
-						parentComponent.setAttribute(
-							'heading',
-							'Hello from Changed Attribute',
-						)
-						await animationFrame()
-						const headingContent = normalizeText(
-							childComponent.querySelector('h1').textContent,
-						)
-						const textContent = normalizeText(
-							childComponent.querySelector('p').textContent,
-						)
-						assert.equal(
-							headingContent,
-							'Hello from Changed Attribute',
-							'Should have changed heading from attribute of parent component',
-						)
-						assert.equal(
-							textContent,
-							'Hello from Changed Attribute'.toUpperCase(),
-							'Should have changed text derived from attribute of parent component',
-						)
-					})
-
-					it('should change heading if inherited state is set', async function () {
-						const parentComponent =
-							document.getElementById('parent')
-						const childComponent = document.getElementById('child')
-						parentComponent.heading = 'Hello from State on Parent'
-						await animationFrame()
-						const headingContent =
-							childComponent.querySelector('h1').textContent
-						assert.equal(
-							headingContent,
-							'Hello from State on Parent',
-							'Should have changed heading from state of parent component',
-						)
-					})
-
-					it('should throw TypeError if signals are not an object or provider', async function () {
-						const parentComponent =
-							document.getElementById('parent')
-						const childComponent = document.getElementById('child')
-
-						assert.throws(
-							() => {
-								pass(null)(parentComponent, childComponent)
-							},
-							TypeError,
-							'Passed signals must be an object or a provider function',
-						)
-					})
-
-					it('should throw TypeError if signals are not a function', async function () {
-						const parentComponent =
-							document.getElementById('parent')
-						const invalidComponent =
-							document.getElementById('invalid')
+					it('should update when matching elements change', async () => {
+						const container = document.createElement('div')
+						container.innerHTML = `<div class="item">Item 1</div>`
+						document.body.appendChild(container)
 
 						try {
-							pass({ heading: 'heading' })(
-								parentComponent,
-								invalidComponent,
-							)
-						} catch (error) {
-							assert.equal(
-								error instanceof TypeError,
-								true,
-								'Should throw TypeError',
-							)
+							const signal = fromSelector('.item')(container)
+
+							assert.equal(signal.get().length, 1)
+
+							// Add new matching element
+							const newItem = document.createElement('div')
+							newItem.className = 'item'
+							newItem.textContent = 'Item 2'
+							container.appendChild(newItem)
+
+							await animationFrame()
+							assert.equal(signal.get().length, 2)
+
+							// Remove element
+							newItem.remove()
+							await animationFrame()
+							assert.equal(signal.get().length, 1)
+						} finally {
+							container.remove()
 						}
 					})
 
-					it('should handle Signal objects directly', async () => {
-						const host = document.querySelector('parent-component')
-						const target = document.querySelector('child-component')
-
-						const directSignal = state('Direct Signal')
+					it('should work with complex selectors', () => {
+						const container = document.createElement('div')
+						container.innerHTML = `
+						<input type="text" class="form-control" />
+						<input type="password" class="form-control" />
+						<input type="text" />
+						<textarea class="form-control"></textarea>
+					`
+						document.body.appendChild(container)
 
 						try {
-							pass({
-								heading: directSignal,
-							})(host, target)
+							const signal =
+								fromSelector('input.form-control')(container)
+							const elements = signal.get()
 
-							await customElements.whenDefined('child-component')
-							await animationFrame()
-
-							assert.equal(target.heading, 'Direct Signal')
-
-							// Test reactivity
-							directSignal.set('Updated Signal')
-							await animationFrame()
-
-							assert.equal(target.heading, 'Updated Signal')
-						} catch (error) {
-							// If pass fails, test that error handling works
-							assert.include(
-								error.message,
-								'Failed to pass signals',
-							)
+							assert.equal(elements.length, 2)
+							assert.equal(elements[0].type, 'text')
+							assert.equal(elements[1].type, 'password')
+						} finally {
+							container.remove()
 						}
 					})
 
-					it('should pass signals using function', async () => {
-						const host = document.querySelector('parent-component')
-						const target = document.querySelector('child-component')
-
-						const dynamicSignal = state('Dynamic')
-
-						try {
-							pass(targetElement => ({
-								text: dynamicSignal,
-							}))(host, target)
-
-							await customElements.whenDefined('child-component')
-							await animationFrame()
-
-							assert.equal(target.text, 'Dynamic')
-						} catch (error) {
-							// If pass fails, test that error handling works
-							assert.include(
-								error.message,
-								'Failed to pass signals',
-							)
-						}
-					})
-				})
-
-				describe('Edge Cases and Integration', () => {
 					it('should handle selection with rapidly changing DOM', async () => {
 						const container = document.createElement('div')
 						document.body.appendChild(container)
 
 						try {
-							const signal = selection(container, '.dynamic')
+							const signal = fromSelector('.dynamic')(container)
 							let lastCount = 0
 
 							const cleanup = effect({
@@ -941,7 +560,7 @@
 						document.body.appendChild(container)
 
 						try {
-							const signal = selection(container, '.clickable')
+							const signal = fromSelector('.clickable')(container)
 							let clicksReceived = 0
 
 							// Add element
@@ -980,9 +599,8 @@
 						try {
 							// Create many signals and let them go out of scope
 							for (let i = 0; i < 100; i++) {
-								const signal = selection(
+								const signal = fromSelector(`.test-${i}`)(
 									container,
-									`.test-${i}`,
 								)
 								signal.get() // Access to trigger observer creation
 							}
@@ -1000,81 +618,113 @@
 					})
 				})
 
-				describe('sensor()', () => {
-					it('should create a computed signal from event data', async () => {
-						const button = document.createElement('button')
-						button.textContent = 'Click me'
-						document.body.appendChild(button)
-
-						try {
-							const clickSignal = sensor(
-								document.body,
-								button,
-								'click',
-								(host, source, event, oldValue) => {
-									assert.equal(host, document.body)
-									assert.equal(source, button)
-									assert.instanceOf(event, MouseEvent)
-									return oldValue + 1
-								},
-								0,
-							)
-
-							// Use with a computed to ensure it behaves like a signal
-							let lastValue = 0
-							const cleanup = effect(() => {
-								lastValue = clickSignal.get()
-							})
-
-							// Should start with initial value
-							assert.equal(lastValue, 0)
-
-							// Should update when event fires
-							button.click()
-							await animationFrame()
-							assert.equal(lastValue, 1)
-
-							button.click()
-							await animationFrame()
-							assert.equal(lastValue, 2)
-
-							cleanup()
-						} finally {
-							button.remove()
-						}
+				describe('fromDescendant()', () => {
+					it('should return fallback when source is null', () => {
+						const reader = fromDescendant(
+							'.non-existent',
+							'value',
+							'default',
+						)(document.body)
+						assert.equal(reader(), 'default')
 					})
 
-					it('should handle input events with proper typing', async () => {
+					it('should return fallback when property does not exist on source', () => {
+						const container = document.createElement('div')
+						const div = document.createElement('div')
+						container.appendChild(div)
+						const reader = fromDescendant(
+							'div',
+							'value',
+							'fallback',
+						)(container)
+						assert.equal(reader(), 'fallback')
+					})
+
+					it('should return property value of source element for non custom elements', () => {
+						const container = document.createElement('div')
+						const div = document.createElement('div')
+						div.className = 'test'
+						container.appendChild(div)
+						const reader = fromDescendant(
+							'div',
+							'className',
+							'fallback',
+						)(container)
+						assert.equal(reader(), 'test')
+					})
+
+					it('should return fallback until component is defined', async () => {
+						const container = document.createElement('div')
+						// Create a mock component that's not yet defined
+						const mockElement = document.createElement(
+							'undefined-component',
+						)
+						container.appendChild(mockElement)
+						const reader = fromDescendant(
+							'undefined-component',
+							'value',
+							'fallback',
+						)(container)
+						assert.equal(reader(), 'fallback')
+					})
+
+					it('should read component property after component is defined', async () => {
+						const element = document.getElementById('read')
+						const reader = fromDescendant(
+							'#read',
+							'value',
+							'fallback',
+						)(document.body)
+
+						// Wait for component to be defined and upgraded
+						await customElements.whenDefined('read-component')
+
+						// Now should return component value
+						assert.equal(reader(), 'test-value')
+					})
+
+					it('should work with module-todo pattern reading input length', async () => {
+						// Simulate the module-todo pattern with form-textbox
+
+						const textbox = document.createElement('form-textbox')
 						const input = document.createElement('input')
-						input.type = 'text'
-						document.body.appendChild(input)
+						textbox.appendChild(input)
+						document.body.appendChild(textbox)
 
 						try {
-							const valueSignal = sensor(
-								document.body,
-								input,
-								'input',
-								(host, source, event, oldValue) => {
-									assert.instanceOf(event, Event)
-									return source.value
-								},
-								'',
-							)
+							const inputLength = fromDescendant(
+								'form-textbox',
+								'length',
+								0,
+							)(document.body)
 
-							// Use in an effect to test reactivity
-							let currentValue = ''
+							// Should return fallback initially
+							assert.equal(inputLength(), 0)
+
+							// Wait for component to be defined
+							await customElements.whenDefined('form-textbox')
+
+							// Initially should be 0
+							assert.equal(inputLength(), 0)
+
+							// Change value and test length updates
+							input.value = 'hello'
+							input.dispatchEvent(new Event('input'))
+							assert.equal(inputLength(), 5)
+
+							// Test that reader function can be used in effects
+							let effectResult = 0
 							const cleanup = effect(() => {
-								currentValue = valueSignal.get()
+								effectResult = inputLength()
 							})
 
-							assert.equal(currentValue, '')
-
-							input.value = 'hello'
-							input.dispatchEvent(
-								new Event('input', { bubbles: true }),
-							)
 							await animationFrame()
-							assert.equal(currentValue, 'hello')
+							assert.equal(effectResult, 5)
+
+							// Change value again - use setter to trigger length update
+							input.value = 'world!'
+							input.dispatchEvent(new Event('input'))
+							assert.equal(effectResult, 6)
 
 							cleanup()
 						} finally {
@@ -1082,395 +732,64 @@
 						}
 					})
 
-					it('should work with computed signals', async () => {
-						const button = document.createElement('button')
-						document.body.appendChild(button)
+					it('should handle component upgrade timing correctly', async () => {
+						// Test the actual timing issue that fromDescendant() solves
+						const container = document.createElement('div')
+						container.innerHTML =
+							'<timing-test-component></timing-test-component>'
+						document.body.appendChild(container)
 
 						try {
-							const clickSignal = sensor(
-								document.body,
-								button,
-								'click',
-								(_, __, ___, oldValue) => oldValue + 1,
-								0,
+							// Get element before it's defined (like querySelector in real usage)
+							const element = container.querySelector(
+								'timing-test-component',
 							)
 
-							const doubledSignal = computed(
-								() => clickSignal.get() * 2,
-							)
-
-							// Test initial computed value
-							assert.equal(doubledSignal.get(), 0)
-
-							// Test that clicking updates the computed
-							button.click()
-							await animationFrame()
-							assert.equal(doubledSignal.get(), 2) // 1 * 2
-						} finally {
-							button.remove()
-						}
-					})
-
-					it('should cleanup event listeners when no watchers remain', async () => {
-						const button = document.createElement('button')
-						button.id = 'cleanup-test-button'
-						document.body.appendChild(button)
-
-						try {
-							let eventCount = 0
-							const clickSignal = sensor(
-								document.body,
-								button,
-								'click',
-								() => ++eventCount,
-								0,
-							)
-
-							// Access signal in an effect - creates watcher
-							let effectRanCount = 0
-							const cleanup = effect(() => {
-								clickSignal.get()
-								effectRanCount++
-							})
-
-							// Wait for initial effect
-							await animationFrame()
-
-							// Click should trigger the effect
-							button.click()
-							await animationFrame()
-							assert.equal(effectRanCount, 2) // initial + after click
-
-							// Remove the watcher by cleaning up the effect
-							cleanup()
-
-							// Next click should not trigger the effect and remove listener
-							button.click()
-							await animationFrame()
-							assert.equal(effectRanCount, 2) // initial + after click
-
-							// Reset event count to test if listener is removed
-							eventCount = 0
-
-							// Click should not trigger the effect anymore
-							button.click()
-
-							// Event count should remain 0 if cleanup worked
-							assert.equal(eventCount, 0)
-						} finally {
-							button.remove()
-						}
-					})
-				})
-
-				describe('fromSelector()', () => {
-					it('should create a signal producer that selects elements', () => {
-						const container = document.createElement('div')
-						container.innerHTML = `
-						<div class="test-item">Item 1</div>
-						<div class="test-item">Item 2</div>
-						<div class="other">Other</div>
-					`
-						document.body.appendChild(container)
-
-						try {
-							const producer = fromSelector('.test-item')
-							const signal = producer(container)
-							const elements = signal.get()
-
-							assert.equal(elements.length, 2)
-							assert.equal(elements[0].textContent, 'Item 1')
-							assert.equal(elements[1].textContent, 'Item 2')
-						} finally {
-							container.remove()
-						}
-					})
-
-					it('should update when matching elements change', async () => {
-						const container = document.createElement('div')
-						container.innerHTML = `<div class="item">Item 1</div>`
-						document.body.appendChild(container)
-
-						try {
-							const producer = fromSelector('.item')
-							const signal = producer(container)
-
-							assert.equal(signal.get().length, 1)
-
-							// Add new matching element
-							const newItem = document.createElement('div')
-							newItem.className = 'item'
-							newItem.textContent = 'Item 2'
-							container.appendChild(newItem)
-
-							await animationFrame()
-							assert.equal(signal.get().length, 2)
-
-							// Remove element
-							newItem.remove()
-							await animationFrame()
-							assert.equal(signal.get().length, 1)
-						} finally {
-							container.remove()
-						}
-					})
-
-					it('should work with complex selectors', () => {
-						const container = document.createElement('div')
-						container.innerHTML = `
-						<input type="text" class="form-control" />
-						<input type="password" class="form-control" />
-						<input type="text" />
-						<textarea class="form-control"></textarea>
-					`
-						document.body.appendChild(container)
-
-						try {
-							const producer = fromSelector('input.form-control')
-							const signal = producer(container)
-							const elements = signal.get()
-
-							assert.equal(elements.length, 2)
-							assert.equal(elements[0].type, 'text')
-							assert.equal(elements[1].type, 'password')
-						} finally {
-							container.remove()
-						}
-					})
-				})
-
-				describe('fromDescendants()', () => {
-					it('should reduce child elements to a single value', () => {
-						const container = document.createElement('div')
-						container.innerHTML = `
-						<div data-value="10">Item 1</div>
-						<div data-value="20">Item 2</div>
-						<div data-value="30">Item 3</div>
-					`
-						document.body.appendChild(container)
-
-						try {
-							const producer = fromDescendants(
-								'[data-value]',
-								(total, element) =>
-									total
-									+ parseInt(element.dataset.value || '0'),
-								0,
+							// Create reader before component is defined
+							const reader = fromDescendant(
+								'timing-test-component',
+								'status',
+								'not-ready',
 							)(container)
-							assert.equal(producer(), 60) // 10 + 20 + 30
-						} finally {
-							container.remove()
-						}
-					})
 
-					it('should update when child elements change', async () => {
-						const container = document.createElement('div')
-						container.innerHTML = `
-						<div data-count="1">Item 1</div>
-						<div data-count="1">Item 2</div>
-					`
-						document.body.appendChild(container)
+							// Should return fallback initially
+							assert.equal(reader(), 'not-ready')
 
-						try {
-							const producer = fromDescendants(
-								'[data-count]',
-								(total, element) =>
-									total
-									+ parseInt(element.dataset.count || '0'),
-								0,
-							)(container)
-							assert.equal(producer(), 2)
+							// Now define the component
+							class TimingTestComponent extends HTMLElement {
+								constructor() {
+									super()
+									this.signals = new Map()
+									this.status = 'ready'
+								}
 
-							// Add new element
-							const newItem = document.createElement('div')
-							newItem.dataset.count = '3'
-							newItem.textContent = 'Item 3'
-							container.appendChild(newItem)
+								getSignal(prop) {
+									if (!this.signals.has(prop)) {
+										this.signals.set(prop, {
+											get: () => this[prop],
+										})
+									}
+									return this.signals.get(prop)
+								}
+							}
 
-							await animationFrame()
-							assert.equal(producer(), 5) // 1 + 1 + 3
-						} finally {
-							container.remove()
-						}
-					})
-
-					it('should work with complex reducers', () => {
-						const container = document.createElement('div')
-						container.innerHTML = `
-						<input type="checkbox" checked />
-						<input type="checkbox" />
-						<input type="checkbox" checked />
-						<input type="radio" />
-					`
-						document.body.appendChild(container)
-
-						try {
-							const producer = fromDescendants(
-								'input[type="checkbox"]',
-								(acc, input) => ({
-									total: acc.total + 1,
-									checked:
-										acc.checked + (input.checked ? 1 : 0),
-								}),
-								{ total: 0, checked: 0 },
-							)(container)
-							const result = producer()
-
-							assert.equal(result.total, 3)
-							assert.equal(result.checked, 2)
-						} finally {
-							container.remove()
-						}
-					})
-				})
-
-				describe('fromEvent()', () => {
-					it('should create a signal producer from input events', async () => {
-						const container = document.createElement('div')
-						container.innerHTML = `<input type="text" id="test-input" />`
-						document.body.appendChild(container)
-
-						try {
-							const producer = fromEvent(
-								'#test-input',
-								'input',
-								(host, source, event) => {
-									assert.equal(host, container)
-									assert.equal(source.id, 'test-input')
-									assert.instanceOf(event, Event)
-									return source.value
-								},
-								'',
-							)
-							const signal = producer(container)
-
-							// Use in effect to test reactivity
-							let currentValue = ''
-							const cleanup = effect(() => {
-								currentValue = signal.get()
-							})
-
-							assert.equal(currentValue, '')
-
-							const input = container.querySelector('#test-input')
-							input.value = 'hello'
-							input.dispatchEvent(
-								new Event('input', { bubbles: true }),
+							customElements.define(
+								'timing-test-component',
+								TimingTestComponent,
 							)
 
-							assert.equal(currentValue, 'hello')
-
-							cleanup()
-						} finally {
-							container.remove()
-						}
-					})
-
-					it('should throw error when element not found', () => {
-						const container = document.createElement('div')
-						document.body.appendChild(container)
-
-						try {
-							const producer = fromEvent(
-								'.nonexistent',
-								'click',
-								() => 'clicked',
-								'',
+							// Wait for upgrade
+							await customElements.whenDefined(
+								'timing-test-component',
 							)
 
-							assert.throws(() => {
-								producer(container)
-							}, /Element not found for selector/)
+							// Now should return component value
+							assert.equal(reader(), 'ready')
 						} finally {
 							container.remove()
 						}
 					})
 
-					it('should work with function initializers', async () => {
-						const container = document.createElement('div')
-						container.innerHTML = `<button id="counter">Count: 0</button>`
-						document.body.appendChild(container)
-
-						try {
-							const producer = fromEvent(
-								'#counter',
-								'click',
-								(host, source, event, oldValue) => oldValue + 1,
-								(host, source) => {
-									assert.equal(host, container)
-									assert.equal(source.id, 'counter')
-									return 5 // Start from 5
-								},
-							)
-							const signal = producer(container)
-
-							// Use in effect to test reactivity
-							let currentValue = 0
-							const cleanup = effect(() => {
-								currentValue = signal.get()
-							})
-
-							assert.equal(currentValue, 5)
-
-							const button = container.querySelector('#counter')
-							button.click()
-
-							assert.equal(currentValue, 6)
-
-							cleanup()
-						} finally {
-							container.remove()
-						}
-					})
-
-					it('should handle form events', async () => {
-						const container = document.createElement('div')
-						container.innerHTML = `
-						<form>
-							<input type="text" name="username" value="john" />
-						</form>
-					`
-						document.body.appendChild(container)
-
-						try {
-							const producer = fromEvent(
-								'form',
-								'submit',
-								(host, source, event) => {
-									event.preventDefault()
-									event.stopPropagation()
-									return new FormData(source)
-								},
-								null,
-							)
-							const signal = producer(container)
-
-							// Use in effect to test reactivity
-							let formData = null
-							const cleanup = effect(() => {
-								formData = signal.get()
-							})
-
-							assert.equal(formData, null)
-
-							const form = container.querySelector('form')
-							const submitEvent = new Event('submit', {
-								bubbles: true,
-								cancelable: true,
-							})
-							form.dispatchEvent(submitEvent)
-
-							assert.instanceOf(formData, FormData)
-							assert.equal(formData.get('username'), 'john')
-
-							cleanup()
-						} finally {
-							container.remove()
-						}
-					})
-				})
-
-				describe('fromDescendant()', () => {
 					it('should read signals from a descendant component', async () => {
 						// Create a mock child component
 						class MockChild1 extends HTMLElement {
@@ -1578,7 +897,319 @@
 					})
 				})
 
-				describe('Integration: Signal Producers in Components', () => {
+				describe('fromEvent()', () => {
+					it('should create a computed signal from event data', async () => {
+						const button = document.createElement('button')
+						button.className = 'click-me'
+						button.textContent = 'Click me'
+						document.body.appendChild(button)
+
+						try {
+							const clickSignal = fromEvent(
+								'button.click-me',
+								'click',
+								({ event, host, source, value }) => {
+									assert.equal(host, document.body)
+									assert.equal(source, button)
+									assert.instanceOf(event, MouseEvent)
+									return value + 1
+								},
+								0,
+							)(document.body)
+
+							// Use with a computed to ensure it behaves like a signal
+							let lastValue = 0
+							const cleanup = effect(() => {
+								lastValue = clickSignal.get()
+							})
+
+							// Should start with initial value
+							assert.equal(lastValue, 0)
+
+							// Should update when event fires
+							button.click()
+							await animationFrame()
+							assert.equal(lastValue, 1)
+
+							button.click()
+							await animationFrame()
+							assert.equal(lastValue, 2)
+
+							cleanup()
+						} finally {
+							button.remove()
+						}
+					})
+
+					it('should handle input events with proper typing', async () => {
+						const input = document.createElement('input')
+						input.type = 'text'
+						document.body.appendChild(input)
+
+						try {
+							const valueSignal = fromEvent(
+								'input',
+								'input',
+								({ event, source }) => {
+									assert.instanceOf(event, Event)
+									return source.value
+								},
+								'',
+							)(document.body)
+
+							// Use in an effect to test reactivity
+							let currentValue = ''
+							const cleanup = effect(() => {
+								currentValue = valueSignal.get()
+							})
+
+							assert.equal(currentValue, '')
+
+							input.value = 'hello'
+							input.dispatchEvent(
+								new Event('input', { bubbles: true }),
+							)
+							await animationFrame()
+							assert.equal(currentValue, 'hello')
+
+							cleanup()
+						} finally {
+							input.remove()
+						}
+					})
+
+					it('should work with computed signals', async () => {
+						const container = document.createElement('div')
+						const button = document.createElement('button')
+						container.append(button)
+						document.body.appendChild(container)
+
+						try {
+							const clickSignal = fromEvent(
+								'button',
+								'click',
+								({ value }) => value + 1,
+								0,
+							)(container)
+
+							const doubledSignal = computed(
+								() => clickSignal.get() * 2,
+							)
+
+							// Test initial computed value
+							assert.equal(doubledSignal.get(), 0)
+
+							// Test that clicking updates the computed
+							button.click()
+							await animationFrame()
+							assert.equal(doubledSignal.get(), 2) // 1 * 2
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should cleanup event listeners when no watchers remain', async () => {
+						const container = document.createElement('div')
+						const button = document.createElement('button')
+						button.id = 'cleanup-test-button'
+						container.appendChild(button)
+						document.body.appendChild(container)
+
+						try {
+							let eventCount = 0
+							const clickSignal = fromEvent(
+								'#cleanup-test-button',
+								'click',
+								() => ++eventCount,
+								0,
+							)(container)
+
+							// Access signal in an effect - creates watcher
+							let effectRanCount = 0
+							const cleanup = effect(() => {
+								clickSignal.get()
+								effectRanCount++
+							})
+
+							// Wait for initial effect
+							await animationFrame()
+
+							// Click should trigger the effect
+							button.click()
+							await animationFrame()
+							assert.equal(effectRanCount, 2) // initial + after click
+
+							// Remove the watcher by cleaning up the effect
+							cleanup()
+
+							// Next click should not trigger the effect and remove listener
+							button.click()
+							await animationFrame()
+							assert.equal(effectRanCount, 2) // initial + after click
+
+							// Reset event count to test if listener is removed
+							eventCount = 0
+
+							// Click should not trigger the effect anymore
+							button.click()
+
+							// Event count should remain 0 if cleanup worked
+							assert.equal(eventCount, 0)
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should create a signal producer from input events', async () => {
+						const container = document.createElement('div')
+						container.innerHTML = `<input type="text" id="test-input" />`
+						document.body.appendChild(container)
+
+						try {
+							const signal = fromEvent(
+								'#test-input',
+								'input',
+								({ event, host, source }) => {
+									assert.equal(host, container)
+									assert.equal(source.id, 'test-input')
+									assert.instanceOf(event, Event)
+									return source.value
+								},
+								'',
+							)(container)
+
+							// Use in effect to test reactivity
+							let currentValue = ''
+							const cleanup = effect(() => {
+								currentValue = signal.get()
+							})
+
+							assert.equal(currentValue, '')
+
+							const input = container.querySelector('#test-input')
+							input.value = 'hello'
+							input.dispatchEvent(
+								new Event('input', { bubbles: true }),
+							)
+
+							assert.equal(currentValue, 'hello')
+
+							cleanup()
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should do nothing when element not found', () => {
+						const container = document.createElement('div')
+						document.body.appendChild(container)
+
+						try {
+							const signal = fromEvent(
+								'.nonexistent',
+								'click',
+								() => 'clicked',
+								'',
+							)(container)
+
+							// Use in effect to test reactivity
+							let currentValue = ''
+							const cleanup = effect(() => {
+								currentValue = signal.get()
+							})
+
+							assert.equal(currentValue, '')
+
+							cleanup()
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should work with function initializers', async () => {
+						const container = document.createElement('div')
+						container.innerHTML = `<button id="counter">Count: 0</button>`
+						document.body.appendChild(container)
+
+						try {
+							const signal = fromEvent(
+								'#counter',
+								'click',
+								({ value }) => value + 1,
+								host => {
+									assert.equal(host, container)
+									assert.equal(
+										host.querySelector('button').id,
+										'counter',
+									)
+									return 5 // Start from 5
+								},
+							)(container)
+
+							// Use in effect to test reactivity
+							let currentValue = 0
+							const cleanup = effect(() => {
+								currentValue = signal.get()
+							})
+
+							assert.equal(currentValue, 5)
+
+							const button = container.querySelector('#counter')
+							button.click()
+
+							assert.equal(currentValue, 6)
+
+							cleanup()
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should handle form events', async () => {
+						const container = document.createElement('div')
+						container.innerHTML = `
+						<form>
+							<input type="text" name="username" value="john" />
+						</form>
+					`
+						document.body.appendChild(container)
+
+						try {
+							const signal = fromEvent(
+								'form',
+								'submit',
+								({ event, source }) => {
+									event.preventDefault()
+									event.stopPropagation()
+									return new FormData(source)
+								},
+								null,
+							)(container)
+
+							// Use in effect to test reactivity
+							let formData = null
+							const cleanup = effect(() => {
+								formData = signal.get()
+							})
+
+							assert.equal(formData, null)
+
+							const form = container.querySelector('form')
+							const submitEvent = new Event('submit', {
+								bubbles: true,
+								cancelable: true,
+							})
+							form.dispatchEvent(submitEvent)
+
+							assert.instanceOf(formData, FormData)
+							assert.equal(formData.get('username'), 'john')
+
+							cleanup()
+						} finally {
+							container.remove()
+						}
+					})
+
 					it('should reproduce fromEvent component issue', async () => {
 						// This test reproduces the issue where fromEvent properties
 						// in components don't update when events are dispatched
@@ -1596,24 +1227,19 @@
 							const host =
 								container.querySelector('.test-component')
 
-							// Create fromEvent producers like in form-textbox component
-							const lengthProducer = fromEvent(
+							// Create signals
+							const lengthSignal = fromEvent(
 								'#comp-input',
 								'input',
-								(host, source, event, oldValue) =>
-									source.value.length,
+								({ source }) => source.value.length,
 								0,
-							)
-							const valueProducer = fromEvent(
+							)(host)
+							const valueSignal = fromEvent(
 								'#comp-input',
 								'change',
-								(host, source, event, oldValue) => source.value,
+								({ source }) => source.value,
 								'',
-							)
-
-							// Create signals
-							const lengthSignal = lengthProducer(host)
-							const valueSignal = valueProducer(host)
+							)(host)
 
 							// Track updates (this simulates component property access)
 							let lengthValue = 0
@@ -1701,6 +1327,318 @@
 						}
 					})
 
+					it('should handle custom events', async () => {
+						const container = document.createElement('div')
+						container.innerHTML = `<div class="custom-target">Custom Event Target</div>`
+						document.body.appendChild(container)
+
+						try {
+							const signal = fromEvent(
+								'.custom-target',
+								'myCustomEvent',
+								({ event, source }) => {
+									assert.equal(
+										source.className,
+										'custom-target',
+									)
+									assert.equal(event.type, 'myCustomEvent')
+									assert.equal(
+										event.detail.message,
+										'Hello from custom event',
+									)
+									return event.detail.value
+								},
+								'initial',
+							)(container)
+
+							// Use in effect to test reactivity
+							let currentValue = 'initial'
+							const cleanup = effect(() => {
+								currentValue = signal.get()
+							})
+
+							assert.equal(currentValue, 'initial')
+
+							// Dispatch custom event
+							const target =
+								container.querySelector('.custom-target')
+							const customEvent = new CustomEvent(
+								'myCustomEvent',
+								{
+									detail: {
+										message: 'Hello from custom event',
+										value: 'custom-value',
+									},
+									bubbles: true,
+								},
+							)
+							target.dispatchEvent(customEvent)
+
+							await microtask()
+							assert.equal(currentValue, 'custom-value')
+
+							cleanup()
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should provide type safety with ElementFromSelector', async () => {
+						// This test demonstrates that TypeScript now knows about element types
+						const container = document.createElement('div')
+						container.innerHTML = `
+							<input type="text" value="hello" />
+							<button type="button">Click me</button>
+						`
+						document.body.appendChild(container)
+
+						try {
+							// TypeScript should infer that elements are HTMLInputElement[]
+							const inputSignal = fromSelector('input')(container)
+							const inputs = inputSignal.get()
+
+							// This should work because TypeScript knows inputs are HTMLInputElement[]
+							assert.equal(inputs.length, 1)
+							assert.equal(inputs[0].value, 'hello')
+							assert.equal(inputs[0].type, 'text')
+
+							// Test with fromDescendants - should know about input properties
+							const totalLength = fromDescendants(
+								'input',
+								(sum, input) => {
+									// TypeScript should know 'input' has .value property
+									return sum + input.value.length
+								},
+								0,
+							)(container)()
+
+							assert.equal(totalLength, 5) // "hello".length
+
+							// Test with fromEvent - should know about button elements
+							const clickSignal = fromEvent(
+								'button',
+								'click',
+								({ source }) => {
+									// TypeScript should know 'source' is HTMLButtonElement
+									return source.textContent || ''
+								},
+								'',
+							)(container)
+
+							let lastValue = ''
+							const cleanup = effect(() => {
+								lastValue = clickSignal.get()
+							})
+
+							const button = container.querySelector('button')
+							button.click()
+							await microtask()
+
+							assert.equal(lastValue, 'Click me')
+							cleanup()
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should provide UIElement component type safety', async () => {
+						// This test demonstrates TypeScript knows about UIElement component methods
+						// when components declare their HTMLElementTagNameMap extension
+
+						// Create a mock UIElement component for testing
+						class MockUIComponent extends HTMLElement {
+							#value = 42
+							#signals = new Map()
+
+							get value() {
+								return this.#value
+							}
+							set value(v) {
+								this.#value = v
+							}
+
+							getSignal(key) {
+								if (!this.#signals.has(key)) {
+									this.#signals.set(key, {
+										get: () => this[key],
+									})
+								}
+								return this.#signals.get(key)
+							}
+
+							setSignal(key, signal) {
+								this.#signals.set(key, signal)
+							}
+						}
+
+						customElements.define(
+							'mock-ui-component',
+							MockUIComponent,
+						)
+
+						const container = document.createElement('div')
+						container.innerHTML = `
+							<mock-ui-component></mock-ui-component>
+							<mock-ui-component></mock-ui-component>
+						`
+						document.body.appendChild(container)
+
+						try {
+							// Test fromSelector with UIElement components
+							const components =
+								fromSelector('mock-ui-component')(
+									container,
+								).get()
+							assert.equal(components.length, 2)
+							// In TypeScript, these would have full UIElement component methods
+							assert.equal(components[0].value, 42)
+							assert.equal(
+								typeof components[0].getSignal,
+								'function',
+							)
+
+							// Test fromDescendants with UIElement components
+							const totalValue = fromDescendants(
+								'mock-ui-component',
+								(sum, component) => {
+									// TypeScript would know 'component' has UIElement methods
+									return sum + component.value
+								},
+								0,
+							)(container)()
+
+							assert.equal(totalValue, 84) // 42 + 42
+
+							// Test fromDescendant with UIElement component
+							const valueReader = fromDescendant(
+								'mock-ui-component',
+								'value',
+								0,
+							)(container)
+
+							assert.equal(valueReader(), 42)
+
+							// Test fromEvent with UIElement component
+							const eventSignal = fromEvent(
+								'mock-ui-component',
+								'customEvent',
+								({ source }) => {
+									// TypeScript would know 'source' has UIElement methods
+									return source.value * 2
+								},
+								0,
+							)(container)
+
+							let lastValue = 0
+							const cleanup = effect(() => {
+								lastValue = eventSignal.get()
+							})
+
+							// Dispatch custom event
+							const component =
+								container.querySelector('mock-ui-component')
+							component.dispatchEvent(
+								new CustomEvent('customEvent', {
+									bubbles: true,
+								}),
+							)
+							await microtask()
+
+							assert.equal(lastValue, 84) // 42 * 2
+
+							cleanup()
+						} finally {
+							container.remove()
+						}
+					})
+				})
+
+				describe('fromDescendants()', () => {
+					it('should reduce child elements to a single value', () => {
+						const container = document.createElement('div')
+						container.innerHTML = `
+						<div data-value="10">Item 1</div>
+						<div data-value="20">Item 2</div>
+						<div data-value="30">Item 3</div>
+					`
+						document.body.appendChild(container)
+
+						try {
+							const producer = fromDescendants(
+								'[data-value]',
+								(total, element) =>
+									total
+									+ parseInt(element.dataset.value || '0'),
+								0,
+							)(container)
+							assert.equal(producer(), 60) // 10 + 20 + 30
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should update when child elements change', async () => {
+						const container = document.createElement('div')
+						container.innerHTML = `
+						<div data-count="1">Item 1</div>
+						<div data-count="1">Item 2</div>
+					`
+						document.body.appendChild(container)
+
+						try {
+							const producer = fromDescendants(
+								'[data-count]',
+								(total, element) =>
+									total
+									+ parseInt(element.dataset.count || '0'),
+								0,
+							)(container)
+							assert.equal(producer(), 2)
+
+							// Add new element
+							const newItem = document.createElement('div')
+							newItem.dataset.count = '3'
+							newItem.textContent = 'Item 3'
+							container.appendChild(newItem)
+
+							await animationFrame()
+							assert.equal(producer(), 5) // 1 + 1 + 3
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should work with complex reducers', () => {
+						const container = document.createElement('div')
+						container.innerHTML = `
+						<input type="checkbox" checked />
+						<input type="checkbox" />
+						<input type="checkbox" checked />
+						<input type="radio" />
+					`
+						document.body.appendChild(container)
+
+						try {
+							const producer = fromDescendants(
+								'input[type="checkbox"]',
+								(acc, input) => ({
+									total: acc.total + 1,
+									checked:
+										acc.checked + (input.checked ? 1 : 0),
+								}),
+								{ total: 0, checked: 0 },
+							)(container)
+							const result = producer()
+
+							assert.equal(result.total, 3)
+							assert.equal(result.checked, 2)
+						} finally {
+							container.remove()
+						}
+					})
+				})
+
+				describe('Integration: Signal Producers in Components', () => {
 					it('should work together in a component setup', async () => {
 						const name = 'test-signal-producers-integration'
 						const container = document.querySelector(name)

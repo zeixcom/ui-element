@@ -8,7 +8,7 @@
 
 > **asJSON**\<`T`\>(`fallback`): [`AttributeParser`](../type-aliases/AttributeParser.md)\<`T`\>
 
-Defined in: [src/lib/parsers.ts:104](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/parsers.ts#L104)
+Defined in: [src/lib/parsers.ts:104](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/parsers.ts#L104)
 
 Parse an attribute as a JSON serialized object with a fallback
 

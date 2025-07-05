@@ -1,5 +1,6 @@
 import { type Signal } from '@zeix/cause-effect'
-import { type Component, type ComponentProps, type Effect } from '../component'
+import { type ComponentProps, type Effect } from '../component'
+import type { HTMLElementEventType, ValidEventName } from '../core/dom'
 type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 	| keyof P
 	| Signal<NonNullable<T>>
@@ -31,8 +32,9 @@ type DangerouslySetInnerHTMLOptions = {
  * Effect for setting properties of a target element according to a given Reactive
  *
  * @since 0.9.0
- * @param {Reactive<T, P, E>} s - state bound to the element property
- * @param {ElementUpdater} updater - updater object containing key, read, update, and delete methods
+ * @param {Reactive<T, P, E>} s - Reactive bound to the element property
+ * @param {ElementUpdater} updater - Updater object containing key, read, update, and delete methods
+ * @returns {Effect<P, E>} Effect function that updates the element properties
  */
 declare const updateElement: <
 	P extends ComponentProps,
@@ -46,8 +48,9 @@ declare const updateElement: <
  * Effect for inserting or removing elements according to a given Reactive
  *
  * @since 0.12.1
- * @param {Reactive<number, P, E>} s - state bound to the number of elements to insert (positive) or remove (negative)
- * @param {ElementInserter<E>} inserter - inserter object containing position, insert, and remove methods
+ * @param {Reactive<number, P, E>} s - Reactive bound to the number of elements to insert (positive) or remove (negative)
+ * @param {ElementInserter<E>} inserter - Inserter object containing position, insert, and remove methods
+ * @returns {Effect<P, E>} - Effect function that inserts or removes elements
  */
 declare const insertOrRemoveElement: <
 	P extends ComponentProps,
@@ -60,7 +63,8 @@ declare const insertOrRemoveElement: <
  * Set text content of an element
  *
  * @since 0.8.0
- * @param {Reactive<string, P, E>} s - state bound to the text content
+ * @param {Reactive<string, P, E>} s - Reactive bound to the text content
+ * @returns {Effect<P, E>} An effect function that sets the text content of the element
  */
 declare const setText: <
 	P extends ComponentProps,
@@ -72,8 +76,9 @@ declare const setText: <
  * Set property of an element
  *
  * @since 0.8.0
- * @param {string} key - name of property to be set
- * @param {Reactive<E[K], P, E>} s - state bound to the property value
+ * @param {string} key - Name of property to be set
+ * @param {Reactive<E[K], P, E>} s - Reactive bound to the property value
+ * @returns {Effect<P, E>} An effect function that sets the property of the element
  */
 declare const setProperty: <
 	P extends ComponentProps,
@@ -87,7 +92,8 @@ declare const setProperty: <
  * Set 'hidden' property of an element
  *
  * @since 0.13.1
- * @param {Reactive<boolean, P, E>} s - state bound to the 'hidden' property value
+ * @param {Reactive<boolean, P, E>} s - Reactive bound to the 'hidden' property value
+ * @returns {Effect<P, E>} An effect function that sets the 'hidden' property of the element
  */
 declare const show: <
 	P extends ComponentProps,
@@ -99,8 +105,9 @@ declare const show: <
  * Set attribute of an element
  *
  * @since 0.8.0
- * @param {string} name - name of attribute to be set
- * @param {Reactive<string, P, E>} s - state bound to the attribute value
+ * @param {string} name - Name of attribute to be set
+ * @param {Reactive<string, P, E>} s - Reactive bound to the attribute value
+ * @returns {Effect<P, E>} An effect function that sets the attribute of the element
  */
 declare const setAttribute: <
 	P extends ComponentProps,
@@ -110,11 +117,12 @@ declare const setAttribute: <
 	s?: Reactive<string, P, E>,
 ) => Effect<P, E>
 /**
- * Toggle a boolan attribute of an element
+ * Toggle a boolean attribute of an element
  *
  * @since 0.8.0
- * @param {string} name - name of attribute to be toggled
- * @param {Reactive<boolean, P, E>} s - state bound to the attribute existence
+ * @param {string} name - Name of attribute to be toggled
+ * @param {Reactive<boolean, P, E>} s - Reactive bound to the attribute existence
+ * @returns {Effect<P, E>} An effect function that toggles the attribute of the element
  */
 declare const toggleAttribute: <
 	P extends ComponentProps,
@@ -127,8 +135,9 @@ declare const toggleAttribute: <
  * Toggle a classList token of an element
  *
  * @since 0.8.0
- * @param {string} token - class token to be toggled
- * @param {Reactive<boolean, P, E>} s - state bound to the class existence
+ * @param {string} token - Class token to be toggled
+ * @param {Reactive<boolean, P, E>} s - Reactive bound to the class existence
+ * @returns {Effect<P, E>} An effect function that toggles the classList token of the element
  */
 declare const toggleClass: <
 	P extends ComponentProps,
@@ -141,8 +150,9 @@ declare const toggleClass: <
  * Set a style property of an element
  *
  * @since 0.8.0
- * @param {string} prop - name of style property to be set
- * @param {Reactive<string, P, E>} s - state bound to the style property value
+ * @param {string} prop - Name of style property to be set
+ * @param {Reactive<string, P, E>} s - Reactive bound to the style property value
+ * @returns {Effect<P, E>} An effect function that sets the style property of the element
  */
 declare const setStyle: <
 	P extends ComponentProps,
@@ -155,8 +165,9 @@ declare const setStyle: <
  * Set inner HTML of an element
  *
  * @since 0.11.0
- * @param {Reactive<string, P, E>} s - state bound to the inner HTML
- * @param {DangerouslySetInnerHTMLOptions} options - options for setting inner HTML: shadowRootMode, allowScripts
+ * @param {Reactive<string, P, E>} s - Reactive bound to the inner HTML
+ * @param {DangerouslySetInnerHTMLOptions} options - Options for setting inner HTML: shadowRootMode, allowScripts
+ * @returns {Effect<P, E>} An effect function that sets the inner HTML of the element
  */
 declare const dangerouslySetInnerHTML: <
 	P extends ComponentProps,
@@ -166,11 +177,26 @@ declare const dangerouslySetInnerHTML: <
 	options?: DangerouslySetInnerHTMLOptions,
 ) => Effect<P, E>
 /**
+ * Attach an event listener to an element
+ *
+ * @since 0.12.0
+ * @param {K} type - event type to listen for
+ * @param {(event: HTMLElementEventType<K>) => void} listener - event listener
+ * @param {boolean | AddEventListenerOptions} options - event listener options
+ * @throws {TypeError} - if the provided handler is not an event listener or a provider function
+ */
+declare const on: <E extends HTMLElement, K extends ValidEventName>(
+	type: K,
+	listener: (event: HTMLElementEventType<K>) => void,
+	options?: boolean | AddEventListenerOptions,
+) => Effect<ComponentProps, E>
+/**
  * Emit a custom event with the given detail
  *
  * @since 0.13.2
- * @param {string} type - event type to emit
- * @param {Reactive<T, P, E>} s - state bound to event detail
+ * @param {string} type - Event type to emit
+ * @param {Reactive<T, P, E>} s - State bound to event detail
+ * @returns {Effect<P, E>} Effect function
  */
 declare const emit: <
 	T,
@@ -179,13 +205,13 @@ declare const emit: <
 >(
 	type: string,
 	s: Reactive<T, P, E>,
-) => (host: Component<P>, target?: E) => Effect<P, E>
+) => Effect<P, E>
 /**
  * Pass reactives to a descendent element
  *
  * @since 0.13.2
  * @param {PassedReactives<P, E> | ((target: E) => PassedReactives<P, E>)} reactives - Reactives to be passed to descendent element
- * @returns {Effect<P, E>} - Effect to be used in ancestor component
+ * @returns {Effect<P, E>} An effect function that passes the reactives to the descendent element
  * @throws {TypeError} If the provided signals are not an object or a provider function
  */
 declare const pass: <P extends ComponentProps, E extends Element>(
@@ -208,6 +234,7 @@ export {
 	toggleClass,
 	setStyle,
 	dangerouslySetInnerHTML,
+	on,
 	emit,
 	pass,
 }

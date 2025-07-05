@@ -8,7 +8,7 @@
 
 > **on**\<`E`, `K`\>(`type`, `listener`, `options`): [`Effect`](../type-aliases/Effect.md)\<[`ComponentProps`](../type-aliases/ComponentProps.md), `E`\>
 
-Defined in: [src/core/dom.ts:303](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L303)
+Defined in: [src/lib/effects.ts:511](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L511)
 
 Attach an event listener to an element
 
@@ -16,7 +16,7 @@ Attach an event listener to an element
 
 ### E
 
-`E` *extends* `Element`
+`E` *extends* `HTMLElement`
 
 ### K
 
@@ -28,7 +28,7 @@ Attach an event listener to an element
 
 `K`
 
-event type to listen for (type-safe based on element type)
+event type to listen for
 
 ### listener
 

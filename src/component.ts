@@ -311,10 +311,6 @@ const component = <P extends ComponentProps>(
 					?.filter(([, ini]) => isAttributeParser(ini))
 					.map(([prop]) => prop) ?? []
 
-			static isComponent(instance: any): instance is Component<P> {
-				return #signals in instance
-			}
-
 			/**
 			 * Constructor function for the custom element: initializes signals
 			 */
@@ -322,10 +318,9 @@ const component = <P extends ComponentProps>(
 				super()
 				for (const [prop, ini] of Object.entries(init)) {
 					if (ini == null) continue
-					const result = isAttributeParser<
-						Signal<P[keyof P]>,
-						Component<P>
-					>(ini)
+					const result = isAttributeParser<P[keyof P], Component<P>>(
+						ini,
+					)
 						? ini(this as unknown as Component<P>, null)
 						: isFunction<Component<P>>(ini)
 							? ini(this as unknown as Component<P>)

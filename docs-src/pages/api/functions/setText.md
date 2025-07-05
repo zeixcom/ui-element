@@ -8,7 +8,7 @@
 
 > **setText**\<`P`, `E`\>(`s`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:290](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/effects.ts#L290)
+Defined in: [src/lib/effects.ts:301](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L301)
 
 Set text content of an element
 
@@ -28,11 +28,13 @@ Set text content of an element
 
 [`Reactive`](../type-aliases/Reactive.md)\<`string`, `P`, `E`\>
 
-state bound to the text content
+Reactive bound to the text content
 
 ## Returns
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+
+An effect function that sets the text content of the element
 
 ## Since
 

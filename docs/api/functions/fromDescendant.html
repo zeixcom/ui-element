@@ -106,9 +106,9 @@
                 Function: fromDescendant()
             </h1>
 <blockquote>
-<p><strong>fromDescendant</strong>&lt;<code>Q</code>, <code>K</code>&gt;(<code>selector</code>, <code>prop</code>, <code>fallback</code>): <a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>Q</code>[<code>K</code>]&gt;</p>
+<p><strong>fromDescendant</strong>&lt;<code>E</code>, <code>K</code>&gt;(<code>selector</code>, <code>prop</code>, <code>fallback</code>): <a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>NonNullable</code>&lt;<code>E</code>[<code>K</code>]&gt;&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L529">src/core/dom.ts:529</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L510">src/core/dom.ts:510</a></p>
 <p>Produce a computed signal for projected reactive property from a descendant component</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
@@ -116,13 +116,13 @@
                 </a>
                 Type Parameters
             </h2>
-<h3 id="q">
-                <a name="q" class="anchor" href="#q">
+<h3 id="e">
+                <a name="e" class="anchor" href="#e">
 	                <span class="permalink">🔗</span>
                 </a>
-                Q
+                E
             </h3>
-<p><code>Q</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
+<p><code>E</code> <em>extends</em> <code>Element</code></p>
 <h3 id="k">
                 <a name="k" class="anchor" href="#k">
 	                <span class="permalink">🔗</span>
@@ -158,7 +158,7 @@
                 </a>
                 fallback
             </h3>
-<p><code>Q</code>[<code>K</code>]</p>
+<p><code>NonNullable</code>&lt;<code>E</code>[<code>K</code>]&gt;</p>
 <p>fallback value to use until component is ready</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
@@ -166,7 +166,7 @@
                 </a>
                 Returns
             </h2>
-<p><a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>Q</code>[<code>K</code>]&gt;</p>
+<p><a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>NonNullable</code>&lt;<code>E</code>[<code>K</code>]&gt;&gt;</p>
 <p>signal producer that emits value from descendant component</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">

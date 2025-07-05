@@ -253,13 +253,14 @@
 		</p>
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
+<span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Computed,</span></span>
 <span class="line"><span style="color:#F8F8F2">	RESET,</span></span>
 <span class="line"><span style="color:#F8F8F2">	UNSET,</span></span>
 <span class="line"><span style="color:#F8F8F2">	batch,</span></span>
 <span class="line"><span style="color:#F8F8F2">	component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	effect,</span></span>
+<span class="line"><span style="color:#F8F8F2">	fromSelector,</span></span>
 <span class="line"><span style="color:#F8F8F2">	on,</span></span>
-<span class="line"><span style="color:#F8F8F2">	selection,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setAttribute,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setText,</span></span>
@@ -296,10 +297,9 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> focusIndex </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">-</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> filterText </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> showPopup </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">false</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> options </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> selection</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLLIElement</span><span style="color:#F8F8F2">>(</span></span>
-<span class="line"><span style="color:#F8F8F2">			el,</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> options </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> fromSelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLLIElement</span><span style="color:#F8F8F2">>(</span></span>
 <span class="line"><span style="color:#E6DB74">			'[role="option"]:not([hidden])'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">		)</span></span>
+<span class="line"><span style="color:#F8F8F2">		)(el) </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Computed</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLLIElement</span><span style="color:#F8F8F2">[]></span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#A6E22E"> isExpanded</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> mode.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'editing'</span><span style="color:#F92672"> &#x26;&#x26;</span><span style="color:#F8F8F2"> showPopup.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Internal function</span></span>

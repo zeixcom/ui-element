@@ -8,7 +8,7 @@
 
 > **toggleClass**\<`P`, `E`\>(`token`, `s`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:402](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/effects.ts#L402)
+Defined in: [src/lib/effects.ts:418](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L418)
 
 Toggle a classList token of an element
 
@@ -28,17 +28,19 @@ Toggle a classList token of an element
 
 `string`
 
-class token to be toggled
+Class token to be toggled
 
 ### s
 
 [`Reactive`](../type-aliases/Reactive.md)\<`boolean`, `P`, `E`\> = `token`
 
-state bound to the class existence
+Reactive bound to the class existence
 
 ## Returns
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+
+An effect function that toggles the classList token of the element
 
 ## Since
 

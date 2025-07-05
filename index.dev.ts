@@ -50,16 +50,14 @@ export {
 	log,
 } from './src/core/util'
 export {
-	type ElementEventMap,
-	type ElementEventType,
+	type HTMLElementEventType,
 	type ValidEventName,
-	selection,
+	type EventType,
+	type TransformerContext,
+	type EventTransformer,
 	fromSelector,
 	fromDescendants,
-	on,
-	sensor,
 	fromEvent,
-	read,
 	fromDescendant,
 } from './src/core/dom'
 export {
@@ -96,6 +94,7 @@ export {
 	toggleClass,
 	setStyle,
 	dangerouslySetInnerHTML,
+	on,
 	emit,
 	pass,
 } from './src/lib/effects'

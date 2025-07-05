@@ -8,7 +8,7 @@
 
 > **insertOrRemoveElement**\<`P`, `E`\>(`s`, `inserter?`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:197](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/effects.ts#L197)
+Defined in: [src/lib/effects.ts:207](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L207)
 
 Effect for inserting or removing elements according to a given Reactive
 
@@ -28,17 +28,19 @@ Effect for inserting or removing elements according to a given Reactive
 
 [`Reactive`](../type-aliases/Reactive.md)\<`number`, `P`, `E`\>
 
-state bound to the number of elements to insert (positive) or remove (negative)
+Reactive bound to the number of elements to insert (positive) or remove (negative)
 
 ### inserter?
 
 [`ElementInserter`](../type-aliases/ElementInserter.md)\<`E`\>
 
-inserter object containing position, insert, and remove methods
+Inserter object containing position, insert, and remove methods
 
 ## Returns
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+
+- Effect function that inserts or removes elements
 
 ## Since
 

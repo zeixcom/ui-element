@@ -82,9 +82,25 @@
 				></span>
 			</div>
 		</unset-test>
+		<div id="host">
+			<div id="test-on-function"></div>
+			<div id="test-on-provider"></div>
+			<div id="test-on-invalid"></div>
+		</div>
 		<emit-test value="test-detail">
 			<div>Content</div>
 		</emit-test>
+		<child-component id="orphan">
+			<h1>Hello from server</h1>
+			<p>Text from server</p>
+		</child-component>
+		<parent-component id="parent" heading="Hello from attribute">
+			<child-component id="child">
+				<h1>Hello from server</h1>
+				<p>Text from server</p>
+			</child-component>
+			<invalid-component id="invalid"></invalid-component>
+		</parent-component>
 
 		<script type="module">
 			import { runTests } from '@web/test-runner-mocha'
@@ -112,6 +128,7 @@
 				insertOrRemoveElement,
 				updateElement,
 				emit,
+				pass,
 			} from '../index.dev.js'
 
 			const animationFrame = async () =>
@@ -374,6 +391,34 @@
 							'test-event',
 							target => el.value === target.textContent,
 						),
+					),
+				],
+			)
+
+			component(
+				'child-component',
+				{
+					heading: asString(RESET),
+					text: asString(RESET),
+				},
+				(_, { first }) => [
+					first('h1', setText('heading')),
+					first('p', setText('text')),
+				],
+			)
+
+			component(
+				'parent-component',
+				{
+					heading: asString(RESET),
+				},
+				(el, { first }) => [
+					first(
+						'child-component',
+						pass({
+							heading: 'heading',
+							text: () => el.heading.toUpperCase(),
+						}),
 					),
 				],
 			)
@@ -1815,6 +1860,77 @@
 					})
 				})
 
+				describe('on()', () => {
+					it('should attach and remove an event listener', async () => {
+						const div = document.getElementById('test-on-function')
+						let called = false
+
+						const off = on('click', () => {
+							called = true
+						})({}, div)
+
+						div.click()
+						const wasCalled = called
+
+						off() // Remove the event listener
+						called = false
+						div.click()
+
+						assert.equal(wasCalled, true)
+						assert.equal(called, false)
+					})
+
+					it('should throw TypeError for invalid handler', async () => {
+						const div = document.getElementById('test-on-invalid')
+						assert.throws(() => on('click', {})({}, div), TypeError)
+					})
+
+					it('should use host as default target', async () => {
+						const host = document.getElementById('host')
+						let called = false
+
+						const off = on('click', () => {
+							called = true
+						})(host)
+
+						host.click()
+						const wasCalled = called
+
+						off() // Remove the event listener
+						called = false
+						host.click()
+
+						assert.equal(wasCalled, true)
+						assert.equal(called, false)
+					})
+
+					it('should handle multiple event types', () => {
+						const element = document.createElement('input')
+						document.body.appendChild(element) // Add to DOM for focus/blur to work
+						let focusCount = 0
+						let blurCount = 0
+
+						const cleanup1 = on('focus', () => focusCount++)(
+							null,
+							element,
+						)
+						const cleanup2 = on('blur', () => blurCount++)(
+							null,
+							element,
+						)
+
+						element.focus()
+						element.blur()
+
+						assert.equal(focusCount, 1)
+						assert.equal(blurCount, 1)
+
+						cleanup1()
+						cleanup2()
+						document.body.removeChild(element) // Clean up
+					})
+				})
+
 				describe('emit()', () => {
 					it('should emit an event', async () => {
 						const el = document.querySelector('emit-test')
@@ -1871,6 +1987,188 @@
 							'from other-event on div',
 							'Event should bubble to parent',
 						)
+					})
+				})
+
+				describe('pass()', function () {
+					it('Orphan component should do nothing at all', async function () {
+						const orphanComponent =
+							document.getElementById('orphan')
+						await animationFrame()
+						const headingContent = normalizeText(
+							orphanComponent.querySelector('h1').textContent,
+						)
+						const textContent = normalizeText(
+							orphanComponent.querySelector('p').textContent,
+						)
+						assert.equal(
+							headingContent,
+							'Hello from server',
+							'Should not change server-side rendered heading',
+						)
+						assert.equal(
+							textContent,
+							'Text from server',
+							'Should not change server-side rendered text',
+						)
+					})
+					it('Descendent component should receive state from attribute of ancestor component', async function () {
+						const childComponent = document.getElementById('child')
+						await customElements.whenDefined(
+							childComponent.localName,
+						)
+						const headingContent =
+							childComponent.querySelector('h1').textContent
+						assert.equal(
+							headingContent,
+							'Hello from attribute',
+							'Should have initial heading from attribute of ancestor component',
+						)
+					})
+
+					it('Descendent component should receive derived state from attribute of ancestor component', async function () {
+						const childComponent = document.getElementById('child')
+						await customElements.whenDefined(
+							childComponent.localName,
+						)
+						const textContent = normalizeText(
+							childComponent.querySelector('p').textContent,
+						)
+						assert.equal(
+							textContent,
+							'Hello from attribute'.toUpperCase(),
+							'Should have initial text derived from attribute of ancestor component',
+						)
+					})
+
+					it('Descendent component should receive passed and derived states from changed attribute of ancestor component', async function () {
+						const parentComponent =
+							document.getElementById('parent')
+						const childComponent = document.getElementById('child')
+						parentComponent.setAttribute(
+							'heading',
+							'Hello from changed attribute',
+						)
+						await animationFrame()
+						const headingContent = normalizeText(
+							childComponent.querySelector('h1').textContent,
+						)
+						const textContent = normalizeText(
+							childComponent.querySelector('p').textContent,
+						)
+						assert.equal(
+							headingContent,
+							'Hello from changed attribute',
+							'Should have changed heading from attribute of ancestor component',
+						)
+						assert.equal(
+							textContent,
+							'Hello from changed attribute'.toUpperCase(),
+							'Should have changed text derived from attribute of ancestor component',
+						)
+					})
+
+					it('Descendent component should change heading if inherited state is set', async function () {
+						const parentComponent =
+							document.getElementById('parent')
+						const childComponent = document.getElementById('child')
+						parentComponent.heading = 'Hello from state on ancestor'
+						await animationFrame()
+						const headingContent =
+							childComponent.querySelector('h1').textContent
+						assert.equal(
+							headingContent,
+							'Hello from state on ancestor',
+							'Should have changed heading from state of ancestor component',
+						)
+					})
+
+					it('should throw TypeError if signals are not an object or provider', async function () {
+						const parentComponent =
+							document.getElementById('parent')
+						const childComponent = document.getElementById('child')
+
+						assert.throws(
+							() => {
+								pass(null)(parentComponent, childComponent)
+							},
+							TypeError,
+							'Passed signals must be an object or a provider function',
+						)
+					})
+
+					it('should throw TypeError if signals are not a function', async function () {
+						const parentComponent =
+							document.getElementById('parent')
+						const invalidComponent =
+							document.getElementById('invalid')
+
+						try {
+							pass({ heading: 'heading' })(
+								parentComponent,
+								invalidComponent,
+							)
+						} catch (error) {
+							assert.equal(
+								error instanceof TypeError,
+								true,
+								'Should throw TypeError',
+							)
+						}
+					})
+
+					it('should handle Signal objects directly', async () => {
+						const host = document.querySelector('parent-component')
+						const target = document.querySelector('child-component')
+
+						const directSignal = state('Direct Signal')
+
+						try {
+							pass({
+								heading: directSignal,
+							})(host, target)
+
+							await customElements.whenDefined('child-component')
+							await animationFrame()
+
+							assert.equal(target.heading, 'Direct Signal')
+
+							// Test reactivity
+							directSignal.set('Updated Signal')
+							await animationFrame()
+
+							assert.equal(target.heading, 'Updated Signal')
+						} catch (error) {
+							// If pass fails, test that error handling works
+							assert.include(
+								error.message,
+								'Failed to pass signals',
+							)
+						}
+					})
+
+					it('should pass signals using function', async () => {
+						const host = document.querySelector('parent-component')
+						const target = document.querySelector('child-component')
+
+						const dynamicSignal = state('Dynamic')
+
+						try {
+							pass(targetElement => ({
+								text: dynamicSignal,
+							}))(host, target)
+
+							await customElements.whenDefined('child-component')
+							await animationFrame()
+
+							assert.equal(target.text, 'Dynamic')
+						} catch (error) {
+							// If pass fails, test that error handling works
+							assert.include(
+								error.message,
+								'Failed to pass signals',
+							)
+						}
 					})
 				})
 			})

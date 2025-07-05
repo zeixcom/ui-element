@@ -6,9 +6,9 @@
 
 # Function: fromEvent()
 
-> **fromEvent**\<`T`, `E`, `K`, `C`\>(`selector`, `type`, `transform`, `initializer`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`T`, `C`\>
+> **fromEvent**\<`T`, `E`, `K`, `C`, `S`\>(`selector`, `type`, `transformer`, `init`, `options`): (`host`) => [`Computed`](../type-aliases/Computed.md)\<`T`\>
 
-Defined in: [src/core/dom.ts:406](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L406)
+Defined in: [src/core/dom.ts:317](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/core/dom.ts#L317)
 
 Produce a computed signal from transformed event data
 
@@ -20,21 +20,25 @@ Produce a computed signal from transformed event data
 
 ### E
 
-`E` *extends* `HTMLElement`
+`E` *extends* `HTMLElement` = `HTMLElement`
 
 ### K
 
-`K` *extends* `string`
+`K` *extends* `string` = `string`
 
 ### C
 
 `C` *extends* `HTMLElement` = `HTMLElement`
 
+### S
+
+`S` *extends* `string` = `string`
+
 ## Parameters
 
 ### selector
 
-`string`
+`S`
 
 CSS selector for the source element
 
@@ -42,26 +46,100 @@ CSS selector for the source element
 
 `K`
 
-event type to listen for
+Event type to listen for
 
-### transform
+### transformer
 
-(`host`, `source`, `event`, `oldValue`) => `T`
+[`EventTransformer`](../type-aliases/EventTransformer.md)\<`T`, [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>, `K`\>
 
-transformation function for the event
+Transformation function for the event
 
-### initializer
+### init
 
-initial value or initializer function
+Initial value or initializer function
 
-`T` | (`host`, `source`) => `T`
+`T` | (`host`) => `T`
+
+### options
+
+`boolean` | `AddEventListenerOptions`
 
 ## Returns
 
-[`SignalProducer`](../type-aliases/SignalProducer.md)\<`T`, `C`\>
+Signal producer for value from event
 
-signal producer for value from event
+> (`host`): [`Computed`](../type-aliases/Computed.md)\<`T`\>
+
+### Parameters
+
+#### host
+
+`C`
+
+### Returns
+
+[`Computed`](../type-aliases/Computed.md)\<`T`\>
 
 ## Since
 
-0.13.1
+0.13.2
+
+## Examples
+
+```ts
+// Simple input value extraction
+fromEvent('input', 'input', ({ source }) => source.value, '')
+```
+
+```ts
+// Click counter using previous value
+fromEvent('button', 'click', ({ value }) => value + 1, 0)
+```
+
+```ts
+// Form submission with event handling
+fromEvent('form', 'submit', ({ event, source }) => {
+  event.preventDefault()
+  return new FormData(source)
+}, null)
+```
+
+```ts
+// Complex logic using multiple context values
+fromEvent('input', 'input', ({ event, source, value, host }) => {
+  if (event.inputType === 'deleteContentBackward') {
+    host.dispatchEvent(new CustomEvent('deletion'))
+  }
+  return source.value.length > value ? source.value : value
+}, '')
+```
+
+```ts
+// TypeScript automatically infers element types from selectors
+fromEvent('input', 'input', ({ source }) => {
+  return source.value.length // TypeScript knows source is HTMLInputElement
+}, 0)
+```
+
+```ts
+// Custom event handling with TypeScript declarations
+// First, declare your custom events and components globally:
+// declare global {
+//   interface HTMLElementTagNameMap {
+//     'my-component': Component<MyComponentProps>
+//   }
+//   interface HTMLElementEventMap {
+//     itemAdded: CustomEvent<{ id: string; quantity: number }>
+//   }
+// }
+fromEvent('my-component', 'itemAdded', ({ event, source }) => {
+  // TypeScript knows source is Component<MyComponentProps> with UIElement methods
+  const currentValue = source.getSignal('someProperty').get()
+  return {
+    id: source.dataset.id,
+    quantity: event.detail.quantity, // TypeScript knows this is a number
+    currentValue,
+    timestamp: Date.now()
+  }
+}, null)
+```

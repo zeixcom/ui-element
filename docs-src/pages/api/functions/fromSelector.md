@@ -6,32 +6,51 @@
 
 # Function: fromSelector()
 
-> **fromSelector**\<`E`\>(`selectors`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`E`[]\>
+> **fromSelector**\<`E`, `K`\>(`selectors`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`K`, `E`\>[]\>
 
-Defined in: [src/core/dom.ts:265](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L265)
+Defined in: [src/core/dom.ts:154](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/core/dom.ts#L154)
 
-Produce a selection signal from a selector
+Produce a selection signal from a selector with automatic type inference
 
 ## Type Parameters
 
 ### E
 
-`E` *extends* `Element`
+`E` *extends* `Element` = `HTMLElement`
+
+### K
+
+`K` *extends* `string` = `string`
 
 ## Parameters
 
 ### selectors
 
-`string`
+`K`
 
 CSS selector for descendant elements
 
 ## Returns
 
-[`SignalProducer`](../type-aliases/SignalProducer.md)\<`E`[]\>
+[`SignalProducer`](../type-aliases/SignalProducer.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`K`, `E`\>[]\>
 
-signal producer for descendant element collection from a selector
+Signal producer for descendant element collection from a selector
 
 ## Since
 
 0.13.1
+
+## Examples
+
+```ts
+// TypeScript automatically infers HTMLInputElement[] for 'input' selector
+const inputs = fromSelector('input')(host).get()
+inputs[0].value // TypeScript knows this is valid
+```
+
+```ts
+// Works with custom UIElement components when declared in HTMLElementTagNameMap
+// declare global { interface HTMLElementTagNameMap { 'my-button': Component<MyButtonProps> } }
+const buttons = fromSelector('my-button')(host).get()
+buttons[0].getSignal('disabled').get() // Access UIElement component methods
+```

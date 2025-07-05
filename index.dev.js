@@ -356,16 +356,16 @@ var observeSubtree = (parent, selectors, callback) => {
   observer.observe(parent, observerConfig);
   return observer;
 };
-var selection = (parent, selectors) => {
+var fromSelector = (selectors) => (host) => {
   const watchers = new Set;
-  const select = () => Array.from(parent.querySelectorAll(selectors));
+  const select = () => Array.from(host.querySelectorAll(selectors));
   let value = UNSET;
   let observer;
   let mutationDepth = 0;
   const MAX_MUTATION_DEPTH = 2;
   const observe2 = () => {
     value = select();
-    observer = observeSubtree(parent, selectors, () => {
+    observer = observeSubtree(host, selectors, () => {
       if (!watchers.size) {
         observer?.disconnect();
         observer = undefined;
@@ -401,34 +401,44 @@ var selection = (parent, selectors) => {
     }
   };
 };
-var fromSelector = (selectors) => (host) => selection(host, selectors);
-var fromDescendants = (selectors, reducer, initialValue) => (host) => () => selection(host, selectors).get().reduce(reducer, initialValue);
-var on = (type, listener, options = false) => (host, target = host) => {
-  if (!isFunction(listener))
-    throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
-  target.addEventListener(type, listener, options);
-  return () => target.removeEventListener(type, listener);
-};
-var sensor = (host, source, type, transform, initialValue, options = false) => {
+var fromDescendants = (selectors, reducer, init) => (host) => () => fromSelector(selectors)(host).get().reduce(reducer, isFunction(init) ? init(host) : init);
+var fromEvent = (selector, type, transformer, init, options = false) => (host) => {
   const watchers = new Set;
-  let value = initialValue;
+  let value = isFunction(init) ? init(host) : init;
   let listener;
   let cleanup;
   const listen = () => {
-    listener = (event) => {
-      const newValue = transform(host, source, event, value);
-      if (!Object.is(newValue, value)) {
-        value = newValue;
-        if (watchers.size > 0)
-          notify(watchers);
-        else if (cleanup)
-          cleanup();
+    listener = (e) => {
+      const target = e.target;
+      if (!target)
+        return;
+      const source = target.closest(selector);
+      if (!source || !host.contains(source))
+        return;
+      e.stopPropagation();
+      try {
+        const newValue = transformer({
+          event: e,
+          host,
+          source,
+          value
+        });
+        if (!Object.is(newValue, value)) {
+          value = newValue;
+          if (watchers.size > 0)
+            notify(watchers);
+          else if (cleanup)
+            cleanup();
+        }
+      } catch (error) {
+        e.stopImmediatePropagation();
+        throw error;
       }
     };
-    source.addEventListener(type, listener, options);
+    host.addEventListener(type, listener, options);
     cleanup = () => {
       if (listener) {
-        source.removeEventListener(type, listener);
+        host.removeEventListener(type, listener);
         listener = undefined;
       }
       cleanup = undefined;
@@ -444,21 +454,13 @@ var sensor = (host, source, type, transform, initialValue, options = false) => {
     }
   };
 };
-var fromEvent = (selector, type, transform, initializer) => (host) => {
+var fromDescendant = (selector, prop, fallback) => (host) => () => {
   const source = host.querySelector(selector);
-  if (!source) {
-    throw new Error(`Element not found for selector "${selector}" in ${elementName(host)}`);
-  }
-  const initialValue = isFunction(initializer) ? initializer(host, source) : initializer;
-  return sensor(host, source, type, transform, initialValue);
-};
-var read = (source, prop, fallback) => () => {
   if (!source || !isUpgradedComponent(source))
     return fallback;
   const value = prop in source ? source[prop] : fallback;
   return value == null || value === UNSET ? fallback : value;
 };
-var fromDescendant = (selector, prop, fallback) => (host) => read(host.querySelector(selector), prop, fallback);
 
 // src/component.ts
 var RESET = Symbol();
@@ -552,9 +554,6 @@ var component = (name, init = {}, setup) => {
     #signals = {};
     #cleanup;
     static observedAttributes = Object.entries(init)?.filter(([, ini]) => isAttributeParser(ini)).map(([prop]) => prop) ?? [];
-    static isComponent(instance) {
-      return #signals in instance;
-    }
     constructor() {
       super();
       for (const [prop, ini] of Object.entries(init)) {
@@ -727,8 +726,8 @@ var safeSetAttribute = (element, attr, value) => {
   element.setAttribute(attr, value);
 };
 var updateElement = (s, updater) => (host, target) => {
-  const { op, name = "", read: read2, update } = updater;
-  const fallback = read2(target);
+  const { op, name = "", read, update } = updater;
+  const fallback = read(target);
   const ops = {
     a: "attribute ",
     c: "class ",
@@ -768,7 +767,7 @@ var updateElement = (s, updater) => (host, target) => {
         return true;
       }, DELETE_DEDUPE).then(ok("Deleted")).catch(err("delete"));
     } else if (value != null) {
-      const current = read2(target);
+      const current = read(target);
       if (Object.is(value, current))
         return;
       enqueue(() => {
@@ -922,6 +921,12 @@ var dangerouslySetInnerHTML = (s, options = {}) => updateElement(s, {
     return " with scripts";
   }
 });
+var on = (type, listener, options = false) => (host, target = host) => {
+  if (!isFunction(listener))
+    throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
+  target.addEventListener(type, listener, options);
+  return () => target.removeEventListener(type, listener);
+};
 var emit = (type, s) => (host, target = host) => effect(() => {
   let detail;
   try {
@@ -941,7 +946,7 @@ var pass = (reactives) => (host, target) => {
   const sources = isFunction(reactives) ? reactives(target) : reactives;
   if (!isDefinedObject(sources))
     throw new TypeError(`Passed signals must be an object or a provider function`);
-  const setProperties = effect(() => {
+  const setProperties = () => effect(() => {
     for (const [prop, source] of Object.entries(sources)) {
       let value;
       try {
@@ -977,9 +982,6 @@ export {
   setStyle,
   setProperty,
   setAttribute,
-  sensor,
-  selection,
-  read,
   provide,
   pass,
   on,

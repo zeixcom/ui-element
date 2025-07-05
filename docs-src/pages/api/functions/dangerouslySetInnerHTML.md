@@ -8,7 +8,7 @@
 
 > **dangerouslySetInnerHTML**\<`P`, `E`\>(`s`, `options`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:448](https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/effects.ts#L448)
+Defined in: [src/lib/effects.ts:466](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L466)
 
 Set inner HTML of an element
 
@@ -28,17 +28,19 @@ Set inner HTML of an element
 
 [`Reactive`](../type-aliases/Reactive.md)\<`string`, `P`, `E`\>
 
-state bound to the inner HTML
+Reactive bound to the inner HTML
 
 ### options
 
 [`DangerouslySetInnerHTMLOptions`](../type-aliases/DangerouslySetInnerHTMLOptions.md) = `{}`
 
-options for setting inner HTML: shadowRootMode, allowScripts
+Options for setting inner HTML: shadowRootMode, allowScripts
 
 ## Returns
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+
+An effect function that sets the inner HTML of the element
 
 ## Since
 
