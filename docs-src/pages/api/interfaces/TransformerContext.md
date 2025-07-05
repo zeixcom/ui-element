@@ -6,7 +6,7 @@
 
 # Interface: TransformerContext\<T, E, K\>
 
-Defined in: [src/core/dom.ts:30](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/dom.ts#L30)
+Defined in: [src/core/dom.ts:30](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/core/dom.ts#L30)
 
 ## Type Parameters
 
@@ -28,7 +28,7 @@ Defined in: [src/core/dom.ts:30](https://github.com/zeixcom/ui-element/blob/dca6
 
 > **event**: [`EventType`](../type-aliases/EventType.md)\<`K`\>
 
-Defined in: [src/core/dom.ts:35](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/dom.ts#L35)
+Defined in: [src/core/dom.ts:35](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/core/dom.ts#L35)
 
 ***
 
@@ -36,7 +36,7 @@ Defined in: [src/core/dom.ts:35](https://github.com/zeixcom/ui-element/blob/dca6
 
 > **host**: `HTMLElement`
 
-Defined in: [src/core/dom.ts:36](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/dom.ts#L36)
+Defined in: [src/core/dom.ts:36](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/core/dom.ts#L36)
 
 ***
 
@@ -44,7 +44,7 @@ Defined in: [src/core/dom.ts:36](https://github.com/zeixcom/ui-element/blob/dca6
 
 > **source**: `E`
 
-Defined in: [src/core/dom.ts:37](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/dom.ts#L37)
+Defined in: [src/core/dom.ts:37](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/core/dom.ts#L37)
 
 ***
 
@@ -52,4 +52,4 @@ Defined in: [src/core/dom.ts:37](https://github.com/zeixcom/ui-element/blob/dca6
 
 > **value**: `T`
 
-Defined in: [src/core/dom.ts:38](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/dom.ts#L38)
+Defined in: [src/core/dom.ts:38](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/core/dom.ts#L38)

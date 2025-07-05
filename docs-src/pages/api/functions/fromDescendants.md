@@ -8,7 +8,7 @@
 
 > **fromDescendants**\<`T`, `E`, `K`\>(`selectors`, `reducer`, `init`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`T`\>
 
-Defined in: [src/core/dom.ts:234](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/dom.ts#L234)
+Defined in: [src/core/dom.ts:234](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/core/dom.ts#L234)
 
 Produce a computed signal from reduced properties of descendant elements with type safety
 

@@ -108,8 +108,8 @@
 <blockquote>
 <p><strong>pass</strong>&lt;<code>P</code>, <code>E</code>&gt;(<code>reactives</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L572">src/lib/effects.ts:572</a></p>
-<p>Pass reactives to a descendent element</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L648">src/lib/effects.ts:648</a></p>
+<p>Effect for passing reactive values to descendant elements.<br>Supports both direct property setting and signal passing for custom elements.</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -142,7 +142,7 @@
                 </a>
                 reactives
             </h3>
-<p>Reactives to be passed to descendent element</p>
+<p>Reactive values to pass or function that returns them</p>
 <p><a href="../type-aliases/PassedReactives.html"><code>PassedReactives</code></a>&lt;<code>P</code>, <code>E</code>&gt; | (<code>target</code>) =&gt; <a href="../type-aliases/PassedReactives.html"><code>PassedReactives</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
@@ -151,7 +151,7 @@
                 Returns
             </h2>
 <p><a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
-<p>An effect function that passes the reactives to the descendent element</p>
+<p>Effect function that passes reactive values to descendant elements</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
@@ -165,7 +165,7 @@
                 </a>
                 Throws
             </h2>
-<p>If the provided signals are not an object or a provider function</p>
+<p>When the provided reactives are not an object or provider function</p>
 
 </section></main>
 			<footer class="content-grid">

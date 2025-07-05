@@ -21,7 +21,7 @@ description: 'Functions, types, and constants'
 
 Create a Web Component of type [Component](api/type-aliases/Component.html) with reactive properties that extend [ComponentProps](api/type-aliases/ComponentProps.html).
 
-- [component](api/functions/component.html)
+- [component](api/functions/component.html) defines a custom element with reactive properties and declarative effects
 
 </section>
 
@@ -32,8 +32,6 @@ Create a Web Component of type [Component](api/type-aliases/Component.html) with
 Create a signal of type [Signal](api/type-aliases/Signal.html).
 
 - [computed](api/functions/computed.html) creates a [Computed](api/type-aliases/Computed.html) signal derived from other signals
-- [selection](api/functions/selection.html) creates a [Computed](api/type-aliases/Computed.html) signal that updates according to a dynamic CSS selector
-- [sensor](api/functions/sensor.html) creates a [Computed](api/type-aliases/Computed.html) signal that updates according to events
 - [state](api/functions/state.html) creates a [State](api/type-aliases/State.html) signal
 
 Helper functions:
@@ -50,20 +48,20 @@ Helper functions:
 
 Declare how attributes are parsed. Functions returning [AttributeParser](api/type-aliases/AttributeParser.html) that will be used to create [State](api/type-aliases/State.html) signals as reactive properties on the component.
 
-- [asBoolean](api/functions/asBoolean.html)
-- [asEnum](api/functions/asEnum.html)
-- [asInteger](api/functions/asInteger.html)
-- [asJSON](api/functions/asJSON.html)
-- [asNumber](api/functions/asNumber.html)
-- [asString](api/functions/asString.html)
+- [asBoolean](api/functions/asBoolean.html) parses boolean attributes (presence indicates true)
+- [asEnum](api/functions/asEnum.html) parses string attributes constrained to specific values
+- [asInteger](api/functions/asInteger.html) parses integer attributes with validation
+- [asJSON](api/functions/asJSON.html) parses JSON attributes into JavaScript objects
+- [asNumber](api/functions/asNumber.html) parses numeric attributes as floating-point numbers
+- [asString](api/functions/asString.html) parses string attributes
 
 </section>
 
 <section>
 
-## Signal Initializers
+## Signal Producers
 
-Declare how signals are initialized. Variable of type or function returning [SignalInitializer](api/type-aliases/SignalInitializer.html):
+Declare how signals are initialized. Variable of type or function returning [SignalProducer](api/type-aliases/SignalProducer.html):
 
 - [fromContext](api/functions/fromContext.html) consumes a context value from nearest ancestor context provider component
 - [fromDescendant](api/functions/fromDescendant.html) gets a reactive property of a descendant component
@@ -79,19 +77,19 @@ Declare how signals are initialized. Variable of type or function returning [Sig
 
 Declare effects of type [FxFunction](api/type-aliases/FxFunction.html) to be applied when signals change:
 
-- [dangerouslySetInnerHTML](api/functions/dangerouslySetInnerHTML.html)
-- [emit](api/functions/emit.html)
-- [insertOrRemoveElement](api/functions/insertOrRemoveElement.html)
-- [on](api/functions/on.html)
-- [pass](api/functions/pass.html)
-- [provide](api/functions/provide.html)
-- [setAttribute](api/functions/setAttribute.html)
-- [setProperty](api/functions/setProperty.html)
-- [setStyle](api/functions/setStyle.html)
-- [setText](api/functions/setText.html)
-- [show](api/functions/show.html)
-- [toggleAttribute](api/functions/toggleAttribute.html)
-- [toggleClass](api/functions/toggleClass.html)
-- [updateElement](api/functions/updateElement.html)
+- [dangerouslySetInnerHTML](api/functions/dangerouslySetInnerHTML.html) sets inner HTML content from a signal
+- [emit](api/functions/emit.html) dispatches custom events when signals change
+- [insertOrRemoveElement](api/functions/insertOrRemoveElement.html) conditionally inserts or removes elements
+- [on](api/functions/on.html) attaches event listeners to elements
+- [pass](api/functions/pass.html) passes signal values to descendant component properties
+- [provide](api/functions/provide.html) provides context values to descendant components
+- [setAttribute](api/functions/setAttribute.html) sets element attributes from signals
+- [setProperty](api/functions/setProperty.html) sets element properties from signals
+- [setStyle](api/functions/setStyle.html) sets CSS styles from signals
+- [setText](api/functions/setText.html) sets text content from signals
+- [show](api/functions/show.html) conditionally shows or hides elements
+- [toggleAttribute](api/functions/toggleAttribute.html) toggles attributes based on signal values
+- [toggleClass](api/functions/toggleClass.html) toggles CSS classes based on signal values
+- [updateElement](api/functions/updateElement.html) base function for updating elements, used for [setText](api/functions/setText.html), [show](api/functions/show.html), [toggleClass](api/functions/toggleClass.html), [toggleAttribute](api/functions/toggleAttribute.html), [setAttribute](api/functions/setAttribute.html), [setProperty](api/functions/setProperty.html), [setStyle](api/functions/setStyle.html)
 
 </section>

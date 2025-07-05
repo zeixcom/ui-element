@@ -106,10 +106,10 @@
                 Function: toggleClass()
             </h1>
 <blockquote>
-<p><strong>toggleClass</strong>&lt;<code>P</code>, <code>E</code>&gt;(<code>token</code>, <code>s</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
+<p><strong>toggleClass</strong>&lt;<code>P</code>, <code>E</code>&gt;(<code>token</code>, <code>reactive</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L418">src/lib/effects.ts:418</a></p>
-<p>Toggle a classList token of an element</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L493">src/lib/effects.ts:493</a></p>
+<p>Effect for toggling a CSS class token on an element.<br>When the reactive value is true, the class is added; when false, it&#39;s removed.</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -143,15 +143,15 @@
                 token
             </h3>
 <p><code>string</code></p>
-<p>Class token to be toggled</p>
-<h3 id="s">
-                <a name="s" class="anchor" href="#s">
+<p>CSS class token to toggle</p>
+<h3 id="reactive">
+                <a name="reactive" class="anchor" href="#reactive">
 	                <span class="permalink">🔗</span>
                 </a>
-                s
+                reactive
             </h3>
 <p><a href="../type-aliases/Reactive.html"><code>Reactive</code></a>&lt;<code>boolean</code>, <code>P</code>, <code>E</code>&gt; = <code>token</code></p>
-<p>Reactive bound to the class existence</p>
+<p>Reactive value bound to the class presence (defaults to class name)</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
@@ -159,7 +159,7 @@
                 Returns
             </h2>
 <p><a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
-<p>An effect function that toggles the classList token of the element</p>
+<p>Effect function that toggles the class on the element</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>

@@ -8,7 +8,7 @@
 
 > **component**\<`P`\>(`name`, `init`, `setup`): `void`
 
-Defined in: [src/component.ts:279](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/component.ts#L279)
+Defined in: [src/component.ts:279](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/component.ts#L279)
 
 Define a component with its states and setup function (connectedCallback)
 

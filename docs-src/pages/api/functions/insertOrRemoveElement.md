@@ -8,7 +8,7 @@
 
 > **insertOrRemoveElement**\<`P`, `E`\>(`reactive`, `inserter?`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:275](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L275)
+Defined in: [src/lib/effects.ts:275](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/lib/effects.ts#L275)
 
 Effect for dynamically inserting or removing elements based on a reactive numeric value.
 Positive values insert elements, negative values remove them.

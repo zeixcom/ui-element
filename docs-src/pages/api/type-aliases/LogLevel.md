@@ -8,4 +8,4 @@
 
 > **LogLevel** = `"debug"` \| `"info"` \| `"warn"` \| `"error"`
 
-Defined in: [src/core/util.ts:5](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/util.ts#L5)
+Defined in: [src/core/util.ts:5](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/core/util.ts#L5)

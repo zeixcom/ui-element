@@ -108,8 +108,8 @@
 <blockquote>
 <p><strong>on</strong>&lt;<code>E</code>, <code>K</code>&gt;(<code>type</code>, <code>listener</code>, <code>options</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L511">src/lib/effects.ts:511</a></p>
-<p>Attach an event listener to an element</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L590">src/lib/effects.ts:590</a></p>
+<p>Effect for attaching an event listener to an element.<br>Provides proper cleanup when the effect is disposed.</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -143,7 +143,7 @@
                 type
             </h3>
 <p><code>K</code></p>
-<p>event type to listen for</p>
+<p>Event type to listen for</p>
 <h3 id="listener">
                 <a name="listener" class="anchor" href="#listener">
 	                <span class="permalink">🔗</span>
@@ -151,14 +151,14 @@
                 listener
             </h3>
 <p>(<code>event</code>) =&gt; <code>void</code></p>
-<p>event listener</p>
+<p>Event listener function</p>
 <h3 id="options">
                 <a name="options" class="anchor" href="#options">
 	                <span class="permalink">🔗</span>
                 </a>
                 options
             </h3>
-<p>event listener options</p>
+<p>Event listener options</p>
 <p><code>boolean</code> | <code>AddEventListenerOptions</code></p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
@@ -167,6 +167,7 @@
                 Returns
             </h2>
 <p><a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a>, <code>E</code>&gt;</p>
+<p>Effect function that manages the event listener</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
@@ -180,9 +181,7 @@
                 </a>
                 Throws
             </h2>
-<ul>
-<li>if the provided handler is not an event listener or a provider function</li>
-</ul>
+<p>When the provided handler is not a function</p>
 
 </section></main>
 			<footer class="content-grid">

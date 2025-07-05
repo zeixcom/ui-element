@@ -8,7 +8,7 @@
 
 > **AttributeParser**\<`T`, `C`\> = (`host`, `value`, `old?`) => `T`
 
-Defined in: [src/component.ts:63](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/component.ts#L63)
+Defined in: [src/component.ts:63](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/component.ts#L63)
 
 ## Type Parameters
 
