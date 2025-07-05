@@ -8,7 +8,7 @@
 
 > **fromEvent**\<`T`, `E`, `K`, `C`, `S`\>(`selector`, `type`, `transformer`, `init`, `options`): (`host`) => [`Computed`](../type-aliases/Computed.md)\<`T`\>
 
-Defined in: [src/core/dom.ts:317](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/core/dom.ts#L317)
+Defined in: [src/core/dom.ts:317](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/dom.ts#L317)
 
 Produce a computed signal from transformed event data
 

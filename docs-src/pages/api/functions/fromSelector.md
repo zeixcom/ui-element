@@ -8,7 +8,7 @@
 
 > **fromSelector**\<`E`, `K`\>(`selectors`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`K`, `E`\>[]\>
 
-Defined in: [src/core/dom.ts:154](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/core/dom.ts#L154)
+Defined in: [src/core/dom.ts:154](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/dom.ts#L154)
 
 Produce a selection signal from a selector with automatic type inference
 

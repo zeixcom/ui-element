@@ -106,9 +106,9 @@
                 Function: emit()
             </h1>
 <blockquote>
-<p><strong>emit</strong>&lt;<code>T</code>, <code>P</code>, <code>E</code>&gt;(<code>type</code>, <code>s</code>): (<code>host</code>, <code>target</code>) =&gt; <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
+<p><strong>emit</strong>&lt;<code>T</code>, <code>P</code>, <code>E</code>&gt;(<code>type</code>, <code>s</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/effects.ts#L491">src/lib/effects.ts:491</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L537">src/lib/effects.ts:537</a></p>
 <p>Emit a custom event with the given detail</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
@@ -150,7 +150,7 @@
                 type
             </h3>
 <p><code>string</code></p>
-<p>event type to emit</p>
+<p>Event type to emit</p>
 <h3 id="s">
                 <a name="s" class="anchor" href="#s">
 	                <span class="permalink">🔗</span>
@@ -158,43 +158,15 @@
                 s
             </h3>
 <p><a href="../type-aliases/Reactive.html"><code>Reactive</code></a>&lt;<code>T</code>, <code>P</code>, <code>E</code>&gt;</p>
-<p>state bound to event detail</p>
+<p>State bound to event detail</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<blockquote>
-<p>(<code>host</code>, <code>target</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
-</blockquote>
-<h3 id="parameters">
-                <a name="parameters" class="anchor" href="#parameters">
-	                <span class="permalink">🔗</span>
-                </a>
-                Parameters
-            </h3>
-<h4 id="host">
-                <a name="host" class="anchor" href="#host">
-	                <span class="permalink">🔗</span>
-                </a>
-                host
-            </h4>
-<p><a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;</p>
-<h4 id="target">
-                <a name="target" class="anchor" href="#target">
-	                <span class="permalink">🔗</span>
-                </a>
-                target
-            </h4>
-<p><code>E</code> = <code>...</code></p>
-<h3 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h3>
 <p><a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
+<p>Effect function</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>

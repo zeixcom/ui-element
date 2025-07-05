@@ -37,10 +37,10 @@ declare const isUpgradedComponent: <E extends Element>(element: E) => boolean
  * Return a string representation of the Element instance
  *
  * @since 0.7.0
- * @param {Element} el
+ * @param {Element | undefined | null} el
  * @returns {string}
  */
-declare const elementName: (el: Element) => string
+declare const elementName: (el: Element | undefined | null) => string
 /**
  * Return a string representation of a JavaScript variable
  *

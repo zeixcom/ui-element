@@ -6,11 +6,12 @@
 
 # Function: emit()
 
-> **emit**\<`T`, `P`, `E`\>(`type`, `s`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+> **emit**\<`T`, `P`, `E`\>(`type`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:537](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L537)
+Defined in: [src/lib/effects.ts:617](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L617)
 
-Emit a custom event with the given detail
+Effect for emitting custom events with reactive detail values.
+Creates and dispatches CustomEvent instances with bubbling enabled by default.
 
 ## Type Parameters
 
@@ -34,17 +35,17 @@ Emit a custom event with the given detail
 
 Event type to emit
 
-### s
+### reactive
 
 [`Reactive`](../type-aliases/Reactive.md)\<`T`, `P`, `E`\>
 
-State bound to event detail
+Reactive value bound to the event detail
 
 ## Returns
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Effect function
+Effect function that emits custom events
 
 ## Since
 

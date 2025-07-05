@@ -108,7 +108,7 @@
 <blockquote>
 <p><strong>insertOrRemoveElement</strong>&lt;<code>P</code>, <code>E</code>&gt;(<code>s</code>, <code>inserter?</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/lib/effects.ts#L197">src/lib/effects.ts:197</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L207">src/lib/effects.ts:207</a></p>
 <p>Effect for inserting or removing elements according to a given Reactive</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
@@ -143,7 +143,7 @@
                 s
             </h3>
 <p><a href="../type-aliases/Reactive.html"><code>Reactive</code></a>&lt;<code>number</code>, <code>P</code>, <code>E</code>&gt;</p>
-<p>state bound to the number of elements to insert (positive) or remove (negative)</p>
+<p>Reactive bound to the number of elements to insert (positive) or remove (negative)</p>
 <h3 id="inserter">
                 <a name="inserter" class="anchor" href="#inserter">
 	                <span class="permalink">🔗</span>
@@ -151,7 +151,7 @@
                 inserter?
             </h3>
 <p><a href="../type-aliases/ElementInserter.html"><code>ElementInserter</code></a>&lt;<code>E</code>&gt;</p>
-<p>inserter object containing position, insert, and remove methods</p>
+<p>Inserter object containing position, insert, and remove methods</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
@@ -159,6 +159,9 @@
                 Returns
             </h2>
 <p><a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
+<ul>
+<li>Effect function that inserts or removes elements</li>
+</ul>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>

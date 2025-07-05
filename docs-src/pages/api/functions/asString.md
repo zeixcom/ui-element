@@ -8,7 +8,7 @@
 
 > **asString**(`fallback?`): [`AttributeParser`](../type-aliases/AttributeParser.md)\<`string`\>
 
-Defined in: [src/lib/parsers.ts:74](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/parsers.ts#L74)
+Defined in: [src/lib/parsers.ts:74](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/parsers.ts#L74)
 
 Parse an attribute as a string with a fallback
 

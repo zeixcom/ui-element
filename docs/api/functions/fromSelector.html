@@ -106,10 +106,10 @@
                 Function: fromSelector()
             </h1>
 <blockquote>
-<p><strong>fromSelector</strong>&lt;<code>E</code>&gt;(<code>selectors</code>): <a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>E</code>[]&gt;</p>
+<p><strong>fromSelector</strong>&lt;<code>E</code>, <code>K</code>&gt;(<code>selectors</code>): <a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>K</code>, <code>E</code>&gt;[]&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L265">src/core/dom.ts:265</a></p>
-<p>Produce a selection signal from a selector</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/core/dom.ts#L154">src/core/dom.ts:154</a></p>
+<p>Produce a selection signal from a selector with automatic type inference</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -122,7 +122,14 @@
                 </a>
                 E
             </h3>
-<p><code>E</code> <em>extends</em> <code>Element</code></p>
+<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
+<h3 id="k">
+                <a name="k" class="anchor" href="#k">
+	                <span class="permalink">🔗</span>
+                </a>
+                K
+            </h3>
+<p><code>K</code> <em>extends</em> <code>string</code> = <code>string</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -135,7 +142,7 @@
                 </a>
                 selectors
             </h3>
-<p><code>string</code></p>
+<p><code>K</code></p>
 <p>CSS selector for descendant elements</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
@@ -143,8 +150,8 @@
                 </a>
                 Returns
             </h2>
-<p><a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>E</code>[]&gt;</p>
-<p>signal producer for descendant element collection from a selector</p>
+<p><a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>K</code>, <code>E</code>&gt;[]&gt;</p>
+<p>Signal producer for descendant element collection from a selector</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
@@ -152,6 +159,45 @@
                 Since
             </h2>
 <p>0.13.1</p>
+<h2 id="examples">
+                <a name="examples" class="anchor" href="#examples">
+	                <span class="permalink">🔗</span>
+                </a>
+                Examples
+            </h2>
+<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">ts</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// TypeScript automatically infers HTMLInputElement[] for 'input' selector</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> inputs </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> fromSelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">)(host).</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">inputs[</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">].value </span><span style="color:#88846F">// TypeScript knows this is valid</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">ts</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Works with custom UIElement components when declared in HTMLElementTagNameMap</span></span>
+<span class="line"><span style="color:#88846F">// declare global { interface HTMLElementTagNameMap { 'my-button': Component&#x3C;MyButtonProps> } }</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> buttons </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> fromSelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-button'</span><span style="color:#F8F8F2">)(host).</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">buttons[</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">].</span><span style="color:#A6E22E">getSignal</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">() </span><span style="color:#88846F">// Access UIElement component methods</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
 
 </section></main>
 			<footer class="content-grid">

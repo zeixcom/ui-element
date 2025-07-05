@@ -6,11 +6,12 @@
 
 # Function: setProperty()
 
-> **setProperty**\<`P`, `K`, `E`\>(`key`, `s`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+> **setProperty**\<`P`, `K`, `E`\>(`key`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:323](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L323)
+Defined in: [src/lib/effects.ts:394](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L394)
 
-Set property of an element
+Effect for setting a property on an element.
+Sets the specified property directly on the element object.
 
 ## Type Parameters
 
@@ -32,19 +33,19 @@ Set property of an element
 
 `K`
 
-Name of property to be set
+Name of the property to set
 
-### s
+### reactive
 
 [`Reactive`](../type-aliases/Reactive.md)\<`E`\[`K`\], `P`, `E`\> = `...`
 
-Reactive bound to the property value
+Reactive value bound to the property value (defaults to property name)
 
 ## Returns
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-An effect function that sets the property of the element
+Effect function that sets the property on the element
 
 ## Since
 

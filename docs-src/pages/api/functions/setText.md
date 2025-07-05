@@ -6,11 +6,12 @@
 
 # Function: setText()
 
-> **setText**\<`P`, `E`\>(`s`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+> **setText**\<`P`, `E`\>(`reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:301](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L301)
+Defined in: [src/lib/effects.ts:371](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L371)
 
-Set text content of an element
+Effect for setting the text content of an element.
+Replaces all child nodes (except comments) with a single text node.
 
 ## Type Parameters
 
@@ -24,17 +25,17 @@ Set text content of an element
 
 ## Parameters
 
-### s
+### reactive
 
 [`Reactive`](../type-aliases/Reactive.md)\<`string`, `P`, `E`\>
 
-Reactive bound to the text content
+Reactive value bound to the text content
 
 ## Returns
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-An effect function that sets the text content of the element
+Effect function that sets the text content of the element
 
 ## Since
 

@@ -8,7 +8,7 @@
 
 > **asNumber**(`fallback?`): [`AttributeParser`](../type-aliases/AttributeParser.md)\<`number`\>
 
-Defined in: [src/lib/parsers.ts:62](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/parsers.ts#L62)
+Defined in: [src/lib/parsers.ts:62](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/parsers.ts#L62)
 
 Parse an attribute as as number with a fallback
 

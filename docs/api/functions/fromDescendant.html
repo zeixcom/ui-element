@@ -106,10 +106,9 @@
                 Function: fromDescendant()
             </h1>
 <blockquote>
-<p><strong>fromDescendant</strong>&lt;<code>E</code>, <code>K</code>&gt;(<code>selector</code>, <code>prop</code>, <code>fallback</code>): <a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>NonNullable</code>&lt;<code>E</code>[<code>K</code>]&gt;&gt;</p>
+<p><strong>fromDescendant</strong>&lt;<code>E</code>, <code>S</code>, <code>K</code>&gt;(<code>selector</code>, <code>prop</code>, <code>fallback</code>): (<code>host</code>) =&gt; () =&gt; <code>NonNullable</code>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[<code>K</code>]&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L510">src/core/dom.ts:510</a></p>
-<p>Produce a computed signal for projected reactive property from a descendant component</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/core/dom.ts#L411">src/core/dom.ts:411</a></p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -122,14 +121,21 @@
                 </a>
                 E
             </h3>
-<p><code>E</code> <em>extends</em> <code>Element</code></p>
+<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
+<h3 id="s">
+                <a name="s" class="anchor" href="#s">
+	                <span class="permalink">🔗</span>
+                </a>
+                S
+            </h3>
+<p><code>S</code> <em>extends</em> <code>string</code> = <code>string</code></p>
 <h3 id="k">
                 <a name="k" class="anchor" href="#k">
 	                <span class="permalink">🔗</span>
                 </a>
                 K
             </h3>
-<p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code></p>
+<p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code> = keyof <a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;</p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -142,8 +148,7 @@
                 </a>
                 selector
             </h3>
-<p><code>string</code></p>
-<p>CSS selector for descendant element</p>
+<p><code>S</code></p>
 <h3 id="prop">
                 <a name="prop" class="anchor" href="#prop">
 	                <span class="permalink">🔗</span>
@@ -151,30 +156,51 @@
                 prop
             </h3>
 <p><code>K</code></p>
-<p>property name to get signal for</p>
 <h3 id="fallback">
                 <a name="fallback" class="anchor" href="#fallback">
 	                <span class="permalink">🔗</span>
                 </a>
                 fallback
             </h3>
-<p><code>NonNullable</code>&lt;<code>E</code>[<code>K</code>]&gt;</p>
-<p>fallback value to use until component is ready</p>
+<p><code>NonNullable</code>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[<code>K</code>]&gt;</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<p><a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>NonNullable</code>&lt;<code>E</code>[<code>K</code>]&gt;&gt;</p>
-<p>signal producer that emits value from descendant component</p>
-<h2 id="since">
-                <a name="since" class="anchor" href="#since">
+<blockquote>
+<p>(<code>host</code>): () =&gt; <code>NonNullable</code>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[<code>K</code>]&gt;</p>
+</blockquote>
+<h3 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
                 </a>
-                Since
-            </h2>
-<p>0.13.1</p>
+                Parameters
+            </h3>
+<h4 id="host">
+                <a name="host" class="anchor" href="#host">
+	                <span class="permalink">🔗</span>
+                </a>
+                host
+            </h4>
+<p><code>HTMLElement</code></p>
+<h3 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h3>
+<blockquote>
+<p>(): <code>NonNullable</code>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[<code>K</code>]&gt;</p>
+</blockquote>
+<h4 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h4>
+<p><code>NonNullable</code>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[<code>K</code>]&gt;</p>
 
 </section></main>
 			<footer class="content-grid">

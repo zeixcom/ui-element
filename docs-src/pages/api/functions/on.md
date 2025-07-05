@@ -8,9 +8,10 @@
 
 > **on**\<`E`, `K`\>(`type`, `listener`, `options`): [`Effect`](../type-aliases/Effect.md)\<[`ComponentProps`](../type-aliases/ComponentProps.md), `E`\>
 
-Defined in: [src/lib/effects.ts:511](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L511)
+Defined in: [src/lib/effects.ts:590](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L590)
 
-Attach an event listener to an element
+Effect for attaching an event listener to an element.
+Provides proper cleanup when the effect is disposed.
 
 ## Type Parameters
 
@@ -28,17 +29,17 @@ Attach an event listener to an element
 
 `K`
 
-event type to listen for
+Event type to listen for
 
 ### listener
 
 (`event`) => `void`
 
-event listener
+Event listener function
 
 ### options
 
-event listener options
+Event listener options
 
 `boolean` | `AddEventListenerOptions`
 
@@ -46,10 +47,12 @@ event listener options
 
 [`Effect`](../type-aliases/Effect.md)\<[`ComponentProps`](../type-aliases/ComponentProps.md), `E`\>
 
+Effect function that manages the event listener
+
 ## Since
 
 0.12.0
 
 ## Throws
 
-- if the provided handler is not an event listener or a provider function
+When the provided handler is not a function

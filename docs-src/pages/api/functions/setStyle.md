@@ -6,11 +6,12 @@
 
 # Function: setStyle()
 
-> **setStyle**\<`P`, `E`\>(`prop`, `s`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+> **setStyle**\<`P`, `E`\>(`prop`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:439](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L439)
+Defined in: [src/lib/effects.ts:515](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L515)
 
-Set a style property of an element
+Effect for setting a CSS style property on an element.
+Sets the specified style property with support for deletion via UNSET.
 
 ## Type Parameters
 
@@ -28,19 +29,19 @@ Set a style property of an element
 
 `string`
 
-Name of style property to be set
+Name of the CSS style property to set
 
-### s
+### reactive
 
 [`Reactive`](../type-aliases/Reactive.md)\<`string`, `P`, `E`\> = `prop`
 
-Reactive bound to the style property value
+Reactive value bound to the style property value (defaults to property name)
 
 ## Returns
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-An effect function that sets the style property of the element
+Effect function that sets the style property on the element
 
 ## Since
 

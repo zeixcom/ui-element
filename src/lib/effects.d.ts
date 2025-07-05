@@ -29,56 +29,61 @@ type DangerouslySetInnerHTMLOptions = {
 	allowScripts?: boolean
 }
 /**
- * Effect for setting properties of a target element according to a given Reactive
+ * Core effect function for updating element properties based on reactive values.
+ * This function handles the lifecycle of reading, updating, and deleting element properties
+ * while providing proper error handling and debugging support.
  *
  * @since 0.9.0
- * @param {Reactive<T, P, E>} s - Reactive bound to the element property
- * @param {ElementUpdater} updater - Updater object containing key, read, update, and delete methods
- * @returns {Effect<P, E>} Effect function that updates the element properties
+ * @param {Reactive<T, P, E>} reactive - The reactive value that drives the element updates
+ * @param {ElementUpdater<E, T>} updater - Configuration object defining how to read, update, and delete the element property
+ * @returns {Effect<P, E>} Effect function that manages the element property updates
  */
 declare const updateElement: <
 	P extends ComponentProps,
 	T extends {},
 	E extends Element = HTMLElement,
 >(
-	s: Reactive<T, P, E>,
+	reactive: Reactive<T, P, E>,
 	updater: ElementUpdater<E, T>,
 ) => Effect<P, E>
 /**
- * Effect for inserting or removing elements according to a given Reactive
+ * Effect for dynamically inserting or removing elements based on a reactive numeric value.
+ * Positive values insert elements, negative values remove them.
  *
  * @since 0.12.1
- * @param {Reactive<number, P, E>} s - Reactive bound to the number of elements to insert (positive) or remove (negative)
- * @param {ElementInserter<E>} inserter - Inserter object containing position, insert, and remove methods
- * @returns {Effect<P, E>} - Effect function that inserts or removes elements
+ * @param {Reactive<number, P, E>} reactive - Reactive value determining number of elements to insert (positive) or remove (negative)
+ * @param {ElementInserter<E>} inserter - Configuration object defining how to create and position elements
+ * @returns {Effect<P, E>} Effect function that manages element insertion and removal
  */
 declare const insertOrRemoveElement: <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
-	s: Reactive<number, P, E>,
+	reactive: Reactive<number, P, E>,
 	inserter?: ElementInserter<E>,
 ) => Effect<P, E>
 /**
- * Set text content of an element
+ * Effect for setting the text content of an element.
+ * Replaces all child nodes (except comments) with a single text node.
  *
  * @since 0.8.0
- * @param {Reactive<string, P, E>} s - Reactive bound to the text content
- * @returns {Effect<P, E>} An effect function that sets the text content of the element
+ * @param {Reactive<string, P, E>} reactive - Reactive value bound to the text content
+ * @returns {Effect<P, E>} Effect function that sets the text content of the element
  */
 declare const setText: <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
-	s: Reactive<string, P, E>,
+	reactive: Reactive<string, P, E>,
 ) => Effect<P, E>
 /**
- * Set property of an element
+ * Effect for setting a property on an element.
+ * Sets the specified property directly on the element object.
  *
  * @since 0.8.0
- * @param {string} key - Name of property to be set
- * @param {Reactive<E[K], P, E>} s - Reactive bound to the property value
- * @returns {Effect<P, E>} An effect function that sets the property of the element
+ * @param {K} key - Name of the property to set
+ * @param {Reactive<E[K], P, E>} reactive - Reactive value bound to the property value (defaults to property name)
+ * @returns {Effect<P, E>} Effect function that sets the property on the element
  */
 declare const setProperty: <
 	P extends ComponentProps,
@@ -86,104 +91,112 @@ declare const setProperty: <
 	E extends Element = HTMLElement,
 >(
 	key: K,
-	s?: Reactive<E[K], P, E>,
+	reactive?: Reactive<E[K], P, E>,
 ) => Effect<P, E>
 /**
- * Set 'hidden' property of an element
+ * Effect for controlling element visibility by setting the 'hidden' property.
+ * When the reactive value is true, the element is shown; when false, it's hidden.
  *
  * @since 0.13.1
- * @param {Reactive<boolean, P, E>} s - Reactive bound to the 'hidden' property value
- * @returns {Effect<P, E>} An effect function that sets the 'hidden' property of the element
+ * @param {Reactive<boolean, P, E>} reactive - Reactive value bound to the visibility state
+ * @returns {Effect<P, E>} Effect function that controls element visibility
  */
 declare const show: <
 	P extends ComponentProps,
 	E extends HTMLElement = HTMLElement,
 >(
-	s: Reactive<boolean, P, E>,
+	reactive: Reactive<boolean, P, E>,
 ) => Effect<P, E>
 /**
- * Set attribute of an element
+ * Effect for setting an attribute on an element.
+ * Sets the specified attribute with security validation for unsafe values.
  *
  * @since 0.8.0
- * @param {string} name - Name of attribute to be set
- * @param {Reactive<string, P, E>} s - Reactive bound to the attribute value
- * @returns {Effect<P, E>} An effect function that sets the attribute of the element
+ * @param {string} name - Name of the attribute to set
+ * @param {Reactive<string, P, E>} reactive - Reactive value bound to the attribute value (defaults to attribute name)
+ * @returns {Effect<P, E>} Effect function that sets the attribute on the element
  */
 declare const setAttribute: <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
 	name: string,
-	s?: Reactive<string, P, E>,
+	reactive?: Reactive<string, P, E>,
 ) => Effect<P, E>
 /**
- * Toggle a boolean attribute of an element
+ * Effect for toggling a boolean attribute on an element.
+ * When the reactive value is true, the attribute is present; when false, it's absent.
  *
  * @since 0.8.0
- * @param {string} name - Name of attribute to be toggled
- * @param {Reactive<boolean, P, E>} s - Reactive bound to the attribute existence
- * @returns {Effect<P, E>} An effect function that toggles the attribute of the element
+ * @param {string} name - Name of the attribute to toggle
+ * @param {Reactive<boolean, P, E>} reactive - Reactive value bound to the attribute presence (defaults to attribute name)
+ * @returns {Effect<P, E>} Effect function that toggles the attribute on the element
  */
 declare const toggleAttribute: <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
 	name: string,
-	s?: Reactive<boolean, P, E>,
+	reactive?: Reactive<boolean, P, E>,
 ) => Effect<P, E>
 /**
- * Toggle a classList token of an element
+ * Effect for toggling a CSS class token on an element.
+ * When the reactive value is true, the class is added; when false, it's removed.
  *
  * @since 0.8.0
- * @param {string} token - Class token to be toggled
- * @param {Reactive<boolean, P, E>} s - Reactive bound to the class existence
- * @returns {Effect<P, E>} An effect function that toggles the classList token of the element
+ * @param {string} token - CSS class token to toggle
+ * @param {Reactive<boolean, P, E>} reactive - Reactive value bound to the class presence (defaults to class name)
+ * @returns {Effect<P, E>} Effect function that toggles the class on the element
  */
 declare const toggleClass: <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
 	token: string,
-	s?: Reactive<boolean, P, E>,
+	reactive?: Reactive<boolean, P, E>,
 ) => Effect<P, E>
 /**
- * Set a style property of an element
+ * Effect for setting a CSS style property on an element.
+ * Sets the specified style property with support for deletion via UNSET.
  *
  * @since 0.8.0
- * @param {string} prop - Name of style property to be set
- * @param {Reactive<string, P, E>} s - Reactive bound to the style property value
- * @returns {Effect<P, E>} An effect function that sets the style property of the element
+ * @param {string} prop - Name of the CSS style property to set
+ * @param {Reactive<string, P, E>} reactive - Reactive value bound to the style property value (defaults to property name)
+ * @returns {Effect<P, E>} Effect function that sets the style property on the element
  */
 declare const setStyle: <
 	P extends ComponentProps,
 	E extends HTMLElement | SVGElement | MathMLElement,
 >(
 	prop: string,
-	s?: Reactive<string, P, E>,
+	reactive?: Reactive<string, P, E>,
 ) => Effect<P, E>
 /**
- * Set inner HTML of an element
+ * Effect for setting the inner HTML of an element with optional Shadow DOM support.
+ * Provides security options for script execution and shadow root creation.
  *
  * @since 0.11.0
- * @param {Reactive<string, P, E>} s - Reactive bound to the inner HTML
- * @param {DangerouslySetInnerHTMLOptions} options - Options for setting inner HTML: shadowRootMode, allowScripts
- * @returns {Effect<P, E>} An effect function that sets the inner HTML of the element
+ * @param {Reactive<string, P, E>} reactive - Reactive value bound to the inner HTML content
+ * @param {DangerouslySetInnerHTMLOptions} options - Configuration options: shadowRootMode, allowScripts
+ * @returns {Effect<P, E>} Effect function that sets the inner HTML of the element
  */
 declare const dangerouslySetInnerHTML: <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
-	s: Reactive<string, P, E>,
+	reactive: Reactive<string, P, E>,
 	options?: DangerouslySetInnerHTMLOptions,
 ) => Effect<P, E>
 /**
- * Attach an event listener to an element
+ * Effect for attaching an event listener to an element.
+ * Provides proper cleanup when the effect is disposed.
  *
  * @since 0.12.0
- * @param {K} type - event type to listen for
- * @param {(event: HTMLElementEventType<K>) => void} listener - event listener
- * @param {boolean | AddEventListenerOptions} options - event listener options
- * @throws {TypeError} - if the provided handler is not an event listener or a provider function
+ * @param {K} type - Event type to listen for
+ * @param {(event: HTMLElementEventType<K>) => void} listener - Event listener function
+ * @param {boolean | AddEventListenerOptions} options - Event listener options
+ * @returns {Effect<ComponentProps, E>} Effect function that manages the event listener
+ * @throws {TypeError} When the provided handler is not a function
  */
 declare const on: <E extends HTMLElement, K extends ValidEventName>(
 	type: K,
@@ -191,12 +204,13 @@ declare const on: <E extends HTMLElement, K extends ValidEventName>(
 	options?: boolean | AddEventListenerOptions,
 ) => Effect<ComponentProps, E>
 /**
- * Emit a custom event with the given detail
+ * Effect for emitting custom events with reactive detail values.
+ * Creates and dispatches CustomEvent instances with bubbling enabled by default.
  *
  * @since 0.13.2
  * @param {string} type - Event type to emit
- * @param {Reactive<T, P, E>} s - State bound to event detail
- * @returns {Effect<P, E>} Effect function
+ * @param {Reactive<T, P, E>} reactive - Reactive value bound to the event detail
+ * @returns {Effect<P, E>} Effect function that emits custom events
  */
 declare const emit: <
 	T,
@@ -204,15 +218,16 @@ declare const emit: <
 	E extends Element = HTMLElement,
 >(
 	type: string,
-	s: Reactive<T, P, E>,
+	reactive: Reactive<T, P, E>,
 ) => Effect<P, E>
 /**
- * Pass reactives to a descendent element
+ * Effect for passing reactive values to descendant elements.
+ * Supports both direct property setting and signal passing for custom elements.
  *
  * @since 0.13.2
- * @param {PassedReactives<P, E> | ((target: E) => PassedReactives<P, E>)} reactives - Reactives to be passed to descendent element
- * @returns {Effect<P, E>} An effect function that passes the reactives to the descendent element
- * @throws {TypeError} If the provided signals are not an object or a provider function
+ * @param {PassedReactives<P, E> | ((target: E) => PassedReactives<P, E>)} reactives - Reactive values to pass or function that returns them
+ * @returns {Effect<P, E>} Effect function that passes reactive values to descendant elements
+ * @throws {TypeError} When the provided reactives are not an object or provider function
  */
 declare const pass: <P extends ComponentProps, E extends Element>(
 	reactives: PassedReactives<P, E> | ((target: E) => PassedReactives<P, E>),

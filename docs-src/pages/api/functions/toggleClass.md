@@ -6,11 +6,12 @@
 
 # Function: toggleClass()
 
-> **toggleClass**\<`P`, `E`\>(`token`, `s`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+> **toggleClass**\<`P`, `E`\>(`token`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:418](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L418)
+Defined in: [src/lib/effects.ts:493](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L493)
 
-Toggle a classList token of an element
+Effect for toggling a CSS class token on an element.
+When the reactive value is true, the class is added; when false, it's removed.
 
 ## Type Parameters
 
@@ -28,19 +29,19 @@ Toggle a classList token of an element
 
 `string`
 
-Class token to be toggled
+CSS class token to toggle
 
-### s
+### reactive
 
 [`Reactive`](../type-aliases/Reactive.md)\<`boolean`, `P`, `E`\> = `token`
 
-Reactive bound to the class existence
+Reactive value bound to the class presence (defaults to class name)
 
 ## Returns
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-An effect function that toggles the classList token of the element
+Effect function that toggles the class on the element
 
 ## Since
 

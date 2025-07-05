@@ -19,20 +19,20 @@ const LOG_ERROR: LogLevel = 'error'
  * Return selector string for the id of the element
  *
  * @since 0.7.0
- * @param {string} id
+ * @param {string | undefined | null} id
  * @returns {string} - id string for the element with '#' prefix
  */
-const idString = (id: string): string => (id ? `#${id}` : '')
+const idString = (id: string | undefined | null): string => (id ? `#${id}` : '')
 
 /**
  * Return a selector string for classes of the element
  *
  * @since 0.7.0
- * @param {DOMTokenList} classList - DOMTokenList to convert to a string
+ * @param {DOMTokenList | undefined | null} classList - DOMTokenList to convert to a string
  * @returns {string} - class string for the DOMTokenList with '.' prefix if any
  */
-const classString = (classList: DOMTokenList): string =>
-	classList.length ? `.${Array.from(classList).join('.')}` : ''
+const classString = (classList: DOMTokenList | undefined | null): string =>
+	classList?.length ? `.${Array.from(classList).join('.')}` : ''
 
 /* === Exported Functions === */
 
@@ -86,11 +86,13 @@ const isUpgradedComponent = <E extends Element>(element: E): boolean => {
  * Return a string representation of the Element instance
  *
  * @since 0.7.0
- * @param {Element} el
+ * @param {Element | undefined | null} el
  * @returns {string}
  */
-const elementName = /*#__PURE__*/ (el: Element): string =>
-	`<${el.localName}${idString(el.id)}${classString(el.classList)}>`
+const elementName = /*#__PURE__*/ (el: Element | undefined | null): string =>
+	el
+		? `<${el.localName}${idString(el.id)}${classString(el.classList)}>`
+		: '<unknown>'
 
 /**
  * Return a string representation of a JavaScript variable

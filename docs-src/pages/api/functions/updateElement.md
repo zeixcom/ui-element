@@ -6,11 +6,13 @@
 
 # Function: updateElement()
 
-> **updateElement**\<`P`, `T`, `E`\>(`s`, `updater`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+> **updateElement**\<`P`, `T`, `E`\>(`reactive`, `updater`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:121](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L121)
+Defined in: [src/lib/effects.ts:202](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L202)
 
-Effect for setting properties of a target element according to a given Reactive
+Core effect function for updating element properties based on reactive values.
+This function handles the lifecycle of reading, updating, and deleting element properties
+while providing proper error handling and debugging support.
 
 ## Type Parameters
 
@@ -28,23 +30,23 @@ Effect for setting properties of a target element according to a given Reactive
 
 ## Parameters
 
-### s
+### reactive
 
 [`Reactive`](../type-aliases/Reactive.md)\<`T`, `P`, `E`\>
 
-Reactive bound to the element property
+The reactive value that drives the element updates
 
 ### updater
 
 [`ElementUpdater`](../type-aliases/ElementUpdater.md)\<`E`, `T`\>
 
-Updater object containing key, read, update, and delete methods
+Configuration object defining how to read, update, and delete the element property
 
 ## Returns
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Effect function that updates the element properties
+Effect function that manages the element property updates
 
 ## Since
 

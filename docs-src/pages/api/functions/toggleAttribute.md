@@ -6,11 +6,12 @@
 
 # Function: toggleAttribute()
 
-> **toggleAttribute**\<`P`, `E`\>(`name`, `s`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+> **toggleAttribute**\<`P`, `E`\>(`name`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:394](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L394)
+Defined in: [src/lib/effects.ts:468](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L468)
 
-Toggle a boolean attribute of an element
+Effect for toggling a boolean attribute on an element.
+When the reactive value is true, the attribute is present; when false, it's absent.
 
 ## Type Parameters
 
@@ -28,19 +29,19 @@ Toggle a boolean attribute of an element
 
 `string`
 
-Name of attribute to be toggled
+Name of the attribute to toggle
 
-### s
+### reactive
 
 [`Reactive`](../type-aliases/Reactive.md)\<`boolean`, `P`, `E`\> = `name`
 
-Reactive bound to the attribute existence
+Reactive value bound to the attribute presence (defaults to attribute name)
 
 ## Returns
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-An effect function that toggles the attribute of the element
+Effect function that toggles the attribute on the element
 
 ## Since
 

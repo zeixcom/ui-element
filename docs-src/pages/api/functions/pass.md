@@ -8,9 +8,10 @@
 
 > **pass**\<`P`, `E`\>(`reactives`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:572](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L572)
+Defined in: [src/lib/effects.ts:648](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L648)
 
-Pass reactives to a descendent element
+Effect for passing reactive values to descendant elements.
+Supports both direct property setting and signal passing for custom elements.
 
 ## Type Parameters
 
@@ -26,7 +27,7 @@ Pass reactives to a descendent element
 
 ### reactives
 
-Reactives to be passed to descendent element
+Reactive values to pass or function that returns them
 
 [`PassedReactives`](../type-aliases/PassedReactives.md)\<`P`, `E`\> | (`target`) => [`PassedReactives`](../type-aliases/PassedReactives.md)\<`P`, `E`\>
 
@@ -34,7 +35,7 @@ Reactives to be passed to descendent element
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-An effect function that passes the reactives to the descendent element
+Effect function that passes reactive values to descendant elements
 
 ## Since
 
@@ -42,4 +43,4 @@ An effect function that passes the reactives to the descendent element
 
 ## Throws
 
-If the provided signals are not an object or a provider function
+When the provided reactives are not an object or provider function

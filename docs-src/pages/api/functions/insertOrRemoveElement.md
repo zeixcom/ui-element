@@ -6,11 +6,12 @@
 
 # Function: insertOrRemoveElement()
 
-> **insertOrRemoveElement**\<`P`, `E`\>(`s`, `inserter?`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+> **insertOrRemoveElement**\<`P`, `E`\>(`reactive`, `inserter?`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:207](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L207)
+Defined in: [src/lib/effects.ts:275](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L275)
 
-Effect for inserting or removing elements according to a given Reactive
+Effect for dynamically inserting or removing elements based on a reactive numeric value.
+Positive values insert elements, negative values remove them.
 
 ## Type Parameters
 
@@ -24,23 +25,23 @@ Effect for inserting or removing elements according to a given Reactive
 
 ## Parameters
 
-### s
+### reactive
 
 [`Reactive`](../type-aliases/Reactive.md)\<`number`, `P`, `E`\>
 
-Reactive bound to the number of elements to insert (positive) or remove (negative)
+Reactive value determining number of elements to insert (positive) or remove (negative)
 
 ### inserter?
 
 [`ElementInserter`](../type-aliases/ElementInserter.md)\<`E`\>
 
-Inserter object containing position, insert, and remove methods
+Configuration object defining how to create and position elements
 
 ## Returns
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-- Effect function that inserts or removes elements
+Effect function that manages element insertion and removal
 
 ## Since
 

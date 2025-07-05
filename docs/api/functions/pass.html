@@ -106,10 +106,10 @@
                 Function: pass()
             </h1>
 <blockquote>
-<p><strong>pass</strong>&lt;<code>P</code>, <code>Q</code>&gt;(<code>signals</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>Q</code>&gt;&gt;</p>
+<p><strong>pass</strong>&lt;<code>P</code>, <code>E</code>&gt;(<code>reactives</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L445">src/core/dom.ts:445</a></p>
-<p>Pass signals to a UIElement component</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L572">src/lib/effects.ts:572</a></p>
+<p>Pass reactives to a descendent element</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -123,37 +123,35 @@
                 P
             </h3>
 <p><code>P</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
-<h3 id="q">
-                <a name="q" class="anchor" href="#q">
+<h3 id="e">
+                <a name="e" class="anchor" href="#e">
 	                <span class="permalink">🔗</span>
                 </a>
-                Q
+                E
             </h3>
-<p><code>Q</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
+<p><code>E</code> <em>extends</em> <code>Element</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Parameters
             </h2>
-<h3 id="signals">
-                <a name="signals" class="anchor" href="#signals">
+<h3 id="reactives">
+                <a name="reactives" class="anchor" href="#reactives">
 	                <span class="permalink">🔗</span>
                 </a>
-                signals
+                reactives
             </h3>
-<p>Signals to be passed to descendent components</p>
-<p><a href="../type-aliases/PassedSignals.html"><code>PassedSignals</code></a>&lt;<code>P</code>, <code>Q</code>&gt; | (<code>target</code>) =&gt; <a href="../type-aliases/PassedSignals.html"><code>PassedSignals</code></a>&lt;<code>P</code>, <code>Q</code>&gt;</p>
+<p>Reactives to be passed to descendent element</p>
+<p><a href="../type-aliases/PassedReactives.html"><code>PassedReactives</code></a>&lt;<code>P</code>, <code>E</code>&gt; | (<code>target</code>) =&gt; <a href="../type-aliases/PassedReactives.html"><code>PassedReactives</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<p><a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>Q</code>&gt;&gt;</p>
-<ul>
-<li>Effect to be used in ancestor component</li>
-</ul>
+<p><a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
+<p>An effect function that passes the reactives to the descendent element</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
@@ -167,14 +165,7 @@
                 </a>
                 Throws
             </h2>
-<p>if the provided signals are not an object or a provider function</p>
-<h2 id="throws">
-                <a name="throws" class="anchor" href="#throws">
-	                <span class="permalink">🔗</span>
-                </a>
-                Throws
-            </h2>
-<p>if the target component is not a UIElement component</p>
+<p>If the provided signals are not an object or a provider function</p>
 
 </section></main>
 			<footer class="content-grid">

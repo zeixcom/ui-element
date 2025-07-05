@@ -6,11 +6,12 @@
 
 # Function: setAttribute()
 
-> **setAttribute**\<`P`, `E`\>(`name`, `s`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+> **setAttribute**\<`P`, `E`\>(`name`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:367](https://github.com/zeixcom/ui-element/blob/0678e2841dfcc123c324a841983e7a648bd2315e/src/lib/effects.ts#L367)
+Defined in: [src/lib/effects.ts:440](https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L440)
 
-Set attribute of an element
+Effect for setting an attribute on an element.
+Sets the specified attribute with security validation for unsafe values.
 
 ## Type Parameters
 
@@ -28,19 +29,19 @@ Set attribute of an element
 
 `string`
 
-Name of attribute to be set
+Name of the attribute to set
 
-### s
+### reactive
 
 [`Reactive`](../type-aliases/Reactive.md)\<`string`, `P`, `E`\> = `name`
 
-Reactive bound to the attribute value
+Reactive value bound to the attribute value (defaults to attribute name)
 
 ## Returns
 
 [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-An effect function that sets the attribute of the element
+Effect function that sets the attribute on the element
 
 ## Since
 
