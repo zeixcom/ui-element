@@ -6,11 +6,12 @@
 
 # Function: setProperty()
 
-> **setProperty**\<`P`, `K`, `E`\>(`key`, `s`): [`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+> **setProperty**\<`P`, `K`, `E`\>(`key`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:311](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/lib/effects.ts#L311)
+Defined in: [src/lib/effects.ts:394](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/lib/effects.ts#L394)
 
-Set property of an element
+Effect for setting a property on an element.
+Sets the specified property directly on the element object.
 
 ## Type Parameters
 
@@ -32,17 +33,19 @@ Set property of an element
 
 `K`
 
-name of property to be set
+Name of the property to set
 
-### s
+### reactive
 
-[`SignalLike`](../type-aliases/SignalLike.md)\<`P`, `E`\[`K`\], `E`\> = `...`
+[`Reactive`](../type-aliases/Reactive.md)\<`E`\[`K`\], `P`, `E`\> = `...`
 
-state bound to the property value
+Reactive value bound to the property value (defaults to property name)
 
 ## Returns
 
-[`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+[`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+
+Effect function that sets the property on the element
 
 ## Since
 

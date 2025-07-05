@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.1</small>
+					UIElement Docs <small>Version 0.13.2</small>
 				</h1>
 				
 <section-menu>
@@ -116,7 +116,7 @@
 			<li><a href="#component">Component</a></li>
 			<li><a href="#signals">Signals</a></li>
 			<li><a href="#attribute-parsers">Attribute Parsers</a></li>
-			<li><a href="#signal-initializers">Signal Initializers</a></li>
+			<li><a href="#signal-producers">Signal Producers</a></li>
 			<li><a href="#effects">Effects</a></li>
 		</ol>
 	</nav>
@@ -135,7 +135,7 @@
             </h2>
 <p>Create a Web Component of type <a href="api/type-aliases/Component.html">Component</a> with reactive properties that extend <a href="api/type-aliases/ComponentProps.html">ComponentProps</a>.</p>
 <ul>
-<li><a href="api/functions/component.html">component</a></li>
+<li><a href="api/functions/component.html">component</a> defines a custom element with reactive properties and declarative effects</li>
 </ul>
 </section>
 
@@ -150,8 +150,6 @@
 <p>Create a signal of type <a href="api/type-aliases/Signal.html">Signal</a>.</p>
 <ul>
 <li><a href="api/functions/computed.html">computed</a> creates a <a href="api/type-aliases/Computed.html">Computed</a> signal derived from other signals</li>
-<li><a href="api/functions/selection.html">selection</a> creates a <a href="api/type-aliases/Computed.html">Computed</a> signal that updates according to a dynamic CSS selector</li>
-<li><a href="api/functions/sensor.html">sensor</a> creates a <a href="api/type-aliases/Computed.html">Computed</a> signal that updates according to events</li>
 <li><a href="api/functions/state.html">state</a> creates a <a href="api/type-aliases/State.html">State</a> signal</li>
 </ul>
 <p>Helper functions:</p>
@@ -172,24 +170,24 @@
             </h2>
 <p>Declare how attributes are parsed. Functions returning <a href="api/type-aliases/AttributeParser.html">AttributeParser</a> that will be used to create <a href="api/type-aliases/State.html">State</a> signals as reactive properties on the component.</p>
 <ul>
-<li><a href="api/functions/asBoolean.html">asBoolean</a></li>
-<li><a href="api/functions/asEnum.html">asEnum</a></li>
-<li><a href="api/functions/asInteger.html">asInteger</a></li>
-<li><a href="api/functions/asJSON.html">asJSON</a></li>
-<li><a href="api/functions/asNumber.html">asNumber</a></li>
-<li><a href="api/functions/asString.html">asString</a></li>
+<li><a href="api/functions/asBoolean.html">asBoolean</a> parses boolean attributes (presence indicates true)</li>
+<li><a href="api/functions/asEnum.html">asEnum</a> parses string attributes constrained to specific values</li>
+<li><a href="api/functions/asInteger.html">asInteger</a> parses integer attributes with validation</li>
+<li><a href="api/functions/asJSON.html">asJSON</a> parses JSON attributes into JavaScript objects</li>
+<li><a href="api/functions/asNumber.html">asNumber</a> parses numeric attributes as floating-point numbers</li>
+<li><a href="api/functions/asString.html">asString</a> parses string attributes</li>
 </ul>
 </section>
 
 <section>
 
-<h2 id="signal-initializers">
-                <a name="signal-initializers" class="anchor" href="#signal-initializers">
+<h2 id="signal-producers">
+                <a name="signal-producers" class="anchor" href="#signal-producers">
 	                <span class="permalink">🔗</span>
                 </a>
-                Signal Initializers
+                Signal Producers
             </h2>
-<p>Declare how signals are initialized. Variable of type or function returning <a href="api/type-aliases/SignalInitializer.html">SignalInitializer</a>:</p>
+<p>Declare how signals are initialized. Variable of type or function returning <a href="api/type-aliases/SignalProducer.html">SignalProducer</a>:</p>
 <ul>
 <li><a href="api/functions/fromContext.html">fromContext</a> consumes a context value from nearest ancestor context provider component</li>
 <li><a href="api/functions/fromDescendant.html">fromDescendant</a> gets a reactive property of a descendant component</li>
@@ -209,20 +207,20 @@
             </h2>
 <p>Declare effects of type <a href="api/type-aliases/FxFunction.html">FxFunction</a> to be applied when signals change:</p>
 <ul>
-<li><a href="api/functions/dangerouslySetInnerHTML.html">dangerouslySetInnerHTML</a></li>
-<li><a href="api/functions/emit.html">emit</a></li>
-<li><a href="api/functions/insertOrRemoveElement.html">insertOrRemoveElement</a></li>
-<li><a href="api/functions/on.html">on</a></li>
-<li><a href="api/functions/pass.html">pass</a></li>
-<li><a href="api/functions/provide.html">provide</a></li>
-<li><a href="api/functions/setAttribute.html">setAttribute</a></li>
-<li><a href="api/functions/setProperty.html">setProperty</a></li>
-<li><a href="api/functions/setStyle.html">setStyle</a></li>
-<li><a href="api/functions/setText.html">setText</a></li>
-<li><a href="api/functions/show.html">show</a></li>
-<li><a href="api/functions/toggleAttribute.html">toggleAttribute</a></li>
-<li><a href="api/functions/toggleClass.html">toggleClass</a></li>
-<li><a href="api/functions/updateElement.html">updateElement</a></li>
+<li><a href="api/functions/dangerouslySetInnerHTML.html">dangerouslySetInnerHTML</a> sets inner HTML content from a signal</li>
+<li><a href="api/functions/emit.html">emit</a> dispatches custom events when signals change</li>
+<li><a href="api/functions/insertOrRemoveElement.html">insertOrRemoveElement</a> conditionally inserts or removes elements</li>
+<li><a href="api/functions/on.html">on</a> attaches event listeners to elements</li>
+<li><a href="api/functions/pass.html">pass</a> passes signal values to descendant component properties</li>
+<li><a href="api/functions/provide.html">provide</a> provides context values to descendant components</li>
+<li><a href="api/functions/setAttribute.html">setAttribute</a> sets element attributes from signals</li>
+<li><a href="api/functions/setProperty.html">setProperty</a> sets element properties from signals</li>
+<li><a href="api/functions/setStyle.html">setStyle</a> sets CSS styles from signals</li>
+<li><a href="api/functions/setText.html">setText</a> sets text content from signals</li>
+<li><a href="api/functions/show.html">show</a> conditionally shows or hides elements</li>
+<li><a href="api/functions/toggleAttribute.html">toggleAttribute</a> toggles attributes based on signal values</li>
+<li><a href="api/functions/toggleClass.html">toggleClass</a> toggles CSS classes based on signal values</li>
+<li><a href="api/functions/updateElement.html">updateElement</a> base function for updating elements, used for <a href="api/functions/setText.html">setText</a>, <a href="api/functions/show.html">show</a>, <a href="api/functions/toggleClass.html">toggleClass</a>, <a href="api/functions/toggleAttribute.html">toggleAttribute</a>, <a href="api/functions/setAttribute.html">setAttribute</a>, <a href="api/functions/setProperty.html">setProperty</a>, <a href="api/functions/setStyle.html">setStyle</a></li>
 </ul>
 </section>
 </main>

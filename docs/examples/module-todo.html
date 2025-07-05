@@ -215,9 +215,9 @@
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	component,</span></span>
+<span class="line"><span style="color:#F8F8F2">	fromDescendant,</span></span>
 <span class="line"><span style="color:#F8F8F2">	fromSelector,</span></span>
 <span class="line"><span style="color:#F8F8F2">	on,</span></span>
-<span class="line"><span style="color:#F8F8F2">	read,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setAttribute,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setText,</span></span>
@@ -225,7 +225,7 @@
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
 <span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { BasicButtonProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../basic-button/basic-button'</span></span>
 <span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { FormCheckboxProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../form-checkbox/form-checkbox'</span></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { FormRadiogroupProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../form-radiogroup/form-radiogroup'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#E6DB74"> '../form-radiogroup/form-radiogroup'</span></span>
 <span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { FormTextboxProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../form-textbox/form-textbox'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">ModuleTodoProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
@@ -248,12 +248,12 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> list </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ol'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">list) </span><span style="color:#F92672">throw</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Error</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'No list found'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> inputLength </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> read</span><span style="color:#F8F8F2">(input, </span><span style="color:#E6DB74">'length'</span><span style="color:#F8F8F2">, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> filterValue </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> read</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">			el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">FormRadiogroupProps</span><span style="color:#F8F8F2">>>(</span><span style="color:#E6DB74">'form-radiogroup'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> inputLength </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> fromDescendant</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-textbox'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'length'</span><span style="color:#F8F8F2">, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)(el)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> filterValue </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> fromDescendant</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'form-radiogroup'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#E6DB74">			'value'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#E6DB74">			'all'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">		)</span></span>
+<span class="line"><span style="color:#F8F8F2">		)(el)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">			// Control todo input form</span></span>

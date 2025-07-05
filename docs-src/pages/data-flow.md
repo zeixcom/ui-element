@@ -281,11 +281,152 @@ Here's how everything comes together:
 
 Passing state down works well when a **parent component can directly observe child state**, but sometimes a **child needs to notify its parent** about an action **without managing shared state itself**.
 
-<card-callout class="caution">
+Custom events are perfect for this - they allow components to communicate upward through the DOM tree without tight coupling.
 
-**TODO**: Add example
+### TypeScript Support for Components and Events
 
-</card-callout>
+To get full TypeScript support, declare your components and custom events globally:
+
+```typescript
+// In your component file
+export type ProductCardProps = {
+  productId: string
+  quantity: number
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'product-card': Component<ProductCardProps>
+    'shopping-cart': Component<ShoppingCartProps>
+  }
+  interface HTMLElementEventMap {
+    itemAdded: CustomEvent<{ id: string; quantity: number }>
+    cartUpdated: CustomEvent<{ total: number }>
+  }
+}
+```
+
+This enables full type checking, autocompletion, and access to UIElement component methods like `.getSignal()` and `.setSignal()`.
+
+### Example: Shopping Cart Events
+
+Consider a **product card** that needs to notify its parent when an item is added:
+
+```js
+// Child component dispatches custom event
+component(
+  'product-card',
+  {
+    productId: asString(),
+    quantity: asInteger(),
+  },
+  (el, { first }) => [
+    first(
+      '.add-button',
+      on('click', () => {
+        // Dispatch custom event with product details
+        el.dispatchEvent(
+          new CustomEvent('itemAdded', {
+            detail: {
+              id: el.productId,
+              quantity: el.quantity,
+            },
+            bubbles: true,
+          }),
+        )
+      }),
+    ),
+  ],
+)
+```
+
+```js
+// Parent component listens for custom events
+component(
+  'shopping-cart',
+  {
+    items: fromEvent(
+      'product-card',
+      'itemAdded',
+      ({ event, source, value }) => {
+        // TypeScript knows 'source' is Component<ProductCardProps>
+        // Can access UIElement methods like source.getSignal('quantity')
+        const newItem = {
+          id: event.detail.id,
+          quantity: event.detail.quantity,
+          addedAt: Date.now(),
+        }
+        return [...value, newItem]
+      },
+      [],
+    ),
+    total: () => el.items.reduce((sum, item) => sum + item.quantity, 0),
+  },
+  (el, { first }) => [
+    first('.cart-count', setText('total')),
+    first(
+      '.items-list',
+      setText(() =>
+        el.items.map(item => `${item.id}: ${item.quantity}`).join(', '),
+      ),
+    ),
+  ],
+)
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'shopping-cart': Component<ShoppingCartProps>
+  }
+}
+```
+
+### Benefits of Custom Events
+
+- **Decoupling**: Child components don't need to know about parent implementation
+- **Reusability**: Components can be used in different contexts
+- **Standard DOM**: Uses native event system, works with any framework
+- **Bubbling**: Events naturally flow up the DOM tree
+- **Cancellable**: Parent can prevent default behavior if needed
+
+### When to Use Custom Events
+
+- **User Actions**: Button clicks, form submissions, gestures
+- **State Changes**: When a component's internal state affects others
+- **Lifecycle Events**: Component initialization, destruction, errors
+- **Data Flow**: When child needs to send data upward without direct coupling
+
+### Component Type Safety Best Practices
+
+Each UIElement component should declare its own `HTMLElementTagNameMap` extension:
+
+```ts
+// In my-component.ts
+export type MyComponentProps = {
+  value: string
+  count: number
+}
+
+export default component(
+  'my-component',
+  {
+    /* ... */
+  },
+  () => [],
+)
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'my-component': Component<MyComponentProps>
+  }
+}
+```
+
+This enables:
+
+- **Full type safety** when using signal producers like `fromDescendants('my-component', ...)`
+- **Access to UIElement methods** like `.getSignal()` and `.setSignal()`
+- **IntelliSense** for component properties and methods
+- **Compile-time validation** of component interactions
 
 </section>
 

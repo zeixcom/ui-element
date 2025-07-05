@@ -6,48 +6,52 @@
 
 # Function: fromDescendant()
 
-> **fromDescendant**\<`Q`, `K`\>(`selector`, `prop`, `fallback`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`Q`\[`K`\]\>
+> **fromDescendant**\<`E`, `S`, `K`\>(`selector`, `prop`, `fallback`): (`host`) => () => `NonNullable`\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>\[`K`\]\>
 
-Defined in: [src/core/dom.ts:533](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L533)
-
-Produce a computed signal for projected reactive property from a descendant component
+Defined in: [src/core/dom.ts:411](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/core/dom.ts#L411)
 
 ## Type Parameters
 
-### Q
+### E
 
-`Q` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
+`E` *extends* `Element` = `HTMLElement`
+
+### S
+
+`S` *extends* `string` = `string`
 
 ### K
 
-`K` *extends* `string` \| `number` \| `symbol`
+`K` *extends* `string` \| `number` \| `symbol` = keyof [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>
 
 ## Parameters
 
 ### selector
 
-`string`
-
-CSS selector for descendant element
+`S`
 
 ### prop
 
 `K`
 
-property name to get signal for
-
 ### fallback
 
-`Q`\[`K`\]
-
-fallback value to use until component is ready
+`NonNullable`\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>\[`K`\]\>
 
 ## Returns
 
-[`SignalProducer`](../type-aliases/SignalProducer.md)\<`Q`\[`K`\]\>
+> (`host`): () => `NonNullable`\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>\[`K`\]\>
 
-signal producer that emits value from descendant component
+### Parameters
 
-## Since
+#### host
 
-0.13.1
+`HTMLElement`
+
+### Returns
+
+> (): `NonNullable`\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>\[`K`\]\>
+
+#### Returns
+
+`NonNullable`\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>\[`K`\]\>

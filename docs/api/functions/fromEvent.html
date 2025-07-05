@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.1</small>
+					UIElement Docs <small>Version 0.13.2</small>
 				</h1>
 				
 <section-menu>
@@ -106,9 +106,9 @@
                 Function: fromEvent()
             </h1>
 <blockquote>
-<p><strong>fromEvent</strong>&lt;<code>T</code>, <code>E</code>, <code>K</code>, <code>C</code>&gt;(<code>selector</code>, <code>type</code>, <code>transform</code>, <code>initializer</code>): <a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>T</code>, <code>C</code>&gt;</p>
+<p><strong>fromEvent</strong>&lt;<code>T</code>, <code>E</code>, <code>K</code>, <code>C</code>, <code>S</code>&gt;(<code>selector</code>, <code>type</code>, <code>transformer</code>, <code>init</code>, <code>options</code>): (<code>host</code>) =&gt; <a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L402">src/core/dom.ts:402</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/dom.ts#L317">src/core/dom.ts:317</a></p>
 <p>Produce a computed signal from transformed event data</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
@@ -129,14 +129,14 @@
                 </a>
                 E
             </h3>
-<p><code>E</code> <em>extends</em> <code>HTMLElement</code></p>
+<p><code>E</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
 <h3 id="k">
                 <a name="k" class="anchor" href="#k">
 	                <span class="permalink">🔗</span>
                 </a>
                 K
             </h3>
-<p><code>K</code> <em>extends</em> <code>string</code></p>
+<p><code>K</code> <em>extends</em> <code>string</code> = <code>string</code></p>
 <h3 id="c">
                 <a name="c" class="anchor" href="#c">
 	                <span class="permalink">🔗</span>
@@ -144,6 +144,13 @@
                 C
             </h3>
 <p><code>C</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
+<h3 id="s">
+                <a name="s" class="anchor" href="#s">
+	                <span class="permalink">🔗</span>
+                </a>
+                S
+            </h3>
+<p><code>S</code> <em>extends</em> <code>string</code> = <code>string</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -156,7 +163,7 @@
                 </a>
                 selector
             </h3>
-<p><code>string</code></p>
+<p><code>S</code></p>
 <p>CSS selector for the source element</p>
 <h3 id="type">
                 <a name="type" class="anchor" href="#type">
@@ -165,38 +172,191 @@
                 type
             </h3>
 <p><code>K</code></p>
-<p>event type to listen for</p>
-<h3 id="transform">
-                <a name="transform" class="anchor" href="#transform">
+<p>Event type to listen for</p>
+<h3 id="transformer">
+                <a name="transformer" class="anchor" href="#transformer">
 	                <span class="permalink">🔗</span>
                 </a>
-                transform
+                transformer
             </h3>
-<p>(<code>host</code>, <code>source</code>, <code>event</code>, <code>oldValue</code>) =&gt; <code>T</code></p>
-<p>transformation function for the event</p>
-<h3 id="initializer">
-                <a name="initializer" class="anchor" href="#initializer">
+<p><a href="../type-aliases/EventTransformer.html"><code>EventTransformer</code></a>&lt;<code>T</code>, <a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;, <code>K</code>&gt;</p>
+<p>Transformation function for the event</p>
+<h3 id="init">
+                <a name="init" class="anchor" href="#init">
 	                <span class="permalink">🔗</span>
                 </a>
-                initializer
+                init
             </h3>
-<p>initial value or initializer function</p>
-<p><code>T</code> | (<code>host</code>, <code>source</code>) =&gt; <code>T</code></p>
+<p>Initial value or initializer function</p>
+<p><code>T</code> | (<code>host</code>) =&gt; <code>T</code></p>
+<h3 id="options">
+                <a name="options" class="anchor" href="#options">
+	                <span class="permalink">🔗</span>
+                </a>
+                options
+            </h3>
+<p><code>boolean</code> | <code>AddEventListenerOptions</code></p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<p><a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>T</code>, <code>C</code>&gt;</p>
-<p>signal producer for value from event</p>
+<p>Signal producer for value from event</p>
+<blockquote>
+<p>(<code>host</code>): <a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;</p>
+</blockquote>
+<h3 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Parameters
+            </h3>
+<h4 id="host">
+                <a name="host" class="anchor" href="#host">
+	                <span class="permalink">🔗</span>
+                </a>
+                host
+            </h4>
+<p><code>C</code></p>
+<h3 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h3>
+<p><a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
                 </a>
                 Since
             </h2>
-<p>0.13.1</p>
+<p>0.13.2</p>
+<h2 id="examples">
+                <a name="examples" class="anchor" href="#examples">
+	                <span class="permalink">🔗</span>
+                </a>
+                Examples
+            </h2>
+<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">ts</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Simple input value extraction</span></span>
+<span class="line"><span style="color:#A6E22E">fromEvent</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">source</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> source.value, </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">ts</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Click counter using previous value</span></span>
+<span class="line"><span style="color:#A6E22E">fromEvent</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'button'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">value</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">+</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">ts</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Form submission with event handling</span></span>
+<span class="line"><span style="color:#A6E22E">fromEvent</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'submit'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">source</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">  event.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F92672">  return</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> FormData</span><span style="color:#F8F8F2">(source)</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#AE81FF">null</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">ts</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Complex logic using multiple context values</span></span>
+<span class="line"><span style="color:#A6E22E">fromEvent</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">source</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">value</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">  if</span><span style="color:#F8F8F2"> (event.inputType </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'deleteContentBackward'</span><span style="color:#F8F8F2">) {</span></span>
+<span class="line"><span style="color:#F8F8F2">    host.</span><span style="color:#A6E22E">dispatchEvent</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">new</span><span style="color:#A6E22E"> CustomEvent</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'deletion'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"><span style="color:#F92672">  return</span><span style="color:#F8F8F2"> source.value.length </span><span style="color:#F92672">></span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> source.value </span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> value</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">ts</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// TypeScript automatically infers element types from selectors</span></span>
+<span class="line"><span style="color:#A6E22E">fromEvent</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">source</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">  return</span><span style="color:#F8F8F2"> source.value.length </span><span style="color:#88846F">// TypeScript knows source is HTMLInputElement</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<module-codeblock collapsed language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">ts</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Custom event handling with TypeScript declarations</span></span>
+<span class="line"><span style="color:#88846F">// First, declare your custom events and components globally:</span></span>
+<span class="line"><span style="color:#88846F">// declare global {</span></span>
+<span class="line"><span style="color:#88846F">//   interface HTMLElementTagNameMap {</span></span>
+<span class="line"><span style="color:#88846F">//     'my-component': Component&#x3C;MyComponentProps></span></span>
+<span class="line"><span style="color:#88846F">//   }</span></span>
+<span class="line"><span style="color:#88846F">//   interface HTMLElementEventMap {</span></span>
+<span class="line"><span style="color:#88846F">//     itemAdded: CustomEvent&#x3C;{ id: string; quantity: number }></span></span>
+<span class="line"><span style="color:#88846F">//   }</span></span>
+<span class="line"><span style="color:#88846F">// }</span></span>
+<span class="line"><span style="color:#A6E22E">fromEvent</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'itemAdded'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">source</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">  // TypeScript knows source is Component&#x3C;MyComponentProps> with UIElement methods</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> currentValue </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> source.</span><span style="color:#A6E22E">getSignal</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'someProperty'</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F92672">  return</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">    id: source.dataset.id,</span></span>
+<span class="line"><span style="color:#F8F8F2">    quantity: event.detail.quantity, </span><span style="color:#88846F">// TypeScript knows this is a number</span></span>
+<span class="line"><span style="color:#F8F8F2">    currentValue,</span></span>
+<span class="line"><span style="color:#F8F8F2">    timestamp: Date.</span><span style="color:#A6E22E">now</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#AE81FF">null</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
 
 </section></main>
 			<footer class="content-grid">

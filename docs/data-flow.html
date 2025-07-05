@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.1</small>
+					UIElement Docs <small>Version 0.13.2</small>
 				</h1>
 				
 <section-menu>
@@ -454,11 +454,210 @@
                 Custom Events
             </h2>
 <p>Passing state down works well when a <strong>parent component can directly observe child state</strong>, but sometimes a <strong>child needs to notify its parent</strong> about an action <strong>without managing shared state itself</strong>.</p>
-<card-callout class="caution">
-
-<p><strong>TODO</strong>: Add example</p>
-</card-callout>
-
+<p>Custom events are perfect for this - they allow components to communicate upward through the DOM tree without tight coupling.</p>
+<h3 id="typescript-support-for-components-and-events">
+                <a name="typescript-support-for-components-and-events" class="anchor" href="#typescript-support-for-components-and-events">
+	                <span class="permalink">🔗</span>
+                </a>
+                TypeScript Support for Components and Events
+            </h3>
+<p>To get full TypeScript support, declare your components and custom events globally:</p>
+<module-codeblock collapsed language="typescript" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">typescript</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// In your component file</span></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">ProductCardProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">  productId</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
+<span class="line"><span style="color:#F8F8F2">  quantity</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#E6DB74">    'product-card'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">ProductCardProps</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#E6DB74">    'shopping-cart'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">ShoppingCartProps</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementEventMap</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">    itemAdded</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">CustomEvent</span><span style="color:#F8F8F2">&#x3C;{ id</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">; quantity</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2"> }></span></span>
+<span class="line"><span style="color:#F8F8F2">    cartUpdated</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">CustomEvent</span><span style="color:#F8F8F2">&#x3C;{ total</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2"> }></span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>This enables full type checking, autocompletion, and access to UIElement component methods like <code>.getSignal()</code> and <code>.setSignal()</code>.</p>
+<h3 id="example-shopping-cart-events">
+                <a name="example-shopping-cart-events" class="anchor" href="#example-shopping-cart-events">
+	                <span class="permalink">🔗</span>
+                </a>
+                Example: Shopping Cart Events
+            </h3>
+<p>Consider a <strong>product card</strong> that needs to notify its parent when an item is added:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Child component dispatches custom event</span></span>
+<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">  'product-card'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  {</span></span>
+<span class="line"><span style="color:#F8F8F2">    productId: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(),</span></span>
+<span class="line"><span style="color:#F8F8F2">    quantity: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(),</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
+<span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">      '.add-button'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">      on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">        // Dispatch custom event with product details</span></span>
+<span class="line"><span style="color:#F8F8F2">        el.</span><span style="color:#A6E22E">dispatchEvent</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F92672">          new</span><span style="color:#A6E22E"> CustomEvent</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'itemAdded'</span><span style="color:#F8F8F2">, {</span></span>
+<span class="line"><span style="color:#F8F8F2">            detail: {</span></span>
+<span class="line"><span style="color:#F8F8F2">              id: el.productId,</span></span>
+<span class="line"><span style="color:#F8F8F2">              quantity: el.quantity,</span></span>
+<span class="line"><span style="color:#F8F8F2">            },</span></span>
+<span class="line"><span style="color:#F8F8F2">            bubbles: </span><span style="color:#AE81FF">true</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">          }),</span></span>
+<span class="line"><span style="color:#F8F8F2">        )</span></span>
+<span class="line"><span style="color:#F8F8F2">      }),</span></span>
+<span class="line"><span style="color:#F8F8F2">    ),</span></span>
+<span class="line"><span style="color:#F8F8F2">  ],</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Parent component listens for custom events</span></span>
+<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">  'shopping-cart'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  {</span></span>
+<span class="line"><span style="color:#F8F8F2">    items: </span><span style="color:#A6E22E">fromEvent</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">      'product-card'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">      'itemAdded'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">      ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">source</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">value</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">        // TypeScript knows 'source' is Component&#x3C;ProductCardProps></span></span>
+<span class="line"><span style="color:#88846F">        // Can access UIElement methods like source.getSignal('quantity')</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">        const</span><span style="color:#F8F8F2"> newItem </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">          id: event.detail.id,</span></span>
+<span class="line"><span style="color:#F8F8F2">          quantity: event.detail.quantity,</span></span>
+<span class="line"><span style="color:#F8F8F2">          addedAt: Date.</span><span style="color:#A6E22E">now</span><span style="color:#F8F8F2">(),</span></span>
+<span class="line"><span style="color:#F8F8F2">        }</span></span>
+<span class="line"><span style="color:#F92672">        return</span><span style="color:#F8F8F2"> [</span><span style="color:#F92672">...</span><span style="color:#F8F8F2">value, newItem]</span></span>
+<span class="line"><span style="color:#F8F8F2">      },</span></span>
+<span class="line"><span style="color:#F8F8F2">      [],</span></span>
+<span class="line"><span style="color:#F8F8F2">    ),</span></span>
+<span class="line"><span style="color:#A6E22E">    total</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.items.</span><span style="color:#A6E22E">reduce</span><span style="color:#F8F8F2">((</span><span style="color:#FD971F;font-style:italic">sum</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">item</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> sum </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> item.quantity, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
+<span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.cart-count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'total'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">      '.items-list'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">      setText</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#F8F8F2">        el.items.</span><span style="color:#A6E22E">map</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">item</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#E6DB74"> `</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">item.id</span><span style="color:#F92672">}</span><span style="color:#E6DB74">: </span><span style="color:#F92672">${</span><span style="color:#F8F8F2">item.quantity</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">join</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">', '</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">      ),</span></span>
+<span class="line"><span style="color:#F8F8F2">    ),</span></span>
+<span class="line"><span style="color:#F8F8F2">  ],</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#E6DB74">    'shopping-cart'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">ShoppingCartProps</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<h3 id="benefits-of-custom-events">
+                <a name="benefits-of-custom-events" class="anchor" href="#benefits-of-custom-events">
+	                <span class="permalink">🔗</span>
+                </a>
+                Benefits of Custom Events
+            </h3>
+<ul>
+<li><strong>Decoupling</strong>: Child components don&#39;t need to know about parent implementation</li>
+<li><strong>Reusability</strong>: Components can be used in different contexts</li>
+<li><strong>Standard DOM</strong>: Uses native event system, works with any framework</li>
+<li><strong>Bubbling</strong>: Events naturally flow up the DOM tree</li>
+<li><strong>Cancellable</strong>: Parent can prevent default behavior if needed</li>
+</ul>
+<h3 id="when-to-use-custom-events">
+                <a name="when-to-use-custom-events" class="anchor" href="#when-to-use-custom-events">
+	                <span class="permalink">🔗</span>
+                </a>
+                When to Use Custom Events
+            </h3>
+<ul>
+<li><strong>User Actions</strong>: Button clicks, form submissions, gestures</li>
+<li><strong>State Changes</strong>: When a component&#39;s internal state affects others</li>
+<li><strong>Lifecycle Events</strong>: Component initialization, destruction, errors</li>
+<li><strong>Data Flow</strong>: When child needs to send data upward without direct coupling</li>
+</ul>
+<h3 id="component-type-safety-best-practices">
+                <a name="component-type-safety-best-practices" class="anchor" href="#component-type-safety-best-practices">
+	                <span class="permalink">🔗</span>
+                </a>
+                Component Type Safety Best Practices
+            </h3>
+<p>Each UIElement component should declare its own <code>HTMLElementTagNameMap</code> extension:</p>
+<module-codeblock collapsed language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">ts</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// In my-component.ts</span></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">MyComponentProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">  value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
+<span class="line"><span style="color:#F8F8F2">  count</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">  'my-component'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  {</span></span>
+<span class="line"><span style="color:#88846F">    /* ... */</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
+<span class="line"><span style="color:#F8F8F2">  () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [],</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#E6DB74">    'my-component'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">MyComponentProps</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>This enables:</p>
+<ul>
+<li><strong>Full type safety</strong> when using signal producers like <code>fromDescendants(&#39;my-component&#39;, ...)</code></li>
+<li><strong>Access to UIElement methods</strong> like <code>.getSignal()</code> and <code>.setSignal()</code></li>
+<li><strong>IntelliSense</strong> for component properties and methods</li>
+<li><strong>Compile-time validation</strong> of component interactions</li>
+</ul>
 </section>
 
 <section>

@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.1</small>
+					UIElement Docs <small>Version 0.13.2</small>
 				</h1>
 				
 <section-menu>
@@ -106,9 +106,9 @@
                 Function: component()
             </h1>
 <blockquote>
-<p><strong>component</strong>&lt;<code>P</code>&gt;(<code>name</code>, <code>init</code>, <code>setup</code>): <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;</p>
+<p><strong>component</strong>&lt;<code>P</code>&gt;(<code>name</code>, <code>init</code>, <code>setup</code>): <code>void</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/component.ts#L279">src/component.ts:279</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/component.ts#L279">src/component.ts:279</a></p>
 <p>Define a component with its states and setup function (connectedCallback)</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
@@ -136,7 +136,7 @@
                 name
             </h3>
 <p><code>string</code></p>
-<p>name of the custom element</p>
+<p>Name of the custom element</p>
 <h3 id="init">
                 <a name="init" class="anchor" href="#init">
 	                <span class="permalink">🔗</span>
@@ -144,25 +144,22 @@
                 init
             </h3>
 <p>{ [K in string | number | symbol]: Initializer&lt;P[K], Component&lt;P&gt;&gt; } = <code>...</code></p>
-<p>signals of the component</p>
+<p>Signals of the component</p>
 <h3 id="setup">
                 <a name="setup" class="anchor" href="#setup">
 	                <span class="permalink">🔗</span>
                 </a>
                 setup
             </h3>
-<p>(<code>host</code>, <code>select</code>) =&gt; <a href="../type-aliases/FxFunction.html"><code>FxFunction</code></a>&lt;<code>P</code>, <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;&gt;[]</p>
-<p>setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()</p>
+<p>(<code>host</code>, <code>select</code>) =&gt; <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;&gt;[]</p>
+<p>Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()<br>@returns: void</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<p><a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;</p>
-<ul>
-<li>constructor function for the custom element</li>
-</ul>
+<p><code>void</code></p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>

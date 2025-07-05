@@ -6,11 +6,13 @@
 
 # Function: updateElement()
 
-> **updateElement**\<`P`, `T`, `E`\>(`s`, `updater`): [`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+> **updateElement**\<`P`, `T`, `E`\>(`reactive`, `updater`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:111](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/lib/effects.ts#L111)
+Defined in: [src/lib/effects.ts:202](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/lib/effects.ts#L202)
 
-Effect for setting properties of a target element according to a given SignalLike
+Core effect function for updating element properties based on reactive values.
+This function handles the lifecycle of reading, updating, and deleting element properties
+while providing proper error handling and debugging support.
 
 ## Type Parameters
 
@@ -28,21 +30,23 @@ Effect for setting properties of a target element according to a given SignalLik
 
 ## Parameters
 
-### s
+### reactive
 
-[`SignalLike`](../type-aliases/SignalLike.md)\<`P`, `T`, `E`\>
+[`Reactive`](../type-aliases/Reactive.md)\<`T`, `P`, `E`\>
 
-state bound to the element property
+The reactive value that drives the element updates
 
 ### updater
 
 [`ElementUpdater`](../type-aliases/ElementUpdater.md)\<`E`, `T`\>
 
-updater object containing key, read, update, and delete methods
+Configuration object defining how to read, update, and delete the element property
 
 ## Returns
 
-[`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+[`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+
+Effect function that manages the element property updates
 
 ## Since
 

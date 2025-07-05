@@ -8,6 +8,10 @@ declare const isDefinedObject: (
 	value: unknown,
 ) => value is Record<string, unknown>
 declare const isString: (value: unknown) => value is string
+declare const hasMethod: <T extends object, K extends PropertyKey, R>(
+	obj: T,
+	methodName: K,
+) => obj is T & Record<K, (...args: any[]) => R>
 /**
  * Check if a node is an Element
  *
@@ -16,13 +20,27 @@ declare const isString: (value: unknown) => value is string
  */
 declare const isElement: (node: Node) => node is Element
 /**
- * Return a HyperScript string representation of the Element instance
+ * Check whether an element is a custom element
+ *
+ * @param {E} element - Element to check
+ * @returns {boolean} - True if the element is a custom element
+ */
+declare const isCustomElement: <E extends Element>(element: E) => boolean
+/**
+ * Check whether a custom element is upgraded or a regular element
+ *
+ * @param {E} element - Element to check
+ * @returns {boolean} - True if the element is an upgraded custom element or a regular element
+ */
+declare const isUpgradedComponent: <E extends Element>(element: E) => boolean
+/**
+ * Return a string representation of the Element instance
  *
  * @since 0.7.0
- * @param {Element} el
+ * @param {Element | undefined | null} el
  * @returns {string}
  */
-declare const elementName: (el: Element) => string
+declare const elementName: (el: Element | undefined | null) => string
 /**
  * Return a string representation of a JavaScript variable
  *
@@ -51,9 +69,12 @@ declare const typeString: (value: unknown) => string
 declare const log: <T>(value: T, msg: string, level?: LogLevel) => T
 export {
 	type LogLevel,
+	hasMethod,
 	isString,
 	isDefinedObject,
 	isElement,
+	isCustomElement,
+	isUpgradedComponent,
 	log,
 	elementName,
 	valueString,

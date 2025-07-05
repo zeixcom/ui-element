@@ -274,11 +274,19 @@ var LOG_INFO = "info";
 var LOG_WARN = "warn";
 var LOG_ERROR = "error";
 var idString = (id) => id ? `#${id}` : "";
-var classString = (classList) => classList.length ? `.${Array.from(classList).join(".")}` : "";
+var classString = (classList) => classList?.length ? `.${Array.from(classList).join(".")}` : "";
 var isDefinedObject = (value) => !!value && typeof value === "object";
 var isString = (value) => typeof value === "string";
+var hasMethod = (obj, methodName) => isString(methodName) && (methodName in obj) && isFunction(obj[methodName]);
 var isElement = (node) => node.nodeType === Node.ELEMENT_NODE;
-var elementName = (el) => `<${el.localName}${idString(el.id)}${classString(el.classList)}>`;
+var isCustomElement = (element) => element.localName.includes("-");
+var isUpgradedComponent = (element) => {
+  if (!isCustomElement(element))
+    return true;
+  const ctor = customElements.get(element.localName);
+  return !!ctor && element instanceof ctor;
+};
+var elementName = (el) => el ? `<${el.localName}${idString(el.id)}${classString(el.classList)}>` : "<unknown>";
 var valueString = (value) => isString(value) ? `"${value}"` : isDefinedObject(value) ? JSON.stringify(value) : String(value);
 var typeString = (value) => {
   if (value === null)
@@ -305,7 +313,6 @@ class CircularMutationError extends Error {
     this.name = "CircularMutationError";
   }
 }
-var isComponent = (value) => value instanceof HTMLElement && value.localName.includes("-");
 var extractAttributes = (selector) => {
   const attributes = new Set;
   if (selector.includes("."))
@@ -349,16 +356,16 @@ var observeSubtree = (parent, selectors, callback) => {
   observer.observe(parent, observerConfig);
   return observer;
 };
-var selection = (parent, selectors) => {
+var fromSelector = (selectors) => (host) => {
   const watchers = new Set;
-  const select = () => Array.from(parent.querySelectorAll(selectors));
+  const select = () => Array.from(host.querySelectorAll(selectors));
   let value = UNSET;
   let observer;
   let mutationDepth = 0;
   const MAX_MUTATION_DEPTH = 2;
   const observe2 = () => {
     value = select();
-    observer = observeSubtree(parent, selectors, () => {
+    observer = observeSubtree(host, selectors, () => {
       if (!watchers.size) {
         observer?.disconnect();
         observer = undefined;
@@ -382,7 +389,7 @@ var selection = (parent, selectors) => {
       }
     });
   };
-  const s = {
+  return {
     [Symbol.toStringTag]: TYPE_COMPUTED,
     get: () => {
       subscribe(watchers);
@@ -393,42 +400,51 @@ var selection = (parent, selectors) => {
       return value;
     }
   };
-  return s;
 };
-var fromSelector = (selectors) => (host) => selection(host, selectors);
-var fromDescendants = (selectors, reducer, initialValue) => (host) => computed(() => selection(host, selectors).get().reduce(reducer, initialValue));
-var on = (type, listener, options = false) => (host, target = host) => {
-  if (!isFunction(listener))
-    throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
-  target.addEventListener(type, listener, options);
-  return () => target.removeEventListener(type, listener);
-};
-var sensor = (host, source, type, transform, initialValue, options = false) => {
+var fromDescendants = (selectors, reducer, init) => (host) => () => fromSelector(selectors)(host).get().reduce(reducer, isFunction(init) ? init(host) : init);
+var fromEvent = (selector, type, transformer, init, options = false) => (host) => {
   const watchers = new Set;
-  let value = initialValue;
+  let value = isFunction(init) ? init(host) : init;
   let listener;
   let cleanup;
   const listen = () => {
-    listener = (event) => {
-      const newValue = transform(host, source, event, value);
-      if (!Object.is(newValue, value)) {
-        value = newValue;
-        if (watchers.size > 0)
-          notify(watchers);
-        else if (cleanup)
-          cleanup();
+    listener = (e) => {
+      const target = e.target;
+      if (!target)
+        return;
+      const source = target.closest(selector);
+      if (!source || !host.contains(source))
+        return;
+      e.stopPropagation();
+      try {
+        const newValue = transformer({
+          event: e,
+          host,
+          source,
+          value
+        });
+        if (!Object.is(newValue, value)) {
+          value = newValue;
+          if (watchers.size > 0)
+            notify(watchers);
+          else if (cleanup)
+            cleanup();
+        }
+      } catch (error) {
+        e.stopImmediatePropagation();
+        throw error;
       }
     };
-    source.addEventListener(type, listener, options);
+    host.addEventListener(type, listener, options);
     cleanup = () => {
       if (listener) {
-        source.removeEventListener(type, listener);
+        host.removeEventListener(type, listener);
         listener = undefined;
       }
       cleanup = undefined;
     };
   };
-  const s = {
+  return {
     [Symbol.toStringTag]: TYPE_COMPUTED,
     get: () => {
       subscribe(watchers);
@@ -437,54 +453,13 @@ var sensor = (host, source, type, transform, initialValue, options = false) => {
       return value;
     }
   };
-  return s;
 };
-var fromEvent = (selector, type, transform, initializer) => (host) => {
+var fromDescendant = (selector, prop, fallback) => (host) => () => {
   const source = host.querySelector(selector);
-  if (!source) {
-    throw new Error(`Element not found for selector "${selector}" in ${host.localName || "component"}`);
-  }
-  const initialValue = isFunction(initializer) ? initializer(host, source) : initializer;
-  return sensor(host, source, type, transform, initialValue);
-};
-var emit = (type, detail) => (host, target = host) => {
-  target.dispatchEvent(new CustomEvent(type, {
-    detail: isFunction(detail) ? detail(target) : detail,
-    bubbles: true
-  }));
-};
-var pass = (signals) => (host, target) => {
-  if (!isComponent(target))
-    throw new TypeError(`Target element must be a custom element`);
-  const sources = isFunction(signals) ? signals(target) : signals;
-  if (!isDefinedObject(sources))
-    throw new TypeError(`Passed signals must be an object or a provider function`);
-  customElements.whenDefined(target.localName).then(() => {
-    for (const [prop, source] of Object.entries(sources)) {
-      const signal = isString(source) ? host.getSignal(prop) : toSignal(source);
-      target.setSignal(prop, signal);
-    }
-  }).catch((error) => {
-    throw new Error(`Failed to pass signals to ${elementName(target)}`, { cause: error });
-  });
-};
-var read = (source, prop, fallback) => {
-  if (!source)
-    return () => fallback;
-  if (!isComponent(source))
-    throw new TypeError(`Target element must be a custom element`);
-  const awaited = computed(async () => {
-    await customElements.whenDefined(source.localName);
-    return source.getSignal(prop);
-  });
-  return () => {
-    const value = awaited.get();
-    return value === UNSET ? fallback : value.get();
-  };
-};
-var fromDescendant = (selector, prop, fallback) => (host) => {
-  const element = host.querySelector(selector);
-  return computed(read(element, prop, fallback));
+  if (!source || !isUpgradedComponent(source))
+    return fallback;
+  const value = prop in source ? source[prop] : fallback;
+  return value == null || value === UNSET ? fallback : value;
 };
 
 // src/component.ts
@@ -574,8 +549,7 @@ var component = (name, init = {}, setup) => {
       throw new TypeError(`${error} in component "${name}".`);
     }
   }
-
-  class CustomElement extends HTMLElement {
+  customElements.define(name, class extends HTMLElement {
     debug;
     #signals = {};
     #cleanup;
@@ -644,9 +618,7 @@ var component = (name, init = {}, setup) => {
       if (DEV_MODE && this.debug)
         log(signal, `Set ${typeString(signal)} "${String(key)} in ${elementName(this)}`);
     }
-  }
-  customElements.define(name, CustomElement);
-  return CustomElement;
+  });
 };
 // src/core/context.ts
 var CONTEXT_REQUEST = "context-request";
@@ -669,7 +641,7 @@ var provide = (provided) => (host) => {
   const listener = (e) => {
     const { context, callback } = e;
     if (provided.includes(context) && isFunction(callback)) {
-      e.stopPropagation();
+      e.stopImmediatePropagation();
       callback(host.getSignal(String(context)));
     }
   };
@@ -731,7 +703,52 @@ var asJSON = (fallback) => (_, value) => {
   return result ?? fallback;
 };
 // src/lib/effects.ts
-var resolveSignalLike = (s, host, target) => isString(s) ? host.getSignal(s).get() : isSignal(s) ? s.get() : isFunction(s) ? s(target) : RESET;
+var RESOLVE_ERROR = Symbol("RESOLVE_ERROR");
+var resolveReactive = (reactive, host, target, context) => {
+  try {
+    return isString(reactive) ? host.getSignal(reactive).get() : isSignal(reactive) ? reactive.get() : isFunction(reactive) ? reactive(target) : RESET;
+  } catch (error) {
+    if (context) {
+      log(error, `Failed to resolve value of ${valueString(reactive)} for ${context} in ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
+    }
+    return RESOLVE_ERROR;
+  }
+};
+var getOperationDescription = (op, name = "") => {
+  const ops = {
+    a: "attribute ",
+    c: "class ",
+    h: "inner HTML",
+    p: "property ",
+    s: "style property ",
+    t: "text content"
+  };
+  return ops[op] + name;
+};
+var createOperationHandlers = (host, target, operationDesc, resolve, reject) => {
+  const ok = (verb) => () => {
+    if (DEV_MODE && host.debug) {
+      log(target, `${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`);
+    }
+    resolve?.(target);
+  };
+  const err = (verb) => (error) => {
+    log(error, `Failed to ${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
+    reject?.(error);
+  };
+  return { ok, err };
+};
+var createDedupeSymbol = (operation, identifier) => {
+  return Symbol(identifier ? `${operation}:${identifier}` : operation);
+};
+var withReactiveValue = (reactive, host, target, context, handler) => {
+  return effect(() => {
+    const value = resolveReactive(reactive, host, target, context);
+    if (value === RESOLVE_ERROR)
+      return;
+    handler(value);
+  });
+};
 var isSafeURL = (value) => {
   if (/^(mailto|tel):/i.test(value))
     return true;
@@ -739,7 +756,7 @@ var isSafeURL = (value) => {
     try {
       const url = new URL(value, window.location.origin);
       return ["http:", "https:", "ftp:"].includes(url.protocol);
-    } catch (_error) {
+    } catch {
       return false;
     }
   }
@@ -753,102 +770,77 @@ var safeSetAttribute = (element, attr, value) => {
     throw new Error(`Unsafe URL for ${attr}: ${value}`);
   element.setAttribute(attr, value);
 };
-var updateElement = (s, updater) => (host, target) => {
-  const { op, name = "", read: read2, update } = updater;
-  const fallback = read2(target);
-  const ops = {
-    a: "attribute ",
-    c: "class ",
-    h: "inner HTML",
-    p: "property ",
-    s: "style property ",
-    t: "text content"
-  };
-  if (isString(s) && isString(fallback) && host[s] === RESET)
-    host.attributeChangedCallback(s, null, fallback);
-  const ok = (verb) => () => {
-    if (DEV_MODE && host.debug)
-      log(target, `${verb} ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`);
-    updater.resolve?.(target);
-  };
-  const err = (verb) => (error) => {
-    log(error, `Failed to ${verb} ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
-    updater.reject?.(error);
-  };
+var updateElement = (reactive, updater) => (host, target) => {
+  const { op, name = "", read, update } = updater;
+  const fallback = read(target);
+  const operationDesc = getOperationDescription(op, name);
+  if (isString(reactive) && isString(fallback) && host[reactive] === RESET) {
+    host.attributeChangedCallback(reactive, null, fallback);
+  }
+  const { ok, err } = createOperationHandlers(host, target, operationDesc, updater.resolve, updater.reject);
   return effect(() => {
-    const UPDATE_DEDUPE = Symbol(`${op}:${name}`);
-    const DELETE_DEDUPE = Symbol(`${op}-${name}`);
-    let value = RESET;
-    try {
-      value = resolveSignalLike(s, host, target);
-    } catch (error) {
-      log(error, `Failed to resolve value of ${valueString(s)} for ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
+    const updateSymbol = createDedupeSymbol(op, name);
+    const deleteSymbol = createDedupeSymbol(`${op}-delete`, name);
+    const value = resolveReactive(reactive, host, target, operationDesc);
+    if (value === RESOLVE_ERROR)
       return;
-    }
-    if (value === RESET)
-      value = fallback;
-    else if (value === UNSET)
-      value = updater.delete ? null : fallback;
-    if (updater.delete && value === null) {
+    const resolvedValue = value === RESET ? fallback : value === UNSET ? updater.delete ? null : fallback : value;
+    if (updater.delete && resolvedValue === null) {
       enqueue(() => {
         updater.delete(target);
         return true;
-      }, DELETE_DEDUPE).then(ok("Deleted")).catch(err("delete"));
-    } else if (value != null) {
-      const current = read2(target);
-      if (Object.is(value, current))
+      }, deleteSymbol).then(ok("Deleted")).catch(err("delete"));
+    } else if (resolvedValue != null) {
+      const current = read(target);
+      if (Object.is(resolvedValue, current))
         return;
       enqueue(() => {
-        update(target, value);
+        update(target, resolvedValue);
         return true;
-      }, UPDATE_DEDUPE).then(ok("Updated")).catch(err("update"));
+      }, updateSymbol).then(ok("Updated")).catch(err("update"));
     }
   });
 };
-var insertOrRemoveElement = (s, inserter) => (host, target) => {
-  const ok = (verb) => () => {
-    if (DEV_MODE && host.debug)
+var insertOrRemoveElement = (reactive, inserter) => (host, target) => {
+  const insertRemoveOk = (verb) => () => {
+    if (DEV_MODE && host.debug) {
       log(target, `${verb} element in ${elementName(target)} in ${elementName(host)}`);
+    }
     if (isFunction(inserter?.resolve)) {
       inserter.resolve(target);
     } else {
-      const signal = isSignal(s) ? s : isString(s) ? host.getSignal(s) : undefined;
+      const signal = isSignal(reactive) ? reactive : isString(reactive) ? host.getSignal(reactive) : undefined;
       if (isState(signal))
         signal.set(0);
     }
   };
-  const err = (verb) => (error) => {
+  const insertRemoveErr = (verb) => (error) => {
     log(error, `Failed to ${verb} element in ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
     inserter?.reject?.(error);
   };
   return effect(() => {
-    const INSERT_DEDUPE = Symbol("i");
-    const REMOVE_DEDUPE = Symbol("d");
-    let diff = 0;
-    try {
-      diff = resolveSignalLike(s, host, target);
-    } catch (error) {
-      log(error, `Failed to resolve value of ${valueString(s)} for insertion or deletion in ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
+    const insertSymbol = createDedupeSymbol("insert");
+    const removeSymbol = createDedupeSymbol("remove");
+    const diff = resolveReactive(reactive, host, target, "insertion or deletion");
+    if (diff === RESOLVE_ERROR)
       return;
-    }
-    if (diff === RESET)
-      diff = 0;
-    if (diff > 0) {
+    const resolvedDiff = diff === RESET ? 0 : diff;
+    if (resolvedDiff > 0) {
       if (!inserter)
         throw new TypeError(`No inserter provided`);
       enqueue(() => {
-        for (let i = 0;i < diff; i++) {
+        for (let i = 0;i < resolvedDiff; i++) {
           const element = inserter.create(target);
           if (!element)
             continue;
           target.insertAdjacentElement(inserter.position ?? "beforeend", element);
         }
         return true;
-      }, INSERT_DEDUPE).then(ok("Inserted")).catch(err("insert"));
-    } else if (diff < 0) {
+      }, insertSymbol).then(insertRemoveOk("Inserted")).catch(insertRemoveErr("insert"));
+    } else if (resolvedDiff < 0) {
       enqueue(() => {
         if (inserter && (inserter.position === "afterbegin" || inserter.position === "beforeend")) {
-          for (let i = 0;i > diff; i--) {
+          for (let i = 0;i > resolvedDiff; i--) {
             if (inserter.position === "afterbegin")
               target.firstElementChild?.remove();
             else
@@ -858,11 +850,11 @@ var insertOrRemoveElement = (s, inserter) => (host, target) => {
           target.remove();
         }
         return true;
-      }, REMOVE_DEDUPE).then(ok("Removed")).catch(err("remove"));
+      }, removeSymbol).then(insertRemoveOk("Removed")).catch(insertRemoveErr("remove"));
     }
   });
 };
-var setText = (s) => updateElement(s, {
+var setText = (reactive) => updateElement(reactive, {
   op: "t",
   read: (el) => el.textContent,
   update: (el, value) => {
@@ -870,7 +862,7 @@ var setText = (s) => updateElement(s, {
     el.append(document.createTextNode(value));
   }
 });
-var setProperty = (key, s = key) => updateElement(s, {
+var setProperty = (key, reactive = key) => updateElement(reactive, {
   op: "p",
   name: String(key),
   read: (el) => (key in el) ? el[key] : UNSET,
@@ -878,7 +870,7 @@ var setProperty = (key, s = key) => updateElement(s, {
     el[key] = value;
   }
 });
-var show = (s) => updateElement(s, {
+var show = (reactive) => updateElement(reactive, {
   op: "p",
   name: "hidden",
   read: (el) => !el.hidden,
@@ -886,7 +878,7 @@ var show = (s) => updateElement(s, {
     el.hidden = !value;
   }
 });
-var setAttribute = (name, s = name) => updateElement(s, {
+var setAttribute = (name, reactive = name) => updateElement(reactive, {
   op: "a",
   name,
   read: (el) => el.getAttribute(name),
@@ -897,7 +889,7 @@ var setAttribute = (name, s = name) => updateElement(s, {
     el.removeAttribute(name);
   }
 });
-var toggleAttribute = (name, s = name) => updateElement(s, {
+var toggleAttribute = (name, reactive = name) => updateElement(reactive, {
   op: "a",
   name,
   read: (el) => el.hasAttribute(name),
@@ -905,7 +897,7 @@ var toggleAttribute = (name, s = name) => updateElement(s, {
     el.toggleAttribute(name, value);
   }
 });
-var toggleClass = (token, s = token) => updateElement(s, {
+var toggleClass = (token, reactive = token) => updateElement(reactive, {
   op: "c",
   name: token,
   read: (el) => el.classList.contains(token),
@@ -913,7 +905,7 @@ var toggleClass = (token, s = token) => updateElement(s, {
     el.classList.toggle(token, value);
   }
 });
-var setStyle = (prop, s = prop) => updateElement(s, {
+var setStyle = (prop, reactive = prop) => updateElement(reactive, {
   op: "s",
   name: prop,
   read: (el) => el.style.getPropertyValue(prop),
@@ -924,7 +916,7 @@ var setStyle = (prop, s = prop) => updateElement(s, {
     el.style.removeProperty(prop);
   }
 });
-var dangerouslySetInnerHTML = (s, options = {}) => updateElement(s, {
+var dangerouslySetInnerHTML = (reactive, options = {}) => updateElement(reactive, {
   op: "h",
   read: (el) => (el.shadowRoot || !options.shadowRootMode ? el : null)?.innerHTML ?? "",
   update: (el, html) => {
@@ -949,6 +941,47 @@ var dangerouslySetInnerHTML = (s, options = {}) => updateElement(s, {
     return " with scripts";
   }
 });
+var on = (type, listener, options = false) => (host, target = host) => {
+  if (!isFunction(listener))
+    throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
+  target.addEventListener(type, listener, options);
+  return () => target.removeEventListener(type, listener);
+};
+var emit = (type, reactive) => (host, target = host) => withReactiveValue(reactive, host, target, `custom event "${type}" detail`, (detail) => {
+  if (detail === RESET || detail === UNSET)
+    return;
+  target.dispatchEvent(new CustomEvent(type, {
+    detail,
+    bubbles: true
+  }));
+});
+var pass = (reactives) => (host, target) => {
+  const sources = isFunction(reactives) ? reactives(target) : reactives;
+  if (!isDefinedObject(sources))
+    throw new TypeError(`Passed signals must be an object or a provider function`);
+  const setProperties = () => effect(() => {
+    for (const [prop, source] of Object.entries(sources)) {
+      const value = resolveReactive(source, host, target, `signal ${prop}`);
+      if (value === RESOLVE_ERROR) {
+        throw new Error(`Failed to resolve signal ${prop} for ${elementName(target)}`);
+      }
+      if (value == null || value === RESET)
+        continue;
+      target[prop] = value;
+    }
+  });
+  if (!isCustomElement(target))
+    return setProperties();
+  customElements.whenDefined(target.localName).then(() => {
+    if (!hasMethod(target, "setSignal"))
+      return setProperties();
+    for (const [prop, source] of Object.entries(sources)) {
+      target.setSignal(prop, isString(source) ? host.getSignal(source) : toSignal(source));
+    }
+  }).catch((error) => {
+    throw new Error(`Failed to pass signals to ${elementName(target)}`, { cause: error });
+  });
+};
 export {
   updateElement,
   toggleClass,
@@ -960,9 +993,6 @@ export {
   setStyle,
   setProperty,
   setAttribute,
-  sensor,
-  selection,
-  read,
   provide,
   pass,
   on,

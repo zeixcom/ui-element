@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.1</small>
+					UIElement Docs <small>Version 0.13.2</small>
 				</h1>
 				
 <section-menu>
@@ -106,10 +106,10 @@
                 Function: setAttribute()
             </h1>
 <blockquote>
-<p><strong>setAttribute</strong>&lt;<code>P</code>, <code>E</code>&gt;(<code>name</code>, <code>s</code>): <a href="../type-aliases/FxFunction.html"><code>FxFunction</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
+<p><strong>setAttribute</strong>&lt;<code>P</code>, <code>E</code>&gt;(<code>name</code>, <code>reactive</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/lib/effects.ts#L353">src/lib/effects.ts:353</a></p>
-<p>Set attribute of an element</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L440">src/lib/effects.ts:440</a></p>
+<p>Effect for setting an attribute on an element.<br>Sets the specified attribute with security validation for unsafe values.</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -143,22 +143,23 @@
                 name
             </h3>
 <p><code>string</code></p>
-<p>name of attribute to be set</p>
-<h3 id="s">
-                <a name="s" class="anchor" href="#s">
+<p>Name of the attribute to set</p>
+<h3 id="reactive">
+                <a name="reactive" class="anchor" href="#reactive">
 	                <span class="permalink">🔗</span>
                 </a>
-                s
+                reactive
             </h3>
-<p><a href="../type-aliases/SignalLike.html"><code>SignalLike</code></a>&lt;<code>P</code>, <code>string</code>, <code>E</code>&gt; = <code>name</code></p>
-<p>state bound to the attribute value</p>
+<p><a href="../type-aliases/Reactive.html"><code>Reactive</code></a>&lt;<code>string</code>, <code>P</code>, <code>E</code>&gt; = <code>name</code></p>
+<p>Reactive value bound to the attribute value (defaults to attribute name)</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<p><a href="../type-aliases/FxFunction.html"><code>FxFunction</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
+<p><a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
+<p>Effect function that sets the attribute on the element</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>

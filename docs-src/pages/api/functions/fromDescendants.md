@@ -6,11 +6,11 @@
 
 # Function: fromDescendants()
 
-> **fromDescendants**\<`T`, `E`\>(`selectors`, `reducer`, `initialValue`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`T`\>
+> **fromDescendants**\<`T`, `E`, `K`\>(`selectors`, `reducer`, `init`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`T`\>
 
-Defined in: [src/core/dom.ts:273](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L273)
+Defined in: [src/core/dom.ts:234](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/core/dom.ts#L234)
 
-Produce a computed signal from reduced properties of descendant elements
+Produce a computed signal from reduced properties of descendant elements with type safety
 
 ## Type Parameters
 
@@ -22,11 +22,15 @@ Produce a computed signal from reduced properties of descendant elements
 
 `E` *extends* `Element` = `HTMLElement`
 
+### K
+
+`K` *extends* `string` = `string`
+
 ## Parameters
 
 ### selectors
 
-`string`
+`K`
 
 CSS selector for descendant elements
 
@@ -36,11 +40,11 @@ CSS selector for descendant elements
 
 function to reduce values
 
-### initialValue
-
-`T`
+### init
 
 initial value for reduction
+
+`T` | (`host`) => `T`
 
 ## Returns
 
@@ -51,3 +55,19 @@ signal producer that emits reduced value
 ## Since
 
 0.13.1
+
+## Examples
+
+```ts
+// TypeScript knows each 'input' is HTMLInputElement
+fromDescendants('input', (total, input) => total + input.value.length, 0)
+```
+
+```ts
+// Works with UIElement components when properly declared
+// declare global { interface HTMLElementTagNameMap { 'form-spinbutton': Component<FormSpinbuttonProps> } }
+fromDescendants('form-spinbutton', (sum, item) => {
+  // TypeScript knows item is Component<FormSpinbuttonProps>
+  return sum + item.value // Access reactive property
+}, 0)
+```

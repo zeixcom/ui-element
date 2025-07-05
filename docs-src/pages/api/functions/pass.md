@@ -6,11 +6,12 @@
 
 # Function: pass()
 
-> **pass**\<`P`, `Q`\>(`signals`): \<`E`\>(`host`, `target`) => `void`
+> **pass**\<`P`, `E`\>(`reactives`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/core/dom.ts:462](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L462)
+Defined in: [src/lib/effects.ts:648](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/lib/effects.ts#L648)
 
-Pass signals to a custom element
+Effect for passing reactive values to descendant elements.
+Supports both direct property setting and signal passing for custom elements.
 
 ## Type Parameters
 
@@ -18,54 +19,28 @@ Pass signals to a custom element
 
 `P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
 
-### Q
-
-`Q` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
-
-## Parameters
-
-### signals
-
-signals to be passed to the custom element
-
-[`PassedSignals`](../type-aliases/PassedSignals.md)\<`P`, `Q`\> | (`target`) => [`PassedSignals`](../type-aliases/PassedSignals.md)\<`P`, `Q`\>
-
-## Returns
-
-> \<`E`\>(`host`, `target`): `void`
-
-### Type Parameters
-
-#### E
+### E
 
 `E` *extends* `Element`
 
-### Parameters
+## Parameters
 
-#### host
+### reactives
 
-[`Component`](../type-aliases/Component.md)\<`P`\>
+Reactive values to pass or function that returns them
 
-#### target
+[`PassedReactives`](../type-aliases/PassedReactives.md)\<`P`, `E`\> | (`target`) => [`PassedReactives`](../type-aliases/PassedReactives.md)\<`P`, `E`\>
 
-`E`
+## Returns
 
-### Returns
+[`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-`void`
+Effect function that passes reactive values to descendant elements
 
 ## Since
 
-0.12.0
+0.13.2
 
 ## Throws
 
-- if the target element is not a custom element
-
-## Throws
-
-- if the provided signals are not an object or a provider function
-
-## Throws
-
-- if it fails to pass signals to the target element
+When the provided reactives are not an object or provider function

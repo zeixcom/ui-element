@@ -6,17 +6,18 @@
 
 # Function: on()
 
-> **on**\<`E`, `K`\>(`type`, `listener`, `options`): \<`P`\>(`host`, `target`) => [`Cleanup`](../type-aliases/Cleanup.md)
+> **on**\<`E`, `K`\>(`type`, `listener`, `options`): [`Effect`](../type-aliases/Effect.md)\<[`ComponentProps`](../type-aliases/ComponentProps.md), `E`\>
 
-Defined in: [src/core/dom.ts:298](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L298)
+Defined in: [src/lib/effects.ts:590](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/lib/effects.ts#L590)
 
-Attach an event listener to an element
+Effect for attaching an event listener to an element.
+Provides proper cleanup when the effect is disposed.
 
 ## Type Parameters
 
 ### E
 
-`E` *extends* `Element`
+`E` *extends* `HTMLElement`
 
 ### K
 
@@ -28,43 +29,25 @@ Attach an event listener to an element
 
 `K`
 
-event type to listen for (type-safe based on element type)
+Event type to listen for
 
 ### listener
 
 (`event`) => `void`
 
-event listener
+Event listener function
 
 ### options
 
-event listener options
+Event listener options
 
 `boolean` | `AddEventListenerOptions`
 
 ## Returns
 
-> \<`P`\>(`host`, `target`): [`Cleanup`](../type-aliases/Cleanup.md)
+[`Effect`](../type-aliases/Effect.md)\<[`ComponentProps`](../type-aliases/ComponentProps.md), `E`\>
 
-### Type Parameters
-
-#### P
-
-`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
-
-### Parameters
-
-#### host
-
-[`Component`](../type-aliases/Component.md)\<`P`\>
-
-#### target
-
-`E` = `...`
-
-### Returns
-
-[`Cleanup`](../type-aliases/Cleanup.md)
+Effect function that manages the event listener
 
 ## Since
 
@@ -72,4 +55,4 @@ event listener options
 
 ## Throws
 
-- if the provided handler is not an event listener or a provider function
+When the provided handler is not a function

@@ -1,5 +1,7 @@
 /* === Types === */
 
+import { isFunction } from '@zeix/cause-effect'
+
 type LogLevel = 'debug' | 'info' | 'warn' | 'error'
 
 /* === Constants === */
@@ -17,20 +19,20 @@ const LOG_ERROR: LogLevel = 'error'
  * Return selector string for the id of the element
  *
  * @since 0.7.0
- * @param {string} id
+ * @param {string | undefined | null} id
  * @returns {string} - id string for the element with '#' prefix
  */
-const idString = (id: string): string => (id ? `#${id}` : '')
+const idString = (id: string | undefined | null): string => (id ? `#${id}` : '')
 
 /**
  * Return a selector string for classes of the element
  *
  * @since 0.7.0
- * @param {DOMTokenList} classList - DOMTokenList to convert to a string
+ * @param {DOMTokenList | undefined | null} classList - DOMTokenList to convert to a string
  * @returns {string} - class string for the DOMTokenList with '.' prefix if any
  */
-const classString = (classList: DOMTokenList): string =>
-	classList.length ? `.${Array.from(classList).join('.')}` : ''
+const classString = (classList: DOMTokenList | undefined | null): string =>
+	classList?.length ? `.${Array.from(classList).join('.')}` : ''
 
 /* === Exported Functions === */
 
@@ -41,24 +43,56 @@ const isDefinedObject = /*#__PURE__*/ (
 const isString = /*#__PURE__*/ (value: unknown): value is string =>
 	typeof value === 'string'
 
+const hasMethod = /*#__PURE__*/ <T extends object, K extends PropertyKey, R>(
+	obj: T,
+	methodName: K,
+): obj is T & Record<K, (...args: any[]) => R> =>
+	isString(methodName) &&
+	methodName in obj &&
+	isFunction<R>((obj as any)[methodName])
+
 /**
  * Check if a node is an Element
  *
  * @param {Node} node - node to check
  * @returns {boolean} - `true` if node is an element node, otherwise `false`
  */
-const isElement = (node: Node): node is Element =>
+const isElement = /*#__PURE__*/ (node: Node): node is Element =>
 	node.nodeType === Node.ELEMENT_NODE
 
 /**
- * Return a HyperScript string representation of the Element instance
+ * Check whether an element is a custom element
+ *
+ * @param {E} element - Element to check
+ * @returns {boolean} - True if the element is a custom element
+ */
+const isCustomElement = /*#__PURE__*/ <E extends Element>(
+	element: E,
+): boolean => element.localName.includes('-')
+
+/**
+ * Check whether a custom element is upgraded or a regular element
+ *
+ * @param {E} element - Element to check
+ * @returns {boolean} - True if the element is an upgraded custom element or a regular element
+ */
+const isUpgradedComponent = <E extends Element>(element: E): boolean => {
+	if (!isCustomElement(element)) return true
+	const ctor = customElements.get(element.localName)
+	return !!ctor && element instanceof ctor
+}
+
+/**
+ * Return a string representation of the Element instance
  *
  * @since 0.7.0
- * @param {Element} el
+ * @param {Element | undefined | null} el
  * @returns {string}
  */
-const elementName = (el: Element): string =>
-	`<${el.localName}${idString(el.id)}${classString(el.classList)}>`
+const elementName = /*#__PURE__*/ (el: Element | undefined | null): string =>
+	el
+		? `<${el.localName}${idString(el.id)}${classString(el.classList)}>`
+		: '<unknown>'
 
 /**
  * Return a string representation of a JavaScript variable
@@ -67,7 +101,7 @@ const elementName = (el: Element): string =>
  * @param {unknown} value
  * @returns {string}
  */
-const valueString = (value: unknown): string =>
+const valueString = /*#__PURE__*/ (value: unknown): string =>
 	isString(value)
 		? `"${value}"`
 		: isDefinedObject(value)
@@ -81,7 +115,7 @@ const valueString = (value: unknown): string =>
  * @param {unknown} value
  * @returns {string}
  */
-const typeString = (value: unknown): string => {
+const typeString = /*#__PURE__*/ (value: unknown): string => {
 	if (value === null) return 'null'
 	if (typeof value !== 'object') return typeof value
 	if (Array.isArray(value)) return 'Array'
@@ -112,9 +146,12 @@ const log = <T>(value: T, msg: string, level: LogLevel = LOG_DEBUG): T => {
 
 export {
 	type LogLevel,
+	hasMethod,
 	isString,
 	isDefinedObject,
 	isElement,
+	isCustomElement,
+	isUpgradedComponent,
 	log,
 	elementName,
 	valueString,

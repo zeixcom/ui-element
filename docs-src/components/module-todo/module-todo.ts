@@ -1,9 +1,9 @@
 import {
 	type Component,
 	component,
+	fromDescendant,
 	fromSelector,
 	on,
-	read,
 	setAttribute,
 	setProperty,
 	setText,
@@ -11,7 +11,7 @@ import {
 } from '../../..'
 import type { BasicButtonProps } from '../basic-button/basic-button'
 import type { FormCheckboxProps } from '../form-checkbox/form-checkbox'
-import type { FormRadiogroupProps } from '../form-radiogroup/form-radiogroup'
+import '../form-radiogroup/form-radiogroup'
 import type { FormTextboxProps } from '../form-textbox/form-textbox'
 
 export type ModuleTodoProps = {
@@ -34,12 +34,12 @@ export default component(
 		const list = el.querySelector('ol')
 		if (!list) throw new Error('No list found')
 
-		const inputLength = read(input, 'length', 0)
-		const filterValue = read(
-			el.querySelector<Component<FormRadiogroupProps>>('form-radiogroup'),
+		const inputLength = fromDescendant('form-textbox', 'length', 0)(el)
+		const filterValue = fromDescendant(
+			'form-radiogroup',
 			'value',
 			'all',
-		)
+		)(el)
 
 		return [
 			// Control todo input form

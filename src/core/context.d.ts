@@ -18,7 +18,7 @@ type UnknownContext = Context<unknown, unknown>
 /**
  * A helper type which can extract a Context value type from a Context type
  */
-type ContextType<T extends UnknownContext> = T extends Context<string, infer V>
+type ContextType<T extends UnknownContext> = T extends Context<infer _, infer V>
 	? V
 	: never
 /**
@@ -32,7 +32,7 @@ declare global {
 		 * A 'context-request' event can be emitted by any element which desires
 		 * a context value to be injected by an external provider.
 		 */
-		'context-request': ContextRequestEvent<Context<string, unknown>>
+		'context-request': ContextRequestEvent<Context<unknown, unknown>>
 	}
 }
 declare const CONTEXT_REQUEST = 'context-request'
@@ -69,18 +69,17 @@ declare class ContextRequestEvent<T extends UnknownContext> extends Event {
  * Provide a context for descendant component consumers
  *
  * @since 0.12.0
- * @param {Context<string, Signal<T>>[]} provided - array of contexts to provide
+ * @param {Context<K, Signal<P[K]>>[]} provided - array of contexts to provide
  * @returns {(host: Component<P>) => Cleanup} - function to add an event listener for ContextRequestEvent returning a cleanup function to remove the event listener
  */
 declare const provide: <P extends ComponentProps, K extends keyof P>(
 	provided: Context<K, Signal<P[K]>>[],
-) => (host: Component<P>) => Cleanup
-/**
+) => (host: Component<P>) => Cleanup /**
  * Consume a context value for a component.
  *
  * @since 0.13.1
- * @param {Context<string, Signal<T>>} context - context key to consume
- * @param {MaybeSignal<T>} fallback - fallback value to use if context is not provided
+ * @param {Context<K, Signal<P[K]>>} context - context key to consume
+ * @param {MaybeSignal<P[K]>} fallback - fallback value to use if context is not provided
  * @returns {(host: C) => Signal<T>} - a function that returns the consumed context signal or a signal of the fallback value
  */
 declare const fromContext: <T extends {}, C extends HTMLElement>(

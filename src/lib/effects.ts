@@ -7,18 +7,23 @@ import {
 	isFunction,
 	isSignal,
 	isState,
+	toSignal,
 } from '@zeix/cause-effect'
 
 import {
 	type Component,
 	type ComponentProps,
-	type FxFunction,
+	type Effect,
 	RESET,
 } from '../component'
+import type { HTMLElementEventType, ValidEventName } from '../core/dom'
 import {
 	DEV_MODE,
 	LOG_ERROR,
 	elementName,
+	hasMethod,
+	isCustomElement,
+	isDefinedObject,
 	isString,
 	log,
 	valueString,
@@ -26,10 +31,14 @@ import {
 
 /* === Types === */
 
-type SignalLike<P extends ComponentProps, T, E extends Element = HTMLElement> =
+type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 	| keyof P
 	| Signal<NonNullable<T>>
 	| ((element: E) => T | null | undefined)
+
+type PassedReactives<P extends ComponentProps, E extends Element> = {
+	[K in keyof E]?: Reactive<E[K], P, E>
+}
 
 type UpdateOperation = 'a' | 'c' | 'h' | 'p' | 's' | 't'
 
@@ -55,39 +64,118 @@ type DangerouslySetInnerHTMLOptions = {
 	allowScripts?: boolean
 }
 
-/* === Internal === */
+/* === Internal Constants === */
 
-const resolveSignalLike = /*#__PURE__*/ <
-	P extends ComponentProps,
+const RESOLVE_ERROR = Symbol('RESOLVE_ERROR')
+
+/* === Internal Functions === */
+
+const resolveReactive = <
 	T extends {},
+	P extends ComponentProps,
 	E extends Element = Component<P>,
 >(
-	s: SignalLike<P, T, E>,
+	reactive: Reactive<T, P, E>,
 	host: Component<P>,
 	target: E,
-): T =>
-	isString(s)
-		? (host.getSignal(s).get() as unknown as T)
-		: isSignal(s)
-			? s.get()
-			: isFunction<T>(s)
-				? s(target)
-				: RESET
+	context?: string,
+): T | typeof RESOLVE_ERROR => {
+	try {
+		return isString(reactive)
+			? (host.getSignal(reactive).get() as unknown as T)
+			: isSignal(reactive)
+				? reactive.get()
+				: isFunction<T>(reactive)
+					? reactive(target)
+					: RESET
+	} catch (error) {
+		if (context) {
+			log(
+				error,
+				`Failed to resolve value of ${valueString(reactive)} for ${context} in ${elementName(target)} in ${elementName(host)}`,
+				LOG_ERROR,
+			)
+		}
+		return RESOLVE_ERROR
+	}
+}
 
-const isSafeURL = /*#__PURE__*/ (value: string): boolean => {
+const getOperationDescription = (
+	op: UpdateOperation,
+	name: string = '',
+): string => {
+	const ops: Record<UpdateOperation, string> = {
+		a: 'attribute ',
+		c: 'class ',
+		h: 'inner HTML',
+		p: 'property ',
+		s: 'style property ',
+		t: 'text content',
+	}
+	return ops[op] + name
+}
+
+const createOperationHandlers = <P extends ComponentProps, E extends Element>(
+	host: Component<P>,
+	target: E,
+	operationDesc: string,
+	resolve?: (target: E) => void,
+	reject?: (error: unknown) => void,
+) => {
+	const ok = (verb: string) => () => {
+		if (DEV_MODE && host.debug) {
+			log(
+				target,
+				`${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`,
+			)
+		}
+		resolve?.(target)
+	}
+
+	const err = (verb: string) => (error: unknown) => {
+		log(
+			error,
+			`Failed to ${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`,
+			LOG_ERROR,
+		)
+		reject?.(error)
+	}
+
+	return { ok, err }
+}
+
+const createDedupeSymbol = (operation: string, identifier?: string): symbol => {
+	return Symbol(identifier ? `${operation}:${identifier}` : operation)
+}
+
+const withReactiveValue = <T, P extends ComponentProps, E extends Element>(
+	reactive: Reactive<T, P, E>,
+	host: Component<P>,
+	target: E,
+	context: string,
+	handler: (value: T) => void,
+): Cleanup => {
+	return effect(() => {
+		const value = resolveReactive(reactive, host, target, context)
+		if (value === RESOLVE_ERROR) return
+		handler(value as T)
+	})
+}
+
+const isSafeURL = (value: string): boolean => {
 	if (/^(mailto|tel):/i.test(value)) return true
 	if (value.includes('://')) {
 		try {
 			const url = new URL(value, window.location.origin)
 			return ['http:', 'https:', 'ftp:'].includes(url.protocol)
-		} catch (_error) {
+		} catch {
 			return false
 		}
 	}
 	return true
 }
 
-const safeSetAttribute = /*#__PURE__*/ (
+const safeSetAttribute = (
 	element: Element,
 	attr: string,
 	value: string,
@@ -101,85 +189,73 @@ const safeSetAttribute = /*#__PURE__*/ (
 /* === Exported Functions === */
 
 /**
- * Effect for setting properties of a target element according to a given SignalLike
+ * Core effect function for updating element properties based on reactive values.
+ * This function handles the lifecycle of reading, updating, and deleting element properties
+ * while providing proper error handling and debugging support.
  *
  * @since 0.9.0
- * @param {SignalLike<T>} s - state bound to the element property
- * @param {ElementUpdater} updater - updater object containing key, read, update, and delete methods
+ * @param {Reactive<T, P, E>} reactive - The reactive value that drives the element updates
+ * @param {ElementUpdater<E, T>} updater - Configuration object defining how to read, update, and delete the element property
+ * @returns {Effect<P, E>} Effect function that manages the element property updates
  */
 const updateElement =
 	<P extends ComponentProps, T extends {}, E extends Element = HTMLElement>(
-		s: SignalLike<P, T, E>,
+		reactive: Reactive<T, P, E>,
 		updater: ElementUpdater<E, T>,
-	): FxFunction<P, E> =>
+	): Effect<P, E> =>
 	(host: Component<P>, target: E): Cleanup => {
 		const { op, name = '', read, update } = updater
 		const fallback = read(target)
-		const ops: Record<string, string> = {
-			a: 'attribute ',
-			c: 'class ',
-			h: 'inner HTML',
-			p: 'property ',
-			s: 'style property ',
-			t: 'text content',
-		}
+		const operationDesc = getOperationDescription(op, name)
 
 		// If not yet set, set signal value to value read from DOM
-		if (isString(s) && isString(fallback) && host[s] === RESET)
-			host.attributeChangedCallback(s, null, fallback)
-
-		const ok = (verb: string) => () => {
-			if (DEV_MODE && host.debug)
-				log(
-					target,
-					`${verb} ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`,
-				)
-			updater.resolve?.(target)
-		}
-		const err = (verb: string) => (error: unknown) => {
-			log(
-				error,
-				`Failed to ${verb} ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`,
-				LOG_ERROR,
-			)
-			updater.reject?.(error)
+		if (
+			isString(reactive) &&
+			isString(fallback) &&
+			host[reactive] === RESET
+		) {
+			host.attributeChangedCallback(reactive, null, fallback)
 		}
 
-		// Update the element's DOM state according to the signal value
+		const { ok, err } = createOperationHandlers(
+			host,
+			target,
+			operationDesc,
+			updater.resolve,
+			updater.reject,
+		)
+
 		return effect(() => {
-			const UPDATE_DEDUPE = Symbol(`${op}:${name}`)
-			const DELETE_DEDUPE = Symbol(`${op}-${name}`)
-			let value = RESET
-			try {
-				value = resolveSignalLike(s, host, target)
-			} catch (error) {
-				log(
-					error,
-					`Failed to resolve value of ${valueString(s)} for ${ops[op] + name} of ${elementName(target)} in ${elementName(host)}`,
-					LOG_ERROR,
-				)
-				return
-			}
-			if (value === RESET) value = fallback
-			else if (value === UNSET) value = updater.delete ? null : fallback
+			const updateSymbol = createDedupeSymbol(op, name)
+			const deleteSymbol = createDedupeSymbol(`${op}-delete`, name)
 
-			// Nil path => delete the attribute or style property of the element
-			if (updater.delete && value === null) {
+			const value = resolveReactive(reactive, host, target, operationDesc)
+			if (value === RESOLVE_ERROR) return
+
+			const resolvedValue =
+				value === RESET
+					? fallback
+					: value === UNSET
+						? updater.delete
+							? null
+							: fallback
+						: value
+
+			if (updater.delete && resolvedValue === null) {
 				enqueue(() => {
 					updater.delete!(target)
 					return true
-				}, DELETE_DEDUPE)
+				}, deleteSymbol)
 					.then(ok('Deleted'))
 					.catch(err('delete'))
-
-				// Ok path => update the element
-			} else if (value != null) {
+			} else if (resolvedValue != null) {
 				const current = read(target)
-				if (Object.is(value, current)) return
+				if (Object.is(resolvedValue, current)) return
+
 				enqueue(() => {
-					update(target, value)
+					update(target, resolvedValue)
 					return true
-				}, UPDATE_DEDUPE)
+				}, updateSymbol)
 					.then(ok('Updated'))
 					.catch(err('update'))
 			}
@@ -187,36 +263,41 @@ const updateElement =
 	}
 
 /**
- * Effect for inserting or removing elements according to a given SignalLike
+ * Effect for dynamically inserting or removing elements based on a reactive numeric value.
+ * Positive values insert elements, negative values remove them.
  *
  * @since 0.12.1
- * @param {SignalLike<P, E, number>} s - state bound to the number of elements to insert (positive) or remove (negative)
- * @param {ElementInserter<E>} inserter - inserter object containing position, insert, and remove methods
+ * @param {Reactive<number, P, E>} reactive - Reactive value determining number of elements to insert (positive) or remove (negative)
+ * @param {ElementInserter<E>} inserter - Configuration object defining how to create and position elements
+ * @returns {Effect<P, E>} Effect function that manages element insertion and removal
  */
 const insertOrRemoveElement =
 	<P extends ComponentProps, E extends Element = HTMLElement>(
-		s: SignalLike<P, number, E>,
+		reactive: Reactive<number, P, E>,
 		inserter?: ElementInserter<E>,
-	): FxFunction<P, E> =>
+	): Effect<P, E> =>
 	(host: Component<P>, target: E) => {
-		const ok = (verb: string) => () => {
-			if (DEV_MODE && host.debug)
+		// Custom ok handler for insertOrRemoveElement
+		const insertRemoveOk = (verb: string) => () => {
+			if (DEV_MODE && host.debug) {
 				log(
 					target,
 					`${verb} element in ${elementName(target)} in ${elementName(host)}`,
 				)
+			}
 			if (isFunction(inserter?.resolve)) {
 				inserter.resolve(target)
 			} else {
-				const signal = isSignal(s)
-					? s
-					: isString(s)
-						? host.getSignal(s)
+				const signal = isSignal(reactive)
+					? reactive
+					: isString(reactive)
+						? host.getSignal(reactive)
 						: undefined
 				if (isState<number>(signal)) signal.set(0)
 			}
 		}
-		const err = (verb: string) => (error: unknown) => {
+
+		const insertRemoveErr = (verb: string) => (error: unknown) => {
 			log(
 				error,
 				`Failed to ${verb} element in ${elementName(target)} in ${elementName(host)}`,
@@ -226,26 +307,24 @@ const insertOrRemoveElement =
 		}
 
 		return effect(() => {
-			const INSERT_DEDUPE = Symbol('i')
-			const REMOVE_DEDUPE = Symbol('d')
-			let diff = 0
-			try {
-				diff = resolveSignalLike(s, host, target)
-			} catch (error) {
-				log(
-					error,
-					`Failed to resolve value of ${valueString(s)} for insertion or deletion in ${elementName(target)} in ${elementName(host)}`,
-					LOG_ERROR,
-				)
-				return
-			}
-			if (diff === RESET) diff = 0
+			const insertSymbol = createDedupeSymbol('insert')
+			const removeSymbol = createDedupeSymbol('remove')
 
-			if (diff > 0) {
+			const diff = resolveReactive(
+				reactive,
+				host,
+				target,
+				'insertion or deletion',
+			)
+			if (diff === RESOLVE_ERROR) return
+
+			const resolvedDiff = diff === RESET ? 0 : diff
+
+			if (resolvedDiff > 0) {
 				// Positive diff => insert element
 				if (!inserter) throw new TypeError(`No inserter provided`)
 				enqueue(() => {
-					for (let i = 0; i < diff; i++) {
+					for (let i = 0; i < resolvedDiff; i++) {
 						const element = inserter.create(target)
 						if (!element) continue
 						target.insertAdjacentElement(
@@ -254,10 +333,10 @@ const insertOrRemoveElement =
 						)
 					}
 					return true
-				}, INSERT_DEDUPE)
-					.then(ok('Inserted'))
-					.catch(err('insert'))
-			} else if (diff < 0) {
+				}, insertSymbol)
+					.then(insertRemoveOk('Inserted'))
+					.catch(insertRemoveErr('insert'))
+			} else if (resolvedDiff < 0) {
 				// Negative diff => remove element
 				enqueue(() => {
 					if (
@@ -265,7 +344,7 @@ const insertOrRemoveElement =
 						(inserter.position === 'afterbegin' ||
 							inserter.position === 'beforeend')
 					) {
-						for (let i = 0; i > diff; i--) {
+						for (let i = 0; i > resolvedDiff; i--) {
 							if (inserter.position === 'afterbegin')
 								target.firstElementChild?.remove()
 							else target.lastElementChild?.remove()
@@ -274,23 +353,25 @@ const insertOrRemoveElement =
 						target.remove()
 					}
 					return true
-				}, REMOVE_DEDUPE)
-					.then(ok('Removed'))
-					.catch(err('remove'))
+				}, removeSymbol)
+					.then(insertRemoveOk('Removed'))
+					.catch(insertRemoveErr('remove'))
 			}
 		})
 	}
 
 /**
- * Set text content of an element
+ * Effect for setting the text content of an element.
+ * Replaces all child nodes (except comments) with a single text node.
  *
  * @since 0.8.0
- * @param {SignalLike<string>} s - state bound to the text content
+ * @param {Reactive<string, P, E>} reactive - Reactive value bound to the text content
+ * @returns {Effect<P, E>} Effect function that sets the text content of the element
  */
 const setText = <P extends ComponentProps, E extends Element = HTMLElement>(
-	s: SignalLike<P, string, E>,
-): FxFunction<P, E> =>
-	updateElement(s, {
+	reactive: Reactive<string, P, E>,
+): Effect<P, E> =>
+	updateElement(reactive, {
 		op: 't',
 		read: el => el.textContent,
 		update: (el, value) => {
@@ -302,11 +383,13 @@ const setText = <P extends ComponentProps, E extends Element = HTMLElement>(
 	})
 
 /**
- * Set property of an element
+ * Effect for setting a property on an element.
+ * Sets the specified property directly on the element object.
  *
  * @since 0.8.0
- * @param {string} key - name of property to be set
- * @param {SignalLike<E[K]>} s - state bound to the property value
+ * @param {K} key - Name of the property to set
+ * @param {Reactive<E[K], P, E>} reactive - Reactive value bound to the property value (defaults to property name)
+ * @returns {Effect<P, E>} Effect function that sets the property on the element
  */
 const setProperty = <
 	P extends ComponentProps,
@@ -314,9 +397,9 @@ const setProperty = <
 	E extends Element = HTMLElement,
 >(
 	key: K,
-	s: SignalLike<P, E[K], E> = key as SignalLike<P, E[K], E>,
-): FxFunction<P, E> =>
-	updateElement(s, {
+	reactive: Reactive<E[K], P, E> = key as Reactive<E[K], P, E>,
+): Effect<P, E> =>
+	updateElement(reactive, {
 		op: 'p',
 		name: String(key),
 		read: el => (key in el ? el[key] : UNSET),
@@ -326,15 +409,17 @@ const setProperty = <
 	})
 
 /**
- * Set 'hidden' property of an element
+ * Effect for controlling element visibility by setting the 'hidden' property.
+ * When the reactive value is true, the element is shown; when false, it's hidden.
  *
  * @since 0.13.1
- * @param {SignalLike<boolean>} s - state bound to the 'hidden' property value
+ * @param {Reactive<boolean, P, E>} reactive - Reactive value bound to the visibility state
+ * @returns {Effect<P, E>} Effect function that controls element visibility
  */
 const show = <P extends ComponentProps, E extends HTMLElement = HTMLElement>(
-	s: SignalLike<P, boolean, E>,
-): FxFunction<P, E> =>
-	updateElement(s, {
+	reactive: Reactive<boolean, P, E>,
+): Effect<P, E> =>
+	updateElement(reactive, {
 		op: 'p',
 		name: 'hidden',
 		read: el => !el.hidden,
@@ -344,20 +429,22 @@ const show = <P extends ComponentProps, E extends HTMLElement = HTMLElement>(
 	})
 
 /**
- * Set attribute of an element
+ * Effect for setting an attribute on an element.
+ * Sets the specified attribute with security validation for unsafe values.
  *
  * @since 0.8.0
- * @param {string} name - name of attribute to be set
- * @param {SignalLike<string>} s - state bound to the attribute value
+ * @param {string} name - Name of the attribute to set
+ * @param {Reactive<string, P, E>} reactive - Reactive value bound to the attribute value (defaults to attribute name)
+ * @returns {Effect<P, E>} Effect function that sets the attribute on the element
  */
 const setAttribute = <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
 	name: string,
-	s: SignalLike<P, string, E> = name,
-): FxFunction<P, E> =>
-	updateElement(s, {
+	reactive: Reactive<string, P, E> = name,
+): Effect<P, E> =>
+	updateElement(reactive, {
 		op: 'a',
 		name,
 		read: el => el.getAttribute(name),
@@ -370,20 +457,22 @@ const setAttribute = <
 	})
 
 /**
- * Toggle a boolan attribute of an element
+ * Effect for toggling a boolean attribute on an element.
+ * When the reactive value is true, the attribute is present; when false, it's absent.
  *
  * @since 0.8.0
- * @param {string} name - name of attribute to be toggled
- * @param {SignalLike<boolean>} s - state bound to the attribute existence
+ * @param {string} name - Name of the attribute to toggle
+ * @param {Reactive<boolean, P, E>} reactive - Reactive value bound to the attribute presence (defaults to attribute name)
+ * @returns {Effect<P, E>} Effect function that toggles the attribute on the element
  */
 const toggleAttribute = <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
 	name: string,
-	s: SignalLike<P, boolean, E> = name,
-): FxFunction<P, E> =>
-	updateElement(s, {
+	reactive: Reactive<boolean, P, E> = name,
+): Effect<P, E> =>
+	updateElement(reactive, {
 		op: 'a',
 		name,
 		read: el => el.hasAttribute(name),
@@ -393,17 +482,19 @@ const toggleAttribute = <
 	})
 
 /**
- * Toggle a classList token of an element
+ * Effect for toggling a CSS class token on an element.
+ * When the reactive value is true, the class is added; when false, it's removed.
  *
  * @since 0.8.0
- * @param {string} token - class token to be toggled
- * @param {SignalLike<boolean>} s - state bound to the class existence
+ * @param {string} token - CSS class token to toggle
+ * @param {Reactive<boolean, P, E>} reactive - Reactive value bound to the class presence (defaults to class name)
+ * @returns {Effect<P, E>} Effect function that toggles the class on the element
  */
 const toggleClass = <P extends ComponentProps, E extends Element = HTMLElement>(
 	token: string,
-	s: SignalLike<P, boolean, E> = token,
-): FxFunction<P, E> =>
-	updateElement(s, {
+	reactive: Reactive<boolean, P, E> = token,
+): Effect<P, E> =>
+	updateElement(reactive, {
 		op: 'c',
 		name: token,
 		read: el => el.classList.contains(token),
@@ -413,20 +504,22 @@ const toggleClass = <P extends ComponentProps, E extends Element = HTMLElement>(
 	})
 
 /**
- * Set a style property of an element
+ * Effect for setting a CSS style property on an element.
+ * Sets the specified style property with support for deletion via UNSET.
  *
  * @since 0.8.0
- * @param {string} prop - name of style property to be set
- * @param {SignalLike<string>} s - state bound to the style property value
+ * @param {string} prop - Name of the CSS style property to set
+ * @param {Reactive<string, P, E>} reactive - Reactive value bound to the style property value (defaults to property name)
+ * @returns {Effect<P, E>} Effect function that sets the style property on the element
  */
 const setStyle = <
 	P extends ComponentProps,
 	E extends HTMLElement | SVGElement | MathMLElement,
 >(
 	prop: string,
-	s: SignalLike<P, string, E> = prop,
-): FxFunction<P, E> =>
-	updateElement(s, {
+	reactive: Reactive<string, P, E> = prop,
+): Effect<P, E> =>
+	updateElement(reactive, {
 		op: 's',
 		name: prop,
 		read: el => el.style.getPropertyValue(prop),
@@ -439,20 +532,22 @@ const setStyle = <
 	})
 
 /**
- * Set inner HTML of an element
+ * Effect for setting the inner HTML of an element with optional Shadow DOM support.
+ * Provides security options for script execution and shadow root creation.
  *
  * @since 0.11.0
- * @param {SignalLike<string>} s - state bound to the inner HTML
- * @param {DangerouslySetInnerHTMLOptions} options - options for setting inner HTML: shadowRootMode, allowScripts
+ * @param {Reactive<string, P, E>} reactive - Reactive value bound to the inner HTML content
+ * @param {DangerouslySetInnerHTMLOptions} options - Configuration options: shadowRootMode, allowScripts
+ * @returns {Effect<P, E>} Effect function that sets the inner HTML of the element
  */
 const dangerouslySetInnerHTML = <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
-	s: SignalLike<P, string, E>,
+	reactive: Reactive<string, P, E>,
 	options: DangerouslySetInnerHTMLOptions = {},
-): FxFunction<P, E> =>
-	updateElement(s, {
+): Effect<P, E> =>
+	updateElement(reactive, {
 		op: 'h',
 		read: el =>
 			(el.shadowRoot || !options.shadowRootMode ? el : null)?.innerHTML ??
@@ -480,10 +575,134 @@ const dangerouslySetInnerHTML = <
 		},
 	})
 
-/* === Exported Types === */
+/**
+ * Effect for attaching an event listener to an element.
+ * Provides proper cleanup when the effect is disposed.
+ *
+ * @since 0.12.0
+ * @param {K} type - Event type to listen for
+ * @param {(event: HTMLElementEventType<K>) => void} listener - Event listener function
+ * @param {boolean | AddEventListenerOptions} options - Event listener options
+ * @returns {Effect<ComponentProps, E>} Effect function that manages the event listener
+ * @throws {TypeError} When the provided handler is not a function
+ */
+const on =
+	<E extends HTMLElement, K extends ValidEventName>(
+		type: K,
+		listener: (event: HTMLElementEventType<K>) => void,
+		options: boolean | AddEventListenerOptions = false,
+	): Effect<ComponentProps, E> =>
+	<P extends ComponentProps>(
+		host: Component<P>,
+		target: E = host as unknown as E,
+	): Cleanup => {
+		if (!isFunction(listener))
+			throw new TypeError(
+				`Invalid event listener provided for "${type} event on element ${elementName(target)}`,
+			)
+		target.addEventListener(type, listener, options)
+		return () => target.removeEventListener(type, listener)
+	}
+
+/**
+ * Effect for emitting custom events with reactive detail values.
+ * Creates and dispatches CustomEvent instances with bubbling enabled by default.
+ *
+ * @since 0.13.2
+ * @param {string} type - Event type to emit
+ * @param {Reactive<T, P, E>} reactive - Reactive value bound to the event detail
+ * @returns {Effect<P, E>} Effect function that emits custom events
+ */
+const emit =
+	<T, P extends ComponentProps, E extends Element = HTMLElement>(
+		type: string,
+		reactive: Reactive<T, P, E>,
+	): Effect<P, E> =>
+	(host: Component<P>, target: E = host as unknown as E): Cleanup =>
+		withReactiveValue(
+			reactive,
+			host,
+			target,
+			`custom event "${type}" detail`,
+			detail => {
+				if (detail === RESET || detail === UNSET) return
+				target.dispatchEvent(
+					new CustomEvent(type, {
+						detail,
+						bubbles: true,
+					}),
+				)
+			},
+		)
+
+/**
+ * Effect for passing reactive values to descendant elements.
+ * Supports both direct property setting and signal passing for custom elements.
+ *
+ * @since 0.13.2
+ * @param {PassedReactives<P, E> | ((target: E) => PassedReactives<P, E>)} reactives - Reactive values to pass or function that returns them
+ * @returns {Effect<P, E>} Effect function that passes reactive values to descendant elements
+ * @throws {TypeError} When the provided reactives are not an object or provider function
+ */
+const pass =
+	<P extends ComponentProps, E extends Element>(
+		reactives:
+			| PassedReactives<P, E>
+			| ((target: E) => PassedReactives<P, E>),
+	): Effect<P, E> =>
+	(host: Component<P>, target: E): Cleanup | void => {
+		const sources = isFunction<PassedReactives<P, E>>(reactives)
+			? reactives(target)
+			: reactives
+		if (!isDefinedObject(sources))
+			throw new TypeError(
+				`Passed signals must be an object or a provider function`,
+			)
+
+		const setProperties = () =>
+			effect(() => {
+				for (const [prop, source] of Object.entries(sources)) {
+					const value = resolveReactive<
+						NonNullable<E[keyof E]>,
+						P,
+						E
+					>(source, host, target, `signal ${prop}`)
+					if (value === RESOLVE_ERROR) {
+						throw new Error(
+							`Failed to resolve signal ${prop} for ${elementName(target)}`,
+						)
+					}
+					if (value == null || value === RESET) continue
+					target[prop as keyof E] = value
+				}
+			})
+		if (!isCustomElement(target)) return setProperties()
+		customElements
+			.whenDefined(target.localName)
+			.then(() => {
+				if (!hasMethod(target, 'setSignal')) return setProperties()
+				for (const [prop, source] of Object.entries(sources)) {
+					target.setSignal(
+						prop,
+						isString(source)
+							? host.getSignal(source)
+							: toSignal(source),
+					)
+				}
+			})
+			.catch(error => {
+				throw new Error(
+					`Failed to pass signals to ${elementName(target)}`,
+					{ cause: error },
+				)
+			})
+	}
+
+/* === Exports === */
 
 export {
-	type SignalLike,
+	type Reactive,
+	type PassedReactives,
 	type UpdateOperation,
 	type ElementUpdater,
 	type ElementInserter,
@@ -498,4 +717,7 @@ export {
 	toggleClass,
 	setStyle,
 	dangerouslySetInnerHTML,
+	on,
+	emit,
+	pass,
 }

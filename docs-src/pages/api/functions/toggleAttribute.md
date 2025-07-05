@@ -6,11 +6,12 @@
 
 # Function: toggleAttribute()
 
-> **toggleAttribute**\<`P`, `E`\>(`name`, `s`): [`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+> **toggleAttribute**\<`P`, `E`\>(`name`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:379](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/lib/effects.ts#L379)
+Defined in: [src/lib/effects.ts:468](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/lib/effects.ts#L468)
 
-Toggle a boolan attribute of an element
+Effect for toggling a boolean attribute on an element.
+When the reactive value is true, the attribute is present; when false, it's absent.
 
 ## Type Parameters
 
@@ -28,17 +29,19 @@ Toggle a boolan attribute of an element
 
 `string`
 
-name of attribute to be toggled
+Name of the attribute to toggle
 
-### s
+### reactive
 
-[`SignalLike`](../type-aliases/SignalLike.md)\<`P`, `boolean`, `E`\> = `name`
+[`Reactive`](../type-aliases/Reactive.md)\<`boolean`, `P`, `E`\> = `name`
 
-state bound to the attribute existence
+Reactive value bound to the attribute presence (defaults to attribute name)
 
 ## Returns
 
-[`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+[`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+
+Effect function that toggles the attribute on the element
 
 ## Since
 

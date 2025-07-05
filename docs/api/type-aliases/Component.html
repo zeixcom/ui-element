@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.1</small>
+					UIElement Docs <small>Version 0.13.2</small>
 				</h1>
 				
 <section-menu>
@@ -108,7 +108,7 @@
 <blockquote>
 <p><strong>Component</strong>&lt;<code>P</code>&gt; = <code>HTMLElement</code> &amp; <code>P</code> &amp; <code>object</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/component.ts#L42">src/component.ts:42</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/component.ts#L42">src/component.ts:42</a></p>
 <h2 id="type-declaration">
                 <a name="type-declaration" class="anchor" href="#type-declaration">
 	                <span class="permalink">🔗</span>
@@ -231,8 +231,21 @@
                 getSignal()
             </h3>
 <blockquote>
-<p><strong>getSignal</strong>(<code>prop</code>): <a href="Signal.html"><code>Signal</code></a>&lt;<code>P</code>[keyof <code>P</code>]&gt;</p>
+<p><strong>getSignal</strong>&lt;<code>K</code>&gt;(<code>prop</code>): <a href="Signal.html"><code>Signal</code></a>&lt;<code>P</code>[<code>K</code>]&gt;</p>
 </blockquote>
+<h4 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type Parameters
+            </h4>
+<h5 id="k">
+                <a name="k" class="anchor" href="#k">
+	                <span class="permalink">🔗</span>
+                </a>
+                K
+            </h5>
+<p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code></p>
 <h4 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -245,14 +258,14 @@
                 </a>
                 prop
             </h5>
-<p>keyof <code>P</code></p>
+<p><code>K</code></p>
 <h4 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h4>
-<p><a href="Signal.html"><code>Signal</code></a>&lt;<code>P</code>[keyof <code>P</code>]&gt;</p>
+<p><a href="Signal.html"><code>Signal</code></a>&lt;<code>P</code>[<code>K</code>]&gt;</p>
 <h3 id="setsignal">
                 <a name="setsignal" class="anchor" href="#setsignal">
 	                <span class="permalink">🔗</span>
@@ -260,8 +273,21 @@
                 setSignal()
             </h3>
 <blockquote>
-<p><strong>setSignal</strong>(<code>prop</code>, <code>signal</code>): <code>void</code></p>
+<p><strong>setSignal</strong>&lt;<code>K</code>&gt;(<code>prop</code>, <code>signal</code>): <code>void</code></p>
 </blockquote>
+<h4 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type Parameters
+            </h4>
+<h5 id="k">
+                <a name="k" class="anchor" href="#k">
+	                <span class="permalink">🔗</span>
+                </a>
+                K
+            </h5>
+<p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code></p>
 <h4 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -274,14 +300,14 @@
                 </a>
                 prop
             </h5>
-<p>keyof <code>P</code></p>
+<p><code>K</code></p>
 <h5 id="signal">
                 <a name="signal" class="anchor" href="#signal">
 	                <span class="permalink">🔗</span>
                 </a>
                 signal
             </h5>
-<p><a href="Signal.html"><code>Signal</code></a>&lt;<code>P</code>[keyof <code>P</code>]&gt;</p>
+<p><a href="Signal.html"><code>Signal</code></a>&lt;<code>P</code>[<code>K</code>]&gt;</p>
 <h4 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>

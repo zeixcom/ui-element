@@ -6,11 +6,12 @@
 
 # Function: dangerouslySetInnerHTML()
 
-> **dangerouslySetInnerHTML**\<`P`, `E`\>(`s`, `options`): [`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+> **dangerouslySetInnerHTML**\<`P`, `E`\>(`reactive`, `options`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:448](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/lib/effects.ts#L448)
+Defined in: [src/lib/effects.ts:543](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/lib/effects.ts#L543)
 
-Set inner HTML of an element
+Effect for setting the inner HTML of an element with optional Shadow DOM support.
+Provides security options for script execution and shadow root creation.
 
 ## Type Parameters
 
@@ -24,21 +25,23 @@ Set inner HTML of an element
 
 ## Parameters
 
-### s
+### reactive
 
-[`SignalLike`](../type-aliases/SignalLike.md)\<`P`, `string`, `E`\>
+[`Reactive`](../type-aliases/Reactive.md)\<`string`, `P`, `E`\>
 
-state bound to the inner HTML
+Reactive value bound to the inner HTML content
 
 ### options
 
 [`DangerouslySetInnerHTMLOptions`](../type-aliases/DangerouslySetInnerHTMLOptions.md) = `{}`
 
-options for setting inner HTML: shadowRootMode, allowScripts
+Configuration options: shadowRootMode, allowScripts
 
 ## Returns
 
-[`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+[`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+
+Effect function that sets the inner HTML of the element
 
 ## Since
 

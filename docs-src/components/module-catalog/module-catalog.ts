@@ -1,4 +1,5 @@
 import { type Component, component, fromDescendants, pass } from '../../..'
+import { BasicButtonProps } from '../basic-button/basic-button'
 
 export type ModuleCatalogProps = {
 	total: number
@@ -7,7 +8,7 @@ export type ModuleCatalogProps = {
 export default component(
 	'module-catalog',
 	{
-		total: fromDescendants<number, HTMLElement & { value: number }>(
+		total: fromDescendants(
 			'form-spinbutton',
 			(sum, item) => sum + item.value,
 			0,
@@ -16,7 +17,7 @@ export default component(
 	(el, { first }) => [
 		first(
 			'basic-button',
-			pass({
+			pass<ModuleCatalogProps, Component<BasicButtonProps>>({
 				badge: () => (el.total > 0 ? String(el.total) : ''),
 				disabled: () => !el.total,
 			}),

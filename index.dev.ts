@@ -1,6 +1,6 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.13.1
+ * @version 0.13.2
  * @author Esther Brunner
  */
 
@@ -35,7 +35,7 @@ export {
 	type AttributeParser,
 	type SignalProducer,
 	type MethodProducer,
-	type FxFunction,
+	type Effect,
 	type ElementFromSelector,
 	type SelectorFunctions,
 	RESET,
@@ -50,19 +50,14 @@ export {
 	log,
 } from './src/core/util'
 export {
-	type PassedSignals,
-	type ElementEventMap,
-	type ElementEventType,
+	type HTMLElementEventType,
 	type ValidEventName,
-	selection,
+	type EventType,
+	type TransformerContext,
+	type EventTransformer,
 	fromSelector,
 	fromDescendants,
-	on,
-	sensor,
 	fromEvent,
-	emit,
-	pass,
-	read,
 	fromDescendant,
 } from './src/core/dom'
 export {
@@ -83,7 +78,8 @@ export {
 	asJSON,
 } from './src/lib/parsers'
 export {
-	type SignalLike,
+	type Reactive,
+	type PassedReactives,
 	type UpdateOperation,
 	type ElementUpdater,
 	type ElementInserter,
@@ -98,4 +94,7 @@ export {
 	toggleClass,
 	setStyle,
 	dangerouslySetInnerHTML,
+	on,
+	emit,
+	pass,
 } from './src/lib/effects'

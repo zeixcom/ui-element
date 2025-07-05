@@ -6,9 +6,9 @@
 
 # Function: component()
 
-> **component**\<`P`\>(`name`, `init`, `setup`): [`Component`](../type-aliases/Component.md)\<`P`\>
+> **component**\<`P`\>(`name`, `init`, `setup`): `void`
 
-Defined in: [src/component.ts:279](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/component.ts#L279)
+Defined in: [src/component.ts:279](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/component.ts#L279)
 
 Define a component with its states and setup function (connectedCallback)
 
@@ -24,25 +24,24 @@ Define a component with its states and setup function (connectedCallback)
 
 `string`
 
-name of the custom element
+Name of the custom element
 
 ### init
 
 \{ \[K in string \| number \| symbol\]: Initializer\<P\[K\], Component\<P\>\> \} = `...`
 
-signals of the component
+Signals of the component
 
 ### setup
 
-(`host`, `select`) => [`FxFunction`](../type-aliases/FxFunction.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`P`\>\>[]
+(`host`, `select`) => [`Effect`](../type-aliases/Effect.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`P`\>\>[]
 
-setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
+Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
+@returns: void
 
 ## Returns
 
-[`Component`](../type-aliases/Component.md)\<`P`\>
-
-- constructor function for the custom element
+`void`
 
 ## Since
 

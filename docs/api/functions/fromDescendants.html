@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.1</small>
+					UIElement Docs <small>Version 0.13.2</small>
 				</h1>
 				
 <section-menu>
@@ -106,10 +106,10 @@
                 Function: fromDescendants()
             </h1>
 <blockquote>
-<p><strong>fromDescendants</strong>&lt;<code>T</code>, <code>E</code>&gt;(<code>selectors</code>, <code>reducer</code>, <code>initialValue</code>): <a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>T</code>&gt;</p>
+<p><strong>fromDescendants</strong>&lt;<code>T</code>, <code>E</code>, <code>K</code>&gt;(<code>selectors</code>, <code>reducer</code>, <code>init</code>): <a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>T</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L273">src/core/dom.ts:273</a></p>
-<p>Produce a computed signal from reduced properties of descendant elements</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/dom.ts#L234">src/core/dom.ts:234</a></p>
+<p>Produce a computed signal from reduced properties of descendant elements with type safety</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -130,6 +130,13 @@
                 E
             </h3>
 <p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
+<h3 id="k">
+                <a name="k" class="anchor" href="#k">
+	                <span class="permalink">🔗</span>
+                </a>
+                K
+            </h3>
+<p><code>K</code> <em>extends</em> <code>string</code> = <code>string</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -142,7 +149,7 @@
                 </a>
                 selectors
             </h3>
-<p><code>string</code></p>
+<p><code>K</code></p>
 <p>CSS selector for descendant elements</p>
 <h3 id="reducer">
                 <a name="reducer" class="anchor" href="#reducer">
@@ -152,14 +159,14 @@
             </h3>
 <p>(<code>accumulator</code>, <code>currentElement</code>, <code>currentIndex</code>, <code>array</code>) =&gt; <code>T</code></p>
 <p>function to reduce values</p>
-<h3 id="initialvalue">
-                <a name="initialvalue" class="anchor" href="#initialvalue">
+<h3 id="init">
+                <a name="init" class="anchor" href="#init">
 	                <span class="permalink">🔗</span>
                 </a>
-                initialValue
+                init
             </h3>
-<p><code>T</code></p>
 <p>initial value for reduction</p>
+<p><code>T</code> | (<code>host</code>) =&gt; <code>T</code></p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
@@ -175,6 +182,46 @@
                 Since
             </h2>
 <p>0.13.1</p>
+<h2 id="examples">
+                <a name="examples" class="anchor" href="#examples">
+	                <span class="permalink">🔗</span>
+                </a>
+                Examples
+            </h2>
+<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">ts</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// TypeScript knows each 'input' is HTMLInputElement</span></span>
+<span class="line"><span style="color:#A6E22E">fromDescendants</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">total</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">input</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> input.value.length, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">ts</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Works with UIElement components when properly declared</span></span>
+<span class="line"><span style="color:#88846F">// declare global { interface HTMLElementTagNameMap { 'form-spinbutton': Component&#x3C;FormSpinbuttonProps> } }</span></span>
+<span class="line"><span style="color:#A6E22E">fromDescendants</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-spinbutton'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">sum</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">item</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">  // TypeScript knows item is Component&#x3C;FormSpinbuttonProps></span></span>
+<span class="line"><span style="color:#F92672">  return</span><span style="color:#F8F8F2"> sum </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> item.value </span><span style="color:#88846F">// Access reactive property</span></span>
+<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
 
 </section></main>
 			<footer class="content-grid">

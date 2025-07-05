@@ -4,14 +4,8 @@
 
 [@zeix/ui-element](../globals.md) / ValidEventName
 
-# Type Alias: ValidEventName\<E\>
+# Type Alias: ValidEventName
 
-> **ValidEventName**\<`E`\> = keyof [`ElementEventMap`](ElementEventMap.md)\<`E`\> & `string`
+> **ValidEventName** = keyof `HTMLElementEventMap` \| `string`
 
-Defined in: [src/core/dom.ts:83](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L83)
-
-## Type Parameters
-
-### E
-
-`E` *extends* `Element`
+Defined in: [src/core/dom.ts:22](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/core/dom.ts#L22)

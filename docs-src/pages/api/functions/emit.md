@@ -6,11 +6,12 @@
 
 # Function: emit()
 
-> **emit**\<`T`\>(`type`, `detail`): \<`P`\>(`host`, `target`) => `void`
+> **emit**\<`T`, `P`, `E`\>(`type`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/core/dom.ts:439](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/dom.ts#L439)
+Defined in: [src/lib/effects.ts:617](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/lib/effects.ts#L617)
 
-Emit a custom event with the given detail
+Effect for emitting custom events with reactive detail values.
+Creates and dispatches CustomEvent instances with bubbling enabled by default.
 
 ## Type Parameters
 
@@ -18,44 +19,34 @@ Emit a custom event with the given detail
 
 `T`
 
+### P
+
+`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
+
+### E
+
+`E` *extends* `Element` = `HTMLElement`
+
 ## Parameters
 
 ### type
 
 `string`
 
-event type to emit
+Event type to emit
 
-### detail
+### reactive
 
-event detail or provider function
+[`Reactive`](../type-aliases/Reactive.md)\<`T`, `P`, `E`\>
 
-`T` | (`element`) => `T`
+Reactive value bound to the event detail
 
 ## Returns
 
-> \<`P`\>(`host`, `target`): `void`
+[`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-### Type Parameters
-
-#### P
-
-`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
-
-### Parameters
-
-#### host
-
-[`Component`](../type-aliases/Component.md)\<`P`\>
-
-#### target
-
-`Element` = `host`
-
-### Returns
-
-`void`
+Effect function that emits custom events
 
 ## Since
 
-0.12.0
+0.13.2

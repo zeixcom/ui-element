@@ -1096,15 +1096,16 @@
 
 				describe('Component Constructor Edge Cases', function () {
 					it('should throw error for reserved property names', function () {
-						const TestComponent = component(
-							'invalid-reserved',
+						const name = 'invalid-reserved'
+						component(
+							name,
 							{
 								validProp: asString('valid'),
 							},
 							() => [],
 						)
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 
 						assert.throws(
 							() => {
@@ -1120,15 +1121,16 @@
 
 					it('should throw error for HTMLElement property conflicts', function () {
 						// Test that innerHTML property is properly blocked
-						const TestComponent = component(
-							'invalid-htmlelement',
+						const name = 'invalid-htmlelement'
+						component(
+							name,
 							{
 								validProp: asString('valid'),
 							},
 							() => [],
 						)
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 
 						// innerHTML should be blocked as it's an HTMLElement property
 						assert.throws(
@@ -1144,12 +1146,9 @@
 					})
 
 					it('should handle setSignal with invalid signal type', function () {
-						const TestComponent = component(
-							'test-setsignal',
-							{},
-							() => [],
-						)
-						const instance = new TestComponent()
+						const name = 'test-setsignal'
+						component(name, {}, () => [])
+						const instance = document.createElement(name)
 
 						assert.throws(
 							() => {
@@ -1164,15 +1163,16 @@
 					})
 
 					it('should handle multiple signal assignments to same property', function () {
-						const TestComponent = component(
-							'test-multiple-signals',
+						const name = 'test-multiple-signals'
+						component(
+							name,
 							{
 								value: asString('initial'),
 							},
 							() => [],
 						)
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 						const newSignal = state('new value')
 
 						// Should not throw when reassigning signal
@@ -1240,16 +1240,13 @@
 						let connectedCalled = false
 						let disconnectedCalled = false
 
-						const TestComponent = component(
-							'test-disconnect',
-							{},
-							() => {
-								initCalled = true
-								return []
-							},
-						)
+						const name = 'test-disconnect'
+						component(name, {}, () => {
+							initCalled = true
+							return []
+						})
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 						document.body.appendChild(instance)
 
 						// Override callbacks to track calls
@@ -1288,8 +1285,9 @@
 					it('should handle attribute changes before connection', function () {
 						let parseCount = 0
 
-						const TestComponent = component(
-							'test-early-attr',
+						const name = 'test-early-attr'
+						component(
+							name,
 							{
 								value: (host, value) => {
 									parseCount++
@@ -1299,7 +1297,7 @@
 							() => [],
 						)
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 						const initialCount = parseCount
 
 						// Change attribute before connecting
@@ -1320,20 +1318,17 @@
 						let connectCount = 0
 						let disconnectCount = 0
 
-						const TestComponent = component(
-							'test-cycles',
-							{},
-							() => {
-								connectCount++
-								return [
-									() => {
-										disconnectCount++
-									},
-								]
-							},
-						)
+						const name = 'test-cycles'
+						component(name, {}, () => {
+							connectCount++
+							return [
+								() => {
+									disconnectCount++
+								},
+							]
+						})
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 						document.body.appendChild(instance)
 
 						const initialConnectCount = connectCount
@@ -1362,8 +1357,9 @@
 
 				describe('Attribute Parser Edge Cases', function () {
 					it('should handle parser functions that throw errors', function () {
-						const TestComponent = component(
-							'test-parser-error',
+						const name = 'test-parser-error'
+						component(
+							name,
 							{
 								errorProp: (host, value) => {
 									if (value === 'error') {
@@ -1375,7 +1371,7 @@
 							() => [],
 						)
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 
 						// Parser should throw, but component should handle it gracefully
 						try {
@@ -1390,8 +1386,9 @@
 					})
 
 					it('should handle computed signals in attribute parsing', function () {
-						const TestComponent = component(
-							'test-computed-attr',
+						const name = 'test-computed-attr'
+						component(
+							name,
 							{
 								base: asString('base'),
 								computedProp: host => {
@@ -1405,7 +1402,7 @@
 							() => [],
 						)
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 						document.body.appendChild(instance)
 
 						// Signal should be set correctly
@@ -1420,8 +1417,9 @@
 					it('should handle null and undefined attribute values', function () {
 						let nullCount = 0
 
-						const TestComponent = component(
-							'test-null-undefined',
+						const name = 'test-null-undefined'
+						component(
+							name,
 							{
 								nullProp: (host, value) => {
 									if (value === null) nullCount++
@@ -1431,7 +1429,7 @@
 							() => [],
 						)
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 						const initialCount = nullCount
 
 						instance.attributeChangedCallback(
@@ -1448,23 +1446,16 @@
 						assert.equal(instance.nullProp, 'null-default')
 					})
 				})
-
 				describe('Selector Function Edge Cases', function () {
 					it('should handle complex CSS selectors with first()', function () {
-						const TestComponent = component(
-							'test-complex-selector',
-							{},
-							(_, { first }) => [
-								first(
-									'div[data-test="value"]:not(.hidden)',
-									() => {
-										// Complex selector should work
-									},
-								),
-							],
-						)
+						const name = 'test-complex-selector'
+						component(name, {}, (_, { first }) => [
+							first('div[data-test="value"]:not(.hidden)', () => {
+								// Complex selector should work
+							}),
+						])
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 						instance.innerHTML = `
 							<div data-test="value" class="visible">Target</div>
 							<div data-test="value" class="hidden">Hidden</div>
@@ -1485,20 +1476,17 @@
 						let attachCount = 0
 						let detachCount = 0
 
-						const TestComponent = component(
-							'test-dynamic-all',
-							{},
-							(_, { all }) => [
-								all('.dynamic-item', () => {
-									attachCount++
-									return () => {
-										detachCount++
-									}
-								}),
-							],
-						)
+						const name = 'test-dynamic-all'
+						component(name, {}, (_, { all }) => [
+							all('.dynamic-item', () => {
+								attachCount++
+								return () => {
+									detachCount++
+								}
+							}),
+						])
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 						document.body.appendChild(instance)
 						instance.connectedCallback()
 
@@ -1535,17 +1523,14 @@
 					})
 
 					it('should handle shadow DOM boundaries', function () {
-						const TestComponent = component(
-							'test-shadow-selector',
-							{},
-							(_, { first }) => [
-								first('.shadow-target', () => {
-									// Should work with shadow DOM
-								}),
-							],
-						)
+						const name = 'test-shadow-selector'
+						component(name, {}, (_, { first }) => [
+							first('.shadow-target', () => {
+								// Should work with shadow DOM
+							}),
+						])
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 						instance.attachShadow({ mode: 'open' })
 						instance.shadowRoot.innerHTML =
 							'<div class="shadow-target">Shadow content</div>'
@@ -1563,15 +1548,12 @@
 				describe('Error Handling', function () {
 					it('should handle setup function returning non-array', function () {
 						// Test that setup function with non-array return is handled
-						const TestComponent = component(
-							'test-non-array-fixed',
-							{},
-							() => {
-								return 'not an array' // Invalid return type
-							},
-						)
+						const name = 'test-non-array-fixed'
+						component(name, {}, () => {
+							return 'not an array' // Invalid return type
+						})
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 						assert.instanceOf(
 							instance,
 							HTMLElement,
@@ -1579,15 +1561,16 @@
 						)
 
 						// Verify the component was created successfully
-						assert.equal(instance.localName, 'test-non-array-fixed')
+						assert.equal(instance.localName, name)
 
 						// Note: connectedCallback will throw when added to DOM, but this is expected
 						// The error is caught by the test framework as an uncaught error
 					})
 
 					it('should handle invalid initializers gracefully', function () {
-						const TestComponent = component(
-							'test-invalid-init',
+						const name = 'test-invalid-init'
+						component(
+							name,
 							{
 								validProp: asString('valid'),
 								invalidProp: undefined, // Invalid initializer
@@ -1595,7 +1578,7 @@
 							() => [],
 						)
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 
 						// Should not crash with invalid initializer
 						assert.doesNotThrow(() => {
@@ -1608,15 +1591,12 @@
 
 					it('should handle setup function errors', function () {
 						// Test that setup function with errors is handled
-						const TestComponent = component(
-							'test-setup-error-fixed',
-							{},
-							() => {
-								throw new Error('Setup error')
-							},
-						)
+						const name = 'test-setup-error-fixed'
+						component(name, {}, () => {
+							throw new Error('Setup error')
+						})
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 						assert.instanceOf(
 							instance,
 							HTMLElement,
@@ -1624,10 +1604,7 @@
 						)
 
 						// Verify the component was created successfully
-						assert.equal(
-							instance.localName,
-							'test-setup-error-fixed',
-						)
+						assert.equal(instance.localName, name)
 
 						// Note: connectedCallback will throw when added to DOM, but this is expected
 						// The error is caught by the test framework as an uncaught error
@@ -1636,15 +1613,16 @@
 
 				describe('Debug Mode', function () {
 					it('should handle debug attribute', function () {
-						const TestComponent = component(
-							'test-debug',
+						const name = 'test-debug'
+						component(
+							name,
 							{
 								value: asString('test'),
 							},
 							() => [],
 						)
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 						instance.setAttribute('debug', '')
 						document.body.appendChild(instance)
 
@@ -1659,15 +1637,16 @@
 					})
 
 					it('should handle debug logging without crashing', function () {
-						const TestComponent = component(
-							'test-debug-logging',
+						const name = 'test-debug-logging'
+						component(
+							name,
 							{
 								value: asString('initial'),
 							},
 							() => [],
 						)
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 						instance.setAttribute('debug', '')
 						document.body.appendChild(instance)
 						instance.connectedCallback()
@@ -1693,17 +1672,14 @@
 						let attachCount = 0
 						const ELEMENT_COUNT = 50
 
-						const TestComponent = component(
-							'test-performance',
-							{},
-							(_, { all }) => [
-								all('.perf-item', () => {
-									attachCount++
-								}),
-							],
-						)
+						const name = 'test-performance'
+						component(name, {}, (_, { all }) => [
+							all('.perf-item', () => {
+								attachCount++
+							}),
+						])
 
-						const instance = new TestComponent()
+						const instance = document.createElement(name)
 						document.body.appendChild(instance)
 						instance.connectedCallback()
 
@@ -1730,8 +1706,9 @@
 					})
 
 					it('should handle component cleanup without memory leaks', function () {
-						const TestComponent = component(
-							'test-memory-cleanup',
+						const name = 'test-memory-cleanup'
+						component(
+							name,
 							{
 								value: asString('test'),
 							},
@@ -1740,7 +1717,7 @@
 
 						// Create and destroy many components
 						for (let i = 0; i < 20; i++) {
-							const instance = new TestComponent()
+							const instance = document.createElement(name)
 							document.body.appendChild(instance)
 							instance.connectedCallback()
 							instance.disconnectedCallback()
@@ -1754,24 +1731,26 @@
 
 				describe('Real-world Integration', function () {
 					it('should handle nested component communication', function () {
-						const ParentComponent = component(
-							'integration-parent',
+						const p = 'integration-parent'
+						component(
+							p,
 							{
 								data: asString('parent-data'),
 							},
 							() => [],
 						)
 
-						const ChildComponent = component(
-							'integration-child',
+						const c = 'integration-child'
+						component(
+							c,
 							{
 								inherited: asString(''),
 							},
 							() => [],
 						)
 
-						const parent = new ParentComponent()
-						const child = new ChildComponent()
+						const parent = document.createElement(p)
+						const child = document.createElement(c)
 
 						parent.appendChild(child)
 						document.body.appendChild(parent)
@@ -1796,8 +1775,9 @@
 					it('should handle complex attribute parsing scenarios', function () {
 						let parseCallCount = 0
 
-						const ComplexComponent = component(
-							'complex-parsing',
+						const name = 'complex-parsing'
+						component(
+							name,
 							{
 								jsonData: (host, value) => {
 									parseCallCount++
@@ -1820,7 +1800,7 @@
 							() => [],
 						)
 
-						const instance = new ComplexComponent()
+						const instance = document.createElement(name)
 						const initialCount = parseCallCount
 
 						// Test JSON parsing

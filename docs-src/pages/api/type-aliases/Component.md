@@ -8,7 +8,7 @@
 
 > **Component**\<`P`\> = `HTMLElement` & `P` & `object`
 
-Defined in: [src/component.ts:42](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/component.ts#L42)
+Defined in: [src/component.ts:42](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/component.ts#L42)
 
 ## Type declaration
 
@@ -68,31 +68,43 @@ Defined in: [src/component.ts:42](https://github.com/zeixcom/ui-element/blob/051
 
 ### getSignal()
 
-> **getSignal**(`prop`): [`Signal`](Signal.md)\<`P`\[keyof `P`\]\>
+> **getSignal**\<`K`\>(`prop`): [`Signal`](Signal.md)\<`P`\[`K`\]\>
+
+#### Type Parameters
+
+##### K
+
+`K` *extends* `string` \| `number` \| `symbol`
 
 #### Parameters
 
 ##### prop
 
-keyof `P`
+`K`
 
 #### Returns
 
-[`Signal`](Signal.md)\<`P`\[keyof `P`\]\>
+[`Signal`](Signal.md)\<`P`\[`K`\]\>
 
 ### setSignal()
 
-> **setSignal**(`prop`, `signal`): `void`
+> **setSignal**\<`K`\>(`prop`, `signal`): `void`
+
+#### Type Parameters
+
+##### K
+
+`K` *extends* `string` \| `number` \| `symbol`
 
 #### Parameters
 
 ##### prop
 
-keyof `P`
+`K`
 
 ##### signal
 
-[`Signal`](Signal.md)\<`P`\[keyof `P`\]\>
+[`Signal`](Signal.md)\<`P`\[`K`\]\>
 
 #### Returns
 

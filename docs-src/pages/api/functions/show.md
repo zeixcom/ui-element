@@ -6,11 +6,12 @@
 
 # Function: show()
 
-> **show**\<`P`, `E`\>(`s`): [`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+> **show**\<`P`, `E`\>(`reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:334](https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/lib/effects.ts#L334)
+Defined in: [src/lib/effects.ts:419](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/lib/effects.ts#L419)
 
-Set 'hidden' property of an element
+Effect for controlling element visibility by setting the 'hidden' property.
+When the reactive value is true, the element is shown; when false, it's hidden.
 
 ## Type Parameters
 
@@ -24,15 +25,17 @@ Set 'hidden' property of an element
 
 ## Parameters
 
-### s
+### reactive
 
-[`SignalLike`](../type-aliases/SignalLike.md)\<`P`, `boolean`, `E`\>
+[`Reactive`](../type-aliases/Reactive.md)\<`boolean`, `P`, `E`\>
 
-state bound to the 'hidden' property value
+Reactive value bound to the visibility state
 
 ## Returns
 
-[`FxFunction`](../type-aliases/FxFunction.md)\<`P`, `E`\>
+[`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+
+Effect function that controls element visibility
 
 ## Since
 

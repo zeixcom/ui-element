@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.1</small>
+					UIElement Docs <small>Version 0.13.2</small>
 				</h1>
 				
 <section-menu>
@@ -108,8 +108,7 @@
 <blockquote>
 <p><strong>fromContext</strong>&lt;<code>T</code>, <code>C</code>&gt;(<code>context</code>, <code>fallback</code>): (<code>host</code>) =&gt; <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/core/context.ts#L124">src/core/context.ts:124</a></p>
-<p>Consume a context value for a component.</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/context.ts#L123">src/core/context.ts:123</a></p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -143,7 +142,6 @@
                 context
             </h3>
 <p><a href="../type-aliases/Context.html"><code>Context</code></a>&lt;<code>string</code>, <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;&gt;</p>
-<p>context key to consume</p>
 <h3 id="fallback">
                 <a name="fallback" class="anchor" href="#fallback">
 	                <span class="permalink">🔗</span>
@@ -151,16 +149,12 @@
                 fallback
             </h3>
 <p><a href="../type-aliases/MaybeSignal.html"><code>MaybeSignal</code></a>&lt;<code>T</code>&gt;</p>
-<p>fallback value to use if context is not provided</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<ul>
-<li>a function that returns the consumed context signal or a signal of the fallback value</li>
-</ul>
 <blockquote>
 <p>(<code>host</code>): <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;</p>
 </blockquote>
@@ -184,13 +178,6 @@
                 Returns
             </h3>
 <p><a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;</p>
-<h2 id="since">
-                <a name="since" class="anchor" href="#since">
-	                <span class="permalink">🔗</span>
-                </a>
-                Since
-            </h2>
-<p>0.13.1</p>
 
 </section></main>
 			<footer class="content-grid">

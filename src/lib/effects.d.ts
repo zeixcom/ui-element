@@ -1,9 +1,13 @@
 import { type Signal } from '@zeix/cause-effect'
-import { type ComponentProps, type FxFunction } from '../component'
-type SignalLike<P extends ComponentProps, T, E extends Element = HTMLElement> =
+import { type ComponentProps, type Effect } from '../component'
+import type { HTMLElementEventType, ValidEventName } from '../core/dom'
+type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 	| keyof P
 	| Signal<NonNullable<T>>
 	| ((element: E) => T | null | undefined)
+type PassedReactives<P extends ComponentProps, E extends Element> = {
+	[K in keyof E]?: Reactive<E[K], P, E>
+}
 type UpdateOperation = 'a' | 'c' | 'h' | 'p' | 's' | 't'
 type ElementUpdater<E extends Element, T> = {
 	op: UpdateOperation
@@ -25,52 +29,61 @@ type DangerouslySetInnerHTMLOptions = {
 	allowScripts?: boolean
 }
 /**
- * Effect for setting properties of a target element according to a given SignalLike
+ * Core effect function for updating element properties based on reactive values.
+ * This function handles the lifecycle of reading, updating, and deleting element properties
+ * while providing proper error handling and debugging support.
  *
  * @since 0.9.0
- * @param {SignalLike<T>} s - state bound to the element property
- * @param {ElementUpdater} updater - updater object containing key, read, update, and delete methods
+ * @param {Reactive<T, P, E>} reactive - The reactive value that drives the element updates
+ * @param {ElementUpdater<E, T>} updater - Configuration object defining how to read, update, and delete the element property
+ * @returns {Effect<P, E>} Effect function that manages the element property updates
  */
 declare const updateElement: <
 	P extends ComponentProps,
 	T extends {},
 	E extends Element = HTMLElement,
 >(
-	s: SignalLike<P, T, E>,
+	reactive: Reactive<T, P, E>,
 	updater: ElementUpdater<E, T>,
-) => FxFunction<P, E>
+) => Effect<P, E>
 /**
- * Effect for inserting or removing elements according to a given SignalLike
+ * Effect for dynamically inserting or removing elements based on a reactive numeric value.
+ * Positive values insert elements, negative values remove them.
  *
  * @since 0.12.1
- * @param {SignalLike<P, E, number>} s - state bound to the number of elements to insert (positive) or remove (negative)
- * @param {ElementInserter<E>} inserter - inserter object containing position, insert, and remove methods
+ * @param {Reactive<number, P, E>} reactive - Reactive value determining number of elements to insert (positive) or remove (negative)
+ * @param {ElementInserter<E>} inserter - Configuration object defining how to create and position elements
+ * @returns {Effect<P, E>} Effect function that manages element insertion and removal
  */
 declare const insertOrRemoveElement: <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
-	s: SignalLike<P, number, E>,
+	reactive: Reactive<number, P, E>,
 	inserter?: ElementInserter<E>,
-) => FxFunction<P, E>
+) => Effect<P, E>
 /**
- * Set text content of an element
+ * Effect for setting the text content of an element.
+ * Replaces all child nodes (except comments) with a single text node.
  *
  * @since 0.8.0
- * @param {SignalLike<string>} s - state bound to the text content
+ * @param {Reactive<string, P, E>} reactive - Reactive value bound to the text content
+ * @returns {Effect<P, E>} Effect function that sets the text content of the element
  */
 declare const setText: <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
-	s: SignalLike<P, string, E>,
-) => FxFunction<P, E>
+	reactive: Reactive<string, P, E>,
+) => Effect<P, E>
 /**
- * Set property of an element
+ * Effect for setting a property on an element.
+ * Sets the specified property directly on the element object.
  *
  * @since 0.8.0
- * @param {string} key - name of property to be set
- * @param {SignalLike<E[K]>} s - state bound to the property value
+ * @param {K} key - Name of the property to set
+ * @param {Reactive<E[K], P, E>} reactive - Reactive value bound to the property value (defaults to property name)
+ * @returns {Effect<P, E>} Effect function that sets the property on the element
  */
 declare const setProperty: <
 	P extends ComponentProps,
@@ -78,92 +91,150 @@ declare const setProperty: <
 	E extends Element = HTMLElement,
 >(
 	key: K,
-	s?: SignalLike<P, E[K], E>,
-) => FxFunction<P, E>
+	reactive?: Reactive<E[K], P, E>,
+) => Effect<P, E>
 /**
- * Set 'hidden' property of an element
+ * Effect for controlling element visibility by setting the 'hidden' property.
+ * When the reactive value is true, the element is shown; when false, it's hidden.
  *
  * @since 0.13.1
- * @param {SignalLike<boolean>} s - state bound to the 'hidden' property value
+ * @param {Reactive<boolean, P, E>} reactive - Reactive value bound to the visibility state
+ * @returns {Effect<P, E>} Effect function that controls element visibility
  */
 declare const show: <
 	P extends ComponentProps,
 	E extends HTMLElement = HTMLElement,
 >(
-	s: SignalLike<P, boolean, E>,
-) => FxFunction<P, E>
+	reactive: Reactive<boolean, P, E>,
+) => Effect<P, E>
 /**
- * Set attribute of an element
+ * Effect for setting an attribute on an element.
+ * Sets the specified attribute with security validation for unsafe values.
  *
  * @since 0.8.0
- * @param {string} name - name of attribute to be set
- * @param {SignalLike<string>} s - state bound to the attribute value
+ * @param {string} name - Name of the attribute to set
+ * @param {Reactive<string, P, E>} reactive - Reactive value bound to the attribute value (defaults to attribute name)
+ * @returns {Effect<P, E>} Effect function that sets the attribute on the element
  */
 declare const setAttribute: <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
 	name: string,
-	s?: SignalLike<P, string, E>,
-) => FxFunction<P, E>
+	reactive?: Reactive<string, P, E>,
+) => Effect<P, E>
 /**
- * Toggle a boolan attribute of an element
+ * Effect for toggling a boolean attribute on an element.
+ * When the reactive value is true, the attribute is present; when false, it's absent.
  *
  * @since 0.8.0
- * @param {string} name - name of attribute to be toggled
- * @param {SignalLike<boolean>} s - state bound to the attribute existence
+ * @param {string} name - Name of the attribute to toggle
+ * @param {Reactive<boolean, P, E>} reactive - Reactive value bound to the attribute presence (defaults to attribute name)
+ * @returns {Effect<P, E>} Effect function that toggles the attribute on the element
  */
 declare const toggleAttribute: <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
 	name: string,
-	s?: SignalLike<P, boolean, E>,
-) => FxFunction<P, E>
+	reactive?: Reactive<boolean, P, E>,
+) => Effect<P, E>
 /**
- * Toggle a classList token of an element
+ * Effect for toggling a CSS class token on an element.
+ * When the reactive value is true, the class is added; when false, it's removed.
  *
  * @since 0.8.0
- * @param {string} token - class token to be toggled
- * @param {SignalLike<boolean>} s - state bound to the class existence
+ * @param {string} token - CSS class token to toggle
+ * @param {Reactive<boolean, P, E>} reactive - Reactive value bound to the class presence (defaults to class name)
+ * @returns {Effect<P, E>} Effect function that toggles the class on the element
  */
 declare const toggleClass: <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
 	token: string,
-	s?: SignalLike<P, boolean, E>,
-) => FxFunction<P, E>
+	reactive?: Reactive<boolean, P, E>,
+) => Effect<P, E>
 /**
- * Set a style property of an element
+ * Effect for setting a CSS style property on an element.
+ * Sets the specified style property with support for deletion via UNSET.
  *
  * @since 0.8.0
- * @param {string} prop - name of style property to be set
- * @param {SignalLike<string>} s - state bound to the style property value
+ * @param {string} prop - Name of the CSS style property to set
+ * @param {Reactive<string, P, E>} reactive - Reactive value bound to the style property value (defaults to property name)
+ * @returns {Effect<P, E>} Effect function that sets the style property on the element
  */
 declare const setStyle: <
 	P extends ComponentProps,
 	E extends HTMLElement | SVGElement | MathMLElement,
 >(
 	prop: string,
-	s?: SignalLike<P, string, E>,
-) => FxFunction<P, E>
+	reactive?: Reactive<string, P, E>,
+) => Effect<P, E>
 /**
- * Set inner HTML of an element
+ * Effect for setting the inner HTML of an element with optional Shadow DOM support.
+ * Provides security options for script execution and shadow root creation.
  *
  * @since 0.11.0
- * @param {SignalLike<string>} s - state bound to the inner HTML
- * @param {DangerouslySetInnerHTMLOptions} options - options for setting inner HTML: shadowRootMode, allowScripts
+ * @param {Reactive<string, P, E>} reactive - Reactive value bound to the inner HTML content
+ * @param {DangerouslySetInnerHTMLOptions} options - Configuration options: shadowRootMode, allowScripts
+ * @returns {Effect<P, E>} Effect function that sets the inner HTML of the element
  */
 declare const dangerouslySetInnerHTML: <
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
 >(
-	s: SignalLike<P, string, E>,
+	reactive: Reactive<string, P, E>,
 	options?: DangerouslySetInnerHTMLOptions,
-) => FxFunction<P, E>
+) => Effect<P, E>
+/**
+ * Effect for attaching an event listener to an element.
+ * Provides proper cleanup when the effect is disposed.
+ *
+ * @since 0.12.0
+ * @param {K} type - Event type to listen for
+ * @param {(event: HTMLElementEventType<K>) => void} listener - Event listener function
+ * @param {boolean | AddEventListenerOptions} options - Event listener options
+ * @returns {Effect<ComponentProps, E>} Effect function that manages the event listener
+ * @throws {TypeError} When the provided handler is not a function
+ */
+declare const on: <E extends HTMLElement, K extends ValidEventName>(
+	type: K,
+	listener: (event: HTMLElementEventType<K>) => void,
+	options?: boolean | AddEventListenerOptions,
+) => Effect<ComponentProps, E>
+/**
+ * Effect for emitting custom events with reactive detail values.
+ * Creates and dispatches CustomEvent instances with bubbling enabled by default.
+ *
+ * @since 0.13.2
+ * @param {string} type - Event type to emit
+ * @param {Reactive<T, P, E>} reactive - Reactive value bound to the event detail
+ * @returns {Effect<P, E>} Effect function that emits custom events
+ */
+declare const emit: <
+	T,
+	P extends ComponentProps,
+	E extends Element = HTMLElement,
+>(
+	type: string,
+	reactive: Reactive<T, P, E>,
+) => Effect<P, E>
+/**
+ * Effect for passing reactive values to descendant elements.
+ * Supports both direct property setting and signal passing for custom elements.
+ *
+ * @since 0.13.2
+ * @param {PassedReactives<P, E> | ((target: E) => PassedReactives<P, E>)} reactives - Reactive values to pass or function that returns them
+ * @returns {Effect<P, E>} Effect function that passes reactive values to descendant elements
+ * @throws {TypeError} When the provided reactives are not an object or provider function
+ */
+declare const pass: <P extends ComponentProps, E extends Element>(
+	reactives: PassedReactives<P, E> | ((target: E) => PassedReactives<P, E>),
+) => Effect<P, E>
 export {
-	type SignalLike,
+	type Reactive,
+	type PassedReactives,
 	type UpdateOperation,
 	type ElementUpdater,
 	type ElementInserter,
@@ -178,4 +249,7 @@ export {
 	toggleClass,
 	setStyle,
 	dangerouslySetInnerHTML,
+	on,
+	emit,
+	pass,
 }
