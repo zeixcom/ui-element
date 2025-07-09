@@ -106,15 +106,23 @@
                 Function: fromDescendant()
             </h1>
 <blockquote>
-<p><strong>fromDescendant</strong>&lt;<code>E</code>, <code>S</code>, <code>K</code>&gt;(<code>selector</code>, <code>prop</code>, <code>fallback</code>): (<code>host</code>) =&gt; () =&gt; <code>NonNullable</code>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[<code>K</code>]&gt;</p>
+<p><strong>fromDescendant</strong>&lt;<code>T</code>, <code>E</code>, <code>S</code>&gt;(<code>selector</code>, <code>map</code>): <a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>T</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/dom.ts#L411">src/core/dom.ts:411</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/core/dom.ts#L345">src/core/dom.ts:345</a></p>
+<p>Produce a computed signal from a map function on a descendant element</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Type Parameters
             </h2>
+<h3 id="t">
+                <a name="t" class="anchor" href="#t">
+	                <span class="permalink">🔗</span>
+                </a>
+                T
+            </h3>
+<p><code>T</code> <em>extends</em> <code>object</code></p>
 <h3 id="e">
                 <a name="e" class="anchor" href="#e">
 	                <span class="permalink">🔗</span>
@@ -129,13 +137,6 @@
                 S
             </h3>
 <p><code>S</code> <em>extends</em> <code>string</code> = <code>string</code></p>
-<h3 id="k">
-                <a name="k" class="anchor" href="#k">
-	                <span class="permalink">🔗</span>
-                </a>
-                K
-            </h3>
-<p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code> = keyof <a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;</p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -149,58 +150,30 @@
                 selector
             </h3>
 <p><code>S</code></p>
-<h3 id="prop">
-                <a name="prop" class="anchor" href="#prop">
+<p>CSS selector for descendant element</p>
+<h3 id="map">
+                <a name="map" class="anchor" href="#map">
 	                <span class="permalink">🔗</span>
                 </a>
-                prop
+                map
             </h3>
-<p><code>K</code></p>
-<h3 id="fallback">
-                <a name="fallback" class="anchor" href="#fallback">
-	                <span class="permalink">🔗</span>
-                </a>
-                fallback
-            </h3>
-<p><code>NonNullable</code>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[<code>K</code>]&gt;</p>
+<p>(<code>element</code>, <code>isUpgraded</code>) =&gt; <code>T</code></p>
+<p>Function to map over the element</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<blockquote>
-<p>(<code>host</code>): () =&gt; <code>NonNullable</code>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[<code>K</code>]&gt;</p>
-</blockquote>
-<h3 id="parameters">
-                <a name="parameters" class="anchor" href="#parameters">
+<p><a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>T</code>&gt;</p>
+<p>Signal producer that gets the property value from descendant element</p>
+<h2 id="since">
+                <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
                 </a>
-                Parameters
-            </h3>
-<h4 id="host">
-                <a name="host" class="anchor" href="#host">
-	                <span class="permalink">🔗</span>
-                </a>
-                host
-            </h4>
-<p><code>HTMLElement</code></p>
-<h3 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h3>
-<blockquote>
-<p>(): <code>NonNullable</code>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[<code>K</code>]&gt;</p>
-</blockquote>
-<h4 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h4>
-<p><code>NonNullable</code>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[<code>K</code>]&gt;</p>
+                Since
+            </h2>
+<p>0.13.3</p>
 
 </section></main>
 			<footer class="content-grid">

@@ -1,5 +1,10 @@
-import { type Component, component, fromDescendants, pass } from '../../..'
-import { BasicButtonProps } from '../basic-button/basic-button'
+import {
+	type Component,
+	type SignalProducer,
+	component,
+	pass,
+	reduced,
+} from '../../..'
 
 export type ModuleCatalogProps = {
 	total: number
@@ -8,16 +13,18 @@ export type ModuleCatalogProps = {
 export default component(
 	'module-catalog',
 	{
-		total: fromDescendants(
-			'form-spinbutton',
-			(sum, item) => sum + item.value,
-			0,
-		),
+		total: (el =>
+			reduced(
+				el,
+				'form-spinbutton',
+				(sum, item) => sum + item.value,
+				0,
+			)) as SignalProducer<number>,
 	},
 	(el, { first }) => [
 		first(
 			'basic-button',
-			pass<ModuleCatalogProps, Component<BasicButtonProps>>({
+			pass({
 				badge: () => (el.total > 0 ? String(el.total) : ''),
 				disabled: () => !el.total,
 			}),

@@ -25,13 +25,16 @@ export default component(
 			all(
 				'input',
 				setProperty('checked', target => el.value === getKey(target)),
-				on('change', e => {
-					e.stopPropagation()
-					const value =
-						parseInt((e.currentTarget as HTMLInputElement)?.value) +
-						1
-					el.value = value
-					emit('change-rating', value)(el)
+				on({
+					change: (e: Event) => {
+						e.stopPropagation()
+						const value =
+							parseInt(
+								(e.currentTarget as HTMLInputElement)?.value,
+							) + 1
+						el.value = value
+						emit('change-rating', value)(el)
+					},
 				}),
 			),
 			all(
@@ -45,5 +48,8 @@ export default component(
 declare global {
 	interface HTMLElementTagNameMap {
 		'rating-stars': Component<RatingStarsProps>
+	}
+	interface HTMLElementEventMap {
+		'change-rating': CustomEvent<number>
 	}
 }

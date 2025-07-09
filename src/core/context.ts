@@ -90,19 +90,19 @@ class ContextRequestEvent<T extends UnknownContext> extends Event {
 /**
  * Provide a context for descendant component consumers
  *
- * @since 0.12.0
- * @param {Context<K, Signal<P[K]>>[]} provided - array of contexts to provide
+ * @since 0.13.3
+ * @param {Context<K, Signal<P[K]>>[]} contexts - array of contexts to provide
  * @returns {(host: Component<P>) => Cleanup} - function to add an event listener for ContextRequestEvent returning a cleanup function to remove the event listener
  */
-const provide =
+const provideContexts =
 	<P extends ComponentProps, K extends keyof P>(
-		provided: Context<K, Signal<P[K]>>[],
+		contexts: Context<K, Signal<P[K]>>[],
 	): ((host: Component<P>) => Cleanup) =>
 	(host: Component<P>) => {
 		const listener = (e: ContextRequestEvent<UnknownContext>) => {
 			const { context, callback } = e
 			if (
-				provided.includes(context as Context<K, Signal<P[K]>>) &&
+				contexts.includes(context as Context<K, Signal<P[K]>>) &&
 				isFunction(callback)
 			) {
 				e.stopImmediatePropagation()
@@ -111,7 +111,9 @@ const provide =
 		}
 		host.addEventListener(CONTEXT_REQUEST, listener)
 		return () => host.removeEventListener(CONTEXT_REQUEST, listener)
-	} /**
+	}
+
+/**
  * Consume a context value for a component.
  *
  * @since 0.13.1
@@ -140,6 +142,6 @@ export {
 	type ContextType,
 	CONTEXT_REQUEST,
 	ContextRequestEvent,
-	provide,
+	provideContexts,
 	fromContext,
 }

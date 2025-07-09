@@ -13,8 +13,10 @@ export default component(
 		first('span', setText('name')),
 		first(
 			'input',
-			on('input', (e: Event) => {
-				el.name = (e.target as HTMLInputElement)?.value || RESET
+			on({
+				input: (e: Event) => {
+					el.name = (e.target as HTMLInputElement)?.value || RESET
+				},
 			}),
 		),
 	],

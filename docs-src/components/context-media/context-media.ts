@@ -3,7 +3,7 @@ import {
 	type Context,
 	type State,
 	component,
-	provide,
+	provideContexts,
 	state,
 } from '../../../'
 
@@ -114,7 +114,12 @@ export default component(
 		},
 	},
 	() => [
-		provide([MEDIA_MOTION, MEDIA_THEME, MEDIA_VIEWPORT, MEDIA_ORIENTATION]),
+		provideContexts([
+			MEDIA_MOTION,
+			MEDIA_THEME,
+			MEDIA_VIEWPORT,
+			MEDIA_ORIENTATION,
+		]),
 	],
 )
 

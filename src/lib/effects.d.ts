@@ -1,14 +1,13 @@
 import { type Signal } from '@zeix/cause-effect'
 import { type ComponentProps, type Effect } from '../component'
-import type { HTMLElementEventType, ValidEventName } from '../core/dom'
 type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 	| keyof P
 	| Signal<NonNullable<T>>
 	| ((element: E) => T | null | undefined)
-type PassedReactives<P extends ComponentProps, E extends Element> = {
+type Reactives<P extends ComponentProps, E extends Element> = {
 	[K in keyof E]?: Reactive<E[K], P, E>
 }
-type UpdateOperation = 'a' | 'c' | 'h' | 'p' | 's' | 't'
+type UpdateOperation = 'a' | 'c' | 'd' | 'h' | 'm' | 'p' | 's' | 't'
 type ElementUpdater<E extends Element, T> = {
 	op: UpdateOperation
 	name?: string
@@ -108,6 +107,38 @@ declare const show: <
 	reactive: Reactive<boolean, P, E>,
 ) => Effect<P, E>
 /**
+ * Effect for calling a method on an element.
+ *
+ * @since 0.13.3
+ * @param {K} methodName - Name of the method to call
+ * @param {Reactive<boolean, P, E>} reactive - Reactive value bound to the method call
+ * @param {unknown[]} args - Arguments to pass to the method
+ * @returns Effect function that calls the method on the element
+ */
+declare const callMethod: <
+	P extends ComponentProps,
+	K extends keyof E,
+	E extends HTMLElement = HTMLElement,
+>(
+	methodName: K,
+	reactive: Reactive<boolean, P, E>,
+	args?: unknown[],
+) => Effect<P, E>
+/**
+ * Effect for controlling element focus by calling the 'focus()' method.
+ * If the reactive value is true, element will be focussed; when false, nothing happens.
+ *
+ * @since 0.13.3
+ * @param {Reactive<boolean, P, E>} reactive - Reactive value bound to the focus state
+ * @returns {Effect<P, E>} Effect function that sets element focus
+ */
+declare const focus: <
+	P extends ComponentProps,
+	E extends HTMLElement = HTMLElement,
+>(
+	reactive: Reactive<boolean, P, E>,
+) => Effect<P, E>
+/**
  * Effect for setting an attribute on an element.
  * Sets the specified attribute with security validation for unsafe values.
  *
@@ -191,28 +222,23 @@ declare const dangerouslySetInnerHTML: <
  * Effect for attaching an event listener to an element.
  * Provides proper cleanup when the effect is disposed.
  *
- * @since 0.12.0
- * @param {K} type - Event type to listen for
- * @param {(event: HTMLElementEventType<K>) => void} listener - Event listener function
- * @param {boolean | AddEventListenerOptions} options - Event listener options
+ * @since 0.13.3
+ * @param {(event: HTMLElementEventType<K>) => void} listeners - Event listener function
  * @returns {Effect<ComponentProps, E>} Effect function that manages the event listener
- * @throws {TypeError} When the provided handler is not a function
  */
-declare const on: <E extends HTMLElement, K extends ValidEventName>(
-	type: K,
-	listener: (event: HTMLElementEventType<K>) => void,
-	options?: boolean | AddEventListenerOptions,
+declare const on: <E extends HTMLElement>(
+	listeners: { [K in keyof HTMLElementEventMap]?: EventListener },
 ) => Effect<ComponentProps, E>
 /**
  * Effect for emitting custom events with reactive detail values.
  * Creates and dispatches CustomEvent instances with bubbling enabled by default.
  *
- * @since 0.13.2
+ * @since 0.13.3
  * @param {string} type - Event type to emit
  * @param {Reactive<T, P, E>} reactive - Reactive value bound to the event detail
  * @returns {Effect<P, E>} Effect function that emits custom events
  */
-declare const emit: <
+declare const emitEvent: <
 	T,
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
@@ -225,16 +251,16 @@ declare const emit: <
  * Supports both direct property setting and signal passing for custom elements.
  *
  * @since 0.13.2
- * @param {PassedReactives<P, E> | ((target: E) => PassedReactives<P, E>)} reactives - Reactive values to pass or function that returns them
+ * @param {Reactives<P, E>} reactives - Reactive values to pass or function that returns them
  * @returns {Effect<P, E>} Effect function that passes reactive values to descendant elements
- * @throws {TypeError} When the provided reactives are not an object or provider function
+ * @throws {ReferenceError} When the provided reactives are not an object or provider function
  */
 declare const pass: <P extends ComponentProps, E extends Element>(
-	reactives: PassedReactives<P, E> | ((target: E) => PassedReactives<P, E>),
+	reactives: Reactives<P, E>,
 ) => Effect<P, E>
 export {
 	type Reactive,
-	type PassedReactives,
+	type Reactives,
 	type UpdateOperation,
 	type ElementUpdater,
 	type ElementInserter,
@@ -244,12 +270,14 @@ export {
 	setText,
 	setProperty,
 	show,
+	callMethod,
+	focus,
 	setAttribute,
 	toggleAttribute,
 	toggleClass,
 	setStyle,
 	dangerouslySetInnerHTML,
 	on,
-	emit,
+	emitEvent,
 	pass,
 }

@@ -18,31 +18,37 @@ export default component('rating-feedback', {}, (el, { all, first }) => {
 
 	return [
 		// Event listeners for rating changes and form submission
-		on<HTMLElement, CustomEvent<number>>('change-rating', e => {
-			rating.set(e.detail)
-		}),
-		on('submit', e => {
-			e.preventDefault()
-			submitted.set(true)
-			console.log('Feedback submitted')
+		on({
+			'change-rating': e => {
+				rating.set(e.detail)
+			},
+			submit: e => {
+				e.preventDefault()
+				submitted.set(true)
+				console.log('Feedback submitted')
+			},
 		}),
 
 		// Event listener for hide button
 		first(
 			'.hide',
-			on('click', () => {
-				const feedback = el.querySelector<HTMLElement>('.feedback')
-				if (feedback) feedback.hidden = true
+			on({
+				click: () => {
+					const feedback = el.querySelector<HTMLElement>('.feedback')
+					if (feedback) feedback.hidden = true
+				},
 			}),
 		),
 
 		// Event listener for textarea
 		first(
 			'textarea',
-			on('input', e => {
-				empty.set(
-					(e.target as HTMLTextAreaElement)?.value.trim() === '',
-				)
+			on({
+				input: (e: Event) => {
+					empty.set(
+						(e.target as HTMLTextAreaElement)?.value.trim() === '',
+					)
+				},
 			}),
 		),
 

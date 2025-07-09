@@ -10,7 +10,7 @@ import {
 	state,
 } from '../../../'
 
-import { SpinButtonProps } from '../form-spinbutton/form-spinbutton'
+import { FormSpinbuttonProps } from '../form-spinbutton/form-spinbutton'
 
 export type CalcTableProps = {
 	columns: number
@@ -59,14 +59,14 @@ export default component(
 			setProperty(
 				'rows',
 				() =>
-					el.querySelector<Component<SpinButtonProps>>(
+					el.querySelector<Component<FormSpinbuttonProps>>(
 						'.rows form-spinbutton',
 					)?.value,
 			),
 			setProperty(
 				'columns',
 				() =>
-					el.querySelector<Component<SpinButtonProps>>(
+					el.querySelector<Component<FormSpinbuttonProps>>(
 						'.columns form-spinbutton',
 					)?.value,
 			),
@@ -191,11 +191,13 @@ export default component(
 			/* Update column values when cells change */
 			all(
 				'tbody input',
-				on('change', (e: Event) => {
-					const colKey = (e.target as HTMLInputElement)?.dataset[
-						'key'
-					]
-					colSums.get(colKey!)?.set(calcColumnSum(colKey!))
+				on({
+					change: (e: Event) => {
+						const colKey = (e.target as HTMLInputElement)?.dataset[
+							'key'
+						]
+						colSums.get(colKey!)?.set(calcColumnSum(colKey!))
+					},
 				}),
 			),
 

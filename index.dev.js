@@ -342,13 +342,72 @@ var areElementArraysEqual = (arr1, arr2) => {
   }
   return true;
 };
-var observeSubtree = (parent, selectors, callback) => {
+var fromEvents = (initialize, selector, events) => (host) => {
+  const watchers = new Set;
+  let value = isFunction(initialize) ? initialize(host) : initialize;
+  const eventMap = new Map;
+  let cleanup;
+  const listen = () => {
+    for (const [type, transform] of Object.entries(events)) {
+      const listener = (e) => {
+        const target = e.target;
+        if (!target)
+          return;
+        const source = target.closest(selector);
+        if (!source || !host.contains(source))
+          return;
+        e.stopPropagation();
+        try {
+          const newValue = transform({
+            event: e,
+            host,
+            target: source,
+            value
+          });
+          if (newValue == null)
+            return;
+          if (!Object.is(newValue, value)) {
+            value = newValue;
+            if (watchers.size > 0)
+              notify(watchers);
+            else if (cleanup)
+              cleanup();
+          }
+        } catch (error) {
+          e.stopImmediatePropagation();
+          throw error;
+        }
+      };
+      eventMap.set(type, listener);
+      host.addEventListener(type, listener);
+    }
+    cleanup = () => {
+      if (eventMap.size) {
+        for (const [type, listener] of eventMap) {
+          host.removeEventListener(type, listener);
+        }
+        eventMap.clear();
+      }
+      cleanup = undefined;
+    };
+  };
+  return {
+    [Symbol.toStringTag]: TYPE_COMPUTED,
+    get() {
+      subscribe(watchers);
+      if (watchers.size && !eventMap.size)
+        listen();
+      return value;
+    }
+  };
+};
+var observeSubtree = (parent, selector, callback) => {
   const observer = new MutationObserver(callback);
-  const observedAttributes = extractAttributes(selectors);
   const observerConfig = {
     childList: true,
     subtree: true
   };
+  const observedAttributes = extractAttributes(selector);
   if (observedAttributes.length) {
     observerConfig.attributes = true;
     observerConfig.attributeFilter = observedAttributes;
@@ -356,16 +415,16 @@ var observeSubtree = (parent, selectors, callback) => {
   observer.observe(parent, observerConfig);
   return observer;
 };
-var fromSelector = (selectors) => (host) => {
+var fromSelector = (selector) => (host) => {
   const watchers = new Set;
-  const select = () => Array.from(host.querySelectorAll(selectors));
+  const select = () => Array.from(host.querySelectorAll(selector));
   let value = UNSET;
   let observer;
   let mutationDepth = 0;
   const MAX_MUTATION_DEPTH = 2;
   const observe2 = () => {
     value = select();
-    observer = observeSubtree(host, selectors, () => {
+    observer = observeSubtree(host, selector, () => {
       if (!watchers.size) {
         observer?.disconnect();
         observer = undefined;
@@ -391,7 +450,7 @@ var fromSelector = (selectors) => (host) => {
   };
   return {
     [Symbol.toStringTag]: TYPE_COMPUTED,
-    get: () => {
+    get() {
       subscribe(watchers);
       if (!watchers.size)
         value = select();
@@ -401,65 +460,10 @@ var fromSelector = (selectors) => (host) => {
     }
   };
 };
-var fromDescendants = (selectors, reducer, init) => (host) => () => fromSelector(selectors)(host).get().reduce(reducer, isFunction(init) ? init(host) : init);
-var fromEvent = (selector, type, transformer, init, options = false) => (host) => {
-  const watchers = new Set;
-  let value = isFunction(init) ? init(host) : init;
-  let listener;
-  let cleanup;
-  const listen = () => {
-    listener = (e) => {
-      const target = e.target;
-      if (!target)
-        return;
-      const source = target.closest(selector);
-      if (!source || !host.contains(source))
-        return;
-      e.stopPropagation();
-      try {
-        const newValue = transformer({
-          event: e,
-          host,
-          source,
-          value
-        });
-        if (!Object.is(newValue, value)) {
-          value = newValue;
-          if (watchers.size > 0)
-            notify(watchers);
-          else if (cleanup)
-            cleanup();
-        }
-      } catch (error) {
-        e.stopImmediatePropagation();
-        throw error;
-      }
-    };
-    host.addEventListener(type, listener, options);
-    cleanup = () => {
-      if (listener) {
-        host.removeEventListener(type, listener);
-        listener = undefined;
-      }
-      cleanup = undefined;
-    };
-  };
-  return {
-    [Symbol.toStringTag]: TYPE_COMPUTED,
-    get: () => {
-      subscribe(watchers);
-      if (watchers.size && !listener)
-        listen();
-      return value;
-    }
-  };
-};
-var fromDescendant = (selector, prop, fallback) => (host) => () => {
+var reduced = (host, selector, reducer, initialValue) => computed(() => fromSelector(selector)(host).get().reduce(reducer, initialValue));
+var read = (host, selector, map) => {
   const source = host.querySelector(selector);
-  if (!source || !isUpgradedComponent(source))
-    return fallback;
-  const value = prop in source ? source[prop] : fallback;
-  return value == null || value === UNSET ? fallback : value;
+  return map(source, source ? isUpgradedComponent(source) : false);
 };
 
 // src/component.ts
@@ -637,10 +641,10 @@ class ContextRequestEvent extends Event {
     this.subscribe = subscribe2;
   }
 }
-var provide = (provided) => (host) => {
+var provideContexts = (contexts) => (host) => {
   const listener = (e) => {
     const { context, callback } = e;
-    if (provided.includes(context) && isFunction(callback)) {
+    if (contexts.includes(context) && isFunction(callback)) {
       e.stopImmediatePropagation();
       callback(host.getSignal(String(context)));
     }
@@ -662,17 +666,13 @@ var parseNumber = (parseFn, value) => {
   const parsed = parseFn(value);
   return Number.isFinite(parsed) ? parsed : undefined;
 };
-var asBoolean = () => (_, value) => value !== "false" && value != null;
+var asBoolean = () => (_, value) => value != null && value !== "false";
 var asInteger = (fallback = 0) => (_, value) => {
   if (value == null)
     return fallback;
   const trimmed = value.trim();
-  if (trimmed === "")
-    return fallback;
-  if (trimmed.toLowerCase().startsWith("0x")) {
-    const parsed2 = parseInt(trimmed, 16);
-    return Number.isFinite(parsed2) ? parsed2 : fallback;
-  }
+  if (trimmed.toLowerCase().startsWith("0x"))
+    return parseNumber((v) => parseInt(v, 16), trimmed) ?? fallback;
   const parsed = parseNumber(parseFloat, value);
   return parsed != null ? Math.trunc(parsed) : fallback;
 };
@@ -709,7 +709,7 @@ var resolveReactive = (reactive, host, target, context) => {
     return isString(reactive) ? host.getSignal(reactive).get() : isSignal(reactive) ? reactive.get() : isFunction(reactive) ? reactive(target) : RESET;
   } catch (error) {
     if (context) {
-      log(error, `Failed to resolve value of ${valueString(reactive)} for ${context} in ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
+      log(error, `Failed to resolve value of ${valueString(reactive)}${context ? ` for ${context}` : ""} in ${elementName(target)}${host !== target ? ` in ${elementName(host)}` : ""}`, LOG_ERROR);
     }
     return RESOLVE_ERROR;
   }
@@ -718,7 +718,9 @@ var getOperationDescription = (op, name = "") => {
   const ops = {
     a: "attribute ",
     c: "class ",
+    d: "dataset ",
     h: "inner HTML",
+    m: "method call ",
     p: "property ",
     s: "style property ",
     t: "text content"
@@ -771,8 +773,8 @@ var safeSetAttribute = (element, attr, value) => {
   element.setAttribute(attr, value);
 };
 var updateElement = (reactive, updater) => (host, target) => {
-  const { op, name = "", read, update } = updater;
-  const fallback = read(target);
+  const { op, name = "", read: read2, update } = updater;
+  const fallback = read2(target);
   const operationDesc = getOperationDescription(op, name);
   if (isString(reactive) && isString(fallback) && host[reactive] === RESET) {
     host.attributeChangedCallback(reactive, null, fallback);
@@ -780,7 +782,6 @@ var updateElement = (reactive, updater) => (host, target) => {
   const { ok, err } = createOperationHandlers(host, target, operationDesc, updater.resolve, updater.reject);
   return effect(() => {
     const updateSymbol = createDedupeSymbol(op, name);
-    const deleteSymbol = createDedupeSymbol(`${op}-delete`, name);
     const value = resolveReactive(reactive, host, target, operationDesc);
     if (value === RESOLVE_ERROR)
       return;
@@ -789,9 +790,9 @@ var updateElement = (reactive, updater) => (host, target) => {
       enqueue(() => {
         updater.delete(target);
         return true;
-      }, deleteSymbol).then(ok("Deleted")).catch(err("delete"));
+      }, updateSymbol).then(ok("Deleted")).catch(err("delete"));
     } else if (resolvedValue != null) {
-      const current = read(target);
+      const current = read2(target);
       if (Object.is(resolvedValue, current))
         return;
       enqueue(() => {
@@ -819,8 +820,8 @@ var insertOrRemoveElement = (reactive, inserter) => (host, target) => {
     inserter?.reject?.(error);
   };
   return effect(() => {
-    const insertSymbol = createDedupeSymbol("insert");
-    const removeSymbol = createDedupeSymbol("remove");
+    const insertSymbol = createDedupeSymbol("i");
+    const removeSymbol = createDedupeSymbol("r");
     const diff = resolveReactive(reactive, host, target, "insertion or deletion");
     if (diff === RESOLVE_ERROR)
       return;
@@ -876,6 +877,28 @@ var show = (reactive) => updateElement(reactive, {
   read: (el) => !el.hidden,
   update: (el, value) => {
     el.hidden = !value;
+  }
+});
+var callMethod = (methodName, reactive, args) => updateElement(reactive, {
+  op: "m",
+  name: String(methodName),
+  read: () => null,
+  update: (el, value) => {
+    if (value && hasMethod(el, methodName)) {
+      if (args)
+        el[methodName](...args);
+      else
+        el[methodName]();
+    }
+  }
+});
+var focus = (reactive) => updateElement(reactive, {
+  op: "m",
+  name: "focus",
+  read: (el) => el === document.activeElement,
+  update: (el, value) => {
+    if (value && hasMethod(el, "focus"))
+      el.focus();
   }
 });
 var setAttribute = (name, reactive = name) => updateElement(reactive, {
@@ -941,13 +964,20 @@ var dangerouslySetInnerHTML = (reactive, options = {}) => updateElement(reactive
     return " with scripts";
   }
 });
-var on = (type, listener, options = false) => (host, target = host) => {
-  if (!isFunction(listener))
-    throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
-  target.addEventListener(type, listener, options);
-  return () => target.removeEventListener(type, listener);
+var on = (listeners) => (host, target = host) => {
+  const eventMap = new Map;
+  for (const [type, listener] of Object.entries(listeners)) {
+    eventMap.set(type, listener);
+    target.addEventListener(type, listener);
+  }
+  return () => {
+    for (const [type, listener] of eventMap) {
+      target.removeEventListener(type, listener);
+    }
+    eventMap.clear();
+  };
 };
-var emit = (type, reactive) => (host, target = host) => withReactiveValue(reactive, host, target, `custom event "${type}" detail`, (detail) => {
+var emitEvent = (type, reactive) => (host, target = host) => withReactiveValue(reactive, host, target, `custom event "${type}" detail`, (detail) => {
   if (detail === RESET || detail === UNSET)
     return;
   target.dispatchEvent(new CustomEvent(type, {
@@ -956,27 +986,15 @@ var emit = (type, reactive) => (host, target = host) => withReactiveValue(reacti
   }));
 });
 var pass = (reactives) => (host, target) => {
-  const sources = isFunction(reactives) ? reactives(target) : reactives;
-  if (!isDefinedObject(sources))
-    throw new TypeError(`Passed signals must be an object or a provider function`);
-  const setProperties = () => effect(() => {
-    for (const [prop, source] of Object.entries(sources)) {
-      const value = resolveReactive(source, host, target, `signal ${prop}`);
-      if (value === RESOLVE_ERROR) {
-        throw new Error(`Failed to resolve signal ${prop} for ${elementName(target)}`);
-      }
-      if (value == null || value === RESET)
-        continue;
-      target[prop] = value;
-    }
-  });
+  if (!isDefinedObject(reactives))
+    throw new ReferenceError(`Passed signals must be an object or a provider function`);
   if (!isCustomElement(target))
-    return setProperties();
+    return;
   customElements.whenDefined(target.localName).then(() => {
     if (!hasMethod(target, "setSignal"))
-      return setProperties();
-    for (const [prop, source] of Object.entries(sources)) {
-      target.setSignal(prop, isString(source) ? host.getSignal(source) : toSignal(source));
+      return;
+    for (const [prop, reactive] of Object.entries(reactives)) {
+      target.setSignal(prop, isString(reactive) ? host.getSignal(reactive) : toSignal(reactive));
     }
   }).catch((error) => {
     throw new Error(`Failed to pass signals to ${elementName(target)}`, { cause: error });
@@ -993,7 +1011,9 @@ export {
   setStyle,
   setProperty,
   setAttribute,
-  provide,
+  reduced,
+  read,
+  provideContexts,
   pass,
   on,
   log,
@@ -1002,16 +1022,16 @@ export {
   isComputed,
   insertOrRemoveElement,
   fromSelector,
-  fromEvent,
-  fromDescendants,
-  fromDescendant,
+  fromEvents,
   fromContext,
+  focus,
   enqueue,
-  emit,
+  emitEvent,
   effect,
   dangerouslySetInnerHTML,
   computed,
   component,
+  callMethod,
   batch,
   asString,
   asNumber,

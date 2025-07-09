@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>EventTransformer()\<T, E, K\> – UIElement Docs</title>
+		<title>EventTransformer()\<T, E, C, Evt\> – UIElement Docs</title>
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="../../assets/main.css" />
 		<script type="module" src="../../assets/main.js"></script>
@@ -99,16 +99,16 @@
 				</card-callout>
 			</header>
 			<main class="content-grid"><section class="api-content">
-<h1 id="type-alias-eventtransformerltt-e-kgt">
-                <a name="type-alias-eventtransformerltt-e-kgt" class="anchor" href="#type-alias-eventtransformerltt-e-kgt">
+<h1 id="type-alias-eventtransformerltt-e-c-evtgt">
+                <a name="type-alias-eventtransformerltt-e-c-evtgt" class="anchor" href="#type-alias-eventtransformerltt-e-c-evtgt">
 	                <span class="permalink">🔗</span>
                 </a>
-                Type Alias: EventTransformer()&lt;T, E, K&gt;
+                Type Alias: EventTransformer()&lt;T, E, C, Evt&gt;
             </h1>
 <blockquote>
-<p><strong>EventTransformer</strong>&lt;<code>T</code>, <code>E</code>, <code>K</code>&gt; = (<code>context</code>) =&gt; <code>T</code></p>
+<p><strong>EventTransformer</strong>&lt;<code>T</code>, <code>E</code>, <code>C</code>, <code>Evt</code>&gt; = (<code>context</code>) =&gt; <code>T</code> | <code>void</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/dom.ts#L42">src/core/dom.ts:42</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/core/dom.ts#L39">src/core/dom.ts:39</a></p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -128,14 +128,21 @@
                 </a>
                 E
             </h3>
-<p><code>E</code> <em>extends</em> <code>HTMLElement</code></p>
-<h3 id="k">
-                <a name="k" class="anchor" href="#k">
+<p><code>E</code> <em>extends</em> <code>Element</code></p>
+<h3 id="c">
+                <a name="c" class="anchor" href="#c">
 	                <span class="permalink">🔗</span>
                 </a>
-                K
+                C
             </h3>
-<p><code>K</code> <em>extends</em> <code>string</code></p>
+<p><code>C</code> <em>extends</em> <code>HTMLElement</code></p>
+<h3 id="evt">
+                <a name="evt" class="anchor" href="#evt">
+	                <span class="permalink">🔗</span>
+                </a>
+                Evt
+            </h3>
+<p><code>Evt</code> <em>extends</em> <code>Event</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -148,14 +155,14 @@
                 </a>
                 context
             </h3>
-<p><a href="../interfaces/TransformerContext.html"><code>TransformerContext</code></a>&lt;<code>T</code>, <code>E</code>, <code>K</code>&gt;</p>
+<p><a href="EventTransformerContext.html"><code>EventTransformerContext</code></a>&lt;<code>T</code>, <code>E</code>, <code>C</code>, <code>Evt</code>&gt;</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<p><code>T</code></p>
+<p><code>T</code> | <code>void</code></p>
 
 </section></main>
 			<footer class="content-grid">

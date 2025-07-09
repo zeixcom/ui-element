@@ -1,7 +1,6 @@
 import {
 	type Component,
 	type Computed,
-	RESET,
 	UNSET,
 	batch,
 	component,
@@ -31,8 +30,8 @@ export default component<FormComboboxProps>(
 	{
 		value: '',
 		length: 0,
-		error: RESET,
-		description: RESET,
+		error: '',
+		description: '',
 		clear() {},
 	},
 	(el, { first, all }) => {
@@ -84,34 +83,38 @@ export default component<FormComboboxProps>(
 						options.get().at(i)?.focus()
 					else input.focus()
 				}),
-			on('keydown', (e: KeyboardEvent) => {
-				if (['ArrowDown', 'ArrowUp'].includes(e.key)) {
-					e.preventDefault()
-					e.stopPropagation()
-					// Set mode to editing when navigating options
-					mode.set('editing')
-					if (e.altKey) showPopup.set(e.key === 'ArrowDown')
-					else
-						focusIndex.update(v =>
-							e.key === 'ArrowDown'
-								? Math.min(v + 1, options.get().length - 1)
-								: Math.max(v - 1, -1),
-						)
-				}
+			on({
+				keydown: (e: Event) => {
+					const { key, altKey } = e as KeyboardEvent
+					if (['ArrowDown', 'ArrowUp'].includes(key)) {
+						e.preventDefault()
+						e.stopPropagation()
+						// Set mode to editing when navigating options
+						mode.set('editing')
+						if (altKey) showPopup.set(key === 'ArrowDown')
+						else
+							focusIndex.update(v =>
+								key === 'ArrowDown'
+									? Math.min(v + 1, options.get().length - 1)
+									: Math.max(v - 1, -1),
+							)
+					}
+				},
+				keyup: (e: Event) => {
+					const { key } = e as KeyboardEvent
+					if (key === 'Delete') {
+						e.preventDefault()
+						e.stopPropagation()
+						commit('')
+					}
+				},
+				focusout: () =>
+					requestAnimationFrame(() => {
+						// Set mode to idle when no element in our component has focus
+						if (!el.contains(document.activeElement))
+							mode.set('idle')
+					}),
 			}),
-			on('keyup', (e: KeyboardEvent) => {
-				if (e.key === 'Delete') {
-					e.preventDefault()
-					e.stopPropagation()
-					commit('')
-				}
-			}),
-			on('focusout', () =>
-				requestAnimationFrame(() => {
-					// Set mode to idle when no element in our component has focus
-					if (!el.contains(document.activeElement)) mode.set('idle')
-				}),
-			),
 
 			// Effects on error and description
 			// Have to come first so we can set the el.description using RESET
@@ -133,55 +136,66 @@ export default component<FormComboboxProps>(
 						: UNSET,
 				),
 				setProperty('ariaExpanded', () => String(isExpanded())),
-				on('change', () => {
-					input.checkValidity()
-					el.value = input.value
-					el.error = input.validationMessage ?? ''
+				on({
+					change: () => {
+						input.checkValidity()
+						el.value = input.value
+						el.error = input.validationMessage ?? ''
+					},
 				}),
-				on('input', () =>
-					batch(() => {
-						// Set mode to editing when typing
-						mode.set('editing')
-						showPopup.set(true)
-						filterText.set(input.value.trim().toLowerCase())
-						el.length = input.value.length
-					}),
-				),
+				on({
+					input: () =>
+						batch(() => {
+							// Set mode to editing when typing
+							mode.set('editing')
+							showPopup.set(true)
+							filterText.set(input.value.trim().toLowerCase())
+							el.length = input.value.length
+						}),
+				}),
 			),
 
 			// Effects and event listeners on clear button
 			first(
 				'.clear',
 				show(() => !!el.length),
-				on('click', () => el.clear()),
+				on({
+					click: () => {
+						el.clear()
+					},
+				}),
 			),
 
 			// Effect on listbox
 			first(
 				'[role="listbox"]',
 				show(isExpanded),
-				on('keyup', (e: KeyboardEvent) => {
-					if (e.key === 'Enter') {
-						commit(
-							options
-								.get()
-								.at(focusIndex.get())
-								?.textContent?.trim() || '',
-						)
-					} else if (e.key === 'Escape') {
-						commit(el.value)
-					} else {
-						const key = e.key.toLowerCase()
-						const nextIndex = options
-							.get()
-							.findIndex(option =>
-								(
-									option.textContent?.trim().toLowerCase() ||
-									''
-								).startsWith(key),
+				on({
+					keyup: (e: Event) => {
+						const { key } = e as KeyboardEvent
+						if (key === 'Enter') {
+							commit(
+								options
+									.get()
+									.at(focusIndex.get())
+									?.textContent?.trim() || '',
 							)
-						if (nextIndex !== -1) focusIndex.set(nextIndex)
-					}
+						} else if (key === 'Escape') {
+							commit(el.value)
+						} else {
+							const lowKey = key.toLowerCase()
+							const nextIndex = options
+								.get()
+								.findIndex(option =>
+									(
+										option.textContent
+											?.trim()
+											.toLowerCase() || ''
+									).startsWith(lowKey),
+								)
+							if (nextIndex !== -1) focusIndex.set(nextIndex)
+						}
+					},
 				}),
 			),
 
@@ -200,10 +214,13 @@ export default component<FormComboboxProps>(
 						.toLowerCase()
 						.includes(filterText.get()),
 				),
-				on('click', e => {
-					commit(
-						(e.target as HTMLLIElement).textContent?.trim() || '',
-					)
+				on({
+					click: (e: Event) => {
+						commit(
+							(e.target as HTMLLIElement).textContent?.trim() ||
+								'',
+						)
+					},
 				}),
 			),
 		]

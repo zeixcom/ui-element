@@ -106,10 +106,10 @@
                 Function: fromDescendants()
             </h1>
 <blockquote>
-<p><strong>fromDescendants</strong>&lt;<code>T</code>, <code>E</code>, <code>K</code>&gt;(<code>selectors</code>, <code>reducer</code>, <code>init</code>): <a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>T</code>&gt;</p>
+<p><strong>fromDescendants</strong>&lt;<code>T</code>, <code>E</code>, <code>C</code>, <code>K</code>&gt;(<code>initialize</code>, <code>selector</code>, <code>reduce</code>): <a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>T</code>, <code>C</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/dom.ts#L234">src/core/dom.ts:234</a></p>
-<p>Produce a computed signal from reduced properties of descendant elements with type safety</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/core/dom.ts#L306">src/core/dom.ts:306</a></p>
+<p>Produce a computed signal from reduced properties of descendant elements</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -130,6 +130,13 @@
                 E
             </h3>
 <p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
+<h3 id="c">
+                <a name="c" class="anchor" href="#c">
+	                <span class="permalink">🔗</span>
+                </a>
+                C
+            </h3>
+<p><code>C</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
 <h3 id="k">
                 <a name="k" class="anchor" href="#k">
 	                <span class="permalink">🔗</span>
@@ -143,85 +150,45 @@
                 </a>
                 Parameters
             </h2>
-<h3 id="selectors">
-                <a name="selectors" class="anchor" href="#selectors">
+<h3 id="initialize">
+                <a name="initialize" class="anchor" href="#initialize">
 	                <span class="permalink">🔗</span>
                 </a>
-                selectors
+                initialize
+            </h3>
+<p>Initial value or intialize function for reduction</p>
+<p><code>T</code> | (<code>host</code>) =&gt; <code>T</code></p>
+<h3 id="selector">
+                <a name="selector" class="anchor" href="#selector">
+	                <span class="permalink">🔗</span>
+                </a>
+                selector
             </h3>
 <p><code>K</code></p>
 <p>CSS selector for descendant elements</p>
-<h3 id="reducer">
-                <a name="reducer" class="anchor" href="#reducer">
+<h3 id="reduce">
+                <a name="reduce" class="anchor" href="#reduce">
 	                <span class="permalink">🔗</span>
                 </a>
-                reducer
+                reduce
             </h3>
 <p>(<code>accumulator</code>, <code>currentElement</code>, <code>currentIndex</code>, <code>array</code>) =&gt; <code>T</code></p>
-<p>function to reduce values</p>
-<h3 id="init">
-                <a name="init" class="anchor" href="#init">
-	                <span class="permalink">🔗</span>
-                </a>
-                init
-            </h3>
-<p>initial value for reduction</p>
-<p><code>T</code> | (<code>host</code>) =&gt; <code>T</code></p>
+<p>Function to reduce values</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<p><a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>T</code>&gt;</p>
-<p>signal producer that emits reduced value</p>
+<p><a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>T</code>, <code>C</code>&gt;</p>
+<p>Signal producer that emits reduced value</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
                 </a>
                 Since
             </h2>
-<p>0.13.1</p>
-<h2 id="examples">
-                <a name="examples" class="anchor" href="#examples">
-	                <span class="permalink">🔗</span>
-                </a>
-                Examples
-            </h2>
-<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">ts</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// TypeScript knows each 'input' is HTMLInputElement</span></span>
-<span class="line"><span style="color:#A6E22E">fromDescendants</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">total</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">input</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> input.value.length, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	
-</module-codeblock>
-<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		
-		<span class="language">ts</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Works with UIElement components when properly declared</span></span>
-<span class="line"><span style="color:#88846F">// declare global { interface HTMLElementTagNameMap { 'form-spinbutton': Component&#x3C;FormSpinbuttonProps> } }</span></span>
-<span class="line"><span style="color:#A6E22E">fromDescendants</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-spinbutton'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">sum</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">item</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#88846F">  // TypeScript knows item is Component&#x3C;FormSpinbuttonProps></span></span>
-<span class="line"><span style="color:#F92672">  return</span><span style="color:#F8F8F2"> sum </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> item.value </span><span style="color:#88846F">// Access reactive property</span></span>
-<span class="line"><span style="color:#F8F8F2">}, </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	
-</module-codeblock>
+<p>0.13.3</p>
 
 </section></main>
 			<footer class="content-grid">

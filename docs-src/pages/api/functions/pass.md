@@ -8,7 +8,7 @@
 
 > **pass**\<`P`, `E`\>(`reactives`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:648](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/lib/effects.ts#L648)
+Defined in: [src/lib/effects.ts:704](https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/lib/effects.ts#L704)
 
 Effect for passing reactive values to descendant elements.
 Supports both direct property setting and signal passing for custom elements.
@@ -27,9 +27,9 @@ Supports both direct property setting and signal passing for custom elements.
 
 ### reactives
 
-Reactive values to pass or function that returns them
+[`Reactives`](../type-aliases/Reactives.md)\<`P`, `E`\>
 
-[`PassedReactives`](../type-aliases/PassedReactives.md)\<`P`, `E`\> | (`target`) => [`PassedReactives`](../type-aliases/PassedReactives.md)\<`P`, `E`\>
+Reactive values to pass or function that returns them
 
 ## Returns
 

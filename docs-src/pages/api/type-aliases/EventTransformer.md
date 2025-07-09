@@ -4,11 +4,11 @@
 
 [@zeix/ui-element](../globals.md) / EventTransformer
 
-# Type Alias: EventTransformer()\<T, E, K\>
+# Type Alias: EventTransformer()\<T, E, C, Evt\>
 
-> **EventTransformer**\<`T`, `E`, `K`\> = (`context`) => `T`
+> **EventTransformer**\<`T`, `E`, `C`, `Evt`\> = (`context`) => `T` \| `void`
 
-Defined in: [src/core/dom.ts:42](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/core/dom.ts#L42)
+Defined in: [src/core/dom.ts:39](https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/core/dom.ts#L39)
 
 ## Type Parameters
 
@@ -18,18 +18,22 @@ Defined in: [src/core/dom.ts:42](https://github.com/zeixcom/ui-element/blob/d13f
 
 ### E
 
-`E` *extends* `HTMLElement`
+`E` *extends* `Element`
 
-### K
+### C
 
-`K` *extends* `string`
+`C` *extends* `HTMLElement`
+
+### Evt
+
+`Evt` *extends* `Event`
 
 ## Parameters
 
 ### context
 
-[`TransformerContext`](../interfaces/TransformerContext.md)\<`T`, `E`, `K`\>
+[`EventTransformerContext`](EventTransformerContext.md)\<`T`, `E`, `C`, `Evt`\>
 
 ## Returns
 
-`T`
+`T` \| `void`

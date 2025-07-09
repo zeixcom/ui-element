@@ -106,9 +106,9 @@
                 Function: on()
             </h1>
 <blockquote>
-<p><strong>on</strong>&lt;<code>E</code>, <code>K</code>&gt;(<code>type</code>, <code>listener</code>, <code>options</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a>, <code>E</code>&gt;</p>
+<p><strong>on</strong>&lt;<code>E</code>&gt;(<code>listeners</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L590">src/lib/effects.ts:590</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/lib/effects.ts#L643">src/lib/effects.ts:643</a></p>
 <p>Effect for attaching an event listener to an element.<br>Provides proper cleanup when the effect is disposed.</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
@@ -123,43 +123,762 @@
                 E
             </h3>
 <p><code>E</code> <em>extends</em> <code>HTMLElement</code></p>
-<h3 id="k">
-                <a name="k" class="anchor" href="#k">
-	                <span class="permalink">🔗</span>
-                </a>
-                K
-            </h3>
-<p><code>K</code> <em>extends</em> <code>string</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Parameters
             </h2>
-<h3 id="type">
-                <a name="type" class="anchor" href="#type">
+<h3 id="listeners">
+                <a name="listeners" class="anchor" href="#listeners">
 	                <span class="permalink">🔗</span>
                 </a>
-                type
+                listeners
             </h3>
-<p><code>K</code></p>
-<p>Event type to listen for</p>
-<h3 id="listener">
-                <a name="listener" class="anchor" href="#listener">
-	                <span class="permalink">🔗</span>
-                </a>
-                listener
-            </h3>
-<p>(<code>event</code>) =&gt; <code>void</code></p>
 <p>Event listener function</p>
-<h3 id="options">
-                <a name="options" class="anchor" href="#options">
+<h4 id="abort">
+                <a name="abort" class="anchor" href="#abort">
 	                <span class="permalink">🔗</span>
                 </a>
-                options
-            </h3>
-<p>Event listener options</p>
-<p><code>boolean</code> | <code>AddEventListenerOptions</code></p>
+                abort?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="animationcancel">
+                <a name="animationcancel" class="anchor" href="#animationcancel">
+	                <span class="permalink">🔗</span>
+                </a>
+                animationcancel?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="animationend">
+                <a name="animationend" class="anchor" href="#animationend">
+	                <span class="permalink">🔗</span>
+                </a>
+                animationend?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="animationiteration">
+                <a name="animationiteration" class="anchor" href="#animationiteration">
+	                <span class="permalink">🔗</span>
+                </a>
+                animationiteration?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="animationstart">
+                <a name="animationstart" class="anchor" href="#animationstart">
+	                <span class="permalink">🔗</span>
+                </a>
+                animationstart?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="auxclick">
+                <a name="auxclick" class="anchor" href="#auxclick">
+	                <span class="permalink">🔗</span>
+                </a>
+                auxclick?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="beforeinput">
+                <a name="beforeinput" class="anchor" href="#beforeinput">
+	                <span class="permalink">🔗</span>
+                </a>
+                beforeinput?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="beforetoggle">
+                <a name="beforetoggle" class="anchor" href="#beforetoggle">
+	                <span class="permalink">🔗</span>
+                </a>
+                beforetoggle?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="blur">
+                <a name="blur" class="anchor" href="#blur">
+	                <span class="permalink">🔗</span>
+                </a>
+                blur?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="cancel">
+                <a name="cancel" class="anchor" href="#cancel">
+	                <span class="permalink">🔗</span>
+                </a>
+                cancel?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="canplay">
+                <a name="canplay" class="anchor" href="#canplay">
+	                <span class="permalink">🔗</span>
+                </a>
+                canplay?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="canplaythrough">
+                <a name="canplaythrough" class="anchor" href="#canplaythrough">
+	                <span class="permalink">🔗</span>
+                </a>
+                canplaythrough?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="change">
+                <a name="change" class="anchor" href="#change">
+	                <span class="permalink">🔗</span>
+                </a>
+                change?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="click">
+                <a name="click" class="anchor" href="#click">
+	                <span class="permalink">🔗</span>
+                </a>
+                click?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="close">
+                <a name="close" class="anchor" href="#close">
+	                <span class="permalink">🔗</span>
+                </a>
+                close?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="compositionend">
+                <a name="compositionend" class="anchor" href="#compositionend">
+	                <span class="permalink">🔗</span>
+                </a>
+                compositionend?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="compositionstart">
+                <a name="compositionstart" class="anchor" href="#compositionstart">
+	                <span class="permalink">🔗</span>
+                </a>
+                compositionstart?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="compositionupdate">
+                <a name="compositionupdate" class="anchor" href="#compositionupdate">
+	                <span class="permalink">🔗</span>
+                </a>
+                compositionupdate?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="context-request">
+                <a name="context-request" class="anchor" href="#context-request">
+	                <span class="permalink">🔗</span>
+                </a>
+                context-request?
+            </h4>
+<p><code>EventListener</code></p>
+<p>A &#39;context-request&#39; event can be emitted by any element which desires<br>a context value to be injected by an external provider.</p>
+<h4 id="contextlost">
+                <a name="contextlost" class="anchor" href="#contextlost">
+	                <span class="permalink">🔗</span>
+                </a>
+                contextlost?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="contextmenu">
+                <a name="contextmenu" class="anchor" href="#contextmenu">
+	                <span class="permalink">🔗</span>
+                </a>
+                contextmenu?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="contextrestored">
+                <a name="contextrestored" class="anchor" href="#contextrestored">
+	                <span class="permalink">🔗</span>
+                </a>
+                contextrestored?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="copy">
+                <a name="copy" class="anchor" href="#copy">
+	                <span class="permalink">🔗</span>
+                </a>
+                copy?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="cuechange">
+                <a name="cuechange" class="anchor" href="#cuechange">
+	                <span class="permalink">🔗</span>
+                </a>
+                cuechange?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="cut">
+                <a name="cut" class="anchor" href="#cut">
+	                <span class="permalink">🔗</span>
+                </a>
+                cut?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="dblclick">
+                <a name="dblclick" class="anchor" href="#dblclick">
+	                <span class="permalink">🔗</span>
+                </a>
+                dblclick?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="drag">
+                <a name="drag" class="anchor" href="#drag">
+	                <span class="permalink">🔗</span>
+                </a>
+                drag?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="dragend">
+                <a name="dragend" class="anchor" href="#dragend">
+	                <span class="permalink">🔗</span>
+                </a>
+                dragend?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="dragenter">
+                <a name="dragenter" class="anchor" href="#dragenter">
+	                <span class="permalink">🔗</span>
+                </a>
+                dragenter?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="dragleave">
+                <a name="dragleave" class="anchor" href="#dragleave">
+	                <span class="permalink">🔗</span>
+                </a>
+                dragleave?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="dragover">
+                <a name="dragover" class="anchor" href="#dragover">
+	                <span class="permalink">🔗</span>
+                </a>
+                dragover?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="dragstart">
+                <a name="dragstart" class="anchor" href="#dragstart">
+	                <span class="permalink">🔗</span>
+                </a>
+                dragstart?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="drop">
+                <a name="drop" class="anchor" href="#drop">
+	                <span class="permalink">🔗</span>
+                </a>
+                drop?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="durationchange">
+                <a name="durationchange" class="anchor" href="#durationchange">
+	                <span class="permalink">🔗</span>
+                </a>
+                durationchange?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="emptied">
+                <a name="emptied" class="anchor" href="#emptied">
+	                <span class="permalink">🔗</span>
+                </a>
+                emptied?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="ended">
+                <a name="ended" class="anchor" href="#ended">
+	                <span class="permalink">🔗</span>
+                </a>
+                ended?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="error">
+                <a name="error" class="anchor" href="#error">
+	                <span class="permalink">🔗</span>
+                </a>
+                error?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="focus">
+                <a name="focus" class="anchor" href="#focus">
+	                <span class="permalink">🔗</span>
+                </a>
+                focus?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="focusin">
+                <a name="focusin" class="anchor" href="#focusin">
+	                <span class="permalink">🔗</span>
+                </a>
+                focusin?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="focusout">
+                <a name="focusout" class="anchor" href="#focusout">
+	                <span class="permalink">🔗</span>
+                </a>
+                focusout?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="formdata">
+                <a name="formdata" class="anchor" href="#formdata">
+	                <span class="permalink">🔗</span>
+                </a>
+                formdata?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="fullscreenchange">
+                <a name="fullscreenchange" class="anchor" href="#fullscreenchange">
+	                <span class="permalink">🔗</span>
+                </a>
+                fullscreenchange?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="fullscreenerror">
+                <a name="fullscreenerror" class="anchor" href="#fullscreenerror">
+	                <span class="permalink">🔗</span>
+                </a>
+                fullscreenerror?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="gotpointercapture">
+                <a name="gotpointercapture" class="anchor" href="#gotpointercapture">
+	                <span class="permalink">🔗</span>
+                </a>
+                gotpointercapture?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="input">
+                <a name="input" class="anchor" href="#input">
+	                <span class="permalink">🔗</span>
+                </a>
+                input?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="invalid">
+                <a name="invalid" class="anchor" href="#invalid">
+	                <span class="permalink">🔗</span>
+                </a>
+                invalid?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="keydown">
+                <a name="keydown" class="anchor" href="#keydown">
+	                <span class="permalink">🔗</span>
+                </a>
+                keydown?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="keypress">
+                <a name="keypress" class="anchor" href="#keypress">
+	                <span class="permalink">🔗</span>
+                </a>
+                keypress?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="keyup">
+                <a name="keyup" class="anchor" href="#keyup">
+	                <span class="permalink">🔗</span>
+                </a>
+                keyup?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="load">
+                <a name="load" class="anchor" href="#load">
+	                <span class="permalink">🔗</span>
+                </a>
+                load?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="loadeddata">
+                <a name="loadeddata" class="anchor" href="#loadeddata">
+	                <span class="permalink">🔗</span>
+                </a>
+                loadeddata?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="loadedmetadata">
+                <a name="loadedmetadata" class="anchor" href="#loadedmetadata">
+	                <span class="permalink">🔗</span>
+                </a>
+                loadedmetadata?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="loadstart">
+                <a name="loadstart" class="anchor" href="#loadstart">
+	                <span class="permalink">🔗</span>
+                </a>
+                loadstart?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="lostpointercapture">
+                <a name="lostpointercapture" class="anchor" href="#lostpointercapture">
+	                <span class="permalink">🔗</span>
+                </a>
+                lostpointercapture?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="mousedown">
+                <a name="mousedown" class="anchor" href="#mousedown">
+	                <span class="permalink">🔗</span>
+                </a>
+                mousedown?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="mouseenter">
+                <a name="mouseenter" class="anchor" href="#mouseenter">
+	                <span class="permalink">🔗</span>
+                </a>
+                mouseenter?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="mouseleave">
+                <a name="mouseleave" class="anchor" href="#mouseleave">
+	                <span class="permalink">🔗</span>
+                </a>
+                mouseleave?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="mousemove">
+                <a name="mousemove" class="anchor" href="#mousemove">
+	                <span class="permalink">🔗</span>
+                </a>
+                mousemove?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="mouseout">
+                <a name="mouseout" class="anchor" href="#mouseout">
+	                <span class="permalink">🔗</span>
+                </a>
+                mouseout?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="mouseover">
+                <a name="mouseover" class="anchor" href="#mouseover">
+	                <span class="permalink">🔗</span>
+                </a>
+                mouseover?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="mouseup">
+                <a name="mouseup" class="anchor" href="#mouseup">
+	                <span class="permalink">🔗</span>
+                </a>
+                mouseup?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="paste">
+                <a name="paste" class="anchor" href="#paste">
+	                <span class="permalink">🔗</span>
+                </a>
+                paste?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="pause">
+                <a name="pause" class="anchor" href="#pause">
+	                <span class="permalink">🔗</span>
+                </a>
+                pause?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="play">
+                <a name="play" class="anchor" href="#play">
+	                <span class="permalink">🔗</span>
+                </a>
+                play?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="playing">
+                <a name="playing" class="anchor" href="#playing">
+	                <span class="permalink">🔗</span>
+                </a>
+                playing?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="pointercancel">
+                <a name="pointercancel" class="anchor" href="#pointercancel">
+	                <span class="permalink">🔗</span>
+                </a>
+                pointercancel?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="pointerdown">
+                <a name="pointerdown" class="anchor" href="#pointerdown">
+	                <span class="permalink">🔗</span>
+                </a>
+                pointerdown?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="pointerenter">
+                <a name="pointerenter" class="anchor" href="#pointerenter">
+	                <span class="permalink">🔗</span>
+                </a>
+                pointerenter?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="pointerleave">
+                <a name="pointerleave" class="anchor" href="#pointerleave">
+	                <span class="permalink">🔗</span>
+                </a>
+                pointerleave?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="pointermove">
+                <a name="pointermove" class="anchor" href="#pointermove">
+	                <span class="permalink">🔗</span>
+                </a>
+                pointermove?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="pointerout">
+                <a name="pointerout" class="anchor" href="#pointerout">
+	                <span class="permalink">🔗</span>
+                </a>
+                pointerout?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="pointerover">
+                <a name="pointerover" class="anchor" href="#pointerover">
+	                <span class="permalink">🔗</span>
+                </a>
+                pointerover?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="pointerup">
+                <a name="pointerup" class="anchor" href="#pointerup">
+	                <span class="permalink">🔗</span>
+                </a>
+                pointerup?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="progress">
+                <a name="progress" class="anchor" href="#progress">
+	                <span class="permalink">🔗</span>
+                </a>
+                progress?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="ratechange">
+                <a name="ratechange" class="anchor" href="#ratechange">
+	                <span class="permalink">🔗</span>
+                </a>
+                ratechange?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="reset">
+                <a name="reset" class="anchor" href="#reset">
+	                <span class="permalink">🔗</span>
+                </a>
+                reset?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="resize">
+                <a name="resize" class="anchor" href="#resize">
+	                <span class="permalink">🔗</span>
+                </a>
+                resize?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="scroll">
+                <a name="scroll" class="anchor" href="#scroll">
+	                <span class="permalink">🔗</span>
+                </a>
+                scroll?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="scrollend">
+                <a name="scrollend" class="anchor" href="#scrollend">
+	                <span class="permalink">🔗</span>
+                </a>
+                scrollend?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="securitypolicyviolation">
+                <a name="securitypolicyviolation" class="anchor" href="#securitypolicyviolation">
+	                <span class="permalink">🔗</span>
+                </a>
+                securitypolicyviolation?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="seeked">
+                <a name="seeked" class="anchor" href="#seeked">
+	                <span class="permalink">🔗</span>
+                </a>
+                seeked?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="seeking">
+                <a name="seeking" class="anchor" href="#seeking">
+	                <span class="permalink">🔗</span>
+                </a>
+                seeking?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="select">
+                <a name="select" class="anchor" href="#select">
+	                <span class="permalink">🔗</span>
+                </a>
+                select?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="selectionchange">
+                <a name="selectionchange" class="anchor" href="#selectionchange">
+	                <span class="permalink">🔗</span>
+                </a>
+                selectionchange?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="selectstart">
+                <a name="selectstart" class="anchor" href="#selectstart">
+	                <span class="permalink">🔗</span>
+                </a>
+                selectstart?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="slotchange">
+                <a name="slotchange" class="anchor" href="#slotchange">
+	                <span class="permalink">🔗</span>
+                </a>
+                slotchange?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="stalled">
+                <a name="stalled" class="anchor" href="#stalled">
+	                <span class="permalink">🔗</span>
+                </a>
+                stalled?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="submit">
+                <a name="submit" class="anchor" href="#submit">
+	                <span class="permalink">🔗</span>
+                </a>
+                submit?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="suspend">
+                <a name="suspend" class="anchor" href="#suspend">
+	                <span class="permalink">🔗</span>
+                </a>
+                suspend?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="timeupdate">
+                <a name="timeupdate" class="anchor" href="#timeupdate">
+	                <span class="permalink">🔗</span>
+                </a>
+                timeupdate?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="toggle">
+                <a name="toggle" class="anchor" href="#toggle">
+	                <span class="permalink">🔗</span>
+                </a>
+                toggle?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="touchcancel">
+                <a name="touchcancel" class="anchor" href="#touchcancel">
+	                <span class="permalink">🔗</span>
+                </a>
+                touchcancel?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="touchend">
+                <a name="touchend" class="anchor" href="#touchend">
+	                <span class="permalink">🔗</span>
+                </a>
+                touchend?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="touchmove">
+                <a name="touchmove" class="anchor" href="#touchmove">
+	                <span class="permalink">🔗</span>
+                </a>
+                touchmove?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="touchstart">
+                <a name="touchstart" class="anchor" href="#touchstart">
+	                <span class="permalink">🔗</span>
+                </a>
+                touchstart?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="transitioncancel">
+                <a name="transitioncancel" class="anchor" href="#transitioncancel">
+	                <span class="permalink">🔗</span>
+                </a>
+                transitioncancel?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="transitionend">
+                <a name="transitionend" class="anchor" href="#transitionend">
+	                <span class="permalink">🔗</span>
+                </a>
+                transitionend?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="transitionrun">
+                <a name="transitionrun" class="anchor" href="#transitionrun">
+	                <span class="permalink">🔗</span>
+                </a>
+                transitionrun?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="transitionstart">
+                <a name="transitionstart" class="anchor" href="#transitionstart">
+	                <span class="permalink">🔗</span>
+                </a>
+                transitionstart?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="volumechange">
+                <a name="volumechange" class="anchor" href="#volumechange">
+	                <span class="permalink">🔗</span>
+                </a>
+                volumechange?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="waiting">
+                <a name="waiting" class="anchor" href="#waiting">
+	                <span class="permalink">🔗</span>
+                </a>
+                waiting?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="webkitanimationend">
+                <a name="webkitanimationend" class="anchor" href="#webkitanimationend">
+	                <span class="permalink">🔗</span>
+                </a>
+                webkitanimationend?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="webkitanimationiteration">
+                <a name="webkitanimationiteration" class="anchor" href="#webkitanimationiteration">
+	                <span class="permalink">🔗</span>
+                </a>
+                webkitanimationiteration?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="webkitanimationstart">
+                <a name="webkitanimationstart" class="anchor" href="#webkitanimationstart">
+	                <span class="permalink">🔗</span>
+                </a>
+                webkitanimationstart?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="webkittransitionend">
+                <a name="webkittransitionend" class="anchor" href="#webkittransitionend">
+	                <span class="permalink">🔗</span>
+                </a>
+                webkittransitionend?
+            </h4>
+<p><code>EventListener</code></p>
+<h4 id="wheel">
+                <a name="wheel" class="anchor" href="#wheel">
+	                <span class="permalink">🔗</span>
+                </a>
+                wheel?
+            </h4>
+<p><code>EventListener</code></p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
@@ -174,14 +893,7 @@
                 </a>
                 Since
             </h2>
-<p>0.12.0</p>
-<h2 id="throws">
-                <a name="throws" class="anchor" href="#throws">
-	                <span class="permalink">🔗</span>
-                </a>
-                Throws
-            </h2>
-<p>When the provided handler is not a function</p>
+<p>0.13.3</p>
 
 </section></main>
 			<footer class="content-grid">

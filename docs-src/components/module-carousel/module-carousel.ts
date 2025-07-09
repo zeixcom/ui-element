@@ -1,68 +1,94 @@
-import { component, on, setProperty, state } from '../../..'
+import {
+	type Component,
+	component,
+	fromEvents,
+	fromSelector,
+	setProperty,
+} from '../../..'
 
-export default component('module-carousel', {}, (el, { all, first }) => {
-	const currentIndex = state(0)
-	const slides = Array.from(el.querySelectorAll('[role="tabpanel"]'))
-	const total = slides.length
-	const updateIndex = (direction: number) => {
-		currentIndex.update(v => (v + direction + total) % total)
+export type ModuleCarouselProps = {
+	slides: HTMLElement[]
+	index: number
+}
+
+const wrapAround = (index: number, total: number) => (index + total) % total
+
+const clickHandler = ({ host, target, value }) => {
+	const total = host.slides.length
+	const nextIndex = target.classList.contains('prev')
+		? value - 1
+		: target.classList.contains('next')
+			? value + 1
+			: parseInt(target.dataset.index || '0')
+	return Number.isInteger(nextIndex) ? wrapAround(nextIndex, total) : 0
+}
+
+const keyupHandler = ({ event, host, value }) => {
+	const key = event.key
+	if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(key)) {
+		event.preventDefault()
+		event.stopPropagation()
+		const total = host.slides.length
+		const nextIndex =
+			key === 'Home'
+				? 0
+				: key === 'End'
+					? total - 1
+					: wrapAround(value + (key === 'ArrowLeft' ? -1 : 1), total)
+		host.slides[nextIndex].focus()
+		return nextIndex
 	}
+}
 
-	return [
-		first(
-			'nav',
-			on('keyup', (e: KeyboardEvent) => {
-				if (
-					['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)
-				) {
-					e.preventDefault()
-					e.stopPropagation()
-					if (e.key === 'Home') currentIndex.set(0)
-					else if (e.key === 'End') currentIndex.set(total - 1)
-					else updateIndex(e.key === 'ArrowLeft' ? -1 : 1)
-					el.querySelectorAll<HTMLButtonElement>('[role="tab"]')[
-						currentIndex.get()
-					].focus()
-				}
-			}),
-			first(
-				'.prev',
-				on('click', () => {
-					updateIndex(-1)
-				}),
-			),
-			first(
-				'.next',
-				on('click', () => {
-					updateIndex(1)
-				}),
-			),
+export default component(
+	'module-carousel',
+	{
+		slides: fromSelector<HTMLElement>('[role="tabpanel"]'),
+		index: fromEvents<
+			number,
+			HTMLButtonElement,
+			HTMLElement & { slides: HTMLElement[] }
+		>(
+			(host: HTMLElement & { slides: HTMLElement[] }) =>
+				Math.max(
+					host.slides.findIndex(
+						slide => slide.ariaCurrent === 'true',
+					),
+					0,
+				),
+			'nav button',
+			{
+				click: clickHandler,
+				keyup: keyupHandler,
+			},
+		),
+	},
+	(el, { all }) => {
+		const isCurrentDot = (target: HTMLElement) =>
+			target.dataset.index === String(el.index)
+
+		return [
 			all(
 				'[role="tab"]',
 				setProperty('ariaSelected', target =>
-					String(
-						target.dataset['index'] === String(currentIndex.get()),
-					),
+					String(isCurrentDot(target)),
 				),
 				setProperty('tabIndex', target =>
-					target.dataset['index'] === String(currentIndex.get())
-						? 0
-						: -1,
+					isCurrentDot(target) ? 0 : -1,
 				),
-				on('click', e => {
-					const rawIndex = (e.target as HTMLElement)?.dataset['index']
-					const nextIndex = rawIndex ? parseInt(rawIndex) : 0
-					currentIndex.set(
-						Number.isInteger(nextIndex) ? nextIndex : 0,
-					)
-				}),
 			),
-		),
-		all(
-			'[role="tabpanel"]',
-			setProperty('ariaCurrent', target =>
-				String(target.id === slides[currentIndex.get()].id),
+			all(
+				'[role="tabpanel"]',
+				setProperty('ariaCurrent', target =>
+					String(target.id === el.slides[el.index].id),
+				),
 			),
-		),
-	]
-})
+		]
+	},
+)
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'module-carousel': Component<ModuleCarouselProps>
+	}
+}

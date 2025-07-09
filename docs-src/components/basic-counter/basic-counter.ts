@@ -1,4 +1,10 @@
-import { type Component, asInteger, component, on, setText } from '../../..'
+import {
+	type Component,
+	asInteger,
+	component,
+	fromEvents,
+	setText,
+} from '../../..'
 
 export type BasicCounterProps = {
 	count: number
@@ -7,17 +13,15 @@ export type BasicCounterProps = {
 export default component(
 	'basic-counter',
 	{
-		count: asInteger(),
-	},
-	(el, { first }) => [
-		first('span', setText('count')),
-		first(
+		count: fromEvents(
+			el => asInteger()(el, el.querySelector('span')?.textContent),
 			'button',
-			on('click', () => {
-				el.count++
-			}),
+			{
+				click: ({ value }) => ++value,
+			},
 		),
-	],
+	},
+	(_, { first }) => [first('span', setText('count'))],
 )
 
 declare global {
