@@ -219,14 +219,14 @@
 <span class="line"><span style="color:#F8F8F2">	on,</span></span>
 <span class="line"><span style="color:#F8F8F2">	pass,</span></span>
 <span class="line"><span style="color:#F8F8F2">	read,</span></span>
+<span class="line"><span style="color:#F8F8F2">	requireDescendant,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setAttribute,</span></span>
-<span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setText,</span></span>
 <span class="line"><span style="color:#F8F8F2">	show,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
 <span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { BasicButtonProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../basic-button/basic-button'</span></span>
 <span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { FormCheckboxProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../form-checkbox/form-checkbox'</span></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { FormTextboxProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../form-textbox/form-textbox'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#E6DB74"> '../form-textbox/form-textbox'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">ModuleTodoProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">	active</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[]</span></span>
@@ -240,13 +240,9 @@
 <span class="line"><span style="color:#F8F8F2">		completed: </span><span style="color:#A6E22E">fromSelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-checkbox[checked]'</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> textbox </span><span style="color:#F92672">=</span></span>
-<span class="line"><span style="color:#F8F8F2">			el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">FormTextboxProps</span><span style="color:#F8F8F2">>>(</span><span style="color:#E6DB74">'form-textbox'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">textbox) </span><span style="color:#F92672">throw</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Error</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'No input field found'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> template </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'template'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">template) </span><span style="color:#F92672">throw</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Error</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'No template found'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> list </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ol'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">list) </span><span style="color:#F92672">throw</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Error</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'No list found'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> textbox </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> requireDescendant</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">'form-textbox'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> template </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> requireDescendant</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">'template'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> list </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> requireDescendant</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">'ol'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">			// Control todo input form</span></span>
@@ -258,25 +254,23 @@
 <span class="line"><span style="color:#F8F8F2">			),</span></span>
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">				'form'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">({</span></span>
-<span class="line"><span style="color:#A6E22E">					submit</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">						e.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#A6E22E">						queueMicrotask</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> textbox.value.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F92672">							if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">value) </span><span style="color:#F92672">return</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> li </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">importNode</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">								template.content,</span></span>
-<span class="line"><span style="color:#AE81FF">								true</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">							).firstElementChild</span></span>
-<span class="line"><span style="color:#F92672">							if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">(li </span><span style="color:#F92672">instanceof</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLLIElement</span><span style="color:#F8F8F2">))</span></span>
-<span class="line"><span style="color:#F92672">								throw</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Error</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">									'Invalid template for list item; expected &#x3C;li>'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">								)</span></span>
-<span class="line"><span style="color:#F8F8F2">							li.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(value)</span></span>
-<span class="line"><span style="color:#F8F8F2">							list.</span><span style="color:#A6E22E">append</span><span style="color:#F8F8F2">(li)</span></span>
-<span class="line"><span style="color:#F8F8F2">							textbox.</span><span style="color:#A6E22E">clear</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">						})</span></span>
-<span class="line"><span style="color:#F8F8F2">					},</span></span>
+<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'submit'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">					e.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#A6E22E">					queueMicrotask</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> textbox.value.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F92672">						if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">value) </span><span style="color:#F92672">return</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> li </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">importNode</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">							template.content,</span></span>
+<span class="line"><span style="color:#AE81FF">							true</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">						).firstElementChild</span></span>
+<span class="line"><span style="color:#F92672">						if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">(li </span><span style="color:#F92672">instanceof</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLLIElement</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#F92672">							throw</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Error</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">								'Invalid template for list item; expected &#x3C;li>'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">							)</span></span>
+<span class="line"><span style="color:#F8F8F2">						li.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(value)</span></span>
+<span class="line"><span style="color:#F8F8F2">						list.</span><span style="color:#A6E22E">append</span><span style="color:#F8F8F2">(li)</span></span>
+<span class="line"><span style="color:#F8F8F2">						textbox.</span><span style="color:#A6E22E">clear</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">					})</span></span>
 <span class="line"><span style="color:#F8F8F2">				}),</span></span>
 <span class="line"><span style="color:#F8F8F2">			),</span></span>
 <span class="line"></span>
@@ -288,12 +282,10 @@
 <span class="line"><span style="color:#F8F8F2">						radiogroup </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> upgraded </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> radiogroup.value </span><span style="color:#F92672">:</span><span style="color:#E6DB74"> 'all'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">					),</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
-<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">({</span></span>
-<span class="line"><span style="color:#A6E22E">					click</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> target </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span></span>
-<span class="line"><span style="color:#F92672">						if</span><span style="color:#F8F8F2"> (target.localName </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'button'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">							target.</span><span style="color:#A6E22E">closest</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'li'</span><span style="color:#F8F8F2">)</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">remove</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">					},</span></span>
+<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> target </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (target.localName </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'button'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">						target.</span><span style="color:#A6E22E">closest</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'li'</span><span style="color:#F8F8F2">)</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E">remove</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">				}),</span></span>
 <span class="line"><span style="color:#F8F8F2">			),</span></span>
 <span class="line"></span>
@@ -329,16 +321,14 @@
 <span class="line"><span style="color:#F92672">							?</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(el.completed.length)</span></span>
 <span class="line"><span style="color:#F92672">							:</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">				}),</span></span>
-<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">({</span></span>
-<span class="line"><span style="color:#A6E22E">					click</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> items </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> Array.</span><span style="color:#A6E22E">from</span><span style="color:#F8F8F2">(el.</span><span style="color:#A6E22E">querySelectorAll</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ol li'</span><span style="color:#F8F8F2">))</span></span>
-<span class="line"><span style="color:#F92672">						for</span><span style="color:#F8F8F2"> (</span><span style="color:#66D9EF;font-style:italic">let</span><span style="color:#F8F8F2"> i </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> items.length </span><span style="color:#F92672">-</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">; i </span><span style="color:#F92672">>=</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">; i</span><span style="color:#F92672">--</span><span style="color:#F8F8F2">) {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> task </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> items[i].querySelector</span><span style="color:#F92672">&#x3C;</span></span>
-<span class="line"><span style="color:#F8F8F2">								HTMLElement </span><span style="color:#F92672">&#x26;</span><span style="color:#F8F8F2"> FormCheckboxProps</span></span>
-<span class="line"><span style="color:#F92672">							></span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-checkbox'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">							if</span><span style="color:#F8F8F2"> (task?.checked) items[i].</span><span style="color:#A6E22E">remove</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">						}</span></span>
-<span class="line"><span style="color:#F8F8F2">					},</span></span>
+<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> items </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> Array.</span><span style="color:#A6E22E">from</span><span style="color:#F8F8F2">(el.</span><span style="color:#A6E22E">querySelectorAll</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ol li'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#F92672">					for</span><span style="color:#F8F8F2"> (</span><span style="color:#66D9EF;font-style:italic">let</span><span style="color:#F8F8F2"> i </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> items.length </span><span style="color:#F92672">-</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">; i </span><span style="color:#F92672">>=</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">; i</span><span style="color:#F92672">--</span><span style="color:#F8F8F2">) {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> task </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> items[i].querySelector</span><span style="color:#F92672">&#x3C;</span></span>
+<span class="line"><span style="color:#F8F8F2">							HTMLElement </span><span style="color:#F92672">&#x26;</span><span style="color:#F8F8F2"> FormCheckboxProps</span></span>
+<span class="line"><span style="color:#F92672">						></span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-checkbox'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">						if</span><span style="color:#F8F8F2"> (task?.checked) items[i].</span><span style="color:#A6E22E">remove</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">					}</span></span>
 <span class="line"><span style="color:#F8F8F2">				}),</span></span>
 <span class="line"><span style="color:#F8F8F2">			),</span></span>
 <span class="line"><span style="color:#F8F8F2">		]</span></span>

@@ -6,9 +6,9 @@
 
 # Type Alias: EventType\<K\>
 
-> **EventType**\<`K`\> = `K` *extends* keyof `HTMLElementEventMap` ? `HTMLElementEventMap`\[`K`\] : `K` *extends* keyof `SVGElementEventMap` ? `SVGElementEventMap`\[`K`\] : `Event`
+> **EventType**\<`K`\> = `K` *extends* keyof `HTMLElementEventMap` ? `HTMLElementEventMap`\[`K`\] : `Event`
 
-Defined in: [src/core/dom.ts:19](https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/core/dom.ts#L19)
+Defined in: [src/core/dom.ts:18](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L18)
 
 ## Type Parameters
 

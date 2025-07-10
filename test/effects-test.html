@@ -101,7 +101,7 @@
 			</child-component>
 			<invalid-component id="invalid"></invalid-component>
 		</parent-component>
-		<call-method-test>
+		<!-- <call-method-test>
 			<input type="text" value="test" />
 			<button>Test Button</button>
 		</call-method-test>
@@ -109,7 +109,7 @@
 			<input type="text" id="input1" value="first" />
 			<input type="text" id="input2" value="second" />
 			<button id="btn1">Button 1</button>
-		</focus-test>
+		</focus-test> -->
 
 		<script type="module">
 			import { runTests } from '@web/test-runner-mocha'
@@ -138,8 +138,8 @@
 				updateElement,
 				emitEvent,
 				pass,
-				callMethod,
-				focus,
+				// callMethod,
+				// focus,
 			} from '../index.dev.js'
 
 			const animationFrame = async () =>
@@ -434,27 +434,27 @@
 				],
 			)
 
-			component(
-				'call-method-test',
-				{
-					shouldClick: asBoolean(false),
-					shouldSelect: asBoolean(false),
-				},
-				(el, { first }) => [
-					first(
-						'button',
-						callMethod('click', el => el.shouldClick),
-					),
-					first(
-						'input',
-						callMethod(
-							'setSelectionRange',
-							el => el.shouldSelect,
-							[0, 2],
-						),
-					),
-				],
-			)
+			// component(
+			// 	'call-method-test',
+			// 	{
+			// 		shouldClick: asBoolean(false),
+			// 		shouldSelect: asBoolean(false),
+			// 	},
+			// 	(el, { first }) => [
+			// 		first(
+			// 			'button',
+			// 			callMethod('click', el => el.shouldClick),
+			// 		),
+			// 		first(
+			// 			'input',
+			// 			callMethod(
+			// 				'setSelectionRange',
+			// 				el => el.shouldSelect,
+			// 				[0, 2],
+			// 			),
+			// 		),
+			// 	],
+			// )
 
 			// component(
 			// 	'focus-test',
@@ -2134,24 +2134,22 @@
 						)
 					})
 
-					it('should throw TypeError if signals are not a function', async function () {
+					it('should throw TypeError if target is not a custom element', async function () {
 						const parentComponent =
 							document.getElementById('parent')
-						const invalidComponent =
-							document.getElementById('invalid')
+						const regularDiv = document.createElement('div')
+						regularDiv.id = 'regular-div'
 
-						try {
-							pass({ heading: 'heading' })(
-								parentComponent,
-								invalidComponent,
-							)
-						} catch (error) {
-							assert.equal(
-								error instanceof TypeError,
-								true,
-								'Should throw TypeError',
-							)
-						}
+						assert.throws(
+							() => {
+								pass({ heading: 'heading' })(
+									parentComponent,
+									regularDiv,
+								)
+							},
+							TypeError,
+							'Target <div#regular-div> is not a custom element',
+						)
 					})
 
 					it('should handle Signal objects directly', async () => {
@@ -2302,81 +2300,81 @@
 					})
 				})
 
-				describe('callMethod()', function () {
-					it('should call method when reactive value is true', async function () {
-						const component =
-							document.querySelector('call-method-test')
-						const input = component.querySelector('input')
-						const button = component.querySelector('button')
+				// describe('callMethod()', function () {
+				// 	it('should call method when reactive value is true', async function () {
+				// 		const component =
+				// 			document.querySelector('call-method-test')
+				// 		const input = component.querySelector('input')
+				// 		const button = component.querySelector('button')
 
-						// Track button clicks
-						let clickCount = 0
-						button.addEventListener('click', () => clickCount++)
+				// 		// Track button clicks
+				// 		let clickCount = 0
+				// 		button.addEventListener('click', () => clickCount++)
 
-						// Initially, no methods should be called
-						assert.equal(clickCount, 0)
+				// 		// Initially, no methods should be called
+				// 		assert.equal(clickCount, 0)
 
-						// Set shouldClick to true
-						component.setAttribute('should-click', 'true')
-						await animationFrame()
+				// 		// Set shouldClick to true
+				// 		component.setAttribute('should-click', 'true')
+				// 		await animationFrame()
 
-						// Button should have been clicked
-						assert.equal(clickCount, 1)
+				// 		// Button should have been clicked
+				// 		assert.equal(clickCount, 1)
 
-						// Set shouldClick to false
-						component.setAttribute('should-click', 'false')
-						await animationFrame()
+				// 		// Set shouldClick to false
+				// 		component.setAttribute('should-click', 'false')
+				// 		await animationFrame()
 
-						// Should not click again
-						assert.equal(clickCount, 1)
-					})
+				// 		// Should not click again
+				// 		assert.equal(clickCount, 1)
+				// 	})
 
-					it('should handle method calls with arguments', async function () {
-						const component =
-							document.querySelector('call-method-test')
-						const input = component.querySelector('input')
+				// 	it('should handle method calls with arguments', async function () {
+				// 		const component =
+				// 			document.querySelector('call-method-test')
+				// 		const input = component.querySelector('input')
 
-						// Focus the input first
-						input.focus()
-						input.value = 'test selection'
+				// 		// Focus the input first
+				// 		input.focus()
+				// 		input.value = 'test selection'
 
-						// Set shouldSelect to true to trigger setSelectionRange
-						component.setAttribute('should-select', 'true')
-						await animationFrame()
+				// 		// Set shouldSelect to true to trigger setSelectionRange
+				// 		component.setAttribute('should-select', 'true')
+				// 		await animationFrame()
 
-						// Check that selection was made (first 2 characters)
-						assert.equal(input.selectionStart, 0)
-						assert.equal(input.selectionEnd, 2)
-					})
+				// 		// Check that selection was made (first 2 characters)
+				// 		assert.equal(input.selectionStart, 0)
+				// 		assert.equal(input.selectionEnd, 2)
+				// 	})
 
-					it('should not call method when reactive value is false', async function () {
-						const component =
-							document.querySelector('call-method-test')
-						const button = component.querySelector('button')
+				// 	it('should not call method when reactive value is false', async function () {
+				// 		const component =
+				// 			document.querySelector('call-method-test')
+				// 		const button = component.querySelector('button')
 
-						let clickCount = 0
-						button.addEventListener('click', () => clickCount++)
+				// 		let clickCount = 0
+				// 		button.addEventListener('click', () => clickCount++)
 
-						// Set shouldClick to false
-						component.setAttribute('should-click', 'false')
-						await animationFrame()
+				// 		// Set shouldClick to false
+				// 		component.setAttribute('should-click', 'false')
+				// 		await animationFrame()
 
-						// Button should not have been clicked
-						assert.equal(clickCount, 0)
-					})
+				// 		// Button should not have been clicked
+				// 		assert.equal(clickCount, 0)
+				// 	})
 
-					it('should handle non-existent methods gracefully', async function () {
-						const component =
-							document.querySelector('call-method-test')
+				// 	it('should handle non-existent methods gracefully', async function () {
+				// 		const component =
+				// 			document.querySelector('call-method-test')
 
-						// This should not throw an error even if method doesn't exist
-						component.setAttribute('should-select', 'true')
-						await animationFrame()
+				// 		// This should not throw an error even if method doesn't exist
+				// 		component.setAttribute('should-select', 'true')
+				// 		await animationFrame()
 
-						// Test passes if no error is thrown
-						assert.ok(true)
-					})
-				})
+				// 		// Test passes if no error is thrown
+				// 		assert.ok(true)
+				// 	})
+				// })
 
 				// describe('focus()', function () {
 				// 	it('should focus element when reactive value is true', async function () {

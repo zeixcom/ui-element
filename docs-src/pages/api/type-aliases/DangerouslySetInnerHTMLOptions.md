@@ -8,7 +8,7 @@
 
 > **DangerouslySetInnerHTMLOptions** = `object`
 
-Defined in: [src/lib/effects.ts:61](https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/lib/effects.ts#L61)
+Defined in: [src/lib/effects.ts:62](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/lib/effects.ts#L62)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/lib/effects.ts:61](https://github.com/zeixcom/ui-element/blob/e
 
 > `optional` **allowScripts**: `boolean`
 
-Defined in: [src/lib/effects.ts:63](https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/lib/effects.ts#L63)
+Defined in: [src/lib/effects.ts:64](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/lib/effects.ts#L64)
 
 ***
 
@@ -24,4 +24,4 @@ Defined in: [src/lib/effects.ts:63](https://github.com/zeixcom/ui-element/blob/e
 
 > `optional` **shadowRootMode**: `ShadowRootMode`
 
-Defined in: [src/lib/effects.ts:62](https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/lib/effects.ts#L62)
+Defined in: [src/lib/effects.ts:63](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/lib/effects.ts#L63)

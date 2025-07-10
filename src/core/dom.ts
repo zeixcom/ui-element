@@ -375,6 +375,7 @@ const requireDescendant = <
 export {
 	type EventType,
 	type EventTransformer,
+	type EventTransformers,
 	type EventTransformerContext,
 	fromEvents,
 	fromSelector,

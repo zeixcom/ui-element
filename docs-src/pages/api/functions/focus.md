@@ -8,7 +8,7 @@
 
 > **focus**\<`P`, `E`\>(`reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:475](https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/lib/effects.ts#L475)
+Defined in: [src/lib/effects.ts:476](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/lib/effects.ts#L476)
 
 Effect for controlling element focus by calling the 'focus()' method.
 If the reactive value is true, element will be focussed; when false, nothing happens.

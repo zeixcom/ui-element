@@ -2,13 +2,13 @@
 
 ***
 
-[@zeix/ui-element](../globals.md) / emit
+[@zeix/ui-element](../globals.md) / emitEvent
 
-# Function: emit()
+# Function: emitEvent()
 
-> **emit**\<`T`, `P`, `E`\>(`type`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
+> **emitEvent**\<`T`, `P`, `E`\>(`type`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:673](https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/lib/effects.ts#L673)
+Defined in: [src/lib/effects.ts:670](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/lib/effects.ts#L670)
 
 Effect for emitting custom events with reactive detail values.
 Creates and dispatches CustomEvent instances with bubbling enabled by default.
@@ -49,4 +49,4 @@ Effect function that emits custom events
 
 ## Since
 
-0.13.2
+0.13.3

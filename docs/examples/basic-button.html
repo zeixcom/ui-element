@@ -198,7 +198,8 @@
 			<span class="file">basic-button.ts</span>
 			<span class="language">ts</span>
 		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { requireDescendant } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	RESET,</span></span>
 <span class="line"><span style="color:#F8F8F2">	asBoolean,</span></span>
@@ -219,13 +220,18 @@
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
 <span class="line"><span style="color:#F8F8F2">		disabled: </span><span style="color:#A6E22E">asBoolean</span><span style="color:#F8F8F2">(),</span></span>
 <span class="line"><span style="color:#F8F8F2">		label: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(RESET),</span></span>
-<span class="line"><span style="color:#F8F8F2">		badge: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(RESET),</span></span>
+<span class="line"><span style="color:#F8F8F2">		badge: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'button'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.label'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'label'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.badge'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'badge'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"><span style="color:#F8F8F2">	],</span></span>
+<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#A6E22E">		requireDescendant</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">'button'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#A6E22E">		requireDescendant</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">'.label'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'button'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.label'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'label'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.badge'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'badge'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#F8F8F2">		]</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>

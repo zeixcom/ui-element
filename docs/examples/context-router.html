@@ -28,7 +28,7 @@
 <span class="line"><span style="color:#F8F8F2">	computed,</span></span>
 <span class="line"><span style="color:#F8F8F2">	dangerouslySetInnerHTML,</span></span>
 <span class="line"><span style="color:#F8F8F2">	on,</span></span>
-<span class="line"><span style="color:#F8F8F2">	provide,</span></span>
+<span class="line"><span style="color:#F8F8F2">	provideContexts,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setText,</span></span>
 <span class="line"><span style="color:#F8F8F2">	show,</span></span>
 <span class="line"><span style="color:#F8F8F2">	state,</span></span>
@@ -154,7 +154,7 @@
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">			// Provide contexts</span></span>
-<span class="line"><span style="color:#A6E22E">			provide</span><span style="color:#F8F8F2">([ROUTER_PATHNAME, ROUTER_QUERY]),</span></span>
+<span class="line"><span style="color:#A6E22E">			provideContexts</span><span style="color:#F8F8F2">([ROUTER_PATHNAME, ROUTER_QUERY]),</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">			// Navigate and update 'active' class</span></span>
 <span class="line"><span style="color:#A6E22E">			all</span><span style="color:#F8F8F2">(</span></span>
@@ -165,15 +165,13 @@
 <span class="line"><span style="color:#A6E22E">						isInternalLink</span><span style="color:#F8F8F2">(target) </span><span style="color:#F92672">&#x26;&#x26;</span></span>
 <span class="line"><span style="color:#F8F8F2">						el[ROUTER_PATHNAME] </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> target.pathname,</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
-<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">({</span></span>
-<span class="line"><span style="color:#A6E22E">					click</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F92672">						if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#A6E22E">isInternalLink</span><span style="color:#F8F8F2">(e.target)) </span><span style="color:#F92672">return</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> url </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> URL</span><span style="color:#F8F8F2">(e.target.href)</span></span>
-<span class="line"><span style="color:#F92672">						if</span><span style="color:#F8F8F2"> (url.origin </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> window.location.origin) {</span></span>
-<span class="line"><span style="color:#F8F8F2">							e.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">							el[ROUTER_PATHNAME] </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> url.pathname</span></span>
-<span class="line"><span style="color:#F8F8F2">						}</span></span>
-<span class="line"><span style="color:#F8F8F2">					},</span></span>
+<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#A6E22E">isInternalLink</span><span style="color:#F8F8F2">(e.target)) </span><span style="color:#F92672">return</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> url </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> URL</span><span style="color:#F8F8F2">(e.target.href)</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (url.origin </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> window.location.origin) {</span></span>
+<span class="line"><span style="color:#F8F8F2">						e.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">						el[ROUTER_PATHNAME] </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> url.pathname</span></span>
+<span class="line"><span style="color:#F8F8F2">					}</span></span>
 <span class="line"><span style="color:#F8F8F2">				}),</span></span>
 <span class="line"><span style="color:#F8F8F2">			),</span></span>
 <span class="line"></span>

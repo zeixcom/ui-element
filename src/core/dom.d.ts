@@ -33,7 +33,7 @@ type EventTransformers<
  * @since 0.13.3
  * @param {T | ((host: C) => T)} initialize - Initial value or initialize function
  * @param {S} selector - CSS selector for the source element
- * @param {EventTransformers<T, ElementFromSelector<S, E>, K>} events - Transformation functions for events
+ * @param {EventTransformers<T, ElementFromSelector<S, E>, C>} events - Transformation functions for events
  * @returns {(host: C) => Computed<T>} Signal producer for value from event
  */
 declare const fromEvents: <
@@ -65,22 +65,22 @@ declare const observeSubtree: (
  *
  * @since 0.13.1
  * @param {K} selector - CSS selector for descendant elements
- * @returns {(host: HTMLElement) => Computed<ElementFromSelector<K, E>[]} Signal producer for descendant element collection from a selector
+ * @returns {(host: C) => Computed<ElementFromSelector<S, E>[]>} Signal producer for descendant element collection from a selector
  */
 declare const fromSelector: <
 	E extends Element = HTMLElement,
 	C extends HTMLElement = HTMLElement,
-	K extends string = string,
+	S extends string = string,
 >(
-	selector: K,
-) => SignalProducer<ElementFromSelector<K, E>[], C>
+	selector: S,
+) => SignalProducer<ElementFromSelector<S, E>[], C>
 /**
  * Reduced properties of descendant elements
  *
  * @since 0.13.3
  * @param {C} host - Host element for computed property
- * @param {K} selector - CSS selector for descendant elements
- * @param {(accumulator: T, currentElement: ElementFromSelector<K, E>, currentIndex: number, array: ElementFromSelector<K, E>[]) => T} reducer - Function to reduce values
+ * @param {S} selector - CSS selector for descendant elements
+ * @param {(accumulator: T, currentElement: ElementFromSelector<S, E>, currentIndex: number, array: ElementFromSelector<S, E>[]) => T} reducer - Function to reduce values
  * @param {T} initialValue - Initial value function for reduction
  * @returns {Computed<T>} Computed signal of reduced values of descendant elements
  */
@@ -107,7 +107,7 @@ declare const reduced: <
  * @param {C} host - Host element
  * @param {S} selector - CSS selector for descendant element
  * @param {(element: ElementFromSelector<S, E> | null, isUpgraded: boolean) => T} map - Function to map over the element
- * @returns {SignalProducer<T>} Signal producer that gets the property value from descendant element
+ * @returns {T} The mapped result from the descendant element
  */
 declare const read: <
 	T extends {},
@@ -138,6 +138,7 @@ declare const requireDescendant: <
 export {
 	type EventType,
 	type EventTransformer,
+	type EventTransformers,
 	type EventTransformerContext,
 	fromEvents,
 	fromSelector,

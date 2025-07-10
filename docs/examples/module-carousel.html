@@ -424,7 +424,7 @@
 <span class="line"><span style="color:#F92672">		?</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">-</span><span style="color:#AE81FF"> 1</span></span>
 <span class="line"><span style="color:#F92672">		:</span><span style="color:#F8F8F2"> target.classList.</span><span style="color:#A6E22E">contains</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'next'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F92672">			?</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">+</span><span style="color:#AE81FF"> 1</span></span>
-<span class="line"><span style="color:#F92672">			:</span><span style="color:#A6E22E"> parseInt</span><span style="color:#F8F8F2">(target.dataset[</span><span style="color:#E6DB74">'index'</span><span style="color:#F8F8F2">] </span><span style="color:#F92672">||</span><span style="color:#E6DB74"> '0'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">			:</span><span style="color:#A6E22E"> parseInt</span><span style="color:#F8F8F2">(target.dataset.index </span><span style="color:#F92672">||</span><span style="color:#E6DB74"> '0'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> Number.</span><span style="color:#A6E22E">isInteger</span><span style="color:#F8F8F2">(nextIndex) </span><span style="color:#F92672">?</span><span style="color:#A6E22E"> wrapAround</span><span style="color:#F8F8F2">(nextIndex, total) </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> 0</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
@@ -470,7 +470,7 @@
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#A6E22E"> isCurrentDot</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
-<span class="line"><span style="color:#F8F8F2">			target.dataset[</span><span style="color:#E6DB74">'index'</span><span style="color:#F8F8F2">] </span><span style="color:#F92672">===</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(el.index)</span></span>
+<span class="line"><span style="color:#F8F8F2">			target.dataset.index </span><span style="color:#F92672">===</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(el.index)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#A6E22E">			all</span><span style="color:#F8F8F2">(</span></span>
@@ -485,7 +485,7 @@
 <span class="line"><span style="color:#A6E22E">			all</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">				'[role="tabpanel"]'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaCurrent'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
-<span class="line"><span style="color:#A6E22E">					String</span><span style="color:#F8F8F2">(target.id </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> el.slides[el.index </span><span style="color:#F92672">as</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">].id),</span></span>
+<span class="line"><span style="color:#A6E22E">					String</span><span style="color:#F8F8F2">(target.id </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> el.slides[el.index].id),</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
 <span class="line"><span style="color:#F8F8F2">			),</span></span>
 <span class="line"><span style="color:#F8F8F2">		]</span></span>

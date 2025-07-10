@@ -1,6 +1,6 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.13.2
+ * @version 0.13.3
  * @author Esther Brunner
  */
 
@@ -52,6 +52,7 @@ export {
 export {
 	type EventType,
 	type EventTransformer,
+	type EventTransformers,
 	type EventTransformerContext,
 	fromEvents,
 	fromSelector,

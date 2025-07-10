@@ -95,18 +95,9 @@ You are an expert TypeScript engineer assisting with a TypeScript library for re
 - Maintain focus on simplicity and Web Platform alignment
 - Balance feature completeness with library size constraints
 
-## LLM Note-Taking Process
+## LLM Documentation
 
-- Maintain LLM_NOTES.md to document unexpected behavior and solutions
-- When encountering unexpected library behavior, check if similar issues are documented
-- For new issues, document:
-  - What was expected vs actual behavior
-  - Root cause analysis
-  - Solution or workaround found
-  - Lessons learned and takeaways
-- Use these notes to identify patterns and potential library improvements
-- Flag recurring issues as candidates for library design changes
-- Structure notes with clear dates, components, and problem descriptions
+- Maintain llms.txt to document core API usage in a form suitable for LLMs to quickly grasp the intent and functionality
 
 ## Always ask for user guidance when:
 

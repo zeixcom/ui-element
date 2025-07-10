@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>provide – UIElement Docs</title>
+		<title>emitEvent – UIElement Docs</title>
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="../../assets/main.css" />
 		<script type="module" src="../../assets/main.js"></script>
@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.2</small>
+					UIElement Docs <small>Version 0.13.3</small>
 				</h1>
 				
 <section-menu>
@@ -99,23 +99,30 @@
 				</card-callout>
 			</header>
 			<main class="content-grid"><section class="api-content">
-<h1 id="function-provide">
-                <a name="function-provide" class="anchor" href="#function-provide">
+<h1 id="function-emitevent">
+                <a name="function-emitevent" class="anchor" href="#function-emitevent">
 	                <span class="permalink">🔗</span>
                 </a>
-                Function: provide()
+                Function: emitEvent()
             </h1>
 <blockquote>
-<p><strong>provide</strong>&lt;<code>P</code>, <code>K</code>&gt;(<code>provided</code>): (<code>host</code>) =&gt; <a href="../type-aliases/Cleanup.html"><code>Cleanup</code></a></p>
+<p><strong>emitEvent</strong>&lt;<code>T</code>, <code>P</code>, <code>E</code>&gt;(<code>type</code>, <code>reactive</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/core/context.ts#L98">src/core/context.ts:98</a></p>
-<p>Provide a context for descendant component consumers</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/lib/effects.ts#L670">src/lib/effects.ts:670</a></p>
+<p>Effect for emitting custom events with reactive detail values.<br>Creates and dispatches CustomEvent instances with bubbling enabled by default.</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Type Parameters
             </h2>
+<h3 id="t">
+                <a name="t" class="anchor" href="#t">
+	                <span class="permalink">🔗</span>
+                </a>
+                T
+            </h3>
+<p><code>T</code></p>
 <h3 id="p">
                 <a name="p" class="anchor" href="#p">
 	                <span class="permalink">🔗</span>
@@ -123,66 +130,50 @@
                 P
             </h3>
 <p><code>P</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
-<h3 id="k">
-                <a name="k" class="anchor" href="#k">
+<h3 id="e">
+                <a name="e" class="anchor" href="#e">
 	                <span class="permalink">🔗</span>
                 </a>
-                K
+                E
             </h3>
-<p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code></p>
+<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Parameters
             </h2>
-<h3 id="provided">
-                <a name="provided" class="anchor" href="#provided">
+<h3 id="type">
+                <a name="type" class="anchor" href="#type">
 	                <span class="permalink">🔗</span>
                 </a>
-                provided
+                type
             </h3>
-<p><a href="../type-aliases/Context.html"><code>Context</code></a>&lt;<code>K</code>, <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>P</code>[<code>K</code>]&gt;&gt;[]</p>
-<p>array of contexts to provide</p>
+<p><code>string</code></p>
+<p>Event type to emit</p>
+<h3 id="reactive">
+                <a name="reactive" class="anchor" href="#reactive">
+	                <span class="permalink">🔗</span>
+                </a>
+                reactive
+            </h3>
+<p><a href="../type-aliases/Reactive.html"><code>Reactive</code></a>&lt;<code>T</code>, <code>P</code>, <code>E</code>&gt;</p>
+<p>Reactive value bound to the event detail</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<ul>
-<li>function to add an event listener for ContextRequestEvent returning a cleanup function to remove the event listener</li>
-</ul>
-<blockquote>
-<p>(<code>host</code>): <a href="../type-aliases/Cleanup.html"><code>Cleanup</code></a></p>
-</blockquote>
-<h3 id="parameters">
-                <a name="parameters" class="anchor" href="#parameters">
-	                <span class="permalink">🔗</span>
-                </a>
-                Parameters
-            </h3>
-<h4 id="host">
-                <a name="host" class="anchor" href="#host">
-	                <span class="permalink">🔗</span>
-                </a>
-                host
-            </h4>
-<p><a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;</p>
-<h3 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h3>
-<p><a href="../type-aliases/Cleanup.html"><code>Cleanup</code></a></p>
+<p><a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
+<p>Effect function that emits custom events</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
                 </a>
                 Since
             </h2>
-<p>0.12.0</p>
+<p>0.13.3</p>
 
 </section></main>
 			<footer class="content-grid">

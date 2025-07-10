@@ -203,37 +203,31 @@
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">		// Event listeners for rating changes and form submission</span></span>
-<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">({</span></span>
-<span class="line"><span style="color:#E6DB74">			'change-rating'</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">				rating.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(e.detail)</span></span>
-<span class="line"><span style="color:#F8F8F2">			},</span></span>
-<span class="line"><span style="color:#A6E22E">			submit</span><span style="color:#F8F8F2">: </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">				e.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">				submitted.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">true</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">				console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Feedback submitted'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">			},</span></span>
+<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change-rating'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">			rating.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(e.detail)</span></span>
+<span class="line"><span style="color:#F8F8F2">		}),</span></span>
+<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'submit'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">			e.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">			submitted.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">true</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">			console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Feedback submitted'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">		}),</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Event listener for hide button</span></span>
 <span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">			'.hide'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">({</span></span>
-<span class="line"><span style="color:#A6E22E">				click</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> feedback </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'.feedback'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (feedback) feedback.hidden </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> true</span></span>
-<span class="line"><span style="color:#F8F8F2">				},</span></span>
+<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> feedback </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'.feedback'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> (feedback) feedback.hidden </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> true</span></span>
 <span class="line"><span style="color:#F8F8F2">			}),</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Event listener for textarea</span></span>
 <span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">			'textarea'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">({</span></span>
-<span class="line"><span style="color:#A6E22E">				input</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">					empty.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">						(e.target </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLTextAreaElement</span><span style="color:#F8F8F2">)?.value.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">					)</span></span>
-<span class="line"><span style="color:#F8F8F2">				},</span></span>
+<span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">				empty.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">					(e.target </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLTextAreaElement</span><span style="color:#F8F8F2">)?.value.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">				)</span></span>
 <span class="line"><span style="color:#F8F8F2">			}),</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
 <span class="line"></span>

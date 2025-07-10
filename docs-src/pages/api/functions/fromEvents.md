@@ -8,7 +8,7 @@
 
 > **fromEvents**\<`T`, `E`, `C`, `S`\>(`initialize`, `selector`, `events`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`T`, `C`\>
 
-Defined in: [src/core/dom.ts:126](https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/core/dom.ts#L126)
+Defined in: [src/core/dom.ts:120](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L120)
 
 Produce a computed signal from transformed event data
 
@@ -46,7 +46,7 @@ CSS selector for the source element
 
 ### events
 
-`EventTransformers`\<`T`, [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>, `C`\>
+[`EventTransformers`](../type-aliases/EventTransformers.md)\<`T`, [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>, `C`\>
 
 Transformation functions for events
 

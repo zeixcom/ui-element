@@ -1,6 +1,6 @@
 {
 	"name": "@zeix/ui-element",
-	"version": "0.13.2",
+	"version": "0.13.3",
 	"description": "UIElement - a HTML-first library for reactive Web Components",
 	"main": "index.js",
 	"types": "index.d.ts",

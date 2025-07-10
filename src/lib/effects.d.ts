@@ -255,14 +255,13 @@ declare const emitEvent: <
 	reactive: Reactive<T, P, E>,
 ) => Effect<P, E>
 /**
- * Effect for passing reactive values to descendant elements.
- * Supports both direct property setting and signal passing for custom elements.
+ * Effect for passing reactive values to a descendant UIElement component.
  *
- * @since 0.13.2
- * @param {Reactives<P, E>} reactives - Reactive values to pass or function that returns them
- * @returns {Effect<P, E>} Effect function that passes reactive values to descendant elements
+ * @since 0.13.3
+ * @param {Reactives<Component<Q>, P>} reactives - Reactive values to pass
+ * @returns {Effect<P, E>} Effect function that passes reactive values to the descendant component
  * @throws {TypeError} When the provided reactives are not an object or the target is not a UIElement component
- * @throws {Error}
+ * @throws {Error} When passing signals failed for some other reason
  */
 declare const pass: <P extends ComponentProps, Q extends ComponentProps>(
 	reactives: Reactives<Component<Q>, P>,

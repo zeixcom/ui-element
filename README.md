@@ -1,6 +1,6 @@
 # UIElement
 
-Version 0.13.2
+Version 0.13.3
 
 **UIElement** - a HTML-first library for reactive Web Components
 

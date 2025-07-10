@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.2</small>
+					UIElement Docs <small>Version 0.13.3</small>
 				</h1>
 				
 <section-menu>
@@ -118,6 +118,7 @@
 			<li><a href="#attribute-parsers">Attribute Parsers</a></li>
 			<li><a href="#signal-producers">Signal Producers</a></li>
 			<li><a href="#effects">Effects</a></li>
+			<li><a href="#dom-utilities">DOM Utilities</a></li>
 		</ol>
 	</nav>
 </module-toc>
@@ -168,7 +169,7 @@
                 </a>
                 Attribute Parsers
             </h2>
-<p>Declare how attributes are parsed. Functions returning <a href="api/type-aliases/AttributeParser.html">AttributeParser</a> that will be used to create <a href="api/type-aliases/State.html">State</a> signals as reactive properties on the component.</p>
+<p>Declare how attributes are parsed. Functions returning <a href="api/type-aliases/AttributeParser.html">AttributeParser</a> that will be used to create <a href="api/type-aliases/State.html">State</a> signals as writable reactive properties on the component.</p>
 <ul>
 <li><a href="api/functions/asBoolean.html">asBoolean</a> parses boolean attributes (presence indicates true)</li>
 <li><a href="api/functions/asEnum.html">asEnum</a> parses string attributes constrained to specific values</li>
@@ -187,12 +188,10 @@
                 </a>
                 Signal Producers
             </h2>
-<p>Declare how signals are initialized. Variable of type or function returning <a href="api/type-aliases/SignalProducer.html">SignalProducer</a>:</p>
+<p>Declare how signals are initialized. Functions returning type <a href="api/type-aliases/SignalProducer.html">SignalProducer</a> that will be used to create <a href="api/type-aliases/Computed.html">Computed</a> signals as read-only reactive properties on the component.</p>
 <ul>
 <li><a href="api/functions/fromContext.html">fromContext</a> consumes a context value from nearest ancestor context provider component</li>
-<li><a href="api/functions/fromDescendant.html">fromDescendant</a> gets a reactive property of a descendant component</li>
-<li><a href="api/functions/fromDescendants.html">fromDescendants</a> reduces properties of a collection of descendant elements to a single value</li>
-<li><a href="api/functions/fromEvent.html">fromEvent</a> creates a computed signal from an event handler on a descendant element</li>
+<li><a href="api/functions/fromEvents.html">fromEvents</a> creates a computed signal from event transformers on descendant elements</li>
 <li><a href="api/functions/fromSelector.html">fromSelector</a> creates a computed signal of descentant elements matching a CSS selector</li>
 </ul>
 </section>
@@ -205,14 +204,14 @@
                 </a>
                 Effects
             </h2>
-<p>Declare effects of type <a href="api/type-aliases/FxFunction.html">FxFunction</a> to be applied when signals change:</p>
+<p>Declare effects of type <a href="api/type-aliases/Effect.html">Effect</a> to be applied when signals change:</p>
 <ul>
 <li><a href="api/functions/dangerouslySetInnerHTML.html">dangerouslySetInnerHTML</a> sets inner HTML content from a signal</li>
-<li><a href="api/functions/emit.html">emit</a> dispatches custom events when signals change</li>
+<li><a href="api/functions/emitEvent.html">emitEvent</a> dispatches custom events when signals change</li>
 <li><a href="api/functions/insertOrRemoveElement.html">insertOrRemoveElement</a> conditionally inserts or removes elements</li>
 <li><a href="api/functions/on.html">on</a> attaches event listeners to elements</li>
 <li><a href="api/functions/pass.html">pass</a> passes signal values to descendant component properties</li>
-<li><a href="api/functions/provide.html">provide</a> provides context values to descendant components</li>
+<li><a href="api/functions/provideContexts.html">provideContexts</a> provides context values to descendant components</li>
 <li><a href="api/functions/setAttribute.html">setAttribute</a> sets element attributes from signals</li>
 <li><a href="api/functions/setProperty.html">setProperty</a> sets element properties from signals</li>
 <li><a href="api/functions/setStyle.html">setStyle</a> sets CSS styles from signals</li>
@@ -221,6 +220,22 @@
 <li><a href="api/functions/toggleAttribute.html">toggleAttribute</a> toggles attributes based on signal values</li>
 <li><a href="api/functions/toggleClass.html">toggleClass</a> toggles CSS classes based on signal values</li>
 <li><a href="api/functions/updateElement.html">updateElement</a> base function for updating elements, used for <a href="api/functions/setText.html">setText</a>, <a href="api/functions/show.html">show</a>, <a href="api/functions/toggleClass.html">toggleClass</a>, <a href="api/functions/toggleAttribute.html">toggleAttribute</a>, <a href="api/functions/setAttribute.html">setAttribute</a>, <a href="api/functions/setProperty.html">setProperty</a>, <a href="api/functions/setStyle.html">setStyle</a></li>
+</ul>
+</section>
+
+<section>
+
+<h2 id="dom-utilities">
+                <a name="dom-utilities" class="anchor" href="#dom-utilities">
+	                <span class="permalink">🔗</span>
+                </a>
+                DOM Utilities
+            </h2>
+<p>Functions to work with descendant elements:</p>
+<ul>
+<li><a href="api/functions/read.html">read</a> reads properties from a descendant element, waiting for components to be upgraded</li>
+<li><a href="api/functions/reduced.html">reduced</a> creates a computed signal from a reducer function</li>
+<li><a href="api/functions/requireDescendant.html">requireDescendant</a> requires a descendant element to exist and returns it, otherwise throws an error</li>
 </ul>
 </section>
 </main>

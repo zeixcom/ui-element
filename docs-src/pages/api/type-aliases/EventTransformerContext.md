@@ -8,7 +8,7 @@
 
 > **EventTransformerContext**\<`T`, `E`, `C`, `Evt`\> = `object`
 
-Defined in: [src/core/dom.ts:26](https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/core/dom.ts#L26)
+Defined in: [src/core/dom.ts:22](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L22)
 
 ## Type Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/core/dom.ts:26](https://github.com/zeixcom/ui-element/blob/e1c0
 
 > **event**: `Evt`
 
-Defined in: [src/core/dom.ts:32](https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/core/dom.ts#L32)
+Defined in: [src/core/dom.ts:28](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L28)
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: [src/core/dom.ts:32](https://github.com/zeixcom/ui-element/blob/e1c0
 
 > **host**: `C`
 
-Defined in: [src/core/dom.ts:33](https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/core/dom.ts#L33)
+Defined in: [src/core/dom.ts:29](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L29)
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: [src/core/dom.ts:33](https://github.com/zeixcom/ui-element/blob/e1c0
 
 > **target**: `E`
 
-Defined in: [src/core/dom.ts:34](https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/core/dom.ts#L34)
+Defined in: [src/core/dom.ts:30](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L30)
 
 ***
 
@@ -58,4 +58,4 @@ Defined in: [src/core/dom.ts:34](https://github.com/zeixcom/ui-element/blob/e1c0
 
 > **value**: `T`
 
-Defined in: [src/core/dom.ts:35](https://github.com/zeixcom/ui-element/blob/e1c0693393151dbc67087d7dde9d2a2f9e7dd58b/src/core/dom.ts#L35)
+Defined in: [src/core/dom.ts:31](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L31)

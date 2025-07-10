@@ -226,7 +226,7 @@
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	UNSET,</span></span>
-<span class="line"><span style="color:#F8F8F2">	batch,</span></span>
+<span class="line"><span style="color:#88846F">	// batch,</span></span>
 <span class="line"><span style="color:#F8F8F2">	component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	computed,</span></span>
 <span class="line"><span style="color:#F8F8F2">	fromEvents,</span></span>
@@ -327,10 +327,8 @@
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">				'.clear'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">				show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !!</span><span style="color:#F8F8F2">el.length),</span></span>
-<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">({</span></span>
-<span class="line"><span style="color:#A6E22E">					click</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">						el.</span><span style="color:#A6E22E">clear</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">					},</span></span>
+<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">					el.</span><span style="color:#A6E22E">clear</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">				}),</span></span>
 <span class="line"><span style="color:#F8F8F2">			),</span></span>
 <span class="line"></span>
