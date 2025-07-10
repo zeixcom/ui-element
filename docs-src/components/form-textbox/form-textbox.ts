@@ -102,10 +102,8 @@ export default component<FormTextboxProps>(
 			first(
 				'.clear',
 				show(() => !!el.length),
-				on({
-					click: () => {
-						el.clear()
-					},
+				on('click', () => {
+					el.clear()
 				}),
 			),
 

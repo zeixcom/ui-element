@@ -16,6 +16,7 @@ import {
 	type Effect,
 	RESET,
 } from '../component'
+import type { EventType } from '../core/dom'
 import {
 	DEV_MODE,
 	LOG_ERROR,
@@ -35,7 +36,7 @@ type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 	| Signal<NonNullable<T>>
 	| ((element: E) => T | null | undefined)
 
-type Reactives<P extends ComponentProps, E extends Element> = {
+type Reactives<E extends Element, P extends ComponentProps> = {
 	[K in keyof E]?: Reactive<E[K], P, E>
 }
 
@@ -210,7 +211,7 @@ const updateElement =
 		reactive: Reactive<T, P, E>,
 		updater: ElementUpdater<E, T>,
 	): Effect<P, E> =>
-	(host: Component<P>, target: E): Cleanup => {
+	(host, target): Cleanup => {
 		const { op, name = '', read, update } = updater
 		const fallback = read(target)
 		const operationDesc = getOperationDescription(op, name)
@@ -282,7 +283,7 @@ const insertOrRemoveElement =
 		reactive: Reactive<number, P, E>,
 		inserter?: ElementInserter<E>,
 	): Effect<P, E> =>
-	(host: Component<P>, target: E) => {
+	(host, target) => {
 		// Custom ok handler for insertOrRemoveElement
 		const insertRemoveOk = (verb: string) => () => {
 			if (DEV_MODE && host.debug) {
@@ -635,29 +636,25 @@ const dangerouslySetInnerHTML = <
  * Effect for attaching an event listener to an element.
  * Provides proper cleanup when the effect is disposed.
  *
- * @since 0.13.3
- * @param {(event: HTMLElementEventType<K>) => void} listeners - Event listener function
+ * @since 0.12.0
+ * @param {string} type - Event type
+ * @param {(event: EventType<K>) => void} listener - Event listener function
+ * @param {AddEventListenerOptions | boolean} options - Event listener options
  * @returns {Effect<ComponentProps, E>} Effect function that manages the event listener
  */
 const on =
-	<E extends HTMLElement>(
-		listeners: { [K in keyof HTMLElementEventMap]?: EventListener },
+	<K extends keyof HTMLElementEventMap | string, E extends HTMLElement>(
+		type: K,
+		listener: (event: EventType<K>) => void,
+		options: AddEventListenerOptions | boolean = false,
 	): Effect<ComponentProps, E> =>
-	<P extends ComponentProps>(
-		host: Component<P>,
-		target: E = host as unknown as E,
-	): Cleanup => {
-		const eventMap = new Map<string, EventListener>()
-		for (const [type, listener] of Object.entries(listeners)) {
-			eventMap.set(type, listener)
-			target.addEventListener(type, listener)
-		}
-		return () => {
-			for (const [type, listener] of eventMap) {
-				target.removeEventListener(type, listener)
-			}
-			eventMap.clear()
-		}
+	(_, target): Cleanup => {
+		if (!isFunction(listener))
+			throw new TypeError(
+				`Invalid event listener provided for "${type} event on element ${elementName(target)}`,
+			)
+		target.addEventListener(type, listener, options)
+		return () => target.removeEventListener(type, listener)
 	}
 
 /**
@@ -674,7 +671,7 @@ const emitEvent =
 		type: string,
 		reactive: Reactive<T, P, E>,
 	): Effect<P, E> =>
-	(host: Component<P>, target: E = host as unknown as E): Cleanup =>
+	(host, target): Cleanup =>
 		withReactiveValue(
 			reactive,
 			host,
@@ -698,40 +695,27 @@ const emitEvent =
  * @since 0.13.2
  * @param {Reactives<P, E>} reactives - Reactive values to pass or function that returns them
  * @returns {Effect<P, E>} Effect function that passes reactive values to descendant elements
- * @throws {ReferenceError} When the provided reactives are not an object or provider function
+ * @throws {TypeError} When the provided reactives are not an object or the target is not a UIElement component
+ * @throws {Error}
  */
 const pass =
-	<P extends ComponentProps, E extends Element>(
-		reactives: Reactives<P, E>,
-	): Effect<P, E> =>
-	(host: Component<P>, target: E): Cleanup | void => {
+	<P extends ComponentProps, Q extends ComponentProps>(
+		reactives: Reactives<Component<Q>, P>,
+	): Effect<P, Component<Q>> =>
+	(host, target): Cleanup | void => {
 		if (!isDefinedObject(reactives))
-			throw new ReferenceError(
-				`Passed signals must be an object or a provider function`,
+			throw new TypeError(`Reactives must be an object of passed signals`)
+		if (!isCustomElement(target))
+			throw new TypeError(
+				`Target ${elementName(target)} is not a custom element`,
 			)
-
-		/* const setProperties = () =>
-			effect(() => {
-				for (const [prop, reactive] of Object.entries(reactives)) {
-					const value = resolveReactive<
-						NonNullable<E[keyof E]>,
-						P,
-						E
-					>(reactive, host, target, `signal ${prop}`)
-					if (value === RESOLVE_ERROR) {
-						throw new Error(
-							`Failed to resolve signal ${prop} for ${elementName(target)}`,
-						)
-					}
-					if (value == null || value === RESET) continue
-					target[prop as keyof E] = value
-				}
-			}) */
-		if (!isCustomElement(target)) return // setProperties()
 		customElements
 			.whenDefined(target.localName)
 			.then(() => {
-				if (!hasMethod(target, 'setSignal')) return // setProperties()
+				if (!hasMethod(target, 'setSignal'))
+					throw new TypeError(
+						`Target ${elementName(target)} is not a UIElement component`,
+					)
 				for (const [prop, reactive] of Object.entries(reactives)) {
 					target.setSignal(
 						prop,

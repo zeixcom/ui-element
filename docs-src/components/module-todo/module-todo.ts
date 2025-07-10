@@ -5,14 +5,14 @@ import {
 	on,
 	pass,
 	read,
+	requireDescendant,
 	setAttribute,
-	setProperty,
 	setText,
 	show,
 } from '../../..'
 import type { BasicButtonProps } from '../basic-button/basic-button'
 import type { FormCheckboxProps } from '../form-checkbox/form-checkbox'
-import type { FormTextboxProps } from '../form-textbox/form-textbox'
+import '../form-textbox/form-textbox'
 
 export type ModuleTodoProps = {
 	active: HTMLElement[]
@@ -26,13 +26,9 @@ export default component(
 		completed: fromSelector('form-checkbox[checked]'),
 	},
 	(el, { first }) => {
-		const textbox =
-			el.querySelector<Component<FormTextboxProps>>('form-textbox')
-		if (!textbox) throw new Error('No input field found')
-		const template = el.querySelector('template')
-		if (!template) throw new Error('No template found')
-		const list = el.querySelector('ol')
-		if (!list) throw new Error('No list found')
+		const textbox = requireDescendant(el, 'form-textbox')
+		const template = requireDescendant(el, 'template')
+		const list = requireDescendant(el, 'ol')
 
 		return [
 			// Control todo input form
@@ -44,25 +40,23 @@ export default component(
 			),
 			first(
 				'form',
-				on({
-					submit: (e: Event) => {
-						e.preventDefault()
-						queueMicrotask(() => {
-							const value = textbox.value.trim()
-							if (!value) return
-							const li = document.importNode(
-								template.content,
-								true,
-							).firstElementChild
-							if (!(li instanceof HTMLLIElement))
-								throw new Error(
-									'Invalid template for list item; expected <li>',
-								)
-							li.querySelector('slot')?.replaceWith(value)
-							list.append(li)
-							textbox.clear()
-						})
-					},
+				on('submit', (e: Event) => {
+					e.preventDefault()
+					queueMicrotask(() => {
+						const value = textbox.value.trim()
+						if (!value) return
+						const li = document.importNode(
+							template.content,
+							true,
+						).firstElementChild
+						if (!(li instanceof HTMLLIElement))
+							throw new Error(
+								'Invalid template for list item; expected <li>',
+							)
+						li.querySelector('slot')?.replaceWith(value)
+						list.append(li)
+						textbox.clear()
+					})
 				}),
 			),
 
@@ -74,12 +68,10 @@ export default component(
 						radiogroup && upgraded ? radiogroup.value : 'all',
 					),
 				),
-				on({
-					click: (e: Event) => {
-						const target = e.target as HTMLElement
-						if (target.localName === 'button')
-							target.closest('li')!.remove()
-					},
+				on('click', (e: Event) => {
+					const target = e.target as HTMLElement
+					if (target.localName === 'button')
+						target.closest('li')!.remove()
 				}),
 			),
 
@@ -115,16 +107,14 @@ export default component(
 							? String(el.completed.length)
 							: '',
 				}),
-				on({
-					click: () => {
-						const items = Array.from(el.querySelectorAll('ol li'))
-						for (let i = items.length - 1; i >= 0; i--) {
-							const task = items[i].querySelector<
-								HTMLElement & FormCheckboxProps
-							>('form-checkbox')
-							if (task?.checked) items[i].remove()
-						}
-					},
+				on('click', () => {
+					const items = Array.from(el.querySelectorAll('ol li'))
+					for (let i = items.length - 1; i >= 0; i--) {
+						const task = items[i].querySelector<
+							HTMLElement & FormCheckboxProps
+						>('form-checkbox')
+						if (task?.checked) items[i].remove()
+					}
 				}),
 			),
 		]

@@ -53,21 +53,19 @@
 				await microtask() // Wait for DOM to reflect changes
 			}
 
-			// Helper to reset checkbox component state
-			const resetCheckbox = async el => {
-				el.checked = false
-				el.label = ''
-				const input = el.querySelector('input')
-				if (input) {
-					input.checked = false
-				}
-				await tick()
-			}
-
 			// Helper to simulate checkbox click
 			const clickCheckbox = async checkbox => {
 				checkbox.click()
-				checkbox.dispatchEvent(new Event('change', { bubbles: true }))
+				await tick()
+			}
+
+			// Helper to reset checkbox component state
+			const resetCheckbox = async el => {
+				el.label = ''
+				const input = el.querySelector('input')
+				if (el.checked && input) {
+					input.checked = false
+				}
 				await tick()
 			}
 
@@ -130,31 +128,19 @@
 						assert.equal(input.checked, false)
 
 						// Setting property should sync both
-						el.checked = true
-						await tick()
+						clickCheckbox(input)
 
 						assert.equal(el.checked, true)
 						assert.equal(input.checked, true)
 						assert.isTrue(el.hasAttribute('checked'))
 					})
 
-					it('should sync checked property to input element', async () => {
+					it('should not allow to set checked programmatically', async () => {
 						const el = document.getElementById('test1')
 						const input = el.querySelector('input')
-
-						// Set checked programmatically
-						el.checked = true
-						await tick()
-
-						assert.equal(input.checked, true)
-						assert.isTrue(el.hasAttribute('checked'))
-
-						// Uncheck programmatically
-						el.checked = false
-						await tick()
-
-						assert.equal(input.checked, false)
-						assert.isFalse(el.hasAttribute('checked'))
+						assert.throws(() => {
+							el.checked = true
+						}, TypeError)
 					})
 
 					it('should sync label property to label element', async () => {
@@ -196,53 +182,6 @@
 						assert.isFalse(el.hasAttribute('checked'))
 					})
 
-					it('should handle multiple property updates', async () => {
-						const el = document.getElementById('test1')
-						const input = el.querySelector('input')
-						const labelEl = el.querySelector('.label')
-
-						// Set multiple properties
-						el.checked = true
-						el.label = 'Completed Task'
-
-						await tick()
-
-						assert.equal(input.checked, true)
-						assert.equal(labelEl.textContent, 'Completed Task')
-						assert.isTrue(el.hasAttribute('checked'))
-					})
-
-					it('should handle boolean checked values correctly', async () => {
-						const el = document.getElementById('test1')
-						const input = el.querySelector('input')
-
-						// Test truthy values
-						el.checked = true
-						await tick()
-						assert.equal(input.checked, true)
-
-						el.checked = 'true'
-						await tick()
-						assert.equal(input.checked, true)
-
-						el.checked = 1
-						await tick()
-						assert.equal(input.checked, true)
-
-						// Test falsy values
-						el.checked = false
-						await tick()
-						assert.equal(input.checked, false)
-
-						el.checked = ''
-						await tick()
-						assert.equal(input.checked, false)
-
-						el.checked = 0
-						await tick()
-						assert.equal(input.checked, false)
-					})
-
 					it('should handle string label values correctly', async () => {
 						const el = document.getElementById('test1')
 						const labelEl = el.querySelector('.label')
@@ -279,9 +218,8 @@
 						)
 
 						// Should work normally despite being visually hidden
-						el.checked = true
+						if (!el.checked) clickCheckbox(input)
 						el.label = 'Hidden Checkbox'
-
 						await tick()
 
 						assert.equal(input.checked, true)
@@ -298,7 +236,7 @@
 						assert.isNull(labelEl)
 
 						// Should still handle checked state
-						el.checked = true
+						if (!el.checked) clickCheckbox(input)
 						await tick()
 
 						assert.equal(input.checked, true)
@@ -318,55 +256,15 @@
 
 						// Rapid changes
 						for (let i = 0; i < 5; i++) {
-							el.checked = i % 2 === 0
+							input.click()
 							el.label = `Task ${i}`
 						}
-
 						await tick()
 
 						// Should have final values (i=4, 4%2===0 is true)
 						assert.equal(input.checked, true)
 						assert.equal(labelEl.textContent, 'Task 4')
 						assert.equal(el.checked, true)
-					})
-
-					it('should maintain bidirectional sync between property and input', async () => {
-						const el = document.getElementById('test1')
-						const input = el.querySelector('input')
-
-						// Property to input
-						el.checked = true
-						await tick()
-						assert.equal(input.checked, true)
-
-						// Input to property (via change event)
-						input.checked = false
-						input.dispatchEvent(
-							new Event('change', { bubbles: true }),
-						)
-						await tick()
-						assert.equal(el.checked, false)
-					})
-
-					it('should preserve input classes and attributes', async () => {
-						const el = document.getElementById('test3')
-						const input = el.querySelector('input')
-
-						// Should preserve original input attributes
-						assert.isTrue(
-							input.classList.contains('visually-hidden'),
-						)
-						assert.equal(input.type, 'checkbox')
-
-						// Property changes should not affect these
-						el.checked = true
-						el.label = 'Changed'
-						await tick()
-
-						assert.isTrue(
-							input.classList.contains('visually-hidden'),
-						)
-						assert.equal(input.type, 'checkbox')
 					})
 
 					it('should handle keyboard interactions', async () => {

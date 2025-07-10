@@ -9,6 +9,7 @@ import {
 	state,
 	toggleClass,
 } from '../../..'
+import { requireDescendant } from '../../../src/core/dom'
 import { asURL } from '../../functions/attribute-parser/as-url'
 import { fetchWithCache } from '../../functions/shared/fetch-with-cache'
 
@@ -22,8 +23,10 @@ export default component(
 		src: asURL,
 	},
 	(el, { first }) => {
-		const error = state('')
+		requireDescendant(el, 'card-callout')
+		requireDescendant(el, '.error')
 
+		const error = state('')
 		const content = computed(async abort => {
 			const url = el.src.value
 			if (el.src.error || !url) {

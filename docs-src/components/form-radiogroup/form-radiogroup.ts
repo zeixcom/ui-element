@@ -34,14 +34,14 @@ export default component(
 	},
 	(el, { all }) => [
 		setAttribute('value'),
-		manageFocusOnKeydown(
-			Array.from(el.querySelectorAll<HTMLInputElement>('input')),
-			inputs => inputs.findIndex(input => input.checked),
-		),
 		all(
 			'input',
 			setProperty('tabIndex', target =>
 				target.value === el.value ? 0 : -1,
+			),
+			...manageFocusOnKeydown(
+				Array.from(el.querySelectorAll<HTMLInputElement>('input')),
+				inputs => inputs.findIndex(input => input.checked),
 			),
 		),
 		all(

@@ -2,9 +2,7 @@ import { type Computed } from '@zeix/cause-effect'
 import type { ElementFromSelector, SignalProducer } from '../component'
 type EventType<K extends string> = K extends keyof HTMLElementEventMap
 	? HTMLElementEventMap[K]
-	: K extends keyof SVGElementEventMap
-		? SVGElementEventMap[K]
-		: Event
+	: Event
 type EventTransformerContext<
 	T extends {},
 	E extends Element,
@@ -121,6 +119,22 @@ declare const read: <
 	selector: S,
 	map: (element: ElementFromSelector<S, E> | null, isUpgraded: boolean) => T,
 ) => T
+/**
+ * Assert that an element contains an expected descendant element
+ *
+ * @since 0.13.3
+ * @param {HTMLElement} host - Host element
+ * @param {S} selector - Descendant element to check for
+ * @returns {ElementFromSelector<S, E>} First found descendant element
+ * @throws {Error} If the element does not contain the required descendant element
+ */
+declare const requireDescendant: <
+	S extends string = string,
+	E extends Element = HTMLElement,
+>(
+	host: HTMLElement,
+	selector: S,
+) => ElementFromSelector<S, E>
 export {
 	type EventType,
 	type EventTransformer,
@@ -130,4 +144,5 @@ export {
 	reduced,
 	read,
 	observeSubtree,
+	requireDescendant,
 }

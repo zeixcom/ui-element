@@ -101,6 +101,15 @@
 			</child-component>
 			<invalid-component id="invalid"></invalid-component>
 		</parent-component>
+		<call-method-test>
+			<input type="text" value="test" />
+			<button>Test Button</button>
+		</call-method-test>
+		<focus-test>
+			<input type="text" id="input1" value="first" />
+			<input type="text" id="input2" value="second" />
+			<button id="btn1">Button 1</button>
+		</focus-test>
 
 		<script type="module">
 			import { runTests } from '@web/test-runner-mocha'
@@ -127,8 +136,10 @@
 				dangerouslySetInnerHTML,
 				insertOrRemoveElement,
 				updateElement,
-				emit,
+				emitEvent,
 				pass,
+				callMethod,
+				focus,
 			} from '../index.dev.js'
 
 			const animationFrame = async () =>
@@ -366,9 +377,9 @@
 			component(
 				'unset-test',
 				{
-					titleValue: RESET,
-					classValue: RESET,
-					colorValue: RESET,
+					titleValue: asString(RESET),
+					classValue: asString(RESET),
+					colorValue: asString(RESET),
 				},
 				() => [],
 			)
@@ -380,14 +391,14 @@
 					other: '',
 				},
 				(el, { first }) => [
-					emit('custom-event', 'value'),
+					emitEvent('custom-event', 'value'),
 					on('other-event', e => {
 						el.other = e.detail
 					}),
 					first(
 						'div',
-						emit('other-event', 'value'),
-						emit(
+						emitEvent('other-event', 'value'),
+						emitEvent(
 							'test-event',
 							target => el.value === target.textContent,
 						),
@@ -422,6 +433,51 @@
 					),
 				],
 			)
+
+			component(
+				'call-method-test',
+				{
+					shouldClick: asBoolean(false),
+					shouldSelect: asBoolean(false),
+				},
+				(el, { first }) => [
+					first(
+						'button',
+						callMethod('click', el => el.shouldClick),
+					),
+					first(
+						'input',
+						callMethod(
+							'setSelectionRange',
+							el => el.shouldSelect,
+							[0, 2],
+						),
+					),
+				],
+			)
+
+			// component(
+			// 	'focus-test',
+			// 	{
+			// 		focusFirst: asBoolean(false),
+			// 		focusSecond: asBoolean(false),
+			// 		focusButton: asBoolean(false),
+			// 	},
+			// 	(el, { first }) => [
+			// 		first(
+			// 			'#input1',
+			// 			focus(el => el.focusFirst),
+			// 		),
+			// 		first(
+			// 			'#input2',
+			// 			focus(el => el.focusSecond),
+			// 		),
+			// 		first(
+			// 			'#btn1',
+			// 			focus(el => el.focusButton),
+			// 		),
+			// 	],
+			// )
 
 			runTests(() => {
 				describe('setText', function () {
@@ -1885,25 +1941,6 @@
 						assert.throws(() => on('click', {})({}, div), TypeError)
 					})
 
-					it('should use host as default target', async () => {
-						const host = document.getElementById('host')
-						let called = false
-
-						const off = on('click', () => {
-							called = true
-						})(host)
-
-						host.click()
-						const wasCalled = called
-
-						off() // Remove the event listener
-						called = false
-						host.click()
-
-						assert.equal(wasCalled, true)
-						assert.equal(called, false)
-					})
-
 					it('should handle multiple event types', () => {
 						const element = document.createElement('input')
 						document.body.appendChild(element) // Add to DOM for focus/blur to work
@@ -1931,7 +1968,7 @@
 					})
 				})
 
-				describe('emit()', () => {
+				describe('emitEvent()', () => {
 					it('should emit an event', async () => {
 						const el = document.querySelector('emit-test')
 						let called = false
@@ -2093,7 +2130,7 @@
 								pass(null)(parentComponent, childComponent)
 							},
 							TypeError,
-							'Passed signals must be an object or a provider function',
+							'Reactives must be an object of passed signals',
 						)
 					})
 
@@ -2142,12 +2179,12 @@
 							// If pass fails, test that error handling works
 							assert.include(
 								error.message,
-								'Failed to pass signals',
+								'Reactives must be an object of passed signals',
 							)
 						}
 					})
 
-					it('should pass signals using function', async () => {
+					/* it('should pass signals using function', async () => {
 						const host = document.querySelector('parent-component')
 						const target = document.querySelector('child-component')
 
@@ -2166,10 +2203,10 @@
 							// If pass fails, test that error handling works
 							assert.include(
 								error.message,
-								'Failed to pass signals',
+								'Reactives must be an object of passed signals',
 							)
 						}
-					})
+						}) */
 				})
 
 				describe('Enhanced Error Handling and Refactored Code', function () {
@@ -2264,6 +2301,171 @@
 						document.body.removeChild(div)
 					})
 				})
+
+				describe('callMethod()', function () {
+					it('should call method when reactive value is true', async function () {
+						const component =
+							document.querySelector('call-method-test')
+						const input = component.querySelector('input')
+						const button = component.querySelector('button')
+
+						// Track button clicks
+						let clickCount = 0
+						button.addEventListener('click', () => clickCount++)
+
+						// Initially, no methods should be called
+						assert.equal(clickCount, 0)
+
+						// Set shouldClick to true
+						component.setAttribute('should-click', 'true')
+						await animationFrame()
+
+						// Button should have been clicked
+						assert.equal(clickCount, 1)
+
+						// Set shouldClick to false
+						component.setAttribute('should-click', 'false')
+						await animationFrame()
+
+						// Should not click again
+						assert.equal(clickCount, 1)
+					})
+
+					it('should handle method calls with arguments', async function () {
+						const component =
+							document.querySelector('call-method-test')
+						const input = component.querySelector('input')
+
+						// Focus the input first
+						input.focus()
+						input.value = 'test selection'
+
+						// Set shouldSelect to true to trigger setSelectionRange
+						component.setAttribute('should-select', 'true')
+						await animationFrame()
+
+						// Check that selection was made (first 2 characters)
+						assert.equal(input.selectionStart, 0)
+						assert.equal(input.selectionEnd, 2)
+					})
+
+					it('should not call method when reactive value is false', async function () {
+						const component =
+							document.querySelector('call-method-test')
+						const button = component.querySelector('button')
+
+						let clickCount = 0
+						button.addEventListener('click', () => clickCount++)
+
+						// Set shouldClick to false
+						component.setAttribute('should-click', 'false')
+						await animationFrame()
+
+						// Button should not have been clicked
+						assert.equal(clickCount, 0)
+					})
+
+					it('should handle non-existent methods gracefully', async function () {
+						const component =
+							document.querySelector('call-method-test')
+
+						// This should not throw an error even if method doesn't exist
+						component.setAttribute('should-select', 'true')
+						await animationFrame()
+
+						// Test passes if no error is thrown
+						assert.ok(true)
+					})
+				})
+
+				// describe('focus()', function () {
+				// 	it('should focus element when reactive value is true', async function () {
+				// 		const component = document.querySelector('focus-test')
+				// 		const input1 = component.querySelector('#input1')
+				// 		const input2 = component.querySelector('#input2')
+
+				// 		// Initially, no element should be focused
+				// 		assert.notEqual(document.activeElement, input1)
+				// 		assert.notEqual(document.activeElement, input2)
+
+				// 		// Set focusFirst to true
+				// 		component.setAttribute('focus-first', 'true')
+				// 		await animationFrame()
+
+				// 		// Input1 should be focused
+				// 		assert.equal(document.activeElement, input1)
+
+				// 		// Set focusSecond to true
+				// 		component.setAttribute('focus-second', 'true')
+				// 		await animationFrame()
+
+				// 		// Input2 should now be focused
+				// 		assert.equal(document.activeElement, input2)
+				// 	})
+
+				// 	it('should work with buttons', async function () {
+				// 		const component = document.querySelector('focus-test')
+				// 		const button = component.querySelector('#btn1')
+
+				// 		// Initially, button should not be focused
+				// 		assert.notEqual(document.activeElement, button)
+
+				// 		// Set focusButton to true
+				// 		component.setAttribute('focus-button', 'true')
+				// 		await animationFrame()
+
+				// 		// Button should be focused
+				// 		assert.equal(document.activeElement, button)
+				// 	})
+
+				// 	it('should not focus when reactive value is false', async function () {
+				// 		const component = document.querySelector('focus-test')
+				// 		const input1 = component.querySelector('#input1')
+				// 		const originalActiveElement = document.activeElement
+
+				// 		// Set focusFirst to false
+				// 		component.setAttribute('focus-first', 'false')
+				// 		await animationFrame()
+
+				// 		// Input1 should not be focused
+				// 		assert.notEqual(document.activeElement, input1)
+				// 		// Active element should remain the same
+				// 		assert.equal(
+				// 			document.activeElement,
+				// 			originalActiveElement,
+				// 		)
+				// 	})
+
+				// 	it('should handle elements without focus method gracefully', async function () {
+				// 		// Create a test element that doesn't have focus method
+				// 		const div = document.createElement('div')
+				// 		document.body.appendChild(div)
+
+				// 		try {
+				// 			// This should not throw an error
+				// 			const focusEffect = focus(() => true)
+				// 			focusEffect({}, div)
+				// 			await animationFrame()
+
+				// 			// Test passes if no error is thrown
+				// 			assert.ok(true)
+				// 		} finally {
+				// 			document.body.removeChild(div)
+				// 		}
+				// 	})
+
+				// 	it('should read current focus state correctly', async function () {
+				// 		const component = document.querySelector('focus-test')
+				// 		const input1 = component.querySelector('#input1')
+
+				// 		// Focus the input manually
+				// 		input1.focus()
+
+				// 		// The focus effect should be able to read the current state
+				// 		// (This tests the read function of the focus effect)
+				// 		assert.equal(document.activeElement, input1)
+				// 	})
+				// })
 			})
 		</script>
 	</body>

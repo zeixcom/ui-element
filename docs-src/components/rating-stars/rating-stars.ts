@@ -2,7 +2,7 @@ import {
 	type Component,
 	asInteger,
 	component,
-	emit,
+	emitEvent,
 	on,
 	setProperty,
 	setText,
@@ -22,19 +22,14 @@ export default component(
 			parseInt(element.dataset['key'] || '0')
 
 		return [
+			emitEvent('change-rating', 'value'),
 			all(
 				'input',
 				setProperty('checked', target => el.value === getKey(target)),
-				on({
-					change: (e: Event) => {
-						e.stopPropagation()
-						const value =
-							parseInt(
-								(e.currentTarget as HTMLInputElement)?.value,
-							) + 1
-						el.value = value
-						emit('change-rating', value)(el)
-					},
+				on('change', e => {
+					e.stopPropagation()
+					const value = parseInt((e.currentTarget as HTMLInputElement)?.value)
+					el.value = value + 1
 				}),
 			),
 			all(

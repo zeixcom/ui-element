@@ -11,18 +11,14 @@ import {
 } from '@zeix/cause-effect'
 
 import type { ElementFromSelector, SignalProducer } from '../component'
-import { isUpgradedComponent } from './util'
+import { elementName, isUpgradedComponent } from './util'
 
 /* === Types === */
 
-// Helper type to get event type - use mapped type for known events, Event for custom events
 type EventType<K extends string> = K extends keyof HTMLElementEventMap
 	? HTMLElementEventMap[K]
-	: K extends keyof SVGElementEventMap
-		? SVGElementEventMap[K]
-		: Event
+	: Event
 
-// Transformer context interface for fromEvent
 type EventTransformerContext<
 	T extends {},
 	E extends Element,
@@ -35,7 +31,6 @@ type EventTransformerContext<
 	value: T
 }
 
-// Event transformer function type
 type EventTransformer<
 	T extends {},
 	E extends Element,
@@ -43,7 +38,6 @@ type EventTransformer<
 	Evt extends Event,
 > = (context: EventTransformerContext<T, E, C, Evt>) => T | void
 
-// Event transformer map type
 type EventTransformers<
 	T extends {},
 	E extends Element,
@@ -119,7 +113,7 @@ const areElementArraysEqual = <E extends Element>(
  * @since 0.13.3
  * @param {T | ((host: C) => T)} initialize - Initial value or initialize function
  * @param {S} selector - CSS selector for the source element
- * @param {EventTransformers<T, ElementFromSelector<S, E>, K>} events - Transformation functions for events
+ * @param {EventTransformers<T, ElementFromSelector<S, E>, C>} events - Transformation functions for events
  * @returns {(host: C) => Computed<T>} Signal producer for value from event
  */
 const fromEvents =
@@ -229,23 +223,23 @@ const observeSubtree = (
  *
  * @since 0.13.1
  * @param {K} selector - CSS selector for descendant elements
- * @returns {(host: HTMLElement) => Computed<ElementFromSelector<K, E>[]} Signal producer for descendant element collection from a selector
+ * @returns {(host: C) => Computed<ElementFromSelector<S, E>[]>} Signal producer for descendant element collection from a selector
  */
 const fromSelector =
 	<
 		E extends Element = HTMLElement,
 		C extends HTMLElement = HTMLElement,
-		K extends string = string,
+		S extends string = string,
 	>(
-		selector: K,
-	): SignalProducer<ElementFromSelector<K, E>[], C> =>
+		selector: S,
+	): SignalProducer<ElementFromSelector<S, E>[], C> =>
 	(host: C) => {
 		const watchers: Set<Watcher> = new Set()
 		const select = () =>
 			Array.from(
-				host.querySelectorAll<ElementFromSelector<K, E>>(selector),
+				host.querySelectorAll<ElementFromSelector<S, E>>(selector),
 			)
-		let value: ElementFromSelector<K, E>[] = UNSET
+		let value: ElementFromSelector<S, E>[] = UNSET
 		let observer: MutationObserver | undefined
 		let mutationDepth = 0
 		const MAX_MUTATION_DEPTH = 2 // Consider a depth > 1 as circular
@@ -285,7 +279,7 @@ const fromSelector =
 		return {
 			[Symbol.toStringTag]: TYPE_COMPUTED,
 
-			get(): ElementFromSelector<K, E>[] {
+			get(): ElementFromSelector<S, E>[] {
 				subscribe(watchers)
 				if (!watchers.size) value = select()
 				else if (!observer) observe()
@@ -299,8 +293,8 @@ const fromSelector =
  *
  * @since 0.13.3
  * @param {C} host - Host element for computed property
- * @param {K} selector - CSS selector for descendant elements
- * @param {(accumulator: T, currentElement: ElementFromSelector<K, E>, currentIndex: number, array: ElementFromSelector<K, E>[]) => T} reducer - Function to reduce values
+ * @param {S} selector - CSS selector for descendant elements
+ * @param {(accumulator: T, currentElement: ElementFromSelector<S, E>, currentIndex: number, array: ElementFromSelector<S, E>[]) => T} reducer - Function to reduce values
  * @param {T} initialValue - Initial value function for reduction
  * @returns {Computed<T>} Computed signal of reduced values of descendant elements
  */
@@ -337,7 +331,7 @@ const reduced = <
  * @param {C} host - Host element
  * @param {S} selector - CSS selector for descendant element
  * @param {(element: ElementFromSelector<S, E> | null, isUpgraded: boolean) => T} map - Function to map over the element
- * @returns {SignalProducer<T>} Signal producer that gets the property value from descendant element
+ * @returns {T} The mapped result from the descendant element
  */
 const read = <
 	T extends {},
@@ -353,6 +347,31 @@ const read = <
 	return map(source, source ? isUpgradedComponent(source) : false)
 }
 
+/**
+ * Assert that an element contains an expected descendant element
+ *
+ * @since 0.13.3
+ * @param {HTMLElement} host - Host element
+ * @param {S} selector - Descendant element to check for
+ * @returns {ElementFromSelector<S, E>} First found descendant element
+ * @throws {Error} If the element does not contain the required descendant element
+ */
+const requireDescendant = <
+	S extends string = string,
+	E extends Element = HTMLElement,
+>(
+	host: HTMLElement,
+	selector: S,
+): ElementFromSelector<S, E> => {
+	const target = host.querySelector<ElementFromSelector<S, E>>(selector)
+	if (!target) {
+		throw new Error(
+			`Component ${elementName(host)} does not contain required <${selector}> element`,
+		)
+	}
+	return target
+}
+
 export {
 	type EventType,
 	type EventTransformer,
@@ -362,4 +381,5 @@ export {
 	reduced,
 	read,
 	observeSubtree,
+	requireDescendant,
 }

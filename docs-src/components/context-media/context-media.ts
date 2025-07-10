@@ -59,7 +59,7 @@ export default component(
 		},
 
 		// Context for screen viewport size
-		[MEDIA_VIEWPORT]: el => {
+		[MEDIA_VIEWPORT]: (el: HTMLElement) => {
 			const getBreakpoint = (attr: string, fallback: string) => {
 				const value = el.getAttribute(attr)
 				const trimmed = value?.trim()

@@ -1,10 +1,11 @@
 import { type Signal } from '@zeix/cause-effect'
-import { type ComponentProps, type Effect } from '../component'
+import { type Component, type ComponentProps, type Effect } from '../component'
+import type { EventType } from '../core/dom'
 type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 	| keyof P
 	| Signal<NonNullable<T>>
 	| ((element: E) => T | null | undefined)
-type Reactives<P extends ComponentProps, E extends Element> = {
+type Reactives<E extends Element, P extends ComponentProps> = {
 	[K in keyof E]?: Reactive<E[K], P, E>
 }
 type UpdateOperation = 'a' | 'c' | 'd' | 'h' | 'm' | 'p' | 's' | 't'
@@ -222,12 +223,19 @@ declare const dangerouslySetInnerHTML: <
  * Effect for attaching an event listener to an element.
  * Provides proper cleanup when the effect is disposed.
  *
- * @since 0.13.3
- * @param {(event: HTMLElementEventType<K>) => void} listeners - Event listener function
+ * @since 0.12.0
+ * @param {string} type - Event type
+ * @param {(event: EventType<K>) => void} listener - Event listener function
+ * @param {AddEventListenerOptions | boolean} options - Event listener options
  * @returns {Effect<ComponentProps, E>} Effect function that manages the event listener
  */
-declare const on: <E extends HTMLElement>(
-	listeners: { [K in keyof HTMLElementEventMap]?: EventListener },
+declare const on: <
+	K extends keyof HTMLElementEventMap | string,
+	E extends HTMLElement,
+>(
+	type: K,
+	listener: (event: EventType<K>) => void,
+	options?: AddEventListenerOptions | boolean,
 ) => Effect<ComponentProps, E>
 /**
  * Effect for emitting custom events with reactive detail values.
@@ -253,11 +261,12 @@ declare const emitEvent: <
  * @since 0.13.2
  * @param {Reactives<P, E>} reactives - Reactive values to pass or function that returns them
  * @returns {Effect<P, E>} Effect function that passes reactive values to descendant elements
- * @throws {ReferenceError} When the provided reactives are not an object or provider function
+ * @throws {TypeError} When the provided reactives are not an object or the target is not a UIElement component
+ * @throws {Error}
  */
-declare const pass: <P extends ComponentProps, E extends Element>(
-	reactives: Reactives<P, E>,
-) => Effect<P, E>
+declare const pass: <P extends ComponentProps, Q extends ComponentProps>(
+	reactives: Reactives<Component<Q>, P>,
+) => Effect<P, Component<Q>>
 export {
 	type Reactive,
 	type Reactives,

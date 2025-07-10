@@ -120,6 +120,7 @@ Save the following inside a `<script type="module">` tag or an external JavaScri
 ```html
 <script type="module">
   import {
+    asString,
     component,
     on,
     RESET,
@@ -130,7 +131,7 @@ Save the following inside a `<script type="module">` tag or an external JavaScri
     'hello-world',
     {
       // Fall back to server-rendered content
-      name: RESET,
+      name: asString(RESET),
     },
     (el, { first }) => [
       // Update content dynamically based on the "name" signal

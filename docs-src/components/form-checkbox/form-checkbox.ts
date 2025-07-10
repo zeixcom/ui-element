@@ -1,8 +1,10 @@
 import {
 	type Component,
 	RESET,
+	asString,
 	component,
 	fromEvents,
+	requireDescendant,
 	setText,
 	toggleAttribute,
 } from '../../..'
@@ -18,12 +20,14 @@ export default component(
 		checked: fromEvents(el => el.querySelector('input')?.checked, 'input', {
 			change: ({ target }) => target.checked,
 		}),
-		label: RESET,
+		label: asString(RESET),
 	},
-	(_, { first }) => [
-		toggleAttribute('checked'),
-		first('.label', setText('label')),
-	],
+	(el, { first }) => {
+		requireDescendant(el, 'input[type="checkbox"]')
+		requireDescendant(el, '.label')
+
+		return [toggleAttribute('checked'), first('.label', setText('label'))]
+	},
 )
 
 declare global {

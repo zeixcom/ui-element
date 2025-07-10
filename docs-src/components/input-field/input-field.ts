@@ -5,7 +5,7 @@ import {
 	UNSET,
 	component,
 	computed,
-	emit,
+	emitEvent,
 	on,
 	setAttribute,
 	setProperty,
@@ -29,7 +29,11 @@ export type InputFieldProps = {
 const isNumber = (num: unknown) => typeof num === 'number'
 
 // Parse a value as a number with optional integer flag and fallback value
-const parseNumber = (v: string | null, int = false, fallback = 0): number => {
+const parseNumber = (
+	v: string | null | undefined,
+	int = false,
+	fallback = 0,
+): number => {
 	if (!v) return fallback
 	const temp = int ? parseInt(v, 10) : parseFloat(v)
 	return Number.isFinite(temp) ? temp : fallback
@@ -110,25 +114,23 @@ export default component(
 			input.checkValidity()
 			el.value = newValue
 			el.error = input.validationMessage ?? ''
-			if (input?.value !== String(value)) emit('value-change', value)(el)
 		}
 
 		// Handle input changes
 		fns.push(
+			emitEvent('value-change', 'value'),
 			first(
 				'input',
 				setProperty('value', () => String(el.value)),
-				on({
-					change: () => {
-						triggerChange(
-							typeNumber
-								? (input.valueAsNumber ?? 0)
-								: (input.value ?? ''),
-						)
-					},
-					input: () => {
-						el.length = input.value.length ?? 0
-					},
+				on('change', () => {
+					triggerChange(
+						typeNumber
+							? (input.valueAsNumber ?? 0)
+							: (input.value ?? ''),
+					)
+				}),
+				on('input', () => {
+					el.length = input.value.length ?? 0
 				}),
 			),
 		)
@@ -159,21 +161,19 @@ export default component(
 			fns.push(
 				first(
 					'input',
-					on({
-						keydown: (e: Event) => {
-							const { key, shiftKey } = e as KeyboardEvent
-							if (['ArrowUp', 'ArrowDown'].includes(key)) {
-								e.stopPropagation()
-								e.preventDefault()
-								const n = shiftKey ? step * 10 : step
-								const newValue = nearestStep(
-									input.valueAsNumber +
-										(key === 'ArrowUp' ? n : -n),
-								)
-								input.value = String(newValue)
-								triggerChange(newValue)
-							}
-						},
+					on('keydown', (e: Event) => {
+						const { key, shiftKey } = e as KeyboardEvent
+						if (['ArrowUp', 'ArrowDown'].includes(key)) {
+							e.stopPropagation()
+							e.preventDefault()
+							const n = shiftKey ? step * 10 : step
+							const newValue = nearestStep(
+								input.valueAsNumber +
+									(key === 'ArrowUp' ? n : -n),
+							)
+							input.value = String(newValue)
+							triggerChange(newValue)
+						}
 					}),
 				),
 			)
@@ -183,17 +183,15 @@ export default component(
 				fns.push(
 					first<HTMLButtonElement>(
 						'.decrement',
-						on({
-							click: (e: Event) => {
-								const n = (e as MouseEvent).shiftKey
-									? step * 10
-									: step
-								const newValue = nearestStep(
-									input.valueAsNumber - n,
-								)
-								input.value = String(newValue)
-								triggerChange(newValue)
-							},
+						on('click', (e: Event) => {
+							const n = (e as MouseEvent).shiftKey
+								? step * 10
+								: step
+							const newValue = nearestStep(
+								input.valueAsNumber - n,
+							)
+							input.value = String(newValue)
+							triggerChange(newValue)
 						}),
 						setProperty(
 							'disabled',
@@ -205,17 +203,15 @@ export default component(
 					),
 					first<HTMLButtonElement>(
 						'.increment',
-						on({
-							click: (e: Event) => {
-								const n = (e as MouseEvent).shiftKey
-									? step * 10
-									: step
-								const newValue = nearestStep(
-									input.valueAsNumber + n,
-								)
-								input.value = String(newValue)
-								triggerChange(newValue)
-							},
+						on('click', (e: Event) => {
+							const n = (e as MouseEvent).shiftKey
+								? step * 10
+								: step
+							const newValue = nearestStep(
+								input.valueAsNumber + n,
+							)
+							input.value = String(newValue)
+							triggerChange(newValue)
 						}),
 						setProperty(
 							'disabled',
@@ -232,11 +228,9 @@ export default component(
 			fns.push(
 				first<HTMLButtonElement>(
 					'.clear',
-					on({
-						click: () => {
-							el.clear()
-							triggerChange('')
-						},
+					on('click', () => {
+						el.clear()
+						triggerChange('')
 					}),
 					show(() => !!el.length),
 				),

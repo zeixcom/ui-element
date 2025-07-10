@@ -57,6 +57,7 @@ export {
 	fromSelector,
 	read,
 	reduced,
+	requireDescendant,
 } from './src/core/dom'
 export {
 	type Context,

@@ -465,6 +465,13 @@ var read = (host, selector, map) => {
   const source = host.querySelector(selector);
   return map(source, source ? isUpgradedComponent(source) : false);
 };
+var requireDescendant = (host, selector) => {
+  const target = host.querySelector(selector);
+  if (!target) {
+    throw new Error(`Component ${elementName(host)} does not contain required <${selector}> element`);
+  }
+  return target;
+};
 
 // src/component.ts
 var RESET = Symbol();
@@ -964,20 +971,13 @@ var dangerouslySetInnerHTML = (reactive, options = {}) => updateElement(reactive
     return " with scripts";
   }
 });
-var on = (listeners) => (host, target = host) => {
-  const eventMap = new Map;
-  for (const [type, listener] of Object.entries(listeners)) {
-    eventMap.set(type, listener);
-    target.addEventListener(type, listener);
-  }
-  return () => {
-    for (const [type, listener] of eventMap) {
-      target.removeEventListener(type, listener);
-    }
-    eventMap.clear();
-  };
+var on = (type, listener, options = false) => (_, target) => {
+  if (!isFunction(listener))
+    throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
+  target.addEventListener(type, listener, options);
+  return () => target.removeEventListener(type, listener);
 };
-var emitEvent = (type, reactive) => (host, target = host) => withReactiveValue(reactive, host, target, `custom event "${type}" detail`, (detail) => {
+var emitEvent = (type, reactive) => (host, target) => withReactiveValue(reactive, host, target, `custom event "${type}" detail`, (detail) => {
   if (detail === RESET || detail === UNSET)
     return;
   target.dispatchEvent(new CustomEvent(type, {
@@ -987,12 +987,12 @@ var emitEvent = (type, reactive) => (host, target = host) => withReactiveValue(r
 });
 var pass = (reactives) => (host, target) => {
   if (!isDefinedObject(reactives))
-    throw new ReferenceError(`Passed signals must be an object or a provider function`);
+    throw new TypeError(`Reactives must be an object of passed signals`);
   if (!isCustomElement(target))
-    return;
+    throw new TypeError(`Target ${elementName(target)} is not a custom element`);
   customElements.whenDefined(target.localName).then(() => {
     if (!hasMethod(target, "setSignal"))
-      return;
+      throw new TypeError(`Target ${elementName(target)} is not a UIElement component`);
     for (const [prop, reactive] of Object.entries(reactives)) {
       target.setSignal(prop, isString(reactive) ? host.getSignal(reactive) : toSignal(reactive));
     }
@@ -1011,6 +1011,7 @@ export {
   setStyle,
   setProperty,
   setAttribute,
+  requireDescendant,
   reduced,
   read,
   provideContexts,

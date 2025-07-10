@@ -191,20 +191,18 @@ export default component(
 			/* Update column values when cells change */
 			all(
 				'tbody input',
-				on({
-					change: (e: Event) => {
-						const colKey = (e.target as HTMLInputElement)?.dataset[
-							'key'
-						]
-						colSums.get(colKey!)?.set(calcColumnSum(colKey!))
-					},
+				on('change', e => {
+					const colKey = (e.target as HTMLInputElement)?.dataset[
+						'key'
+					]
+					colSums.get(colKey!)?.set(calcColumnSum(colKey!))
 				}),
 			),
 
 			/* Update sums for each column */
 			all(
 				'tfoot td',
-				setText((target: HTMLTableCellElement) =>
+				setText(target =>
 					String(colSums.get(target.dataset['key']!)!.get()),
 				),
 			),

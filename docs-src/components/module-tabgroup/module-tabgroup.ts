@@ -7,6 +7,7 @@ import {
 	setProperty,
 	show,
 } from '../../..'
+import { requireDescendant } from '../../../src/core/dom'
 
 export type ModuleTabgroupProps = {
 	tabs: HTMLButtonElement[]
@@ -79,8 +80,12 @@ export default component(
 		),
 	},
 	(el, { all }) => {
+		requireDescendant(el, '[role="tablist"]')
+		requireDescendant(el, '[role="tab"]')
+		requireDescendant(el, '[role="tabpanel"]')
 		const isCurrentTab = (tab: HTMLButtonElement) =>
 			el.selected === getAriaControls(tab)
+
 		return [
 			all<HTMLButtonElement>(
 				'[role="tab"]',
@@ -102,6 +107,6 @@ export default component(
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'tab-list': Component<ModuleTabgroupProps>
+		'module-tabgroup': Component<ModuleTabgroupProps>
 	}
 }

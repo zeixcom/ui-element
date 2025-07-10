@@ -1,39 +1,20 @@
-import {
-	type Component,
-	type SignalProducer,
-	component,
-	pass,
-	reduced,
-} from '../../..'
+import { component, pass, reduced } from '../../..'
 
-export type ModuleCatalogProps = {
-	total: number
-}
+export default component('module-catalog', {}, (el, { first }) => {
+	const total = reduced(
+		el,
+		'form-spinbutton',
+		(sum, item) => sum + item.value,
+		0,
+	)
 
-export default component(
-	'module-catalog',
-	{
-		total: (el =>
-			reduced(
-				el,
-				'form-spinbutton',
-				(sum, item) => sum + item.value,
-				0,
-			)) as SignalProducer<number>,
-	},
-	(el, { first }) => [
+	return [
 		first(
 			'basic-button',
 			pass({
-				badge: () => (el.total > 0 ? String(el.total) : ''),
-				disabled: () => !el.total,
+				badge: () => (total.get() > 0 ? String(total.get()) : ''),
+				disabled: () => !total.get(),
 			}),
 		),
-	],
-)
-
-declare global {
-	interface HTMLElementTagNameMap {
-		'module-catalog': Component<ModuleCatalogProps>
-	}
-}
+	]
+})

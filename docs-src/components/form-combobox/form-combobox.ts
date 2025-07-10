@@ -83,41 +83,38 @@ export default component<FormComboboxProps>(
 						options.get().at(i)?.focus()
 					else input.focus()
 				}),
-			on({
-				keydown: (e: Event) => {
-					const { key, altKey } = e as KeyboardEvent
-					if (['ArrowDown', 'ArrowUp'].includes(key)) {
-						e.preventDefault()
-						e.stopPropagation()
-						// Set mode to editing when navigating options
-						mode.set('editing')
-						if (altKey) showPopup.set(key === 'ArrowDown')
-						else
-							focusIndex.update(v =>
-								key === 'ArrowDown'
-									? Math.min(v + 1, options.get().length - 1)
-									: Math.max(v - 1, -1),
-							)
-					}
-				},
-				keyup: (e: Event) => {
-					const { key } = e as KeyboardEvent
-					if (key === 'Delete') {
-						e.preventDefault()
-						e.stopPropagation()
-						commit('')
-					}
-				},
-				focusout: () =>
-					requestAnimationFrame(() => {
-						// Set mode to idle when no element in our component has focus
-						if (!el.contains(document.activeElement))
-							mode.set('idle')
-					}),
+			on('keydown', e => {
+				const { key, altKey } = e
+				if (['ArrowDown', 'ArrowUp'].includes(key)) {
+					e.preventDefault()
+					e.stopPropagation()
+					// Set mode to editing when navigating options
+					mode.set('editing')
+					if (altKey) showPopup.set(key === 'ArrowDown')
+					else
+						focusIndex.update(v =>
+							key === 'ArrowDown'
+								? Math.min(v + 1, options.get().length - 1)
+								: Math.max(v - 1, -1),
+						)
+				}
+			}),
+			on('keyup', e => {
+				const { key } = e
+				if (key === 'Delete') {
+					e.preventDefault()
+					e.stopPropagation()
+					commit('')
+				}
+			}),
+			on('focusout', () => {
+				requestAnimationFrame(() => {
+					// Set mode to idle when no element in our component has focus
+					if (!el.contains(document.activeElement)) mode.set('idle')
+				})
 			}),
 
 			// Effects on error and description
-			// Have to come first so we can set the el.description using RESET
 			first('.error', setText('error')),
 			first('.description', setText('description')),
 
@@ -136,22 +133,19 @@ export default component<FormComboboxProps>(
 						: UNSET,
 				),
 				setProperty('ariaExpanded', () => String(isExpanded())),
-				on({
-					change: () => {
-						input.checkValidity()
-						el.value = input.value
-						el.error = input.validationMessage ?? ''
-					},
+				on('change', () => {
+					input.checkValidity()
+					el.value = input.value
+					el.error = input.validationMessage ?? ''
 				}),
-				on({
-					input: () =>
-						batch(() => {
-							// Set mode to editing when typing
-							mode.set('editing')
-							showPopup.set(true)
-							filterText.set(input.value.trim().toLowerCase())
-							el.length = input.value.length
-						}),
+				on('input', () => {
+					batch(() => {
+						// Set mode to editing when typing
+						mode.set('editing')
+						showPopup.set(true)
+						filterText.set(input.value.trim().toLowerCase())
+						el.length = input.value.length
+					})
 				}),
 			),
 
@@ -159,10 +153,8 @@ export default component<FormComboboxProps>(
 			first(
 				'.clear',
 				show(() => !!el.length),
-				on({
-					click: () => {
-						el.clear()
-					},
+				on('click', () => {
+					el.clear()
 				}),
 			),
 
@@ -170,32 +162,29 @@ export default component<FormComboboxProps>(
 			first(
 				'[role="listbox"]',
 				show(isExpanded),
-				on({
-					keyup: (e: Event) => {
-						const { key } = e as KeyboardEvent
-						if (key === 'Enter') {
-							commit(
-								options
-									.get()
-									.at(focusIndex.get())
-									?.textContent?.trim() || '',
-							)
-						} else if (key === 'Escape') {
-							commit(el.value)
-						} else {
-							const lowKey = key.toLowerCase()
-							const nextIndex = options
+				on('keyup', (e: Event) => {
+					const { key } = e as KeyboardEvent
+					if (key === 'Enter') {
+						commit(
+							options
 								.get()
-								.findIndex(option =>
-									(
-										option.textContent
-											?.trim()
-											.toLowerCase() || ''
-									).startsWith(lowKey),
-								)
-							if (nextIndex !== -1) focusIndex.set(nextIndex)
-						}
-					},
+								.at(focusIndex.get())
+								?.textContent?.trim() || '',
+						)
+					} else if (key === 'Escape') {
+						commit(el.value)
+					} else {
+						const lowKey = key.toLowerCase()
+						const nextIndex = options
+							.get()
+							.findIndex(option =>
+								(
+									option.textContent?.trim().toLowerCase() ||
+									''
+								).startsWith(lowKey),
+							)
+						if (nextIndex !== -1) focusIndex.set(nextIndex)
+					}
 				}),
 			),
 
@@ -214,13 +203,10 @@ export default component<FormComboboxProps>(
 						.toLowerCase()
 						.includes(filterText.get()),
 				),
-				on({
-					click: (e: Event) => {
-						commit(
-							(e.target as HTMLLIElement).textContent?.trim() ||
-								'',
-						)
-					},
+				on('click', (e: Event) => {
+					commit(
+						(e.target as HTMLLIElement).textContent?.trim() || '',
+					)
 				}),
 			),
 		]

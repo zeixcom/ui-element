@@ -1,3 +1,4 @@
+import { requireDescendant } from '../../..'
 import {
 	type Component,
 	RESET,
@@ -19,13 +20,18 @@ export default component(
 	{
 		disabled: asBoolean(),
 		label: asString(RESET),
-		badge: asString(RESET),
+		badge: asString(),
 	},
-	(_, { first }) => [
-		first('button', setProperty('disabled')),
-		first('.label', setText('label')),
-		first('.badge', setText('badge')),
-	],
+	(el, { first }) => {
+		requireDescendant(el, 'button')
+		requireDescendant(el, '.label')
+
+		return [
+			first('button', setProperty('disabled')),
+			first('.label', setText('label')),
+			first('.badge', setText('badge')),
+		]
+	},
 )
 
 declare global {

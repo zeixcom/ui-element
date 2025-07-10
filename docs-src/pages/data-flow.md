@@ -92,7 +92,7 @@ component(
   'basic-button',
   {
     disabled: asBoolean(),
-    badge: asString(RESET),
+    badge: asString(),
   },
   (_, { first }) => [
     first('button', setProperty('disabled')),

@@ -38,9 +38,7 @@ export const standardClearEffects = <
 	host: Component<P>,
 ): Effect<P, HTMLButtonElement>[] => [
 	show(() => !!host.length),
-	on({
-		click: () => {
-			host.clear()
-		},
+	on('click', () => {
+		host.clear()
 	}),
 ]

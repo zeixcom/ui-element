@@ -3,10 +3,10 @@ import {
 	asBoolean,
 	component,
 	on,
+	requireDescendant,
 	toggleAttribute,
 } from '../../..'
-
-import type { BasicButtonProps } from '../basic-button/basic-button'
+import { copyToClipboard } from '../../functions/event-listener/copy-to-clipboard'
 
 export type ModuleCodeblockProps = {
 	collapsed: boolean
@@ -18,47 +18,23 @@ export default component(
 		collapsed: asBoolean(),
 	},
 	(el, { first }) => {
-		const code = el.querySelector('code')
+		const code = requireDescendant(el, 'code')
+
 		return [
 			toggleAttribute('collapsed'),
 			first(
 				'.overlay',
-				on({
-					click: () => {
-						el.collapsed = false
-					},
+				on('click', () => {
+					el.collapsed = false
 				}),
 			),
 			first(
 				'.copy',
-				on({
-					click: async (e: Event) => {
-						const copyButton =
-							e.currentTarget as Component<BasicButtonProps>
-						const label = copyButton.textContent?.trim() ?? ''
-						let status = 'success'
-						try {
-							await navigator.clipboard.writeText(
-								code?.textContent?.trim() ?? '',
-							)
-						} catch (err) {
-							console.error(
-								'Error while trying to use navigator.clipboard.writeText()',
-								err,
-							)
-							status = 'error'
-						}
-						copyButton.disabled = true
-						copyButton.label =
-							el.getAttribute(`copy-${status}`) ?? label
-						setTimeout(
-							() => {
-								copyButton.disabled = false
-								copyButton.label = label
-							},
-							status === 'success' ? 1000 : 3000,
-						)
-					},
+				copyToClipboard(code, {
+					success: el.getAttribute('copy-success') || 'Copied!',
+					error:
+						el.getAttribute('copy-success') ||
+						'Error trying to copy to clipboard!',
 				}),
 			),
 		]
