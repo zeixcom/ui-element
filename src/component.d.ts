@@ -32,7 +32,7 @@ type Component<P extends ComponentProps> = HTMLElement &
 	}
 type AttributeParser<T extends {}, C extends HTMLElement = HTMLElement> = (
 	host: C,
-	value: string | null,
+	value: string | null | undefined,
 	old?: string | null,
 ) => T
 type SignalProducer<T extends {}, C extends HTMLElement = HTMLElement> = (
@@ -51,7 +51,13 @@ type Effect<P extends ComponentProps, E extends Element> = (
 type ElementFromSelector<
 	K extends string,
 	E extends Element = HTMLElement,
-> = K extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[K] : E
+> = K extends keyof HTMLElementTagNameMap
+	? HTMLElementTagNameMap[K]
+	: K extends keyof SVGElementTagNameMap
+		? SVGElementTagNameMap[K]
+		: K extends keyof MathMLElementTagNameMap
+			? MathMLElementTagNameMap[K]
+			: E
 type SelectorFunctions<P extends ComponentProps> = {
 	first: <E extends Element = never, K extends string = string>(
 		selector: K,
@@ -68,7 +74,7 @@ declare const RESET: any
  *
  * @since 0.12.0
  * @param {string} name - Name of the custom element
- * @param {{ [K in keyof S]: Initializer<S[K], Component<P>> }} init - Signals of the component
+ * @param {{ [K in keyof P]: Initializer<P[K], Component<P>> }} init - Signals of the component
  * @param {FxFunction<S>[]} setup - Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
  * @returns: void
  */

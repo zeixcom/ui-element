@@ -1,6 +1,6 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.13.2
+ * @version 0.13.3
  * @author Esther Brunner
  */
 
@@ -50,22 +50,22 @@ export {
 	log,
 } from './src/core/util'
 export {
-	type HTMLElementEventType,
-	type ValidEventName,
 	type EventType,
-	type TransformerContext,
 	type EventTransformer,
+	type EventTransformers,
+	type EventTransformerContext,
+	fromEvents,
 	fromSelector,
-	fromDescendants,
-	fromEvent,
-	fromDescendant,
+	read,
+	reduced,
+	requireDescendant,
 } from './src/core/dom'
 export {
 	type Context,
 	type UnknownContext,
 	type ContextType,
-	provide,
 	fromContext,
+	provideContexts,
 } from './src/core/context'
 
 // Lib
@@ -79,7 +79,7 @@ export {
 } from './src/lib/parsers'
 export {
 	type Reactive,
-	type PassedReactives,
+	type Reactives,
 	type UpdateOperation,
 	type ElementUpdater,
 	type ElementInserter,
@@ -89,12 +89,14 @@ export {
 	setText,
 	setProperty,
 	show,
+	callMethod,
+	focus,
 	setAttribute,
 	toggleAttribute,
 	toggleClass,
 	setStyle,
 	dangerouslySetInnerHTML,
 	on,
-	emit,
+	emitEvent,
 	pass,
 } from './src/lib/effects'

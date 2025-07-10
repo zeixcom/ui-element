@@ -8,7 +8,7 @@
 
 > **asEnum**(`valid`): [`AttributeParser`](../type-aliases/AttributeParser.md)\<`string`\>
 
-Defined in: [src/lib/parsers.ts:86](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/lib/parsers.ts#L86)
+Defined in: [src/lib/parsers.ts:83](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/lib/parsers.ts#L83)
 
 Parse an attribute as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option
 

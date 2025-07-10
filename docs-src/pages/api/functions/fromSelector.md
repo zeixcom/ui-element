@@ -6,11 +6,11 @@
 
 # Function: fromSelector()
 
-> **fromSelector**\<`E`, `K`\>(`selectors`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`K`, `E`\>[]\>
+> **fromSelector**\<`E`, `C`, `S`\>(`selector`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>[], `C`\>
 
-Defined in: [src/core/dom.ts:154](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/core/dom.ts#L154)
+Defined in: [src/core/dom.ts:229](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L229)
 
-Produce a selection signal from a selector with automatic type inference
+Produce a computed signal of an array of elements matching a selector
 
 ## Type Parameters
 
@@ -18,39 +18,28 @@ Produce a selection signal from a selector with automatic type inference
 
 `E` *extends* `Element` = `HTMLElement`
 
-### K
+### C
 
-`K` *extends* `string` = `string`
+`C` *extends* `HTMLElement` = `HTMLElement`
+
+### S
+
+`S` *extends* `string` = `string`
 
 ## Parameters
 
-### selectors
+### selector
 
-`K`
+`S`
 
 CSS selector for descendant elements
 
 ## Returns
 
-[`SignalProducer`](../type-aliases/SignalProducer.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`K`, `E`\>[]\>
+[`SignalProducer`](../type-aliases/SignalProducer.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>[], `C`\>
 
 Signal producer for descendant element collection from a selector
 
 ## Since
 
 0.13.1
-
-## Examples
-
-```ts
-// TypeScript automatically infers HTMLInputElement[] for 'input' selector
-const inputs = fromSelector('input')(host).get()
-inputs[0].value // TypeScript knows this is valid
-```
-
-```ts
-// Works with custom UIElement components when declared in HTMLElementTagNameMap
-// declare global { interface HTMLElementTagNameMap { 'my-button': Component<MyButtonProps> } }
-const buttons = fromSelector('my-button')(host).get()
-buttons[0].getSignal('disabled').get() // Access UIElement component methods
-```

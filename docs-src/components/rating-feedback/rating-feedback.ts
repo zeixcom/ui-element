@@ -18,7 +18,7 @@ export default component('rating-feedback', {}, (el, { all, first }) => {
 
 	return [
 		// Event listeners for rating changes and form submission
-		on<HTMLElement, CustomEvent<number>>('change-rating', e => {
+		on('change-rating', e => {
 			rating.set(e.detail)
 		}),
 		on('submit', e => {

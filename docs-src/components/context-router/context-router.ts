@@ -8,7 +8,7 @@ import {
 	computed,
 	dangerouslySetInnerHTML,
 	on,
-	provide,
+	provideContexts,
 	setText,
 	show,
 	state,
@@ -134,7 +134,7 @@ export default component(
 
 		return [
 			// Provide contexts
-			provide([ROUTER_PATHNAME, ROUTER_QUERY]),
+			provideContexts([ROUTER_PATHNAME, ROUTER_QUERY]),
 
 			// Navigate and update 'active' class
 			all(
@@ -145,7 +145,7 @@ export default component(
 						isInternalLink(target) &&
 						el[ROUTER_PATHNAME] === target.pathname,
 				),
-				on('click', (e: Event) => {
+				on('click', e => {
 					if (!isInternalLink(e.target)) return
 					const url = new URL(e.target.href)
 					if (url.origin === window.location.origin) {

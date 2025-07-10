@@ -1,14 +1,14 @@
 import { type Signal } from '@zeix/cause-effect'
-import { type ComponentProps, type Effect } from '../component'
-import type { HTMLElementEventType, ValidEventName } from '../core/dom'
+import { type Component, type ComponentProps, type Effect } from '../component'
+import type { EventType } from '../core/dom'
 type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 	| keyof P
 	| Signal<NonNullable<T>>
 	| ((element: E) => T | null | undefined)
-type PassedReactives<P extends ComponentProps, E extends Element> = {
+type Reactives<E extends Element, P extends ComponentProps> = {
 	[K in keyof E]?: Reactive<E[K], P, E>
 }
-type UpdateOperation = 'a' | 'c' | 'h' | 'p' | 's' | 't'
+type UpdateOperation = 'a' | 'c' | 'd' | 'h' | 'm' | 'p' | 's' | 't'
 type ElementUpdater<E extends Element, T> = {
 	op: UpdateOperation
 	name?: string
@@ -108,6 +108,38 @@ declare const show: <
 	reactive: Reactive<boolean, P, E>,
 ) => Effect<P, E>
 /**
+ * Effect for calling a method on an element.
+ *
+ * @since 0.13.3
+ * @param {K} methodName - Name of the method to call
+ * @param {Reactive<boolean, P, E>} reactive - Reactive value bound to the method call
+ * @param {unknown[]} args - Arguments to pass to the method
+ * @returns Effect function that calls the method on the element
+ */
+declare const callMethod: <
+	P extends ComponentProps,
+	K extends keyof E,
+	E extends HTMLElement = HTMLElement,
+>(
+	methodName: K,
+	reactive: Reactive<boolean, P, E>,
+	args?: unknown[],
+) => Effect<P, E>
+/**
+ * Effect for controlling element focus by calling the 'focus()' method.
+ * If the reactive value is true, element will be focussed; when false, nothing happens.
+ *
+ * @since 0.13.3
+ * @param {Reactive<boolean, P, E>} reactive - Reactive value bound to the focus state
+ * @returns {Effect<P, E>} Effect function that sets element focus
+ */
+declare const focus: <
+	P extends ComponentProps,
+	E extends HTMLElement = HTMLElement,
+>(
+	reactive: Reactive<boolean, P, E>,
+) => Effect<P, E>
+/**
  * Effect for setting an attribute on an element.
  * Sets the specified attribute with security validation for unsafe values.
  *
@@ -192,27 +224,29 @@ declare const dangerouslySetInnerHTML: <
  * Provides proper cleanup when the effect is disposed.
  *
  * @since 0.12.0
- * @param {K} type - Event type to listen for
- * @param {(event: HTMLElementEventType<K>) => void} listener - Event listener function
- * @param {boolean | AddEventListenerOptions} options - Event listener options
+ * @param {string} type - Event type
+ * @param {(event: EventType<K>) => void} listener - Event listener function
+ * @param {AddEventListenerOptions | boolean} options - Event listener options
  * @returns {Effect<ComponentProps, E>} Effect function that manages the event listener
- * @throws {TypeError} When the provided handler is not a function
  */
-declare const on: <E extends HTMLElement, K extends ValidEventName>(
+declare const on: <
+	K extends keyof HTMLElementEventMap | string,
+	E extends HTMLElement,
+>(
 	type: K,
-	listener: (event: HTMLElementEventType<K>) => void,
-	options?: boolean | AddEventListenerOptions,
+	listener: (event: EventType<K>) => void,
+	options?: AddEventListenerOptions | boolean,
 ) => Effect<ComponentProps, E>
 /**
  * Effect for emitting custom events with reactive detail values.
  * Creates and dispatches CustomEvent instances with bubbling enabled by default.
  *
- * @since 0.13.2
+ * @since 0.13.3
  * @param {string} type - Event type to emit
  * @param {Reactive<T, P, E>} reactive - Reactive value bound to the event detail
  * @returns {Effect<P, E>} Effect function that emits custom events
  */
-declare const emit: <
+declare const emitEvent: <
 	T,
 	P extends ComponentProps,
 	E extends Element = HTMLElement,
@@ -221,20 +255,20 @@ declare const emit: <
 	reactive: Reactive<T, P, E>,
 ) => Effect<P, E>
 /**
- * Effect for passing reactive values to descendant elements.
- * Supports both direct property setting and signal passing for custom elements.
+ * Effect for passing reactive values to a descendant UIElement component.
  *
- * @since 0.13.2
- * @param {PassedReactives<P, E> | ((target: E) => PassedReactives<P, E>)} reactives - Reactive values to pass or function that returns them
- * @returns {Effect<P, E>} Effect function that passes reactive values to descendant elements
- * @throws {TypeError} When the provided reactives are not an object or provider function
+ * @since 0.13.3
+ * @param {Reactives<Component<Q>, P>} reactives - Reactive values to pass
+ * @returns {Effect<P, E>} Effect function that passes reactive values to the descendant component
+ * @throws {TypeError} When the provided reactives are not an object or the target is not a UIElement component
+ * @throws {Error} When passing signals failed for some other reason
  */
-declare const pass: <P extends ComponentProps, E extends Element>(
-	reactives: PassedReactives<P, E> | ((target: E) => PassedReactives<P, E>),
-) => Effect<P, E>
+declare const pass: <P extends ComponentProps, Q extends ComponentProps>(
+	reactives: Reactives<Component<Q>, P>,
+) => Effect<P, Component<Q>>
 export {
 	type Reactive,
-	type PassedReactives,
+	type Reactives,
 	type UpdateOperation,
 	type ElementUpdater,
 	type ElementInserter,
@@ -244,12 +278,14 @@ export {
 	setText,
 	setProperty,
 	show,
+	callMethod,
+	focus,
 	setAttribute,
 	toggleAttribute,
 	toggleClass,
 	setStyle,
 	dangerouslySetInnerHTML,
 	on,
-	emit,
+	emitEvent,
 	pass,
 }

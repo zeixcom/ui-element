@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>provide – UIElement Docs</title>
+		<title>reduced – UIElement Docs</title>
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="../../assets/main.css" />
 		<script type="module" src="../../assets/main.js"></script>
@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.2</small>
+					UIElement Docs <small>Version 0.13.3</small>
 				</h1>
 				
 <section-menu>
@@ -99,90 +99,104 @@
 				</card-callout>
 			</header>
 			<main class="content-grid"><section class="api-content">
-<h1 id="function-provide">
-                <a name="function-provide" class="anchor" href="#function-provide">
+<h1 id="function-reduced">
+                <a name="function-reduced" class="anchor" href="#function-reduced">
 	                <span class="permalink">🔗</span>
                 </a>
-                Function: provide()
+                Function: reduced()
             </h1>
 <blockquote>
-<p><strong>provide</strong>&lt;<code>P</code>, <code>K</code>&gt;(<code>provided</code>): (<code>host</code>) =&gt; <a href="../type-aliases/Cleanup.html"><code>Cleanup</code></a></p>
+<p><strong>reduced</strong>&lt;<code>T</code>, <code>E</code>, <code>C</code>, <code>S</code>&gt;(<code>host</code>, <code>selector</code>, <code>reducer</code>, <code>initialValue</code>): <a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/context.ts#L98">src/core/context.ts:98</a></p>
-<p>Provide a context for descendant component consumers</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L301">src/core/dom.ts:301</a></p>
+<p>Reduced properties of descendant elements</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Type Parameters
             </h2>
-<h3 id="p">
-                <a name="p" class="anchor" href="#p">
+<h3 id="t">
+                <a name="t" class="anchor" href="#t">
 	                <span class="permalink">🔗</span>
                 </a>
-                P
+                T
             </h3>
-<p><code>P</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
-<h3 id="k">
-                <a name="k" class="anchor" href="#k">
+<p><code>T</code> <em>extends</em> <code>object</code></p>
+<h3 id="e">
+                <a name="e" class="anchor" href="#e">
 	                <span class="permalink">🔗</span>
                 </a>
-                K
+                E
             </h3>
-<p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code></p>
+<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
+<h3 id="c">
+                <a name="c" class="anchor" href="#c">
+	                <span class="permalink">🔗</span>
+                </a>
+                C
+            </h3>
+<p><code>C</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
+<h3 id="s">
+                <a name="s" class="anchor" href="#s">
+	                <span class="permalink">🔗</span>
+                </a>
+                S
+            </h3>
+<p><code>S</code> <em>extends</em> <code>string</code> = <code>string</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Parameters
             </h2>
-<h3 id="provided">
-                <a name="provided" class="anchor" href="#provided">
+<h3 id="host">
+                <a name="host" class="anchor" href="#host">
 	                <span class="permalink">🔗</span>
                 </a>
-                provided
+                host
             </h3>
-<p><a href="../type-aliases/Context.html"><code>Context</code></a>&lt;<code>K</code>, <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>P</code>[<code>K</code>]&gt;&gt;[]</p>
-<p>array of contexts to provide</p>
+<p><code>C</code></p>
+<p>Host element for computed property</p>
+<h3 id="selector">
+                <a name="selector" class="anchor" href="#selector">
+	                <span class="permalink">🔗</span>
+                </a>
+                selector
+            </h3>
+<p><code>S</code></p>
+<p>CSS selector for descendant elements</p>
+<h3 id="reducer">
+                <a name="reducer" class="anchor" href="#reducer">
+	                <span class="permalink">🔗</span>
+                </a>
+                reducer
+            </h3>
+<p>(<code>accumulator</code>, <code>currentElement</code>, <code>currentIndex</code>, <code>array</code>) =&gt; <code>T</code></p>
+<p>Function to reduce values</p>
+<h3 id="initialvalue">
+                <a name="initialvalue" class="anchor" href="#initialvalue">
+	                <span class="permalink">🔗</span>
+                </a>
+                initialValue
+            </h3>
+<p><code>T</code></p>
+<p>Initial value function for reduction</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<ul>
-<li>function to add an event listener for ContextRequestEvent returning a cleanup function to remove the event listener</li>
-</ul>
-<blockquote>
-<p>(<code>host</code>): <a href="../type-aliases/Cleanup.html"><code>Cleanup</code></a></p>
-</blockquote>
-<h3 id="parameters">
-                <a name="parameters" class="anchor" href="#parameters">
-	                <span class="permalink">🔗</span>
-                </a>
-                Parameters
-            </h3>
-<h4 id="host">
-                <a name="host" class="anchor" href="#host">
-	                <span class="permalink">🔗</span>
-                </a>
-                host
-            </h4>
-<p><a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;</p>
-<h3 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h3>
-<p><a href="../type-aliases/Cleanup.html"><code>Cleanup</code></a></p>
+<p><a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;</p>
+<p>Computed signal of reduced values of descendant elements</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
                 </a>
                 Since
             </h2>
-<p>0.12.0</p>
+<p>0.13.3</p>
 
 </section></main>
 			<footer class="content-grid">

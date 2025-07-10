@@ -46,7 +46,7 @@ Helper functions:
 
 ## Attribute Parsers
 
-Declare how attributes are parsed. Functions returning [AttributeParser](api/type-aliases/AttributeParser.html) that will be used to create [State](api/type-aliases/State.html) signals as reactive properties on the component.
+Declare how attributes are parsed. Functions returning [AttributeParser](api/type-aliases/AttributeParser.html) that will be used to create [State](api/type-aliases/State.html) signals as writable reactive properties on the component.
 
 - [asBoolean](api/functions/asBoolean.html) parses boolean attributes (presence indicates true)
 - [asEnum](api/functions/asEnum.html) parses string attributes constrained to specific values
@@ -61,12 +61,10 @@ Declare how attributes are parsed. Functions returning [AttributeParser](api/typ
 
 ## Signal Producers
 
-Declare how signals are initialized. Variable of type or function returning [SignalProducer](api/type-aliases/SignalProducer.html):
+Declare how signals are initialized. Functions returning type [SignalProducer](api/type-aliases/SignalProducer.html) that will be used to create [Computed](api/type-aliases/Computed.html) signals as read-only reactive properties on the component.
 
 - [fromContext](api/functions/fromContext.html) consumes a context value from nearest ancestor context provider component
-- [fromDescendant](api/functions/fromDescendant.html) gets a reactive property of a descendant component
-- [fromDescendants](api/functions/fromDescendants.html) reduces properties of a collection of descendant elements to a single value
-- [fromEvent](api/functions/fromEvent.html) creates a computed signal from an event handler on a descendant element
+- [fromEvents](api/functions/fromEvents.html) creates a computed signal from event transformers on descendant elements
 - [fromSelector](api/functions/fromSelector.html) creates a computed signal of descentant elements matching a CSS selector
 
 </section>
@@ -75,14 +73,14 @@ Declare how signals are initialized. Variable of type or function returning [Sig
 
 ## Effects
 
-Declare effects of type [FxFunction](api/type-aliases/FxFunction.html) to be applied when signals change:
+Declare effects of type [Effect](api/type-aliases/Effect.html) to be applied when signals change:
 
 - [dangerouslySetInnerHTML](api/functions/dangerouslySetInnerHTML.html) sets inner HTML content from a signal
-- [emit](api/functions/emit.html) dispatches custom events when signals change
+- [emitEvent](api/functions/emitEvent.html) dispatches custom events when signals change
 - [insertOrRemoveElement](api/functions/insertOrRemoveElement.html) conditionally inserts or removes elements
 - [on](api/functions/on.html) attaches event listeners to elements
 - [pass](api/functions/pass.html) passes signal values to descendant component properties
-- [provide](api/functions/provide.html) provides context values to descendant components
+- [provideContexts](api/functions/provideContexts.html) provides context values to descendant components
 - [setAttribute](api/functions/setAttribute.html) sets element attributes from signals
 - [setProperty](api/functions/setProperty.html) sets element properties from signals
 - [setStyle](api/functions/setStyle.html) sets CSS styles from signals
@@ -91,5 +89,17 @@ Declare effects of type [FxFunction](api/type-aliases/FxFunction.html) to be app
 - [toggleAttribute](api/functions/toggleAttribute.html) toggles attributes based on signal values
 - [toggleClass](api/functions/toggleClass.html) toggles CSS classes based on signal values
 - [updateElement](api/functions/updateElement.html) base function for updating elements, used for [setText](api/functions/setText.html), [show](api/functions/show.html), [toggleClass](api/functions/toggleClass.html), [toggleAttribute](api/functions/toggleAttribute.html), [setAttribute](api/functions/setAttribute.html), [setProperty](api/functions/setProperty.html), [setStyle](api/functions/setStyle.html)
+
+</section>
+
+<section>
+
+## DOM Utilities
+
+Functions to work with descendant elements:
+
+- [read](api/functions/read.html) reads properties from a descendant element, waiting for components to be upgraded
+- [reduced](api/functions/reduced.html) creates a computed signal from a reducer function
+- [requireDescendant](api/functions/requireDescendant.html) requires a descendant element to exist and returns it, otherwise throws an error
 
 </section>

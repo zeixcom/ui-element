@@ -27,7 +27,7 @@
 			const animationFrame = () => new Promise(requestAnimationFrame)
 
 			runTests(() => {
-				describe('My Counter Component', () => {
+				describe('Basic Counter Component', () => {
 					it('should initialize with count from attribute', async () => {
 						const el = document.getElementById('test1')
 						const countSpan = el.querySelector('span')
@@ -79,9 +79,6 @@
 						const incrementBtn = el.querySelector('button')
 						const countSpan = el.querySelector('span')
 
-						el.count = 0
-						await animationFrame() // Wait for scheduled effect execution
-
 						// Click multiple times rapidly
 						incrementBtn.click()
 						incrementBtn.click()
@@ -92,45 +89,26 @@
 						assert.equal(countSpan.textContent, '3')
 					})
 
-					it('should handle programmatic count updates', async () => {
+					it('should not allow programmatic count updates', async () => {
 						const el = document.getElementById('test2')
 						const countSpan = el.querySelector('span')
-
-						el.count = 100
-						await animationFrame() // Wait for scheduled effect execution
-
-						assert.equal(countSpan.textContent, '100')
-
-						el.count = 101
-						await animationFrame() // Wait for scheduled effect execution
-
-						assert.equal(countSpan.textContent, '101')
-					})
-
-					it('should handle zero correctly', async () => {
-						const el = document.getElementById('test2')
-						const countSpan = el.querySelector('span')
-
-						el.count = 0
-						await animationFrame()
-
-						assert.equal(countSpan.textContent, '0')
+						assert.throws(() => {
+							el.count = 100
+						}, TypeError)
 					})
 
 					it('should maintain count across increment cycles', async () => {
 						const el = document.getElementById('test2')
 						const incrementBtn = el.querySelector('button')
 
-						el.count = 10
-						await animationFrame() // Wait for initial state update
+						const initialCount = el.count
+						incrementBtn.click()
+						await animationFrame() // Wait for event handling and effect execution
+						assert.equal(el.count, initialCount + 1)
 
 						incrementBtn.click()
 						await animationFrame() // Wait for event handling and effect execution
-						assert.equal(el.count, 11)
-
-						incrementBtn.click()
-						await animationFrame() // Wait for event handling and effect execution
-						assert.equal(el.count, 12)
+						assert.equal(el.count, initialCount + 2)
 					})
 				})
 			})

@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.2</small>
+					UIElement Docs <small>Version 0.13.3</small>
 				</h1>
 				
 <section-menu>
@@ -106,9 +106,9 @@
                 Function: on()
             </h1>
 <blockquote>
-<p><strong>on</strong>&lt;<code>E</code>, <code>K</code>&gt;(<code>type</code>, <code>listener</code>, <code>options</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a>, <code>E</code>&gt;</p>
+<p><strong>on</strong>&lt;<code>K</code>, <code>E</code>&gt;(<code>type</code>, <code>listener</code>, <code>options</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L590">src/lib/effects.ts:590</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/lib/effects.ts#L646">src/lib/effects.ts:646</a></p>
 <p>Effect for attaching an event listener to an element.<br>Provides proper cleanup when the effect is disposed.</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
@@ -116,13 +116,6 @@
                 </a>
                 Type Parameters
             </h2>
-<h3 id="e">
-                <a name="e" class="anchor" href="#e">
-	                <span class="permalink">🔗</span>
-                </a>
-                E
-            </h3>
-<p><code>E</code> <em>extends</em> <code>HTMLElement</code></p>
 <h3 id="k">
                 <a name="k" class="anchor" href="#k">
 	                <span class="permalink">🔗</span>
@@ -130,6 +123,13 @@
                 K
             </h3>
 <p><code>K</code> <em>extends</em> <code>string</code></p>
+<h3 id="e">
+                <a name="e" class="anchor" href="#e">
+	                <span class="permalink">🔗</span>
+                </a>
+                E
+            </h3>
+<p><code>E</code> <em>extends</em> <code>HTMLElement</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -143,7 +143,7 @@
                 type
             </h3>
 <p><code>K</code></p>
-<p>Event type to listen for</p>
+<p>Event type</p>
 <h3 id="listener">
                 <a name="listener" class="anchor" href="#listener">
 	                <span class="permalink">🔗</span>
@@ -175,13 +175,6 @@
                 Since
             </h2>
 <p>0.12.0</p>
-<h2 id="throws">
-                <a name="throws" class="anchor" href="#throws">
-	                <span class="permalink">🔗</span>
-                </a>
-                Throws
-            </h2>
-<p>When the provided handler is not a function</p>
 
 </section></main>
 			<footer class="content-grid">

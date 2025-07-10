@@ -1,14 +1,13 @@
 import {
 	type Component,
 	RESET,
-	asBoolean,
 	asString,
 	component,
-	on,
-	setProperty,
+	fromEvents,
+	requireDescendant,
 	setText,
 	toggleAttribute,
-} from '../../../'
+} from '../../..'
 
 export type FormCheckboxProps = {
 	checked: boolean
@@ -18,20 +17,17 @@ export type FormCheckboxProps = {
 export default component(
 	'form-checkbox',
 	{
-		checked: asBoolean(),
+		checked: fromEvents(el => el.querySelector('input')?.checked, 'input', {
+			change: ({ target }) => target.checked,
+		}),
 		label: asString(RESET),
 	},
-	(el, { first }) => [
-		toggleAttribute('checked'),
-		first(
-			'input',
-			setProperty('checked'),
-			on('change', (e: Event) => {
-				el.checked = (e.target as HTMLInputElement)?.checked
-			}),
-		),
-		first('.label', setText('label')),
-	],
+	(el, { first }) => {
+		requireDescendant(el, 'input[type="checkbox"]')
+		requireDescendant(el, '.label')
+
+		return [toggleAttribute('checked'), first('.label', setText('label'))]
+	},
 )
 
 declare global {

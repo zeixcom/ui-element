@@ -3,7 +3,7 @@ import {
 	type Context,
 	type State,
 	component,
-	provide,
+	provideContexts,
 	state,
 } from '../../../'
 
@@ -59,7 +59,7 @@ export default component(
 		},
 
 		// Context for screen viewport size
-		[MEDIA_VIEWPORT]: el => {
+		[MEDIA_VIEWPORT]: (el: HTMLElement) => {
 			const getBreakpoint = (attr: string, fallback: string) => {
 				const value = el.getAttribute(attr)
 				const trimmed = value?.trim()
@@ -114,7 +114,12 @@ export default component(
 		},
 	},
 	() => [
-		provide([MEDIA_MOTION, MEDIA_THEME, MEDIA_VIEWPORT, MEDIA_ORIENTATION]),
+		provideContexts([
+			MEDIA_MOTION,
+			MEDIA_THEME,
+			MEDIA_VIEWPORT,
+			MEDIA_ORIENTATION,
+		]),
 	],
 )
 

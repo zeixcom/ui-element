@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>SignalLike\<P, T, E\> – UIElement Docs</title>
+		<title>focus – UIElement Docs</title>
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="../../assets/main.css" />
 		<script type="module" src="../../assets/main.js"></script>
@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.1</small>
+					UIElement Docs <small>Version 0.13.3</small>
 				</h1>
 				
 <section-menu>
@@ -99,16 +99,17 @@
 				</card-callout>
 			</header>
 			<main class="content-grid"><section class="api-content">
-<h1 id="type-alias-signallikeltp-t-egt">
-                <a name="type-alias-signallikeltp-t-egt" class="anchor" href="#type-alias-signallikeltp-t-egt">
+<h1 id="function-focus">
+                <a name="function-focus" class="anchor" href="#function-focus">
 	                <span class="permalink">🔗</span>
                 </a>
-                Type Alias: SignalLike&lt;P, T, E&gt;
+                Function: focus()
             </h1>
 <blockquote>
-<p><strong>SignalLike</strong>&lt;<code>P</code>, <code>T</code>, <code>E</code>&gt; = keyof <code>P</code> | <a href="Signal.html"><code>Signal</code></a>&lt;<code>NonNullable</code>&lt;<code>T</code>&gt;&gt; | (<code>element</code>) =&gt; <code>T</code> | <code>null</code> | <code>undefined</code></p>
+<p><strong>focus</strong>&lt;<code>P</code>, <code>E</code>&gt;(<code>reactive</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/051e9e1bc23b455abad71bf33880530a33e32030/src/lib/effects.ts#L29">src/lib/effects.ts:29</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/lib/effects.ts#L476">src/lib/effects.ts:476</a></p>
+<p>Effect for controlling element focus by calling the &#39;focus()&#39; method.<br>If the reactive value is true, element will be focussed; when false, nothing happens.</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -121,21 +122,43 @@
                 </a>
                 P
             </h3>
-<p><code>P</code> <em>extends</em> <a href="ComponentProps.html"><code>ComponentProps</code></a></p>
-<h3 id="t">
-                <a name="t" class="anchor" href="#t">
-	                <span class="permalink">🔗</span>
-                </a>
-                T
-            </h3>
-<p><code>T</code></p>
+<p><code>P</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
 <h3 id="e">
                 <a name="e" class="anchor" href="#e">
 	                <span class="permalink">🔗</span>
                 </a>
                 E
             </h3>
-<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
+<p><code>E</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
+<h2 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Parameters
+            </h2>
+<h3 id="reactive">
+                <a name="reactive" class="anchor" href="#reactive">
+	                <span class="permalink">🔗</span>
+                </a>
+                reactive
+            </h3>
+<p><a href="../type-aliases/Reactive.html"><code>Reactive</code></a>&lt;<code>boolean</code>, <code>P</code>, <code>E</code>&gt;</p>
+<p>Reactive value bound to the focus state</p>
+<h2 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h2>
+<p><a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
+<p>Effect function that sets element focus</p>
+<h2 id="since">
+                <a name="since" class="anchor" href="#since">
+	                <span class="permalink">🔗</span>
+                </a>
+                Since
+            </h2>
+<p>0.13.3</p>
 
 </section></main>
 			<footer class="content-grid">

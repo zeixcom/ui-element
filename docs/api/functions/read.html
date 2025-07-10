@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.2</small>
+					UIElement Docs <small>Version 0.13.3</small>
 				</h1>
 				
 <section-menu>
@@ -106,84 +106,89 @@
                 Function: read()
             </h1>
 <blockquote>
-<p><strong>read</strong>&lt;<code>E</code>, <code>K</code>&gt;(<code>source</code>, <code>prop</code>, <code>fallback</code>): () =&gt; <code>NonNullable</code>&lt;<code>E</code>[<code>K</code>]&gt;</p>
+<p><strong>read</strong>&lt;<code>T</code>, <code>E</code>, <code>C</code>, <code>S</code>&gt;(<code>host</code>, <code>selector</code>, <code>map</code>): <code>T</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/1b1fdfb1fc30e6d828e5489798acad1c8a45a5b4/src/core/dom.ts#L489">src/core/dom.ts:489</a></p>
-<p>Read a signal property from a custom element safely after it&#39;s defined<br>Returns a function that provides the signal value with fallback until component is ready</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L336">src/core/dom.ts:336</a></p>
+<p>Read from a descendant element and map the result</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Type Parameters
             </h2>
+<h3 id="t">
+                <a name="t" class="anchor" href="#t">
+	                <span class="permalink">🔗</span>
+                </a>
+                T
+            </h3>
+<p><code>T</code> <em>extends</em> <code>object</code></p>
 <h3 id="e">
                 <a name="e" class="anchor" href="#e">
 	                <span class="permalink">🔗</span>
                 </a>
                 E
             </h3>
-<p><code>E</code> <em>extends</em> <code>Element</code></p>
-<h3 id="k">
-                <a name="k" class="anchor" href="#k">
+<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
+<h3 id="c">
+                <a name="c" class="anchor" href="#c">
 	                <span class="permalink">🔗</span>
                 </a>
-                K
+                C
             </h3>
-<p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code></p>
+<p><code>C</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
+<h3 id="s">
+                <a name="s" class="anchor" href="#s">
+	                <span class="permalink">🔗</span>
+                </a>
+                S
+            </h3>
+<p><code>S</code> <em>extends</em> <code>string</code> = <code>string</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Parameters
             </h2>
-<h3 id="source">
-                <a name="source" class="anchor" href="#source">
+<h3 id="host">
+                <a name="host" class="anchor" href="#host">
 	                <span class="permalink">🔗</span>
                 </a>
-                source
+                host
             </h3>
-<p>Source custom element to read reactive property from</p>
-<p><code>null</code> | <code>E</code></p>
-<h3 id="prop">
-                <a name="prop" class="anchor" href="#prop">
+<p><code>C</code></p>
+<p>Host element</p>
+<h3 id="selector">
+                <a name="selector" class="anchor" href="#selector">
 	                <span class="permalink">🔗</span>
                 </a>
-                prop
+                selector
             </h3>
-<p><code>K</code></p>
-<p>Property name to get</p>
-<h3 id="fallback">
-                <a name="fallback" class="anchor" href="#fallback">
+<p><code>S</code></p>
+<p>CSS selector for descendant element</p>
+<h3 id="map">
+                <a name="map" class="anchor" href="#map">
 	                <span class="permalink">🔗</span>
                 </a>
-                fallback
+                map
             </h3>
-<p><code>NonNullable</code>&lt;<code>E</code>[<code>K</code>]&gt;</p>
-<p>Fallback value to use until component is upgraded</p>
+<p>(<code>element</code>, <code>isUpgraded</code>) =&gt; <code>T</code></p>
+<p>Function to map over the element</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<p>Function that returns current value or fallback</p>
-<blockquote>
-<p>(): <code>NonNullable</code>&lt;<code>E</code>[<code>K</code>]&gt;</p>
-</blockquote>
-<h3 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h3>
-<p><code>NonNullable</code>&lt;<code>E</code>[<code>K</code>]&gt;</p>
+<p><code>T</code></p>
+<p>The mapped result from the descendant element</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
                 </a>
                 Since
             </h2>
-<p>0.13.1</p>
+<p>0.13.3</p>
 
 </section></main>
 			<footer class="content-grid">

@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.2</small>
+					UIElement Docs <small>Version 0.13.3</small>
 				</h1>
 				
 <section-menu>
@@ -105,15 +105,6 @@
                 </a>
                 @zeix/ui-element
             </h1>
-<h2 id="interfaces">
-                <a name="interfaces" class="anchor" href="#interfaces">
-	                <span class="permalink">🔗</span>
-                </a>
-                Interfaces
-            </h2>
-<ul>
-<li><a href="interfaces/TransformerContext.html">TransformerContext</a></li>
-</ul>
 <h2 id="type-aliases">
                 <a name="type-aliases" class="anchor" href="#type-aliases">
 	                <span class="permalink">🔗</span>
@@ -136,14 +127,15 @@
 <li><a href="type-aliases/ElementInserter.html">ElementInserter</a></li>
 <li><a href="type-aliases/ElementUpdater.html">ElementUpdater</a></li>
 <li><a href="type-aliases/EventTransformer.html">EventTransformer</a></li>
+<li><a href="type-aliases/EventTransformerContext.html">EventTransformerContext</a></li>
+<li><a href="type-aliases/EventTransformers.html">EventTransformers</a></li>
 <li><a href="type-aliases/EventType.html">EventType</a></li>
-<li><a href="type-aliases/HTMLElementEventType.html">HTMLElementEventType</a></li>
 <li><a href="type-aliases/Initializer.html">Initializer</a></li>
 <li><a href="type-aliases/LogLevel.html">LogLevel</a></li>
 <li><a href="type-aliases/MaybeSignal.html">MaybeSignal</a></li>
 <li><a href="type-aliases/MethodProducer.html">MethodProducer</a></li>
-<li><a href="type-aliases/PassedReactives.html">PassedReactives</a></li>
 <li><a href="type-aliases/Reactive.html">Reactive</a></li>
+<li><a href="type-aliases/Reactives.html">Reactives</a></li>
 <li><a href="type-aliases/ReservedWords.html">ReservedWords</a></li>
 <li><a href="type-aliases/SelectorFunctions.html">SelectorFunctions</a></li>
 <li><a href="type-aliases/Signal.html">Signal</a></li>
@@ -151,7 +143,6 @@
 <li><a href="type-aliases/State.html">State</a></li>
 <li><a href="type-aliases/UnknownContext.html">UnknownContext</a></li>
 <li><a href="type-aliases/UpdateOperation.html">UpdateOperation</a></li>
-<li><a href="type-aliases/ValidEventName.html">ValidEventName</a></li>
 <li><a href="type-aliases/ValidPropertyKey.html">ValidPropertyKey</a></li>
 </ul>
 <h2 id="variables">
@@ -186,12 +177,11 @@
 <li><a href="functions/computed.html">computed</a></li>
 <li><a href="functions/dangerouslySetInnerHTML.html">dangerouslySetInnerHTML</a></li>
 <li><a href="functions/effect.html">effect</a></li>
-<li><a href="functions/emit.html">emit</a></li>
+<li><a href="functions/emitEvent.html">emitEvent</a></li>
 <li><a href="functions/enqueue.html">enqueue</a></li>
+<li><a href="functions/focus.html">focus</a></li>
 <li><a href="functions/fromContext.html">fromContext</a></li>
-<li><a href="functions/fromDescendant.html">fromDescendant</a></li>
-<li><a href="functions/fromDescendants.html">fromDescendants</a></li>
-<li><a href="functions/fromEvent.html">fromEvent</a></li>
+<li><a href="functions/fromEvents.html">fromEvents</a></li>
 <li><a href="functions/fromSelector.html">fromSelector</a></li>
 <li><a href="functions/insertOrRemoveElement.html">insertOrRemoveElement</a></li>
 <li><a href="functions/isComputed.html">isComputed</a></li>
@@ -200,7 +190,10 @@
 <li><a href="functions/log.html">log</a></li>
 <li><a href="functions/on.html">on</a></li>
 <li><a href="functions/pass.html">pass</a></li>
-<li><a href="functions/provide.html">provide</a></li>
+<li><a href="functions/provideContexts.html">provideContexts</a></li>
+<li><a href="functions/read.html">read</a></li>
+<li><a href="functions/reduced.html">reduced</a></li>
+<li><a href="functions/requireDescendant.html">requireDescendant</a></li>
 <li><a href="functions/setAttribute.html">setAttribute</a></li>
 <li><a href="functions/setProperty.html">setProperty</a></li>
 <li><a href="functions/setStyle.html">setStyle</a></li>

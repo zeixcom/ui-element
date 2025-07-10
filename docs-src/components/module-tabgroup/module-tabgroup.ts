@@ -1,51 +1,101 @@
 import {
 	type Component,
 	component,
-	on,
+	focus,
+	fromEvents,
+	fromSelector,
 	setProperty,
 	show,
-	state,
 } from '../../..'
-import { manageFocusOnKeydown } from '../../functions/event-listener/manage-focus-on-keydown'
+import { requireDescendant } from '../../../src/core/dom'
 
 export type ModuleTabgroupProps = {
+	tabs: HTMLButtonElement[]
 	selected: string
+}
+
+const getAriaControls = (target: HTMLElement) =>
+	target?.getAttribute('aria-controls') ?? ''
+
+const getSelected = (
+	elements: HTMLElement[],
+	isCurrent: (element: HTMLElement) => boolean,
+	offset = 0,
+) =>
+	getAriaControls(
+		elements[
+			Math.min(
+				Math.max(elements.findIndex(isCurrent) + offset, 0),
+				elements.length - 1,
+			)
+		],
+	)
+
+const handleClick = ({ target }) => getAriaControls(target)
+
+const handleKeyup = ({ event, host, target }) => {
+	const key = event.key
+	if (
+		[
+			'ArrowLeft',
+			'ArrowRight',
+			'ArrowUp',
+			'ArrowDown',
+			'Home',
+			'End',
+		].includes(key)
+	) {
+		event.preventDefault()
+		event.stopPropagation()
+		return getSelected(
+			host.tabs,
+			tab => tab === target,
+			key === 'Home'
+				? -host.tabs.length
+				: key === 'End'
+					? host.tabs.length
+					: key === 'ArrowLeft' || key === 'ArrowUp'
+						? -1
+						: 1,
+		)
+	}
 }
 
 export default component(
 	'module-tabgroup',
 	{
-		selected: '',
+		tabs: fromSelector<HTMLButtonElement>('[role="tab"]'),
+		selected: fromEvents<
+			string,
+			HTMLButtonElement,
+			HTMLElement & { tabs: HTMLButtonElement[] }
+		>(
+			(el: HTMLElement & { tabs: HTMLButtonElement[] }) =>
+				getSelected(el.tabs, tab => tab.ariaSelected === 'true'),
+			'[role="tab"]',
+			{
+				click: handleClick,
+				keyup: handleKeyup,
+			},
+		),
 	},
-	(el, { all, first }) => {
-		const getAriaControls = (target: Element) =>
-			target?.getAttribute('aria-controls') ?? ''
-		const tabs = Array.from(
-			el.querySelectorAll<HTMLButtonElement>('[role="tab"]'),
-		)
-		const focusIndex = state(
-			tabs.findIndex(tab => tab.ariaSelected === 'true'),
-		)
-		el.selected = getAriaControls(tabs[focusIndex.get()])
+	(el, { all }) => {
+		requireDescendant(el, '[role="tablist"]')
+		requireDescendant(el, '[role="tab"]')
+		requireDescendant(el, '[role="tabpanel"]')
+		const isCurrentTab = (tab: HTMLButtonElement) =>
+			el.selected === getAriaControls(tab)
 
 		return [
-			first('[role="tablist"]', manageFocusOnKeydown(tabs, focusIndex)),
 			all<HTMLButtonElement>(
 				'[role="tab"]',
-				on('click', (e: Event) => {
-					el.selected = getAriaControls(
-						e.currentTarget as HTMLElement,
-					)
-					focusIndex.set(
-						tabs.findIndex(tab => tab === e.currentTarget),
-					)
-				}),
 				setProperty('ariaSelected', target =>
-					String(el.selected === getAriaControls(target)),
+					String(isCurrentTab(target)),
 				),
 				setProperty('tabIndex', target =>
-					el.selected === getAriaControls(target) ? 0 : -1,
+					isCurrentTab(target) ? 0 : -1,
 				),
+				focus(isCurrentTab),
 			),
 			all(
 				'[role="tabpanel"]',
@@ -57,6 +107,6 @@ export default component(
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'tab-list': Component<ModuleTabgroupProps>
+		'module-tabgroup': Component<ModuleTabgroupProps>
 	}
 }

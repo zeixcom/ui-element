@@ -2,13 +2,13 @@
 
 ***
 
-[@zeix/ui-element](../globals.md) / provide
+[@zeix/ui-element](../globals.md) / provideContexts
 
-# Function: provide()
+# Function: provideContexts()
 
-> **provide**\<`P`, `K`\>(`provided`): (`host`) => [`Cleanup`](../type-aliases/Cleanup.md)
+> **provideContexts**\<`P`, `K`\>(`contexts`): (`host`) => [`Cleanup`](../type-aliases/Cleanup.md)
 
-Defined in: [src/core/context.ts:98](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/core/context.ts#L98)
+Defined in: [src/core/context.ts:98](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/context.ts#L98)
 
 Provide a context for descendant component consumers
 
@@ -24,7 +24,7 @@ Provide a context for descendant component consumers
 
 ## Parameters
 
-### provided
+### contexts
 
 [`Context`](../type-aliases/Context.md)\<`K`, [`Signal`](../type-aliases/Signal.md)\<`P`\[`K`\]\>\>[]
 
@@ -48,4 +48,4 @@ array of contexts to provide
 
 ## Since
 
-0.12.0
+0.13.3

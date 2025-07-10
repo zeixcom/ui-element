@@ -1,32 +1,20 @@
-import { type Component, component, fromDescendants, pass } from '../../..'
-import { BasicButtonProps } from '../basic-button/basic-button'
+import { component, pass, reduced } from '../../..'
 
-export type ModuleCatalogProps = {
-	total: number
-}
+export default component('module-catalog', {}, (el, { first }) => {
+	const total = reduced(
+		el,
+		'form-spinbutton',
+		(sum, item) => sum + item.value,
+		0,
+	)
 
-export default component(
-	'module-catalog',
-	{
-		total: fromDescendants(
-			'form-spinbutton',
-			(sum, item) => sum + item.value,
-			0,
-		),
-	},
-	(el, { first }) => [
+	return [
 		first(
 			'basic-button',
-			pass<ModuleCatalogProps, Component<BasicButtonProps>>({
-				badge: () => (el.total > 0 ? String(el.total) : ''),
-				disabled: () => !el.total,
+			pass({
+				badge: () => (total.get() > 0 ? String(total.get()) : ''),
+				disabled: () => !total.get(),
 			}),
 		),
-	],
-)
-
-declare global {
-	interface HTMLElementTagNameMap {
-		'module-catalog': Component<ModuleCatalogProps>
-	}
-}
+	]
+})

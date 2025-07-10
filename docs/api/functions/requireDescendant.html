@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>fromDescendant – UIElement Docs</title>
+		<title>requireDescendant – UIElement Docs</title>
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="../../assets/main.css" />
 		<script type="module" src="../../assets/main.js"></script>
@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.2</small>
+					UIElement Docs <small>Version 0.13.3</small>
 				</h1>
 				
 <section-menu>
@@ -99,29 +99,23 @@
 				</card-callout>
 			</header>
 			<main class="content-grid"><section class="api-content">
-<h1 id="function-fromdescendant">
-                <a name="function-fromdescendant" class="anchor" href="#function-fromdescendant">
+<h1 id="function-requiredescendant">
+                <a name="function-requiredescendant" class="anchor" href="#function-requiredescendant">
 	                <span class="permalink">🔗</span>
                 </a>
-                Function: fromDescendant()
+                Function: requireDescendant()
             </h1>
 <blockquote>
-<p><strong>fromDescendant</strong>&lt;<code>E</code>, <code>S</code>, <code>K</code>&gt;(<code>selector</code>, <code>prop</code>, <code>fallback</code>): (<code>host</code>) =&gt; () =&gt; <code>NonNullable</code>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[<code>K</code>]&gt;</p>
+<p><strong>requireDescendant</strong>&lt;<code>S</code>, <code>E</code>&gt;(<code>host</code>, <code>selector</code>): <a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/core/dom.ts#L411">src/core/dom.ts:411</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L359">src/core/dom.ts:359</a></p>
+<p>Assert that an element contains an expected descendant element</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Type Parameters
             </h2>
-<h3 id="e">
-                <a name="e" class="anchor" href="#e">
-	                <span class="permalink">🔗</span>
-                </a>
-                E
-            </h3>
-<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
 <h3 id="s">
                 <a name="s" class="anchor" href="#s">
 	                <span class="permalink">🔗</span>
@@ -129,19 +123,27 @@
                 S
             </h3>
 <p><code>S</code> <em>extends</em> <code>string</code> = <code>string</code></p>
-<h3 id="k">
-                <a name="k" class="anchor" href="#k">
+<h3 id="e">
+                <a name="e" class="anchor" href="#e">
 	                <span class="permalink">🔗</span>
                 </a>
-                K
+                E
             </h3>
-<p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code> = keyof <a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;</p>
+<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Parameters
             </h2>
+<h3 id="host">
+                <a name="host" class="anchor" href="#host">
+	                <span class="permalink">🔗</span>
+                </a>
+                host
+            </h3>
+<p><code>HTMLElement</code></p>
+<p>Host element</p>
 <h3 id="selector">
                 <a name="selector" class="anchor" href="#selector">
 	                <span class="permalink">🔗</span>
@@ -149,58 +151,29 @@
                 selector
             </h3>
 <p><code>S</code></p>
-<h3 id="prop">
-                <a name="prop" class="anchor" href="#prop">
-	                <span class="permalink">🔗</span>
-                </a>
-                prop
-            </h3>
-<p><code>K</code></p>
-<h3 id="fallback">
-                <a name="fallback" class="anchor" href="#fallback">
-	                <span class="permalink">🔗</span>
-                </a>
-                fallback
-            </h3>
-<p><code>NonNullable</code>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[<code>K</code>]&gt;</p>
+<p>Descendant element to check for</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<blockquote>
-<p>(<code>host</code>): () =&gt; <code>NonNullable</code>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[<code>K</code>]&gt;</p>
-</blockquote>
-<h3 id="parameters">
-                <a name="parameters" class="anchor" href="#parameters">
+<p><a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;</p>
+<p>First found descendant element</p>
+<h2 id="since">
+                <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
                 </a>
-                Parameters
-            </h3>
-<h4 id="host">
-                <a name="host" class="anchor" href="#host">
+                Since
+            </h2>
+<p>0.13.3</p>
+<h2 id="throws">
+                <a name="throws" class="anchor" href="#throws">
 	                <span class="permalink">🔗</span>
                 </a>
-                host
-            </h4>
-<p><code>HTMLElement</code></p>
-<h3 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h3>
-<blockquote>
-<p>(): <code>NonNullable</code>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[<code>K</code>]&gt;</p>
-</blockquote>
-<h4 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h4>
-<p><code>NonNullable</code>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[<code>K</code>]&gt;</p>
+                Throws
+            </h2>
+<p>If the element does not contain the required descendant element</p>
 
 </section></main>
 			<footer class="content-grid">

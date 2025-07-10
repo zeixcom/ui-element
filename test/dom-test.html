@@ -23,11 +23,12 @@
 				component,
 				computed,
 				effect,
-				fromDescendants,
-				fromDescendant,
-				fromEvent,
+				fromEvents,
 				fromSelector,
 				on,
+				read,
+				reduced,
+				requireDescendant,
 				setText,
 				state,
 			} from '../index.dev.js'
@@ -69,18 +70,17 @@
 				'test-signal-producers-integration',
 				{
 					items: fromSelector('.item'),
-					total: fromDescendants(
-						'[data-value]',
-						(sum, element) =>
-							sum + parseInt(element.dataset.value || '0'),
-						0,
-					),
-					lastInput: fromEvent(
-						'input',
-						'input',
-						({ source }) => source.value,
-						'',
-					),
+					total: el =>
+						reduced(
+							el,
+							'[data-value]',
+							(sum, element) =>
+								sum + parseInt(element.dataset.value || '0'),
+							0,
+						),
+					lastInput: fromEvents('', 'input', {
+						input: ({ target }) => target.value,
+					}),
 				},
 				(_, { first }) => [first('p', setText('lastInput'))],
 			)
@@ -618,26 +618,26 @@
 					})
 				})
 
-				describe('fromDescendant()', () => {
+				describe('read()', () => {
 					it('should return fallback when source is null', () => {
-						const reader = fromDescendant(
+						const value = read(
+							document.body,
 							'.non-existent',
-							'value',
-							'default',
-						)(document.body)
-						assert.equal(reader(), 'default')
+							target => target?.value ?? 'default',
+						)
+						assert.equal(value, 'default')
 					})
 
 					it('should return fallback when property does not exist on source', () => {
 						const container = document.createElement('div')
 						const div = document.createElement('div')
 						container.appendChild(div)
-						const reader = fromDescendant(
+						const value = read(
+							container,
 							'div',
-							'value',
-							'fallback',
-						)(container)
-						assert.equal(reader(), 'fallback')
+							target => target.value ?? 'fallback',
+						)
+						assert.equal(value, 'fallback')
 					})
 
 					it('should return property value of source element for non custom elements', () => {
@@ -645,12 +645,12 @@
 						const div = document.createElement('div')
 						div.className = 'test'
 						container.appendChild(div)
-						const reader = fromDescendant(
+						const value = read(
+							container,
 							'div',
-							'className',
-							'fallback',
-						)(container)
-						assert.equal(reader(), 'test')
+							target => target.className ?? 'fallback',
+						)
+						assert.equal(value, 'test')
 					})
 
 					it('should return fallback until component is defined', async () => {
@@ -660,27 +660,29 @@
 							'undefined-component',
 						)
 						container.appendChild(mockElement)
-						const reader = fromDescendant(
+						const value = read(
+							container,
 							'undefined-component',
-							'value',
-							'fallback',
-						)(container)
-						assert.equal(reader(), 'fallback')
+							(target, upgraded) =>
+								target && upgraded ? target.value : 'fallback',
+						)
+						assert.equal(value, 'fallback')
 					})
 
 					it('should read component property after component is defined', async () => {
 						const element = document.getElementById('read')
-						const reader = fromDescendant(
+						const value = read(
+							document.body,
 							'#read',
-							'value',
-							'fallback',
-						)(document.body)
+							(target, upgraded) =>
+								target && upgraded ? target.value : 'fallback',
+						)
 
 						// Wait for component to be defined and upgraded
 						await customElements.whenDefined('read-component')
 
 						// Now should return component value
-						assert.equal(reader(), 'test-value')
+						assert.equal(value, 'test-value')
 					})
 
 					it('should work with module-todo pattern reading input length', async () => {
@@ -692,11 +694,13 @@
 						document.body.appendChild(textbox)
 
 						try {
-							const inputLength = fromDescendant(
-								'form-textbox',
-								'length',
-								0,
-							)(document.body)
+							const inputLength = () =>
+								read(
+									document.body,
+									'form-textbox',
+									(target, upgraded) =>
+										target && upgraded ? target.length : 0,
+								)
 
 							// Should return fallback initially
 							assert.equal(inputLength(), 0)
@@ -733,7 +737,7 @@
 					})
 
 					it('should handle component upgrade timing correctly', async () => {
-						// Test the actual timing issue that fromDescendant() solves
+						// Test the actual timing issue that read() solves
 						const container = document.createElement('div')
 						container.innerHTML =
 							'<timing-test-component></timing-test-component>'
@@ -746,11 +750,15 @@
 							)
 
 							// Create reader before component is defined
-							const reader = fromDescendant(
-								'timing-test-component',
-								'status',
-								'not-ready',
-							)(container)
+							const reader = () =>
+								read(
+									container,
+									'timing-test-component',
+									(target, upgraded) =>
+										target && upgraded
+											? target.status
+											: 'not-ready',
+								)
 
 							// Should return fallback initially
 							assert.equal(reader(), 'not-ready')
@@ -816,20 +824,18 @@
 						document.body.appendChild(container)
 
 						try {
-							const producer = fromDescendant(
-								'#child',
-								'value',
-								'fallback',
-							)(container)
-
-							// Should return fallback initially
-							// assert.equal(producer(), 'fallback')
+							const reader = () =>
+								read(container, '#child', (target, upgraded) =>
+									target && upgraded
+										? target.value
+										: 'fallback',
+								)
 
 							// Wait for component to be defined and upgraded
 							await customElements.whenDefined('mock-child-1')
 
 							// Should now return component value
-							assert.equal(producer(), 'child-value')
+							assert.equal(reader(), 'child-value')
 						} finally {
 							container.remove()
 						}
@@ -840,13 +846,13 @@
 						document.body.appendChild(container)
 
 						try {
-							const producer = fromDescendant(
+							const value = read(
+								container,
 								'.nonexistent',
-								'value',
-								'fallback',
-							)(container)
+								target => target?.value ?? 'fallback',
+							)
 
-							assert.equal(producer(), 'fallback')
+							assert.equal(value, 'fallback')
 						} finally {
 							container.remove()
 						}
@@ -860,10 +866,21 @@
 								this._count = 0
 							}
 
+							get count() {
+								return this._count
+							}
+
+							set count(value) {
+								this._count = value
+							}
+
 							getSignal(prop) {
 								if (!this.signals.has(prop)) {
 									this.signals.set(prop, {
 										get: () => this._count,
+										set: value => {
+											this._count = value
+										},
 									})
 								}
 								return this.signals.get(prop)
@@ -877,27 +894,32 @@
 						document.body.appendChild(container)
 
 						try {
-							const producer = fromDescendant(
-								'#computed',
-								'count',
-								0,
-							)(container)
-							const doubled = computed(() => producer() * 2)
-
-							// Initial fallback
-							assert.equal(doubled.get(), 0)
-
-							// Wait for component
+							// Wait for component to be defined first
 							await customElements.whenDefined('mock-computed-2')
 
-							assert.equal(doubled.get(), 0) // 0 * 2
+							// Test initial read
+							const initialValue = read(
+								container,
+								'#computed',
+								target => target.count ?? 0,
+							)
+							assert.equal(initialValue, 0)
+
+							// Set count and test read again
+							container.querySelector('#computed').count = 1
+							const updatedValue = read(
+								container,
+								'#computed',
+								target => target.count ?? 0,
+							)
+							assert.equal(updatedValue, 1)
 						} finally {
 							container.remove()
 						}
 					})
 				})
 
-				describe('fromEvent()', () => {
+				describe('fromEvents()', () => {
 					it('should create a computed signal from event data', async () => {
 						const button = document.createElement('button')
 						button.className = 'click-me'
@@ -905,16 +927,17 @@
 						document.body.appendChild(button)
 
 						try {
-							const clickSignal = fromEvent(
-								'button.click-me',
-								'click',
-								({ event, host, source, value }) => {
-									assert.equal(host, document.body)
-									assert.equal(source, button)
-									assert.instanceOf(event, MouseEvent)
-									return value + 1
-								},
+							const clickSignal = fromEvents(
 								0,
+								'button.click-me',
+								{
+									click: ({ event, host, target, value }) => {
+										assert.equal(host, document.body)
+										assert.equal(target, button)
+										assert.instanceOf(event, MouseEvent)
+										return value + 1
+									},
+								},
 							)(document.body)
 
 							// Use with a computed to ensure it behaves like a signal
@@ -947,15 +970,12 @@
 						document.body.appendChild(input)
 
 						try {
-							const valueSignal = fromEvent(
-								'input',
-								'input',
-								({ event, source }) => {
+							const valueSignal = fromEvents('', 'input', {
+								input: ({ event, target }) => {
 									assert.instanceOf(event, Event)
-									return source.value
+									return target.value
 								},
-								'',
-							)(document.body)
+							})(document.body)
 
 							// Use in an effect to test reactivity
 							let currentValue = ''
@@ -985,12 +1005,9 @@
 						document.body.appendChild(container)
 
 						try {
-							const clickSignal = fromEvent(
-								'button',
-								'click',
-								({ value }) => value + 1,
-								0,
-							)(container)
+							const clickSignal = fromEvents(0, 'button', {
+								click: ({ value }) => value + 1,
+							})(container)
 
 							const doubledSignal = computed(
 								() => clickSignal.get() * 2,
@@ -1017,11 +1034,12 @@
 
 						try {
 							let eventCount = 0
-							const clickSignal = fromEvent(
-								'#cleanup-test-button',
-								'click',
-								() => ++eventCount,
+							const clickSignal = fromEvents(
 								0,
+								'#cleanup-test-button',
+								{
+									click: () => ++eventCount,
+								},
 							)(container)
 
 							// Access signal in an effect - creates watcher
@@ -1066,17 +1084,14 @@
 						document.body.appendChild(container)
 
 						try {
-							const signal = fromEvent(
-								'#test-input',
-								'input',
-								({ event, host, source }) => {
+							const signal = fromEvents('', '#test-input', {
+								input: ({ event, host, target }) => {
 									assert.equal(host, container)
-									assert.equal(source.id, 'test-input')
+									assert.equal(target.id, 'test-input')
 									assert.instanceOf(event, Event)
-									return source.value
+									return target.value
 								},
-								'',
-							)(container)
+							})(container)
 
 							// Use in effect to test reactivity
 							let currentValue = ''
@@ -1105,12 +1120,9 @@
 						document.body.appendChild(container)
 
 						try {
-							const signal = fromEvent(
-								'.nonexistent',
-								'click',
-								() => 'clicked',
-								'',
-							)(container)
+							const signal = fromEvents('', '.nonexistent', {
+								click: () => 'clicked',
+							})(container)
 
 							// Use in effect to test reactivity
 							let currentValue = ''
@@ -1132,10 +1144,7 @@
 						document.body.appendChild(container)
 
 						try {
-							const signal = fromEvent(
-								'#counter',
-								'click',
-								({ value }) => value + 1,
+							const signal = fromEvents(
 								host => {
 									assert.equal(host, container)
 									assert.equal(
@@ -1143,6 +1152,10 @@
 										'counter',
 									)
 									return 5 // Start from 5
+								},
+								'#counter',
+								{
+									click: ({ value }) => ++value,
 								},
 							)(container)
 
@@ -1175,16 +1188,12 @@
 						document.body.appendChild(container)
 
 						try {
-							const signal = fromEvent(
-								'form',
-								'submit',
-								({ event, source }) => {
+							const signal = fromEvents(null, 'form', {
+								submit: ({ event, target }) => {
 									event.preventDefault()
-									event.stopPropagation()
-									return new FormData(source)
+									return new FormData(target)
 								},
-								null,
-							)(container)
+							})(container)
 
 							// Use in effect to test reactivity
 							let formData = null
@@ -1210,8 +1219,8 @@
 						}
 					})
 
-					it('should reproduce fromEvent component issue', async () => {
-						// This test reproduces the issue where fromEvent properties
+					it('should reproduce fromEvents component issue', async () => {
+						// This test reproduces the issue where fromEvents properties
 						// in components don't update when events are dispatched
 						const container = document.createElement('div')
 						container.innerHTML = `
@@ -1228,18 +1237,12 @@
 								container.querySelector('.test-component')
 
 							// Create signals
-							const lengthSignal = fromEvent(
-								'#comp-input',
-								'input',
-								({ source }) => source.value.length,
-								0,
-							)(host)
-							const valueSignal = fromEvent(
-								'#comp-input',
-								'change',
-								({ source }) => source.value,
-								'',
-							)(host)
+							const lengthSignal = fromEvents(0, '#comp-input', {
+								input: ({ target }) => target.value.length,
+							})(host)
+							const valueSignal = fromEvents('', '#comp-input', {
+								change: ({ target }) => target.value,
+							})(host)
 
 							// Track updates (this simulates component property access)
 							let lengthValue = 0
@@ -1333,22 +1336,26 @@
 						document.body.appendChild(container)
 
 						try {
-							const signal = fromEvent(
-								'.custom-target',
-								'myCustomEvent',
-								({ event, source }) => {
-									assert.equal(
-										source.className,
-										'custom-target',
-									)
-									assert.equal(event.type, 'myCustomEvent')
-									assert.equal(
-										event.detail.message,
-										'Hello from custom event',
-									)
-									return event.detail.value
-								},
+							const signal = fromEvents(
 								'initial',
+								'.custom-target',
+								{
+									myCustomEvent: ({ event, target }) => {
+										assert.equal(
+											target.className,
+											'custom-target',
+										)
+										assert.equal(
+											event.type,
+											'myCustomEvent',
+										)
+										assert.equal(
+											event.detail.message,
+											'Hello from custom event',
+										)
+										return event.detail.value
+									},
+								},
 							)(container)
 
 							// Use in effect to test reactivity
@@ -1402,28 +1409,20 @@
 							assert.equal(inputs[0].value, 'hello')
 							assert.equal(inputs[0].type, 'text')
 
-							// Test with fromDescendants - should know about input properties
-							const totalLength = fromDescendants(
+							// Test with reduced - should know about input properties
+							const totalLength = reduced(
+								container,
 								'input',
-								(sum, input) => {
-									// TypeScript should know 'input' has .value property
-									return sum + input.value.length
-								},
+								(sum, input) => sum + input.value.length,
 								0,
-							)(container)()
+							).get()
 
 							assert.equal(totalLength, 5) // "hello".length
 
-							// Test with fromEvent - should know about button elements
-							const clickSignal = fromEvent(
-								'button',
-								'click',
-								({ source }) => {
-									// TypeScript should know 'source' is HTMLButtonElement
-									return source.textContent || ''
-								},
-								'',
-							)(container)
+							// Test with fromEvents - should know about button elements
+							const clickSignal = fromEvents('', 'button', {
+								click: ({ target }) => target.textContent || '',
+							})(container)
 
 							let lastValue = ''
 							const cleanup = effect(() => {
@@ -1497,36 +1496,33 @@
 								'function',
 							)
 
-							// Test fromDescendants with UIElement components
-							const totalValue = fromDescendants(
+							// Test reduced with UIElement components
+							const totalValue = reduced(
+								container,
 								'mock-ui-component',
-								(sum, component) => {
-									// TypeScript would know 'component' has UIElement methods
-									return sum + component.value
-								},
+								(sum, component) => sum + component.value,
 								0,
-							)(container)()
+							).get()
 
 							assert.equal(totalValue, 84) // 42 + 42
 
-							// Test fromDescendant with UIElement component
-							const valueReader = fromDescendant(
+							// Test read with UIElement component
+							const value = read(
+								container,
 								'mock-ui-component',
-								'value',
+								component => component.value ?? 0,
+							)
+
+							assert.equal(value, 42)
+
+							// Test fromEvents with UIElement component
+							const eventSignal = fromEvents(
 								0,
-							)(container)
-
-							assert.equal(valueReader(), 42)
-
-							// Test fromEvent with UIElement component
-							const eventSignal = fromEvent(
 								'mock-ui-component',
-								'customEvent',
-								({ source }) => {
-									// TypeScript would know 'source' has UIElement methods
-									return source.value * 2
+								{
+									customEvent: ({ target }) =>
+										target.value * 2,
 								},
-								0,
 							)(container)
 
 							let lastValue = 0
@@ -1551,9 +1547,149 @@
 							container.remove()
 						}
 					})
+
+					it('should handle multiple event listeners (click and keyup)', async () => {
+						const container = document.createElement('div')
+						container.innerHTML = `
+							<button id="tab1" aria-controls="panel1">Tab 1</button>
+							<button id="tab2" aria-controls="panel2">Tab 2</button>
+							<button id="tab3" aria-controls="panel3">Tab 3</button>
+						`
+						document.body.appendChild(container)
+
+						try {
+							const tabs = Array.from(
+								container.querySelectorAll('button'),
+							)
+
+							// Helper function similar to module-tabgroup
+							const getAriaControls = target =>
+								target?.getAttribute('aria-controls') ?? ''
+
+							const getSelected = (
+								elements,
+								isCurrent,
+								offset = 0,
+							) =>
+								getAriaControls(
+									elements[
+										Math.min(
+											Math.max(
+												elements.findIndex(isCurrent)
+													+ offset,
+												0,
+											),
+											elements.length - 1,
+										)
+									],
+								)
+
+							const signal = fromEvents(
+								'panel1', // initial selected
+								'button',
+								{
+									click: ({ target }) =>
+										getAriaControls(target),
+									keyup: ({ event, target }) => {
+										const key = event.key
+										if (
+											[
+												'ArrowLeft',
+												'ArrowRight',
+												'Home',
+												'End',
+											].includes(key)
+										) {
+											event.preventDefault()
+											event.stopPropagation()
+											return getSelected(
+												tabs,
+												tab => tab === target,
+												key === 'Home'
+													? -tabs.length
+													: key === 'End'
+														? tabs.length
+														: key === 'ArrowLeft'
+															? -1
+															: 1,
+											)
+										}
+									},
+								},
+							)(container)
+
+							// Use in effect to test reactivity
+							let currentValue = 'panel1'
+							const cleanup = effect(() => {
+								currentValue = signal.get()
+							})
+
+							// Test initial value
+							assert.equal(currentValue, 'panel1')
+
+							// Test click event
+							tabs[1].click()
+							await animationFrame()
+							assert.equal(currentValue, 'panel2')
+
+							// Test keyup event - ArrowRight should move to next tab
+							tabs[1].dispatchEvent(
+								new KeyboardEvent('keyup', {
+									key: 'ArrowRight',
+									bubbles: true,
+								}),
+							)
+							await animationFrame()
+							assert.equal(currentValue, 'panel3')
+
+							// Test keyup event - ArrowLeft should move to previous tab
+							tabs[2].dispatchEvent(
+								new KeyboardEvent('keyup', {
+									key: 'ArrowLeft',
+									bubbles: true,
+								}),
+							)
+							await animationFrame()
+							assert.equal(currentValue, 'panel2')
+
+							// Test keyup event - Home should move to first tab
+							tabs[1].dispatchEvent(
+								new KeyboardEvent('keyup', {
+									key: 'Home',
+									bubbles: true,
+								}),
+							)
+							await animationFrame()
+							assert.equal(currentValue, 'panel1')
+
+							// Test keyup event - End should move to last tab
+							tabs[0].dispatchEvent(
+								new KeyboardEvent('keyup', {
+									key: 'End',
+									bubbles: true,
+								}),
+							)
+							await animationFrame()
+							assert.equal(currentValue, 'panel3')
+
+							// Test that other keys don't trigger changes
+							tabs[2].dispatchEvent(
+								new KeyboardEvent('keyup', {
+									key: 'Enter',
+									bubbles: true,
+								}),
+							)
+							await animationFrame()
+							assert.equal(currentValue, 'panel3') // Should remain unchanged
+
+							cleanup()
+						} finally {
+							container.remove()
+						}
+					})
 				})
 
-				describe('fromDescendants()', () => {
+				describe('reduced()', () => {
 					it('should reduce child elements to a single value', () => {
 						const container = document.createElement('div')
 						container.innerHTML = `
@@ -1564,14 +1700,15 @@
 						document.body.appendChild(container)
 
 						try {
-							const producer = fromDescendants(
+							const reducer = reduced(
+								container,
 								'[data-value]',
 								(total, element) =>
 									total
 									+ parseInt(element.dataset.value || '0'),
 								0,
-							)(container)
-							assert.equal(producer(), 60) // 10 + 20 + 30
+							)
+							assert.equal(reducer.get(), 60) // 10 + 20 + 30
 						} finally {
 							container.remove()
 						}
@@ -1586,14 +1723,15 @@
 						document.body.appendChild(container)
 
 						try {
-							const producer = fromDescendants(
+							const reducer = reduced(
+								container,
 								'[data-count]',
 								(total, element) =>
 									total
 									+ parseInt(element.dataset.count || '0'),
 								0,
-							)(container)
-							assert.equal(producer(), 2)
+							)
+							assert.equal(reducer.get(), 2)
 
 							// Add new element
 							const newItem = document.createElement('div')
@@ -1602,7 +1740,7 @@
 							container.appendChild(newItem)
 
 							await animationFrame()
-							assert.equal(producer(), 5) // 1 + 1 + 3
+							assert.equal(reducer.get(), 5) // 1 + 1 + 3
 						} finally {
 							container.remove()
 						}
@@ -1619,7 +1757,8 @@
 						document.body.appendChild(container)
 
 						try {
-							const producer = fromDescendants(
+							const reducer = reduced(
+								container,
 								'input[type="checkbox"]',
 								(acc, input) => ({
 									total: acc.total + 1,
@@ -1627,11 +1766,311 @@
 										acc.checked + (input.checked ? 1 : 0),
 								}),
 								{ total: 0, checked: 0 },
-							)(container)
-							const result = producer()
+							)
+							const result = reducer.get()
 
 							assert.equal(result.total, 3)
 							assert.equal(result.checked, 2)
+						} finally {
+							container.remove()
+						}
+					})
+				})
+
+				describe('requireDescendant()', () => {
+					it('should return the element when it exists', () => {
+						const container = document.createElement('div')
+						container.innerHTML = `
+							<form>
+								<input type="text" id="test-input" />
+								<button type="submit">Submit</button>
+							</form>
+						`
+						document.body.appendChild(container)
+
+						try {
+							const input = requireDescendant(
+								container,
+								'#test-input',
+							)
+							assert.instanceOf(input, HTMLInputElement)
+							assert.equal(input.id, 'test-input')
+							assert.equal(input.type, 'text')
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should return the correct element type for different selectors', () => {
+						const container = document.createElement('div')
+						container.innerHTML = `
+							<form>
+								<input type="text" />
+								<button type="submit">Submit</button>
+								<textarea></textarea>
+								<select><option>Option</option></select>
+							</form>
+						`
+						document.body.appendChild(container)
+
+						try {
+							const input = requireDescendant(container, 'input')
+							assert.instanceOf(input, HTMLInputElement)
+
+							const button = requireDescendant(
+								container,
+								'button',
+							)
+							assert.instanceOf(button, HTMLButtonElement)
+
+							const textarea = requireDescendant(
+								container,
+								'textarea',
+							)
+							assert.instanceOf(textarea, HTMLTextAreaElement)
+
+							const select = requireDescendant(
+								container,
+								'select',
+							)
+							assert.instanceOf(select, HTMLSelectElement)
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should return the first matching element when multiple exist', () => {
+						const container = document.createElement('div')
+						container.innerHTML = `
+							<ul>
+								<li data-value="1">First</li>
+								<li data-value="2">Second</li>
+								<li data-value="3">Third</li>
+							</ul>
+						`
+						document.body.appendChild(container)
+
+						try {
+							const firstLi = requireDescendant(container, 'li')
+							assert.instanceOf(firstLi, HTMLLIElement)
+							assert.equal(firstLi.dataset.value, '1')
+							assert.equal(firstLi.textContent, 'First')
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should work with complex selectors', () => {
+						const container = document.createElement('div')
+						container.innerHTML = `
+							<div class="content">
+								<form class="todo-form">
+									<input type="text" class="todo-input" />
+									<button class="submit-btn" type="submit">Add</button>
+								</form>
+								<ol class="todo-list">
+									<li><span>Task 1</span></li>
+								</ol>
+							</div>
+						`
+						document.body.appendChild(container)
+
+						try {
+							const form = requireDescendant(
+								container,
+								'form.todo-form',
+							)
+							assert.instanceOf(form, HTMLFormElement)
+							assert.equal(form.className, 'todo-form')
+
+							const input = requireDescendant(
+								container,
+								'input.todo-input',
+							)
+							assert.instanceOf(input, HTMLInputElement)
+							assert.equal(input.className, 'todo-input')
+
+							const list = requireDescendant(
+								container,
+								'ol.todo-list',
+							)
+							assert.instanceOf(list, HTMLOListElement)
+							assert.equal(list.className, 'todo-list')
+
+							const button = requireDescendant(
+								container,
+								'button[type="submit"]',
+							)
+							assert.instanceOf(button, HTMLButtonElement)
+							assert.equal(button.type, 'submit')
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should throw an error when element does not exist', () => {
+						const container = document.createElement('div')
+						container.innerHTML = `<p>No form here</p>`
+						document.body.appendChild(container)
+
+						try {
+							assert.throws(
+								() => requireDescendant(container, 'form'),
+								Error,
+								'Component <div> does not contain required <form> element',
+							)
+
+							assert.throws(
+								() =>
+									requireDescendant(container, '#missing-id'),
+								Error,
+								'Component <div> does not contain required <#missing-id> element',
+							)
+
+							assert.throws(
+								() =>
+									requireDescendant(
+										container,
+										'.missing-class',
+									),
+								Error,
+								'Component <div> does not contain required <.missing-class> element',
+							)
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should throw an error with correct component name', () => {
+						const container = document.createElement('module-todo')
+						container.innerHTML = `<p>No required elements</p>`
+						document.body.appendChild(container)
+
+						try {
+							assert.throws(
+								() =>
+									requireDescendant(
+										container,
+										'form-textbox',
+									),
+								Error,
+								'Component <module-todo> does not contain required <form-textbox> element',
+							)
+
+							assert.throws(
+								() => requireDescendant(container, 'template'),
+								Error,
+								'Component <module-todo> does not contain required <template> element',
+							)
+
+							assert.throws(
+								() => requireDescendant(container, 'ol'),
+								Error,
+								'Component <module-todo> does not contain required <ol> element',
+							)
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should work with custom elements', () => {
+						// Define a simple custom element for testing
+						if (!customElements.get('test-custom-element')) {
+							class TestCustomElement extends HTMLElement {
+								constructor() {
+									super()
+									this.innerHTML =
+										'<span>Custom content</span>'
+								}
+							}
+							customElements.define(
+								'test-custom-element',
+								TestCustomElement,
+							)
+						}
+
+						const container = document.createElement('div')
+						container.innerHTML = `
+							<test-custom-element id="custom-1">
+								<span>Content</span>
+							</test-custom-element>
+						`
+						document.body.appendChild(container)
+
+						try {
+							const customElement = requireDescendant(
+								container,
+								'test-custom-element',
+							)
+							assert.instanceOf(customElement, HTMLElement)
+							assert.equal(
+								customElement.tagName.toLowerCase(),
+								'test-custom-element',
+							)
+							assert.equal(customElement.id, 'custom-1')
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should work with template elements', () => {
+						const container = document.createElement('div')
+						container.innerHTML = `
+							<template id="todo-template">
+								<li>
+									<form-checkbox></form-checkbox>
+									<slot></slot>
+									<button type="button">Delete</button>
+								</li>
+							</template>
+						`
+						document.body.appendChild(container)
+
+						try {
+							const template = requireDescendant(
+								container,
+								'template',
+							)
+							assert.instanceOf(template, HTMLTemplateElement)
+							assert.equal(template.id, 'todo-template')
+							assert.instanceOf(
+								template.content,
+								DocumentFragment,
+							)
+						} finally {
+							container.remove()
+						}
+					})
+
+					it('should provide proper type inference for ElementFromSelector', () => {
+						const container = document.createElement('div')
+						container.innerHTML = `
+							<form>
+								<input type="email" name="email" required />
+								<button type="submit">Submit</button>
+							</form>
+						`
+						document.body.appendChild(container)
+
+						try {
+							// Test that TypeScript would infer HTMLInputElement for input selector
+							const input = requireDescendant(
+								container,
+								'input[type="email"]',
+							)
+							assert.instanceOf(input, HTMLInputElement)
+							assert.equal(input.type, 'email')
+							assert.equal(input.name, 'email')
+							assert.equal(input.required, true)
+
+							// Test that TypeScript would infer HTMLButtonElement for button selector
+							const button = requireDescendant(
+								container,
+								'button[type="submit"]',
+							)
+							assert.instanceOf(button, HTMLButtonElement)
+							assert.equal(button.type, 'submit')
+							assert.equal(button.textContent, 'Submit')
 						} finally {
 							container.remove()
 						}
@@ -1647,7 +2086,7 @@
 						// Test fromSelector
 						assert.equal(container.items.length, 2)
 
-						// Test fromDescendants
+						// Test reduced
 						assert.equal(container.total, 30)
 
 						// Test fromEvent

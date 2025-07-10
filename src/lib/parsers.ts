@@ -4,7 +4,7 @@ import type { AttributeParser } from '../component'
 
 const parseNumber = (
 	parseFn: (v: string) => number,
-	value: string | null,
+	value: string | null | undefined,
 ): number | undefined => {
 	if (value == null) return
 	const parsed = parseFn(value)
@@ -21,8 +21,8 @@ const parseNumber = (
  */
 const asBoolean =
 	(): AttributeParser<boolean> =>
-	(_: HTMLElement, value: string | null): boolean =>
-		value !== 'false' && value != null
+	(_: HTMLElement, value: string | null | undefined): boolean =>
+		value != null && value !== 'false'
 
 /**
  * Parse an attribute as as number forced to integer with a fallback
@@ -35,16 +35,13 @@ const asBoolean =
  */
 const asInteger =
 	(fallback: number = 0): AttributeParser<number> =>
-	(_: HTMLElement, value: string | null): number => {
+	(_: HTMLElement, value: string | null | undefined): number => {
 		if (value == null) return fallback
-		const trimmed = value.trim()
-		if (trimmed === '') return fallback
 
 		// Handle hexadecimal notation
-		if (trimmed.toLowerCase().startsWith('0x')) {
-			const parsed = parseInt(trimmed, 16)
-			return Number.isFinite(parsed) ? parsed : fallback
-		}
+		const trimmed = value.trim()
+		if (trimmed.toLowerCase().startsWith('0x'))
+			return parseNumber(v => parseInt(v, 16), trimmed) ?? fallback
 
 		// Handle other formats (including scientific notation)
 		const parsed = parseNumber(parseFloat, value)
@@ -60,7 +57,7 @@ const asInteger =
  */
 const asNumber =
 	(fallback: number = 0): AttributeParser<number> =>
-	(_: HTMLElement, value: string | null): number =>
+	(_: HTMLElement, value: string | null | undefined): number =>
 		parseNumber(parseFloat, value) ?? fallback
 
 /**
@@ -72,7 +69,7 @@ const asNumber =
  */
 const asString =
 	(fallback: string = ''): AttributeParser<string> =>
-	(_: HTMLElement, value: string | null): string =>
+	(_: HTMLElement, value: string | null | undefined): string =>
 		value ?? fallback
 
 /**
@@ -84,7 +81,7 @@ const asString =
  */
 const asEnum =
 	(valid: [string, ...string[]]): AttributeParser<string> =>
-	(_: HTMLElement, value: string | null): string => {
+	(_: HTMLElement, value: string | null | undefined): string => {
 		if (value == null) return valid[0]
 		const lowerValue = value.toLowerCase()
 		const matchingValid = valid.find(v => v.toLowerCase() === lowerValue)
@@ -102,7 +99,7 @@ const asEnum =
  */
 const asJSON =
 	<T extends {}>(fallback: T): AttributeParser<T> =>
-	(_: HTMLElement, value: string | null): T => {
+	(_: HTMLElement, value: string | null | undefined): T => {
 		if ((value ?? fallback) == null)
 			throw new ReferenceError(
 				'Value and fallback are both null or undefined',

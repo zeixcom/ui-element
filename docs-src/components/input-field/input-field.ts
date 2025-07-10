@@ -5,7 +5,7 @@ import {
 	UNSET,
 	component,
 	computed,
-	emit,
+	emitEvent,
 	on,
 	setAttribute,
 	setProperty,
@@ -29,7 +29,11 @@ export type InputFieldProps = {
 const isNumber = (num: unknown) => typeof num === 'number'
 
 // Parse a value as a number with optional integer flag and fallback value
-const parseNumber = (v: string | null, int = false, fallback = 0): number => {
+const parseNumber = (
+	v: string | null | undefined,
+	int = false,
+	fallback = 0,
+): number => {
 	if (!v) return fallback
 	const temp = int ? parseInt(v, 10) : parseFloat(v)
 	return Number.isFinite(temp) ? temp : fallback
@@ -110,11 +114,11 @@ export default component(
 			input.checkValidity()
 			el.value = newValue
 			el.error = input.validationMessage ?? ''
-			if (input?.value !== String(value)) emit('value-change', value)(el)
 		}
 
 		// Handle input changes
 		fns.push(
+			emitEvent('value-change', 'value'),
 			first(
 				'input',
 				setProperty('value', () => String(el.value)),
@@ -157,8 +161,8 @@ export default component(
 			fns.push(
 				first(
 					'input',
-					on('keydown', (e: KeyboardEvent) => {
-						const { key, shiftKey } = e
+					on('keydown', (e: Event) => {
+						const { key, shiftKey } = e as KeyboardEvent
 						if (['ArrowUp', 'ArrowDown'].includes(key)) {
 							e.stopPropagation()
 							e.preventDefault()

@@ -1,4 +1,12 @@
-import { type Component, RESET, component, on, setText } from '../../../'
+import {
+	type Component,
+	RESET,
+	asString,
+	component,
+	on,
+	requireDescendant,
+	setText,
+} from '../../..'
 
 export type HelloWorldProps = {
 	name: string
@@ -7,17 +15,21 @@ export type HelloWorldProps = {
 export default component(
 	'hello-world',
 	{
-		name: RESET,
+		name: asString(RESET),
 	},
-	(el, { first }) => [
-		first('span', setText('name')),
-		first(
-			'input',
-			on('input', (e: Event) => {
-				el.name = (e.target as HTMLInputElement)?.value || RESET
-			}),
-		),
-	],
+	(el, { first }) => {
+		requireDescendant(el, 'span')
+
+		return [
+			first(
+				'input',
+				on('input', e => {
+					el.name = (e.target as HTMLInputElement).value || RESET
+				}),
+			),
+			first('span', setText('name')),
+		]
+	},
 )
 
 declare global {

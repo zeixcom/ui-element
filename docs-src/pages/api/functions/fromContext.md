@@ -8,7 +8,9 @@
 
 > **fromContext**\<`T`, `C`\>(`context`, `fallback`): (`host`) => [`Signal`](../type-aliases/Signal.md)\<`T`\>
 
-Defined in: [src/core/context.ts:123](https://github.com/zeixcom/ui-element/blob/d13febaf363936558771161c1c4f66e2034f5ec3/src/core/context.ts#L123)
+Defined in: [src/core/context.ts:125](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/context.ts#L125)
+
+Consume a context value for a component.
 
 ## Type Parameters
 
@@ -26,11 +28,17 @@ Defined in: [src/core/context.ts:123](https://github.com/zeixcom/ui-element/blob
 
 [`Context`](../type-aliases/Context.md)\<`string`, [`Signal`](../type-aliases/Signal.md)\<`T`\>\>
 
+context key to consume
+
 ### fallback
 
 [`MaybeSignal`](../type-aliases/MaybeSignal.md)\<`T`\>
 
+fallback value to use if context is not provided
+
 ## Returns
+
+- a function that returns the consumed context signal or a signal of the fallback value
 
 > (`host`): [`Signal`](../type-aliases/Signal.md)\<`T`\>
 
@@ -43,3 +51,7 @@ Defined in: [src/core/context.ts:123](https://github.com/zeixcom/ui-element/blob
 ### Returns
 
 [`Signal`](../type-aliases/Signal.md)\<`T`\>
+
+## Since
+
+0.13.1

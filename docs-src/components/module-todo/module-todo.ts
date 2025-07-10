@@ -1,18 +1,18 @@
 import {
 	type Component,
 	component,
-	fromDescendant,
 	fromSelector,
 	on,
+	pass,
+	read,
+	requireDescendant,
 	setAttribute,
-	setProperty,
 	setText,
 	show,
 } from '../../..'
 import type { BasicButtonProps } from '../basic-button/basic-button'
 import type { FormCheckboxProps } from '../form-checkbox/form-checkbox'
-import '../form-radiogroup/form-radiogroup'
-import type { FormTextboxProps } from '../form-textbox/form-textbox'
+import '../form-textbox/form-textbox'
 
 export type ModuleTodoProps = {
 	active: HTMLElement[]
@@ -26,33 +26,24 @@ export default component(
 		completed: fromSelector('form-checkbox[checked]'),
 	},
 	(el, { first }) => {
-		const input =
-			el.querySelector<Component<FormTextboxProps>>('form-textbox')
-		if (!input) throw new Error('No input field found')
-		const template = el.querySelector('template')
-		if (!template) throw new Error('No template found')
-		const list = el.querySelector('ol')
-		if (!list) throw new Error('No list found')
-
-		const inputLength = fromDescendant('form-textbox', 'length', 0)(el)
-		const filterValue = fromDescendant(
-			'form-radiogroup',
-			'value',
-			'all',
-		)(el)
+		const textbox = requireDescendant(el, 'form-textbox')
+		const template = requireDescendant(el, 'template')
+		const list = requireDescendant(el, 'ol')
 
 		return [
 			// Control todo input form
 			first<Component<BasicButtonProps>>(
 				'.submit',
-				setProperty('disabled', () => !inputLength()),
+				pass({
+					disabled: () => !textbox.length,
+				}),
 			),
 			first(
 				'form',
 				on('submit', (e: Event) => {
 					e.preventDefault()
 					queueMicrotask(() => {
-						const value = input.value.toString().trim()
+						const value = textbox.value.trim()
 						if (!value) return
 						const li = document.importNode(
 							template.content,
@@ -62,11 +53,9 @@ export default component(
 							throw new Error(
 								'Invalid template for list item; expected <li>',
 							)
-						li.querySelector('slot')?.replaceWith(
-							String(input.value.trim()),
-						)
+						li.querySelector('slot')?.replaceWith(value)
 						list.append(li)
-						input.clear()
+						textbox.clear()
 					})
 				}),
 			),
@@ -74,7 +63,11 @@ export default component(
 			// Control todo list
 			first(
 				'ol',
-				setAttribute('filter', filterValue),
+				setAttribute('filter', () =>
+					read(el, 'form-radiogroup', (radiogroup, upgraded) =>
+						radiogroup && upgraded ? radiogroup.value : 'all',
+					),
+				),
 				on('click', (e: Event) => {
 					const target = e.target as HTMLElement
 					if (target.localName === 'button')
@@ -107,10 +100,13 @@ export default component(
 			// Control clear-completed button
 			first<Component<BasicButtonProps>>(
 				'.clear-completed',
-				setProperty('disabled', () => !el.completed.length),
-				setProperty('badge', () =>
-					el.completed.length > 0 ? String(el.completed.length) : '',
-				),
+				pass({
+					disabled: () => !el.completed.length,
+					badge: () =>
+						el.completed.length > 0
+							? String(el.completed.length)
+							: '',
+				}),
 				on('click', () => {
 					const items = Array.from(el.querySelectorAll('ol li'))
 					for (let i = items.length - 1; i >= 0; i--) {

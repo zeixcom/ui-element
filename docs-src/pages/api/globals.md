@@ -4,10 +4,6 @@
 
 # @zeix/ui-element
 
-## Interfaces
-
-- [TransformerContext](interfaces/TransformerContext.md)
-
 ## Type Aliases
 
 - [AttributeParser](type-aliases/AttributeParser.md)
@@ -25,14 +21,15 @@
 - [ElementInserter](type-aliases/ElementInserter.md)
 - [ElementUpdater](type-aliases/ElementUpdater.md)
 - [EventTransformer](type-aliases/EventTransformer.md)
+- [EventTransformerContext](type-aliases/EventTransformerContext.md)
+- [EventTransformers](type-aliases/EventTransformers.md)
 - [EventType](type-aliases/EventType.md)
-- [HTMLElementEventType](type-aliases/HTMLElementEventType.md)
 - [Initializer](type-aliases/Initializer.md)
 - [LogLevel](type-aliases/LogLevel.md)
 - [MaybeSignal](type-aliases/MaybeSignal.md)
 - [MethodProducer](type-aliases/MethodProducer.md)
-- [PassedReactives](type-aliases/PassedReactives.md)
 - [Reactive](type-aliases/Reactive.md)
+- [Reactives](type-aliases/Reactives.md)
 - [ReservedWords](type-aliases/ReservedWords.md)
 - [SelectorFunctions](type-aliases/SelectorFunctions.md)
 - [Signal](type-aliases/Signal.md)
@@ -40,7 +37,6 @@
 - [State](type-aliases/State.md)
 - [UnknownContext](type-aliases/UnknownContext.md)
 - [UpdateOperation](type-aliases/UpdateOperation.md)
-- [ValidEventName](type-aliases/ValidEventName.md)
 - [ValidPropertyKey](type-aliases/ValidPropertyKey.md)
 
 ## Variables
@@ -65,12 +61,11 @@
 - [computed](functions/computed.md)
 - [dangerouslySetInnerHTML](functions/dangerouslySetInnerHTML.md)
 - [effect](functions/effect.md)
-- [emit](functions/emit.md)
+- [emitEvent](functions/emitEvent.md)
 - [enqueue](functions/enqueue.md)
+- [focus](functions/focus.md)
 - [fromContext](functions/fromContext.md)
-- [fromDescendant](functions/fromDescendant.md)
-- [fromDescendants](functions/fromDescendants.md)
-- [fromEvent](functions/fromEvent.md)
+- [fromEvents](functions/fromEvents.md)
 - [fromSelector](functions/fromSelector.md)
 - [insertOrRemoveElement](functions/insertOrRemoveElement.md)
 - [isComputed](functions/isComputed.md)
@@ -79,7 +74,10 @@
 - [log](functions/log.md)
 - [on](functions/on.md)
 - [pass](functions/pass.md)
-- [provide](functions/provide.md)
+- [provideContexts](functions/provideContexts.md)
+- [read](functions/read.md)
+- [reduced](functions/reduced.md)
+- [requireDescendant](functions/requireDescendant.md)
 - [setAttribute](functions/setAttribute.md)
 - [setProperty](functions/setProperty.md)
 - [setStyle](functions/setStyle.md)

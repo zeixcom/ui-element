@@ -2,36 +2,49 @@ import {
 	type Component,
 	asInteger,
 	component,
-	on,
+	fromEvents,
 	setProperty,
 	setText,
 	show,
-} from '../../../'
+} from '../../..'
 
 export type FormSpinbuttonProps = {
 	value: number
 }
 
+const clickHandler = ({ target, value }) =>
+	value + (target.classList.contains('decrement') ? -1 : 1)
+
+const keydownHandler = ({ event, value }) => {
+	const { key } = event as KeyboardEvent
+	if (['ArrowUp', 'ArrowDown', '-', '+'].includes(key)) {
+		event.stopPropagation()
+		event.preventDefault()
+		return value + (key === 'ArrowDown' || key === '-' ? -1 : 1)
+	}
+}
+
 export default component(
 	'form-spinbutton',
 	{
-		value: asInteger(),
+		value: fromEvents(
+			el => asInteger()(el, el.querySelector('value')?.textContent),
+			'button',
+			{
+				click: clickHandler,
+				keydown: keydownHandler,
+			},
+		),
 	},
-	(el, { all, first }) => {
+	(el, { first }) => {
 		const zeroLabel = el.getAttribute('zero-label') || 'Add to Cart'
 		const incrementLabel = el.getAttribute('increment-label') || 'Increment'
 		const max = asInteger(9)(el, el.getAttribute('max'))
 		const nonZero = () => el.value !== 0
 
 		return [
-			first<HTMLButtonElement>('.value', setText('value'), show(nonZero)),
-			first<HTMLButtonElement>(
-				'.decrement',
-				show(nonZero),
-				on('click', () => {
-					el.value--
-				}),
-			),
+			first('.value', setText('value'), show(nonZero)),
+			first('.decrement', show(nonZero)),
 			first<HTMLButtonElement>(
 				'.increment',
 				setText(() => (nonZero() ? '+' : zeroLabel)),
@@ -39,21 +52,6 @@ export default component(
 					nonZero() ? incrementLabel : zeroLabel,
 				),
 				setProperty('disabled', () => el.value >= max),
-				on('click', () => {
-					el.value++
-				}),
-			),
-			all(
-				'button',
-				on('keydown', (e: Event) => {
-					const { key } = e as KeyboardEvent
-					if (['ArrowUp', 'ArrowDown', '-', '+'].includes(key)) {
-						e.stopPropagation()
-						e.preventDefault()
-						if (key === 'ArrowDown' || key === '-') el.value--
-						if (key === 'ArrowUp' || key === '+') el.value++
-					}
-				}),
 			),
 		]
 	},

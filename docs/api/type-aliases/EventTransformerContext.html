@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>PassedReactives\<P, E\> – UIElement Docs</title>
+		<title>EventTransformerContext\<T, E, C, Evt\> – UIElement Docs</title>
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="../../assets/main.css" />
 		<script type="module" src="../../assets/main.js"></script>
@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.2</small>
+					UIElement Docs <small>Version 0.13.3</small>
 				</h1>
 				
 <section-menu>
@@ -99,29 +99,29 @@
 				</card-callout>
 			</header>
 			<main class="content-grid"><section class="api-content">
-<h1 id="type-alias-passedreactivesltp-egt">
-                <a name="type-alias-passedreactivesltp-egt" class="anchor" href="#type-alias-passedreactivesltp-egt">
+<h1 id="type-alias-eventtransformercontextltt-e-c-evtgt">
+                <a name="type-alias-eventtransformercontextltt-e-c-evtgt" class="anchor" href="#type-alias-eventtransformercontextltt-e-c-evtgt">
 	                <span class="permalink">🔗</span>
                 </a>
-                Type Alias: PassedReactives&lt;P, E&gt;
+                Type Alias: EventTransformerContext&lt;T, E, C, Evt&gt;
             </h1>
 <blockquote>
-<p><strong>PassedReactives</strong>&lt;<code>P</code>, <code>E</code>&gt; = <code>{ [K in keyof E]?: Reactive&lt;E[K], P, E&gt; }</code></p>
+<p><strong>EventTransformerContext</strong>&lt;<code>T</code>, <code>E</code>, <code>C</code>, <code>Evt</code>&gt; = <code>object</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/dca68975dbf6990768dc34ee0f32fba5091cee2d/src/lib/effects.ts#L39">src/lib/effects.ts:39</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L22">src/core/dom.ts:22</a></p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Type Parameters
             </h2>
-<h3 id="p">
-                <a name="p" class="anchor" href="#p">
+<h3 id="t">
+                <a name="t" class="anchor" href="#t">
 	                <span class="permalink">🔗</span>
                 </a>
-                P
+                T
             </h3>
-<p><code>P</code> <em>extends</em> <a href="ComponentProps.html"><code>ComponentProps</code></a></p>
+<p><code>T</code> <em>extends</em> <code>object</code></p>
 <h3 id="e">
                 <a name="e" class="anchor" href="#e">
 	                <span class="permalink">🔗</span>
@@ -129,6 +129,69 @@
                 E
             </h3>
 <p><code>E</code> <em>extends</em> <code>Element</code></p>
+<h3 id="c">
+                <a name="c" class="anchor" href="#c">
+	                <span class="permalink">🔗</span>
+                </a>
+                C
+            </h3>
+<p><code>C</code> <em>extends</em> <code>HTMLElement</code></p>
+<h3 id="evt">
+                <a name="evt" class="anchor" href="#evt">
+	                <span class="permalink">🔗</span>
+                </a>
+                Evt
+            </h3>
+<p><code>Evt</code> <em>extends</em> <code>Event</code></p>
+<h2 id="properties">
+                <a name="properties" class="anchor" href="#properties">
+	                <span class="permalink">🔗</span>
+                </a>
+                Properties
+            </h2>
+<h3 id="event">
+                <a name="event" class="anchor" href="#event">
+	                <span class="permalink">🔗</span>
+                </a>
+                event
+            </h3>
+<blockquote>
+<p><strong>event</strong>: <code>Evt</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L28">src/core/dom.ts:28</a></p>
+<hr>
+<h3 id="host">
+                <a name="host" class="anchor" href="#host">
+	                <span class="permalink">🔗</span>
+                </a>
+                host
+            </h3>
+<blockquote>
+<p><strong>host</strong>: <code>C</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L29">src/core/dom.ts:29</a></p>
+<hr>
+<h3 id="target">
+                <a name="target" class="anchor" href="#target">
+	                <span class="permalink">🔗</span>
+                </a>
+                target
+            </h3>
+<blockquote>
+<p><strong>target</strong>: <code>E</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L30">src/core/dom.ts:30</a></p>
+<hr>
+<h3 id="value">
+                <a name="value" class="anchor" href="#value">
+	                <span class="permalink">🔗</span>
+                </a>
+                value
+            </h3>
+<blockquote>
+<p><strong>value</strong>: <code>T</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L31">src/core/dom.ts:31</a></p>
 
 </section></main>
 			<footer class="content-grid">

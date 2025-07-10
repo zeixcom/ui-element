@@ -1,4 +1,4 @@
-import { State, on } from '../../..'
+import { type ComponentProps, type Effect, on, state } from '../../..'
 
 const HANDLED_KEYS = [
 	'ArrowLeft',
@@ -9,30 +9,37 @@ const HANDLED_KEYS = [
 	'End',
 ]
 
-const clamp = (value: number, min: number, max: number) =>
-	Math.min(Math.max(value, min), max)
-
-export const manageFocusOnKeydown = (
-	elements: HTMLElement[],
-	index: State<number>,
-) =>
-	on('keydown', (e: KeyboardEvent) => {
-		if (HANDLED_KEYS.includes(e.key)) {
-			e.preventDefault()
-			e.stopPropagation()
-			if (e.key === 'Home') index.set(0)
-			else if (e.key === 'End') index.set(elements.length - 1)
-			else
-				index.update(v =>
-					clamp(
-						v +
-							(e.key === 'ArrowRight' || e.key === 'ArrowDown'
-								? 1
-								: -1),
-						0,
-						elements.length - 1,
-					),
-				)
-			if (elements[index.get()]) elements[index.get()].focus()
-		}
-	})
+export const manageFocusOnKeydown = <E extends HTMLElement = HTMLElement>(
+	elements: E[],
+	getSelected: (elements: E[]) => number,
+): Effect<ComponentProps, E>[] => {
+	const index = state(getSelected(elements))
+	return [
+		on('change', () => {
+			index.set(getSelected(elements))
+		}),
+		on('keydown', e => {
+			const { key } = e
+			if (HANDLED_KEYS.includes(key)) {
+				e.preventDefault()
+				e.stopPropagation()
+				if (key === 'Home') index.set(0)
+				else if (key === 'End') index.set(elements.length - 1)
+				else
+					index.update(v =>
+						Math.min(
+							Math.max(
+								v +
+									(key === 'ArrowRight' || key === 'ArrowDown'
+										? 1
+										: -1),
+								0,
+							),
+							elements.length - 1,
+						),
+					)
+				if (elements[index.get()]) elements[index.get()].focus()
+			}
+		}),
+	]
+}

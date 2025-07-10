@@ -1,11 +1,9 @@
 import {
 	type Component,
-	asString,
 	component,
-	on,
+	fromEvents,
 	setAttribute,
 	setProperty,
-	state,
 	toggleClass,
 } from '../../..'
 import { manageFocusOnKeydown } from '../../functions/event-listener/manage-focus-on-keydown'
@@ -14,41 +12,46 @@ export type FormRadiogroupProps = {
 	value: string
 }
 
+const changeHandler = ({ target }) => target.value
+
+const keyupHandler = ({ event, target }) => {
+	if (event.key === 'Enter') target.click()
+}
+
 export default component(
 	'form-radiogroup',
 	{
-		value: asString(),
+		value: fromEvents(
+			(host: HTMLElement) =>
+				host.querySelector<HTMLInputElement>('input:checked')?.value ??
+				'',
+			'input',
+			{
+				change: changeHandler,
+				keyup: keyupHandler,
+			},
+		),
 	},
-	(el, { all }) => {
-		const inputs = Array.from(el.querySelectorAll('input'))
-		const focusIndex = state(inputs.findIndex(input => input.checked))
-		return [
-			setAttribute('value'),
-			manageFocusOnKeydown(inputs, focusIndex),
-			all(
-				'input',
-				on('change', e => {
-					const input = e.target as HTMLInputElement
-					el.value = input.value
-					focusIndex.set(inputs.findIndex(input => input.checked))
-				}),
-				on('keyup', (e: KeyboardEvent) => {
-					if (e.key === 'Enter' && e.target)
-						(e.target as HTMLInputElement).click()
-				}),
-				setProperty('tabIndex', target =>
-					target.value === el.value ? 0 : -1,
-				),
+	(el, { all }) => [
+		setAttribute('value'),
+		all(
+			'input',
+			setProperty('tabIndex', target =>
+				target.value === el.value ? 0 : -1,
 			),
-			all(
-				'label',
-				toggleClass(
-					'selected',
-					target => el.value === target.querySelector('input')?.value,
-				),
+			...manageFocusOnKeydown(
+				Array.from(el.querySelectorAll<HTMLInputElement>('input')),
+				inputs => inputs.findIndex(input => input.checked),
 			),
-		]
-	},
+		),
+		all(
+			'label',
+			toggleClass(
+				'selected',
+				target => el.value === target.querySelector('input')?.value,
+			),
+		),
+	],
 )
 
 declare global {

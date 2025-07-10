@@ -1,4 +1,4 @@
-import { type Component, type FxFunction, on, show } from '../../..'
+import { type Component, type Effect, on, show } from '../../..'
 
 /**
  * Creates a clear function for input components that properly handles
@@ -30,13 +30,15 @@ export const createClearFunction =
  * Standard effects for clearing input components on button elements
  *
  * @param {Component<P>} host - The component instance with clear, length properties
- * @returns {FxFunction<P, HTMLButtonElement>[]} - Effects for clearing the input component
+ * @returns {Effect<P, HTMLButtonElement>[]} - Effects for clearing the input component
  */
 export const standardClearEffects = <
 	P extends { clear: () => void; length: number },
 >(
 	host: Component<P>,
-): FxFunction<P, HTMLButtonElement>[] => [
+): Effect<P, HTMLButtonElement>[] => [
 	show(() => !!host.length),
-	on('click', () => host.clear()),
+	on('click', () => {
+		host.clear()
+	}),
 ]

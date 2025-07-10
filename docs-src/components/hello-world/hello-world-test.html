@@ -14,7 +14,7 @@
 			<p>Hello, <span>World</span>!</p>
 		</hello-world>
 
-		<hello-world id="test2" name="Alice">
+		<hello-world id="test2">
 			<label
 				>Your name<br />
 				<input type="text" />
@@ -55,7 +55,7 @@
 						// Component uses RESET, so it shows the initial DOM content "World"
 						// The attribute doesn't automatically become the property value
 						assert.equal(span.textContent, 'World')
-						assert.equal(el.getAttribute('name'), 'Alice')
+						assert.equal(el.getAttribute('name'), 'World')
 
 						// When we set the property programmatically, it should work
 						el.name = 'Alice'

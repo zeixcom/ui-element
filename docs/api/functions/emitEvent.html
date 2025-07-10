@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>consume – UIElement Docs</title>
+		<title>emitEvent – UIElement Docs</title>
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="../../assets/main.css" />
 		<script type="module" src="../../assets/main.js"></script>
@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.1</small>
+					UIElement Docs <small>Version 0.13.3</small>
 				</h1>
 				
 <section-menu>
@@ -99,17 +99,17 @@
 				</card-callout>
 			</header>
 			<main class="content-grid"><section class="api-content">
-<h1 id="function-consume">
-                <a name="function-consume" class="anchor" href="#function-consume">
+<h1 id="function-emitevent">
+                <a name="function-emitevent" class="anchor" href="#function-emitevent">
 	                <span class="permalink">🔗</span>
                 </a>
-                Function: consume()
+                Function: emitEvent()
             </h1>
 <blockquote>
-<p><strong>consume</strong>&lt;<code>T</code>, <code>C</code>&gt;(<code>context</code>, <code>fallback</code>): (<code>host</code>) =&gt; <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;</p>
+<p><strong>emitEvent</strong>&lt;<code>T</code>, <code>P</code>, <code>E</code>&gt;(<code>type</code>, <code>reactive</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/ef7525ef4fcd5329d68c2b65cc085220a29b7a4f/src/core/context.ts#L124">src/core/context.ts:124</a></p>
-<p>Consume a context value for a component.</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/lib/effects.ts#L670">src/lib/effects.ts:670</a></p>
+<p>Effect for emitting custom events with reactive detail values.<br>Creates and dispatches CustomEvent instances with bubbling enabled by default.</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -122,75 +122,58 @@
                 </a>
                 T
             </h3>
-<p><code>T</code> <em>extends</em> <code>object</code></p>
-<h3 id="c">
-                <a name="c" class="anchor" href="#c">
+<p><code>T</code></p>
+<h3 id="p">
+                <a name="p" class="anchor" href="#p">
 	                <span class="permalink">🔗</span>
                 </a>
-                C
+                P
             </h3>
-<p><code>C</code> <em>extends</em> <code>HTMLElement</code></p>
+<p><code>P</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
+<h3 id="e">
+                <a name="e" class="anchor" href="#e">
+	                <span class="permalink">🔗</span>
+                </a>
+                E
+            </h3>
+<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Parameters
             </h2>
-<h3 id="context">
-                <a name="context" class="anchor" href="#context">
+<h3 id="type">
+                <a name="type" class="anchor" href="#type">
 	                <span class="permalink">🔗</span>
                 </a>
-                context
+                type
             </h3>
-<p><a href="../type-aliases/Context.html"><code>Context</code></a>&lt;<code>string</code>, <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;&gt;</p>
-<p>context key to consume</p>
-<h3 id="fallback">
-                <a name="fallback" class="anchor" href="#fallback">
+<p><code>string</code></p>
+<p>Event type to emit</p>
+<h3 id="reactive">
+                <a name="reactive" class="anchor" href="#reactive">
 	                <span class="permalink">🔗</span>
                 </a>
-                fallback
+                reactive
             </h3>
-<p><a href="../type-aliases/MaybeSignal.html"><code>MaybeSignal</code></a>&lt;<code>T</code>&gt;</p>
-<p>fallback value to use if context is not provided</p>
+<p><a href="../type-aliases/Reactive.html"><code>Reactive</code></a>&lt;<code>T</code>, <code>P</code>, <code>E</code>&gt;</p>
+<p>Reactive value bound to the event detail</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<ul>
-<li>a function that returns the consumed context signal or a signal of the fallback value</li>
-</ul>
-<blockquote>
-<p>(<code>host</code>): <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;</p>
-</blockquote>
-<h3 id="parameters">
-                <a name="parameters" class="anchor" href="#parameters">
-	                <span class="permalink">🔗</span>
-                </a>
-                Parameters
-            </h3>
-<h4 id="host">
-                <a name="host" class="anchor" href="#host">
-	                <span class="permalink">🔗</span>
-                </a>
-                host
-            </h4>
-<p><code>C</code></p>
-<h3 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h3>
-<p><a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;</p>
+<p><a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
+<p>Effect function that emits custom events</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
                 </a>
                 Since
             </h2>
-<p>0.12.0</p>
+<p>0.13.3</p>
 
 </section></main>
 			<footer class="content-grid">
