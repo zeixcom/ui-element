@@ -1,53 +1,60 @@
-import type { AttributeParser } from '../component'
+import { type StringParser, type ValueOrExtractor } from '../core/dom'
 /**
  * Parse a boolean attribute as an actual boolean value
  *
  * @since 0.13.1
- * @returns {AttributeParser<boolean>}
+ * @returns {StringParser<boolean>}
  */
-declare const asBoolean: () => AttributeParser<boolean>
+declare const asBoolean: () => StringParser<boolean>
 /**
- * Parse an attribute as as number forced to integer with a fallback
+ * Parse a string as a number forced to integer with a fallback
  *
  * Supports hexadecimal and scientific notation
  *
  * @since 0.11.0
- * @param {number} [fallback=0] - fallback value
- * @returns {AttributeParser<number>} parser function
+ * @param {ValueOrExtractor<number>} [fallback=0] - Fallback value or extractor function
+ * @returns {StringParser<number>} Parser function
  */
-declare const asInteger: (fallback?: number) => AttributeParser<number>
+declare const asInteger: (
+	fallback?: ValueOrExtractor<number>,
+) => StringParser<number>
 /**
- * Parse an attribute as as number with a fallback
+ * Parse a string as a number with a fallback
  *
  * @since 0.11.0
- * @param {number} [fallback=0] - fallback value
- * @returns {AttributeParser<number>} parser function
+ * @param {ValueOrExtractor<number>} [fallback=0] - Fallback value or extractor function
+ * @returns {AttributeParser<number>} Parser function
  */
-declare const asNumber: (fallback?: number) => AttributeParser<number>
+declare const asNumber: (
+	fallback?: ValueOrExtractor<number>,
+) => StringParser<number>
 /**
- * Parse an attribute as a string with a fallback
+ * Parse a string as a string with a fallback
  *
  * @since 0.11.0
- * @param {string} [fallback=''] - fallback value
- * @returns {AttributeParser<string>} parser function
+ * @param {ValueOrExtractor<string>} [fallback=''] - Fallback value or extractor function
+ * @returns {StringParser<string>} Parser function
  */
-declare const asString: (fallback?: string) => AttributeParser<string>
+declare const asString: (
+	fallback?: ValueOrExtractor<string>,
+) => StringParser<string>
 /**
- * Parse an attribute as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option
+ * Parse a string as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option
  *
  * @since 0.9.0
- * @param {string[]} valid - array of valid values
- * @returns {AttributeParser<string>} parser function
+ * @param {[string, ...string[]]} valid - Array of valid values
+ * @returns {StringParser<string>} Parser function
  */
-declare const asEnum: (valid: [string, ...string[]]) => AttributeParser<string>
+declare const asEnum: (valid: [string, ...string[]]) => StringParser<string>
 /**
- * Parse an attribute as a JSON serialized object with a fallback
+ * Parse a string as a JSON serialized object with a fallback
  *
  * @since 0.11.0
- * @param {T} fallback - fallback value
- * @returns {AttributeParser<T>} parser function
- * @throws {ReferenceError} if the value and fallback are both null or undefined
- * @throws {SyntaxError} if the value is not a valid JSON object
+ * @param {ValueOrExtractor<T>} fallback - Fallback value or extractor function
+ * @returns {StringParser<T>} Parser function
+ * @throws {TypeError} If the value and fallback are both null or undefined or value is not a valid JSON string
  */
-declare const asJSON: <T extends {}>(fallback: T) => AttributeParser<T>
+declare const asJSON: <T extends {}>(
+	fallback: ValueOrExtractor<T>,
+) => StringParser<T>
 export { asBoolean, asInteger, asNumber, asString, asEnum, asJSON }

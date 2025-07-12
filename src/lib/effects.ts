@@ -1,6 +1,5 @@
 import {
 	type Cleanup,
-	type Signal,
 	UNSET,
 	effect,
 	enqueue,
@@ -10,13 +9,13 @@ import {
 	toSignal,
 } from '@zeix/cause-effect'
 
+import type { Component, ComponentProps } from '../component'
 import {
-	type Component,
-	type ComponentProps,
 	type Effect,
 	RESET,
-} from '../component'
-import type { EventType } from '../core/dom'
+	type Reactive,
+	resolveReactive,
+} from '../core/reactive'
 import {
 	DEV_MODE,
 	LOG_ERROR,
@@ -26,15 +25,9 @@ import {
 	isDefinedObject,
 	isString,
 	log,
-	valueString,
 } from '../core/util'
 
 /* === Types === */
-
-type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
-	| keyof P
-	| Signal<NonNullable<T>>
-	| ((element: E) => T | null | undefined)
 
 type Reactives<E extends Element, P extends ComponentProps> = {
 	[K in keyof E]?: Reactive<E[K], P, E>
@@ -64,47 +57,7 @@ type DangerouslySetInnerHTMLOptions = {
 	allowScripts?: boolean
 }
 
-/* === Internal Constants === */
-
-const RESOLVE_ERROR = Symbol('RESOLVE_ERROR')
-
 /* === Internal Functions === */
-
-const resolveReactive = <
-	T extends {},
-	P extends ComponentProps,
-	E extends Element = Component<P>,
->(
-	reactive: Reactive<T, P, E>,
-	host: Component<P>,
-	target: E,
-	context?: string,
-): T | typeof RESOLVE_ERROR => {
-	try {
-		return isString(reactive)
-			? (host.getSignal(reactive).get() as unknown as T)
-			: isSignal(reactive)
-				? reactive.get()
-				: isFunction<T>(reactive)
-					? reactive(target)
-					: RESET
-	} catch (error) {
-		if (context) {
-			log(
-				error,
-				`Failed to resolve value of ${valueString(reactive)}${
-					context ? ` for ${context}` : ''
-				} in ${elementName(target)}${
-					(host as unknown as E) !== target
-						? ` in ${elementName(host)}`
-						: ''
-				}`,
-				LOG_ERROR,
-			)
-		}
-		return RESOLVE_ERROR
-	}
-}
 
 const getOperationDescription = (
 	op: UpdateOperation,
@@ -154,20 +107,6 @@ const createOperationHandlers = <P extends ComponentProps, E extends Element>(
 
 const createDedupeSymbol = (operation: string, identifier?: string): symbol => {
 	return Symbol(identifier ? `${operation}:${identifier}` : operation)
-}
-
-const withReactiveValue = <T, P extends ComponentProps, E extends Element>(
-	reactive: Reactive<T, P, E>,
-	host: Component<P>,
-	target: E,
-	context: string,
-	handler: (value: T) => void,
-): Cleanup => {
-	return effect(() => {
-		const value = resolveReactive(reactive, host, target, context)
-		if (value === RESOLVE_ERROR) return
-		handler(value as T)
-	})
 }
 
 const isSafeURL = (value: string): boolean => {
@@ -237,8 +176,6 @@ const updateElement =
 			const updateSymbol = createDedupeSymbol(op, name)
 
 			const value = resolveReactive(reactive, host, target, operationDesc)
-			if (value === RESOLVE_ERROR) return
-
 			const resolvedValue =
 				value === RESET
 					? fallback
@@ -323,8 +260,6 @@ const insertOrRemoveElement =
 				target,
 				'insertion or deletion',
 			)
-			if (diff === RESOLVE_ERROR) return
-
 			const resolvedDiff = diff === RESET ? 0 : diff
 
 			if (resolvedDiff > 0) {
@@ -633,62 +568,6 @@ const dangerouslySetInnerHTML = <
 	})
 
 /**
- * Effect for attaching an event listener to an element.
- * Provides proper cleanup when the effect is disposed.
- *
- * @since 0.12.0
- * @param {string} type - Event type
- * @param {(event: EventType<K>) => void} listener - Event listener function
- * @param {AddEventListenerOptions | boolean} options - Event listener options
- * @returns {Effect<ComponentProps, E>} Effect function that manages the event listener
- */
-const on =
-	<K extends keyof HTMLElementEventMap | string, E extends HTMLElement>(
-		type: K,
-		listener: (event: EventType<K>) => void,
-		options: AddEventListenerOptions | boolean = false,
-	): Effect<ComponentProps, E> =>
-	(_, target): Cleanup => {
-		if (!isFunction(listener))
-			throw new TypeError(
-				`Invalid event listener provided for "${type} event on element ${elementName(target)}`,
-			)
-		target.addEventListener(type, listener, options)
-		return () => target.removeEventListener(type, listener)
-	}
-
-/**
- * Effect for emitting custom events with reactive detail values.
- * Creates and dispatches CustomEvent instances with bubbling enabled by default.
- *
- * @since 0.13.3
- * @param {string} type - Event type to emit
- * @param {Reactive<T, P, E>} reactive - Reactive value bound to the event detail
- * @returns {Effect<P, E>} Effect function that emits custom events
- */
-const emitEvent =
-	<T, P extends ComponentProps, E extends Element = HTMLElement>(
-		type: string,
-		reactive: Reactive<T, P, E>,
-	): Effect<P, E> =>
-	(host, target): Cleanup =>
-		withReactiveValue(
-			reactive,
-			host,
-			target,
-			`custom event "${type}" detail`,
-			detail => {
-				if (detail === RESET || detail === UNSET) return
-				target.dispatchEvent(
-					new CustomEvent(type, {
-						detail,
-						bubbles: true,
-					}),
-				)
-			},
-		)
-
-/**
  * Effect for passing reactive values to a descendant UIElement component.
  *
  * @since 0.13.3
@@ -735,7 +614,6 @@ const pass =
 /* === Exports === */
 
 export {
-	type Reactive,
 	type Reactives,
 	type UpdateOperation,
 	type ElementUpdater,
@@ -753,7 +631,5 @@ export {
 	toggleClass,
 	setStyle,
 	dangerouslySetInnerHTML,
-	on,
-	emitEvent,
 	pass,
 }

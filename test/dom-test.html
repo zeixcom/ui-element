@@ -841,7 +841,7 @@
 						}
 					})
 
-					it('should handle missing child elements', () => {
+					it('should handle missing descendant elements', () => {
 						const container = document.createElement('div')
 						document.body.appendChild(container)
 
@@ -1690,7 +1690,7 @@
 				})
 
 				describe('reduced()', () => {
-					it('should reduce child elements to a single value', () => {
+					it('should reduce descendant elements to a single value', () => {
 						const container = document.createElement('div')
 						container.innerHTML = `
 						<div data-value="10">Item 1</div>
@@ -1714,7 +1714,7 @@
 						}
 					})
 
-					it('should update when child elements change', async () => {
+					it('should update when descendant elements change', async () => {
 						const container = document.createElement('div')
 						container.innerHTML = `
 						<div data-count="1">Item 1</div>

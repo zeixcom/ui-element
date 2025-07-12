@@ -65,6 +65,7 @@
 - [enqueue](functions/enqueue.md)
 - [focus](functions/focus.md)
 - [fromContext](functions/fromContext.md)
+- [fromDOM](functions/fromDOM.md)
 - [fromEvents](functions/fromEvents.md)
 - [fromSelector](functions/fromSelector.md)
 - [insertOrRemoveElement](functions/insertOrRemoveElement.md)

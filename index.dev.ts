@@ -32,13 +32,9 @@ export {
 	type ValidPropertyKey,
 	type ReservedWords,
 	type Initializer,
-	type AttributeParser,
 	type SignalProducer,
 	type MethodProducer,
-	type Effect,
-	type ElementFromSelector,
 	type SelectorFunctions,
-	RESET,
 	component,
 } from './src/component'
 export {
@@ -50,16 +46,31 @@ export {
 	log,
 } from './src/core/util'
 export {
+	type ElementFromSelector,
+	type StringParser,
+	type ValueOrExtractor,
+	fromComponent,
+	fromDOM,
+	fromSelector,
+	read,
+	reduced,
+	requireElement,
+} from './src/core/dom'
+export {
+	type Effect,
+	type Reactive,
+	RESET,
+	resolveReactive,
+} from './src/core/reactive'
+export {
 	type EventType,
 	type EventTransformer,
 	type EventTransformers,
 	type EventTransformerContext,
+	emitEvent,
 	fromEvents,
-	fromSelector,
-	read,
-	reduced,
-	requireDescendant,
-} from './src/core/dom'
+	on,
+} from './src/core/events'
 export {
 	type Context,
 	type UnknownContext,
@@ -78,7 +89,6 @@ export {
 	asJSON,
 } from './src/lib/parsers'
 export {
-	type Reactive,
 	type Reactives,
 	type UpdateOperation,
 	type ElementUpdater,
@@ -96,7 +106,5 @@ export {
 	toggleClass,
 	setStyle,
 	dangerouslySetInnerHTML,
-	on,
-	emitEvent,
 	pass,
 } from './src/lib/effects'

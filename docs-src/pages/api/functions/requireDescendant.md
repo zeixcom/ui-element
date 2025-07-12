@@ -8,7 +8,7 @@
 
 > **requireDescendant**\<`S`, `E`\>(`host`, `selector`): [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>
 
-Defined in: [src/core/dom.ts:359](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L359)
+Defined in: [src/core/dom.ts:359](https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/core/dom.ts#L359)
 
 Assert that an element contains an expected descendant element
 

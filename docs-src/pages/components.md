@@ -73,7 +73,7 @@ In this example you see all three ways to define a reactive property:
 
 <card-callout class="caution">
 
-**Note**: Property initialization runs **before the element is attached to the DOM**. You can't access not yet defined properties or child elements here.
+**Caution**: Property initialization runs **before the element is attached to the DOM**. You can't access not yet defined properties or descendant elements here.
 
 </card-callout>
 

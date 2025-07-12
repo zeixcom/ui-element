@@ -1,5 +1,6 @@
-import { type Cleanup, type MaybeSignal, type Signal } from '@zeix/cause-effect'
+import { type Cleanup, type Signal } from '@zeix/cause-effect'
 import { type Component, type ComponentProps } from '../component'
+import { type ValueOrExtractor } from './dom'
 /** @see https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md */
 /**
  * A context key.
@@ -32,7 +33,7 @@ declare global {
 		 * A 'context-request' event can be emitted by any element which desires
 		 * a context value to be injected by an external provider.
 		 */
-		'context-request': ContextRequestEvent<Context<unknown, unknown>>
+		'context-request': ContextRequestEvent<UnknownContext>
 	}
 }
 declare const CONTEXT_REQUEST = 'context-request'
@@ -69,8 +70,8 @@ declare class ContextRequestEvent<T extends UnknownContext> extends Event {
  * Provide a context for descendant component consumers
  *
  * @since 0.13.3
- * @param {Context<K, Signal<P[K]>>[]} contexts - array of contexts to provide
- * @returns {(host: Component<P>) => Cleanup} - function to add an event listener for ContextRequestEvent returning a cleanup function to remove the event listener
+ * @param {Context<K, Signal<P[K]>>[]} contexts - Array of contexts to provide
+ * @returns {(host: Component<P>) => Cleanup} Function to add an event listener for ContextRequestEvent returning a cleanup function to remove the event listener
  */
 declare const provideContexts: <P extends ComponentProps, K extends keyof P>(
 	contexts: Context<K, Signal<P[K]>>[],
@@ -79,13 +80,13 @@ declare const provideContexts: <P extends ComponentProps, K extends keyof P>(
  * Consume a context value for a component.
  *
  * @since 0.13.1
- * @param {Context<K, Signal<P[K]>>} context - context key to consume
- * @param {MaybeSignal<P[K]>} fallback - fallback value to use if context is not provided
- * @returns {(host: C) => Signal<T>} - a function that returns the consumed context signal or a signal of the fallback value
+ * @param {Context<K, Signal<T>>} context - Context key to consume
+ * @param {ValueOrExtractor<P[K]>} fallback - Fallback value or extractor function
+ * @returns {(host: C) => Signal<T>} Function that returns the consumed context signal or a signal of the fallback value
  */
 declare const fromContext: <T extends {}, C extends HTMLElement>(
 	context: Context<string, Signal<T>>,
-	fallback: MaybeSignal<T>,
+	fallback: ValueOrExtractor<T>,
 ) => (host: C) => Signal<T>
 export {
 	type Context,

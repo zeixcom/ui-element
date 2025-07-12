@@ -1,13 +1,13 @@
-import { requireDescendant } from '../../..'
 import {
 	type Component,
-	RESET,
 	asBoolean,
 	asString,
 	component,
+	fromDOM,
+	requireElement,
 	setProperty,
 	setText,
-} from '../../../'
+} from '../../..'
 
 export type BasicButtonProps = {
 	disabled: boolean
@@ -19,12 +19,11 @@ export default component(
 	'basic-button',
 	{
 		disabled: asBoolean(),
-		label: asString(RESET),
+		label: asString(fromDOM('.label', target => target.textContent, '')),
 		badge: asString(),
 	},
 	(el, { first }) => {
-		requireDescendant(el, 'button')
-		requireDescendant(el, '.label')
+		requireElement(el, 'button')
 
 		return [
 			first('button', setProperty('disabled')),

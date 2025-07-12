@@ -8,7 +8,7 @@
 
 > **SignalProducer**\<`T`, `C`\> = (`host`) => [`MaybeSignal`](MaybeSignal.md)\<`T`\>
 
-Defined in: [src/component.ts:69](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/component.ts#L69)
+Defined in: [src/component.ts:69](https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/component.ts#L69)
 
 ## Type Parameters
 

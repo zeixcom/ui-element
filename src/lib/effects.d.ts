@@ -1,10 +1,5 @@
-import { type Signal } from '@zeix/cause-effect'
-import { type Component, type ComponentProps, type Effect } from '../component'
-import type { EventType } from '../core/dom'
-type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
-	| keyof P
-	| Signal<NonNullable<T>>
-	| ((element: E) => T | null | undefined)
+import type { Component, ComponentProps } from '../component'
+import { type Effect, type Reactive } from '../core/reactive'
 type Reactives<E extends Element, P extends ComponentProps> = {
 	[K in keyof E]?: Reactive<E[K], P, E>
 }
@@ -220,41 +215,6 @@ declare const dangerouslySetInnerHTML: <
 	options?: DangerouslySetInnerHTMLOptions,
 ) => Effect<P, E>
 /**
- * Effect for attaching an event listener to an element.
- * Provides proper cleanup when the effect is disposed.
- *
- * @since 0.12.0
- * @param {string} type - Event type
- * @param {(event: EventType<K>) => void} listener - Event listener function
- * @param {AddEventListenerOptions | boolean} options - Event listener options
- * @returns {Effect<ComponentProps, E>} Effect function that manages the event listener
- */
-declare const on: <
-	K extends keyof HTMLElementEventMap | string,
-	E extends HTMLElement,
->(
-	type: K,
-	listener: (event: EventType<K>) => void,
-	options?: AddEventListenerOptions | boolean,
-) => Effect<ComponentProps, E>
-/**
- * Effect for emitting custom events with reactive detail values.
- * Creates and dispatches CustomEvent instances with bubbling enabled by default.
- *
- * @since 0.13.3
- * @param {string} type - Event type to emit
- * @param {Reactive<T, P, E>} reactive - Reactive value bound to the event detail
- * @returns {Effect<P, E>} Effect function that emits custom events
- */
-declare const emitEvent: <
-	T,
-	P extends ComponentProps,
-	E extends Element = HTMLElement,
->(
-	type: string,
-	reactive: Reactive<T, P, E>,
-) => Effect<P, E>
-/**
  * Effect for passing reactive values to a descendant UIElement component.
  *
  * @since 0.13.3
@@ -267,7 +227,6 @@ declare const pass: <P extends ComponentProps, Q extends ComponentProps>(
 	reactives: Reactives<Component<Q>, P>,
 ) => Effect<P, Component<Q>>
 export {
-	type Reactive,
 	type Reactives,
 	type UpdateOperation,
 	type ElementUpdater,
@@ -285,7 +244,5 @@ export {
 	toggleClass,
 	setStyle,
 	dangerouslySetInnerHTML,
-	on,
-	emitEvent,
 	pass,
 }

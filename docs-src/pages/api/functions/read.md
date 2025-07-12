@@ -8,7 +8,7 @@
 
 > **read**\<`T`, `E`, `C`, `S`\>(`host`, `selector`, `map`): `T`
 
-Defined in: [src/core/dom.ts:336](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L336)
+Defined in: [src/core/dom.ts:336](https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/core/dom.ts#L336)
 
 Read from a descendant element and map the result
 

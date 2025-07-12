@@ -342,64 +342,17 @@ var areElementArraysEqual = (arr1, arr2) => {
   }
   return true;
 };
-var fromEvents = (initialize, selector, events) => (host) => {
-  const watchers = new Set;
-  let value = isFunction(initialize) ? initialize(host) : initialize;
-  const eventMap = new Map;
-  let cleanup;
-  const listen = () => {
-    for (const [type, transform] of Object.entries(events)) {
-      const listener = (e) => {
-        const target = e.target;
-        if (!target)
-          return;
-        const source = target.closest(selector);
-        if (!source || !host.contains(source))
-          return;
-        e.stopPropagation();
-        try {
-          const newValue = transform({
-            event: e,
-            host,
-            target: source,
-            value
-          });
-          if (newValue == null)
-            return;
-          if (!Object.is(newValue, value)) {
-            value = newValue;
-            if (watchers.size > 0)
-              notify(watchers);
-            else if (cleanup)
-              cleanup();
-          }
-        } catch (error) {
-          e.stopImmediatePropagation();
-          throw error;
-        }
-      };
-      eventMap.set(type, listener);
-      host.addEventListener(type, listener);
-    }
-    cleanup = () => {
-      if (eventMap.size) {
-        for (const [type, listener] of eventMap) {
-          host.removeEventListener(type, listener);
-        }
-        eventMap.clear();
-      }
-      cleanup = undefined;
-    };
-  };
-  return {
-    [Symbol.toStringTag]: TYPE_COMPUTED,
-    get() {
-      subscribe(watchers);
-      if (watchers.size && !eventMap.size)
-        listen();
+var isStringParser = (value) => isFunction(value) && value.length >= 2;
+var extractValue = (extractor, element, parser) => {
+  if (isFunction(extractor)) {
+    const value = extractor(element);
+    if (isString(value) && parser)
+      return parser(element, value);
+    else
       return value;
-    }
-  };
+  } else {
+    return extractor;
+  }
 };
 var observeSubtree = (parent, selector, callback) => {
   const observer = new MutationObserver(callback);
@@ -465,16 +418,35 @@ var read = (host, selector, map) => {
   const source = host.querySelector(selector);
   return map(source, source ? isUpgradedComponent(source) : false);
 };
-var requireDescendant = (host, selector) => {
+var requireElement = (host, selector) => {
   const target = host.querySelector(selector);
   if (!target) {
     throw new Error(`Component ${elementName(host)} does not contain required <${selector}> element`);
   }
   return target;
 };
+var fromDOM = (selector, extractor, parser, fallback) => (host) => {
+  const target = host.querySelector(selector);
+  if (target) {
+    const value = extractor(target);
+    if (value != null)
+      return extractValue(value, host, parser);
+  }
+  if (fallback != null)
+    return extractValue(fallback, host, parser);
+  throw new Error(`Component ${elementName(host)} does not contain required <${selector}> element`);
+};
+var fromComponent = (selector, fn, fallback) => (host) => {
+  const target = requireElement(host, selector);
+  if (!isCustomElement(target))
+    throw new Error(`Element ${selector} is not a custom element`);
+  return computed(async () => {
+    await customElements.whenDefined(target.localName);
+    return fn(target) ?? extractValue(fallback, host);
+  });
+};
 
 // src/component.ts
-var RESET = Symbol();
 var RESERVED_WORDS = new Set([
   "constructor",
   "prototype"
@@ -496,14 +468,11 @@ var HTML_ELEMENT_PROPS = new Set([
   "textContent",
   "innerText"
 ]);
-var isAttributeParser = (value) => isFunction(value) && value.length >= 2;
 var validatePropertyName = (prop) => {
-  if (RESERVED_WORDS.has(prop)) {
+  if (RESERVED_WORDS.has(prop))
     return `Property name "${prop}" is a reserved word`;
-  }
-  if (HTML_ELEMENT_PROPS.has(prop)) {
+  if (HTML_ELEMENT_PROPS.has(prop))
     return `Property name "${prop}" conflicts with inherited HTMLElement property`;
-  }
   return null;
 };
 var run = (fns, host, target = host) => {
@@ -556,30 +525,27 @@ var select = () => ({
 var component = (name, init = {}, setup) => {
   for (const prop of Object.keys(init)) {
     const error = validatePropertyName(prop);
-    if (error) {
+    if (error)
       throw new TypeError(`${error} in component "${name}".`);
-    }
   }
-  customElements.define(name, class extends HTMLElement {
+
+  class CustomElement extends HTMLElement {
     debug;
     #signals = {};
     #cleanup;
-    static observedAttributes = Object.entries(init)?.filter(([, ini]) => isAttributeParser(ini)).map(([prop]) => prop) ?? [];
-    constructor() {
-      super();
-      for (const [prop, ini] of Object.entries(init)) {
-        if (ini == null)
-          continue;
-        const result = isAttributeParser(ini) ? ini(this, null) : isFunction(ini) ? ini(this) : ini;
-        if (result != null)
-          this.setSignal(prop, toSignal(result));
-      }
-    }
+    static observedAttributes = Object.entries(init)?.filter(([, initializer]) => isStringParser(initializer)).map(([prop]) => prop) ?? [];
     connectedCallback() {
       if (DEV_MODE) {
         this.debug = this.hasAttribute("debug");
         if (this.debug)
           log(this, "Connected");
+      }
+      for (const [prop, initializer] of Object.entries(init)) {
+        if (initializer == null || prop in this)
+          continue;
+        const result = isFunction(initializer) ? initializer(this, null) : initializer;
+        if (result != null)
+          this.setSignal(prop, toSignal(result));
       }
       const fns = setup(this, select());
       if (!Array.isArray(fns))
@@ -595,13 +561,16 @@ var component = (name, init = {}, setup) => {
     attributeChangedCallback(attr, old, value) {
       if (value === old || isComputed(this.#signals[attr]))
         return;
-      const parse = init[attr];
-      if (!isAttributeParser(parse))
+      const parser = init[attr];
+      if (!isStringParser(parser))
         return;
-      const parsed = parse(this, value, old);
+      const parsed = parser(this, value, old);
       if (DEV_MODE && this.debug)
-        log(value, `Attribute "${attr}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`);
-      this[attr] = parsed;
+        log(value, `Attribute "${String(attr)}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`);
+      if (attr in this)
+        this[attr] = parsed;
+      else
+        this.setSignal(attr, toSignal(parsed));
     }
     getSignal(key) {
       const signal = this.#signals[key];
@@ -629,8 +598,96 @@ var component = (name, init = {}, setup) => {
       if (DEV_MODE && this.debug)
         log(signal, `Set ${typeString(signal)} "${String(key)} in ${elementName(this)}`);
     }
-  });
+  }
+  customElements.define(name, CustomElement);
 };
+// src/core/reactive.ts
+var RESET = Symbol("RESET");
+var resolveReactive = (reactive, host, target, context) => {
+  try {
+    return isString(reactive) ? host.getSignal(reactive).get() : isSignal(reactive) ? reactive.get() : isFunction(reactive) ? reactive(target) : RESET;
+  } catch (error) {
+    if (context) {
+      log(error, `Failed to resolve value of ${valueString(reactive)}${context ? ` for ${context}` : ""} in ${elementName(target)}${host !== target ? ` in ${elementName(host)}` : ""}`, LOG_ERROR);
+    }
+    return RESET;
+  }
+};
+// src/core/events.ts
+var fromEvents = (initialize, selector, events) => (host) => {
+  const watchers = new Set;
+  let value = extractValue(initialize, host);
+  const eventMap = new Map;
+  let cleanup;
+  const listen = () => {
+    for (const [type, transform] of Object.entries(events)) {
+      const listener = (e) => {
+        const target = e.target;
+        if (!target)
+          return;
+        const source = target.closest(selector);
+        if (!source || !host.contains(source))
+          return;
+        e.stopPropagation();
+        try {
+          const newValue = transform({
+            event: e,
+            host,
+            target: source,
+            value
+          });
+          if (newValue == null)
+            return;
+          if (!Object.is(newValue, value)) {
+            value = newValue;
+            if (watchers.size > 0)
+              notify(watchers);
+            else if (cleanup)
+              cleanup();
+          }
+        } catch (error) {
+          e.stopImmediatePropagation();
+          throw error;
+        }
+      };
+      eventMap.set(type, listener);
+      host.addEventListener(type, listener);
+    }
+    cleanup = () => {
+      if (eventMap.size) {
+        for (const [type, listener] of eventMap) {
+          host.removeEventListener(type, listener);
+        }
+        eventMap.clear();
+      }
+      cleanup = undefined;
+    };
+  };
+  return {
+    [Symbol.toStringTag]: TYPE_COMPUTED,
+    get() {
+      subscribe(watchers);
+      if (watchers.size && !eventMap.size)
+        listen();
+      return value;
+    }
+  };
+};
+var on = (type, listener, options = false) => (_, target) => {
+  if (!isFunction(listener))
+    throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
+  target.addEventListener(type, listener, options);
+  return () => target.removeEventListener(type, listener);
+};
+var emitEvent = (type, reactive) => (host, target) => effect(() => {
+  const value = resolveReactive(reactive, host, target, `custom event "${type}" detail`);
+  if (value === RESET || value === UNSET)
+    return;
+  target.dispatchEvent(new CustomEvent(type, {
+    detail: value,
+    bubbles: true
+  }));
+});
 // src/core/context.ts
 var CONTEXT_REQUEST = "context-request";
 
@@ -660,7 +717,7 @@ var provideContexts = (contexts) => (host) => {
   return () => host.removeEventListener(CONTEXT_REQUEST, listener);
 };
 var fromContext = (context, fallback) => (host) => {
-  let consumed = toSignal(fallback);
+  let consumed = toSignal(extractValue(fallback, host));
   host.dispatchEvent(new ContextRequestEvent(context, (value) => {
     consumed = value;
   }));
@@ -674,17 +731,23 @@ var parseNumber = (parseFn, value) => {
   return Number.isFinite(parsed) ? parsed : undefined;
 };
 var asBoolean = () => (_, value) => value != null && value !== "false";
-var asInteger = (fallback = 0) => (_, value) => {
-  if (value == null)
-    return fallback;
-  const trimmed = value.trim();
-  if (trimmed.toLowerCase().startsWith("0x"))
-    return parseNumber((v) => parseInt(v, 16), trimmed) ?? fallback;
-  const parsed = parseNumber(parseFloat, value);
-  return parsed != null ? Math.trunc(parsed) : fallback;
+var asInteger = (fallback = 0) => {
+  const parser = (host, value) => {
+    if (value == null)
+      return extractValue(fallback, host, parser);
+    const trimmed = value.trim();
+    if (trimmed.toLowerCase().startsWith("0x"))
+      return parseNumber((v) => parseInt(v, 16), trimmed) ?? extractValue(fallback, host, parser);
+    const parsed = parseNumber(parseFloat, value);
+    return parsed != null ? Math.trunc(parsed) : extractValue(fallback, host, parser);
+  };
+  return parser;
 };
-var asNumber = (fallback = 0) => (_, value) => parseNumber(parseFloat, value) ?? fallback;
-var asString = (fallback = "") => (_, value) => value ?? fallback;
+var asNumber = (fallback = 0) => {
+  const parser = (host, value) => parseNumber(parseFloat, value) ?? extractValue(fallback, host, parser);
+  return parser;
+};
+var asString = (fallback = "") => (host, value) => value ?? extractValue(fallback, host);
 var asEnum = (valid) => (_, value) => {
   if (value == null)
     return valid[0];
@@ -692,35 +755,27 @@ var asEnum = (valid) => (_, value) => {
   const matchingValid = valid.find((v) => v.toLowerCase() === lowerValue);
   return matchingValid ? value : valid[0];
 };
-var asJSON = (fallback) => (_, value) => {
-  if ((value ?? fallback) == null)
-    throw new ReferenceError("Value and fallback are both null or undefined");
-  if (value == null)
-    return fallback;
-  if (value === "")
-    throw new SyntaxError("Empty string is not valid JSON");
-  let result;
-  try {
-    result = JSON.parse(value);
-  } catch (error) {
-    throw new SyntaxError(`Failed to parse JSON: ${String(error)}`, {
-      cause: error
-    });
-  }
-  return result ?? fallback;
+var asJSON = (fallback) => {
+  const parser = (host, value) => {
+    if ((value ?? fallback) == null)
+      throw new TypeError("asJSON: Value and fallback are both null or undefined");
+    if (value == null)
+      return extractValue(fallback, host, parser);
+    if (value === "")
+      throw new TypeError("Empty string is not valid JSON");
+    let result;
+    try {
+      result = JSON.parse(value);
+    } catch (error) {
+      throw new TypeError(`asJSON: Failed to parse JSON: ${String(error)}`, {
+        cause: error
+      });
+    }
+    return result ?? extractValue(fallback, host, parser);
+  };
+  return parser;
 };
 // src/lib/effects.ts
-var RESOLVE_ERROR = Symbol("RESOLVE_ERROR");
-var resolveReactive = (reactive, host, target, context) => {
-  try {
-    return isString(reactive) ? host.getSignal(reactive).get() : isSignal(reactive) ? reactive.get() : isFunction(reactive) ? reactive(target) : RESET;
-  } catch (error) {
-    if (context) {
-      log(error, `Failed to resolve value of ${valueString(reactive)}${context ? ` for ${context}` : ""} in ${elementName(target)}${host !== target ? ` in ${elementName(host)}` : ""}`, LOG_ERROR);
-    }
-    return RESOLVE_ERROR;
-  }
-};
 var getOperationDescription = (op, name = "") => {
   const ops = {
     a: "attribute ",
@@ -749,14 +804,6 @@ var createOperationHandlers = (host, target, operationDesc, resolve, reject) => 
 };
 var createDedupeSymbol = (operation, identifier) => {
   return Symbol(identifier ? `${operation}:${identifier}` : operation);
-};
-var withReactiveValue = (reactive, host, target, context, handler) => {
-  return effect(() => {
-    const value = resolveReactive(reactive, host, target, context);
-    if (value === RESOLVE_ERROR)
-      return;
-    handler(value);
-  });
 };
 var isSafeURL = (value) => {
   if (/^(mailto|tel):/i.test(value))
@@ -790,8 +837,6 @@ var updateElement = (reactive, updater) => (host, target) => {
   return effect(() => {
     const updateSymbol = createDedupeSymbol(op, name);
     const value = resolveReactive(reactive, host, target, operationDesc);
-    if (value === RESOLVE_ERROR)
-      return;
     const resolvedValue = value === RESET ? fallback : value === UNSET ? updater.delete ? null : fallback : value;
     if (updater.delete && resolvedValue === null) {
       enqueue(() => {
@@ -830,8 +875,6 @@ var insertOrRemoveElement = (reactive, inserter) => (host, target) => {
     const insertSymbol = createDedupeSymbol("i");
     const removeSymbol = createDedupeSymbol("r");
     const diff = resolveReactive(reactive, host, target, "insertion or deletion");
-    if (diff === RESOLVE_ERROR)
-      return;
     const resolvedDiff = diff === RESET ? 0 : diff;
     if (resolvedDiff > 0) {
       if (!inserter)
@@ -971,20 +1014,6 @@ var dangerouslySetInnerHTML = (reactive, options = {}) => updateElement(reactive
     return " with scripts";
   }
 });
-var on = (type, listener, options = false) => (_, target) => {
-  if (!isFunction(listener))
-    throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
-  target.addEventListener(type, listener, options);
-  return () => target.removeEventListener(type, listener);
-};
-var emitEvent = (type, reactive) => (host, target) => withReactiveValue(reactive, host, target, `custom event "${type}" detail`, (detail) => {
-  if (detail === RESET || detail === UNSET)
-    return;
-  target.dispatchEvent(new CustomEvent(type, {
-    detail,
-    bubbles: true
-  }));
-});
 var pass = (reactives) => (host, target) => {
   if (!isDefinedObject(reactives))
     throw new TypeError(`Reactives must be an object of passed signals`);
@@ -1011,7 +1040,8 @@ export {
   setStyle,
   setProperty,
   setAttribute,
-  requireDescendant,
+  resolveReactive,
+  requireElement,
   reduced,
   read,
   provideContexts,
@@ -1024,7 +1054,9 @@ export {
   insertOrRemoveElement,
   fromSelector,
   fromEvents,
+  fromDOM,
   fromContext,
+  fromComponent,
   focus,
   enqueue,
   emitEvent,

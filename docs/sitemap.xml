@@ -2,462 +2,462 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 		<url>
 		<loc>https://zeixcom.github.io/ui-element/examples.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/components.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/blog.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/blog/composing-complexity.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.6</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/blog/rethinking-reactivity.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.6</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/blog/flow-from-cause-to-effect.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.6</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/blog/html-first-thinking.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.6</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/blog/the-case-for-components.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.6</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/getting-started.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/index.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>1.0</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/data-flow.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/ElementInserter.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/EventType.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/EffectMatcher.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/ComponentProps.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/ComputedCallback.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/ValidPropertyKey.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/Initializer.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/Reactives.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/EventTransformer.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/Context.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/Effect.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/EventTransformerContext.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/State.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/ElementFromSelector.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/SignalProducer.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/EventTransformers.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/Component.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/AttributeParser.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/Signal.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/DangerouslySetInnerHTMLOptions.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/ElementUpdater.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/Computed.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/MethodProducer.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/SelectorFunctions.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/ContextType.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/MaybeSignal.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/Reactive.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/Cleanup.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/UpdateOperation.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/UnknownContext.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/ReservedWords.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/type-aliases/LogLevel.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/README.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.7</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/variables/LOG_ERROR.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/variables/LOG_INFO.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/variables/UNSET.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/variables/LOG_DEBUG.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/variables/LOG_WARN.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/variables/RESET.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/isState.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/asEnum.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/asBoolean.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/emitEvent.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/insertOrRemoveElement.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/asJSON.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/toSignal.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/effect.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/isSignal.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/read.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/focus.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/asString.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/state.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/setProperty.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/requireDescendant.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/fromSelector.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/component.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/toggleClass.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/pass.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/computed.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/log.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/reduced.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/fromContext.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/updateElement.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/enqueue.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/toggleAttribute.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/setText.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/isComputed.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/setStyle.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/show.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/asNumber.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/dangerouslySetInnerHTML.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/setAttribute.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/asInteger.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/on.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/provideContexts.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/fromEvents.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/functions/batch.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/api/globals.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/styling.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://zeixcom.github.io/ui-element/about.html</loc>
-		<lastmod>2025-07-10T01:07:07.263Z</lastmod>
+		<lastmod>2025-07-11T11:13:14.413Z</lastmod>
 		<priority>0.8</priority>
 	</url>
 </urlset>
