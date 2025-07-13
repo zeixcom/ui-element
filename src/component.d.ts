@@ -1,5 +1,9 @@
 import { type Cleanup, type MaybeSignal, type Signal } from '@zeix/cause-effect'
-import { type ElementFromSelector, type StringParser } from './core/dom'
+import {
+	type ElementFromSelector,
+	type Extractor,
+	type StringParser,
+} from './core/dom'
 import type { Effect } from './core/reactive'
 type ReservedWords =
 	| 'constructor'
@@ -34,9 +38,10 @@ type Component<P extends ComponentProps> = HTMLElement &
 			signal: Signal<P[K]>,
 		): void
 	}
-type SignalProducer<T extends {}, C extends HTMLElement = HTMLElement> = (
-	host: C,
-) => MaybeSignal<T>
+type SignalProducer<
+	T extends {},
+	C extends HTMLElement = HTMLElement,
+> = Extractor<MaybeSignal<T>, C>
 type MethodProducer<C extends HTMLElement> = (host: C) => void
 type Initializer<T extends {}, C extends HTMLElement> =
 	| T

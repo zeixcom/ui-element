@@ -12,3 +12,4 @@ export { type EventType, type EventTransformer, type EventTransformers, type Eve
 export { type Context, type UnknownContext, type ContextType, fromContext, provideContexts, } from './src/core/context';
 export { asBoolean, asInteger, asNumber, asString, asEnum, asJSON, } from './src/lib/parsers';
 export { type Reactives, type UpdateOperation, type ElementUpdater, type ElementInserter, type DangerouslySetInnerHTMLOptions, updateElement, insertOrRemoveElement, setText, setProperty, show, focus, setAttribute, toggleAttribute, toggleClass, setStyle, dangerouslySetInnerHTML, pass, } from './src/lib/effects';
+export { getText, getProperty, hasAttribute, getAttribute, hasClass, getStyle, } from './src/lib/extractors';

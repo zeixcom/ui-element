@@ -1,5 +1,10 @@
-import { type ComponentProps, type SignalProducer } from '../component'
-import { type ElementFromSelector, type ValueOrExtractor } from './dom'
+import { type Computed } from '@zeix/cause-effect'
+import { type ComponentProps } from '../component'
+import {
+	type ElementFromSelector,
+	type Extractor,
+	type ValueOrExtractor,
+} from './dom'
 import { type Effect, type Reactive } from './reactive'
 type EventType<K extends string> = K extends keyof HTMLElementEventMap
 	? HTMLElementEventMap[K]
@@ -35,7 +40,7 @@ type EventTransformers<
  * @param {ValueOrExtractor<T>} initialize - Initial value or extractor function
  * @param {S} selector - CSS selector for the source element
  * @param {EventTransformers<T, ElementFromSelector<S, E>, C>} events - Transformation functions for events
- * @returns {(host: C) => Computed<T>} Signal producer for value from event
+ * @returns {Extractor<Computed<T>, C>} Extractor function for value from event
  */
 declare const fromEvents: <
 	T extends {},
@@ -46,7 +51,7 @@ declare const fromEvents: <
 	initialize: ValueOrExtractor<T, C>,
 	selector: S,
 	events: EventTransformers<T, ElementFromSelector<S, E>, C>,
-) => SignalProducer<T, C>
+) => Extractor<Computed<T>, C>
 /**
  * Effect for attaching an event listener to an element.
  * Provides proper cleanup when the effect is disposed.

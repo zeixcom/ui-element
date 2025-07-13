@@ -1,5 +1,6 @@
 import {
 	type Cleanup,
+	type Computed,
 	TYPE_COMPUTED,
 	UNSET,
 	type Watcher,
@@ -8,9 +9,10 @@ import {
 	notify,
 	subscribe,
 } from '@zeix/cause-effect'
-import { type ComponentProps, type SignalProducer } from '../component'
+import { type ComponentProps } from '../component'
 import {
 	type ElementFromSelector,
+	type Extractor,
 	type ValueOrExtractor,
 	extractValue,
 } from './dom'
@@ -59,7 +61,7 @@ type EventTransformers<
  * @param {ValueOrExtractor<T>} initialize - Initial value or extractor function
  * @param {S} selector - CSS selector for the source element
  * @param {EventTransformers<T, ElementFromSelector<S, E>, C>} events - Transformation functions for events
- * @returns {(host: C) => Computed<T>} Signal producer for value from event
+ * @returns {Extractor<Computed<T>, C>} Extractor function for value from event
  */
 const fromEvents =
 	<
@@ -71,7 +73,7 @@ const fromEvents =
 		initialize: ValueOrExtractor<T, C>,
 		selector: S,
 		events: EventTransformers<T, ElementFromSelector<S, E>, C>,
-	): SignalProducer<T, C> =>
+	): Extractor<Computed<T>, C> =>
 	(host: C) => {
 		const watchers: Set<Watcher> = new Set()
 		let value: T = extractValue(initialize, host)

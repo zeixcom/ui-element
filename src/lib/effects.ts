@@ -506,7 +506,7 @@ const toggleClass = <P extends ComponentProps, E extends Element = HTMLElement>(
  */
 const setStyle = <
 	P extends ComponentProps,
-	E extends HTMLElement | SVGElement | MathMLElement,
+	E extends HTMLElement | SVGElement | MathMLElement = HTMLElement,
 >(
 	prop: string,
 	reactive: Reactive<string, P, E> = prop,

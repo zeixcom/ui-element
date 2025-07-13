@@ -4,6 +4,8 @@ import {
 	asString,
 	component,
 	fromDOM,
+	getAttribute,
+	getText,
 	requireElement,
 	setProperty,
 	setText,
@@ -19,7 +21,13 @@ export default component(
 	'basic-button',
 	{
 		disabled: asBoolean(),
-		label: asString(fromDOM('.label', target => target.textContent, '')),
+		label: asString(
+			fromDOM(
+				'.label',
+				getText<string>(undefined),
+				getAttribute('aria-label', undefined),
+			),
+		),
 		badge: asString(),
 	},
 	(el, { first }) => {

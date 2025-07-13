@@ -193,7 +193,7 @@ declare const toggleClass: <
  */
 declare const setStyle: <
 	P extends ComponentProps,
-	E extends HTMLElement | SVGElement | MathMLElement,
+	E extends HTMLElement | SVGElement | MathMLElement = HTMLElement,
 >(
 	prop: string,
 	reactive?: Reactive<string, P, E>,

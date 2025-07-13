@@ -6,6 +6,7 @@ import {
 } from '@zeix/cause-effect'
 
 import type { Component, ComponentProps } from '../component'
+import type { LooseExtractor } from './dom'
 import { LOG_ERROR, elementName, isString, log, valueString } from './util'
 
 /* === Types === */
@@ -18,7 +19,7 @@ type Effect<P extends ComponentProps, E extends Element> = (
 type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 	| keyof P
 	| Signal<NonNullable<T>>
-	| ((element: E) => T | null | undefined)
+	| LooseExtractor<T | null | undefined, E>
 
 /* === Constants === */
 

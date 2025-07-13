@@ -1,5 +1,6 @@
 import { type Cleanup, type Signal } from '@zeix/cause-effect'
 import type { Component, ComponentProps } from '../component'
+import type { LooseExtractor } from './dom'
 type Effect<P extends ComponentProps, E extends Element> = (
 	host: Component<P>,
 	element: E,
@@ -7,7 +8,7 @@ type Effect<P extends ComponentProps, E extends Element> = (
 type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 	| keyof P
 	| Signal<NonNullable<T>>
-	| ((element: E) => T | null | undefined)
+	| LooseExtractor<T | null | undefined, E>
 declare const RESET: any
 declare const resolveReactive: <
 	T extends {},

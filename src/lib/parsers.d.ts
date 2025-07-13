@@ -12,32 +12,32 @@ declare const asBoolean: () => StringParser<boolean>
  * Supports hexadecimal and scientific notation
  *
  * @since 0.11.0
- * @param {ValueOrExtractor<number>} [fallback=0] - Fallback value or extractor function
- * @returns {StringParser<number>} Parser function
+ * @param {ValueOrExtractor<number, E>} [fallback=0] - Fallback value or extractor function
+ * @returns {StringParser<number, E>} Parser function
  */
-declare const asInteger: (
-	fallback?: ValueOrExtractor<number>,
-) => StringParser<number>
+declare const asInteger: <E extends Element = HTMLElement>(
+	fallback?: ValueOrExtractor<number, E>,
+) => StringParser<number, E>
 /**
  * Parse a string as a number with a fallback
  *
  * @since 0.11.0
- * @param {ValueOrExtractor<number>} [fallback=0] - Fallback value or extractor function
- * @returns {AttributeParser<number>} Parser function
+ * @param {ValueOrExtractor<number, E>} [fallback=0] - Fallback value or extractor function
+ * @returns {StringParser<number, E>} Parser function
  */
-declare const asNumber: (
-	fallback?: ValueOrExtractor<number>,
-) => StringParser<number>
+declare const asNumber: <E extends Element = HTMLElement>(
+	fallback?: ValueOrExtractor<number, E>,
+) => StringParser<number, E>
 /**
  * Parse a string as a string with a fallback
  *
  * @since 0.11.0
- * @param {ValueOrExtractor<string>} [fallback=''] - Fallback value or extractor function
- * @returns {StringParser<string>} Parser function
+ * @param {ValueOrExtractor<string, E>} [fallback=''] - Fallback value or extractor function
+ * @returns {StringParser<string, E>} Parser function
  */
-declare const asString: (
-	fallback?: ValueOrExtractor<string>,
-) => StringParser<string>
+declare const asString: <E extends Element = HTMLElement>(
+	fallback?: ValueOrExtractor<string, E>,
+) => StringParser<string, E>
 /**
  * Parse a string as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option
  *
@@ -50,11 +50,12 @@ declare const asEnum: (valid: [string, ...string[]]) => StringParser<string>
  * Parse a string as a JSON serialized object with a fallback
  *
  * @since 0.11.0
- * @param {ValueOrExtractor<T>} fallback - Fallback value or extractor function
- * @returns {StringParser<T>} Parser function
- * @throws {TypeError} If the value and fallback are both null or undefined or value is not a valid JSON string
+ * @param {ValueOrExtractor<T, E>} fallback - Fallback value or extractor function
+ * @returns {StringParser<T, E>} Parser function
+ * @throws {TypeError} If the value and fallback are both null or undefined
+ * @throws {SyntaxError} If value is not a valid JSON string
  */
-declare const asJSON: <T extends {}>(
-	fallback: ValueOrExtractor<T>,
-) => StringParser<T>
+declare const asJSON: <T extends {}, E extends Element = HTMLElement>(
+	fallback: ValueOrExtractor<T, E>,
+) => StringParser<T, E>
 export { asBoolean, asInteger, asNumber, asString, asEnum, asJSON }

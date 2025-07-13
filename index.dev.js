@@ -343,13 +343,11 @@ var areElementArraysEqual = (arr1, arr2) => {
   return true;
 };
 var isStringParser = (value) => isFunction(value) && value.length >= 2;
+var parseValue = (value, element, parser) => parser ? parser(element, value) : value ?? "";
 var extractValue = (extractor, element, parser) => {
   if (isFunction(extractor)) {
     const value = extractor(element);
-    if (isString(value) && parser)
-      return parser(element, value);
-    else
-      return value;
+    return isString(value) && parser ? parseValue(value, element, parser) : value;
   } else {
     return extractor;
   }
@@ -425,7 +423,7 @@ var requireElement = (host, selector) => {
   }
   return target;
 };
-var fromDOM = (selector, extractor, parser, fallback) => (host) => {
+var fromDOM = (selector, extractor, fallback, parser) => (host) => {
   const target = host.querySelector(selector);
   if (target) {
     const value = extractor(target);
@@ -436,13 +434,13 @@ var fromDOM = (selector, extractor, parser, fallback) => (host) => {
     return extractValue(fallback, host, parser);
   throw new Error(`Component ${elementName(host)} does not contain required <${selector}> element`);
 };
-var fromComponent = (selector, fn, fallback) => (host) => {
+var fromComponent = (selector, extractor, fallback, parser) => (host) => {
   const target = requireElement(host, selector);
   if (!isCustomElement(target))
     throw new Error(`Element ${selector} is not a custom element`);
   return computed(async () => {
     await customElements.whenDefined(target.localName);
-    return fn(target) ?? extractValue(fallback, host);
+    return extractor(target) ?? extractValue(fallback, host, parser);
   });
 };
 
@@ -732,22 +730,22 @@ var parseNumber = (parseFn, value) => {
 };
 var asBoolean = () => (_, value) => value != null && value !== "false";
 var asInteger = (fallback = 0) => {
-  const parser = (host, value) => {
+  const parser = (element, value) => {
     if (value == null)
-      return extractValue(fallback, host, parser);
+      return extractValue(fallback, element, parser);
     const trimmed = value.trim();
     if (trimmed.toLowerCase().startsWith("0x"))
-      return parseNumber((v) => parseInt(v, 16), trimmed) ?? extractValue(fallback, host, parser);
+      return parseNumber((v) => parseInt(v, 16), trimmed) ?? extractValue(fallback, element, parser);
     const parsed = parseNumber(parseFloat, value);
-    return parsed != null ? Math.trunc(parsed) : extractValue(fallback, host, parser);
+    return parsed != null ? Math.trunc(parsed) : extractValue(fallback, element, parser);
   };
   return parser;
 };
 var asNumber = (fallback = 0) => {
-  const parser = (host, value) => parseNumber(parseFloat, value) ?? extractValue(fallback, host, parser);
+  const parser = (element, value) => parseNumber(parseFloat, value) ?? extractValue(fallback, element, parser);
   return parser;
 };
-var asString = (fallback = "") => (host, value) => value ?? extractValue(fallback, host);
+var asString = (fallback = "") => (element, value) => value ?? extractValue(fallback, element, undefined);
 var asEnum = (valid) => (_, value) => {
   if (value == null)
     return valid[0];
@@ -756,22 +754,22 @@ var asEnum = (valid) => (_, value) => {
   return matchingValid ? value : valid[0];
 };
 var asJSON = (fallback) => {
-  const parser = (host, value) => {
+  const parser = (element, value) => {
     if ((value ?? fallback) == null)
       throw new TypeError("asJSON: Value and fallback are both null or undefined");
     if (value == null)
-      return extractValue(fallback, host, parser);
+      return extractValue(fallback, element, parser);
     if (value === "")
       throw new TypeError("Empty string is not valid JSON");
     let result;
     try {
       result = JSON.parse(value);
     } catch (error) {
-      throw new TypeError(`asJSON: Failed to parse JSON: ${String(error)}`, {
+      throw new SyntaxError(`Failed to parse JSON: ${String(error)}`, {
         cause: error
       });
     }
-    return result ?? extractValue(fallback, host, parser);
+    return result ?? extractValue(fallback, element, parser);
   };
   return parser;
 };
@@ -1029,6 +1027,13 @@ var pass = (reactives) => (host, target) => {
     throw new Error(`Failed to pass signals to ${elementName(target)}`, { cause: error });
   });
 };
+// src/lib/extractors.ts
+var getText = (parser) => (element) => parseValue(element.textContent, element, parser);
+var getProperty = (prop, fallback, parser) => (element) => element[prop] ?? extractValue(fallback, element, parser);
+var hasAttribute = (attr) => (element) => element.hasAttribute(attr);
+var getAttribute = (attr, parser) => (element) => parseValue(element.getAttribute(attr), element, parser);
+var hasClass = (token) => (element) => element.classList.contains(token);
+var getStyle = (prop, parser) => (element) => parseValue(window.getComputedStyle(element).getPropertyValue(prop), element, parser);
 export {
   updateElement,
   toggleClass,
@@ -1052,6 +1057,12 @@ export {
   isSignal,
   isComputed,
   insertOrRemoveElement,
+  hasClass,
+  hasAttribute,
+  getText,
+  getStyle,
+  getProperty,
+  getAttribute,
   fromSelector,
   fromEvents,
   fromDOM,

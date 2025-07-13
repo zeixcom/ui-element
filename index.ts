@@ -108,3 +108,11 @@ export {
 	dangerouslySetInnerHTML,
 	pass,
 } from './src/lib/effects'
+export {
+	getText,
+	getProperty,
+	hasAttribute,
+	getAttribute,
+	hasClass,
+	getStyle,
+} from './src/lib/extractors'

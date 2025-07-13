@@ -9,7 +9,6 @@ import {
 	subscribe,
 } from '@zeix/cause-effect'
 
-import type { SignalProducer } from '../component'
 import {
 	elementName,
 	isCustomElement,
@@ -30,21 +29,26 @@ type ElementFromSelector<
 			? MathMLElementTagNameMap[K]
 			: E
 
+type Extractor<T extends {}, E extends Element = HTMLElement> = (
+	element: E,
+) => T
+
+type LooseExtractor<T, E extends Element = HTMLElement> = (element: E) => T
+
+type ValueOrExtractor<T extends {}, E extends Element = HTMLElement> =
+	| T
+	| Extractor<T, E>
+
 type StringParser<T extends {}, E extends Element = HTMLElement> = (
 	host: E,
 	value: string | null | undefined,
 	old?: string | null,
 ) => T
 
-type ValueOrExtractor<T extends {}, E extends Element = HTMLElement> =
-	| T
-	| ((element: E) => T)
-
-type Extractor<
-	T,
+type OptionalStringParser<
+	T extends {},
 	E extends Element = HTMLElement,
-	S extends string = string,
-> = (element: ElementFromSelector<S, E>) => T | string
+> = T extends string ? undefined : StringParser<T, E>
 
 /* === Error Class === */
 
@@ -119,23 +123,39 @@ const isStringParser = <T extends {}, C extends HTMLElement = HTMLElement>(
 ): value is StringParser<T, C> => isFunction(value) && value.length >= 2
 
 /**
+ * Parse a value using a string parser
+ *
+ * @since 0.13.4
+ * @param {string | null | undefined} value - Value to parse
+ * @param {E} element - Element to pass to parser function
+ * @param {OptionalStringParser<T, E>} parser - String parser function
+ * @returns {T} Parsed value
+ */
+const parseValue = <T extends {}, E extends Element = HTMLElement>(
+	value: string | null | undefined,
+	element: E,
+	parser: OptionalStringParser<T, E>,
+): T => (parser ? parser(element, value) : (value ?? '')) as T
+
+/**
  * Get a value from an extractor function or a value
  *
  * @since 0.13.4
- * @param {ValueOrExtractor<T, E>} extractor - Value or extractor function
+ * @param {ValueOrExtractor<T | string, E>} extractor - Value or extractor function
  * @param {E} element - Element to pass to extractor function
  * @param {StringParser<T, E>} parser - String parser function
  * @returns {T} Non-nullable value
  */
 const extractValue = <T extends {}, E extends Element = HTMLElement>(
-	extractor: ValueOrExtractor<T, E>,
+	extractor: ValueOrExtractor<T | string, E>,
 	element: E,
-	parser?: StringParser<T, E>,
+	parser?: OptionalStringParser<T, E>,
 ): T => {
-	if (isFunction<T>(extractor)) {
+	if (isFunction(extractor)) {
 		const value = extractor(element)
-		if (isString(value) && parser) return parser(element, value)
-		else return value as T
+		return isString(value) && parser
+			? parseValue<T, E>(value, element, parser)
+			: (value as T)
 	} else {
 		return extractor as T
 	}
@@ -174,7 +194,7 @@ const observeSubtree = (
  *
  * @since 0.13.1
  * @param {K} selector - CSS selector for descendant elements
- * @returns {(host: C) => Computed<ElementFromSelector<S, E>[]>} Signal producer for descendant element collection from a selector
+ * @returns {Extractor<Computed<ElementFromSelector<S, E>[]>, C>} Signal producer for descendant element collection from a selector
  */
 const fromSelector =
 	<
@@ -183,8 +203,8 @@ const fromSelector =
 		S extends string = string,
 	>(
 		selector: S,
-	): SignalProducer<ElementFromSelector<S, E>[], C> =>
-	(host: C) => {
+	): Extractor<Computed<ElementFromSelector<S, E>[]>, C> =>
+	(host: C): Computed<ElementFromSelector<S, E>[]> => {
 		const watchers: Set<Watcher> = new Set()
 		const select = () =>
 			Array.from(
@@ -329,9 +349,9 @@ const requireElement = <
  * @since 0.13.4
  * @param {S} selector - Selector for element to check for
  * @param {Extractor<T, ElementFromSelector<string, E>>} extractor - Extractor function
- * @param {StringParser<T>} [parser] - Optional parser for string values
  * @param {ValueOrExtractor<T>} [fallback] - Optional fallback value or extractor
- * @returns {(host: C) => T} Function to retrieve value from host element
+ * @param {StringParser<T>} [parser] - Optional parser for string values
+ * @returns {Extractor<T, C>} Extractor function to retrieve value from host element
  * @throws {Error} If no element matches any selector and no fallback is provided
  */
 const fromDOM =
@@ -342,15 +362,18 @@ const fromDOM =
 		S extends string = string,
 	>(
 		selector: S,
-		extractor: Extractor<T, ElementFromSelector<S, E>>,
-		parser?: StringParser<T>,
-		fallback?: ValueOrExtractor<T>,
-	): ((host: C) => T) =>
+		extractor: LooseExtractor<
+			T | string | null | undefined,
+			ElementFromSelector<S, E>
+		>,
+		fallback: ValueOrExtractor<T, C>,
+		parser?: OptionalStringParser<T, C>,
+	): Extractor<T, C> =>
 	(host: C): T => {
 		const target = host.querySelector<ElementFromSelector<S, E>>(selector)
 		if (target) {
 			const value = extractor(target)
-			if (value != null) return extractValue(value, host, parser) as T
+			if (value != null) return extractValue(value, host, parser)
 		}
 		if (fallback != null) return extractValue(fallback, host, parser)
 		throw new Error(
@@ -359,23 +382,32 @@ const fromDOM =
 	}
 
 const fromComponent =
-	<T, S extends string = string, E extends Element = HTMLElement>(
+	<
+		T extends {},
+		E extends Element = HTMLElement,
+		C extends HTMLElement = HTMLElement,
+		S extends string = string,
+	>(
 		selector: S,
-		fn: (target: ElementFromSelector<S, E>) => T,
-		fallback: ValueOrExtractor<NonNullable<T>>,
-	) =>
-	<C extends HTMLElement>(host: C): Computed<NonNullable<T>> => {
+		extractor: Extractor<T, ElementFromSelector<S, E>>,
+		fallback: ValueOrExtractor<T>,
+		parser?: OptionalStringParser<T>,
+	): Extractor<Computed<T>, C> =>
+	(host: C): Computed<T> => {
 		const target = requireElement<S, E>(host, selector)
 		if (!isCustomElement(target))
 			throw new Error(`Element ${selector} is not a custom element`)
-		return computed(async (): Promise<NonNullable<T>> => {
+		return computed(async () => {
 			await customElements.whenDefined(target.localName)
-			return fn(target) ?? extractValue(fallback, host)
+			return extractor(target) ?? extractValue(fallback, host, parser)
 		})
 	}
 
 export {
 	type ElementFromSelector,
+	type Extractor,
+	type LooseExtractor,
+	type OptionalStringParser,
 	type StringParser,
 	type ValueOrExtractor,
 	extractValue,
@@ -383,6 +415,7 @@ export {
 	fromDOM,
 	fromSelector,
 	isStringParser,
+	parseValue,
 	reduced,
 	read,
 	observeSubtree,

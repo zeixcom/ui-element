@@ -12,6 +12,7 @@ import {
 
 import {
 	type ElementFromSelector,
+	type Extractor,
 	type StringParser,
 	isStringParser,
 	observeSubtree,
@@ -69,9 +70,10 @@ type Component<P extends ComponentProps> = HTMLElement &
 		): void
 	}
 
-type SignalProducer<T extends {}, C extends HTMLElement = HTMLElement> = (
-	host: C,
-) => MaybeSignal<T>
+type SignalProducer<
+	T extends {},
+	C extends HTMLElement = HTMLElement,
+> = Extractor<MaybeSignal<T>, C>
 
 type MethodProducer<C extends HTMLElement> = (host: C) => void
 
