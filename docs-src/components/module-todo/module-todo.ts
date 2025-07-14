@@ -5,7 +5,7 @@ import {
 	on,
 	pass,
 	read,
-	requireDescendant,
+	requireElement,
 	setAttribute,
 	setText,
 	show,
@@ -26,9 +26,9 @@ export default component(
 		completed: fromSelector('form-checkbox[checked]'),
 	},
 	(el, { first }) => {
-		const textbox = requireDescendant(el, 'form-textbox')
-		const template = requireDescendant(el, 'template')
-		const list = requireDescendant(el, 'ol')
+		const textbox = requireElement(el, 'form-textbox')
+		const template = requireElement(el, 'template')
+		const list = requireElement(el, 'ol')
 
 		return [
 			// Control todo input form

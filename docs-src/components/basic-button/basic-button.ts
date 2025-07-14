@@ -3,9 +3,6 @@ import {
 	asBoolean,
 	asString,
 	component,
-	fromDOM,
-	getAttribute,
-	getText,
 	requireElement,
 	setProperty,
 	setText,
@@ -22,13 +19,15 @@ export default component(
 	{
 		disabled: asBoolean(),
 		label: asString(
-			fromDOM(
-				'.label',
-				getText<string>(undefined),
-				getAttribute('aria-label', undefined),
-			),
+			el =>
+				el.querySelector('.label')?.textContent ??
+				(Array.from(el.childNodes)
+					.filter(node => node.nodeType === Node.TEXT_NODE)
+					.join() ||
+					el.getAttribute('aria-label') ||
+					''),
 		),
-		badge: asString(),
+		badge: asString(el => el.querySelector('.badge')?.textContent ?? ''),
 	},
 	(el, { first }) => {
 		requireElement(el, 'button')

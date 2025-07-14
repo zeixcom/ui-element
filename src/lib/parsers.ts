@@ -1,5 +1,4 @@
 import {
-	type OptionalStringParser,
 	type StringParser,
 	type ValueOrExtractor,
 	extractValue,
@@ -89,7 +88,7 @@ const asString =
 		fallback: ValueOrExtractor<string, E> = '',
 	): StringParser<string, E> =>
 	(element: E, value: string | null | undefined): string =>
-		value ?? extractValue(fallback, element, undefined)
+		value ?? extractValue(fallback, element)
 
 /**
  * Parse a string as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option
@@ -124,12 +123,7 @@ const asJSON = <T extends {}, E extends Element = HTMLElement>(
 			throw new TypeError(
 				'asJSON: Value and fallback are both null or undefined',
 			)
-		if (value == null)
-			return extractValue(
-				fallback,
-				element,
-				parser as OptionalStringParser<T, E>,
-			)
+		if (value == null) return extractValue(fallback, element, parser)
 		if (value === '') throw new TypeError('Empty string is not valid JSON')
 		let result: T | undefined
 		try {
@@ -139,14 +133,7 @@ const asJSON = <T extends {}, E extends Element = HTMLElement>(
 				cause: error,
 			})
 		}
-		return (
-			result ??
-			extractValue(
-				fallback,
-				element,
-				parser as OptionalStringParser<T, E>,
-			)
-		)
+		return result ?? extractValue(fallback, element, parser)
 	}
 	return parser
 }

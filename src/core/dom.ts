@@ -40,7 +40,7 @@ type ValueOrExtractor<T extends {}, E extends Element = HTMLElement> =
 	| Extractor<T, E>
 
 type StringParser<T extends {}, E extends Element = HTMLElement> = (
-	host: E,
+	element: E,
 	value: string | null | undefined,
 	old?: string | null,
 ) => T
@@ -128,38 +128,66 @@ const isStringParser = <T extends {}, C extends HTMLElement = HTMLElement>(
  * @since 0.13.4
  * @param {string | null | undefined} value - Value to parse
  * @param {E} element - Element to pass to parser function
- * @param {OptionalStringParser<T, E>} parser - String parser function
+ * @param {StringParser<T, E>} parser - String parser function
  * @returns {T} Parsed value
  */
 const parseValue = <T extends {}, E extends Element = HTMLElement>(
 	value: string | null | undefined,
 	element: E,
-	parser: OptionalStringParser<T, E>,
+	parser: StringParser<T, E>,
 ): T => (parser ? parser(element, value) : (value ?? '')) as T
 
 /**
  * Get a value from an extractor function or a value
  *
  * @since 0.13.4
- * @param {ValueOrExtractor<T | string, E>} extractor - Value or extractor function
+ * @param {ValueOrExtractor<T | string, E>} fallback - Value or extractor function
  * @param {E} element - Element to pass to extractor function
  * @param {StringParser<T, E>} parser - String parser function
  * @returns {T} Non-nullable value
  */
 const extractValue = <T extends {}, E extends Element = HTMLElement>(
-	extractor: ValueOrExtractor<T | string, E>,
+	fallback: ValueOrExtractor<T | string, E>,
 	element: E,
-	parser?: OptionalStringParser<T, E>,
+	parser?: StringParser<T, E>,
 ): T => {
-	if (isFunction(extractor)) {
-		const value = extractor(element)
+	if (isFunction(fallback)) {
+		const value = fallback(element)
 		return isString(value) && parser
 			? parseValue<T, E>(value, element, parser)
 			: (value as T)
 	} else {
-		return extractor as T
+		return fallback as T
 	}
 }
+
+const fromFirst =
+	<
+		T extends {},
+		E extends Element = HTMLElement,
+		C extends HTMLElement = HTMLElement,
+		S extends string = string,
+	>(
+		selector: S,
+		extractor: LooseExtractor<
+			T | string | null | undefined,
+			ElementFromSelector<S, E>
+		>,
+		fallback: ValueOrExtractor<T, C>,
+		parser?: StringParser<T>,
+	): Extractor<T, C> =>
+	(host: C) => {
+		const target = host.querySelector<ElementFromSelector<S, E>>(selector)
+		if (!target) return extractValue(fallback, host, parser)
+		const value = extractor(target)
+		return isString(value) && parser
+			? parseValue<T, ElementFromSelector<S, E>>(
+					value,
+					target,
+					parser as StringParser<T, ElementFromSelector<S, E>>,
+				)
+			: (value as T)
+	}
 
 /**
  * Observe a DOM subtree with a mutation observer
@@ -367,7 +395,7 @@ const fromDOM =
 			ElementFromSelector<S, E>
 		>,
 		fallback: ValueOrExtractor<T, C>,
-		parser?: OptionalStringParser<T, C>,
+		parser?: StringParser<T, C>,
 	): Extractor<T, C> =>
 	(host: C): T => {
 		const target = host.querySelector<ElementFromSelector<S, E>>(selector)
@@ -413,6 +441,7 @@ export {
 	extractValue,
 	fromComponent,
 	fromDOM,
+	fromFirst,
 	fromSelector,
 	isStringParser,
 	parseValue,

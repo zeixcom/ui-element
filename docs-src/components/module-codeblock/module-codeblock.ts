@@ -3,7 +3,7 @@ import {
 	asBoolean,
 	component,
 	on,
-	requireDescendant,
+	requireElement,
 	toggleAttribute,
 } from '../../..'
 import { copyToClipboard } from '../../functions/event-listener/copy-to-clipboard'
@@ -18,7 +18,7 @@ export default component(
 		collapsed: asBoolean(),
 	},
 	(el, { first }) => {
-		const code = requireDescendant(el, 'code')
+		const code = requireElement(el, 'code')
 
 		return [
 			toggleAttribute('collapsed'),

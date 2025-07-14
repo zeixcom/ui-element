@@ -3,8 +3,10 @@ import {
 	RESET,
 	asString,
 	component,
+	fromDOM,
+	getText,
 	on,
-	requireDescendant,
+	requireElement,
 	setText,
 } from '../../..'
 
@@ -15,10 +17,10 @@ export type HelloWorldProps = {
 export default component(
 	'hello-world',
 	{
-		name: asString(RESET),
+		name: asString(fromDOM('span', getText())),
 	},
 	(el, { first }) => {
-		requireDescendant(el, 'span')
+		requireElement(el, 'span')
 
 		return [
 			first(

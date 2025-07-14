@@ -4,7 +4,7 @@ import {
 	asString,
 	component,
 	fromEvents,
-	requireDescendant,
+	requireElement,
 	setText,
 	toggleAttribute,
 } from '../../..'
@@ -23,8 +23,8 @@ export default component(
 		label: asString(RESET),
 	},
 	(el, { first }) => {
-		requireDescendant(el, 'input[type="checkbox"]')
-		requireDescendant(el, '.label')
+		requireElement(el, 'input[type="checkbox"]')
+		requireElement(el, '.label')
 
 		return [toggleAttribute('checked'), first('.label', setText('label'))]
 	},
