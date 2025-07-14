@@ -1,21 +1,22 @@
 import {
 	type Component,
+	asString,
 	component,
 	focus,
 	fromEvents,
 	fromSelector,
+	getAttribute,
 	setProperty,
 	show,
 } from '../../..'
-import { requireDescendant } from '../../../src/core/dom'
+import { requireElement } from '../../../src/core/dom'
 
 export type ModuleTabgroupProps = {
 	tabs: HTMLButtonElement[]
 	selected: string
 }
 
-const getAriaControls = (target: HTMLElement) =>
-	target?.getAttribute('aria-controls') ?? ''
+const getAriaControls = getAttribute('aria-controls', asString())
 
 const getSelected = (
 	elements: HTMLElement[],
@@ -80,9 +81,9 @@ export default component(
 		),
 	},
 	(el, { all }) => {
-		requireDescendant(el, '[role="tablist"]')
-		requireDescendant(el, '[role="tab"]')
-		requireDescendant(el, '[role="tabpanel"]')
+		requireElement(el, '[role="tablist"]')
+		requireElement(el, '[role="tab"]')
+		requireElement(el, '[role="tabpanel"]')
 		const isCurrentTab = (tab: HTMLButtonElement) =>
 			el.selected === getAriaControls(tab)
 

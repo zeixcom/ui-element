@@ -4,12 +4,12 @@ import {
 	component,
 	computed,
 	dangerouslySetInnerHTML,
+	requireElement,
 	setText,
 	show,
 	state,
 	toggleClass,
 } from '../../..'
-import { requireDescendant } from '../../../src/core/dom'
 import { asURL } from '../../functions/attribute-parser/as-url'
 import { fetchWithCache } from '../../functions/shared/fetch-with-cache'
 
@@ -23,8 +23,8 @@ export default component(
 		src: asURL,
 	},
 	(el, { first }) => {
-		requireDescendant(el, 'card-callout')
-		requireDescendant(el, '.error')
+		requireElement(el, 'card-callout')
+		requireElement(el, '.error')
 
 		const error = state('')
 		const content = computed(async abort => {
