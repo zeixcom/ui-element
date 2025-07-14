@@ -35,20 +35,25 @@ type Extractor<T extends {}, E extends Element = HTMLElement> = (
 
 type LooseExtractor<T, E extends Element = HTMLElement> = (element: E) => T
 
-type ValueOrExtractor<T extends {}, E extends Element = HTMLElement> =
-	| T
-	| Extractor<T, E>
-
-type StringParser<T extends {}, E extends Element = HTMLElement> = (
+type Parser<T extends {}, E extends Element = HTMLElement> = (
 	element: E,
 	value: string | null | undefined,
 	old?: string | null,
 ) => T
 
-type OptionalStringParser<
-	T extends {},
-	E extends Element = HTMLElement,
-> = T extends string ? undefined : StringParser<T, E>
+type Fallback<T extends {}, E extends Element = HTMLElement> =
+	| T
+	| Extractor<T, E>
+
+type ParserOrFallback<T extends {}, E extends Element = HTMLElement> =
+	| Parser<T, E>
+	| Fallback<T, E>
+
+type TypeFromParser<P> = P extends Parser<infer T, any>
+	? T
+	: P extends ParserOrFallback<infer T, any>
+		? T
+		: string
 
 /* === Error Class === */
 
@@ -118,9 +123,9 @@ const areElementArraysEqual = <E extends Element>(
  * @param {unknown} value - Value to check if it is a string parser
  * @returns {boolean} True if the value is a string parser, false otherwise
  */
-const isStringParser = <T extends {}, C extends HTMLElement = HTMLElement>(
+const isParser = <T extends {}, E extends Element = HTMLElement>(
 	value: unknown,
-): value is StringParser<T, C> => isFunction(value) && value.length >= 2
+): value is Parser<T, E> => isFunction(value) && value.length >= 2
 
 /**
  * Parse a value using a string parser
@@ -128,36 +133,40 @@ const isStringParser = <T extends {}, C extends HTMLElement = HTMLElement>(
  * @since 0.13.4
  * @param {string | null | undefined} value - Value to parse
  * @param {E} element - Element to pass to parser function
- * @param {StringParser<T, E>} parser - String parser function
+ * @param {Parser<T, E>} parser - String parser function
  * @returns {T} Parsed value
  */
 const parseValue = <T extends {}, E extends Element = HTMLElement>(
 	value: string | null | undefined,
 	element: E,
-	parser: StringParser<T, E>,
+	parser: Parser<T, E>,
 ): T => (parser ? parser(element, value) : (value ?? '')) as T
 
 /**
  * Get a value from an extractor function or a value
  *
  * @since 0.13.4
- * @param {ValueOrExtractor<T | string, E>} fallback - Value or extractor function
+ * @param {Fallback<T | string, E>} fallback - Value or extractor function
  * @param {E} element - Element to pass to extractor function
- * @param {StringParser<T, E>} parser - String parser function
+ * @param {Parser<T, E>} parser - String parser function
  * @returns {T} Non-nullable value
  */
-const extractValue = <T extends {}, E extends Element = HTMLElement>(
-	fallback: ValueOrExtractor<T | string, E>,
+const extractValue = <
+	T extends {},
+	E extends Element = HTMLElement,
+	P extends Parser<T, E> | undefined = undefined,
+>(
+	fallback: Fallback<TypeFromParser<P> | string, E>,
 	element: E,
-	parser?: StringParser<T, E>,
-): T => {
-	if (isFunction(fallback)) {
+	parser?: P,
+): TypeFromParser<P> => {
+	if (isFunction<TypeFromParser<P>>(fallback)) {
 		const value = fallback(element)
-		return isString(value) && parser
-			? parseValue<T, E>(value, element, parser)
-			: (value as T)
+		return isString(value) && isParser<TypeFromParser<P>, E>(parser)
+			? parseValue(value, element, parser)
+			: value
 	} else {
-		return fallback as T
+		return fallback as TypeFromParser<P>
 	}
 }
 
@@ -173,8 +182,8 @@ const fromFirst =
 			T | string | null | undefined,
 			ElementFromSelector<S, E>
 		>,
-		fallback: ValueOrExtractor<T, C>,
-		parser?: StringParser<T>,
+		fallback: Fallback<T, C>,
+		parser?: Parser<T>,
 	): Extractor<T, C> =>
 	(host: C) => {
 		const target = host.querySelector<ElementFromSelector<S, E>>(selector)
@@ -184,7 +193,7 @@ const fromFirst =
 			? parseValue<T, ElementFromSelector<S, E>>(
 					value,
 					target,
-					parser as StringParser<T, ElementFromSelector<S, E>>,
+					parser as Parser<T, ElementFromSelector<S, E>>,
 				)
 			: (value as T)
 	}
@@ -394,8 +403,8 @@ const fromDOM =
 			T | string | null | undefined,
 			ElementFromSelector<S, E>
 		>,
-		fallback: ValueOrExtractor<T, C>,
-		parser?: StringParser<T, C>,
+		fallback: Fallback<T, C>,
+		parser?: Parser<T, C>,
 	): Extractor<T, C> =>
 	(host: C): T => {
 		const target = host.querySelector<ElementFromSelector<S, E>>(selector)
@@ -418,8 +427,8 @@ const fromComponent =
 	>(
 		selector: S,
 		extractor: Extractor<T, ElementFromSelector<S, E>>,
-		fallback: ValueOrExtractor<T>,
-		parser?: OptionalStringParser<T>,
+		fallback: Fallback<T>,
+		parser?: Parser<T>,
 	): Extractor<Computed<T>, C> =>
 	(host: C): Computed<T> => {
 		const target = requireElement<S, E>(host, selector)
@@ -434,16 +443,17 @@ const fromComponent =
 export {
 	type ElementFromSelector,
 	type Extractor,
+	type Fallback,
 	type LooseExtractor,
-	type OptionalStringParser,
-	type StringParser,
-	type ValueOrExtractor,
+	type Parser,
+	type ParserOrFallback,
+	type TypeFromParser,
 	extractValue,
 	fromComponent,
 	fromDOM,
 	fromFirst,
 	fromSelector,
-	isStringParser,
+	isParser,
 	parseValue,
 	reduced,
 	read,

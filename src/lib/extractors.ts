@@ -1,17 +1,30 @@
 import {
 	type Extractor,
-	type StringParser,
-	type ValueOrExtractor,
+	type Fallback,
+	type Parser,
+	type TypeFromParser,
 	extractValue,
+	isParser,
 	parseValue,
 } from '../core/dom'
 
 const getText =
-	<T extends {}, E extends Element = Element>(
-		parser: StringParser<T, E>,
-	): Extractor<T, E> =>
-	(element: E): T =>
-		parseValue<T, E>(element.textContent, element, parser)
+	<
+		T extends {},
+		E extends Element = Element,
+		P extends Parser<T, E> | undefined = undefined,
+	>(
+		parser?: Parser<T, E>,
+		fallback?: Fallback<TypeFromParser<P>, E>,
+	): Extractor<TypeFromParser<P>, E> =>
+	(element: E): TypeFromParser<P> => {
+		const value = element.textContent
+		if (parser) return parseValue(value, element, parser) as TypeFromParser<P>
+		if (value != null || fallback) return value ?? extractValue(fallback, element)
+		return parser
+			? ( )
+			: value ?? extractValue(fallback, element)
+	}
 
 const getProperty =
 	<E extends Element, K extends keyof E>(
@@ -29,10 +42,12 @@ const hasAttribute =
 const getAttribute =
 	<T extends {} = string, E extends Element = Element>(
 		attr: string,
-		parser: StringParser<T, E>,
+		parserOrFallback: ParserOrFallback<T, E>,
 	): Extractor<T, E> =>
 	(element: E): T =>
-		parseValue(element.getAttribute(attr), element, parser)
+		parseValue(element.getAttribute(attr) ?? !isParser(parserOrFallback) ? parserOrFallback : '', element, isParser(parserOrFallback)
+			? parserOrFallback
+			: undefined
 
 const hasClass =
 	(token: string): Extractor<boolean, Element> =>
@@ -45,7 +60,7 @@ const getStyle =
 		E extends HTMLElement | SVGElement | MathMLElement = HTMLElement,
 	>(
 		prop: string,
-		parser: StringParser<T, E>,
+		parser: Parser<T, E>,
 	): Extractor<T, E> =>
 	(element: E): T =>
 		parseValue(

@@ -13,8 +13,8 @@ import {
 import {
 	type ElementFromSelector,
 	type Extractor,
-	type StringParser,
-	isStringParser,
+	type Parser,
+	isParser,
 	observeSubtree,
 } from './core/dom'
 import type { Effect } from './core/reactive'
@@ -79,7 +79,7 @@ type MethodProducer<C extends HTMLElement> = (host: C) => void
 
 type Initializer<T extends {}, C extends HTMLElement> =
 	| T
-	| StringParser<T, C>
+	| Parser<T, C>
 	| SignalProducer<T, C>
 	| MethodProducer<C>
 
@@ -286,7 +286,7 @@ const component = <P extends ComponentProps & ValidateComponentProps<P>>(
 
 		static observedAttributes =
 			Object.entries(init)
-				?.filter(([, initializer]) => isStringParser(initializer))
+				?.filter(([, initializer]) => isParser(initializer))
 				.map(([prop]) => prop) ?? []
 
 		/**
@@ -338,7 +338,7 @@ const component = <P extends ComponentProps & ValidateComponentProps<P>>(
 		) {
 			if (value === old || isComputed(this.#signals[attr])) return // unchanged or controlled by computed
 			const parser = init[attr]
-			if (!isStringParser<P[K]>(parser)) return
+			if (!isParser<P[K]>(parser)) return
 			const parsed = parser(this, value, old)
 			if (DEV_MODE && this.debug)
 				log(

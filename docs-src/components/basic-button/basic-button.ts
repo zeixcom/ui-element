@@ -19,13 +19,18 @@ export default component(
 	{
 		disabled: asBoolean(),
 		label: asString(
+			/* ({ first }) => [
+				first('.label', getText()),
+				getText(),
+				getAttribute('aria-label'),
+				'',
+			] */
 			el =>
 				el.querySelector('.label')?.textContent ??
 				(Array.from(el.childNodes)
 					.filter(node => node.nodeType === Node.TEXT_NODE)
 					.join() ||
-					el.getAttribute('aria-label') ||
-					''),
+					el.getAttribute('aria-label') | ''),
 		),
 		badge: asString(el => el.querySelector('.badge')?.textContent ?? ''),
 	},

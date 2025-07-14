@@ -1,8 +1,4 @@
-import {
-	type StringParser,
-	type ValueOrExtractor,
-	extractValue,
-} from '../core/dom'
+import { type Fallback, type Parser, extractValue } from '../core/dom'
 
 /* === Internal Function === */
 
@@ -21,10 +17,10 @@ const parseNumber = (
  * Parse a boolean attribute as an actual boolean value
  *
  * @since 0.13.1
- * @returns {StringParser<boolean>}
+ * @returns {Parser<boolean>}
  */
 const asBoolean =
-	(): StringParser<boolean> =>
+	(): Parser<boolean> =>
 	(_: HTMLElement, value: string | null | undefined): boolean =>
 		value != null && value !== 'false'
 
@@ -34,12 +30,12 @@ const asBoolean =
  * Supports hexadecimal and scientific notation
  *
  * @since 0.11.0
- * @param {ValueOrExtractor<number, E>} [fallback=0] - Fallback value or extractor function
- * @returns {StringParser<number, E>} Parser function
+ * @param {Fallback<number, E>} [fallback=0] - Fallback value or extractor function
+ * @returns {Parser<number, E>} Parser function
  */
 const asInteger = <E extends Element = HTMLElement>(
-	fallback: ValueOrExtractor<number, E> = 0,
-): StringParser<number, E> => {
+	fallback: Fallback<number, E> = 0,
+): Parser<number, E> => {
 	const parser = (element: E, value: string | null | undefined): number => {
 		if (value == null) return extractValue(fallback, element, parser)
 
@@ -64,12 +60,12 @@ const asInteger = <E extends Element = HTMLElement>(
  * Parse a string as a number with a fallback
  *
  * @since 0.11.0
- * @param {ValueOrExtractor<number, E>} [fallback=0] - Fallback value or extractor function
- * @returns {StringParser<number, E>} Parser function
+ * @param {Fallback<number, E>} [fallback=0] - Fallback value or extractor function
+ * @returns {Parser<number, E>} Parser function
  */
 const asNumber = <E extends Element = HTMLElement>(
-	fallback: ValueOrExtractor<number, E> = 0,
-): StringParser<number, E> => {
+	fallback: Fallback<number, E> = 0,
+): Parser<number, E> => {
 	const parser = (element: E, value: string | null | undefined): number =>
 		parseNumber(parseFloat, value) ??
 		extractValue(fallback, element, parser)
@@ -80,13 +76,13 @@ const asNumber = <E extends Element = HTMLElement>(
  * Parse a string as a string with a fallback
  *
  * @since 0.11.0
- * @param {ValueOrExtractor<string, E>} [fallback=''] - Fallback value or extractor function
- * @returns {StringParser<string, E>} Parser function
+ * @param {Fallback<string, E>} [fallback=''] - Fallback value or extractor function
+ * @returns {Parser<string, E>} Parser function
  */
 const asString =
 	<E extends Element = HTMLElement>(
-		fallback: ValueOrExtractor<string, E> = '',
-	): StringParser<string, E> =>
+		fallback: Fallback<string, E> = '',
+	): Parser<string, E> =>
 	(element: E, value: string | null | undefined): string =>
 		value ?? extractValue(fallback, element)
 
@@ -95,10 +91,10 @@ const asString =
  *
  * @since 0.9.0
  * @param {[string, ...string[]]} valid - Array of valid values
- * @returns {StringParser<string>} Parser function
+ * @returns {Parser<string>} Parser function
  */
 const asEnum =
-	(valid: [string, ...string[]]): StringParser<string> =>
+	(valid: [string, ...string[]]): Parser<string> =>
 	(_: Element, value: string | null | undefined): string => {
 		if (value == null) return valid[0]
 		const lowerValue = value.toLowerCase()
@@ -110,14 +106,14 @@ const asEnum =
  * Parse a string as a JSON serialized object with a fallback
  *
  * @since 0.11.0
- * @param {ValueOrExtractor<T, E>} fallback - Fallback value or extractor function
- * @returns {StringParser<T, E>} Parser function
+ * @param {Fallback<T, E>} fallback - Fallback value or extractor function
+ * @returns {Parser<T, E>} Parser function
  * @throws {TypeError} If the value and fallback are both null or undefined
  * @throws {SyntaxError} If value is not a valid JSON string
  */
 const asJSON = <T extends {}, E extends Element = HTMLElement>(
-	fallback: ValueOrExtractor<T, E>,
-): StringParser<T, E> => {
+	fallback: Fallback<T, E>,
+): Parser<T, E> => {
 	const parser = (element: E, value: string | null | undefined): T => {
 		if ((value ?? fallback) == null)
 			throw new TypeError(

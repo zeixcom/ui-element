@@ -13,7 +13,7 @@ import { type ComponentProps } from '../component'
 import {
 	type ElementFromSelector,
 	type Extractor,
-	type ValueOrExtractor,
+	type Fallback,
 	extractValue,
 } from './dom'
 import { type Effect, RESET, type Reactive, resolveReactive } from './reactive'
@@ -70,7 +70,7 @@ const fromEvents =
 		C extends HTMLElement = HTMLElement,
 		S extends string = string,
 	>(
-		initialize: ValueOrExtractor<T, C>,
+		initialize: Fallback<T, C>,
 		selector: S,
 		events: EventTransformers<T, ElementFromSelector<S, E>, C>,
 	): Extractor<Computed<T>, C> =>
