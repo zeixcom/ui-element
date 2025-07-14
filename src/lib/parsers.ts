@@ -37,7 +37,7 @@ const asInteger = <E extends Element = HTMLElement>(
 	fallback: Fallback<number, E> = 0,
 ): Parser<number, E> => {
 	const parser = (element: E, value: string | null | undefined): number => {
-		if (value == null) return extractValue(fallback, element, parser)
+		if (value == null) return extractValue(element, parser)
 
 		// Handle hexadecimal notation
 		const trimmed = value.trim()
@@ -51,7 +51,7 @@ const asInteger = <E extends Element = HTMLElement>(
 		const parsed = parseNumber(parseFloat, value)
 		return parsed != null
 			? Math.trunc(parsed)
-			: extractValue(fallback, element, parser)
+			: extractValue(element, parser)
 	}
 	return parser
 }

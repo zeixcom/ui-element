@@ -2,6 +2,7 @@ import {
 	type Extractor,
 	type Fallback,
 	type Parser,
+	type ParserOrFallback,
 	type TypeFromParser,
 	extractValue,
 	isParser,
@@ -14,8 +15,7 @@ const getText =
 		E extends Element = Element,
 		P extends Parser<T, E> | undefined = undefined,
 	>(
-		parser?: Parser<T, E>,
-		fallback?: Fallback<TypeFromParser<P>, E>,
+		parserOrFallback: ParserOrFallback<T, E>,
 	): Extractor<TypeFromParser<P>, E> =>
 	(element: E): TypeFromParser<P> => {
 		const value = element.textContent

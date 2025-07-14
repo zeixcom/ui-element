@@ -84,13 +84,13 @@ type Initializer<T extends {}, C extends HTMLElement> =
 	| MethodProducer<C>
 
 type SelectorFunctions<P extends ComponentProps> = {
-	first: <E extends Element = never, K extends string = string>(
-		selector: K,
-		...fns: Effect<P, ElementFromSelector<K, E>>[]
+	first: <E extends Element = never, S extends string = string>(
+		selector: S,
+		...fns: Effect<P, ElementFromSelector<S, E>>[]
 	) => (host: Component<P>) => Cleanup | void
-	all: <E extends Element = never, K extends string = string>(
-		selector: K,
-		...fns: Effect<P, ElementFromSelector<K, E>>[]
+	all: <E extends Element = never, S extends string = string>(
+		selector: S,
+		...fns: Effect<P, ElementFromSelector<S, E>>[]
 	) => (host: Component<P>) => Cleanup
 }
 
