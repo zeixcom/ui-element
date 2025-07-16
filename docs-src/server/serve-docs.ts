@@ -11,6 +11,7 @@ async function rebuildDocs() {
 	console.log('\n🔄 Rebuilding docs...')
 	const startTime = performance.now()
 	try {
+		await execAsync('bun run build:docs-js')
 		await execAsync('bun run build:docs-html')
 		const duration = (performance.now() - startTime).toFixed(2)
 		console.log(`✨ Docs rebuilt successfully in ${duration}ms!`)
@@ -24,16 +25,45 @@ async function rebuildDocs() {
 	}
 }
 
-// Watch for changes in markdown files
+// Watch for changes in markdown files and components
 async function watchDocs() {
-	console.log('👀 Watching for changes in docs-src/pages...')
-	const watcher = watch('docs-src/pages', { recursive: true })
-	for await (const event of watcher) {
-		if (event.filename?.endsWith('.md')) {
-			console.log(`\n📝 Detected change in: ${event.filename}`)
+	console.log('👀 Watching for changes in docs-src/pages and docs-src/components...')
+	
+	// Watch markdown files
+	const pagesWatcher = watch('docs-src/pages', { recursive: true })
+	const componentsWatcher = watch('docs-src/components', { recursive: true })
+	
+	// Handle both watchers
+	const handleChange = async (event: any, source: string) => {
+		const filename = event.filename
+		if (!filename) return
+		
+		// Handle markdown files
+		if (source === 'pages' && filename.endsWith('.md')) {
+			console.log(`\n📝 Detected change in: ${filename}`)
+			await rebuildDocs()
+		}
+		
+		// Handle component files
+		if (source === 'components' && (filename.endsWith('.ts') || filename.endsWith('.html') || filename.endsWith('.css'))) {
+			console.log(`\n�� Detected component change in: ${filename}`)
 			await rebuildDocs()
 		}
 	}
+	
+	// Start both watchers
+	Promise.all([
+		(async () => {
+			for await (const event of pagesWatcher) {
+				await handleChange(event, 'pages')
+			}
+		})(),
+		(async () => {
+			for await (const event of componentsWatcher) {
+				await handleChange(event, 'components')
+			}
+		})()
+	]).catch(console.error)
 }
 
 // Start the watcher
