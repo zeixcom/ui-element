@@ -6,10 +6,22 @@ import { watch } from 'fs/promises'
 const execAsync = promisify(exec)
 const sockets = new Set<ServerWebSocket>()
 
+// Track ongoing rebuilds to prevent duplicates
+let isRebuilding = false
+let pendingRebuild = false
+
 // Function to rebuild docs and notify clients
 async function rebuildDocs() {
+	if (isRebuilding) {
+		// If already rebuilding, mark that we need another rebuild after this one
+		pendingRebuild = true
+		return
+	}
+	
+	isRebuilding = true
 	console.log('\n🔄 Rebuilding docs...')
 	const startTime = performance.now()
+	
 	try {
 		await execAsync('bun run build:docs-js')
 		await execAsync('bun run build:docs-html')
@@ -22,48 +34,75 @@ async function rebuildDocs() {
 		})
 	} catch (error) {
 		console.error('❌ Error rebuilding docs:', error)
+	} finally {
+		isRebuilding = false
+		
+		// If there's a pending rebuild, do it now
+		if (pendingRebuild) {
+			pendingRebuild = false
+			// Small delay to prevent immediate re-triggering
+			setTimeout(() => rebuildDocs(), 100)
+		}
 	}
 }
+
+// Track recent file changes to prevent duplicate processing
+const recentFileChanges = new Set<string>()
+const FILE_CHANGE_TIMEOUT = 1000 // 1 second
 
 // Watch for changes in markdown files and components
 async function watchDocs() {
 	console.log('👀 Watching for changes in docs-src/pages and docs-src/components...')
 	
-	// Watch markdown files
-	const pagesWatcher = watch('docs-src/pages', { recursive: true })
-	const componentsWatcher = watch('docs-src/components', { recursive: true })
+	// Define watch configurations
+	const watchConfigs = [
+		{
+			path: 'docs-src/pages',
+			extensions: ['.md'],
+			label: '📝'
+		},
+		{
+			path: 'docs-src/components', 
+			extensions: ['.ts', '.html', '.css'],
+			label: '🔧'
+		}
+	]
 	
-	// Handle both watchers
-	const handleChange = async (event: any, source: string) => {
+	// Generic file change handler
+	const handleFileChange = async (event: any, config: typeof watchConfigs[0]) => {
 		const filename = event.filename
-		if (!filename) return
-		
-		// Handle markdown files
-		if (source === 'pages' && filename.endsWith('.md')) {
-			console.log(`\n📝 Detected change in: ${filename}`)
-			await rebuildDocs()
+		if (!filename || !config.extensions.some(ext => filename.endsWith(ext))) {
+			return
 		}
 		
-		// Handle component files
-		if (source === 'components' && (filename.endsWith('.ts') || filename.endsWith('.html') || filename.endsWith('.css'))) {
-			console.log(`\n�� Detected component change in: ${filename}`)
-			await rebuildDocs()
+		// Create a unique key for this file change
+		const fileKey = `${config.path}/${filename}`
+		
+		// Check if we've recently processed this file
+		if (recentFileChanges.has(fileKey)) {
+			return
 		}
+		
+		// Mark this file as recently changed
+		recentFileChanges.add(fileKey)
+		setTimeout(() => recentFileChanges.delete(fileKey), FILE_CHANGE_TIMEOUT)
+		
+		console.log(`\n${config.label} Detected change in: ${filename}`)
+		rebuildDocs()
 	}
 	
-	// Start both watchers
-	Promise.all([
+	// Start all watchers
+	const watchers = watchConfigs.map(config => 
 		(async () => {
-			for await (const event of pagesWatcher) {
-				await handleChange(event, 'pages')
-			}
-		})(),
-		(async () => {
-			for await (const event of componentsWatcher) {
-				await handleChange(event, 'components')
+			const watcher = watch(config.path, { recursive: true })
+			for await (const event of watcher) {
+				await handleFileChange(event, config)
 			}
 		})()
-	]).catch(console.error)
+	)
+	
+	// Run all watchers concurrently
+	Promise.all(watchers).catch(console.error)
 }
 
 // Start the watcher
