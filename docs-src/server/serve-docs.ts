@@ -10,21 +10,24 @@ const sockets = new Set<ServerWebSocket>()
 let isRebuilding = false
 let pendingRebuild = false
 
-// Function to rebuild docs and notify clients
-async function rebuildDocs() {
+// Function to rebuild docs and notify clients (now takes buildCommands)
+async function rebuildDocs(
+	buildCommands: string[] = ['build:docs-js', 'build:docs-html']
+) {
 	if (isRebuilding) {
-		// If already rebuilding, mark that we need another rebuild after this one
 		pendingRebuild = true
 		return
 	}
-	
+
 	isRebuilding = true
-	console.log('\n🔄 Rebuilding docs...')
+	console.log(`\n🔄 Rebuilding docs with: ${buildCommands.join(', ')}`)
 	const startTime = performance.now()
-	
+
 	try {
-		await execAsync('bun run build:docs-js')
-		await execAsync('bun run build:docs-html')
+		for (const cmd of buildCommands) {
+			console.log(`▶️ Running: bun run ${cmd}`)
+			await execAsync(`bun run ${cmd}`)
+		}
 		const duration = (performance.now() - startTime).toFixed(2)
 		console.log(`✨ Docs rebuilt successfully in ${duration}ms!`)
 
@@ -36,63 +39,101 @@ async function rebuildDocs() {
 		console.error('❌ Error rebuilding docs:', error)
 	} finally {
 		isRebuilding = false
-		
-		// If there's a pending rebuild, do it now
 		if (pendingRebuild) {
 			pendingRebuild = false
-			// Small delay to prevent immediate re-triggering
-			setTimeout(() => rebuildDocs(), 100)
+			setTimeout(() => rebuildDocs(buildCommands), 100)
 		}
 	}
 }
 
 // Track recent file changes to prevent duplicate processing
-const recentFileChanges = new Set<string>()
-const FILE_CHANGE_TIMEOUT = 1000 // 1 second
+const fileDebounceTimers = new Map<string, NodeJS.Timeout>()
+const FILE_DEBOUNCE_DELAY = 300 // ms
 
 // Watch for changes in markdown files and components
 async function watchDocs() {
-	console.log('👀 Watching for changes in docs-src/pages and docs-src/components...')
-	
-	// Define watch configurations
+	console.log(
+		'👀 Watching for changes in docs-src/pages, docs-src/components, and src...'
+	)
+
+	// Define watch configurations 
 	const watchConfigs = [
 		{
 			path: 'docs-src/pages',
 			extensions: ['.md'],
-			label: '📝'
+			label: '📝',
 		},
 		{
-			path: 'docs-src/components', 
+			path: 'docs-src/components',
 			extensions: ['.ts', '.html', '.css'],
-			label: '🔧'
-		}
+			label: '🔧',
+		},
+		{
+			path: 'src',
+			extensions: ['.ts'],
+			label: '📦',
+		},
 	]
-	
-	// Generic file change handler
-	const handleFileChange = async (event: any, config: typeof watchConfigs[0]) => {
-		const filename = event.filename
-		if (!filename || !config.extensions.some(ext => filename.endsWith(ext))) {
-			return
+
+	// Map file changes to build commands
+	function getBuildCommands(filePath: string): string[] {
+		if (filePath.startsWith('docs-src/components/')) {
+			if (filePath.endsWith('.ts')) return ['build:docs-js']
+			if (filePath.endsWith('.css')) return ['build:docs-css']
+			if (filePath.endsWith('.html')) return ['build:docs-html']
+			if (filePath.endsWith('.md')) return ['build:docs-html']
 		}
-		
-		// Create a unique key for this file change
-		const fileKey = `${config.path}/${filename}`
-		
-		// Check if we've recently processed this file
-		if (recentFileChanges.has(fileKey)) {
-			return
+		if (
+			filePath.startsWith('docs-src/pages/') &&
+			filePath.endsWith('.md')
+		) {
+			return ['build:docs-html']
 		}
-		
-		// Mark this file as recently changed
-		recentFileChanges.add(fileKey)
-		setTimeout(() => recentFileChanges.delete(fileKey), FILE_CHANGE_TIMEOUT)
-		
-		console.log(`\n${config.label} Detected change in: ${filename}`)
-		rebuildDocs()
+		if (filePath.startsWith('src/') && filePath.endsWith('.ts')) {
+			return ['build', 'build:docs-js', 'build:docs-api']
+		}
+		return []
 	}
-	
-	// Start all watchers
-	const watchers = watchConfigs.map(config => 
+
+	// Generic file change handler
+	const handleFileChange = async (
+		event: any,
+		config: (typeof watchConfigs)[0]
+	) => {
+		const filename = event.filename
+		const eventType = event.eventType || event.type || 'unknown'
+		if (
+			!filename ||
+			!config.extensions.some(ext => filename.endsWith(ext))
+		) {
+			return
+		}
+
+		// Use absolute file path as debounce key
+		const absFilePath = `${config.path}/${filename}`
+		const debounceKey = absFilePath
+
+		if (fileDebounceTimers.has(debounceKey)) {
+			clearTimeout(fileDebounceTimers.get(debounceKey))
+		}
+		fileDebounceTimers.set(
+			debounceKey,
+			setTimeout(async () => {
+				fileDebounceTimers.delete(debounceKey)
+				const buildCommands = getBuildCommands(absFilePath)
+				console.log(`\n${config.label} Debounced change [${eventType}]: ${absFilePath}`)
+				if (buildCommands.length === 0) {
+					console.log('⚠️ No build command mapped for this change.')
+					return
+				}
+				console.log(`🔨 Will run: ${buildCommands.join(', ')}`)
+				await rebuildDocs(buildCommands)
+			}, FILE_DEBOUNCE_DELAY)
+		)
+	}
+
+	// Start all watchers (one per directory)
+	const watchers = watchConfigs.map(config =>
 		(async () => {
 			const watcher = watch(config.path, { recursive: true })
 			for await (const event of watcher) {
@@ -100,8 +141,7 @@ async function watchDocs() {
 			}
 		})()
 	)
-	
-	// Run all watchers concurrently
+
 	Promise.all(watchers).catch(console.error)
 }
 
@@ -140,7 +180,7 @@ const server = Bun.serve({
 		if (path.endsWith('.html') || path === '/') {
 			try {
 				let content = await Bun.file(
-					`./docs${path === '/' ? '/index.html' : path}`,
+					`./docs${path === '/' ? '/index.html' : path}`
 				).text()
 				const reloadScript = `
 					<script>
