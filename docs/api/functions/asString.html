@@ -106,10 +106,23 @@
                 Function: asString()
             </h1>
 <blockquote>
-<p><strong>asString</strong>(<code>fallback?</code>): <a href="../type-aliases/AttributeParser.html"><code>AttributeParser</code></a>&lt;<code>string</code>&gt;</p>
+<p><strong>asString</strong>&lt;<code>E</code>&gt;(<code>fallback?</code>): <a href="../type-aliases/Parser.html"><code>Parser</code></a>&lt;<code>string</code>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/lib/parsers.ts#L71">src/lib/parsers.ts:71</a></p>
-<p>Parse an attribute as a string with a fallback</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/lib/parsers.ts#L79">src/lib/parsers.ts:79</a></p>
+<p>Parse a string as a string with a fallback</p>
+<h2 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type Parameters
+            </h2>
+<h3 id="e">
+                <a name="e" class="anchor" href="#e">
+	                <span class="permalink">🔗</span>
+                </a>
+                E
+            </h3>
+<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -122,16 +135,16 @@
                 </a>
                 fallback?
             </h3>
-<p><code>string</code> = <code>&#39;&#39;</code></p>
-<p>fallback value</p>
+<p><a href="../type-aliases/Fallback.html"><code>Fallback</code></a>&lt;<code>string</code>, <code>E</code>&gt; = <code>&#39;&#39;</code></p>
+<p>Fallback value or extractor function</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<p><a href="../type-aliases/AttributeParser.html"><code>AttributeParser</code></a>&lt;<code>string</code>&gt;</p>
-<p>parser function</p>
+<p><a href="../type-aliases/Parser.html"><code>Parser</code></a>&lt;<code>string</code>, <code>E</code>&gt;</p>
+<p>Parser function</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>

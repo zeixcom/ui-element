@@ -1,6 +1,6 @@
 import { type Component, type ComponentProps, type Effect, on } from '../../..'
 
-import { BasicButtonProps } from '../../components/basic-button/basic-button'
+import { BasicButtonProps } from './basic-button'
 
 type CopyStatus = 'success' | 'error'
 
@@ -14,7 +14,7 @@ export const copyToClipboard =
 	): Effect<ComponentProps, Component<BasicButtonProps>> =>
 	(host, button) =>
 		on('click', async () => {
-			const label = button.textContent?.trim() ?? ''
+			const label = button.label
 			let status: CopyStatus = COPY_SUCCESS
 			try {
 				await navigator.clipboard.writeText(

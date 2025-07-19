@@ -12,19 +12,20 @@ type ElementFromSelector<
 type Extractor<T extends {}, E extends Element = HTMLElement> = (
 	element: E,
 ) => T
-type LooseExtractor<T, E extends Element = HTMLElement> = (element: E) => T
-type ValueOrExtractor<T extends {}, E extends Element = HTMLElement> =
-	| T
-	| Extractor<T, E>
-type StringParser<T extends {}, E extends Element = HTMLElement> = (
-	host: E,
+type LooseExtractor<T, E extends Element = HTMLElement> = (
+	element: E,
+) => T | null | undefined
+type Parser<T extends {}, E extends Element = HTMLElement> = (
+	element: E,
 	value: string | null | undefined,
 	old?: string | null,
 ) => T
-type OptionalStringParser<
-	T extends {},
-	E extends Element = HTMLElement,
-> = T extends string ? undefined : StringParser<T, E>
+type Fallback<T extends {}, E extends Element = HTMLElement> =
+	| T
+	| Extractor<T, E>
+type ParserOrFallback<T extends {}, E extends Element = HTMLElement> =
+	| Parser<T, E>
+	| Fallback<T, E>
 /**
  * Check if a value is a string parser
  *
@@ -32,40 +33,52 @@ type OptionalStringParser<
  * @param {unknown} value - Value to check if it is a string parser
  * @returns {boolean} True if the value is a string parser, false otherwise
  */
-declare const isStringParser: <
-	T extends {},
-	C extends HTMLElement = HTMLElement,
->(
+declare const isParser: <T extends {}, E extends Element = HTMLElement>(
 	value: unknown,
-) => value is StringParser<T, C>
+) => value is Parser<T, E>
 /**
- * Parse a value using a string parser
+ * Get a fallback value for an element
  *
  * @since 0.13.4
- * @param {string | null | undefined} value - Value to parse
- * @param {E} element - Element to pass to parser function
- * @param {OptionalStringParser<T, E>} parser - String parser function
- * @returns {T} Parsed value
+ * @param {E} element - Element to get fallback value for
+ * @param {ParserOrFallback<T, E>} fallback - Fallback value or parser function
+ * @returns {T} Fallback value or parsed value
  */
-declare const parseValue: <T extends {}, E extends Element = HTMLElement>(
-	value: string | null | undefined,
+declare const getFallback: <T extends {}, E extends Element = HTMLElement>(
 	element: E,
-	parser: OptionalStringParser<T, E>,
+	fallback: ParserOrFallback<T, E>,
 ) => T
 /**
- * Get a value from an extractor function or a value
+ * Get a value from the first element matching a selector
  *
  * @since 0.13.4
- * @param {ValueOrExtractor<T | string, E>} extractor - Value or extractor function
- * @param {E} element - Element to pass to extractor function
- * @param {StringParser<T, E>} parser - String parser function
- * @returns {T} Non-nullable value
+ * @param {string} selector - Selector to match
+ * @param {LooseExtractor<T | string | null | undefined, ElementFromSelector<S, E>>[]} extractors - Extractor functions to apply to the element
+ * @returns {LooseExtractor<T | string | null | undefined, C>} Loose extractor function to apply to the host element
  */
-declare const extractValue: <T extends {}, E extends Element = HTMLElement>(
-	extractor: ValueOrExtractor<T | string, E>,
-	element: E,
-	parser?: OptionalStringParser<T, E>,
-) => T
+declare const fromFirst: <
+	T,
+	E extends Element = HTMLElement,
+	C extends HTMLElement = HTMLElement,
+	S extends string = string,
+>(
+	selector: S,
+	...extractors: LooseExtractor<T | string, ElementFromSelector<S, E>>[]
+) => LooseExtractor<T | string, C>
+declare const fromDOM: <
+	T extends {},
+	E extends Element = HTMLElement,
+	C extends HTMLElement = HTMLElement,
+	S extends {
+		[K in keyof S & string]: LooseExtractor<
+			T | string,
+			ElementFromSelector<K, E>
+		>
+	} = {},
+>(
+	fallback: ParserOrFallback<T, C>,
+	selectors: S,
+) => Extractor<T, C>
 /**
  * Observe a DOM subtree with a mutation observer
  *
@@ -154,32 +167,8 @@ declare const requireElement: <
 >(
 	host: HTMLElement,
 	selector: S,
+	assertCustomElement?: boolean,
 ) => ElementFromSelector<S, E>
-/**
- * Get an initial value from multiple element selectors with optional parser and fallback
- *
- * @since 0.13.4
- * @param {S} selector - Selector for element to check for
- * @param {Extractor<T, ElementFromSelector<string, E>>} extractor - Extractor function
- * @param {ValueOrExtractor<T>} [fallback] - Optional fallback value or extractor
- * @param {StringParser<T>} [parser] - Optional parser for string values
- * @returns {Extractor<T, C>} Extractor function to retrieve value from host element
- * @throws {Error} If no element matches any selector and no fallback is provided
- */
-declare const fromDOM: <
-	T extends {},
-	E extends Element = HTMLElement,
-	C extends HTMLElement = HTMLElement,
-	S extends string = string,
->(
-	selector: S,
-	extractor: LooseExtractor<
-		T | string | null | undefined,
-		ElementFromSelector<S, E>
-	>,
-	fallback: ValueOrExtractor<T, C>,
-	parser?: OptionalStringParser<T, C>,
-) => Extractor<T, C>
 declare const fromComponent: <
 	T extends {},
 	E extends Element = HTMLElement,
@@ -188,22 +177,21 @@ declare const fromComponent: <
 >(
 	selector: S,
 	extractor: Extractor<T, ElementFromSelector<S, E>>,
-	fallback: ValueOrExtractor<T>,
-	parser?: OptionalStringParser<T>,
+	fallback: Fallback<T>,
 ) => Extractor<Computed<T>, C>
 export {
 	type ElementFromSelector,
 	type Extractor,
+	type Fallback,
 	type LooseExtractor,
-	type OptionalStringParser,
-	type StringParser,
-	type ValueOrExtractor,
-	extractValue,
+	type Parser,
+	type ParserOrFallback,
 	fromComponent,
 	fromDOM,
+	fromFirst,
 	fromSelector,
-	isStringParser,
-	parseValue,
+	getFallback,
+	isParser,
 	reduced,
 	read,
 	observeSubtree,

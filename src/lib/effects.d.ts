@@ -82,7 +82,7 @@ declare const setText: <
  */
 declare const setProperty: <
 	P extends ComponentProps,
-	K extends keyof E,
+	K extends keyof E & string,
 	E extends Element = HTMLElement,
 >(
 	key: K,

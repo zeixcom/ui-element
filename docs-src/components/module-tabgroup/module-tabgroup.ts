@@ -1,11 +1,9 @@
 import {
 	type Component,
-	asString,
 	component,
 	focus,
 	fromEvents,
 	fromSelector,
-	getAttribute,
 	setProperty,
 	show,
 } from '../../..'
@@ -16,7 +14,8 @@ export type ModuleTabgroupProps = {
 	selected: string
 }
 
-const getAriaControls = getAttribute('aria-controls', asString())
+const getAriaControls = (element: HTMLElement) =>
+	element.getAttribute('aria-controls') ?? ''
 
 const getSelected = (
 	elements: HTMLElement[],

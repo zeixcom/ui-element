@@ -86,11 +86,11 @@ type Initializer<T extends {}, C extends HTMLElement> =
 type SelectorFunctions<P extends ComponentProps> = {
 	first: <E extends Element = never, S extends string = string>(
 		selector: S,
-		...fns: Effect<P, ElementFromSelector<S, E>>[]
+		...effects: Effect<P, ElementFromSelector<S, E>>[]
 	) => (host: Component<P>) => Cleanup | void
 	all: <E extends Element = never, S extends string = string>(
 		selector: S,
-		...fns: Effect<P, ElementFromSelector<S, E>>[]
+		...effects: Effect<P, ElementFromSelector<S, E>>[]
 	) => (host: Component<P>) => Cleanup
 }
 
@@ -148,17 +148,19 @@ const validatePropertyName = (prop: string): string | null => {
  * Run one or more functions on a component's element
  *
  * @since 0.12.0
- * @param {Effect<P, E>[]} fns - functions to run
- * @param {Component<P>} host - component host element
- * @param {E} target - target element
- * @returns {Cleanup} - a cleanup function that runs collected cleanup functions
+ * @param {Effect<P, E>[]} effects - Effect functions to run
+ * @param {Component<P>} host - Component host element
+ * @param {E} target - Target element
+ * @returns {Cleanup} - Cleanup function that runs collected cleanup functions
  */
-const run = <P extends ComponentProps, E extends Element = Component<P>>(
-	fns: Effect<P, E>[],
+const runEffects = <P extends ComponentProps, E extends Element = Component<P>>(
+	effects: Effect<P, E>[],
 	host: Component<P>,
 	target: E = host as unknown as E,
 ): Cleanup => {
-	const cleanups = fns.filter(isFunction).map(fn => fn(host, target))
+	const cleanups = effects
+		.filter(isFunction)
+		.map(effect => effect(host, target))
 	return () => {
 		cleanups.filter(isFunction).forEach(cleanup => cleanup())
 		cleanups.length = 0
@@ -169,37 +171,37 @@ const run = <P extends ComponentProps, E extends Element = Component<P>>(
  * Create partially applied helper functions to select sub-elements
  *
  * @since 0.13.0
- * @returns {UI<P>} - helper functions for selecting sub-elements
+ * @returns {SelectorFunctions<P>} - Helper functions for selecting sub-elements
  */
 const select = <P extends ComponentProps>(): SelectorFunctions<P> => ({
 	/**
 	 * Apply effect functions to a first matching sub-element within the custom element
 	 *
 	 * @since 0.12.0
-	 * @param {K} selector - selector to match sub-element
+	 * @param {S} selector - Selector to match sub-element
 	 */
 	first:
-		<E extends Element = never, K extends string = string>(
-			selector: K,
-			...fns: Effect<P, ElementFromSelector<K, E>>[]
+		<E extends Element = never, S extends string = string>(
+			selector: S,
+			...effects: Effect<P, ElementFromSelector<S, E>>[]
 		) =>
 		(host: Component<P>): Cleanup | void => {
 			const el = (host.shadowRoot || host).querySelector<
-				ElementFromSelector<K, E>
+				ElementFromSelector<S, E>
 			>(selector)
-			if (el) run(fns, host, el)
+			if (el) runEffects(effects, host, el)
 		},
 
 	/**
-	 * Apply effect functions to all matching sub-elements within the custom element
+	 * Apply effect functions to all matching descendant elements within the custom element
 	 *
 	 * @since 0.12.0
-	 * @param {S} selector - selector to match sub-elements
+	 * @param {S} selector - Selector to match descendants
 	 */
 	all:
 		<E extends Element = never, S extends string = string>(
 			selector: S,
-			...fns: Effect<P, ElementFromSelector<S, E>>[]
+			...effects: Effect<P, ElementFromSelector<S, E>>[]
 		) =>
 		(host: Component<P>): Cleanup => {
 			const cleanups = new Map<ElementFromSelector<S, E>, Cleanup>()
@@ -207,7 +209,7 @@ const select = <P extends ComponentProps>(): SelectorFunctions<P> => ({
 
 			const attach = (target: ElementFromSelector<S, E>) => {
 				if (!cleanups.has(target))
-					cleanups.set(target, run(fns, host, target))
+					cleanups.set(target, runEffects(effects, host, target))
 			}
 
 			const detach = (target: ElementFromSelector<S, E>) => {
@@ -308,12 +310,12 @@ const component = <P extends ComponentProps & ValidateComponentProps<P>>(
 			}
 
 			// Run setup function
-			const fns = setup(this as unknown as Component<P>, select())
-			if (!Array.isArray(fns))
+			const effects = setup(this as unknown as Component<P>, select())
+			if (!Array.isArray(effects))
 				throw new TypeError(
 					`Expected array of functions as return value of setup function in ${elementName(this)}`,
 				)
-			this.#cleanup = run(fns, this as unknown as Component<P>)
+			this.#cleanup = runEffects(effects, this as unknown as Component<P>)
 		}
 
 		/**
@@ -327,9 +329,9 @@ const component = <P extends ComponentProps & ValidateComponentProps<P>>(
 		/**
 		 * Native callback function when an observed attribute of the custom element changes
 		 *
-		 * @param {K} attr - name of the modified attribute
-		 * @param {string | null} old - old value of the modified attribute
-		 * @param {string | null} value - new value of the modified attribute
+		 * @param {K} attr - Name of the modified attribute
+		 * @param {string | null} old - Old value of the modified attribute
+		 * @param {string | null} value - New value of the modified attribute
 		 */
 		attributeChangedCallback<K extends keyof P & string>(
 			attr: K,
@@ -371,9 +373,9 @@ const component = <P extends ComponentProps & ValidateComponentProps<P>>(
 		 *
 		 * @since 0.12.0
 		 * @param {K} key - Key to set signal for
-		 * @param {Signal<P[keyof P]>} signal - signal to set value to
-		 * @throws {TypeError} if key is not a valid property key
-		 * @throws {TypeError} if signal is not a valid signal
+		 * @param {Signal<P[keyof P]>} signal - Signal to set value to
+		 * @throws {TypeError} If key is not a valid property key
+		 * @throws {TypeError} If signal is not a valid signal
 		 * @returns {void}
 		 */
 		setSignal<K extends keyof P & string>(

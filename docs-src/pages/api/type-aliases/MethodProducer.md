@@ -8,7 +8,7 @@
 
 > **MethodProducer**\<`C`\> = (`host`) => `void`
 
-Defined in: [src/component.ts:73](https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/component.ts#L73)
+Defined in: [src/component.ts:78](https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/component.ts#L78)
 
 ## Type Parameters
 

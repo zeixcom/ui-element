@@ -6,7 +6,7 @@ import {
 	requireElement,
 	toggleAttribute,
 } from '../../..'
-import { copyToClipboard } from '../../functions/event-listener/copy-to-clipboard'
+import { copyToClipboard } from '../basic-button/copy-to-clipboard'
 
 export type ModuleCodeblockProps = {
 	collapsed: boolean

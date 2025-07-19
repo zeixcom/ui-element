@@ -1,11 +1,11 @@
-import { type Fallback, type Parser, extractValue } from '../core/dom'
+import { type Fallback, type Parser, getFallback } from '../core/dom'
 
 /* === Internal Function === */
 
 const parseNumber = (
 	parseFn: (v: string) => number,
 	value: string | null | undefined,
-): number | undefined => {
+) => {
 	if (value == null) return
 	const parsed = parseFn(value)
 	return Number.isFinite(parsed) ? parsed : undefined
@@ -20,8 +20,7 @@ const parseNumber = (
  * @returns {Parser<boolean>}
  */
 const asBoolean =
-	(): Parser<boolean> =>
-	(_: HTMLElement, value: string | null | undefined): boolean =>
+	(): Parser<boolean> => (_: HTMLElement, value: string | null | undefined) =>
 		value != null && value !== 'false'
 
 /**
@@ -33,28 +32,27 @@ const asBoolean =
  * @param {Fallback<number, E>} [fallback=0] - Fallback value or extractor function
  * @returns {Parser<number, E>} Parser function
  */
-const asInteger = <E extends Element = HTMLElement>(
-	fallback: Fallback<number, E> = 0,
-): Parser<number, E> => {
-	const parser = (element: E, value: string | null | undefined): number => {
-		if (value == null) return extractValue(element, parser)
+const asInteger =
+	<E extends Element = HTMLElement>(
+		fallback: Fallback<number, E> = 0,
+	): Parser<number, E> =>
+	(element: E, value: string | null | undefined) => {
+		if (value == null) return getFallback(element, fallback)
 
 		// Handle hexadecimal notation
 		const trimmed = value.trim()
 		if (trimmed.toLowerCase().startsWith('0x'))
 			return (
 				parseNumber(v => parseInt(v, 16), trimmed) ??
-				extractValue(fallback, element, parser)
+				getFallback(element, fallback)
 			)
 
 		// Handle other formats (including scientific notation)
 		const parsed = parseNumber(parseFloat, value)
 		return parsed != null
 			? Math.trunc(parsed)
-			: extractValue(element, parser)
+			: getFallback(element, fallback)
 	}
-	return parser
-}
 
 /**
  * Parse a string as a number with a fallback
@@ -63,14 +61,12 @@ const asInteger = <E extends Element = HTMLElement>(
  * @param {Fallback<number, E>} [fallback=0] - Fallback value or extractor function
  * @returns {Parser<number, E>} Parser function
  */
-const asNumber = <E extends Element = HTMLElement>(
-	fallback: Fallback<number, E> = 0,
-): Parser<number, E> => {
-	const parser = (element: E, value: string | null | undefined): number =>
-		parseNumber(parseFloat, value) ??
-		extractValue(fallback, element, parser)
-	return parser
-}
+const asNumber =
+	<E extends Element = HTMLElement>(
+		fallback: Fallback<number, E> = 0,
+	): Parser<number, E> =>
+	(element: E, value: string | null | undefined) =>
+		parseNumber(parseFloat, value) ?? getFallback(element, fallback)
 
 /**
  * Parse a string as a string with a fallback
@@ -83,8 +79,8 @@ const asString =
 	<E extends Element = HTMLElement>(
 		fallback: Fallback<string, E> = '',
 	): Parser<string, E> =>
-	(element: E, value: string | null | undefined): string =>
-		value ?? extractValue(fallback, element)
+	(element: E, value: string | null | undefined) =>
+		value ?? getFallback(element, fallback)
 
 /**
  * Parse a string as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option
@@ -95,7 +91,7 @@ const asString =
  */
 const asEnum =
 	(valid: [string, ...string[]]): Parser<string> =>
-	(_: Element, value: string | null | undefined): string => {
+	(_: Element, value: string | null | undefined) => {
 		if (value == null) return valid[0]
 		const lowerValue = value.toLowerCase()
 		const matchingValid = valid.find(v => v.toLowerCase() === lowerValue)
@@ -111,15 +107,16 @@ const asEnum =
  * @throws {TypeError} If the value and fallback are both null or undefined
  * @throws {SyntaxError} If value is not a valid JSON string
  */
-const asJSON = <T extends {}, E extends Element = HTMLElement>(
-	fallback: Fallback<T, E>,
-): Parser<T, E> => {
-	const parser = (element: E, value: string | null | undefined): T => {
+const asJSON =
+	<T extends {}, E extends Element = HTMLElement>(
+		fallback: Fallback<T, E>,
+	): Parser<T, E> =>
+	(element: E, value: string | null | undefined) => {
 		if ((value ?? fallback) == null)
 			throw new TypeError(
 				'asJSON: Value and fallback are both null or undefined',
 			)
-		if (value == null) return extractValue(fallback, element, parser)
+		if (value == null) return getFallback(element, fallback)
 		if (value === '') throw new TypeError('Empty string is not valid JSON')
 		let result: T | undefined
 		try {
@@ -129,9 +126,7 @@ const asJSON = <T extends {}, E extends Element = HTMLElement>(
 				cause: error,
 			})
 		}
-		return result ?? extractValue(fallback, element, parser)
+		return result ?? getFallback(element, fallback)
 	}
-	return parser
-}
 
 export { asBoolean, asInteger, asNumber, asString, asEnum, asJSON }

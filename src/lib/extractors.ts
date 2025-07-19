@@ -1,72 +1,59 @@
-import {
-	type Extractor,
-	type Fallback,
-	type Parser,
-	type ParserOrFallback,
-	type TypeFromParser,
-	extractValue,
-	isParser,
-	parseValue,
-} from '../core/dom'
+import { type Extractor, type LooseExtractor, fromDOM } from '../core/dom'
 
 const getText =
-	<
-		T extends {},
-		E extends Element = Element,
-		P extends Parser<T, E> | undefined = undefined,
-	>(
-		parserOrFallback: ParserOrFallback<T, E>,
-	): Extractor<TypeFromParser<P>, E> =>
-	(element: E): TypeFromParser<P> => {
-		const value = element.textContent
-		if (parser) return parseValue(value, element, parser) as TypeFromParser<P>
-		if (value != null || fallback) return value ?? extractValue(fallback, element)
-		return parser
-			? ( )
-			: value ?? extractValue(fallback, element)
-	}
+	<E extends Element = Element>(): LooseExtractor<string, E> =>
+	(element: E) =>
+		element.textContent?.trim()
 
 const getProperty =
-	<E extends Element, K extends keyof E>(
+	<E extends Element, K extends keyof E & string>(
 		prop: K,
-		fallback: ValueOrExtractor<NonNullable<E[K]>, E>,
-	): Extractor<NonNullable<E[K]>, E> =>
-	(element: E): NonNullable<E[K]> =>
-		element[prop] ?? extractValue(fallback, element)
+	): LooseExtractor<E[K], E> =>
+	(element: E) =>
+		element[prop]
 
 const hasAttribute =
 	(attr: string): Extractor<boolean, Element> =>
-	(element: Element): boolean =>
+	(element: Element) =>
 		element.hasAttribute(attr)
 
 const getAttribute =
-	<T extends {} = string, E extends Element = Element>(
-		attr: string,
-		parserOrFallback: ParserOrFallback<T, E>,
-	): Extractor<T, E> =>
-	(element: E): T =>
-		parseValue(element.getAttribute(attr) ?? !isParser(parserOrFallback) ? parserOrFallback : '', element, isParser(parserOrFallback)
-			? parserOrFallback
-			: undefined
+	<E extends Element = Element>(attr: string): LooseExtractor<string, E> =>
+	(element: E) =>
+		element.getAttribute(attr)
 
 const hasClass =
 	(token: string): Extractor<boolean, Element> =>
-	(element: Element): boolean =>
+	(element: Element) =>
 		element.classList.contains(token)
 
 const getStyle =
-	<
-		T extends {},
-		E extends HTMLElement | SVGElement | MathMLElement = HTMLElement,
-	>(
+	<E extends HTMLElement | SVGElement | MathMLElement = HTMLElement>(
 		prop: string,
-		parser: Parser<T, E>,
-	): Extractor<T, E> =>
-	(element: E): T =>
-		parseValue(
-			window.getComputedStyle(element).getPropertyValue(prop),
-			element,
-			parser,
-		)
+	): Extractor<string, E> =>
+	(element: E) =>
+		window.getComputedStyle(element).getPropertyValue(prop)
 
-export { getText, getProperty, hasAttribute, getAttribute, hasClass, getStyle }
+const getLabel = <E extends HTMLElement>(
+	selector: string,
+): Extractor<string, E> =>
+	fromDOM('', { '.label': getText(), [selector]: getAttribute('aria-label') })
+
+const getDescription = <E extends HTMLElement>(
+	selector: string,
+): Extractor<string, E> =>
+	fromDOM('', {
+		'.description': getText(),
+		[selector]: getAttribute('aria-describedby'),
+	})
+
+export {
+	getText,
+	getProperty,
+	hasAttribute,
+	getAttribute,
+	hasClass,
+	getStyle,
+	getLabel,
+	getDescription,
+}

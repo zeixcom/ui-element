@@ -219,7 +219,7 @@
 <span class="line"><span style="color:#F8F8F2">	on,</span></span>
 <span class="line"><span style="color:#F8F8F2">	pass,</span></span>
 <span class="line"><span style="color:#F8F8F2">	read,</span></span>
-<span class="line"><span style="color:#F8F8F2">	requireDescendant,</span></span>
+<span class="line"><span style="color:#F8F8F2">	requireElement,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setAttribute,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setText,</span></span>
 <span class="line"><span style="color:#F8F8F2">	show,</span></span>
@@ -240,9 +240,9 @@
 <span class="line"><span style="color:#F8F8F2">		completed: </span><span style="color:#A6E22E">fromSelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-checkbox[checked]'</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> textbox </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> requireDescendant</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">'form-textbox'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> template </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> requireDescendant</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">'template'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> list </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> requireDescendant</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">'ol'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> textbox </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> requireElement</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">'form-textbox'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> template </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> requireElement</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">'template'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> list </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> requireElement</span><span style="color:#F8F8F2">(el, </span><span style="color:#E6DB74">'ol'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">			// Control todo input form</span></span>

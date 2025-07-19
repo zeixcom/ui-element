@@ -1,6 +1,6 @@
 import { type Cleanup, type Signal } from '@zeix/cause-effect'
-import { type Component, type ComponentProps } from '../component'
-import { type Extractor, type ValueOrExtractor } from './dom'
+import type { Component, ComponentProps } from '../component'
+import { type Extractor, type Fallback } from './dom'
 /** @see https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md */
 /**
  * A context key.
@@ -81,12 +81,12 @@ declare const provideContexts: <P extends ComponentProps, K extends keyof P>(
  *
  * @since 0.13.1
  * @param {Context<K, Signal<T>>} context - Context key to consume
- * @param {ValueOrExtractor<P[K]>} fallback - Fallback value or extractor function
+ * @param {Fallback<P[K]>} fallback - Fallback value or extractor function
  * @returns {Extractor<Signal<T>, C>} Function that returns the consumed context signal or a signal of the fallback value
  */
 declare const fromContext: <T extends {}, C extends HTMLElement = HTMLElement>(
 	context: Context<string, Signal<T>>,
-	fallback: ValueOrExtractor<T, C>,
+	fallback: Fallback<T, C>,
 ) => Extractor<Signal<T>, C>
 export {
 	type Context,

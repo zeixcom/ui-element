@@ -44,16 +44,16 @@ Helper functions:
 
 <section>
 
-## Attribute Parsers
+## Parsers
 
-Declare how attributes are parsed. Functions returning [AttributeParser](api/type-aliases/AttributeParser.html) that will be used to create [State](api/type-aliases/State.html) signals as writable reactive properties on the component.
+Declare how attributes are parsed. Functions returning [Parser](api/type-aliases/AttributeParser.html) that will be used to create [State](api/type-aliases/State.html) signals as writable reactive properties on the component.
 
-- [asBoolean](api/functions/asBoolean.html) parses boolean attributes (presence indicates true)
+- [asBoolean](api/functions/asBoolean.html) parses boolean strings (presence indicates true)
 - [asEnum](api/functions/asEnum.html) parses string attributes constrained to specific values
 - [asInteger](api/functions/asInteger.html) parses integer attributes with validation
 - [asJSON](api/functions/asJSON.html) parses JSON attributes into JavaScript objects
 - [asNumber](api/functions/asNumber.html) parses numeric attributes as floating-point numbers
-- [asString](api/functions/asString.html) parses string attributes
+- [asString](api/functions/asString.html) identity function for strings defaulting to empty string
 
 </section>
 

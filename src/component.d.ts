@@ -2,7 +2,7 @@ import { type Cleanup, type MaybeSignal, type Signal } from '@zeix/cause-effect'
 import {
 	type ElementFromSelector,
 	type Extractor,
-	type StringParser,
+	type Parser,
 } from './core/dom'
 import type { Effect } from './core/reactive'
 type ReservedWords =
@@ -45,17 +45,17 @@ type SignalProducer<
 type MethodProducer<C extends HTMLElement> = (host: C) => void
 type Initializer<T extends {}, C extends HTMLElement> =
 	| T
-	| StringParser<T, C>
+	| Parser<T, C>
 	| SignalProducer<T, C>
 	| MethodProducer<C>
 type SelectorFunctions<P extends ComponentProps> = {
-	first: <E extends Element = never, K extends string = string>(
-		selector: K,
-		...fns: Effect<P, ElementFromSelector<K, E>>[]
+	first: <E extends Element = never, S extends string = string>(
+		selector: S,
+		...effects: Effect<P, ElementFromSelector<S, E>>[]
 	) => (host: Component<P>) => Cleanup | void
-	all: <E extends Element = never, K extends string = string>(
-		selector: K,
-		...fns: Effect<P, ElementFromSelector<K, E>>[]
+	all: <E extends Element = never, S extends string = string>(
+		selector: S,
+		...effects: Effect<P, ElementFromSelector<S, E>>[]
 	) => (host: Component<P>) => Cleanup
 }
 /**

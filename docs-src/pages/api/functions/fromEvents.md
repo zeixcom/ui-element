@@ -6,9 +6,9 @@
 
 # Function: fromEvents()
 
-> **fromEvents**\<`T`, `E`, `C`, `S`\>(`initialize`, `selector`, `events`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`T`, `C`\>
+> **fromEvents**\<`T`, `E`, `C`, `S`\>(`initialize`, `selector`, `events`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`T`\>, `C`\>
 
-Defined in: [src/core/dom.ts:120](https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/core/dom.ts#L120)
+Defined in: [src/core/events.ts:67](https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/core/events.ts#L67)
 
 Produce a computed signal from transformed event data
 
@@ -34,9 +34,9 @@ Produce a computed signal from transformed event data
 
 ### initialize
 
-Initial value or initialize function
+[`Fallback`](../type-aliases/Fallback.md)\<`T`, `C`\>
 
-`T` | (`host`) => `T`
+Initial value or extractor function
 
 ### selector
 
@@ -52,9 +52,9 @@ Transformation functions for events
 
 ## Returns
 
-[`SignalProducer`](../type-aliases/SignalProducer.md)\<`T`, `C`\>
+[`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`T`\>, `C`\>
 
-Signal producer for value from event
+Extractor function for value from event
 
 ## Since
 

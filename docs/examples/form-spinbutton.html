@@ -153,7 +153,9 @@
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	asInteger,</span></span>
 <span class="line"><span style="color:#F8F8F2">	component,</span></span>
+<span class="line"><span style="color:#F8F8F2">	fromDOM,</span></span>
 <span class="line"><span style="color:#F8F8F2">	fromEvents,</span></span>
+<span class="line"><span style="color:#F8F8F2">	getText,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setText,</span></span>
 <span class="line"><span style="color:#F8F8F2">	show,</span></span>
@@ -179,7 +181,7 @@
 <span class="line"><span style="color:#E6DB74">	'form-spinbutton'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
 <span class="line"><span style="color:#F8F8F2">		value: </span><span style="color:#A6E22E">fromEvents</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#FD971F;font-style:italic">			el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> asInteger</span><span style="color:#F8F8F2">()(el, el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">)?.textContent),</span></span>
+<span class="line"><span style="color:#A6E22E">			fromDOM</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(), { </span><span style="color:#E6DB74">'.value'</span><span style="color:#F8F8F2">: </span><span style="color:#A6E22E">getText</span><span style="color:#F8F8F2">() }),</span></span>
 <span class="line"><span style="color:#E6DB74">			'button'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">			{</span></span>
 <span class="line"><span style="color:#F8F8F2">				click: clickHandler,</span></span>

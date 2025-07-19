@@ -13,7 +13,6 @@ export {
 	type ComputedCallback,
 	type EffectMatcher,
 	type Cleanup,
-	UNSET,
 	state,
 	computed,
 	effect,
@@ -47,19 +46,24 @@ export {
 } from './src/core/util'
 export {
 	type ElementFromSelector,
-	type StringParser,
-	type ValueOrExtractor,
+	type Extractor,
+	type Fallback,
+	type LooseExtractor,
+	type Parser,
+	type ParserOrFallback,
 	fromComponent,
 	fromDOM,
+	fromFirst,
 	fromSelector,
-	read,
+	getFallback,
+	isParser,
 	reduced,
+	read,
 	requireElement,
 } from './src/core/dom'
 export {
 	type Effect,
 	type Reactive,
-	RESET,
 	resolveReactive,
 } from './src/core/reactive'
 export {
@@ -115,4 +119,6 @@ export {
 	getAttribute,
 	hasClass,
 	getStyle,
+	getLabel,
+	getDescription,
 } from './src/lib/extractors'

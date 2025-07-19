@@ -8,7 +8,7 @@
 
 > **setProperty**\<`P`, `K`, `E`\>(`key`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:401](https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/lib/effects.ts#L401)
+Defined in: [src/lib/effects.ts:332](https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/lib/effects.ts#L332)
 
 Effect for setting a property on an element.
 Sets the specified property directly on the element object.
@@ -21,7 +21,7 @@ Sets the specified property directly on the element object.
 
 ### K
 
-`K` *extends* `string` \| `number` \| `symbol`
+`K` *extends* `string`
 
 ### E
 

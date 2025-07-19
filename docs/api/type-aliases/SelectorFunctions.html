@@ -108,7 +108,7 @@
 <blockquote>
 <p><strong>SelectorFunctions</strong>&lt;<code>P</code>&gt; = <code>object</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/component.ts#L97">src/component.ts:97</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/component.ts#L86">src/component.ts:86</a></p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -135,9 +135,9 @@
                 all()
             </h3>
 <blockquote>
-<p><strong>all</strong>: &lt;<code>E</code>, <code>K</code>&gt;(<code>selector</code>, ...<code>fns</code>) =&gt; (<code>host</code>) =&gt; <a href="Cleanup.html"><code>Cleanup</code></a></p>
+<p><strong>all</strong>: &lt;<code>E</code>, <code>S</code>&gt;(<code>selector</code>, ...<code>effects</code>) =&gt; (<code>host</code>) =&gt; <a href="Cleanup.html"><code>Cleanup</code></a></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/component.ts#L102">src/component.ts:102</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/component.ts#L91">src/component.ts:91</a></p>
 <h4 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -151,13 +151,13 @@
                 E
             </h5>
 <p><code>E</code> <em>extends</em> <code>Element</code> = <code>never</code></p>
-<h5 id="k">
-                <a name="k" class="anchor" href="#k">
+<h5 id="s">
+                <a name="s" class="anchor" href="#s">
 	                <span class="permalink">🔗</span>
                 </a>
-                K
+                S
             </h5>
-<p><code>K</code> <em>extends</em> <code>string</code> = <code>string</code></p>
+<p><code>S</code> <em>extends</em> <code>string</code> = <code>string</code></p>
 <h4 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -170,14 +170,14 @@
                 </a>
                 selector
             </h5>
-<p><code>K</code></p>
-<h5 id="fns">
-                <a name="fns" class="anchor" href="#fns">
+<p><code>S</code></p>
+<h5 id="effects">
+                <a name="effects" class="anchor" href="#effects">
 	                <span class="permalink">🔗</span>
                 </a>
-                fns
+                effects
             </h5>
-<p>...<a href="Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <a href="ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>K</code>, <code>E</code>&gt;&gt;[]</p>
+<p>...<a href="Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <a href="ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;&gt;[]</p>
 <h4 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
@@ -215,9 +215,9 @@
                 first()
             </h3>
 <blockquote>
-<p><strong>first</strong>: &lt;<code>E</code>, <code>K</code>&gt;(<code>selector</code>, ...<code>fns</code>) =&gt; (<code>host</code>) =&gt; <a href="Cleanup.html"><code>Cleanup</code></a> | <code>void</code></p>
+<p><strong>first</strong>: &lt;<code>E</code>, <code>S</code>&gt;(<code>selector</code>, ...<code>effects</code>) =&gt; (<code>host</code>) =&gt; <a href="Cleanup.html"><code>Cleanup</code></a> | <code>void</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/component.ts#L98">src/component.ts:98</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/component.ts#L87">src/component.ts:87</a></p>
 <h4 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -231,13 +231,13 @@
                 E
             </h5>
 <p><code>E</code> <em>extends</em> <code>Element</code> = <code>never</code></p>
-<h5 id="k">
-                <a name="k" class="anchor" href="#k">
+<h5 id="s">
+                <a name="s" class="anchor" href="#s">
 	                <span class="permalink">🔗</span>
                 </a>
-                K
+                S
             </h5>
-<p><code>K</code> <em>extends</em> <code>string</code> = <code>string</code></p>
+<p><code>S</code> <em>extends</em> <code>string</code> = <code>string</code></p>
 <h4 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -250,14 +250,14 @@
                 </a>
                 selector
             </h5>
-<p><code>K</code></p>
-<h5 id="fns">
-                <a name="fns" class="anchor" href="#fns">
+<p><code>S</code></p>
+<h5 id="effects">
+                <a name="effects" class="anchor" href="#effects">
 	                <span class="permalink">🔗</span>
                 </a>
-                fns
+                effects
             </h5>
-<p>...<a href="Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <a href="ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>K</code>, <code>E</code>&gt;&gt;[]</p>
+<p>...<a href="Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <a href="ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;&gt;[]</p>
 <h4 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>

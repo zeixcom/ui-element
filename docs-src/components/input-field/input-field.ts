@@ -1,7 +1,7 @@
 import {
-	type AttributeParser,
 	type Component,
 	type Effect,
+	type Parser,
 	UNSET,
 	component,
 	computed,
@@ -48,7 +48,7 @@ const countDecimals = (value: number): number => {
 
 /* === Attribute Parsers === */
 
-const asNumberOrString: AttributeParser<string | number> = (el, v) => {
+const asNumberOrString: Parser<string | number> = (el, v) => {
 	const input = el.querySelector('input')
 	return input && input.type === 'number'
 		? parseNumber(v, el.hasAttribute('integer'), 0)
@@ -57,7 +57,7 @@ const asNumberOrString: AttributeParser<string | number> = (el, v) => {
 
 /* === Component === */
 
-export default component(
+export default component<InputFieldProps>(
 	'input-field',
 	{
 		value: asNumberOrString,

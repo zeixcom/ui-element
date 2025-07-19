@@ -108,7 +108,7 @@
 <blockquote>
 <p><strong>Component</strong>&lt;<code>P</code>&gt; = <code>HTMLElement</code> &amp; <code>P</code> &amp; <code>object</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/component.ts#L42">src/component.ts:42</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/component.ts#L53">src/component.ts:53</a></p>
 <h2 id="type-declaration">
                 <a name="type-declaration" class="anchor" href="#type-declaration">
 	                <span class="permalink">🔗</span>
@@ -124,31 +124,6 @@
 <blockquote>
 <p><code>optional</code> <strong>debug</strong>: <code>boolean</code></p>
 </blockquote>
-<h3 id="shadowroot">
-                <a name="shadowroot" class="anchor" href="#shadowroot">
-	                <span class="permalink">🔗</span>
-                </a>
-                shadowRoot
-            </h3>
-<blockquote>
-<p><strong>shadowRoot</strong>: <code>ShadowRoot</code> | <code>null</code></p>
-</blockquote>
-<h3 id="adoptedcallback">
-                <a name="adoptedcallback" class="anchor" href="#adoptedcallback">
-	                <span class="permalink">🔗</span>
-                </a>
-                adoptedCallback()?
-            </h3>
-<blockquote>
-<p><code>optional</code> <strong>adoptedCallback</strong>(): <code>void</code></p>
-</blockquote>
-<h4 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h4>
-<p><code>void</code></p>
 <h3 id="attributechangedcallback">
                 <a name="attributechangedcallback" class="anchor" href="#attributechangedcallback">
 	                <span class="permalink">🔗</span>
@@ -156,8 +131,21 @@
                 attributeChangedCallback()
             </h3>
 <blockquote>
-<p><strong>attributeChangedCallback</strong>(<code>name</code>, <code>oldValue</code>, <code>newValue</code>): <code>void</code></p>
+<p><strong>attributeChangedCallback</strong>&lt;<code>K</code>&gt;(<code>name</code>, <code>oldValue</code>, <code>newValue</code>): <code>void</code></p>
 </blockquote>
+<h4 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type Parameters
+            </h4>
+<h5 id="k">
+                <a name="k" class="anchor" href="#k">
+	                <span class="permalink">🔗</span>
+                </a>
+                K
+            </h5>
+<p><code>K</code> <em>extends</em> <code>string</code></p>
 <h4 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -170,7 +158,7 @@
                 </a>
                 name
             </h5>
-<p><code>string</code></p>
+<p><code>K</code></p>
 <h5 id="oldvalue">
                 <a name="oldvalue" class="anchor" href="#oldvalue">
 	                <span class="permalink">🔗</span>
@@ -185,38 +173,6 @@
                 newValue
             </h5>
 <p><code>null</code> | <code>string</code></p>
-<h4 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h4>
-<p><code>void</code></p>
-<h3 id="connectedcallback">
-                <a name="connectedcallback" class="anchor" href="#connectedcallback">
-	                <span class="permalink">🔗</span>
-                </a>
-                connectedCallback()
-            </h3>
-<blockquote>
-<p><strong>connectedCallback</strong>(): <code>void</code></p>
-</blockquote>
-<h4 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h4>
-<p><code>void</code></p>
-<h3 id="disconnectedcallback">
-                <a name="disconnectedcallback" class="anchor" href="#disconnectedcallback">
-	                <span class="permalink">🔗</span>
-                </a>
-                disconnectedCallback()
-            </h3>
-<blockquote>
-<p><strong>disconnectedCallback</strong>(): <code>void</code></p>
-</blockquote>
 <h4 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
@@ -245,7 +201,7 @@
                 </a>
                 K
             </h5>
-<p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code></p>
+<p><code>K</code> <em>extends</em> <code>string</code></p>
 <h4 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -287,7 +243,7 @@
                 </a>
                 K
             </h5>
-<p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code></p>
+<p><code>K</code> <em>extends</em> <code>string</code></p>
 <h4 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>

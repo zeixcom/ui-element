@@ -4,11 +4,11 @@
 
 [@zeix/ui-element](../globals.md) / SignalProducer
 
-# Type Alias: SignalProducer()\<T, C\>
+# Type Alias: SignalProducer\<T, C\>
 
-> **SignalProducer**\<`T`, `C`\> = (`host`) => [`MaybeSignal`](MaybeSignal.md)\<`T`\>
+> **SignalProducer**\<`T`, `C`\> = [`Extractor`](Extractor.md)\<[`MaybeSignal`](MaybeSignal.md)\<`T`\>, `C`\>
 
-Defined in: [src/component.ts:69](https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/component.ts#L69)
+Defined in: [src/component.ts:73](https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/component.ts#L73)
 
 ## Type Parameters
 
@@ -19,13 +19,3 @@ Defined in: [src/component.ts:69](https://github.com/zeixcom/ui-element/blob/29b
 ### C
 
 `C` *extends* `HTMLElement` = `HTMLElement`
-
-## Parameters
-
-### host
-
-`C`
-
-## Returns
-
-[`MaybeSignal`](MaybeSignal.md)\<`T`\>

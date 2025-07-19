@@ -5,8 +5,8 @@ import {
 	toSignal,
 } from '@zeix/cause-effect'
 
-import { type Component, type ComponentProps } from '../component'
-import { type Extractor, type Fallback, extractValue } from './dom'
+import type { Component, ComponentProps } from '../component'
+import { type Extractor, type Fallback, getFallback } from './dom'
 
 /** @see https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md */
 
@@ -127,7 +127,7 @@ const fromContext =
 		fallback: Fallback<T, C>,
 	): Extractor<Signal<T>, C> =>
 	(host: C) => {
-		let consumed: Signal<T> = toSignal(extractValue(fallback, host))
+		let consumed: Signal<T> = toSignal(getFallback(host, fallback))
 		host.dispatchEvent(
 			new ContextRequestEvent(context, (value: Signal<T>) => {
 				consumed = value

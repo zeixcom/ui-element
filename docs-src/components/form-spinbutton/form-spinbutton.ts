@@ -2,7 +2,9 @@ import {
 	type Component,
 	asInteger,
 	component,
+	fromDOM,
 	fromEvents,
+	getText,
 	setProperty,
 	setText,
 	show,
@@ -28,7 +30,7 @@ export default component(
 	'form-spinbutton',
 	{
 		value: fromEvents(
-			el => asInteger()(el, el.querySelector('value')?.textContent),
+			fromDOM(asInteger(), { '.value': getText() }),
 			'button',
 			{
 				click: clickHandler,

@@ -115,7 +115,7 @@
 		<ol>
 			<li><a href="#component">Component</a></li>
 			<li><a href="#signals">Signals</a></li>
-			<li><a href="#attribute-parsers">Attribute Parsers</a></li>
+			<li><a href="#parsers">Parsers</a></li>
 			<li><a href="#signal-producers">Signal Producers</a></li>
 			<li><a href="#effects">Effects</a></li>
 			<li><a href="#dom-utilities">DOM Utilities</a></li>
@@ -163,20 +163,20 @@
 
 <section>
 
-<h2 id="attribute-parsers">
-                <a name="attribute-parsers" class="anchor" href="#attribute-parsers">
+<h2 id="parsers">
+                <a name="parsers" class="anchor" href="#parsers">
 	                <span class="permalink">🔗</span>
                 </a>
-                Attribute Parsers
+                Parsers
             </h2>
-<p>Declare how attributes are parsed. Functions returning <a href="api/type-aliases/AttributeParser.html">AttributeParser</a> that will be used to create <a href="api/type-aliases/State.html">State</a> signals as writable reactive properties on the component.</p>
+<p>Declare how attributes are parsed. Functions returning <a href="api/type-aliases/AttributeParser.html">Parser</a> that will be used to create <a href="api/type-aliases/State.html">State</a> signals as writable reactive properties on the component.</p>
 <ul>
-<li><a href="api/functions/asBoolean.html">asBoolean</a> parses boolean attributes (presence indicates true)</li>
+<li><a href="api/functions/asBoolean.html">asBoolean</a> parses boolean strings (presence indicates true)</li>
 <li><a href="api/functions/asEnum.html">asEnum</a> parses string attributes constrained to specific values</li>
 <li><a href="api/functions/asInteger.html">asInteger</a> parses integer attributes with validation</li>
 <li><a href="api/functions/asJSON.html">asJSON</a> parses JSON attributes into JavaScript objects</li>
 <li><a href="api/functions/asNumber.html">asNumber</a> parses numeric attributes as floating-point numbers</li>
-<li><a href="api/functions/asString.html">asString</a> parses string attributes</li>
+<li><a href="api/functions/asString.html">asString</a> identity function for strings defaulting to empty string</li>
 </ul>
 </section>
 

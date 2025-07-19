@@ -1,10 +1,7 @@
 import {
 	type Component,
-	RESET,
 	asString,
 	component,
-	fromDOM,
-	getText,
 	on,
 	requireElement,
 	setText,
@@ -17,16 +14,18 @@ export type HelloWorldProps = {
 export default component(
 	'hello-world',
 	{
-		name: asString(fromDOM('span', getText())),
+		name: asString(),
 	},
 	(el, { first }) => {
-		requireElement(el, 'span')
+		const span = requireElement(el, 'span')
+		const initial = span.textContent || ''
+		if (initial && !el.name) el.name = initial
 
 		return [
 			first(
 				'input',
 				on('input', e => {
-					el.name = (e.target as HTMLInputElement).value || RESET
+					el.name = (e.target as HTMLInputElement).value || initial
 				}),
 			),
 			first('span', setText('name')),

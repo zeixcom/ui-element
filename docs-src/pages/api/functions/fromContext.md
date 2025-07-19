@@ -6,9 +6,9 @@
 
 # Function: fromContext()
 
-> **fromContext**\<`T`, `C`\>(`context`, `fallback`): (`host`) => [`Signal`](../type-aliases/Signal.md)\<`T`\>
+> **fromContext**\<`T`, `C`\>(`context`, `fallback`): [`Extractor`](../type-aliases/Extractor.md)\<[`Signal`](../type-aliases/Signal.md)\<`T`\>, `C`\>
 
-Defined in: [src/core/context.ts:125](https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/core/context.ts#L125)
+Defined in: [src/core/context.ts:125](https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/core/context.ts#L125)
 
 Consume a context value for a component.
 
@@ -20,7 +20,7 @@ Consume a context value for a component.
 
 ### C
 
-`C` *extends* `HTMLElement`
+`C` *extends* `HTMLElement` = `HTMLElement`
 
 ## Parameters
 
@@ -28,29 +28,19 @@ Consume a context value for a component.
 
 [`Context`](../type-aliases/Context.md)\<`string`, [`Signal`](../type-aliases/Signal.md)\<`T`\>\>
 
-context key to consume
+Context key to consume
 
 ### fallback
 
-[`MaybeSignal`](../type-aliases/MaybeSignal.md)\<`T`\>
+[`Fallback`](../type-aliases/Fallback.md)\<`T`, `C`\>
 
-fallback value to use if context is not provided
+Fallback value or extractor function
 
 ## Returns
 
-- a function that returns the consumed context signal or a signal of the fallback value
+[`Extractor`](../type-aliases/Extractor.md)\<[`Signal`](../type-aliases/Signal.md)\<`T`\>, `C`\>
 
-> (`host`): [`Signal`](../type-aliases/Signal.md)\<`T`\>
-
-### Parameters
-
-#### host
-
-`C`
-
-### Returns
-
-[`Signal`](../type-aliases/Signal.md)\<`T`\>
+Function that returns the consumed context signal or a signal of the fallback value
 
 ## Since
 

@@ -6,44 +6,38 @@
 
 # Function: fromDOM()
 
-> **fromDOM**\<`T`, `S`, `E`\>(`selector`, `fn`): (`host`) => `NonNullable`\<`T`\>
+> **fromDOM**\<`T`, `E`, `C`, `S`\>(`fallback`, `selectors`): [`Extractor`](../type-aliases/Extractor.md)\<`T`, `C`\>
 
-Defined in: [src/core/dom.ts:376](https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/core/dom.ts#L376)
+Defined in: [src/core/dom.ts:167](https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/core/dom.ts#L167)
 
 ## Type Parameters
 
 ### T
 
-`T`
-
-### S
-
-`S` *extends* `string` = `string`
+`T` *extends* `object`
 
 ### E
 
 `E` *extends* `Element` = `HTMLElement`
 
+### C
+
+`C` *extends* `HTMLElement` = `HTMLElement`
+
+### S
+
+`S` *extends* \{ \[K in string\]: LooseExtractor\<string \| T, ElementFromSelector\<K, E\>\> \} = \{ \}
+
 ## Parameters
 
-### selector
+### fallback
+
+[`ParserOrFallback`](../type-aliases/ParserOrFallback.md)\<`T`, `C`\>
+
+### selectors
 
 `S`
 
-### fn
-
-(`target`) => `T`
-
 ## Returns
 
-> (`host`): `NonNullable`\<`T`\>
-
-### Parameters
-
-#### host
-
-`HTMLElement`
-
-### Returns
-
-`NonNullable`\<`T`\>
+[`Extractor`](../type-aliases/Extractor.md)\<`T`, `C`\>

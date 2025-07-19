@@ -1,10 +1,6 @@
 import { type Computed } from '@zeix/cause-effect'
-import { type ComponentProps } from '../component'
-import {
-	type ElementFromSelector,
-	type Extractor,
-	type ValueOrExtractor,
-} from './dom'
+import type { ComponentProps } from '../component'
+import { type ElementFromSelector, type Extractor, type Fallback } from './dom'
 import { type Effect, type Reactive } from './reactive'
 type EventType<K extends string> = K extends keyof HTMLElementEventMap
 	? HTMLElementEventMap[K]
@@ -48,7 +44,7 @@ declare const fromEvents: <
 	C extends HTMLElement = HTMLElement,
 	S extends string = string,
 >(
-	initialize: ValueOrExtractor<T, C>,
+	initialize: Fallback<T, C>,
 	selector: S,
 	events: EventTransformers<T, ElementFromSelector<S, E>, C>,
 ) => Extractor<Computed<T>, C>

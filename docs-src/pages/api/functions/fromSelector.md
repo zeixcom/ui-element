@@ -6,9 +6,9 @@
 
 # Function: fromSelector()
 
-> **fromSelector**\<`E`, `C`, `S`\>(`selector`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>[], `C`\>
+> **fromSelector**\<`E`, `C`, `S`\>(`selector`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>[]\>, `C`\>
 
-Defined in: [src/core/dom.ts:229](https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/core/dom.ts#L229)
+Defined in: [src/core/dom.ts:247](https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/core/dom.ts#L247)
 
 Produce a computed signal of an array of elements matching a selector
 
@@ -36,7 +36,7 @@ CSS selector for descendant elements
 
 ## Returns
 
-[`SignalProducer`](../type-aliases/SignalProducer.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>[], `C`\>
+[`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>[]\>, `C`\>
 
 Signal producer for descendant element collection from a selector
 

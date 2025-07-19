@@ -106,9 +106,9 @@
                 Function: fromContext()
             </h1>
 <blockquote>
-<p><strong>fromContext</strong>&lt;<code>T</code>, <code>C</code>&gt;(<code>context</code>, <code>fallback</code>): (<code>host</code>) =&gt; <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;</p>
+<p><strong>fromContext</strong>&lt;<code>T</code>, <code>C</code>&gt;(<code>context</code>, <code>fallback</code>): <a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;, <code>C</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/core/context.ts#L125">src/core/context.ts:125</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/core/context.ts#L125">src/core/context.ts:125</a></p>
 <p>Consume a context value for a component.</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
@@ -129,7 +129,7 @@
                 </a>
                 C
             </h3>
-<p><code>C</code> <em>extends</em> <code>HTMLElement</code></p>
+<p><code>C</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
@@ -143,47 +143,23 @@
                 context
             </h3>
 <p><a href="../type-aliases/Context.html"><code>Context</code></a>&lt;<code>string</code>, <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;&gt;</p>
-<p>context key to consume</p>
+<p>Context key to consume</p>
 <h3 id="fallback">
                 <a name="fallback" class="anchor" href="#fallback">
 	                <span class="permalink">🔗</span>
                 </a>
                 fallback
             </h3>
-<p><a href="../type-aliases/MaybeSignal.html"><code>MaybeSignal</code></a>&lt;<code>T</code>&gt;</p>
-<p>fallback value to use if context is not provided</p>
+<p><a href="../type-aliases/Fallback.html"><code>Fallback</code></a>&lt;<code>T</code>, <code>C</code>&gt;</p>
+<p>Fallback value or extractor function</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<ul>
-<li>a function that returns the consumed context signal or a signal of the fallback value</li>
-</ul>
-<blockquote>
-<p>(<code>host</code>): <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;</p>
-</blockquote>
-<h3 id="parameters">
-                <a name="parameters" class="anchor" href="#parameters">
-	                <span class="permalink">🔗</span>
-                </a>
-                Parameters
-            </h3>
-<h4 id="host">
-                <a name="host" class="anchor" href="#host">
-	                <span class="permalink">🔗</span>
-                </a>
-                host
-            </h4>
-<p><code>C</code></p>
-<h3 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h3>
-<p><a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;</p>
+<p><a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;, <code>C</code>&gt;</p>
+<p>Function that returns the consumed context signal or a signal of the fallback value</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>

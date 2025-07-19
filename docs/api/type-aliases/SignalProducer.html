@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>SignalProducer()\<T, C\> – UIElement Docs</title>
+		<title>SignalProducer\<T, C\> – UIElement Docs</title>
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="../../assets/main.css" />
 		<script type="module" src="../../assets/main.js"></script>
@@ -103,12 +103,12 @@
                 <a name="type-alias-signalproducerltt-cgt" class="anchor" href="#type-alias-signalproducerltt-cgt">
 	                <span class="permalink">🔗</span>
                 </a>
-                Type Alias: SignalProducer()&lt;T, C&gt;
+                Type Alias: SignalProducer&lt;T, C&gt;
             </h1>
 <blockquote>
-<p><strong>SignalProducer</strong>&lt;<code>T</code>, <code>C</code>&gt; = (<code>host</code>) =&gt; <a href="MaybeSignal.html"><code>MaybeSignal</code></a>&lt;<code>T</code>&gt;</p>
+<p><strong>SignalProducer</strong>&lt;<code>T</code>, <code>C</code>&gt; = <a href="Extractor.html"><code>Extractor</code></a>&lt;<a href="MaybeSignal.html"><code>MaybeSignal</code></a>&lt;<code>T</code>&gt;, <code>C</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/component.ts#L69">src/component.ts:69</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/component.ts#L73">src/component.ts:73</a></p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -129,26 +129,6 @@
                 C
             </h3>
 <p><code>C</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
-<h2 id="parameters">
-                <a name="parameters" class="anchor" href="#parameters">
-	                <span class="permalink">🔗</span>
-                </a>
-                Parameters
-            </h2>
-<h3 id="host">
-                <a name="host" class="anchor" href="#host">
-	                <span class="permalink">🔗</span>
-                </a>
-                host
-            </h3>
-<p><code>C</code></p>
-<h2 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h2>
-<p><a href="MaybeSignal.html"><code>MaybeSignal</code></a>&lt;<code>T</code>&gt;</p>
 
 </section></main>
 			<footer class="content-grid">

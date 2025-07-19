@@ -2,13 +2,13 @@
 
 ***
 
-[@zeix/ui-element](../globals.md) / requireDescendant
+[@zeix/ui-element](../globals.md) / requireElement
 
-# Function: requireDescendant()
+# Function: requireElement()
 
-> **requireDescendant**\<`S`, `E`\>(`host`, `selector`): [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>
+> **requireElement**\<`S`, `E`\>(`host`, `selector`, `assertCustomElement`): [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>
 
-Defined in: [src/core/dom.ts:359](https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/core/dom.ts#L359)
+Defined in: [src/core/dom.ts:377](https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/core/dom.ts#L377)
 
 Assert that an element contains an expected descendant element
 
@@ -34,7 +34,11 @@ Host element
 
 `S`
 
-Descendant element to check for
+Selector for element to check for
+
+### assertCustomElement
+
+`boolean` = `false`
 
 ## Returns
 
@@ -44,7 +48,7 @@ First found descendant element
 
 ## Since
 
-0.13.3
+0.13.4
 
 ## Throws
 

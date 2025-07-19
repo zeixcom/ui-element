@@ -1,9 +1,6 @@
-import { type AttributeParser } from '../../..'
+import { type Parser } from '../../..'
 
-export const asURL: AttributeParser<{ value: string; error: string }> = (
-	el,
-	v,
-) => {
+export const asURL: Parser<{ value: string; error: string }> = (el, v) => {
 	let value = ''
 	let error = ''
 	if (!v) {

@@ -1,7 +1,9 @@
 import {
 	type Component,
 	component,
+	fromDOM,
 	fromEvents,
+	getProperty,
 	setAttribute,
 	setProperty,
 	toggleClass,
@@ -22,9 +24,11 @@ export default component(
 	'form-radiogroup',
 	{
 		value: fromEvents(
-			(host: HTMLElement) =>
-				host.querySelector<HTMLInputElement>('input:checked')?.value ??
-				'',
+			fromDOM<string>('', {
+				'input:checked': getProperty<HTMLInputElement, 'value'>(
+					'value',
+				),
+			}),
 			'input',
 			{
 				change: changeHandler,

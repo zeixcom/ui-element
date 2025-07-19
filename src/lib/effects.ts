@@ -105,10 +105,6 @@ const createOperationHandlers = <P extends ComponentProps, E extends Element>(
 	return { ok, err }
 }
 
-const createDedupeSymbol = (operation: string, identifier?: string): symbol => {
-	return Symbol(identifier ? `${operation}:${identifier}` : operation)
-}
-
 const isSafeURL = (value: string): boolean => {
 	if (/^(mailto|tel):/i.test(value)) return true
 	if (value.includes('://')) {
@@ -173,7 +169,7 @@ const updateElement =
 		)
 
 		return effect(() => {
-			const updateSymbol = createDedupeSymbol(op, name)
+			const updateSymbol = Symbol(name ? `${op}:${name}` : op)
 
 			const value = resolveReactive(reactive, host, target, operationDesc)
 			const resolvedValue =
@@ -251,8 +247,8 @@ const insertOrRemoveElement =
 		}
 
 		return effect(() => {
-			const insertSymbol = createDedupeSymbol('i')
-			const removeSymbol = createDedupeSymbol('r')
+			const insertSymbol = Symbol('i')
+			const removeSymbol = Symbol('r')
 
 			const diff = resolveReactive(
 				reactive,
@@ -335,7 +331,7 @@ const setText = <P extends ComponentProps, E extends Element = HTMLElement>(
  */
 const setProperty = <
 	P extends ComponentProps,
-	K extends keyof E,
+	K extends keyof E & string,
 	E extends Element = HTMLElement,
 >(
 	key: K,
@@ -343,7 +339,7 @@ const setProperty = <
 ): Effect<P, E> =>
 	updateElement(reactive, {
 		op: 'p',
-		name: String(key),
+		name: key,
 		read: el => (key in el ? el[key] : UNSET),
 		update: (el, value) => {
 			el[key] = value

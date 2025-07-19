@@ -9,12 +9,12 @@ import {
 	notify,
 	subscribe,
 } from '@zeix/cause-effect'
-import { type ComponentProps } from '../component'
+import type { ComponentProps } from '../component'
 import {
 	type ElementFromSelector,
 	type Extractor,
 	type Fallback,
-	extractValue,
+	getFallback,
 } from './dom'
 import { type Effect, RESET, type Reactive, resolveReactive } from './reactive'
 import { elementName } from './util'
@@ -76,7 +76,7 @@ const fromEvents =
 	): Extractor<Computed<T>, C> =>
 	(host: C) => {
 		const watchers: Set<Watcher> = new Set()
-		let value: T = extractValue(initialize, host)
+		let value: T = getFallback(host, initialize)
 		const eventMap = new Map<string, EventListener>()
 		let cleanup: Cleanup | undefined
 

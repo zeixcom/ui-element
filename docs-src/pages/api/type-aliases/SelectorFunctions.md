@@ -8,7 +8,7 @@
 
 > **SelectorFunctions**\<`P`\> = `object`
 
-Defined in: [src/component.ts:97](https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/component.ts#L97)
+Defined in: [src/component.ts:86](https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/component.ts#L86)
 
 ## Type Parameters
 
@@ -20,9 +20,9 @@ Defined in: [src/component.ts:97](https://github.com/zeixcom/ui-element/blob/29b
 
 ### all()
 
-> **all**: \<`E`, `K`\>(`selector`, ...`fns`) => (`host`) => [`Cleanup`](Cleanup.md)
+> **all**: \<`E`, `S`\>(`selector`, ...`effects`) => (`host`) => [`Cleanup`](Cleanup.md)
 
-Defined in: [src/component.ts:102](https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/component.ts#L102)
+Defined in: [src/component.ts:91](https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/component.ts#L91)
 
 #### Type Parameters
 
@@ -30,19 +30,19 @@ Defined in: [src/component.ts:102](https://github.com/zeixcom/ui-element/blob/29
 
 `E` *extends* `Element` = `never`
 
-##### K
+##### S
 
-`K` *extends* `string` = `string`
+`S` *extends* `string` = `string`
 
 #### Parameters
 
 ##### selector
 
-`K`
+`S`
 
-##### fns
+##### effects
 
-...[`Effect`](Effect.md)\<`P`, [`ElementFromSelector`](ElementFromSelector.md)\<`K`, `E`\>\>[]
+...[`Effect`](Effect.md)\<`P`, [`ElementFromSelector`](ElementFromSelector.md)\<`S`, `E`\>\>[]
 
 #### Returns
 
@@ -62,9 +62,9 @@ Defined in: [src/component.ts:102](https://github.com/zeixcom/ui-element/blob/29
 
 ### first()
 
-> **first**: \<`E`, `K`\>(`selector`, ...`fns`) => (`host`) => [`Cleanup`](Cleanup.md) \| `void`
+> **first**: \<`E`, `S`\>(`selector`, ...`effects`) => (`host`) => [`Cleanup`](Cleanup.md) \| `void`
 
-Defined in: [src/component.ts:98](https://github.com/zeixcom/ui-element/blob/29b42270573af1b19b68f0383c60c6f1221e3f0d/src/component.ts#L98)
+Defined in: [src/component.ts:87](https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/component.ts#L87)
 
 #### Type Parameters
 
@@ -72,19 +72,19 @@ Defined in: [src/component.ts:98](https://github.com/zeixcom/ui-element/blob/29b
 
 `E` *extends* `Element` = `never`
 
-##### K
+##### S
 
-`K` *extends* `string` = `string`
+`S` *extends* `string` = `string`
 
 #### Parameters
 
 ##### selector
 
-`K`
+`S`
 
-##### fns
+##### effects
 
-...[`Effect`](Effect.md)\<`P`, [`ElementFromSelector`](ElementFromSelector.md)\<`K`, `E`\>\>[]
+...[`Effect`](Effect.md)\<`P`, [`ElementFromSelector`](ElementFromSelector.md)\<`S`, `E`\>\>[]
 
 #### Returns
 

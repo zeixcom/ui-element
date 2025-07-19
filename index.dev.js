@@ -342,15 +342,34 @@ var areElementArraysEqual = (arr1, arr2) => {
   }
   return true;
 };
-var isStringParser = (value) => isFunction(value) && value.length >= 2;
-var parseValue = (value, element, parser) => parser ? parser(element, value) : value ?? "";
-var extractValue = (extractor, element, parser) => {
-  if (isFunction(extractor)) {
-    const value = extractor(element);
-    return isString(value) && parser ? parseValue(value, element, parser) : value;
-  } else {
-    return extractor;
+var isParser = (value) => isFunction(value) && value.length >= 2;
+var getFallback = (element, fallback) => isFunction(fallback) ? fallback(element) : fallback;
+var fromFirst = (selector, ...extractors) => (host) => {
+  const target = host.querySelector(selector);
+  if (!target)
+    return;
+  for (const extractor of extractors) {
+    const value = extractor(target);
+    if (value !== undefined)
+      return value;
   }
+};
+var fromDOM = (fallback, selectors) => (host) => {
+  const fromFirst2 = (selector, extractor) => {
+    const target = host.querySelector(selector);
+    if (!target)
+      return;
+    const value2 = extractor(target);
+    if (value2 != null)
+      return value2;
+  };
+  let value = undefined;
+  for (const [selector, extractor] of Object.entries(selectors)) {
+    value = fromFirst2(selector, extractor);
+    if (value != null)
+      break;
+  }
+  return isString(value) && isParser(fallback) ? fallback(host, value) : value ?? getFallback(host, fallback);
 };
 var observeSubtree = (parent, selector, callback) => {
   const observer = new MutationObserver(callback);
@@ -416,31 +435,20 @@ var read = (host, selector, map) => {
   const source = host.querySelector(selector);
   return map(source, source ? isUpgradedComponent(source) : false);
 };
-var requireElement = (host, selector) => {
-  const target = host.querySelector(selector);
-  if (!target) {
-    throw new Error(`Component ${elementName(host)} does not contain required <${selector}> element`);
-  }
-  return target;
-};
-var fromDOM = (selector, extractor, fallback, parser) => (host) => {
+var requireElement = (host, selector, assertCustomElement = false) => {
   const target = host.querySelector(selector);
   if (target) {
-    const value = extractor(target);
-    if (value != null)
-      return extractValue(value, host, parser);
+    if (assertCustomElement && !isCustomElement(target))
+      throw new Error(`Element ${selector} is not a custom element`);
+    return target;
   }
-  if (fallback != null)
-    return extractValue(fallback, host, parser);
   throw new Error(`Component ${elementName(host)} does not contain required <${selector}> element`);
 };
-var fromComponent = (selector, extractor, fallback, parser) => (host) => {
-  const target = requireElement(host, selector);
-  if (!isCustomElement(target))
-    throw new Error(`Element ${selector} is not a custom element`);
+var fromComponent = (selector, extractor, fallback) => (host) => {
+  const target = requireElement(host, selector, true);
   return computed(async () => {
     await customElements.whenDefined(target.localName);
-    return extractor(target) ?? extractValue(fallback, host, parser);
+    return extractor(target) ?? getFallback(host, fallback);
   });
 };
 
@@ -473,25 +481,25 @@ var validatePropertyName = (prop) => {
     return `Property name "${prop}" conflicts with inherited HTMLElement property`;
   return null;
 };
-var run = (fns, host, target = host) => {
-  const cleanups = fns.filter(isFunction).map((fn) => fn(host, target));
+var runEffects = (effects, host, target = host) => {
+  const cleanups = effects.filter(isFunction).map((effect2) => effect2(host, target));
   return () => {
     cleanups.filter(isFunction).forEach((cleanup) => cleanup());
     cleanups.length = 0;
   };
 };
 var select = () => ({
-  first: (selector, ...fns) => (host) => {
+  first: (selector, ...effects) => (host) => {
     const el = (host.shadowRoot || host).querySelector(selector);
     if (el)
-      run(fns, host, el);
+      runEffects(effects, host, el);
   },
-  all: (selector, ...fns) => (host) => {
+  all: (selector, ...effects) => (host) => {
     const cleanups = new Map;
     const root = host.shadowRoot || host;
     const attach = (target) => {
       if (!cleanups.has(target))
-        cleanups.set(target, run(fns, host, target));
+        cleanups.set(target, runEffects(effects, host, target));
     };
     const detach = (target) => {
       const cleanup = cleanups.get(target);
@@ -531,7 +539,7 @@ var component = (name, init = {}, setup) => {
     debug;
     #signals = {};
     #cleanup;
-    static observedAttributes = Object.entries(init)?.filter(([, initializer]) => isStringParser(initializer)).map(([prop]) => prop) ?? [];
+    static observedAttributes = Object.entries(init)?.filter(([, initializer]) => isParser(initializer)).map(([prop]) => prop) ?? [];
     connectedCallback() {
       if (DEV_MODE) {
         this.debug = this.hasAttribute("debug");
@@ -545,10 +553,10 @@ var component = (name, init = {}, setup) => {
         if (result != null)
           this.setSignal(prop, toSignal(result));
       }
-      const fns = setup(this, select());
-      if (!Array.isArray(fns))
+      const effects = setup(this, select());
+      if (!Array.isArray(effects))
         throw new TypeError(`Expected array of functions as return value of setup function in ${elementName(this)}`);
-      this.#cleanup = run(fns, this);
+      this.#cleanup = runEffects(effects, this);
     }
     disconnectedCallback() {
       if (isFunction(this.#cleanup))
@@ -560,7 +568,7 @@ var component = (name, init = {}, setup) => {
       if (value === old || isComputed(this.#signals[attr]))
         return;
       const parser = init[attr];
-      if (!isStringParser(parser))
+      if (!isParser(parser))
         return;
       const parsed = parser(this, value, old);
       if (DEV_MODE && this.debug)
@@ -614,7 +622,7 @@ var resolveReactive = (reactive, host, target, context) => {
 // src/core/events.ts
 var fromEvents = (initialize, selector, events) => (host) => {
   const watchers = new Set;
-  let value = extractValue(initialize, host);
+  let value = getFallback(host, initialize);
   const eventMap = new Map;
   let cleanup;
   const listen = () => {
@@ -715,7 +723,7 @@ var provideContexts = (contexts) => (host) => {
   return () => host.removeEventListener(CONTEXT_REQUEST, listener);
 };
 var fromContext = (context, fallback) => (host) => {
-  let consumed = toSignal(extractValue(fallback, host));
+  let consumed = toSignal(getFallback(host, fallback));
   host.dispatchEvent(new ContextRequestEvent(context, (value) => {
     consumed = value;
   }));
@@ -729,23 +737,17 @@ var parseNumber = (parseFn, value) => {
   return Number.isFinite(parsed) ? parsed : undefined;
 };
 var asBoolean = () => (_, value) => value != null && value !== "false";
-var asInteger = (fallback = 0) => {
-  const parser = (element, value) => {
-    if (value == null)
-      return extractValue(fallback, element, parser);
-    const trimmed = value.trim();
-    if (trimmed.toLowerCase().startsWith("0x"))
-      return parseNumber((v) => parseInt(v, 16), trimmed) ?? extractValue(fallback, element, parser);
-    const parsed = parseNumber(parseFloat, value);
-    return parsed != null ? Math.trunc(parsed) : extractValue(fallback, element, parser);
-  };
-  return parser;
+var asInteger = (fallback = 0) => (element, value) => {
+  if (value == null)
+    return getFallback(element, fallback);
+  const trimmed = value.trim();
+  if (trimmed.toLowerCase().startsWith("0x"))
+    return parseNumber((v) => parseInt(v, 16), trimmed) ?? getFallback(element, fallback);
+  const parsed = parseNumber(parseFloat, value);
+  return parsed != null ? Math.trunc(parsed) : getFallback(element, fallback);
 };
-var asNumber = (fallback = 0) => {
-  const parser = (element, value) => parseNumber(parseFloat, value) ?? extractValue(fallback, element, parser);
-  return parser;
-};
-var asString = (fallback = "") => (element, value) => value ?? extractValue(fallback, element, undefined);
+var asNumber = (fallback = 0) => (element, value) => parseNumber(parseFloat, value) ?? getFallback(element, fallback);
+var asString = (fallback = "") => (element, value) => value ?? getFallback(element, fallback);
 var asEnum = (valid) => (_, value) => {
   if (value == null)
     return valid[0];
@@ -753,25 +755,22 @@ var asEnum = (valid) => (_, value) => {
   const matchingValid = valid.find((v) => v.toLowerCase() === lowerValue);
   return matchingValid ? value : valid[0];
 };
-var asJSON = (fallback) => {
-  const parser = (element, value) => {
-    if ((value ?? fallback) == null)
-      throw new TypeError("asJSON: Value and fallback are both null or undefined");
-    if (value == null)
-      return extractValue(fallback, element, parser);
-    if (value === "")
-      throw new TypeError("Empty string is not valid JSON");
-    let result;
-    try {
-      result = JSON.parse(value);
-    } catch (error) {
-      throw new SyntaxError(`Failed to parse JSON: ${String(error)}`, {
-        cause: error
-      });
-    }
-    return result ?? extractValue(fallback, element, parser);
-  };
-  return parser;
+var asJSON = (fallback) => (element, value) => {
+  if ((value ?? fallback) == null)
+    throw new TypeError("asJSON: Value and fallback are both null or undefined");
+  if (value == null)
+    return getFallback(element, fallback);
+  if (value === "")
+    throw new TypeError("Empty string is not valid JSON");
+  let result;
+  try {
+    result = JSON.parse(value);
+  } catch (error) {
+    throw new SyntaxError(`Failed to parse JSON: ${String(error)}`, {
+      cause: error
+    });
+  }
+  return result ?? getFallback(element, fallback);
 };
 // src/lib/effects.ts
 var getOperationDescription = (op, name = "") => {
@@ -799,9 +798,6 @@ var createOperationHandlers = (host, target, operationDesc, resolve, reject) => 
     reject?.(error);
   };
   return { ok, err };
-};
-var createDedupeSymbol = (operation, identifier) => {
-  return Symbol(identifier ? `${operation}:${identifier}` : operation);
 };
 var isSafeURL = (value) => {
   if (/^(mailto|tel):/i.test(value))
@@ -833,7 +829,7 @@ var updateElement = (reactive, updater) => (host, target) => {
   }
   const { ok, err } = createOperationHandlers(host, target, operationDesc, updater.resolve, updater.reject);
   return effect(() => {
-    const updateSymbol = createDedupeSymbol(op, name);
+    const updateSymbol = Symbol(name ? `${op}:${name}` : op);
     const value = resolveReactive(reactive, host, target, operationDesc);
     const resolvedValue = value === RESET ? fallback : value === UNSET ? updater.delete ? null : fallback : value;
     if (updater.delete && resolvedValue === null) {
@@ -870,8 +866,8 @@ var insertOrRemoveElement = (reactive, inserter) => (host, target) => {
     inserter?.reject?.(error);
   };
   return effect(() => {
-    const insertSymbol = createDedupeSymbol("i");
-    const removeSymbol = createDedupeSymbol("r");
+    const insertSymbol = Symbol("i");
+    const removeSymbol = Symbol("r");
     const diff = resolveReactive(reactive, host, target, "insertion or deletion");
     const resolvedDiff = diff === RESET ? 0 : diff;
     if (resolvedDiff > 0) {
@@ -913,7 +909,7 @@ var setText = (reactive) => updateElement(reactive, {
 });
 var setProperty = (key, reactive = key) => updateElement(reactive, {
   op: "p",
-  name: String(key),
+  name: key,
   read: (el) => (key in el) ? el[key] : UNSET,
   update: (el, value) => {
     el[key] = value;
@@ -1028,12 +1024,17 @@ var pass = (reactives) => (host, target) => {
   });
 };
 // src/lib/extractors.ts
-var getText = (parser) => (element) => parseValue(element.textContent, element, parser);
-var getProperty = (prop, fallback, parser) => (element) => element[prop] ?? extractValue(fallback, element, parser);
+var getText = () => (element) => element.textContent?.trim();
+var getProperty = (prop) => (element) => element[prop];
 var hasAttribute = (attr) => (element) => element.hasAttribute(attr);
-var getAttribute = (attr, parser) => (element) => parseValue(element.getAttribute(attr), element, parser);
+var getAttribute = (attr) => (element) => element.getAttribute(attr);
 var hasClass = (token) => (element) => element.classList.contains(token);
-var getStyle = (prop, parser) => (element) => parseValue(window.getComputedStyle(element).getPropertyValue(prop), element, parser);
+var getStyle = (prop) => (element) => window.getComputedStyle(element).getPropertyValue(prop);
+var getLabel = (selector) => fromDOM("", { ".label": getText(), [selector]: getAttribute("aria-label") });
+var getDescription = (selector) => fromDOM("", {
+  ".description": getText(),
+  [selector]: getAttribute("aria-describedby")
+});
 export {
   updateElement,
   toggleClass,
@@ -1055,6 +1056,7 @@ export {
   log,
   isState,
   isSignal,
+  isParser,
   isComputed,
   insertOrRemoveElement,
   hasClass,
@@ -1062,8 +1064,12 @@ export {
   getText,
   getStyle,
   getProperty,
+  getLabel,
+  getFallback,
+  getDescription,
   getAttribute,
   fromSelector,
+  fromFirst,
   fromEvents,
   fromDOM,
   fromContext,

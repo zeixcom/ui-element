@@ -15,7 +15,7 @@ export type BasicCounterProps = {
 export default component(
 	'basic-counter',
 	{
-		count: fromEvents(fromDOM('span', getText(asInteger())), 'button', {
+		count: fromEvents(fromDOM(asInteger(), { span: getText() }), 'button', {
 			click: ({ value }) => ++value,
 		}),
 	},
