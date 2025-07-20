@@ -306,13 +306,57 @@ var log = (value, msg, level = LOG_DEBUG) => {
   return value;
 };
 
-// src/core/dom.ts
+// src/core/errors.ts
 class CircularMutationError extends Error {
-  constructor(message) {
-    super(message);
+  constructor(host, selector) {
+    super(`Circular dependency detected in selection signal for component ${elementName(host)} with selector "${selector}"`);
     this.name = "CircularMutationError";
   }
 }
+
+class InvalidComponentNameError extends Error {
+  constructor(component) {
+    super(`Invalid component name "${component}". Custom element names must contain a hyphen, start with a lowercase letter, and contain only lowercase letters, numbers, and hyphens.`);
+    this.name = "InvalidComponentNameError";
+  }
+}
+
+class InvalidCustomElementError extends Error {
+  constructor(host, target, required) {
+    super(`Expected element ${elementName(target)} in ${elementName(host)} to be a custom element.${required ? ` ${required}` : ""}`);
+    this.name = "InvalidCustomElementError";
+  }
+}
+
+class InvalidPropertyNameError extends Error {
+  constructor(component, prop, reason) {
+    super(`Invalid property name "${prop}" for component <${component}>. ${reason}`);
+    this.name = "InvalidPropertyNameError";
+  }
+}
+
+class InvalidSetupFunctionError extends Error {
+  constructor(host) {
+    super(`Invalid setup function in component <${elementName(host)}>. Setup function must return an array of effects or a single effect function.`);
+    this.name = "InvalidSetupFunctionError";
+  }
+}
+
+class InvalidSignalError extends Error {
+  constructor(host, prop) {
+    super(`Expected signal as value for property "${String(prop)}" in component ${elementName(host)}.`);
+    this.name = "InvalidSignalError";
+  }
+}
+
+class MissingElementError extends Error {
+  constructor(host, selector, required) {
+    super(`Missing required element <${selector}> in component ${elementName(host)}. ${required}`);
+    this.name = "MissingElementError";
+  }
+}
+
+// src/core/dom.ts
 var extractAttributes = (selector) => {
   const attributes = new Set;
   if (selector.includes("."))
@@ -344,19 +388,10 @@ var areElementArraysEqual = (arr1, arr2) => {
 };
 var isParser = (value) => isFunction(value) && value.length >= 2;
 var getFallback = (element, fallback) => isFunction(fallback) ? fallback(element) : fallback;
-var fromFirst = (selector, ...extractors) => (host) => {
-  const target = host.querySelector(selector);
-  if (!target)
-    return;
-  for (const extractor of extractors) {
-    const value = extractor(target);
-    if (value !== undefined)
-      return value;
-  }
-};
-var fromDOM = (fallback, selectors) => (host) => {
-  const fromFirst2 = (selector, extractor) => {
-    const target = host.querySelector(selector);
+var fromDOM = (fallback, extractors) => (host) => {
+  const root = host.shadowRoot ?? host;
+  const fromFirst = (selector, extractor) => {
+    const target = root.querySelector(selector);
     if (!target)
       return;
     const value2 = extractor(target);
@@ -364,8 +399,8 @@ var fromDOM = (fallback, selectors) => (host) => {
       return value2;
   };
   let value = undefined;
-  for (const [selector, extractor] of Object.entries(selectors)) {
-    value = fromFirst2(selector, extractor);
+  for (const [selector, extractor] of Object.entries(extractors)) {
+    value = fromFirst(selector, extractor);
     if (value != null)
       break;
   }
@@ -387,7 +422,7 @@ var observeSubtree = (parent, selector, callback) => {
 };
 var fromSelector = (selector) => (host) => {
   const watchers = new Set;
-  const select = () => Array.from(host.querySelectorAll(selector));
+  const select = () => Array.from((host.shadowRoot || host).querySelectorAll(selector));
   let value = UNSET;
   let observer;
   let mutationDepth = 0;
@@ -405,7 +440,7 @@ var fromSelector = (selector) => (host) => {
         observer?.disconnect();
         observer = undefined;
         mutationDepth = 0;
-        throw new CircularMutationError("Circular mutation in element selection detected");
+        throw new CircularMutationError(host, selector);
       }
       try {
         const newElements = select();
@@ -435,20 +470,20 @@ var read = (host, selector, map) => {
   const source = host.querySelector(selector);
   return map(source, source ? isUpgradedComponent(source) : false);
 };
-var requireElement = (host, selector, assertCustomElement = false) => {
-  const target = host.querySelector(selector);
+var requireElement = (host, selector, required, assertCustomElement) => {
+  const target = (host.shadowRoot || host).querySelector(selector);
   if (target) {
     if (assertCustomElement && !isCustomElement(target))
-      throw new Error(`Element ${selector} is not a custom element`);
+      throw new InvalidCustomElementError(host, target, required);
     return target;
   }
-  throw new Error(`Component ${elementName(host)} does not contain required <${selector}> element`);
+  throw new MissingElementError(host, selector, required);
 };
-var fromComponent = (selector, extractor, fallback) => (host) => {
-  const target = requireElement(host, selector, true);
+var fromComponent = (selector, extractor, required) => (host) => {
+  const target = requireElement(host, selector, required, true);
   return computed(async () => {
     await customElements.whenDefined(target.localName);
-    return extractor(target) ?? getFallback(host, fallback);
+    return extractor(target);
   });
 };
 
@@ -482,6 +517,8 @@ var validatePropertyName = (prop) => {
   return null;
 };
 var runEffects = (effects, host, target = host) => {
+  if (!Array.isArray(effects))
+    return effects(host, target);
   const cleanups = effects.filter(isFunction).map((effect2) => effect2(host, target));
   return () => {
     cleanups.filter(isFunction).forEach((cleanup) => cleanup());
@@ -489,21 +526,24 @@ var runEffects = (effects, host, target = host) => {
   };
 };
 var select = () => ({
-  first: (selector, ...effects) => (host) => {
-    const el = (host.shadowRoot || host).querySelector(selector);
-    if (el)
-      runEffects(effects, host, el);
+  first: (selector, effects, required) => (host) => {
+    const target = (host.shadowRoot || host).querySelector(selector);
+    if (!target && required != null)
+      throw new MissingElementError(host, selector, required);
+    if (target)
+      runEffects(effects, host, target);
   },
-  all: (selector, ...effects) => (host) => {
+  all: (selector, effects, required) => (host) => {
     const cleanups = new Map;
     const root = host.shadowRoot || host;
     const attach = (target) => {
-      if (!cleanups.has(target))
-        cleanups.set(target, runEffects(effects, host, target));
+      const cleanup = runEffects(effects, host, target);
+      if (cleanup && !cleanups.has(target))
+        cleanups.set(target, cleanup);
     };
     const detach = (target) => {
       const cleanup = cleanups.get(target);
-      if (isFunction(cleanup))
+      if (cleanup)
         cleanup();
       cleanups.delete(target);
     };
@@ -520,7 +560,11 @@ var select = () => ({
         mutation.removedNodes.forEach(applyToMatching(detach));
       }
     });
-    root.querySelectorAll(selector).forEach(attach);
+    const targets = root.querySelectorAll(selector);
+    if (!targets.length && required != null)
+      throw new MissingElementError(host, selector, required);
+    if (targets.length)
+      targets.forEach(attach);
     return () => {
       observer.disconnect();
       cleanups.forEach((cleanup) => cleanup());
@@ -529,10 +573,12 @@ var select = () => ({
   }
 });
 var component = (name, init = {}, setup) => {
+  if (!name.includes("-") || !name.match(/^[a-z][a-z0-9-]*$/))
+    throw new InvalidComponentNameError(name);
   for (const prop of Object.keys(init)) {
     const error = validatePropertyName(prop);
     if (error)
-      throw new TypeError(`${error} in component "${name}".`);
+      throw new InvalidPropertyNameError(name, prop, error);
   }
 
   class CustomElement extends HTMLElement {
@@ -554,9 +600,13 @@ var component = (name, init = {}, setup) => {
           this.setSignal(prop, toSignal(result));
       }
       const effects = setup(this, select());
-      if (!Array.isArray(effects))
-        throw new TypeError(`Expected array of functions as return value of setup function in ${elementName(this)}`);
-      this.#cleanup = runEffects(effects, this);
+      if (Array.isArray(effects) || isFunction(effects)) {
+        const cleanup = runEffects(effects, this);
+        if (cleanup)
+          this.#cleanup = cleanup;
+      } else {
+        throw new InvalidSetupFunctionError(this);
+      }
     }
     disconnectedCallback() {
       if (isFunction(this.#cleanup))
@@ -587,9 +637,9 @@ var component = (name, init = {}, setup) => {
     setSignal(key, signal) {
       const error = validatePropertyName(String(key));
       if (error)
-        throw new TypeError(`${error} on ${elementName(this)}.`);
+        throw new InvalidPropertyNameError(this.localName, key, error);
       if (!isSignal(signal))
-        throw new TypeError(`Expected signal as value for property "${String(key)}" on ${elementName(this)}.`);
+        throw new InvalidSignalError(this, key);
       const prev = this.#signals[key];
       const writable = isState(signal);
       this.#signals[key] = signal;
@@ -679,9 +729,21 @@ var fromEvents = (initialize, selector, events) => (host) => {
     }
   };
 };
-var on = (type, listener, options = false) => (_, target) => {
-  if (!isFunction(listener))
-    throw new TypeError(`Invalid event listener provided for "${type} event on element ${elementName(target)}`);
+var on = (type, handler, options = false) => (host, target) => {
+  const listener = (e) => {
+    const result = handler({ host, target, event: e });
+    if (!isDefinedObject(result))
+      return;
+    batch(() => {
+      for (const [key, value] of Object.entries(result)) {
+        const signal = host.getSignal(key);
+        if (isState(signal))
+          signal.set(value);
+        else
+          log(value, `Reactive property "${key}" on ${elementName(host)} from event ${type} on ${elementName(target)} could not be set, because it is read-only.`, LOG_ERROR);
+      }
+    });
+  };
   target.addEventListener(type, listener, options);
   return () => target.removeEventListener(type, listener);
 };
@@ -1069,7 +1131,6 @@ export {
   getDescription,
   getAttribute,
   fromSelector,
-  fromFirst,
   fromEvents,
   fromDOM,
   fromContext,
@@ -1090,7 +1151,6 @@ export {
   asEnum,
   asBoolean,
   UNSET,
-  RESET,
   LOG_WARN,
   LOG_INFO,
   LOG_ERROR,

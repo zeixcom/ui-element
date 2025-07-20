@@ -1,5 +1,7 @@
 import { component, pass, reduced } from '../../..'
 
+import '../form-spinbutton/form-spinbutton'
+
 export default component('module-catalog', {}, (el, { first }) => {
 	const total = reduced(
 		el,

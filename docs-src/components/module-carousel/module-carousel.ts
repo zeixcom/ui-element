@@ -68,15 +68,14 @@ export default component(
 			target.dataset.index === String(el.index)
 
 		return [
-			all(
-				'[role="tab"]',
+			all('[role="tab"]', [
 				setProperty('ariaSelected', target =>
 					String(isCurrentDot(target)),
 				),
 				setProperty('tabIndex', target =>
 					isCurrentDot(target) ? 0 : -1,
 				),
-			),
+			]),
 			all(
 				'[role="tabpanel"]',
 				setProperty('ariaCurrent', target =>

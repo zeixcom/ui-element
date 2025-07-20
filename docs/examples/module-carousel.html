@@ -473,15 +473,14 @@
 <span class="line"><span style="color:#F8F8F2">			target.dataset.index </span><span style="color:#F92672">===</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(el.index)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">			all</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">				'[role="tab"]'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'[role="tab"]'</span><span style="color:#F8F8F2">, [</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaSelected'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
 <span class="line"><span style="color:#A6E22E">					String</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">isCurrentDot</span><span style="color:#F8F8F2">(target)),</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tabIndex'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
 <span class="line"><span style="color:#A6E22E">					isCurrentDot</span><span style="color:#F8F8F2">(target) </span><span style="color:#F92672">?</span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> :</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
-<span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"><span style="color:#F8F8F2">			]),</span></span>
 <span class="line"><span style="color:#A6E22E">			all</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">				'[role="tabpanel"]'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaCurrent'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>

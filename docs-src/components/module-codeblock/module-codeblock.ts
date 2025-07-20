@@ -17,28 +17,31 @@ export default component(
 	{
 		collapsed: asBoolean(),
 	},
-	(el, { first }) => {
-		const code = requireElement(el, 'code')
-
-		return [
-			toggleAttribute('collapsed'),
-			first(
-				'.overlay',
-				on('click', () => {
-					el.collapsed = false
-				}),
-			),
-			first(
-				'.copy',
-				copyToClipboard(code, {
+	(el, { first }) => [
+		toggleAttribute('collapsed'),
+		first(
+			'.overlay',
+			on('click', () => {
+				el.collapsed = false
+			}),
+		),
+		first(
+			'.copy',
+			copyToClipboard(
+				requireElement(
+					el,
+					'code',
+					'Needed as source container to copy from.',
+				),
+				{
 					success: el.getAttribute('copy-success') || 'Copied!',
 					error:
 						el.getAttribute('copy-success') ||
 						'Error trying to copy to clipboard!',
-				}),
+				},
 			),
-		]
-	},
+		),
+	],
 )
 
 declare global {

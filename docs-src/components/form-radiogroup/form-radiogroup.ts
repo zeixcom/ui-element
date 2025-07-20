@@ -38,8 +38,7 @@ export default component(
 	},
 	(el, { all }) => [
 		setAttribute('value'),
-		all(
-			'input',
+		all('input', [
 			setProperty('tabIndex', target =>
 				target.value === el.value ? 0 : -1,
 			),
@@ -47,7 +46,7 @@ export default component(
 				Array.from(el.querySelectorAll<HTMLInputElement>('input')),
 				inputs => inputs.findIndex(input => input.checked),
 			),
-		),
+		]),
 		all(
 			'label',
 			toggleClass(

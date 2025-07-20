@@ -2,8 +2,9 @@ import {
 	type Component,
 	asString,
 	component,
+	fromDOM,
+	getText,
 	on,
-	requireElement,
 	setText,
 } from '../../..'
 
@@ -14,23 +15,18 @@ export type HelloWorldProps = {
 export default component(
 	'hello-world',
 	{
-		name: asString(),
+		name: asString(fromDOM('World', { span: getText() })),
 	},
-	(el, { first }) => {
-		const span = requireElement(el, 'span')
-		const initial = span.textContent || ''
-		if (initial && !el.name) el.name = initial
-
-		return [
-			first(
-				'input',
-				on('input', e => {
-					el.name = (e.target as HTMLInputElement).value || initial
-				}),
-			),
-			first('span', setText('name')),
-		]
-	},
+	(_, { first }) => [
+		first(
+			'input',
+			on('input', ({ target }) => ({
+				name: target.value,
+			})),
+			'Needed to input the name.',
+		),
+		first('span', setText('name'), 'Needed to display the name.'),
+	],
 )
 
 declare global {

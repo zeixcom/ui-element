@@ -6,21 +6,21 @@
 
 # Function: requireElement()
 
-> **requireElement**\<`S`, `E`\>(`host`, `selector`, `assertCustomElement`): [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>
+> **requireElement**\<`E`, `S`\>(`host`, `selector`, `required`, `assertCustomElement?`): [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>
 
-Defined in: [src/core/dom.ts:377](https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/core/dom.ts#L377)
+Defined in: [src/core/dom.ts:353](https://github.com/zeixcom/ui-element/blob/1c318eb583bce4633e1df4a42dee77859303e28e/src/core/dom.ts#L353)
 
-Assert that an element contains an expected descendant element
+Get the first descendant element matching a selector
 
 ## Type Parameters
-
-### S
-
-`S` *extends* `string` = `string`
 
 ### E
 
 `E` *extends* `Element` = `HTMLElement`
+
+### S
+
+`S` *extends* `string` = `string`
 
 ## Parameters
 
@@ -36,20 +36,32 @@ Host element
 
 Selector for element to check for
 
-### assertCustomElement
+### required
 
-`boolean` = `false`
+`string`
+
+Reason for the assertion
+
+### assertCustomElement?
+
+`boolean`
+
+Whether to assert that the element is a custom element
 
 ## Returns
 
 [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>
 
-First found descendant element
+First matching descendant element
 
 ## Since
 
-0.13.4
+0.14.0
 
 ## Throws
 
 If the element does not contain the required descendant element
+
+## Throws
+
+If assertCustomElement is true and the element is not a custom element

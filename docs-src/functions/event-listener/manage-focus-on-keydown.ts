@@ -18,11 +18,11 @@ export const manageFocusOnKeydown = <E extends HTMLElement = HTMLElement>(
 		on('change', () => {
 			index.set(getSelected(elements))
 		}),
-		on('keydown', e => {
-			const { key } = e
+		on('keydown', ({ event }) => {
+			const { key } = event
 			if (HANDLED_KEYS.includes(key)) {
-				e.preventDefault()
-				e.stopPropagation()
+				event.preventDefault()
+				event.stopPropagation()
 				if (key === 'Home') index.set(0)
 				else if (key === 'End') index.set(elements.length - 1)
 				else

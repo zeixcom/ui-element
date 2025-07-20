@@ -1,27 +1,21 @@
 import { type Computed } from '@zeix/cause-effect'
-import type { ComponentProps } from '../component'
+import type { Component, ComponentProps } from '../component'
 import { type ElementFromSelector, type Extractor, type Fallback } from './dom'
 import { type Effect, type Reactive } from './reactive'
 type EventType<K extends string> = K extends keyof HTMLElementEventMap
 	? HTMLElementEventMap[K]
 	: Event
-type EventTransformerContext<
-	T extends {},
-	E extends Element,
-	C extends HTMLElement,
-	Evt extends Event,
-> = {
-	event: Evt
-	host: C
-	target: E
-	value: T
-}
 type EventTransformer<
 	T extends {},
 	E extends Element,
 	C extends HTMLElement,
 	Evt extends Event,
-> = (context: EventTransformerContext<T, E, C, Evt>) => T | void
+> = (context: {
+	event: Evt
+	host: C
+	target: E
+	value: T
+}) => T | void
 type EventTransformers<
 	T extends {},
 	E extends Element,
@@ -29,6 +23,19 @@ type EventTransformers<
 > = {
 	[K in keyof HTMLElementEventMap]?: EventTransformer<T, E, C, EventType<K>>
 }
+type EventHandler<
+	P extends ComponentProps,
+	E extends Element,
+	Evt extends Event,
+> = (context: {
+	event: Evt
+	host: Component<P>
+	target: E
+}) =>
+	| {
+			[K in keyof P]?: P[K]
+	  }
+	| void
 /**
  * Produce a computed signal from transformed event data
  *
@@ -53,19 +60,20 @@ declare const fromEvents: <
  * Provides proper cleanup when the effect is disposed.
  *
  * @since 0.12.0
- * @param {string} type - Event type
- * @param {(event: EventType<K>) => void} listener - Event listener function
+ * @param {K} type - Event type
+ * @param {EventHandler<P, E, EventType<K>>} handler - Event handler function
  * @param {AddEventListenerOptions | boolean} options - Event listener options
  * @returns {Effect<ComponentProps, E>} Effect function that manages the event listener
  */
 declare const on: <
 	K extends keyof HTMLElementEventMap | string,
-	E extends HTMLElement,
+	P extends ComponentProps,
+	E extends Element = HTMLElement,
 >(
 	type: K,
-	listener: (event: EventType<K>) => void,
+	handler: EventHandler<P, E, EventType<K>>,
 	options?: AddEventListenerOptions | boolean,
-) => Effect<ComponentProps, E>
+) => Effect<P, E>
 /**
  * Effect for emitting custom events with reactive detail values.
  * Creates and dispatches CustomEvent instances with bubbling enabled by default.
@@ -87,7 +95,7 @@ export {
 	type EventType,
 	type EventTransformer,
 	type EventTransformers,
-	type EventTransformerContext,
+	type EventHandler,
 	emitEvent,
 	fromEvents,
 	on,

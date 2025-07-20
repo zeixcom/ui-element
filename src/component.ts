@@ -17,7 +17,14 @@ import {
 	isParser,
 	observeSubtree,
 } from './core/dom'
-import type { Effect } from './core/reactive'
+import {
+	InvalidComponentNameError,
+	InvalidPropertyNameError,
+	InvalidSetupFunctionError,
+	InvalidSignalError,
+	MissingElementError,
+} from './core/errors'
+import type { Effects } from './core/reactive'
 import {
 	DEV_MODE,
 	elementName,
@@ -83,15 +90,18 @@ type Initializer<T extends {}, C extends HTMLElement> =
 	| SignalProducer<T, C>
 	| MethodProducer<C>
 
-type SelectorFunctions<P extends ComponentProps> = {
-	first: <E extends Element = never, S extends string = string>(
-		selector: S,
-		...effects: Effect<P, ElementFromSelector<S, E>>[]
-	) => (host: Component<P>) => Cleanup | void
-	all: <E extends Element = never, S extends string = string>(
-		selector: S,
-		...effects: Effect<P, ElementFromSelector<S, E>>[]
-	) => (host: Component<P>) => Cleanup
+type ElementSelector<P extends ComponentProps> = <
+	E extends Element = HTMLElement,
+	S extends string = string,
+>(
+	selector: S,
+	effects: Effects<P, ElementFromSelector<S, E>>,
+	required?: string,
+) => (host: Component<P>) => Cleanup | void
+
+type ElementSelectors<P extends ComponentProps> = {
+	first: ElementSelector<P>
+	all: ElementSelector<P>
 }
 
 /* === Constants === */
@@ -135,6 +145,9 @@ const HTML_ELEMENT_PROPS = new Set([
  *
  * This validation prevents common mistakes where developers accidentally
  * use property names that conflict with native HTMLElement functionality.
+ *
+ * @param {string} prop - Property name to validate
+ * @returns {string | null} - Error message or null if valid
  */
 const validatePropertyName = (prop: string): string | null => {
 	if (RESERVED_WORDS.has(prop))
@@ -145,19 +158,20 @@ const validatePropertyName = (prop: string): string | null => {
 }
 
 /**
- * Run one or more functions on a component's element
+ * Run one or more effect functions on a component's element
  *
  * @since 0.12.0
- * @param {Effect<P, E>[]} effects - Effect functions to run
+ * @param {Effects<P, E>} effects - Effect functions to run
  * @param {Component<P>} host - Component host element
  * @param {E} target - Target element
  * @returns {Cleanup} - Cleanup function that runs collected cleanup functions
  */
 const runEffects = <P extends ComponentProps, E extends Element = Component<P>>(
-	effects: Effect<P, E>[],
+	effects: Effects<P, E>,
 	host: Component<P>,
 	target: E = host as unknown as E,
-): Cleanup => {
+): void | Cleanup => {
+	if (!Array.isArray(effects)) return effects(host, target)
 	const cleanups = effects
 		.filter(isFunction)
 		.map(effect => effect(host, target))
@@ -171,50 +185,61 @@ const runEffects = <P extends ComponentProps, E extends Element = Component<P>>(
  * Create partially applied helper functions to select sub-elements
  *
  * @since 0.13.0
- * @returns {SelectorFunctions<P>} - Helper functions for selecting sub-elements
+ * @returns {ElementSelectors<P>} - Helper functions for selecting sub-elements
  */
-const select = <P extends ComponentProps>(): SelectorFunctions<P> => ({
+const select = <P extends ComponentProps>(): ElementSelectors<P> => ({
 	/**
-	 * Apply effect functions to a first matching sub-element within the custom element
+	 * Apply effect functions to a first matching descendant within the custom element
 	 *
-	 * @since 0.12.0
-	 * @param {S} selector - Selector to match sub-element
+	 * @since 0.14.0
+	 * @param {S} selector - Selector to match descendant
+	 * @param {Effects<P, ElementFromSelector<S, E>>} effects - Effect functions to apply
+	 * @param {string} required - Optional error message to explain why the element is required; if not provided, missing elements will be silently ignored
+	 * @throws {MissingElementError} - Thrown when the element is required but not found
 	 */
 	first:
-		<E extends Element = never, S extends string = string>(
+		<E extends Element = HTMLElement, S extends string = string>(
 			selector: S,
-			...effects: Effect<P, ElementFromSelector<S, E>>[]
+			effects: Effects<P, ElementFromSelector<S, E>>,
+			required?: string,
 		) =>
-		(host: Component<P>): Cleanup | void => {
-			const el = (host.shadowRoot || host).querySelector<
+		(host: Component<P>) => {
+			const target = (host.shadowRoot || host).querySelector<
 				ElementFromSelector<S, E>
 			>(selector)
-			if (el) runEffects(effects, host, el)
+			if (!target && required != null)
+				throw new MissingElementError(host, selector, required)
+			if (target) runEffects(effects, host, target)
 		},
 
 	/**
 	 * Apply effect functions to all matching descendant elements within the custom element
 	 *
-	 * @since 0.12.0
+	 * @since 0.14.0
 	 * @param {S} selector - Selector to match descendants
+	 * @param {Effects<P, ElementFromSelector<S, E>>} effects - Effect functions to apply
+	 * @param {string} required - Optional error message to explain why the element is required; if not provided, missing elements will be silently ignored
+	 * @throws {MissingElementError} - Thrown when the element is required but not found
 	 */
 	all:
-		<E extends Element = never, S extends string = string>(
+		<E extends Element = HTMLElement, S extends string = string>(
 			selector: S,
-			...effects: Effect<P, ElementFromSelector<S, E>>[]
+			effects: Effects<P, ElementFromSelector<S, E>>,
+			required?: string,
 		) =>
-		(host: Component<P>): Cleanup => {
+		(host: Component<P>) => {
 			const cleanups = new Map<ElementFromSelector<S, E>, Cleanup>()
 			const root = host.shadowRoot || host
 
 			const attach = (target: ElementFromSelector<S, E>) => {
-				if (!cleanups.has(target))
-					cleanups.set(target, runEffects(effects, host, target))
+				const cleanup = runEffects(effects, host, target)
+				if (cleanup && !cleanups.has(target))
+					cleanups.set(target, cleanup)
 			}
 
 			const detach = (target: ElementFromSelector<S, E>) => {
 				const cleanup = cleanups.get(target)
-				if (isFunction(cleanup)) cleanup()
+				if (cleanup) cleanup()
 				cleanups.delete(target)
 			}
 
@@ -237,9 +262,11 @@ const select = <P extends ComponentProps>(): SelectorFunctions<P> => ({
 				}
 			})
 
-			root.querySelectorAll<ElementFromSelector<S, E>>(selector).forEach(
-				attach,
-			)
+			const targets =
+				root.querySelectorAll<ElementFromSelector<S, E>>(selector)
+			if (!targets.length && required != null)
+				throw new MissingElementError(host, selector, required)
+			if (targets.length) targets.forEach(attach)
 
 			return () => {
 				observer.disconnect()
@@ -257,8 +284,10 @@ const select = <P extends ComponentProps>(): SelectorFunctions<P> => ({
  * @since 0.12.0
  * @param {string} name - Name of the custom element
  * @param {{ [K in keyof P]: Initializer<P[K], Component<P>> }} init - Signals of the component
- * @param {FxFunction<S>[]} setup - Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
- * @returns: void
+ * @param {Effects<P, Component<P>>} setup - Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
+ * @throws {InvalidComponentNameError} If component name is invalid
+ * @throws {InvalidPropertyNameError} If property name is invalid
+ * @throws {InvalidSetupFunctionError} If setup function is invalid
  */
 const component = <P extends ComponentProps & ValidateComponentProps<P>>(
 	name: string,
@@ -269,12 +298,14 @@ const component = <P extends ComponentProps & ValidateComponentProps<P>>(
 	},
 	setup: (
 		host: Component<P>,
-		select: SelectorFunctions<P>,
-	) => Effect<P, Component<P>>[],
+		select: ElementSelectors<P>,
+	) => Effects<P, Component<P>>,
 ): void => {
+	if (!name.includes('-') || !name.match(/^[a-z][a-z0-9-]*$/))
+		throw new InvalidComponentNameError(name)
 	for (const prop of Object.keys(init)) {
 		const error = validatePropertyName(prop)
-		if (error) throw new TypeError(`${error} in component "${name}".`)
+		if (error) throw new InvalidPropertyNameError(name, prop, error)
 	}
 
 	class CustomElement extends HTMLElement {
@@ -311,11 +342,15 @@ const component = <P extends ComponentProps & ValidateComponentProps<P>>(
 
 			// Run setup function
 			const effects = setup(this as unknown as Component<P>, select())
-			if (!Array.isArray(effects))
-				throw new TypeError(
-					`Expected array of functions as return value of setup function in ${elementName(this)}`,
+			if (Array.isArray(effects) || isFunction(effects)) {
+				const cleanup = runEffects(
+					effects,
+					this as unknown as Component<P>,
 				)
-			this.#cleanup = runEffects(effects, this as unknown as Component<P>)
+				if (cleanup) this.#cleanup = cleanup
+			} else {
+				throw new InvalidSetupFunctionError(this)
+			}
 		}
 
 		/**
@@ -374,20 +409,17 @@ const component = <P extends ComponentProps & ValidateComponentProps<P>>(
 		 * @since 0.12.0
 		 * @param {K} key - Key to set signal for
 		 * @param {Signal<P[keyof P]>} signal - Signal to set value to
-		 * @throws {TypeError} If key is not a valid property key
-		 * @throws {TypeError} If signal is not a valid signal
-		 * @returns {void}
+		 * @throws {InvalidPropertyNameError} If key is not a valid property name
+		 * @throws {InvalidSignalError} If signal is not a valid signal
 		 */
 		setSignal<K extends keyof P & string>(
 			key: K,
 			signal: Signal<P[K]>,
 		): void {
 			const error = validatePropertyName(String(key))
-			if (error) throw new TypeError(`${error} on ${elementName(this)}.`)
-			if (!isSignal(signal))
-				throw new TypeError(
-					`Expected signal as value for property "${String(key)}" on ${elementName(this)}.`,
-				)
+			if (error)
+				throw new InvalidPropertyNameError(this.localName, key, error)
+			if (!isSignal(signal)) throw new InvalidSignalError(this, key)
 			const prev = this.#signals[key]
 			const writable = isState(signal)
 			this.#signals[key] = signal
@@ -419,6 +451,7 @@ export {
 	type Initializer,
 	type SignalProducer,
 	type MethodProducer,
-	type SelectorFunctions,
+	type ElementSelector,
+	type ElementSelectors,
 	component,
 }

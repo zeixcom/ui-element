@@ -137,23 +137,22 @@ export default component(
 			provideContexts([ROUTER_PATHNAME, ROUTER_QUERY]),
 
 			// Navigate and update 'active' class
-			all(
-				'a[href]:not([href^="#"])',
+			all('a[href]:not([href^="#"])', [
 				toggleClass(
 					'active',
 					target =>
 						isInternalLink(target) &&
 						el[ROUTER_PATHNAME] === target.pathname,
 				),
-				on('click', e => {
-					if (!isInternalLink(e.target)) return
-					const url = new URL(e.target.href)
+				on('click', ({ event, target }) => {
+					if (!isInternalLink(target)) return
+					const url = new URL(target.href)
 					if (url.origin === window.location.origin) {
-						e.preventDefault()
+						event.preventDefault()
 						el[ROUTER_PATHNAME] = url.pathname
 					}
 				}),
-			),
+			]),
 
 			// Render content
 			first(

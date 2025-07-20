@@ -13,6 +13,7 @@ export {
 	type ComputedCallback,
 	type EffectMatcher,
 	type Cleanup,
+	UNSET,
 	state,
 	computed,
 	effect,
@@ -29,11 +30,13 @@ export {
 	type Component,
 	type ComponentProps,
 	type ValidPropertyKey,
+	type ValidateComponentProps,
 	type ReservedWords,
 	type Initializer,
 	type SignalProducer,
 	type MethodProducer,
-	type SelectorFunctions,
+	type ElementSelector,
+	type ElementSelectors,
 	component,
 } from './src/component'
 export {
@@ -53,7 +56,6 @@ export {
 	type ParserOrFallback,
 	fromComponent,
 	fromDOM,
-	fromFirst,
 	fromSelector,
 	getFallback,
 	isParser,
@@ -63,14 +65,15 @@ export {
 } from './src/core/dom'
 export {
 	type Effect,
+	type Effects,
 	type Reactive,
 	resolveReactive,
 } from './src/core/reactive'
 export {
+	type EventHandler,
 	type EventType,
 	type EventTransformer,
 	type EventTransformers,
-	type EventTransformerContext,
 	emitEvent,
 	fromEvents,
 	on,

@@ -16,11 +16,14 @@
 - [DangerouslySetInnerHTMLOptions](type-aliases/DangerouslySetInnerHTMLOptions.md)
 - [Effect](type-aliases/Effect.md)
 - [EffectMatcher](type-aliases/EffectMatcher.md)
+- [Effects](type-aliases/Effects.md)
 - [ElementFromSelector](type-aliases/ElementFromSelector.md)
 - [ElementInserter](type-aliases/ElementInserter.md)
+- [ElementSelector](type-aliases/ElementSelector.md)
+- [ElementSelectors](type-aliases/ElementSelectors.md)
 - [ElementUpdater](type-aliases/ElementUpdater.md)
+- [EventHandler](type-aliases/EventHandler.md)
 - [EventTransformer](type-aliases/EventTransformer.md)
-- [EventTransformerContext](type-aliases/EventTransformerContext.md)
 - [EventTransformers](type-aliases/EventTransformers.md)
 - [EventType](type-aliases/EventType.md)
 - [Extractor](type-aliases/Extractor.md)
@@ -35,12 +38,12 @@
 - [Reactive](type-aliases/Reactive.md)
 - [Reactives](type-aliases/Reactives.md)
 - [ReservedWords](type-aliases/ReservedWords.md)
-- [SelectorFunctions](type-aliases/SelectorFunctions.md)
 - [Signal](type-aliases/Signal.md)
 - [SignalProducer](type-aliases/SignalProducer.md)
 - [State](type-aliases/State.md)
 - [UnknownContext](type-aliases/UnknownContext.md)
 - [UpdateOperation](type-aliases/UpdateOperation.md)
+- [ValidateComponentProps](type-aliases/ValidateComponentProps.md)
 - [ValidPropertyKey](type-aliases/ValidPropertyKey.md)
 
 ## Variables
@@ -49,6 +52,7 @@
 - [LOG\_ERROR](variables/LOG_ERROR.md)
 - [LOG\_INFO](variables/LOG_INFO.md)
 - [LOG\_WARN](variables/LOG_WARN.md)
+- [UNSET](variables/UNSET.md)
 
 ## Functions
 
@@ -70,7 +74,6 @@
 - [fromContext](functions/fromContext.md)
 - [fromDOM](functions/fromDOM.md)
 - [fromEvents](functions/fromEvents.md)
-- [fromFirst](functions/fromFirst.md)
 - [fromSelector](functions/fromSelector.md)
 - [getAttribute](functions/getAttribute.md)
 - [getDescription](functions/getDescription.md)

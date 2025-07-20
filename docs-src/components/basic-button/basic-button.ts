@@ -6,7 +6,6 @@ import {
 	fromDOM,
 	getLabel,
 	getText,
-	requireElement,
 	setProperty,
 	setText,
 } from '../../..'
@@ -24,15 +23,15 @@ export default component(
 		label: asString(getLabel('button')),
 		badge: asString(fromDOM('', { '.badge': getText() })),
 	},
-	(el, { first }) => {
-		requireElement(el, 'button')
-
-		return [
-			first('button', setProperty('disabled')),
-			first('.label', setText('label')),
-			first('.badge', setText('badge')),
-		]
-	},
+	(_, { first }) => [
+		first(
+			'button',
+			setProperty('disabled'),
+			'Add native <button> as descendant.',
+		),
+		first('.label', setText('label')),
+		first('.badge', setText('badge')),
+	],
 )
 
 declare global {

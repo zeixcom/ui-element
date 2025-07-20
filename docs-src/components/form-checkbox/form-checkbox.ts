@@ -7,7 +7,6 @@ import {
 	fromEvents,
 	getLabel,
 	getProperty,
-	requireElement,
 	setText,
 	toggleAttribute,
 } from '../../..'
@@ -29,11 +28,15 @@ export default component(
 		),
 		label: asString(getLabel('input')),
 	},
-	(el, { first }) => {
-		requireElement(el, 'input[type="checkbox"]')
-
-		return [toggleAttribute('checked'), first('.label', setText('label'))]
-	},
+	(_, { first }) => [
+		toggleAttribute('checked'),
+		first<HTMLInputElement>(
+			'input[type="checkbox"]',
+			[],
+			'Native checkbox needed.',
+		),
+		first('.label', setText('label')),
+	],
 )
 
 declare global {

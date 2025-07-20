@@ -6,9 +6,11 @@
 
 # Function: fromDOM()
 
-> **fromDOM**\<`T`, `E`, `C`, `S`\>(`fallback`, `selectors`): [`Extractor`](../type-aliases/Extractor.md)\<`T`, `C`\>
+> **fromDOM**\<`T`, `E`, `C`, `S`\>(`fallback`, `extractors`): [`Extractor`](../type-aliases/Extractor.md)\<`T`, `C`\>
 
-Defined in: [src/core/dom.ts:167](https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/core/dom.ts#L167)
+Defined in: [src/core/dom.ts:137](https://github.com/zeixcom/ui-element/blob/1c318eb583bce4633e1df4a42dee77859303e28e/src/core/dom.ts#L137)
+
+Get a value from elements in the DOM
 
 ## Type Parameters
 
@@ -34,10 +36,20 @@ Defined in: [src/core/dom.ts:167](https://github.com/zeixcom/ui-element/blob/f5c
 
 [`ParserOrFallback`](../type-aliases/ParserOrFallback.md)\<`T`, `C`\>
 
-### selectors
+Fallback value or parser function
+
+### extractors
 
 `S`
+
+An object of extractor functions for selectors as keys to get a value from
 
 ## Returns
 
 [`Extractor`](../type-aliases/Extractor.md)\<`T`, `C`\>
+
+Loose extractor function to apply to the host element
+
+## Since
+
+0.14.0

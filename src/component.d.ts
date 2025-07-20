@@ -4,7 +4,7 @@ import {
 	type Extractor,
 	type Parser,
 } from './core/dom'
-import type { Effect } from './core/reactive'
+import type { Effects } from './core/reactive'
 type ReservedWords =
 	| 'constructor'
 	| 'prototype'
@@ -48,15 +48,17 @@ type Initializer<T extends {}, C extends HTMLElement> =
 	| Parser<T, C>
 	| SignalProducer<T, C>
 	| MethodProducer<C>
-type SelectorFunctions<P extends ComponentProps> = {
-	first: <E extends Element = never, S extends string = string>(
-		selector: S,
-		...effects: Effect<P, ElementFromSelector<S, E>>[]
-	) => (host: Component<P>) => Cleanup | void
-	all: <E extends Element = never, S extends string = string>(
-		selector: S,
-		...effects: Effect<P, ElementFromSelector<S, E>>[]
-	) => (host: Component<P>) => Cleanup
+type ElementSelector<P extends ComponentProps> = <
+	E extends Element = HTMLElement,
+	S extends string = string,
+>(
+	selector: S,
+	effects: Effects<P, ElementFromSelector<S, E>>,
+	required?: string,
+) => (host: Component<P>) => Cleanup | void
+type ElementSelectors<P extends ComponentProps> = {
+	first: ElementSelector<P>
+	all: ElementSelector<P>
 }
 /**
  * Define a component with its states and setup function (connectedCallback)
@@ -64,16 +66,18 @@ type SelectorFunctions<P extends ComponentProps> = {
  * @since 0.12.0
  * @param {string} name - Name of the custom element
  * @param {{ [K in keyof P]: Initializer<P[K], Component<P>> }} init - Signals of the component
- * @param {FxFunction<S>[]} setup - Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
- * @returns: void
+ * @param {Effects<P, Component<P>>} setup - Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
+ * @throws {InvalidComponentNameError} If component name is invalid
+ * @throws {InvalidPropertyNameError} If property name is invalid
+ * @throws {InvalidSetupFunctionError} If setup function is invalid
  */
 declare const component: <P extends ComponentProps & ValidateComponentProps<P>>(
 	name: string,
 	init: { [K in keyof P]: Initializer<P[K], Component<P>> } | undefined,
 	setup: (
 		host: Component<P>,
-		select: SelectorFunctions<P>,
-	) => Effect<P, Component<P>>[],
+		select: ElementSelectors<P>,
+	) => Effects<P, Component<P>>,
 ) => void
 export {
 	type Component,
@@ -84,6 +88,7 @@ export {
 	type Initializer,
 	type SignalProducer,
 	type MethodProducer,
-	type SelectorFunctions,
+	type ElementSelector,
+	type ElementSelectors,
 	component,
 }

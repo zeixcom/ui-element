@@ -16,6 +16,10 @@ type Effect<P extends ComponentProps, E extends Element> = (
 	element: E,
 ) => Cleanup | void
 
+type Effects<P extends ComponentProps, E extends Element> =
+	| Effect<P, E>
+	| Effect<P, E>[]
+
 type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 	| keyof P
 	| Signal<NonNullable<T>>
@@ -66,4 +70,4 @@ const resolveReactive = <
 
 /* === Exports === */
 
-export { type Effect, type Reactive, RESET, resolveReactive }
+export { type Effect, type Effects, type Reactive, RESET, resolveReactive }

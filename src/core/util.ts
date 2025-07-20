@@ -1,6 +1,6 @@
-/* === Types === */
-
 import { isFunction } from '@zeix/cause-effect'
+
+/* === Types === */
 
 type LogLevel = 'debug' | 'info' | 'warn' | 'error'
 

@@ -8,7 +8,7 @@
 
 > **component**\<`P`\>(`name`, `init`, `setup`): `void`
 
-Defined in: [src/component.ts:263](https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/component.ts#L263)
+Defined in: [src/component.ts:292](https://github.com/zeixcom/ui-element/blob/1c318eb583bce4633e1df4a42dee77859303e28e/src/component.ts#L292)
 
 Define a component with its states and setup function (connectedCallback)
 
@@ -16,7 +16,7 @@ Define a component with its states and setup function (connectedCallback)
 
 ### P
 
-`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md) & `ValidateComponentProps`\<`P`\>
+`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md) & [`ValidateComponentProps`](../type-aliases/ValidateComponentProps.md)\<`P`\>
 
 ## Parameters
 
@@ -34,10 +34,9 @@ Signals of the component
 
 ### setup
 
-(`host`, `select`) => [`Effect`](../type-aliases/Effect.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`P`\>\>[]
+(`host`, `select`) => [`Effects`](../type-aliases/Effects.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`P`\>\>
 
 Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
-@returns: void
 
 ## Returns
 
@@ -46,3 +45,15 @@ Setup function to be called in connectedCallback(), may return cleanup function 
 ## Since
 
 0.12.0
+
+## Throws
+
+If component name is invalid
+
+## Throws
+
+If property name is invalid
+
+## Throws
+
+If setup function is invalid

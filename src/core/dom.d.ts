@@ -29,7 +29,7 @@ type ParserOrFallback<T extends {}, E extends Element = HTMLElement> =
 /**
  * Check if a value is a string parser
  *
- * @since 0.13.4
+ * @since 0.14.0
  * @param {unknown} value - Value to check if it is a string parser
  * @returns {boolean} True if the value is a string parser, false otherwise
  */
@@ -39,7 +39,7 @@ declare const isParser: <T extends {}, E extends Element = HTMLElement>(
 /**
  * Get a fallback value for an element
  *
- * @since 0.13.4
+ * @since 0.14.0
  * @param {E} element - Element to get fallback value for
  * @param {ParserOrFallback<T, E>} fallback - Fallback value or parser function
  * @returns {T} Fallback value or parsed value
@@ -49,22 +49,14 @@ declare const getFallback: <T extends {}, E extends Element = HTMLElement>(
 	fallback: ParserOrFallback<T, E>,
 ) => T
 /**
- * Get a value from the first element matching a selector
+ * Get a value from elements in the DOM
  *
- * @since 0.13.4
- * @param {string} selector - Selector to match
+ * @since 0.14.0
+ * @param {ParserOrFallback<T, E>} fallback - Fallback value or parser function
+ * @param {S} extractors - An object of extractor functions for selectors as keys to get a value from
  * @param {LooseExtractor<T | string | null | undefined, ElementFromSelector<S, E>>[]} extractors - Extractor functions to apply to the element
  * @returns {LooseExtractor<T | string | null | undefined, C>} Loose extractor function to apply to the host element
  */
-declare const fromFirst: <
-	T,
-	E extends Element = HTMLElement,
-	C extends HTMLElement = HTMLElement,
-	S extends string = string,
->(
-	selector: S,
-	...extractors: LooseExtractor<T | string, ElementFromSelector<S, E>>[]
-) => LooseExtractor<T | string, C>
 declare const fromDOM: <
 	T extends {},
 	E extends Element = HTMLElement,
@@ -77,7 +69,7 @@ declare const fromDOM: <
 	} = {},
 >(
 	fallback: ParserOrFallback<T, C>,
-	selectors: S,
+	extractors: S,
 ) => Extractor<T, C>
 /**
  * Observe a DOM subtree with a mutation observer
@@ -99,6 +91,7 @@ declare const observeSubtree: (
  * @since 0.13.1
  * @param {K} selector - CSS selector for descendant elements
  * @returns {Extractor<Computed<ElementFromSelector<S, E>[]>, C>} Signal producer for descendant element collection from a selector
+ * @throws {CircularMutationError} If observed mutations would trigger infinite mutation cycles
  */
 declare const fromSelector: <
 	E extends Element = HTMLElement,
@@ -153,22 +146,37 @@ declare const read: <
 	map: (element: ElementFromSelector<S, E> | null, isUpgraded: boolean) => T,
 ) => T
 /**
- * Assert that an element contains an expected descendant element
+ * Get the first descendant element matching a selector
  *
- * @since 0.13.4
+ * @since 0.14.0
  * @param {HTMLElement} host - Host element
  * @param {S} selector - Selector for element to check for
- * @returns {ElementFromSelector<S, E>} First found descendant element
- * @throws {Error} If the element does not contain the required descendant element
+ * @param {string} required - Reason for the assertion
+ * @param {boolean} assertCustomElement - Whether to assert that the element is a custom element
+ * @returns {ElementFromSelector<S, E>} First matching descendant element
+ * @throws {MissingElementError} If the element does not contain the required descendant element
+ * @throws {InvalidCustomElementError} If assertCustomElement is true and the element is not a custom element
  */
 declare const requireElement: <
-	S extends string = string,
 	E extends Element = HTMLElement,
+	S extends string = string,
 >(
 	host: HTMLElement,
 	selector: S,
+	required: string,
 	assertCustomElement?: boolean,
 ) => ElementFromSelector<S, E>
+/**
+ * Create a computed signal from a required descendant component's property
+ *
+ * @since 0.14.0
+ * @param {S} selector - Selector for the required descendant element
+ * @param {Extractor<T, ElementFromSelector<S, E>>} extractor - Function to extract the value from the element
+ * @param {string} required - Explanation why the element is required
+ * @returns {Extractor<Computed<T>, C>} Extractor that returns a computed signal that computes the value from the element
+ * @throws {MissingElementError} If the element does not contain the required descendant element
+ * @throws {InvalidCustomElementError} If the element is not a custom element
+ */
 declare const fromComponent: <
 	T extends {},
 	E extends Element = HTMLElement,
@@ -177,7 +185,7 @@ declare const fromComponent: <
 >(
 	selector: S,
 	extractor: Extractor<T, ElementFromSelector<S, E>>,
-	fallback: Fallback<T>,
+	required: string,
 ) => Extractor<Computed<T>, C>
 export {
 	type ElementFromSelector,
@@ -188,7 +196,6 @@ export {
 	type ParserOrFallback,
 	fromComponent,
 	fromDOM,
-	fromFirst,
 	fromSelector,
 	getFallback,
 	isParser,

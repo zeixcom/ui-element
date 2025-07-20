@@ -4,12 +4,13 @@ import {
 	TYPE_COMPUTED,
 	UNSET,
 	type Watcher,
+	batch,
 	effect,
-	isFunction,
+	isState,
 	notify,
 	subscribe,
 } from '@zeix/cause-effect'
-import type { ComponentProps } from '../component'
+import type { Component, ComponentProps } from '../component'
 import {
 	type ElementFromSelector,
 	type Extractor,
@@ -17,7 +18,7 @@ import {
 	getFallback,
 } from './dom'
 import { type Effect, RESET, type Reactive, resolveReactive } from './reactive'
-import { elementName } from './util'
+import { LOG_ERROR, elementName, isDefinedObject, log } from './util'
 
 /* === Types === */
 
@@ -25,24 +26,17 @@ type EventType<K extends string> = K extends keyof HTMLElementEventMap
 	? HTMLElementEventMap[K]
 	: Event
 
-type EventTransformerContext<
-	T extends {},
-	E extends Element,
-	C extends HTMLElement,
-	Evt extends Event,
-> = {
-	event: Evt
-	host: C
-	target: E
-	value: T
-}
-
 type EventTransformer<
 	T extends {},
 	E extends Element,
 	C extends HTMLElement,
 	Evt extends Event,
-> = (context: EventTransformerContext<T, E, C, Evt>) => T | void
+> = (context: {
+	event: Evt
+	host: C
+	target: E
+	value: T
+}) => T | void
 
 type EventTransformers<
 	T extends {},
@@ -51,6 +45,16 @@ type EventTransformers<
 > = {
 	[K in keyof HTMLElementEventMap]?: EventTransformer<T, E, C, EventType<K>>
 }
+
+type EventHandler<
+	P extends ComponentProps,
+	E extends Element,
+	Evt extends Event,
+> = (context: {
+	event: Evt
+	host: Component<P>
+	target: E
+}) => { [K in keyof P]?: P[K] } | void
 
 /* === Exported Functions === */
 
@@ -82,7 +86,7 @@ const fromEvents =
 
 		const listen = () => {
 			for (const [type, transform] of Object.entries(events)) {
-				const listener = ((e: Event) => {
+				const listener = (e: Event) => {
 					const target = e.target as Element
 					if (!target) return
 
@@ -109,7 +113,7 @@ const fromEvents =
 						e.stopImmediatePropagation()
 						throw error
 					}
-				}) as EventListener
+				}
 				eventMap.set(type, listener)
 				host.addEventListener(type, listener)
 			}
@@ -140,22 +144,38 @@ const fromEvents =
  * Provides proper cleanup when the effect is disposed.
  *
  * @since 0.12.0
- * @param {string} type - Event type
- * @param {(event: EventType<K>) => void} listener - Event listener function
+ * @param {K} type - Event type
+ * @param {EventHandler<P, E, EventType<K>>} handler - Event handler function
  * @param {AddEventListenerOptions | boolean} options - Event listener options
  * @returns {Effect<ComponentProps, E>} Effect function that manages the event listener
  */
 const on =
-	<K extends keyof HTMLElementEventMap | string, E extends HTMLElement>(
+	<
+		K extends keyof HTMLElementEventMap | string,
+		P extends ComponentProps,
+		E extends Element = HTMLElement,
+	>(
 		type: K,
-		listener: (event: EventType<K>) => void,
+		handler: EventHandler<P, E, EventType<K>>,
 		options: AddEventListenerOptions | boolean = false,
-	): Effect<ComponentProps, E> =>
-	(_, target): Cleanup => {
-		if (!isFunction(listener))
-			throw new TypeError(
-				`Invalid event listener provided for "${type} event on element ${elementName(target)}`,
-			)
+	): Effect<P, E> =>
+	(host, target): Cleanup => {
+		const listener = (e: Event) => {
+			const result = handler({ host, target, event: e as EventType<K> })
+			if (!isDefinedObject(result)) return
+			batch(() => {
+				for (const [key, value] of Object.entries(result)) {
+					const signal = host.getSignal(key)
+					if (isState(signal)) signal.set(value)
+					else
+						log(
+							value,
+							`Reactive property "${key}" on ${elementName(host)} from event ${type} on ${elementName(target)} could not be set, because it is read-only.`,
+							LOG_ERROR,
+						)
+				}
+			})
+		}
 		target.addEventListener(type, listener, options)
 		return () => target.removeEventListener(type, listener)
 	}
@@ -197,7 +217,7 @@ export {
 	type EventType,
 	type EventTransformer,
 	type EventTransformers,
-	type EventTransformerContext,
+	type EventHandler,
 	emitEvent,
 	fromEvents,
 	on,

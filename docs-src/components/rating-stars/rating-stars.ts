@@ -23,15 +23,16 @@ export default component(
 
 		return [
 			emitEvent('change-rating', 'value'),
-			all(
-				'input',
+			all('input', [
 				setProperty('checked', target => el.value === getKey(target)),
 				on('change', e => {
 					e.stopPropagation()
-					const value = parseInt((e.currentTarget as HTMLInputElement)?.value)
+					const value = parseInt(
+						(e.currentTarget as HTMLInputElement)?.value,
+					)
 					el.value = value + 1
 				}),
-			),
+			]),
 			all(
 				'.label',
 				setText(target => (getKey(target) <= el.value ? '★' : '☆')),

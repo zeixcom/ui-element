@@ -1,12 +1,12 @@
 import {
 	type Component,
 	type Computed,
-	UNSET,
 	batch,
 	component,
 	effect,
 	fromSelector,
 	on,
+	requireElement,
 	setAttribute,
 	setProperty,
 	setText,
@@ -35,8 +35,11 @@ export default component<FormComboboxProps>(
 		clear() {},
 	},
 	(el, { first, all }) => {
-		const input = el.querySelector('input')
-		if (!input) throw new Error('Input element not found')
+		const input = requireElement(
+			el,
+			'input',
+			'Native input element needed.',
+		)
 
 		// Internal signals
 		const mode = state<FormComboboxMode>('idle')
@@ -83,11 +86,11 @@ export default component<FormComboboxProps>(
 						options.get().at(i)?.focus()
 					else input.focus()
 				}),
-			on('keydown', e => {
-				const { key, altKey } = e
+			on('keydown', ({ event }) => {
+				const { key, altKey } = event
 				if (['ArrowDown', 'ArrowUp'].includes(key)) {
-					e.preventDefault()
-					e.stopPropagation()
+					event.preventDefault()
+					event.stopPropagation()
 					// Set mode to editing when navigating options
 					mode.set('editing')
 					if (altKey) showPopup.set(key === 'ArrowDown')
@@ -99,11 +102,11 @@ export default component<FormComboboxProps>(
 						)
 				}
 			}),
-			on('keyup', e => {
-				const { key } = e
+			on('keyup', ({ event }) => {
+				const { key } = event
 				if (key === 'Delete') {
-					e.preventDefault()
-					e.stopPropagation()
+					event.preventDefault()
+					event.stopPropagation()
 					commit('')
 				}
 			}),
@@ -119,18 +122,17 @@ export default component<FormComboboxProps>(
 			first('.description', setText('description')),
 
 			// Effects and event listeners on input
-			first(
-				'input',
+			first('input', [
 				setProperty('ariaInvalid', () => String(!!el.error)),
 				setAttribute('aria-errormessage', () =>
 					el.error && el.querySelector('.error')?.id
 						? el.querySelector('.error')?.id
-						: UNSET,
+						: null,
 				),
 				setAttribute('aria-describedby', () =>
 					el.description && el.querySelector('.description')?.id
 						? el.querySelector('.description')?.id
-						: UNSET,
+						: null,
 				),
 				setProperty('ariaExpanded', () => String(isExpanded())),
 				on('change', () => {
@@ -147,23 +149,21 @@ export default component<FormComboboxProps>(
 						el.length = input.value.length
 					})
 				}),
-			),
+			]),
 
 			// Effects and event listeners on clear button
-			first(
-				'.clear',
+			first('.clear', [
 				show(() => !!el.length),
 				on('click', () => {
 					el.clear()
 				}),
-			),
+			]),
 
 			// Effect on listbox
-			first(
-				'[role="listbox"]',
+			first('[role="listbox"]', [
 				show(isExpanded),
-				on('keyup', (e: Event) => {
-					const { key } = e as KeyboardEvent
+				on('keyup', ({ event }) => {
+					const { key } = event
 					if (key === 'Enter') {
 						commit(
 							options
@@ -186,11 +186,10 @@ export default component<FormComboboxProps>(
 						if (nextIndex !== -1) focusIndex.set(nextIndex)
 					}
 				}),
-			),
+			]),
 
 			// Effects and event listeners on options
-			all<HTMLLIElement>(
-				'[role="option"]',
+			all<HTMLLIElement>('[role="option"]', [
 				setProperty('ariaSelected', target =>
 					String(
 						target.textContent?.trim().toLowerCase() ===
@@ -203,12 +202,10 @@ export default component<FormComboboxProps>(
 						.toLowerCase()
 						.includes(filterText.get()),
 				),
-				on('click', (e: Event) => {
-					commit(
-						(e.target as HTMLLIElement).textContent?.trim() || '',
-					)
+				on('click', ({ target }) => {
+					commit(target.textContent?.trim() || '')
 				}),
-			),
+			]),
 		]
 	},
 )

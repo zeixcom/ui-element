@@ -10,11 +10,11 @@ import {
 } from '@zeix/cause-effect'
 
 import {
-	elementName,
-	isCustomElement,
-	isString,
-	isUpgradedComponent,
-} from './util'
+	CircularMutationError,
+	InvalidCustomElementError,
+	MissingElementError,
+} from './errors'
+import { isCustomElement, isString, isUpgradedComponent } from './util'
 
 /* === Types === */
 
@@ -51,19 +51,7 @@ type ParserOrFallback<T extends {}, E extends Element = HTMLElement> =
 	| Parser<T, E>
 	| Fallback<T, E>
 
-/* === Error Class === */
-
-/**
- * Error thrown when a circular dependency is detected in a selection signal
- */
-class CircularMutationError extends Error {
-	constructor(message: string) {
-		super(message)
-		this.name = 'CircularMutationError'
-	}
-}
-
-/* === Internal === */
+/* === Internal Functions === */
 
 /**
  * Extract attribute names from a CSS selector
@@ -115,7 +103,7 @@ const areElementArraysEqual = <E extends Element>(
 /**
  * Check if a value is a string parser
  *
- * @since 0.13.4
+ * @since 0.14.0
  * @param {unknown} value - Value to check if it is a string parser
  * @returns {boolean} True if the value is a string parser, false otherwise
  */
@@ -126,7 +114,7 @@ const isParser = <T extends {}, E extends Element = HTMLElement>(
 /**
  * Get a fallback value for an element
  *
- * @since 0.13.4
+ * @since 0.14.0
  * @param {E} element - Element to get fallback value for
  * @param {ParserOrFallback<T, E>} fallback - Fallback value or parser function
  * @returns {T} Fallback value or parsed value
@@ -137,32 +125,14 @@ const getFallback = <T extends {}, E extends Element = HTMLElement>(
 ): T => (isFunction(fallback) ? fallback(element) : fallback) as T
 
 /**
- * Get a value from the first element matching a selector
+ * Get a value from elements in the DOM
  *
- * @since 0.13.4
- * @param {string} selector - Selector to match
+ * @since 0.14.0
+ * @param {ParserOrFallback<T, E>} fallback - Fallback value or parser function
+ * @param {S} extractors - An object of extractor functions for selectors as keys to get a value from
  * @param {LooseExtractor<T | string | null | undefined, ElementFromSelector<S, E>>[]} extractors - Extractor functions to apply to the element
  * @returns {LooseExtractor<T | string | null | undefined, C>} Loose extractor function to apply to the host element
  */
-const fromFirst =
-	<
-		T,
-		E extends Element = HTMLElement,
-		C extends HTMLElement = HTMLElement,
-		S extends string = string,
-	>(
-		selector: S,
-		...extractors: LooseExtractor<T | string, ElementFromSelector<S, E>>[]
-	): LooseExtractor<T | string, C> =>
-	(host: C) => {
-		const target = host.querySelector<ElementFromSelector<S, E>>(selector)
-		if (!target) return
-		for (const extractor of extractors) {
-			const value = extractor(target)
-			if (value !== undefined) return value
-		}
-	}
-
 const fromDOM =
 	<
 		T extends {},
@@ -176,15 +146,17 @@ const fromDOM =
 		} = {},
 	>(
 		fallback: ParserOrFallback<T, C>,
-		selectors: S,
+		extractors: S,
 	): Extractor<T, C> =>
 	(host: C): T => {
+		const root = host.shadowRoot ?? host
+
 		const fromFirst = <K extends keyof S & string>(
 			selector: K,
 			extractor: LooseExtractor<T | string, ElementFromSelector<K, E>>,
 		) => {
 			const target =
-				host.querySelector<ElementFromSelector<K, E>>(selector)
+				root.querySelector<ElementFromSelector<K, E>>(selector)
 			if (!target) return
 			// for (const extractor of extractors) {
 			const value = extractor(target)
@@ -193,7 +165,7 @@ const fromDOM =
 		}
 
 		let value: T | string | null | undefined = undefined
-		for (const [selector, extractor] of Object.entries(selectors)) {
+		for (const [selector, extractor] of Object.entries(extractors)) {
 			value = fromFirst(
 				selector as keyof S & string,
 				extractor as LooseExtractor<
@@ -242,6 +214,7 @@ const observeSubtree = (
  * @since 0.13.1
  * @param {K} selector - CSS selector for descendant elements
  * @returns {Extractor<Computed<ElementFromSelector<S, E>[]>, C>} Signal producer for descendant element collection from a selector
+ * @throws {CircularMutationError} If observed mutations would trigger infinite mutation cycles
  */
 const fromSelector =
 	<
@@ -255,12 +228,14 @@ const fromSelector =
 		const watchers: Set<Watcher> = new Set()
 		const select = () =>
 			Array.from(
-				host.querySelectorAll<ElementFromSelector<S, E>>(selector),
+				(host.shadowRoot || host).querySelectorAll<
+					ElementFromSelector<S, E>
+				>(selector),
 			)
 		let value: ElementFromSelector<S, E>[] = UNSET
 		let observer: MutationObserver | undefined
 		let mutationDepth = 0
-		const MAX_MUTATION_DEPTH = 2 // Consider a depth > 1 as circular
+		const MAX_MUTATION_DEPTH = 2 // Consider a depth > 2 as circular
 
 		const observe = () => {
 			value = select()
@@ -277,9 +252,7 @@ const fromSelector =
 					observer?.disconnect()
 					observer = undefined
 					mutationDepth = 0
-					throw new CircularMutationError(
-						'Circular mutation in element selection detected',
-					)
+					throw new CircularMutationError(host, selector)
 				}
 
 				try {
@@ -366,33 +339,48 @@ const read = <
 }
 
 /**
- * Assert that an element contains an expected descendant element
+ * Get the first descendant element matching a selector
  *
- * @since 0.13.4
+ * @since 0.14.0
  * @param {HTMLElement} host - Host element
  * @param {S} selector - Selector for element to check for
- * @returns {ElementFromSelector<S, E>} First found descendant element
- * @throws {Error} If the element does not contain the required descendant element
+ * @param {string} required - Reason for the assertion
+ * @param {boolean} assertCustomElement - Whether to assert that the element is a custom element
+ * @returns {ElementFromSelector<S, E>} First matching descendant element
+ * @throws {MissingElementError} If the element does not contain the required descendant element
+ * @throws {InvalidCustomElementError} If assertCustomElement is true and the element is not a custom element
  */
 const requireElement = <
-	S extends string = string,
 	E extends Element = HTMLElement,
+	S extends string = string,
 >(
 	host: HTMLElement,
 	selector: S,
-	assertCustomElement = false,
+	required: string,
+	assertCustomElement?: boolean,
 ): ElementFromSelector<S, E> => {
-	const target = host.querySelector<ElementFromSelector<S, E>>(selector)
+	const target = (host.shadowRoot || host).querySelector<
+		ElementFromSelector<S, E>
+	>(selector)
 	if (target) {
 		if (assertCustomElement && !isCustomElement(target))
-			throw new Error(`Element ${selector} is not a custom element`)
+			throw new InvalidCustomElementError(host, target, required)
 		return target
 	}
-	throw new Error(
-		`Component ${elementName(host)} does not contain required <${selector}> element`,
-	)
+	throw new MissingElementError(host, selector, required)
 }
 
+/**
+ * Create a computed signal from a required descendant component's property
+ *
+ * @since 0.14.0
+ * @param {S} selector - Selector for the required descendant element
+ * @param {Extractor<T, ElementFromSelector<S, E>>} extractor - Function to extract the value from the element
+ * @param {string} required - Explanation why the element is required
+ * @returns {Extractor<Computed<T>, C>} Extractor that returns a computed signal that computes the value from the element
+ * @throws {MissingElementError} If the element does not contain the required descendant element
+ * @throws {InvalidCustomElementError} If the element is not a custom element
+ */
 const fromComponent =
 	<
 		T extends {},
@@ -402,13 +390,13 @@ const fromComponent =
 	>(
 		selector: S,
 		extractor: Extractor<T, ElementFromSelector<S, E>>,
-		fallback: Fallback<T>,
+		required: string,
 	): Extractor<Computed<T>, C> =>
 	(host: C): Computed<T> => {
-		const target = requireElement<S, E>(host, selector, true)
+		const target = requireElement<E, S>(host, selector, required, true)
 		return computed(async () => {
 			await customElements.whenDefined(target.localName)
-			return extractor(target) ?? getFallback(host, fallback)
+			return extractor(target)
 		})
 	}
 
@@ -421,7 +409,6 @@ export {
 	type ParserOrFallback,
 	fromComponent,
 	fromDOM,
-	fromFirst,
 	fromSelector,
 	getFallback,
 	isParser,

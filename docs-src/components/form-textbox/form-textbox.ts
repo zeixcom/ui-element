@@ -1,11 +1,10 @@
 import {
 	type Component,
-	UNSET,
-	// batch,
 	component,
 	computed,
 	fromEvents,
 	on,
+	requireElement,
 	setAttribute,
 	setProperty,
 	setText,
@@ -47,10 +46,11 @@ export default component<FormTextboxProps>(
 		clear() {},
 	},
 	(el, { first }) => {
-		const input = el.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+		const input = requireElement<HTMLInputElement | HTMLTextAreaElement>(
+			el,
 			'input, textarea',
+			'Native input or textarea element needed.',
 		)
-		if (!input) throw new Error('No Input or textarea element found')
 
 		// Add clear method to component using shared functionality
 		el.clear = createClearFunction(input)
@@ -75,14 +75,13 @@ export default component<FormTextboxProps>(
 			setAttribute('value'),
 
 			// Effects on input / textarea
-			first(
-				'input, textarea',
+			first('input, textarea', [
 				setProperty('ariaInvalid', () => String(!!el.error)),
 				setAttribute('aria-errormessage', () =>
-					el.error && errorId ? errorId : UNSET,
+					el.error && errorId ? errorId : null,
 				),
 				setAttribute('aria-describedby', () =>
-					el.description && descriptionId ? descriptionId : UNSET,
+					el.description && descriptionId ? descriptionId : null,
 				),
 				/* on({
 					input: () => {
@@ -96,16 +95,15 @@ export default component<FormTextboxProps>(
 						})
 					},
 				}), */
-			),
+			]),
 
 			// Effects and event listeners on clear button
-			first(
-				'.clear',
+			first('.clear', [
 				show(() => !!el.length),
 				on('click', () => {
 					el.clear()
 				}),
-			),
+			]),
 
 			// Effects on error and description
 			first('.error', setText('error')),

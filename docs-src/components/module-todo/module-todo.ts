@@ -4,7 +4,6 @@ import {
 	fromSelector,
 	on,
 	pass,
-	read,
 	requireElement,
 	setAttribute,
 	setText,
@@ -13,6 +12,7 @@ import {
 import type { BasicButtonProps } from '../basic-button/basic-button'
 import type { FormCheckboxProps } from '../form-checkbox/form-checkbox'
 import '../form-textbox/form-textbox'
+import '../form-radiogroup/form-radiogroup'
 
 export type ModuleTodoProps = {
 	active: HTMLElement[]
@@ -26,9 +26,21 @@ export default component(
 		completed: fromSelector('form-checkbox[checked]'),
 	},
 	(el, { first }) => {
-		const textbox = requireElement(el, 'form-textbox')
-		const template = requireElement(el, 'template')
-		const list = requireElement(el, 'ol')
+		const textbox = requireElement(
+			el,
+			'form-textbox',
+			'Needed to enter a new todo item.',
+		)
+		const template = requireElement(
+			el,
+			'template',
+			'Needed to define the list item template.',
+		)
+		const list = requireElement(
+			el,
+			'ol',
+			'Needed to display the list of todos.',
+		)
 
 		return [
 			// Control todo input form
@@ -40,8 +52,8 @@ export default component(
 			),
 			first(
 				'form',
-				on('submit', (e: Event) => {
-					e.preventDefault()
+				on('submit', ({ event }) => {
+					event.preventDefault()
 					queueMicrotask(() => {
 						const value = textbox.value.trim()
 						if (!value) return
@@ -61,19 +73,22 @@ export default component(
 			),
 
 			// Control todo list
-			first(
-				'ol',
-				setAttribute('filter', () =>
-					read(el, 'form-radiogroup', (radiogroup, upgraded) =>
-						radiogroup && upgraded ? radiogroup.value : 'all',
-					),
+			first('ol', [
+				setAttribute(
+					'filter',
+					() =>
+						requireElement(
+							el,
+							'form-radiogroup',
+							'Needed to filter for the todo list.',
+						).value,
 				),
-				on('click', (e: Event) => {
-					const target = e.target as HTMLElement
-					if (target.localName === 'button')
+				on('click', ({ event }) => {
+					const target = event.target
+					if (target && target instanceof HTMLButtonElement)
 						target.closest('li')!.remove()
 				}),
-			),
+			]),
 
 			// Update count elements
 			first(
@@ -98,8 +113,7 @@ export default component(
 			),
 
 			// Control clear-completed button
-			first<Component<BasicButtonProps>>(
-				'.clear-completed',
+			first<Component<BasicButtonProps>>('.clear-completed', [
 				pass({
 					disabled: () => !el.completed.length,
 					badge: () =>
@@ -116,7 +130,7 @@ export default component(
 						if (task?.checked) items[i].remove()
 					}
 				}),
-			),
+			]),
 		]
 	},
 )

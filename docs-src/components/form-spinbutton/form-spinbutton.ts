@@ -45,16 +45,15 @@ export default component(
 		const nonZero = () => el.value !== 0
 
 		return [
-			first('.value', setText('value'), show(nonZero)),
+			first('.value', [setText('value'), show(nonZero)]),
 			first('.decrement', show(nonZero)),
-			first<HTMLButtonElement>(
-				'.increment',
+			first<HTMLButtonElement>('.increment', [
 				setText(() => (nonZero() ? '+' : zeroLabel)),
 				setProperty('ariaLabel', () =>
 					nonZero() ? incrementLabel : zeroLabel,
 				),
 				setProperty('disabled', () => el.value >= max),
-			),
+			]),
 		]
 	},
 )

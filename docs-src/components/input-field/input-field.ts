@@ -119,8 +119,7 @@ export default component<InputFieldProps>(
 		// Handle input changes
 		fns.push(
 			emitEvent('value-change', 'value'),
-			first(
-				'input',
+			first('input', [
 				setProperty('value', () => String(el.value)),
 				on('change', () => {
 					triggerChange(
@@ -132,7 +131,7 @@ export default component<InputFieldProps>(
 				on('input', () => {
 					el.length = input.value.length ?? 0
 				}),
-			),
+			]),
 		)
 
 		if (typeNumber) {
@@ -161,11 +160,11 @@ export default component<InputFieldProps>(
 			fns.push(
 				first(
 					'input',
-					on('keydown', (e: Event) => {
-						const { key, shiftKey } = e as KeyboardEvent
+					on('keydown', ({ event }) => {
+						const { key, shiftKey } = event
 						if (['ArrowUp', 'ArrowDown'].includes(key)) {
-							e.stopPropagation()
-							e.preventDefault()
+							event.stopPropagation()
+							event.preventDefault()
 							const n = shiftKey ? step * 10 : step
 							const newValue = nearestStep(
 								input.valueAsNumber +
@@ -181,12 +180,9 @@ export default component<InputFieldProps>(
 			// Handle spin button clicks and update their disabled state
 			if (spinButton) {
 				fns.push(
-					first<HTMLButtonElement>(
-						'.decrement',
-						on('click', (e: Event) => {
-							const n = (e as MouseEvent).shiftKey
-								? step * 10
-								: step
+					first<HTMLButtonElement>('.decrement', [
+						on('click', ({ event }) => {
+							const n = event.shiftKey ? step * 10 : step
 							const newValue = nearestStep(
 								input.valueAsNumber - n,
 							)
@@ -200,13 +196,10 @@ export default component<InputFieldProps>(
 									step <
 								min,
 						),
-					),
-					first<HTMLButtonElement>(
-						'.increment',
-						on('click', (e: Event) => {
-							const n = (e as MouseEvent).shiftKey
-								? step * 10
-								: step
+					]),
+					first<HTMLButtonElement>('.increment', [
+						on('click', ({ event }) => {
+							const n = event.shiftKey ? step * 10 : step
 							const newValue = nearestStep(
 								input.valueAsNumber + n,
 							)
@@ -220,20 +213,19 @@ export default component<InputFieldProps>(
 									step >
 								max,
 						),
-					),
+					]),
 				)
 			}
 		} else {
 			// Setup clear button and method
 			fns.push(
-				first<HTMLButtonElement>(
-					'.clear',
+				first<HTMLButtonElement>('.clear', [
 					on('click', () => {
 						el.clear()
 						triggerChange('')
 					}),
 					show(() => !!el.length),
-				),
+				]),
 			)
 		}
 
@@ -241,13 +233,12 @@ export default component<InputFieldProps>(
 		const errorId = el.querySelector('.error')?.id
 		fns.push(
 			first('.error', setText('error')),
-			first(
-				'input',
+			first('input', [
 				setProperty('ariaInvalid', () => (el.error ? 'true' : 'false')),
 				setAttribute('aria-errormessage', () =>
 					el.error && errorId ? errorId : UNSET,
 				),
-			),
+			]),
 		)
 
 		// Setup description

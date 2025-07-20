@@ -6,9 +6,11 @@
 
 # Function: fromComponent()
 
-> **fromComponent**\<`T`, `E`, `C`, `S`\>(`selector`, `extractor`, `fallback`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`T`\>, `C`\>
+> **fromComponent**\<`T`, `E`, `C`, `S`\>(`selector`, `extractor`, `required`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`T`\>, `C`\>
 
-Defined in: [src/core/dom.ts:397](https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/core/dom.ts#L397)
+Defined in: [src/core/dom.ts:385](https://github.com/zeixcom/ui-element/blob/1c318eb583bce4633e1df4a42dee77859303e28e/src/core/dom.ts#L385)
+
+Create a computed signal from a required descendant component's property
 
 ## Type Parameters
 
@@ -34,14 +36,34 @@ Defined in: [src/core/dom.ts:397](https://github.com/zeixcom/ui-element/blob/f5c
 
 `S`
 
+Selector for the required descendant element
+
 ### extractor
 
 [`Extractor`](../type-aliases/Extractor.md)\<`T`, [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>\>
 
-### fallback
+Function to extract the value from the element
 
-[`Fallback`](../type-aliases/Fallback.md)\<`T`\>
+### required
+
+`string`
+
+Explanation why the element is required
 
 ## Returns
 
 [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`T`\>, `C`\>
+
+Extractor that returns a computed signal that computes the value from the element
+
+## Since
+
+0.14.0
+
+## Throws
+
+If the element does not contain the required descendant element
+
+## Throws
+
+If the element is not a custom element

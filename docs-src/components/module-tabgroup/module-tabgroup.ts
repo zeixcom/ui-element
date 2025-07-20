@@ -7,7 +7,6 @@ import {
 	setProperty,
 	show,
 } from '../../..'
-import { requireElement } from '../../../src/core/dom'
 
 export type ModuleTabgroupProps = {
 	tabs: HTMLButtonElement[]
@@ -80,26 +79,27 @@ export default component(
 		),
 	},
 	(el, { all }) => {
-		requireElement(el, '[role="tablist"]')
-		requireElement(el, '[role="tab"]')
-		requireElement(el, '[role="tabpanel"]')
 		const isCurrentTab = (tab: HTMLButtonElement) =>
 			el.selected === getAriaControls(tab)
 
 		return [
 			all<HTMLButtonElement>(
 				'[role="tab"]',
-				setProperty('ariaSelected', target =>
-					String(isCurrentTab(target)),
-				),
-				setProperty('tabIndex', target =>
-					isCurrentTab(target) ? 0 : -1,
-				),
-				focus(isCurrentTab),
+				[
+					setProperty('ariaSelected', target =>
+						String(isCurrentTab(target)),
+					),
+					setProperty('tabIndex', target =>
+						isCurrentTab(target) ? 0 : -1,
+					),
+					focus(isCurrentTab),
+				],
+				'At least 2 tabs as children of a <[role="tablist"]> element are needed. Each tab must reference a unique id of a <[role="tabpanel"]> element.',
 			),
 			all(
 				'[role="tabpanel"]',
 				show(target => el.selected === target.id),
+				'At least 2 tabpanels are needed. Each tabpanel must have a unique id.',
 			),
 		]
 	},

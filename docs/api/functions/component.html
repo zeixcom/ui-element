@@ -108,7 +108,7 @@
 <blockquote>
 <p><strong>component</strong>&lt;<code>P</code>&gt;(<code>name</code>, <code>init</code>, <code>setup</code>): <code>void</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/f5c20c5e6da1a988462bc7f68d75f2a4c0200046/src/component.ts#L263">src/component.ts:263</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/1c318eb583bce4633e1df4a42dee77859303e28e/src/component.ts#L292">src/component.ts:292</a></p>
 <p>Define a component with its states and setup function (connectedCallback)</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
@@ -151,8 +151,8 @@
                 </a>
                 setup
             </h3>
-<p>(<code>host</code>, <code>select</code>) =&gt; <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;&gt;[]</p>
-<p>Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()<br>@returns: void</p>
+<p>(<code>host</code>, <code>select</code>) =&gt; <code>Effects</code>&lt;<code>P</code>, <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;&gt;</p>
+<p>Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
@@ -167,6 +167,27 @@
                 Since
             </h2>
 <p>0.12.0</p>
+<h2 id="throws">
+                <a name="throws" class="anchor" href="#throws">
+	                <span class="permalink">🔗</span>
+                </a>
+                Throws
+            </h2>
+<p>If component name is invalid</p>
+<h2 id="throws">
+                <a name="throws" class="anchor" href="#throws">
+	                <span class="permalink">🔗</span>
+                </a>
+                Throws
+            </h2>
+<p>If property name is invalid</p>
+<h2 id="throws">
+                <a name="throws" class="anchor" href="#throws">
+	                <span class="permalink">🔗</span>
+                </a>
+                Throws
+            </h2>
+<p>If setup function is invalid</p>
 
 </section></main>
 			<footer class="content-grid">
