@@ -232,8 +232,7 @@ function effect(matcher) {
     signals,
     ok,
     err = console.error,
-    nil = () => {
-    }
+    nil = () => {}
   } = isFunction(matcher) ? { signals: [], ok: matcher } : matcher;
   let running = false;
   const run = watch(() => observe(() => {
@@ -637,7 +636,7 @@ var CONTEXT_REQUEST = "context-request";
 class ContextRequestEvent extends Event {
   context;
   callback;
-  subscribe2;
+  subscribe;
   constructor(context, callback, subscribe2 = false) {
     super(CONTEXT_REQUEST, {
       bubbles: true,

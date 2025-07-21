@@ -223,7 +223,7 @@ description: 'Common use cases and demos'
 				</form-textbox>
 				<basic-button class="submit">
 					<button type="submit" class="constructive" disabled>
-						Add Todo
+						<span class="label">Add Todo</span>
 					</button>
 				</basic-button>
 			</form>
@@ -237,7 +237,9 @@ description: 'Common use cases and demos'
 						</label>
 					</form-checkbox>
 					<basic-button class="delete">
-						<button type="button" class="destructive small">Delete</button>
+						<button type="button" class="destructive small" aria-label="Delete">
+              <span class="label">✕</span>
+            </button>
 					</basic-button>
 				</li>
 			</template>
@@ -390,20 +392,20 @@ component(
       // Loading state
       first(
         '.loading',
-        setStyle('display', () => (el.loading ? 'block' : 'none')),
+        setStyle('display', () => (el.loading ? 'block' : 'none'))
       ),
 
       // Error state
       first(
         '.error',
         setText('error'),
-        setStyle('display', () => (el.error ? 'block' : 'none')),
+        setStyle('display', () => (el.error ? 'block' : 'none'))
       ),
 
       // Content container
       first(
         '.content',
-        setStyle('display', () => (el.loaded ? 'block' : 'none')),
+        setStyle('display', () => (el.loaded ? 'block' : 'none'))
       ),
 
       // Setup intersection observer
@@ -420,7 +422,7 @@ component(
         return () => observer?.disconnect()
       },
     ]
-  },
+  }
 )
 ```
 

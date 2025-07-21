@@ -8,7 +8,7 @@
 		</form-textbox>
 		<basic-button class="submit">
 			<button type="submit" class="constructive" disabled>
-				Add Todo
+				<span class="label">Add Todo</span>
 			</button>
 		</basic-button>
 	</form>
@@ -18,11 +18,15 @@
 			<form-checkbox class="todo">
 				<label>
 					<input type="checkbox" class="visually-hidden" />
-					<span class="label"><slot></slot></span>
+					<span class="label">
+						<slot></slot>
+					</span>
 				</label>
 			</form-checkbox>
 			<basic-button class="delete">
-				<button type="button" class="destructive small">Delete</button>
+				<button type="button" class="destructive small" aria-label="Delete">
+					<span class="label">✕</span>
+				</button>
 			</basic-button>
 		</li>
 	</template>
@@ -40,31 +44,15 @@
 			<fieldset>
 				<legend class="visually-hidden">Filter</legend>
 				<label class="selected">
-					<input
-						type="radio"
-						class="visually-hidden"
-						name="filter"
-						value="all"
-						checked
-					/>
+					<input type="radio" class="visually-hidden" name="filter" value="all" checked />
 					<span>All</span>
 				</label>
 				<label>
-					<input
-						type="radio"
-						class="visually-hidden"
-						name="filter"
-						value="active"
-					/>
+					<input type="radio" class="visually-hidden" name="filter" value="active" />
 					<span>Active</span>
 				</label>
 				<label>
-					<input
-						type="radio"
-						class="visually-hidden"
-						name="filter"
-						value="completed"
-					/>
+					<input type="radio" class="visually-hidden" name="filter" value="completed" />
 					<span>Completed</span>
 				</label>
 			</fieldset>

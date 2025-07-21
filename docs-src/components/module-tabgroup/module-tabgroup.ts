@@ -20,15 +20,15 @@ const getAriaControls = (target: HTMLElement) =>
 const getSelected = (
 	elements: HTMLElement[],
 	isCurrent: (element: HTMLElement) => boolean,
-	offset = 0,
+	offset = 0
 ) =>
 	getAriaControls(
 		elements[
 			Math.min(
 				Math.max(elements.findIndex(isCurrent) + offset, 0),
-				elements.length - 1,
+				elements.length - 1
 			)
-		],
+		]
 	)
 
 const handleClick = ({ target }) => getAriaControls(target)
@@ -47,17 +47,23 @@ const handleKeyup = ({ event, host, target }) => {
 	) {
 		event.preventDefault()
 		event.stopPropagation()
-		return getSelected(
+		const current = getSelected(
 			host.tabs,
 			tab => tab === target,
 			key === 'Home'
 				? -host.tabs.length
 				: key === 'End'
-					? host.tabs.length
-					: key === 'ArrowLeft' || key === 'ArrowUp'
-						? -1
-						: 1,
+				? host.tabs.length
+				: key === 'ArrowLeft' || key === 'ArrowUp'
+				? -1
+				: 1
 		)
+		host.tabs
+			.filter(
+				(tab: HTMLButtonElement) => getAriaControls(tab) === current
+			)[0]
+			.focus()
+		return current
 	}
 }
 
@@ -76,7 +82,7 @@ export default component(
 			{
 				click: handleClick,
 				keyup: handleKeyup,
-			},
+			}
 		),
 	},
 	(el, { all }) => {
@@ -90,19 +96,18 @@ export default component(
 			all<HTMLButtonElement>(
 				'[role="tab"]',
 				setProperty('ariaSelected', target =>
-					String(isCurrentTab(target)),
+					String(isCurrentTab(target))
 				),
 				setProperty('tabIndex', target =>
-					isCurrentTab(target) ? 0 : -1,
-				),
-				focus(isCurrentTab),
+					isCurrentTab(target) ? 0 : -1
+				)
 			),
 			all(
 				'[role="tabpanel"]',
-				show(target => el.selected === target.id),
+				show(target => el.selected === target.id)
 			),
 		]
-	},
+	}
 )
 
 declare global {
