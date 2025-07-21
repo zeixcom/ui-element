@@ -16,8 +16,8 @@ import '../form-textbox/form-textbox'
 import '../form-radiogroup/form-radiogroup'
 
 export type ModuleTodoProps = {
-	active: HTMLElement[]
-	completed: HTMLElement[]
+	readonly active: HTMLElement[]
+	readonly completed: HTMLElement[]
 }
 
 export default component(
@@ -37,7 +37,7 @@ export default component(
 				'.submit',
 				pass({
 					disabled: () => !textbox.length,
-				})
+				}),
 			),
 			first(
 				'form',
@@ -48,54 +48,57 @@ export default component(
 						if (!value) return
 						const li = document.importNode(
 							template.content,
-							true
+							true,
 						).firstElementChild
 						if (!(li instanceof HTMLLIElement))
 							throw new Error(
-								'Invalid template for list item; expected <li>'
+								'Invalid template for list item; expected <li>',
 							)
 						li.querySelector('slot')?.replaceWith(value)
 						list.append(li)
 						textbox.clear()
 					})
-				})
+				}),
 			),
 
 			// Control todo list
 			first(
 				'ol',
-				setAttribute('filter', () =>
-					read(el, 'form-radiogroup', (radiogroup, upgraded) =>
-						radiogroup && upgraded ? radiogroup.value : 'all'
-					)
+				setAttribute(
+					'filter',
+					read(
+						el,
+						'form-radiogroup',
+						target => target?.getSignal('value').get() ?? 'all',
+					),
 				),
 				on('click', (e: Event) => {
 					const target = e.target as HTMLElement
 					if (target.localName === 'button')
 						target.closest('li')!.remove()
-				})
+				}),
 			),
 
 			// Update count elements
 			first(
 				'.count',
-				setText(() => String(el.active.length))
+				setText(() => String(el.active.length)),
 			),
 			first(
 				'.singular',
-				show(() => el.active.length === 1)
+				show(() => el.active.length === 1),
 			),
 			first(
 				'.plural',
-				show(() => el.active.length > 1)
+				show(() => el.active.length > 1),
 			),
 			first(
 				'.remaining',
-				show(() => !!el.active.length)
+				show(() => !!el.active.length),
 			),
 			first(
 				'.all-done',
-				show(() => !el.active.length)
+				show(() => !el.active.length),
 			),
 
 			// Control clear-completed button
@@ -116,10 +119,10 @@ export default component(
 						>('form-checkbox')
 						if (task?.checked) items[i].remove()
 					}
-				})
+				}),
 			),
 		]
-	}
+	},
 )
 
 declare global {

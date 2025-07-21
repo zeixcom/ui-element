@@ -9,7 +9,7 @@ import {
 } from '../../..'
 
 export type FormSpinbuttonProps = {
-	value: number
+	readonly value: number
 }
 
 const clickHandler = ({ target, value }) =>
@@ -28,7 +28,7 @@ export default component(
 	'form-spinbutton',
 	{
 		value: fromEvents(
-			el => asInteger()(el, el.querySelector('value')?.textContent),
+			el => asInteger()(el, el.querySelector('.value')?.textContent),
 			'button',
 			{
 				click: clickHandler,

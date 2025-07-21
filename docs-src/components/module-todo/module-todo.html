@@ -24,7 +24,11 @@
 				</label>
 			</form-checkbox>
 			<basic-button class="delete">
-				<button type="button" class="destructive small" aria-label="Delete">
+				<button
+					type="button"
+					class="tertiary destructive small"
+					aria-label="Delete"
+				>
 					<span class="label">✕</span>
 				</button>
 			</basic-button>
@@ -44,21 +48,37 @@
 			<fieldset>
 				<legend class="visually-hidden">Filter</legend>
 				<label class="selected">
-					<input type="radio" class="visually-hidden" name="filter" value="all" checked />
+					<input
+						type="radio"
+						class="visually-hidden"
+						name="filter"
+						value="all"
+						checked
+					/>
 					<span>All</span>
 				</label>
 				<label>
-					<input type="radio" class="visually-hidden" name="filter" value="active" />
+					<input
+						type="radio"
+						class="visually-hidden"
+						name="filter"
+						value="active"
+					/>
 					<span>Active</span>
 				</label>
 				<label>
-					<input type="radio" class="visually-hidden" name="filter" value="completed" />
+					<input
+						type="radio"
+						class="visually-hidden"
+						name="filter"
+						value="completed"
+					/>
 					<span>Completed</span>
 				</label>
 			</fieldset>
 		</form-radiogroup>
 		<basic-button class="clear-completed">
-			<button type="button" class="destructive">
+			<button type="button" class="tertiary destructive">
 				<span class="label">Clear Completed</span>
 				<span class="badge"></span>
 			</button>

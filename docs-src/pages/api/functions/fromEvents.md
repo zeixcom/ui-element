@@ -8,7 +8,7 @@
 
 > **fromEvents**\<`T`, `E`, `C`, `S`\>(`initialize`, `selector`, `events`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`T`, `C`\>
 
-Defined in: [src/core/dom.ts:120](https://github.com/zeixcom/ui-element/blob/09c98ef25d6964a68bdac33e61f389dd027c5b92/src/core/dom.ts#L120)
+Defined in: [src/core/dom.ts:120](https://github.com/zeixcom/ui-element/blob/62aded0dfd41b132db684ccc25a7494068f0d957/src/core/dom.ts#L120)
 
 Produce a computed signal from transformed event data
 

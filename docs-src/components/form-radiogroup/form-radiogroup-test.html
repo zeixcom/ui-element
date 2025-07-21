@@ -306,8 +306,7 @@
 						// Focus and press Enter
 						femaleInput.focus()
 						simulateKeyEvent(femaleInput, 'keyup', 'Enter')
-						await animationFrame()
-						await microtask()
+						await tick()
 
 						// Enter should trigger click, but we need to simulate the full sequence
 						// The actual click behavior depends on browser implementation
@@ -343,7 +342,7 @@
 						const el = document.getElementById('test3')
 						const inputs = el.querySelectorAll('input')
 
-						await animationFrame()
+						await tick()
 
 						// Initially empty value
 						assert.equal(el.value, '')
@@ -364,7 +363,7 @@
 						const el = document.getElementById('test4')
 						const input = el.querySelector('input')
 
-						await animationFrame()
+						await tick()
 
 						// Initially set in DOM
 						assert.equal(el.value, '')
@@ -516,6 +515,35 @@
 
 						// Should handle events without errors
 						assert.isNotNull(el)
+					})
+
+					it('should not allow programmatic value updates', async () => {
+						const el = document.getElementById('test1')
+						const originalValue = el.value
+
+						// Should throw TypeError when trying to set value
+						assert.throws(() => {
+							el.value = 'other'
+						}, TypeError)
+
+						// Value should remain unchanged after failed assignment
+						assert.equal(el.value, originalValue)
+
+						// Should throw for different value types
+						assert.throws(() => {
+							el.value = 123
+						}, TypeError)
+
+						assert.throws(() => {
+							el.value = null
+						}, TypeError)
+
+						assert.throws(() => {
+							el.value = undefined
+						}, TypeError)
+
+						// Verify value is still the original value
+						assert.equal(el.value, originalValue)
 					})
 				})
 			})

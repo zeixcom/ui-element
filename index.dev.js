@@ -280,12 +280,6 @@ var isString = (value) => typeof value === "string";
 var hasMethod = (obj, methodName) => isString(methodName) && (methodName in obj) && isFunction(obj[methodName]);
 var isElement = (node) => node.nodeType === Node.ELEMENT_NODE;
 var isCustomElement = (element) => element.localName.includes("-");
-var isUpgradedComponent = (element) => {
-  if (!isCustomElement(element))
-    return true;
-  const ctor = customElements.get(element.localName);
-  return !!ctor && element instanceof ctor;
-};
 var elementName = (el) => el ? `<${el.localName}${idString(el.id)}${classString(el.classList)}>` : "<unknown>";
 var valueString = (value) => isString(value) ? `"${value}"` : isDefinedObject(value) ? JSON.stringify(value) : String(value);
 var typeString = (value) => {
@@ -461,10 +455,12 @@ var fromSelector = (selector) => (host) => {
   };
 };
 var reduced = (host, selector, reducer, initialValue) => computed(() => fromSelector(selector)(host).get().reduce(reducer, initialValue));
-var read = (host, selector, map) => {
-  const source = host.querySelector(selector);
-  return map(source, source ? isUpgradedComponent(source) : false);
-};
+var read = (host, selector, fn) => computed(async () => {
+  const target = host.querySelector(selector);
+  if (target && isCustomElement(target))
+    await customElements.whenDefined(target.localName);
+  return fn(target);
+});
 var requireDescendant = (host, selector) => {
   const target = host.querySelector(selector);
   if (!target) {

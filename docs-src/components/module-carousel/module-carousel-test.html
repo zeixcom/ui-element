@@ -147,7 +147,15 @@
 					bubbles: true,
 					cancelable: true,
 				})
-				element.dispatchEvent(event)
+				// For keyboard navigation, dispatch on the currently focused button or first button
+				const focusedButton =
+					element.querySelector('button[tabindex="0"]')
+					|| element.querySelector('button')
+				if (focusedButton) {
+					focusedButton.dispatchEvent(event)
+				} else {
+					element.dispatchEvent(event)
+				}
 				return event
 			}
 
@@ -685,6 +693,50 @@
 							slides[2].getAttribute('aria-current'),
 							'true',
 						)
+					})
+
+					it('should not allow programmatic property updates', async () => {
+						const el = document.getElementById('test1')
+						const originalIndex = el.index
+						const originalSlides = el.slides
+
+						// Should throw TypeError when trying to set index
+						assert.throws(() => {
+							el.index = 2
+						}, TypeError)
+
+						// Index should remain unchanged after failed assignment
+						assert.equal(el.index, originalIndex)
+
+						// Should throw for different value types
+						assert.throws(() => {
+							el.index = 'invalid'
+						}, TypeError)
+
+						assert.throws(() => {
+							el.index = null
+						}, TypeError)
+
+						assert.throws(() => {
+							el.index = undefined
+						}, TypeError)
+
+						// Should throw TypeError when trying to set slides
+						assert.throws(() => {
+							el.slides = []
+						}, TypeError)
+
+						assert.throws(() => {
+							el.slides = [document.createElement('div')]
+						}, TypeError)
+
+						assert.throws(() => {
+							el.slides = null
+						}, TypeError)
+
+						// Verify properties are still the original values
+						assert.equal(el.index, originalIndex)
+						assert.deepEqual(el.slides, originalSlides)
 					})
 				})
 			})

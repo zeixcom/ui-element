@@ -388,7 +388,7 @@
 						</label>
 					</form-checkbox>
 					<basic-button class="delete">
-						<button type="button" class="destructive small" aria-label="Delete">
+						<button type="button" class="tertiary destructive small" aria-label="Delete">
               <span class="label">✕</span>
             </button>
 					</basic-button>
@@ -438,7 +438,7 @@
 					</fieldset>
 				</form-radiogroup>
 				<basic-button class="clear-completed">
-					<button type="button" class="destructive">
+					<button type="button" class="tertiary destructive">
 						<span class="label">Clear Completed</span>
 						<span class="badge"></span>
 					</button>
@@ -550,20 +550,20 @@
 <span class="line"><span style="color:#88846F">      // Loading state</span></span>
 <span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">        '.loading'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">        setStyle</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (el.loading </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'block'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'none'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#A6E22E">        setStyle</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (el.loading </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'block'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'none'</span><span style="color:#F8F8F2">)),</span></span>
 <span class="line"><span style="color:#F8F8F2">      ),</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">      // Error state</span></span>
 <span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">        '.error'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">        setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'error'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">        setStyle</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (el.error </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'block'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'none'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#A6E22E">        setStyle</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (el.error </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'block'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'none'</span><span style="color:#F8F8F2">)),</span></span>
 <span class="line"><span style="color:#F8F8F2">      ),</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">      // Content container</span></span>
 <span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">        '.content'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">        setStyle</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (el.loaded </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'block'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'none'</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#A6E22E">        setStyle</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'display'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (el.loaded </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'block'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'none'</span><span style="color:#F8F8F2">)),</span></span>
 <span class="line"><span style="color:#F8F8F2">      ),</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">      // Setup intersection observer</span></span>
@@ -580,7 +580,7 @@
 <span class="line"><span style="color:#F92672">        return</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> observer?.</span><span style="color:#A6E22E">disconnect</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">      },</span></span>
 <span class="line"><span style="color:#F8F8F2">    ]</span></span>
-<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
 	<basic-button class="copy">

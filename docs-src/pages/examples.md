@@ -237,7 +237,7 @@ description: 'Common use cases and demos'
 						</label>
 					</form-checkbox>
 					<basic-button class="delete">
-						<button type="button" class="destructive small" aria-label="Delete">
+						<button type="button" class="tertiary destructive small" aria-label="Delete">
               <span class="label">✕</span>
             </button>
 					</basic-button>
@@ -287,7 +287,7 @@ description: 'Common use cases and demos'
 					</fieldset>
 				</form-radiogroup>
 				<basic-button class="clear-completed">
-					<button type="button" class="destructive">
+					<button type="button" class="tertiary destructive">
 						<span class="label">Clear Completed</span>
 						<span class="badge"></span>
 					</button>
@@ -392,20 +392,20 @@ component(
       // Loading state
       first(
         '.loading',
-        setStyle('display', () => (el.loading ? 'block' : 'none'))
+        setStyle('display', () => (el.loading ? 'block' : 'none')),
       ),
 
       // Error state
       first(
         '.error',
         setText('error'),
-        setStyle('display', () => (el.error ? 'block' : 'none'))
+        setStyle('display', () => (el.error ? 'block' : 'none')),
       ),
 
       // Content container
       first(
         '.content',
-        setStyle('display', () => (el.loaded ? 'block' : 'none'))
+        setStyle('display', () => (el.loaded ? 'block' : 'none')),
       ),
 
       // Setup intersection observer
@@ -422,7 +422,7 @@ component(
         return () => observer?.disconnect()
       },
     ]
-  }
+  },
 )
 ```
 

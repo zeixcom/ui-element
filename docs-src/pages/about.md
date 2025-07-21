@@ -52,7 +52,7 @@ A copy of the license can be found in the [LICENSE](https://github.com/zeixcom/u
 
 ## Version History
 
-### Current Version: 0.13.3
+### Current Version: 0.13.4
 
 <card-callout class="caution">
 

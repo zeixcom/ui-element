@@ -135,8 +135,10 @@ export default component<FormComboboxProps>(
 				setProperty('ariaExpanded', () => String(isExpanded())),
 				on('change', () => {
 					input.checkValidity()
-					el.value = input.value
-					el.error = input.validationMessage ?? ''
+					batch(() => {
+						el.value = input.value
+						el.error = input.validationMessage ?? ''
+					})
 				}),
 				on('input', () => {
 					batch(() => {

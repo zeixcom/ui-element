@@ -25,7 +25,8 @@ basic-button {
 			cursor: pointer;
 			opacity: var(--opacity-solid);
 
-			&:hover {
+			&:hover,
+			&:focus {
 				background-color: var(--color-secondary-hover);
 			}
 
@@ -42,7 +43,8 @@ basic-button {
 			&:not(:disabled) {
 				opacity: var(--opacity-solid);
 
-				&:hover {
+				&:hover,
+				&:focus {
 					background-color: var(--color-primary-hover);
 				}
 
@@ -60,7 +62,8 @@ basic-button {
 			&:not(:disabled) {
 				opacity: var(--opacity-solid);
 
-				&:hover {
+				&:hover,
+				&:focus {
 					background-color: var(--color-error-hover);
 				}
 
@@ -78,12 +81,70 @@ basic-button {
 			&:not(:disabled) {
 				opacity: var(--opacity-solid);
 
-				&:hover {
+				&:hover,
+				&:focus {
 					background-color: var(--color-success-hover);
 				}
 
 				&:active {
 					background-color: var(--color-success-active);
+				}
+			}
+		}
+
+		&.tertiary {
+			background: transparent;
+			border: 0 solid transparent;
+			padding: var(--space-xs);
+			height: auto;
+			color: var(--color-primary);
+
+			&:not(:disabled) {
+				opacity: var(--opacity-solid);
+
+				&:hover,
+				&:focus {
+					background-color: rgba(0, 0, 0, 0.05);
+					color: var(--color-primary-hover);
+				}
+
+				&:active {
+					background-color: rgba(0, 0, 0, 0.1);
+					color: var(--color-primary-active);
+				}
+			}
+
+			&.constructive {
+				color: var(--color-success);
+
+				&:not(:disabled) {
+					opacity: var(--opacity-solid);
+
+					&:hover,
+					&:focus {
+						color: var(--color-success-hover);
+					}
+
+					&:active {
+						color: var(--color-success-active);
+					}
+				}
+			}
+
+			&.destructive {
+				color: var(--color-error);
+
+				&:not(:disabled) {
+					opacity: var(--opacity-solid);
+
+					&:hover,
+					&:focus {
+						color: var(--color-error-hover);
+					}
+
+					&:active {
+						color: var(--color-error-active);
+					}
 				}
 			}
 		}

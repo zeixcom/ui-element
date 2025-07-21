@@ -8,7 +8,7 @@
 
 > **EventTransformer**\<`T`, `E`, `C`, `Evt`\> = (`context`) => `T` \| `void`
 
-Defined in: [src/core/dom.ts:34](https://github.com/zeixcom/ui-element/blob/09c98ef25d6964a68bdac33e61f389dd027c5b92/src/core/dom.ts#L34)
+Defined in: [src/core/dom.ts:34](https://github.com/zeixcom/ui-element/blob/62aded0dfd41b132db684ccc25a7494068f0d957/src/core/dom.ts#L34)
 
 ## Type Parameters
 

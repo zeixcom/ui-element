@@ -9,8 +9,8 @@ import {
 import { requireDescendant } from '../../../src/core/dom'
 
 export type ModuleTabgroupProps = {
-	tabs: HTMLButtonElement[]
-	selected: string
+	readonly tabs: HTMLButtonElement[]
+	readonly selected: string
 }
 
 const getAriaControls = (target: HTMLElement) =>

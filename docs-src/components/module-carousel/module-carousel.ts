@@ -7,8 +7,8 @@ import {
 } from '../../..'
 
 export type ModuleCarouselProps = {
-	slides: HTMLElement[]
-	index: number
+	readonly slides: HTMLElement[]
+	readonly index: number
 }
 
 const wrapAround = (index: number, total: number) => (index + total) % total
