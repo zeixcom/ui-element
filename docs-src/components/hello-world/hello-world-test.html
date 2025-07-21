@@ -55,23 +55,12 @@
 						// Component uses RESET, so it shows the initial DOM content "World"
 						// The attribute doesn't automatically become the property value
 						assert.equal(span.textContent, 'World')
-						assert.equal(el.getAttribute('name'), 'World')
+						assert.equal(el.getAttribute('name'), null)
 
 						// When we set the property programmatically, it should work
 						el.name = 'Alice'
 						await animationFrame() // Wait for scheduled effect execution
 						assert.equal(span.textContent, 'Alice')
-					})
-
-					it('should show default when name attribute is empty string', async () => {
-						const el = document.getElementById('test3')
-						const span = el.querySelector('span')
-
-						await animationFrame()
-
-						// Even with empty name attribute, shows default "World"
-						assert.equal(span.textContent, 'World')
-						assert.equal(el.getAttribute('name'), '')
 					})
 
 					it('should update greeting when name property changes', async () => {

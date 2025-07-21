@@ -105,9 +105,6 @@
 				const input = el.querySelector('input, textarea')
 				if (input) {
 					input.value = ''
-					// Reset component state directly to avoid triggering validation
-					el.value = ''
-					el.length = 0
 					el.error = ''
 					await tick()
 				}
