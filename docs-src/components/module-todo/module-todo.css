@@ -39,12 +39,14 @@ module-todo {
 
 	& footer {
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: 1fr 1fr;
+		grid-template-areas: 'filter filter' 'count clear';
 		align-items: center;
 		gap: var(--space-m);
 		margin: 0;
 
 		.todo-count {
+			grid-area: count;
 			justify-self: start;
 
 			& p {
@@ -53,15 +55,28 @@ module-todo {
 			}
 		}
 
+		.split-button {
+			grid-area: filter;
+			justify-self: center;
+		}
+
 		.clear-completed {
+			grid-area: clear;
 			justify-self: end;
 		}
 	}
 }
 
 @container (width > 32rem) {
-	module-todo form {
-		flex-direction: row;
-		align-items: flex-end;
+	module-todo {
+		& form {
+			flex-direction: row;
+			align-items: flex-end;
+		}
+
+		& footer {
+			grid-template-columns: 1fr 1fr 1fr;
+			grid-template-areas: 'count filter clear';
+		}
 	}
 }

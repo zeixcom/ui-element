@@ -223,7 +223,7 @@ description: 'Common use cases and demos'
 				</form-textbox>
 				<basic-button class="submit">
 					<button type="submit" class="constructive" disabled>
-						Add Todo
+						<span class="label">Add Todo</span>
 					</button>
 				</basic-button>
 			</form>
@@ -237,7 +237,9 @@ description: 'Common use cases and demos'
 						</label>
 					</form-checkbox>
 					<basic-button class="delete">
-						<button type="button" class="destructive small">Delete</button>
+						<button type="button" class="tertiary destructive small" aria-label="Delete">
+              <span class="label">✕</span>
+            </button>
 					</basic-button>
 				</li>
 			</template>
@@ -285,7 +287,7 @@ description: 'Common use cases and demos'
 					</fieldset>
 				</form-radiogroup>
 				<basic-button class="clear-completed">
-					<button type="button" class="destructive">
+					<button type="button" class="tertiary destructive">
 						<span class="label">Clear Completed</span>
 						<span class="badge"></span>
 					</button>

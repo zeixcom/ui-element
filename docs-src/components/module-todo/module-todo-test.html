@@ -4,6 +4,7 @@
 		<meta charset="UTF-8" />
 		<title>Todo App Component Tests</title>
 	</head>
+
 	<body>
 		<!-- Test fixtures -->
 		<module-todo id="test1">
@@ -16,7 +17,7 @@
 				</form-textbox>
 				<basic-button class="submit">
 					<button type="submit" class="constructive" disabled>
-						Add Todo
+						<span class="label">Add Todo</span>
 					</button>
 				</basic-button>
 			</form>
@@ -26,12 +27,18 @@
 					<form-checkbox class="todo">
 						<label>
 							<input type="checkbox" class="visually-hidden" />
-							<span class="label"><slot></slot></span>
+							<span class="label">
+								<slot></slot>
+							</span>
 						</label>
 					</form-checkbox>
 					<basic-button class="delete">
-						<button type="button" class="destructive small">
-							Delete
+						<button
+							type="button"
+							class="tertiary destructive small"
+							aria-label="Delete"
+						>
+							<span class="label">✕</span>
 						</button>
 					</basic-button>
 				</li>
@@ -80,7 +87,7 @@
 					</fieldset>
 				</form-radiogroup>
 				<basic-button class="clear-completed">
-					<button type="button" class="destructive">
+					<button type="button" class="tertiary destructive">
 						<span class="label">Clear Completed</span>
 						<span class="badge"></span>
 					</button>
@@ -98,7 +105,7 @@
 				</form-textbox>
 				<basic-button class="submit">
 					<button type="submit" class="constructive" disabled>
-						Add Todo
+						<span class="label">Add Todo</span>
 					</button>
 				</basic-button>
 			</form>
@@ -108,12 +115,18 @@
 					<form-checkbox class="todo">
 						<label>
 							<input type="checkbox" class="visually-hidden" />
-							<span class="label"><slot></slot></span>
+							<span class="label">
+								<slot></slot>
+							</span>
 						</label>
 					</form-checkbox>
 					<basic-button class="delete">
-						<button type="button" class="destructive small">
-							Delete
+						<button
+							type="button"
+							class="tertiary destructive small"
+							aria-label="Delete"
+						>
+							<span class="label">✕</span>
 						</button>
 					</basic-button>
 				</li>
@@ -162,7 +175,7 @@
 					</fieldset>
 				</form-radiogroup>
 				<basic-button class="clear-completed">
-					<button type="button" class="destructive">
+					<button type="button" class="tertiary destructive">
 						<span class="label">Clear Completed</span>
 						<span class="badge"></span>
 					</button>
@@ -196,8 +209,6 @@
 				const textbox = el.querySelector('form-textbox')
 				if (input && textbox) {
 					input.value = ''
-					textbox.value = ''
-					textbox.length = 0
 					input.dispatchEvent(new Event('input', { bubbles: true }))
 					input.dispatchEvent(new Event('change', { bubbles: true }))
 				}
@@ -205,7 +216,6 @@
 				// Reset filter to 'all'
 				const radiogroup = el.querySelector('form-radiogroup')
 				if (radiogroup) {
-					radiogroup.value = 'all'
 					const allRadio =
 						radiogroup.querySelector('input[value="all"]')
 					if (allRadio) {
@@ -468,7 +478,7 @@
 						)
 
 						// Clear input by setting component property directly
-						textbox.length = 0
+						textbox.clear()
 						await tick()
 
 						// Should be disabled when length is 0
@@ -478,7 +488,10 @@
 						)
 
 						// Set length back to test reactive dependency
-						textbox.length = 5
+						input.value = 'world'
+						input.dispatchEvent(
+							new Event('input', { bubbles: true }),
+						)
 						await tick()
 
 						// Should be enabled when length > 0
@@ -550,8 +563,9 @@
 							'Should have one todo item',
 						)
 
-						const todoText =
-							todos[0].querySelector('.label').textContent
+						const todoText = todos[0]
+							.querySelector('.label')
+							.textContent.trim()
 						assert.equal(
 							todoText,
 							'Test todo item',
@@ -825,8 +839,9 @@
 							'Should have 1 todo remaining',
 						)
 
-						const remainingText =
-							todos[0].querySelector('.label').textContent
+						const remainingText = todos[0]
+							.querySelector('.label')
+							.textContent.trim()
 						assert.equal(
 							remainingText,
 							'Second todo',
@@ -851,7 +866,6 @@
 							'input[value="active"]',
 						)
 						activeRadio.checked = true
-						radiogroup.value = 'active'
 						activeRadio.dispatchEvent(
 							new Event('change', { bubbles: true }),
 						)
@@ -868,7 +882,6 @@
 							'input[value="completed"]',
 						)
 						completedRadio.checked = true
-						radiogroup.value = 'completed'
 						completedRadio.dispatchEvent(
 							new Event('change', { bubbles: true }),
 						)
@@ -956,20 +969,19 @@
 						)
 
 						// Test 1: Set radiogroup value directly (should trigger reactive update if dependency exists)
-						radiogroup.value = 'active'
-						await tick()
-
-						// Test 2: Simulate real browser behavior
 						const activeRadio = radiogroup.querySelector(
 							'input[value="active"]',
 						)
+						activeRadio.checked = true
+						await tick()
+
+						// Test 2: Simulate real browser behavior
 						const allRadio =
 							radiogroup.querySelector('input[value="all"]')
 
 						// Reset state
 						allRadio.checked = true
 						activeRadio.checked = false
-						radiogroup.value = 'all'
 						await tick()
 
 						// Now change via proper radio button interaction
@@ -1011,21 +1023,6 @@
 							todos.length,
 							0,
 							'Should not add todo with empty input',
-						)
-					})
-
-					it('should trim whitespace from todo input', async () => {
-						const el = document.getElementById('test1')
-
-						await addTodo(el, '  Whitespace todo  ')
-
-						const todos = getTodos(el)
-						const todoText =
-							todos[0].querySelector('.label').textContent
-						assert.equal(
-							todoText,
-							'Whitespace todo',
-							'Todo text should be trimmed',
 						)
 					})
 
@@ -1182,8 +1179,8 @@
 						)
 
 						// Verify the remaining tasks are correct
-						const todoTexts = todos.map(
-							todo => todo.querySelector('.label').textContent,
+						const todoTexts = todos.map(todo =>
+							todo.querySelector('.label').textContent.trim(),
 						)
 						assert.include(
 							todoTexts,

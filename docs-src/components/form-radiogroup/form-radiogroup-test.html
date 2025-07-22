@@ -76,7 +76,7 @@
 			<fieldset>
 				<legend>Single Option</legend>
 				<label>
-					<input type="radio" name="single" value="single" checked />
+					<input type="radio" name="single" value="single" />
 					<span>Only Option</span>
 				</label>
 			</fieldset>
@@ -124,15 +124,20 @@
 				inputs.forEach(input => {
 					input.checked = false
 				})
-				el.value = ''
 				await tick()
 			}
 
 			// Helper to simulate radio input change
 			const selectRadio = async input => {
-				input.checked = true
-				input.dispatchEvent(new Event('change', { bubbles: true }))
+				input.click()
 				await tick()
+			}
+
+			const selectRadioByValue = async (el, value) => {
+				const input = el.querySelector(`input[value="${value}"]`)
+				if (!input)
+					throw new Error(`No input found with value "${value}"`)
+				await selectRadio(input)
 			}
 
 			// Helper to simulate keyboard events
@@ -217,8 +222,8 @@
 
 						await tick()
 
-						// Component property defaults to empty unless explicitly set
-						assert.equal(el.value, '')
+						// Component property defaults to checked radio input value
+						assert.equal(el.value, 'male')
 
 						// Should have radio inputs
 						assert.isAbove(inputs.length, 0)
@@ -231,25 +236,14 @@
 						)
 					})
 
-					it('should handle value property changes', async () => {
-						const el = document.getElementById('test1')
-
-						// Change value programmatically
-						el.value = 'female'
-						await tick()
-
-						assert.equal(el.value, 'female')
-						assert.equal(el.getAttribute('value'), 'female')
-					})
-
 					it('should handle radio input change events', async () => {
 						const el = document.getElementById('test1')
 						const otherInput = el.querySelector(
 							'input[value="other"]',
 						)
 
-						// Initially empty
-						assert.equal(el.value, '')
+						// Initially set in DOM
+						assert.equal(el.value, 'male')
 
 						// Select other input via change event
 						await selectRadio(otherInput)
@@ -292,14 +286,11 @@
 						const inputs = Array.from(el.querySelectorAll('input'))
 
 						// Set initial focus to first input
-						el.value = 'option-a'
-						await animationFrame()
-						await microtask()
+						await selectRadioByValue(el, 'option-a')
 
 						// Simulate ArrowDown/ArrowRight
 						simulateKeyEvent(el, 'keydown', 'ArrowDown')
-						await animationFrame()
-						await microtask()
+						await tick()
 
 						// Focus management is handled by manageFocusOnKeydown
 						// We can't easily test focus changes in JSDOM, but we ensure no errors
@@ -315,8 +306,7 @@
 						// Focus and press Enter
 						femaleInput.focus()
 						simulateKeyEvent(femaleInput, 'keyup', 'Enter')
-						await animationFrame()
-						await microtask()
+						await tick()
 
 						// Enter should trigger click, but we need to simulate the full sequence
 						// The actual click behavior depends on browser implementation
@@ -352,7 +342,7 @@
 						const el = document.getElementById('test3')
 						const inputs = el.querySelectorAll('input')
 
-						await animationFrame()
+						await tick()
 
 						// Initially empty value
 						assert.equal(el.value, '')
@@ -373,9 +363,9 @@
 						const el = document.getElementById('test4')
 						const input = el.querySelector('input')
 
-						await animationFrame()
+						await tick()
 
-						// Initially empty
+						// Initially set in DOM
 						assert.equal(el.value, '')
 
 						// Should work via change event
@@ -386,19 +376,27 @@
 
 					it('should handle rapid value changes', async () => {
 						const el = document.getElementById('test1')
+						const femaleInput = el.querySelector(
+							'input[value="female"]',
+						)
+						const maleInput = el.querySelector(
+							'input[value="male"]',
+						)
+						const otherInput = el.querySelector(
+							'input[value="other"]',
+						)
 
 						// Rapid changes
-						const values = [
-							'female',
-							'male',
-							'other',
-							'female',
-							'other',
+						const inputs = [
+							femaleInput,
+							maleInput,
+							otherInput,
+							femaleInput,
+							otherInput,
 						]
-						for (const value of values) {
-							el.value = value
+						for (const input of inputs) {
+							input.click()
 						}
-
 						await tick()
 
 						// Should have final value
@@ -432,25 +430,6 @@
 						assert.equal(otherInput.checked, true)
 					})
 
-					it('should handle invalid values gracefully', async () => {
-						const el = document.getElementById('test1')
-						const inputs = el.querySelectorAll('input')
-
-						// Set invalid value
-						el.value = 'nonexistent'
-						await animationFrame()
-						await microtask()
-
-						// No input should be checked
-						inputs.forEach(input => {
-							assert.equal(input.checked, false)
-							assert.equal(input.tabIndex, -1)
-						})
-
-						// Value should still be set (even if invalid)
-						assert.equal(el.value, 'nonexistent')
-					})
-
 					it('should preserve input attributes and classes', async () => {
 						const el = document.getElementById('test2')
 						const allInput = el.querySelector('input[value="all"]')
@@ -463,9 +442,7 @@
 						assert.equal(allInput.name, 'filter')
 
 						// Property changes should not affect these
-						el.value = 'active'
-						await animationFrame()
-						await microtask()
+						await selectRadioByValue(el, 'active')
 
 						assert.isTrue(
 							allInput.classList.contains('visually-hidden'),
@@ -489,43 +466,16 @@
 						assert.equal(maleInput.value, 'male')
 					})
 
-					it('should handle component without inputs gracefully', () => {
-						// Create a minimal component structure for edge case testing
-						const tempDiv = document.createElement('div')
-						tempDiv.innerHTML = `
-                        <form-radiogroup>
-                            <fieldset>
-                                <legend>Empty</legend>
-                            </fieldset>
-                        </form-radiogroup>
-                    `
-						document.body.appendChild(tempDiv)
-
-						const tempEl = tempDiv.querySelector('form-radiogroup')
-
-						// Component should initialize without throwing
-						assert.isNotNull(tempEl)
-
-						// Setting value should not cause errors
-						tempEl.value = 'test'
-
-						// Cleanup
-						document.body.removeChild(tempDiv)
-					})
-
 					it('should maintain attribute-value sync', async () => {
 						const el = document.getElementById('test1')
 
 						// Set via property
-						el.value = 'female'
-						await animationFrame()
-						await microtask()
+						await selectRadioByValue(el, 'female')
 
 						assert.equal(el.getAttribute('value'), 'female')
 
 						// Change to other value
-						el.value = 'other'
-						await tick()
+						await selectRadioByValue(el, 'other')
 
 						assert.equal(el.getAttribute('value'), 'other')
 					})
@@ -567,28 +517,33 @@
 						assert.isNotNull(el)
 					})
 
-					it('should handle mixed interaction scenarios', async () => {
+					it('should not allow programmatic value updates', async () => {
 						const el = document.getElementById('test1')
-						const femaleInput = el.querySelector(
-							'input[value="female"]',
-						)
-						const otherInput = el.querySelector(
-							'input[value="other"]',
-						)
+						const originalValue = el.value
 
-						// Start with user interaction
-						await selectRadio(femaleInput)
-						assert.equal(el.value, 'female')
+						// Should throw TypeError when trying to set value
+						assert.throws(() => {
+							el.value = 'other'
+						}, TypeError)
 
-						// Switch via user interaction
-						await selectRadio(otherInput)
-						assert.equal(el.value, 'other')
+						// Value should remain unchanged after failed assignment
+						assert.equal(el.value, originalValue)
 
-						// Switch back programmatically
-						el.value = 'male'
-						await tick()
+						// Should throw for different value types
+						assert.throws(() => {
+							el.value = 123
+						}, TypeError)
 
-						assert.equal(el.value, 'male')
+						assert.throws(() => {
+							el.value = null
+						}, TypeError)
+
+						assert.throws(() => {
+							el.value = undefined
+						}, TypeError)
+
+						// Verify value is still the original value
+						assert.equal(el.value, originalValue)
 					})
 				})
 			})

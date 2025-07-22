@@ -9,7 +9,7 @@ import {
 import { manageFocusOnKeydown } from '../../functions/event-listener/manage-focus-on-keydown'
 
 export type FormRadiogroupProps = {
-	value: string
+	readonly value: string
 }
 
 const changeHandler = ({ target }) => target.value

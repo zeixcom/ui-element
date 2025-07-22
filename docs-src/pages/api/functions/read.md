@@ -6,9 +6,9 @@
 
 # Function: read()
 
-> **read**\<`T`, `E`, `C`, `S`\>(`host`, `selector`, `map`): `T`
+> **read**\<`T`, `E`, `C`, `S`\>(`host`, `selector`, `fn`): [`Computed`](../type-aliases/Computed.md)\<`T`\>
 
-Defined in: [src/core/dom.ts:336](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/core/dom.ts#L336)
+Defined in: [src/core/dom.ts:336](https://github.com/zeixcom/ui-element/blob/62aded0dfd41b132db684ccc25a7494068f0d957/src/core/dom.ts#L336)
 
 Read from a descendant element and map the result
 
@@ -44,18 +44,18 @@ Host element
 
 CSS selector for descendant element
 
-### map
+### fn
 
-(`element`, `isUpgraded`) => `T`
+(`element`) => `T`
 
 Function to map over the element
 
 ## Returns
 
-`T`
+[`Computed`](../type-aliases/Computed.md)\<`T`\>
 
-The mapped result from the descendant element
+A computed signal of the mapped result from the descendant element
 
 ## Since
 
-0.13.3
+0.13.4

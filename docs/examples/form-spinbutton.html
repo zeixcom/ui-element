@@ -160,7 +160,7 @@
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">FormSpinbuttonProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">	value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span></span>
+<span class="line"><span style="color:#F92672">	readonly</span><span style="color:#F8F8F2"> value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> clickHandler</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">value</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
@@ -179,7 +179,7 @@
 <span class="line"><span style="color:#E6DB74">	'form-spinbutton'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
 <span class="line"><span style="color:#F8F8F2">		value: </span><span style="color:#A6E22E">fromEvents</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#FD971F;font-style:italic">			el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> asInteger</span><span style="color:#F8F8F2">()(el, el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">)?.textContent),</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">			el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> asInteger</span><span style="color:#F8F8F2">()(el, el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.value'</span><span style="color:#F8F8F2">)?.textContent),</span></span>
 <span class="line"><span style="color:#E6DB74">			'button'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">			{</span></span>
 <span class="line"><span style="color:#F8F8F2">				click: clickHandler,</span></span>

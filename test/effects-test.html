@@ -1,107 +1,103 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<title>Effects Tests</title>
-	</head>
-	<body>
-		<update-text text="Text from Attribute">
-			<p>Text from Server</p>
-		</update-text>
-		<update-property value="Value from Attribute">
-			<input type="text" value="Value from Server" />
-		</update-property>
-		<update-attribute required>
-			<input type="text" required />
-			<p id="update-attribute-error">Please fill this required field</p>
-		</update-attribute>
-		<update-class active="0">
-			<ul>
-				<li data-index="0">Item 1</li>
-				<li data-index="1">Item 2</li>
-				<li class="selected" data-index="2">Item 3</li>
-			</ul>
-		</update-class>
-		<update-style color="red">
-			<p style="color: blue">Text from Server</p>
-		</update-style>
-		<dangerous-inner-html id="dangerous"></dangerous-inner-html>
-		<shadow-dangerous-inner-html
-			id="shadow-dangerous"
-		></shadow-dangerous-inner-html>
-		<dangerous-with-scripts></dangerous-with-scripts>
-		<create-element>
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Effects Tests</title>
+</head>
+
+<body>
+	<update-text text="Text from Attribute">
+		<p>Text from Server</p>
+	</update-text>
+	<update-property value="Value from Attribute">
+		<input type="text" value="Value from Server" />
+	</update-property>
+	<update-attribute required>
+		<input type="text" required />
+		<p id="update-attribute-error">Please fill this required field</p>
+	</update-attribute>
+	<update-class active="0">
+		<ul>
+			<li data-index="0">Item 1</li>
+			<li data-index="1">Item 2</li>
+			<li class="selected" data-index="2">Item 3</li>
+		</ul>
+	</update-class>
+	<update-style color="red">
+		<p style="color: blue">Text from Server</p>
+	</update-style>
+	<dangerous-inner-html id="dangerous"></dangerous-inner-html>
+	<shadow-dangerous-inner-html id="shadow-dangerous"></shadow-dangerous-inner-html>
+	<dangerous-with-scripts></dangerous-with-scripts>
+	<create-element>
+		<ul></ul>
+	</create-element>
+	<remove-element>
+		<ul>
+			<li data-key="1">Item 1</li>
+			<li data-key="2">Item 2</li>
+			<li data-key="3">Item 3</li>
+		</ul>
+	</remove-element>
+	<insert-template id="insert-light">
+		<template class="li">
+			<li></li>
+		</template>
+		<template class="p">
+			<p></p>
+		</template>
+		<ul></ul>
+	</insert-template>
+	<insert-template id="insert-shadow">
+		<template class="li">
+			<li></li>
+		</template>
+		<template class="p">
+			<p></p>
+		</template>
+		<template shadowrootmode="open">
 			<ul></ul>
-		</create-element>
-		<remove-element>
-			<ul>
-				<li data-key="1">Item 1</li>
-				<li data-key="2">Item 2</li>
-				<li data-key="3">Item 3</li>
-			</ul>
-		</remove-element>
-		<insert-template id="insert-light">
-			<template class="li">
-				<li></li>
-			</template>
-			<template class="p">
-				<p></p>
-			</template>
-			<ul></ul>
-		</insert-template>
-		<insert-template id="insert-shadow">
-			<template class="li">
-				<li></li>
-			</template>
-			<template class="p">
-				<p></p>
-			</template>
-			<template shadowrootmode="open">
-				<ul></ul>
-			</template>
-		</insert-template>
-		<security-test>
-			<div></div>
-		</security-test>
-		<edge-case-test>
-			<div>
-				<span></span>
-			</div>
-		</edge-case-test>
-		<signal-types-test>
-			<p>
-				<span></span>
-			</p>
-		</signal-types-test>
-		<unset-test>
-			<div>
-				<span
-					title="original"
-					class="original"
-					style="color: blue"
-				></span>
-			</div>
-		</unset-test>
-		<div id="host">
-			<div id="test-on-function"></div>
-			<div id="test-on-provider"></div>
-			<div id="test-on-invalid"></div>
+		</template>
+	</insert-template>
+	<security-test>
+		<div></div>
+	</security-test>
+	<edge-case-test>
+		<div>
+			<span></span>
 		</div>
-		<emit-test value="test-detail">
-			<div>Content</div>
-		</emit-test>
-		<child-component id="orphan">
+	</edge-case-test>
+	<signal-types-test>
+		<p>
+			<span></span>
+		</p>
+	</signal-types-test>
+	<unset-test>
+		<div>
+			<span title="original" class="original" style="color: blue"></span>
+		</div>
+	</unset-test>
+	<div id="host">
+		<div id="test-on-function"></div>
+		<div id="test-on-provider"></div>
+		<div id="test-on-invalid"></div>
+	</div>
+	<emit-test value="test-detail">
+		<div>Content</div>
+	</emit-test>
+	<child-component id="orphan">
+		<h1>Hello from server</h1>
+		<p>Text from server</p>
+	</child-component>
+	<parent-component id="parent" heading="Hello from attribute">
+		<child-component id="child">
 			<h1>Hello from server</h1>
 			<p>Text from server</p>
 		</child-component>
-		<parent-component id="parent" heading="Hello from attribute">
-			<child-component id="child">
-				<h1>Hello from server</h1>
-				<p>Text from server</p>
-			</child-component>
-			<invalid-component id="invalid"></invalid-component>
-		</parent-component>
-		<!-- <call-method-test>
+		<invalid-component id="invalid"></invalid-component>
+	</parent-component>
+	<!-- <call-method-test>
 			<input type="text" value="test" />
 			<button>Test Button</button>
 		</call-method-test>
@@ -111,2360 +107,2361 @@
 			<button id="btn1">Button 1</button>
 		</focus-test> -->
 
-		<script type="module">
-			import { runTests } from '@web/test-runner-mocha'
-			import { assert } from '@esm-bundle/chai'
-			import {
-				RESET,
-				UNSET,
-				component,
-				on,
-				state,
-				computed,
-				effect,
-				asBoolean,
-				asInteger,
-				asNumber,
-				asString,
-				setText,
-				setProperty,
-				show,
-				setAttribute,
-				toggleAttribute,
-				toggleClass,
-				setStyle,
-				dangerouslySetInnerHTML,
-				insertOrRemoveElement,
-				updateElement,
-				emitEvent,
-				pass,
-				// callMethod,
-				// focus,
-			} from '../index.dev.js'
+	<script type="module">
+		import { runTests } from '@web/test-runner-mocha'
+		import { assert } from '@esm-bundle/chai'
+		import {
+			RESET,
+			UNSET,
+			component,
+			on,
+			state,
+			computed,
+			effect,
+			asBoolean,
+			asInteger,
+			asNumber,
+			asString,
+			setText,
+			setProperty,
+			show,
+			setAttribute,
+			toggleAttribute,
+			toggleClass,
+			setStyle,
+			dangerouslySetInnerHTML,
+			insertOrRemoveElement,
+			updateElement,
+			emitEvent,
+			pass,
+			// callMethod,
+			// focus,
+		} from '../index.dev.js'
 
-			const animationFrame = async () =>
-				new Promise(requestAnimationFrame)
-			const normalizeText = text => text.replace(/\s+/g, ' ').trim()
+		const animationFrame = async () =>
+			new Promise(requestAnimationFrame)
+		const normalizeText = text => text.replace(/\s+/g, ' ').trim()
 
-			component(
-				'update-text',
-				{
-					text: asString(),
-				},
-				(_, { first }) => [first('p', setText('text'))],
-			)
+		component(
+			'update-text',
+			{
+				text: asString(),
+			},
+			(_, { first }) => [first('p', setText('text'))],
+		)
 
-			component(
-				'update-property',
-				{
-					value: asString(),
-				},
-				(_, { first }) => [first('input', setProperty('value'))],
-			)
+		component(
+			'update-property',
+			{
+				value: asString(),
+			},
+			(_, { first }) => [first('input', setProperty('value'))],
+		)
 
-			component(
-				'update-attribute',
-				{
-					required: asBoolean(),
-					ariaInvalid: 'false',
-				},
-				(el, { first }) => [
-					first(
-						'input',
-						on('change', e => {
-							el.ariaInvalid = String(!e.target.checkValidity())
-						}),
-						toggleAttribute('required'),
-						setAttribute('aria-errormessage', () =>
-							el.required && el.ariaInvalid !== 'false'
-								? el.querySelector('p').id
-								: RESET,
-						),
-					),
-				],
-			)
-
-			component(
-				'update-class',
-				{
-					active: asInteger(),
-				},
-				(el, { all }) => [
-					all(
-						'li',
-						toggleClass(
-							'selected',
-							target =>
-								el.active === parseInt(target.dataset.index),
-						),
-					),
-				],
-			)
-
-			component(
-				'update-style',
-				{
-					color: asString(),
-				},
-				(_, { first }) => [first('p', setStyle('color'))],
-			)
-
-			component(
-				'dangerous-inner-html',
-				{
-					content: '<p>Initial content</p>',
-				},
-				() => [dangerouslySetInnerHTML('content')],
-			)
-
-			component(
-				'shadow-dangerous-inner-html',
-				{
-					content: '<p>Initial shadow content</p>',
-				},
-				() => [
-					dangerouslySetInnerHTML('content', {
-						shadowRootMode: 'open',
+		component(
+			'update-attribute',
+			{
+				required: asBoolean(),
+				ariaInvalid: 'false',
+			},
+			(el, { first }) => [
+				first(
+					'input',
+					on('change', e => {
+						el.ariaInvalid = String(!e.target.checkValidity())
 					}),
-				],
-			)
+					toggleAttribute('required'),
+					setAttribute('aria-errormessage', () =>
+						el.required && el.ariaInvalid !== 'false'
+							? el.querySelector('p').id
+							: RESET,
+					),
+				),
+			],
+		)
 
-			component(
-				'dangerous-with-scripts',
-				{
-					content: '<p id="test-p-shadow">Original</p>',
-				},
-				() => [
-					dangerouslySetInnerHTML('content', {
-						shadowRootMode: 'open',
-						allowScripts: true,
+		component(
+			'update-class',
+			{
+				active: asInteger(),
+			},
+			(el, { all }) => [
+				all(
+					'li',
+					toggleClass(
+						'selected',
+						target =>
+							el.active === parseInt(target.dataset.index),
+					),
+				),
+			],
+		)
+
+		component(
+			'update-style',
+			{
+				color: asString(),
+			},
+			(_, { first }) => [first('p', setStyle('color'))],
+		)
+
+		component(
+			'dangerous-inner-html',
+			{
+				content: '<p>Initial content</p>',
+			},
+			() => [dangerouslySetInnerHTML('content')],
+		)
+
+		component(
+			'shadow-dangerous-inner-html',
+			{
+				content: '<p>Initial shadow content</p>',
+			},
+			() => [
+				dangerouslySetInnerHTML('content', {
+					shadowRootMode: 'open',
+				}),
+			],
+		)
+
+		component(
+			'dangerous-with-scripts',
+			{
+				content: '<p id="test-p-shadow">Original</p>',
+			},
+			() => [
+				dangerouslySetInnerHTML('content', {
+					shadowRootMode: 'open',
+					allowScripts: true,
+				}),
+			],
+		)
+
+		component(
+			'create-element',
+			{
+				before: 0,
+				prepend: 0,
+				append: 0,
+				after: 0,
+			},
+			(el, { first }) => [
+				first(
+					'ul',
+					insertOrRemoveElement('before', {
+						create: () => {
+							const p = document.createElement('p')
+							p.textContent = 'Before'
+							return p
+						},
+						position: 'beforebegin',
 					}),
-				],
-			)
+					insertOrRemoveElement('prepend', {
+						create: () => {
+							const li = document.createElement('li')
+							li.textContent = 'Prepend'
+							li.setAttribute('value', 'foo')
+							return li
+						},
+						position: 'afterbegin',
+					}),
+					insertOrRemoveElement('append', {
+						create: () => document.createElement('li'),
+					}),
+					insertOrRemoveElement('after', {
+						create: () => {
+							const p = document.createElement('p')
+							p.setAttribute('value', 'bar')
+							return p
+						},
+						position: 'afterend',
+					}),
+				),
+			],
+		)
 
-			component(
-				'create-element',
-				{
-					before: 0,
-					prepend: 0,
-					append: 0,
-					after: 0,
-				},
-				(el, { first }) => [
+		component(
+			'remove-element',
+			{
+				items: [1, 2, 3],
+			},
+			(el, { all }) => [
+				all(
+					'li',
+					insertOrRemoveElement(li =>
+						el.items.includes(parseInt(li.dataset.key))
+							? 0
+							: -1,
+					),
+				),
+			],
+		)
+
+		component(
+			'insert-template',
+			{
+				before: 0,
+				prepend: 0,
+				append: 0,
+				after: 0,
+			},
+			(el, { first }) => {
+				const pTemplate = el.querySelector('.p')
+				const liTemplate = el.querySelector('.li')
+				return [
 					first(
 						'ul',
 						insertOrRemoveElement('before', {
-							create: () => {
-								const p = document.createElement('p')
-								p.textContent = 'Before'
-								return p
-							},
+							create: () =>
+								document.importNode(pTemplate.content, true)
+									.firstElementChild,
 							position: 'beforebegin',
 						}),
 						insertOrRemoveElement('prepend', {
-							create: () => {
-								const li = document.createElement('li')
-								li.textContent = 'Prepend'
-								li.setAttribute('value', 'foo')
-								return li
-							},
+							create: () =>
+								document.importNode(
+									liTemplate.content,
+									true,
+								).firstElementChild,
 							position: 'afterbegin',
 						}),
 						insertOrRemoveElement('append', {
-							create: () => document.createElement('li'),
+							create: () =>
+								document.importNode(
+									liTemplate.content,
+									true,
+								).firstElementChild,
 						}),
 						insertOrRemoveElement('after', {
-							create: () => {
-								const p = document.createElement('p')
-								p.setAttribute('value', 'bar')
-								return p
-							},
+							create: () =>
+								document.importNode(pTemplate.content, true)
+									.firstElementChild,
 							position: 'afterend',
 						}),
 					),
-				],
-			)
+				]
+			},
+		)
 
-			component(
-				'remove-element',
-				{
-					items: [1, 2, 3],
-				},
-				(el, { all }) => [
-					all(
-						'li',
-						insertOrRemoveElement(li =>
-							el.items.includes(parseInt(li.dataset.key))
-								? 0
-								: -1,
-						),
+		component(
+			'security-test',
+			{
+				hrefValue: 'https://example.com',
+				onclickValue: "alert('xss')",
+			},
+			() => [],
+		)
+
+		component(
+			'edge-case-test',
+			{
+				value: 'test',
+				errorProp: 'error',
+			},
+			() => [],
+		)
+
+		component(
+			'signal-types-test',
+			{
+				textValue: 'signal text',
+			},
+			() => [],
+		)
+
+		component(
+			'unset-test',
+			{
+				titleValue: asString(RESET),
+				classValue: asString(RESET),
+				colorValue: asString(RESET),
+			},
+			() => [],
+		)
+
+		component(
+			'emit-test',
+			{
+				value: asString(),
+				other: '',
+			},
+			(el, { first }) => [
+				emitEvent('custom-event', 'value'),
+				on('other-event', e => {
+					el.other = e.detail
+				}),
+				first(
+					'div',
+					emitEvent('other-event', 'value'),
+					emitEvent(
+						'test-event',
+						target => el.value === target.textContent,
 					),
-				],
-			)
+				),
+			],
+		)
 
-			component(
-				'insert-template',
-				{
-					before: 0,
-					prepend: 0,
-					append: 0,
-					after: 0,
-				},
-				(el, { first }) => {
-					const pTemplate = el.querySelector('.p')
-					const liTemplate = el.querySelector('.li')
-					return [
-						first(
-							'ul',
-							insertOrRemoveElement('before', {
-								create: () =>
-									document.importNode(pTemplate.content, true)
-										.firstElementChild,
-								position: 'beforebegin',
-							}),
-							insertOrRemoveElement('prepend', {
-								create: () =>
-									document.importNode(
-										liTemplate.content,
-										true,
-									).firstElementChild,
-								position: 'afterbegin',
-							}),
-							insertOrRemoveElement('append', {
-								create: () =>
-									document.importNode(
-										liTemplate.content,
-										true,
-									).firstElementChild,
-							}),
-							insertOrRemoveElement('after', {
-								create: () =>
-									document.importNode(pTemplate.content, true)
-										.firstElementChild,
-								position: 'afterend',
-							}),
-						),
-					]
-				},
-			)
+		component(
+			'child-component',
+			{
+				heading: asString(RESET),
+				text: asString(RESET),
+			},
+			(_, { first }) => [
+				first('h1', setText('heading')),
+				first('p', setText('text')),
+			],
+		)
 
-			component(
-				'security-test',
-				{
-					hrefValue: 'https://example.com',
-					onclickValue: "alert('xss')",
-				},
-				() => [],
-			)
-
-			component(
-				'edge-case-test',
-				{
-					value: 'test',
-					errorProp: 'error',
-				},
-				() => [],
-			)
-
-			component(
-				'signal-types-test',
-				{
-					textValue: 'signal text',
-				},
-				() => [],
-			)
-
-			component(
-				'unset-test',
-				{
-					titleValue: asString(RESET),
-					classValue: asString(RESET),
-					colorValue: asString(RESET),
-				},
-				() => [],
-			)
-
-			component(
-				'emit-test',
-				{
-					value: asString(),
-					other: '',
-				},
-				(el, { first }) => [
-					emitEvent('custom-event', 'value'),
-					on('other-event', e => {
-						el.other = e.detail
+		component(
+			'parent-component',
+			{
+				heading: asString(RESET),
+			},
+			(el, { first }) => [
+				first(
+					'child-component',
+					pass({
+						heading: 'heading',
+						text: () => el.heading.toUpperCase(),
 					}),
-					first(
-						'div',
-						emitEvent('other-event', 'value'),
-						emitEvent(
-							'test-event',
-							target => el.value === target.textContent,
-						),
-					),
-				],
-			)
+				),
+			],
+		)
 
-			component(
-				'child-component',
-				{
-					heading: asString(RESET),
-					text: asString(RESET),
-				},
-				(_, { first }) => [
-					first('h1', setText('heading')),
-					first('p', setText('text')),
-				],
-			)
+		// component(
+		// 	'call-method-test',
+		// 	{
+		// 		shouldClick: asBoolean(false),
+		// 		shouldSelect: asBoolean(false),
+		// 	},
+		// 	(el, { first }) => [
+		// 		first(
+		// 			'button',
+		// 			callMethod('click', el => el.shouldClick),
+		// 		),
+		// 		first(
+		// 			'input',
+		// 			callMethod(
+		// 				'setSelectionRange',
+		// 				el => el.shouldSelect,
+		// 				[0, 2],
+		// 			),
+		// 		),
+		// 	],
+		// )
 
-			component(
-				'parent-component',
-				{
-					heading: asString(RESET),
-				},
-				(el, { first }) => [
-					first(
-						'child-component',
-						pass({
-							heading: 'heading',
-							text: () => el.heading.toUpperCase(),
-						}),
-					),
-				],
-			)
+		// component(
+		// 	'focus-test',
+		// 	{
+		// 		focusFirst: asBoolean(false),
+		// 		focusSecond: asBoolean(false),
+		// 		focusButton: asBoolean(false),
+		// 	},
+		// 	(el, { first }) => [
+		// 		first(
+		// 			'#input1',
+		// 			focus(el => el.focusFirst),
+		// 		),
+		// 		first(
+		// 			'#input2',
+		// 			focus(el => el.focusSecond),
+		// 		),
+		// 		first(
+		// 			'#btn1',
+		// 			focus(el => el.focusButton),
+		// 		),
+		// 	],
+		// )
 
-			// component(
-			// 	'call-method-test',
-			// 	{
-			// 		shouldClick: asBoolean(false),
-			// 		shouldSelect: asBoolean(false),
-			// 	},
-			// 	(el, { first }) => [
-			// 		first(
-			// 			'button',
-			// 			callMethod('click', el => el.shouldClick),
-			// 		),
-			// 		first(
-			// 			'input',
-			// 			callMethod(
-			// 				'setSelectionRange',
-			// 				el => el.shouldSelect,
-			// 				[0, 2],
-			// 			),
-			// 		),
-			// 	],
-			// )
-
-			// component(
-			// 	'focus-test',
-			// 	{
-			// 		focusFirst: asBoolean(false),
-			// 		focusSecond: asBoolean(false),
-			// 		focusButton: asBoolean(false),
-			// 	},
-			// 	(el, { first }) => [
-			// 		first(
-			// 			'#input1',
-			// 			focus(el => el.focusFirst),
-			// 		),
-			// 		first(
-			// 			'#input2',
-			// 			focus(el => el.focusSecond),
-			// 		),
-			// 		first(
-			// 			'#btn1',
-			// 			focus(el => el.focusButton),
-			// 		),
-			// 	],
-			// )
-
-			runTests(() => {
-				describe('setText', function () {
-					it('should prove setText() working correctly', async function () {
-						const component = document.querySelector('update-text')
-						const paragraph = component.querySelector('p')
-						await animationFrame()
-						let textContent = normalizeText(paragraph.textContent)
-						assert.equal(
-							textContent,
-							'Text from Attribute',
-							'Should display text content from attribute',
-						)
-						component.text = 'New Text'
-						await animationFrame()
-						textContent = normalizeText(paragraph.textContent)
-						assert.equal(
-							textContent,
-							'New Text',
-							'Should update text content from text signal',
-						)
-						component.text = RESET
-						await animationFrame()
-						textContent = normalizeText(paragraph.textContent)
-						assert.equal(
-							textContent,
-							'Text from Server',
-							'Should revert text content to server-rendered version',
-						)
-					})
+		runTests(() => {
+			describe('setText', function () {
+				it('should prove setText() working correctly', async function () {
+					const component = document.querySelector('update-text')
+					const paragraph = component.querySelector('p')
+					await animationFrame()
+					let textContent = normalizeText(paragraph.textContent)
+					assert.equal(
+						textContent,
+						'Text from Attribute',
+						'Should display text content from attribute',
+					)
+					component.text = 'New Text'
+					await animationFrame()
+					textContent = normalizeText(paragraph.textContent)
+					assert.equal(
+						textContent,
+						'New Text',
+						'Should update text content from text signal',
+					)
+					component.text = RESET
+					await animationFrame()
+					textContent = normalizeText(paragraph.textContent)
+					assert.equal(
+						textContent,
+						'Text from Server',
+						'Should revert text content to server-rendered version',
+					)
 				})
+			})
 
-				describe('setProperty', function () {
-					it('should prove setProperty() working correctly', async function () {
-						const component =
-							document.querySelector('update-property')
-						const input = component.querySelector('input')
-						await animationFrame()
-						assert.equal(
-							input.value,
-							'Value from Attribute',
-							'Should display value from attribute',
-						)
-						component.value = 'New Value'
-						await animationFrame()
-						assert.equal(
-							input.value,
-							'New Value',
-							'Should update value from text signal',
-						)
-						component.value = RESET
-						await animationFrame()
-						assert.equal(
-							input.value,
-							'Value from Server',
-							'Should revert value to server-rendered version',
-						)
-					})
+			describe('setProperty', function () {
+				it('should prove setProperty() working correctly', async function () {
+					const component =
+						document.querySelector('update-property')
+					const input = component.querySelector('input')
+					await animationFrame()
+					assert.equal(
+						input.value,
+						'Value from Attribute',
+						'Should display value from attribute',
+					)
+					component.value = 'New Value'
+					await animationFrame()
+					assert.equal(
+						input.value,
+						'New Value',
+						'Should update value from text signal',
+					)
+					component.value = RESET
+					await animationFrame()
+					assert.equal(
+						input.value,
+						'Value from Server',
+						'Should revert value to server-rendered version',
+					)
 				})
+			})
 
-				describe('setAttribute and toggleAttribute', function () {
-					it('should prove setAttribute() and toggleAttribute() working correctly', async function () {
-						const component =
-							document.querySelector('update-attribute')
-						const input = component.querySelector('input')
+			describe('setAttribute and toggleAttribute', function () {
+				it('should prove setAttribute() and toggleAttribute() working correctly', async function () {
+					const component =
+						document.querySelector('update-attribute')
+					const input = component.querySelector('input')
+					await animationFrame()
+					assert.equal(
+						input.required,
+						true,
+						'Should set required property from attribute',
+					)
+					assert.equal(
+						input.hasAttribute('aria-errormessage'),
+						false,
+						'Should not have aria-errormessage before interaction',
+					)
+					input.value = 'New Value'
+					input.dispatchEvent(new Event('change'))
+					await animationFrame()
+					assert.equal(
+						input.hasAttribute('aria-errormessage'),
+						false,
+						'Should not have aria-errormessage if field is not empty',
+					)
+					input.value = ''
+					input.dispatchEvent(new Event('change'))
+					await animationFrame()
+					assert.equal(
+						input.hasAttribute('aria-errormessage'),
+						true,
+						'Should have aria-errormessage if field is empty and required',
+					)
+					component.toggleAttribute('required')
+					await animationFrame()
+					assert.equal(
+						input.hasAttribute('aria-errormessage'),
+						false,
+						'Should not have aria-errormessage if field is not required',
+					)
+					component.required = RESET
+					await animationFrame()
+					assert.equal(
+						input.required,
+						true,
+						'Should revert required attribute to server-rendered version',
+					)
+				})
+			})
+
+			describe('toggleClass', function () {
+				it('should prove toggleClass() working correctly', async function () {
+					const component = document.querySelector('update-class')
+					const items = Array.from(
+						component.querySelectorAll('li'),
+					)
+					await animationFrame()
+					assert.equal(
+						items[0].classList.contains('selected'),
+						true,
+						'First item should have selected class from active attribute',
+					)
+					assert.equal(
+						items[2].classList.contains('selected'),
+						false,
+						'Third item should not have selected class removed',
+					)
+					component.active = 1
+					await animationFrame()
+					assert.equal(
+						items[1].classList.contains('selected'),
+						true,
+						'Second item should have selected class from active signal',
+					)
+					assert.equal(
+						items[0].classList.contains('selected'),
+						false,
+						'First item should not have selected class removed',
+					)
+					component.active = RESET
+					await animationFrame()
+					assert.equal(
+						items[1].classList.contains('selected'),
+						false,
+						'Second item should have selected class removed',
+					)
+					// restore can't work because the selected class for each item is derived on the fly and not stored in a signal
+					// assert.equal(items[2].classList.contains('selected'), true, 'Third item should not have selected class restored to server-rendered version')
+				})
+			})
+
+			describe('setStyle', function () {
+				it('should prove setStyle() working correctly', async function () {
+					const component = document.querySelector('update-style')
+					const paragraph = component.querySelector('p')
+					await animationFrame()
+					assert.equal(
+						paragraph.style.color,
+						'red',
+						'Should set color from attribute',
+					)
+					component.color = 'green'
+					await animationFrame()
+					assert.equal(
+						paragraph.style.color,
+						'green',
+						'Should update color from color signal',
+					)
+					component.color = RESET
+					await animationFrame()
+					assert.equal(
+						paragraph.style.color,
+						'blue',
+						'Should revert color to server-rendered version',
+					)
+				})
+			})
+
+			describe('show', function () {
+				it('should hide element when predicate is false', async function () {
+					const element = document.createElement('div')
+					element.textContent = 'Test content'
+					document.body.appendChild(element)
+
+					// Create a mock component as host
+					const host = { getSignal: () => ({ get: () => false }) }
+
+					try {
+						// Initially visible
+						assert.equal(element.hidden, false)
+
+						// Apply show with false predicate
+						const cleanup = show(() => false)(host, element)
 						await animationFrame()
+
 						assert.equal(
-							input.required,
+							element.hidden,
 							true,
-							'Should set required property from attribute',
-						)
-						assert.equal(
-							input.hasAttribute('aria-errormessage'),
-							false,
-							'Should not have aria-errormessage before interaction',
-						)
-						input.value = 'New Value'
-						input.dispatchEvent(new Event('change'))
-						await animationFrame()
-						assert.equal(
-							input.hasAttribute('aria-errormessage'),
-							false,
-							'Should not have aria-errormessage if field is not empty',
-						)
-						input.value = ''
-						input.dispatchEvent(new Event('change'))
-						await animationFrame()
-						assert.equal(
-							input.hasAttribute('aria-errormessage'),
-							true,
-							'Should have aria-errormessage if field is empty and required',
-						)
-						component.toggleAttribute('required')
-						await animationFrame()
-						assert.equal(
-							input.hasAttribute('aria-errormessage'),
-							false,
-							'Should not have aria-errormessage if field is not required',
-						)
-						component.required = RESET
-						await animationFrame()
-						assert.equal(
-							input.required,
-							true,
-							'Should revert required attribute to server-rendered version',
-						)
-					})
-				})
-
-				describe('toggleClass', function () {
-					it('should prove toggleClass() working correctly', async function () {
-						const component = document.querySelector('update-class')
-						const items = Array.from(
-							component.querySelectorAll('li'),
-						)
-						await animationFrame()
-						assert.equal(
-							items[0].classList.contains('selected'),
-							true,
-							'First item should have selected class from active attribute',
-						)
-						assert.equal(
-							items[2].classList.contains('selected'),
-							false,
-							'Third item should not have selected class removed',
-						)
-						component.active = 1
-						await animationFrame()
-						assert.equal(
-							items[1].classList.contains('selected'),
-							true,
-							'Second item should have selected class from active signal',
-						)
-						assert.equal(
-							items[0].classList.contains('selected'),
-							false,
-							'First item should not have selected class removed',
-						)
-						component.active = RESET
-						await animationFrame()
-						assert.equal(
-							items[1].classList.contains('selected'),
-							false,
-							'Second item should have selected class removed',
-						)
-						// restore can't work because the selected class for each item is derived on the fly and not stored in a signal
-						// assert.equal(items[2].classList.contains('selected'), true, 'Third item should not have selected class restored to server-rendered version')
-					})
-				})
-
-				describe('setStyle', function () {
-					it('should prove setStyle() working correctly', async function () {
-						const component = document.querySelector('update-style')
-						const paragraph = component.querySelector('p')
-						await animationFrame()
-						assert.equal(
-							paragraph.style.color,
-							'red',
-							'Should set color from attribute',
-						)
-						component.color = 'green'
-						await animationFrame()
-						assert.equal(
-							paragraph.style.color,
-							'green',
-							'Should update color from color signal',
-						)
-						component.color = RESET
-						await animationFrame()
-						assert.equal(
-							paragraph.style.color,
-							'blue',
-							'Should revert color to server-rendered version',
-						)
-					})
-				})
-
-				describe('show', function () {
-					it('should hide element when predicate is false', async function () {
-						const element = document.createElement('div')
-						element.textContent = 'Test content'
-						document.body.appendChild(element)
-
-						// Create a mock component as host
-						const host = { getSignal: () => ({ get: () => false }) }
-
-						try {
-							// Initially visible
-							assert.equal(element.hidden, false)
-
-							// Apply show with false predicate
-							const cleanup = show(() => false)(host, element)
-							await animationFrame()
-
-							assert.equal(
-								element.hidden,
-								true,
-								'Element should be hidden when predicate is false',
-							)
-
-							cleanup()
-						} finally {
-							element.remove()
-						}
-					})
-
-					it('should show element when predicate is true', async function () {
-						const element = document.createElement('div')
-						element.textContent = 'Test content'
-						element.hidden = true // Start hidden
-						document.body.appendChild(element)
-
-						// Create a mock component as host
-						const host = { getSignal: () => ({ get: () => true }) }
-
-						try {
-							// Initially hidden
-							assert.equal(element.hidden, true)
-
-							// Apply show with true predicate
-							const cleanup = show(() => true)(host, element)
-							await animationFrame()
-
-							assert.equal(
-								element.hidden,
-								false,
-								'Element should be visible when predicate is true',
-							)
-
-							cleanup()
-						} finally {
-							element.remove()
-						}
-					})
-
-					it('should work with reactive signals like module-todo pattern', async function () {
-						// Create reactive signals for active tasks
-						const activeSignal = state([])
-
-						const singularElement = document.createElement('span')
-						singularElement.className = 'singular'
-						singularElement.textContent = 'task'
-
-						const pluralElement = document.createElement('span')
-						pluralElement.className = 'plural'
-						pluralElement.textContent = 'tasks'
-
-						const remainingElement = document.createElement('div')
-						remainingElement.className = 'remaining'
-
-						const allDoneElement = document.createElement('div')
-						allDoneElement.className = 'all-done'
-						allDoneElement.textContent = 'All done!'
-
-						document.body.appendChild(singularElement)
-						document.body.appendChild(pluralElement)
-						document.body.appendChild(remainingElement)
-						document.body.appendChild(allDoneElement)
-
-						try {
-							// Create a mock host component
-							const host = {
-								getSignal: () => ({ get: () => true }),
-							}
-
-							// Apply show effects like in module-todo using reactive signals
-							const cleanup1 = show(
-								() => activeSignal.get().length === 1,
-							)(host, singularElement)
-							const cleanup2 = show(
-								() => activeSignal.get().length > 1,
-							)(host, pluralElement)
-							const cleanup3 = show(
-								() => !!activeSignal.get().length,
-							)(host, remainingElement)
-							const cleanup4 = show(
-								() => !activeSignal.get().length,
-							)(host, allDoneElement)
-
-							await animationFrame()
-
-							// Initially no active tasks
-							assert.equal(
-								singularElement.hidden,
-								true,
-								'Singular should be hidden with 0 tasks',
-							)
-							assert.equal(
-								pluralElement.hidden,
-								true,
-								'Plural should be hidden with 0 tasks',
-							)
-							assert.equal(
-								remainingElement.hidden,
-								true,
-								'Remaining should be hidden with 0 tasks',
-							)
-							assert.equal(
-								allDoneElement.hidden,
-								false,
-								'All done should be visible with 0 tasks',
-							)
-
-							// Add one task
-							activeSignal.set(['task1'])
-							await animationFrame()
-
-							assert.equal(
-								singularElement.hidden,
-								false,
-								'Singular should be visible with 1 task',
-							)
-							assert.equal(
-								pluralElement.hidden,
-								true,
-								'Plural should be hidden with 1 task',
-							)
-							assert.equal(
-								remainingElement.hidden,
-								false,
-								'Remaining should be visible with 1 task',
-							)
-							assert.equal(
-								allDoneElement.hidden,
-								true,
-								'All done should be hidden with 1 task',
-							)
-
-							// Add more tasks
-							activeSignal.set(['task1', 'task2', 'task3'])
-							await animationFrame()
-
-							assert.equal(
-								singularElement.hidden,
-								true,
-								'Singular should be hidden with 3 tasks',
-							)
-							assert.equal(
-								pluralElement.hidden,
-								false,
-								'Plural should be visible with 3 tasks',
-							)
-							assert.equal(
-								remainingElement.hidden,
-								false,
-								'Remaining should be visible with 3 tasks',
-							)
-							assert.equal(
-								allDoneElement.hidden,
-								true,
-								'All done should be hidden with 3 tasks',
-							)
-
-							cleanup1()
-							cleanup2()
-							cleanup3()
-							cleanup4()
-						} finally {
-							singularElement.remove()
-							pluralElement.remove()
-							remainingElement.remove()
-							allDoneElement.remove()
-						}
-					})
-
-					it('should work with property name strings', async function () {
-						// Create reactive component with signal
-						const visibilitySignal = state(true)
-						const component = {
-							isVisible: true,
-							getSignal: function (prop) {
-								if (prop === 'isVisible')
-									return visibilitySignal
-								return { get: () => this[prop] }
-							},
-						}
-
-						const element = document.createElement('div')
-						document.body.appendChild(element)
-
-						try {
-							// Use property name string
-							const cleanup = show('isVisible')(
-								component,
-								element,
-							)
-							await animationFrame()
-
-							assert.equal(
-								element.hidden,
-								false,
-								'Element should be visible when isVisible is true',
-							)
-
-							// Change signal value (not direct property)
-							visibilitySignal.set(false)
-							await animationFrame()
-
-							assert.equal(
-								element.hidden,
-								true,
-								'Element should be hidden when isVisible is false',
-							)
-
-							cleanup()
-						} finally {
-							element.remove()
-						}
-					})
-
-					it('should work with signal objects directly', async function () {
-						const signal = state(true)
-						const element = document.createElement('div')
-						document.body.appendChild(element)
-
-						// Create a mock host component
-						const host = { getSignal: () => ({ get: () => true }) }
-
-						try {
-							const cleanup = show(signal)(host, element)
-							await animationFrame()
-
-							assert.equal(
-								element.hidden,
-								false,
-								'Element should be visible when signal is true',
-							)
-
-							// Change signal value
-							signal.set(false)
-							await animationFrame()
-
-							assert.equal(
-								element.hidden,
-								true,
-								'Element should be hidden when signal is false',
-							)
-
-							// Change back
-							signal.set(true)
-							await animationFrame()
-
-							assert.equal(
-								element.hidden,
-								false,
-								'Element should be visible again when signal is true',
-							)
-
-							cleanup()
-						} finally {
-							element.remove()
-						}
-					})
-
-					it('should handle clear button pattern from form-textbox', async function () {
-						// Create reactive signal for input length
-						const lengthSignal = state(0)
-
-						const clearButton = document.createElement('button')
-						clearButton.className = 'clear'
-						clearButton.textContent = '✕'
-						clearButton.hidden = true // Initially hidden
-						document.body.appendChild(clearButton)
-
-						try {
-							// Create a mock host component
-							const host = {
-								getSignal: () => ({ get: () => true }),
-							}
-
-							// Apply show effect like in form-textbox using reactive signal
-							const cleanup = show(() => !!lengthSignal.get())(
-								host,
-								clearButton,
-							)
-							await animationFrame()
-
-							// Initially no input, button should be hidden
-							assert.equal(
-								clearButton.hidden,
-								true,
-								'Clear button should be hidden when input is empty',
-							)
-
-							// Type some text
-							lengthSignal.set(5)
-							await animationFrame()
-
-							assert.equal(
-								clearButton.hidden,
-								false,
-								'Clear button should be visible when input has text',
-							)
-
-							// Clear input
-							lengthSignal.set(0)
-							await animationFrame()
-
-							assert.equal(
-								clearButton.hidden,
-								true,
-								'Clear button should be hidden when input is cleared',
-							)
-
-							cleanup()
-						} finally {
-							clearButton.remove()
-						}
-					})
-
-					it('should handle RESET and UNSET values properly', async function () {
-						const element = document.createElement('div')
-						element.hidden = true // Start with hidden
-						document.body.appendChild(element)
-
-						try {
-							// Create a mock host component
-							const host = {
-								getSignal: () => ({ get: () => true }),
-							}
-
-							// Test RESET - should revert to original DOM value
-							const cleanup1 = show(() => RESET)(host, element)
-							await animationFrame()
-
-							assert.equal(
-								element.hidden,
-								true,
-								'RESET should maintain original hidden state',
-							)
-							cleanup1()
-
-							// Test UNSET - should delete/fallback
-							const cleanup2 = show(() => UNSET)(host, element)
-							await animationFrame()
-
-							assert.equal(
-								element.hidden,
-								true,
-								'UNSET should fallback to original hidden state',
-							)
-							cleanup2()
-						} finally {
-							element.remove()
-						}
-					})
-				})
-
-				describe('dangerouslySetInnerHTML', () => {
-					let dangerous, shadowDangerous
-
-					before(() => {
-						dangerous = document.getElementById('dangerous')
-						shadowDangerous =
-							document.getElementById('shadow-dangerous')
-					})
-
-					it('should set inner HTML for non-shadow component', async () => {
-						assert.equal(
-							dangerous.innerHTML,
-							'<p>Initial content</p>',
+							'Element should be hidden when predicate is false',
 						)
 
-						dangerous.content = '<div>Updated content</div>'
-						await animationFrame()
-						assert.equal(
-							dangerous.innerHTML,
-							'<div>Updated content</div>',
-						)
-					})
-
-					it('should set inner HTML for shadow component', async () => {
-						assert.equal(
-							shadowDangerous.shadowRoot.innerHTML,
-							'<p>Initial shadow content</p>',
-						)
-
-						shadowDangerous.content =
-							'<div>Updated shadow content</div>'
-						await animationFrame()
-						assert.equal(
-							shadowDangerous.shadowRoot.innerHTML,
-							'<div>Updated shadow content</div>',
-						)
-					})
-
-					it('should ignore empty content', async () => {
-						dangerous.content = ''
-						await animationFrame()
-						assert.equal(
-							dangerous.innerHTML,
-							'<div>Updated content</div>',
-						)
-
-						shadowDangerous.content = ''
-						await animationFrame()
-						assert.equal(
-							shadowDangerous.shadowRoot.innerHTML,
-							'<div>Updated shadow content</div>',
-						)
-					})
-
-					it('should not execute scripts by default, but allow execution when specified', async () => {
-						const scriptContent =
-							'ipt>document.getElementById("test-p").textContent = "Modified";</scr'
-						const shadowScriptContent =
-							'ipt>document.querySelector("dangerous-with-scripts").shadowRoot.getElementById("test-p-shadow").textContent = "Modified";</scr'
-
-						// Test default behavior (scripts not executed)
-						dangerous.content = `<p id="test-p">Original</p><scr${scriptContent}ipt>`
-						await animationFrame()
-						assert.equal(
-							dangerous.querySelector('#test-p').textContent,
-							'Original',
-							'Script should not modify content by default',
-						)
-
-						const dangerousWithScripts = document.querySelector(
-							'dangerous-with-scripts',
-						)
-						dangerousWithScripts.content = `<p id="test-p-shadow">Original</p><scr${shadowScriptContent}ipt>`
-						await animationFrame()
-						assert.equal(
-							dangerousWithScripts.shadowRoot.querySelector(
-								'#test-p-shadow',
-							).textContent,
-							'Modified',
-							'Script should modify content when allowScripts is true',
-						)
-					})
-				})
-
-				describe('createElement', function () {
-					let createElementComponent
-
-					before(() => {
-						createElementComponent =
-							document.querySelector('create-element')
-					})
-
-					it('should insert a paragraph before the UL', async function () {
-						createElementComponent.before = 1
-						await animationFrame()
-						const insertedParagraph =
-							createElementComponent.querySelector(
-								'p:first-child',
-							)
-						assert.isNotNull(
-							insertedParagraph,
-							'Paragraph should be inserted before the UL',
-						)
-						assert.equal(
-							insertedParagraph.textContent,
-							'Before',
-							'Paragraph should have correct text content',
-						)
-						assert.equal(
-							createElementComponent.before,
-							0,
-							'Before signal should be reset to 0',
-						)
-					})
-
-					it('should insert a LI at the beginning of the UL', async function () {
-						createElementComponent.prepend = 1
-						await animationFrame()
-						const insertedLi =
-							createElementComponent.querySelector(
-								'ul li:first-child',
-							)
-						assert.isNotNull(
-							insertedLi,
-							'LI should be inserted at the beginning of the UL',
-						)
-						assert.equal(
-							insertedLi.textContent,
-							'Prepend',
-							'LI should have correct text content',
-						)
-						assert.equal(
-							insertedLi.getAttribute('value'),
-							'foo',
-							'LI should have correct attribute',
-						)
-						assert.equal(
-							createElementComponent.prepend,
-							0,
-							'Prepend signal should be reset to 0',
-						)
-					})
-
-					it('should insert a LI at the end of the UL', async function () {
-						createElementComponent.append = 1
-						await animationFrame()
-						const insertedLi =
-							createElementComponent.querySelector(
-								'ul li:last-child',
-							)
-						assert.isNotNull(
-							insertedLi,
-							'LI should be inserted at the end of the UL',
-						)
-						assert.equal(
-							insertedLi.textContent,
-							'',
-							'LI should have empty text content',
-						)
-						assert.equal(
-							createElementComponent.append,
-							0,
-							'Append signal should be reset to 0',
-						)
-					})
-
-					it('should insert a paragraph after the UL', async function () {
-						createElementComponent.after = 1
-						await animationFrame()
-						const insertedParagraph =
-							createElementComponent.querySelector('ul + p')
-						assert.isNotNull(
-							insertedParagraph,
-							'Paragraph should be inserted after the UL',
-						)
-						assert.equal(
-							insertedParagraph.textContent,
-							'',
-							'Paragraph should have empty text content',
-						)
-						assert.equal(
-							insertedParagraph.getAttribute('value'),
-							'bar',
-							'Paragraph should have correct attribute',
-						)
-						assert.equal(
-							createElementComponent.after,
-							0,
-							'After signal should be reset to 0',
-						)
-					})
-
-					it('should allow re-triggering effects', async function () {
-						// Re-trigger the 'before' effect
-						createElementComponent.before = true
-						await animationFrame()
-						const beforeParagraph2 =
-							createElementComponent.querySelector(
-								'p:first-child + p',
-							)
-						assert.isNotNull(
-							beforeParagraph2,
-							'LI should be inserted at the beginning of the UL',
-						)
-
-						// Re-trigger the 'prepend' effect
-						createElementComponent.prepend = true
-						await animationFrame()
-						const prependLis =
-							createElementComponent.querySelectorAll(
-								'li[value="foo"]',
-							)
-						assert.equal(
-							prependLis.length,
-							2,
-							'Should insert another LI at the beginning of the UL',
-						)
-
-						// Verify that all signals are reset to false
-						assert.equal(
-							createElementComponent.before,
-							false,
-							'Before signal should be reset to false',
-						)
-						assert.equal(
-							createElementComponent.prepend,
-							false,
-							'Prepend signal should be reset to false',
-						)
-						assert.equal(
-							createElementComponent.append,
-							false,
-							'Append signal should be reset to false',
-						)
-						assert.equal(
-							createElementComponent.after,
-							false,
-							'After signal should be reset to false',
-						)
-					})
-				})
-
-				describe('removeElement', function () {
-					let removeElementComponent
-
-					before(() => {
-						removeElementComponent =
-							document.querySelector('remove-element')
-					})
-
-					it('should remove an item using immutable update (toSpliced)', async function () {
-						removeElementComponent.items =
-							removeElementComponent.items.toSpliced(1, 1)
-						await animationFrame()
-						const items =
-							removeElementComponent.querySelectorAll('li')
-						assert.equal(
-							items.length,
-							2,
-							'Should have 2 items after removal',
-						)
-						assert.equal(
-							items[0].textContent,
-							'Item 1',
-							'First item should remain',
-						)
-						assert.equal(
-							items[1].textContent,
-							'Item 3',
-							'Third item should now be second',
-						)
-					})
-
-					/** Mutable updates don't work
-					 * @TODO log a warning
-					it('should remove an item using mutable update (splice)', async function () {
-						removeElementComponent.set('items', v => v.splice(0, 1));
-						await animationFrame();
-
-						const items = removeElementComponent.querySelectorAll('li');
-						assert.equal(items.length, 1, 'Should have 1 item after removal');
-						assert.equal(items[0].textContent, 'Item 3', 'Third item should remain last');
-					}); */
-
-					it('should handle removing all items', async function () {
-						removeElementComponent.items = []
-						await animationFrame()
-						const items =
-							removeElementComponent.querySelectorAll('li')
-						assert.equal(items.length, 0, 'Should remove all items')
-					})
-				})
-
-				describe('insertTemplate', function () {
-					const testInsertTemplate = async id => {
-						const component = document.getElementById(id)
-						const root =
-							id === 'insert-shadow'
-								? component.shadowRoot
-								: component
-						const ul = root.querySelector('ul')
-
-						await animationFrame()
-						assert.equal(
-							ul.children.length,
-							0,
-							'Initially, ul should be empty',
-						)
-
-						component.before = 1
-						await animationFrame()
-						assert.equal(
-							ul.previousElementSibling.tagName,
-							'P',
-							'Should insert p element before ul',
-						)
-
-						component.prepend = 1
-						await animationFrame()
-						assert.equal(
-							ul.firstElementChild.tagName,
-							'LI',
-							'Should prepend li element to ul',
-						)
-
-						component.append = 1
-						await animationFrame()
-						assert.equal(
-							ul.lastElementChild.tagName,
-							'LI',
-							'Should append li element to ul',
-						)
-
-						component.after = 1
-						await animationFrame()
-						assert.equal(
-							ul.nextElementSibling.tagName,
-							'P',
-							'Should insert p element after ul',
-						)
+						cleanup()
+					} finally {
+						element.remove()
 					}
-
-					it('should prove insertTemplate() working correctly in light DOM', async function () {
-						await testInsertTemplate('insert-light')
-					})
-
-					it('should prove insertTemplate() working correctly in Shadow DOM', async function () {
-						await testInsertTemplate('insert-shadow')
-					})
 				})
 
-				describe('Security Tests', function () {
-					let securityComponent
+				it('should show element when predicate is true', async function () {
+					const element = document.createElement('div')
+					element.textContent = 'Test content'
+					element.hidden = true // Start hidden
+					document.body.appendChild(element)
 
-					before(() => {
-						securityComponent =
-							document.querySelector('security-test')
-					})
+					// Create a mock component as host
+					const host = { getSignal: () => ({ get: () => true }) }
 
-					it('should reject unsafe attributes', async function () {
-						const div = securityComponent.querySelector('div')
+					try {
+						// Initially hidden
+						assert.equal(element.hidden, true)
 
-						// Test that onclick attribute is rejected
-						let threwError = false
-						let errorMessage = ''
-
-						const cleanup = updateElement(() => "alert('xss')", {
-							op: 'a',
-							name: 'onclick',
-							read: el => el.getAttribute('onclick'),
-							update: (el, value) => {
-								// This should throw due to safeSetAttribute
-								if (/^on/i.test('onclick'))
-									throw new Error(`Unsafe attribute: onclick`)
-								el.setAttribute('onclick', value)
-							},
-							reject: error => {
-								threwError = true
-								errorMessage = error.message
-							},
-						})(securityComponent, div)
-
+						// Apply show with true predicate
+						const cleanup = show(() => true)(host, element)
 						await animationFrame()
 
-						assert.isTrue(
-							threwError,
-							'Should throw error for onclick attribute',
+						assert.equal(
+							element.hidden,
+							false,
+							'Element should be visible when predicate is true',
 						)
-						assert.match(errorMessage, /Unsafe attribute: onclick/)
 
 						cleanup()
-
-						// Test that onmouseover attribute is rejected
-						threwError = false
-						errorMessage = ''
-
-						const cleanup2 = updateElement(() => "alert('xss')", {
-							op: 'a',
-							name: 'onmouseover',
-							read: el => el.getAttribute('onmouseover'),
-							update: (el, value) => {
-								// This should throw due to safeSetAttribute
-								if (/^on/i.test('onmouseover'))
-									throw new Error(
-										`Unsafe attribute: onmouseover`,
-									)
-								el.setAttribute('onmouseover', value)
-							},
-							reject: error => {
-								threwError = true
-								errorMessage = error.message
-							},
-						})(securityComponent, div)
-
-						await animationFrame()
-
-						assert.isTrue(
-							threwError,
-							'Should throw error for onmouseover attribute',
-						)
-						assert.match(
-							errorMessage,
-							/Unsafe attribute: onmouseover/,
-						)
-
-						cleanup2()
-					})
-
-					it('should reject unsafe URLs', async function () {
-						const div = securityComponent.querySelector('div')
-
-						// Test that javascript: URLs are rejected
-						let threwError = false
-						let errorMessage = ''
-
-						const cleanup = updateElement(
-							() => "javascript:alert('xss')",
-							{
-								op: 'a',
-								name: 'href',
-								read: el => el.getAttribute('href'),
-								update: (el, value) => {
-									// This should throw due to safeSetAttribute
-									if (value.includes('javascript:'))
-										throw new Error(
-											`Unsafe URL for href: ${value}`,
-										)
-									el.setAttribute('href', value)
-								},
-								reject: error => {
-									threwError = true
-									errorMessage = error.message
-								},
-							},
-						)(securityComponent, div)
-
-						await animationFrame()
-
-						assert.isTrue(
-							threwError,
-							'Should throw error for javascript: URL',
-						)
-						assert.match(errorMessage, /Unsafe URL/)
-
-						cleanup()
-
-						// Test that data: URLs with javascript are rejected
-						threwError = false
-						errorMessage = ''
-
-						const cleanup2 = updateElement(
-							() =>
-								"data:text/html,<script>alert('xss')<\/script>",
-							{
-								op: 'a',
-								name: 'src',
-								read: el => el.getAttribute('src'),
-								update: (el, value) => {
-									// This should throw due to safeSetAttribute
-									if (
-										value.includes('data:')
-										&& value.includes('script')
-									)
-										throw new Error(
-											`Unsafe URL for src: ${value}`,
-										)
-									el.setAttribute('src', value)
-								},
-								reject: error => {
-									threwError = true
-									errorMessage = error.message
-								},
-							},
-						)(securityComponent, div)
-
-						await animationFrame()
-
-						assert.isTrue(
-							threwError,
-							'Should throw error for data: URL with script',
-						)
-						assert.match(errorMessage, /Unsafe URL/)
-
-						cleanup2()
-					})
-
-					it('should allow safe URLs', async function () {
-						const div = securityComponent.querySelector('div')
-
-						// Test that https URLs are allowed
-						const httpsEffect = setAttribute(
-							'href',
-							() => 'https://example.com',
-						)(securityComponent, div)
-						await animationFrame()
-						assert.equal(
-							div.getAttribute('href'),
-							'https://example.com',
-						)
-						httpsEffect()
-
-						// Test that mailto URLs are allowed
-						const mailtoEffect = setAttribute(
-							'href',
-							() => 'mailto:test@example.com',
-						)(securityComponent, div)
-						await animationFrame()
-						assert.equal(
-							div.getAttribute('href'),
-							'mailto:test@example.com',
-						)
-						mailtoEffect()
-
-						// Test that tel URLs are allowed
-						const telEffect = setAttribute(
-							'href',
-							() => 'tel:+1234567890',
-						)(securityComponent, div)
-						await animationFrame()
-						assert.equal(
-							div.getAttribute('href'),
-							'tel:+1234567890',
-						)
-						telEffect()
-
-						// Test that relative URLs are allowed
-						const relativeEffect = setAttribute(
-							'href',
-							() => '/relative/path',
-						)(securityComponent, div)
-						await animationFrame()
-						assert.equal(div.getAttribute('href'), '/relative/path')
-						relativeEffect()
-					})
+					} finally {
+						element.remove()
+					}
 				})
 
-				describe('Reactive Type Variations', function () {
-					let signalComponent
+				it('should work with reactive signals like module-todo pattern', async function () {
+					// Create reactive signals for active tasks
+					const activeSignal = state([])
 
-					before(() => {
-						signalComponent =
-							document.querySelector('signal-types-test')
-					})
+					const singularElement = document.createElement('span')
+					singularElement.className = 'singular'
+					singularElement.textContent = 'task'
 
-					it('should work with Signal objects directly', async function () {
-						const span = signalComponent.querySelector('span')
-						const textSignal = state('direct signal')
+					const pluralElement = document.createElement('span')
+					pluralElement.className = 'plural'
+					pluralElement.textContent = 'tasks'
 
-						const cleanup = setText(textSignal)(
-							signalComponent,
-							span,
-						)
+					const remainingElement = document.createElement('div')
+					remainingElement.className = 'remaining'
+
+					const allDoneElement = document.createElement('div')
+					allDoneElement.className = 'all-done'
+					allDoneElement.textContent = 'All done!'
+
+					document.body.appendChild(singularElement)
+					document.body.appendChild(pluralElement)
+					document.body.appendChild(remainingElement)
+					document.body.appendChild(allDoneElement)
+
+					try {
+						// Create a mock host component
+						const host = {
+							getSignal: () => ({ get: () => true }),
+						}
+
+						// Apply show effects like in module-todo using reactive signals
+						const cleanup1 = show(
+							() => activeSignal.get().length === 1,
+						)(host, singularElement)
+						const cleanup2 = show(
+							() => activeSignal.get().length > 1,
+						)(host, pluralElement)
+						const cleanup3 = show(
+							() => !!activeSignal.get().length,
+						)(host, remainingElement)
+						const cleanup4 = show(
+							() => !activeSignal.get().length,
+						)(host, allDoneElement)
+
 						await animationFrame()
-						assert.equal(span.textContent, 'direct signal')
 
-						textSignal.set('updated signal')
-						await animationFrame()
-						assert.equal(span.textContent, 'updated signal')
-
-						cleanup()
-					})
-
-					it('should work with function-based Reactive', async function () {
-						const span = signalComponent.querySelector('span')
-
-						const cleanup = setText(
-							element => `Function result for ${element.tagName}`,
-						)(signalComponent, span)
-						await animationFrame()
+						// Initially no active tasks
 						assert.equal(
-							span.textContent,
-							'Function result for SPAN',
-						)
-
-						cleanup()
-					})
-
-					it('should work with property name strings', async function () {
-						const span = signalComponent.querySelector('span')
-
-						const cleanup = setText('textValue')(
-							signalComponent,
-							span,
-						)
-						await animationFrame()
-						assert.equal(span.textContent, 'signal text')
-
-						signalComponent.textValue = 'updated text'
-						await animationFrame()
-						assert.equal(span.textContent, 'updated text')
-
-						cleanup()
-					})
-				})
-
-				describe('UNSET vs RESET vs null Handling', function () {
-					let unsetComponent
-
-					before(() => {
-						unsetComponent = document.querySelector('unset-test')
-					})
-
-					it('should handle UNSET by deleting attributes', async function () {
-						const span = unsetComponent.querySelector('span')
-
-						// Set a value first
-						unsetComponent.titleValue = 'test title'
-						const cleanup = setAttribute('title', 'titleValue')(
-							unsetComponent,
-							span,
-						)
-						await animationFrame()
-						assert.equal(span.getAttribute('title'), 'test title')
-
-						unsetComponent.titleValue = UNSET
-						await animationFrame()
-						assert.equal(span.hasAttribute('title'), false)
-
-						cleanup()
-					})
-
-					it('should handle UNSET by removing style properties', async function () {
-						const span = unsetComponent.querySelector('span')
-
-						// Set a value first
-						unsetComponent.colorValue = 'red'
-						const cleanup = setStyle('color', 'colorValue')(
-							unsetComponent,
-							span,
-						)
-						await animationFrame()
-						assert.equal(span.style.color, 'red')
-
-						unsetComponent.colorValue = UNSET
-						await animationFrame()
-						assert.equal(span.style.color, '')
-
-						cleanup()
-					})
-
-					it('should handle RESET by reverting to original DOM value', async function () {
-						const span = unsetComponent.querySelector('span')
-
-						// Debug: Check initial DOM state
-						console.log(
-							'Initial title attribute:',
-							span.getAttribute('title'),
-						)
-						console.log(
-							'Component titleValue:',
-							unsetComponent.titleValue,
-						)
-
-						// Manually set the attribute first to test the RESET behavior
-						span.setAttribute('title', 'original')
-
-						// First set up the effect which will read the current DOM value
-						const cleanup = setAttribute('title', 'titleValue')(
-							unsetComponent,
-							span,
-						)
-
-						// Wait for effect to initialize
-						await animationFrame()
-
-						// Now change the value
-						unsetComponent.titleValue = 'changed title'
-						await animationFrame()
-						assert.equal(
-							span.getAttribute('title'),
-							'changed title',
-						)
-
-						// RESET should revert to the DOM value that was read when effect was created
-						unsetComponent.titleValue = RESET
-						await animationFrame()
-						assert.equal(span.getAttribute('title'), 'original')
-
-						cleanup()
-					})
-
-					it('should handle null as deletion for deletable operations', async function () {
-						const span = unsetComponent.querySelector('span')
-
-						const cleanup = setAttribute('title', () => null)(
-							unsetComponent,
-							span,
-						)
-						await animationFrame()
-						assert.equal(span.hasAttribute('title'), false)
-
-						cleanup()
-					})
-				})
-
-				describe('Error Handling and Edge Cases', function () {
-					let edgeComponent
-
-					before(() => {
-						edgeComponent = document.querySelector('edge-case-test')
-					})
-
-					it('should handle SignalLike resolution errors gracefully', async function () {
-						const span = edgeComponent.querySelector('span')
-
-						const cleanup = setText(() => {
-							throw new Error('Signal resolution error')
-						})(edgeComponent, span)
-
-						await animationFrame()
-						// Should not crash, original content should remain
-						assert.equal(span.textContent, '')
-
-						cleanup()
-					})
-
-					it('should handle multiple rapid updates with deduplication', async function () {
-						const span = edgeComponent.querySelector('span')
-						let updateCount = 0
-
-						const cleanup = updateElement('value', {
-							op: 't',
-							read: () => span.textContent,
-							update: (el, value) => {
-								updateCount++
-								el.textContent = value
-							},
-						})(edgeComponent, span)
-
-						// Initial update happens first
-						await animationFrame()
-						const initialCount = updateCount
-
-						// Trigger multiple rapid updates
-						edgeComponent.value = 'update1'
-						edgeComponent.value = 'update2'
-						edgeComponent.value = 'update3'
-
-						await animationFrame()
-
-						// Should have had minimal updates due to deduplication
-						assert.isBelow(
-							updateCount - initialCount,
-							4,
-							'Should not update for every single change',
-						)
-						assert.equal(span.textContent, 'update3')
-
-						cleanup()
-					})
-
-					it('should handle insertOrRemoveElement with null create result', async function () {
-						const div = edgeComponent.querySelector('div')
-						const initialChildCount = div.children.length
-
-						// Use a state to trigger the insertion
-						const insertionState = state(1)
-						const cleanup = insertOrRemoveElement(insertionState, {
-							create: () => null, // Returns null
-							position: 'beforeend',
-						})(edgeComponent, div)
-
-						await animationFrame()
-						// Should not crash when create returns null and should not add children
-						assert.equal(div.children.length, initialChildCount)
-
-						cleanup()
-					})
-
-					it('should handle negative removal counts', async function () {
-						const div = edgeComponent.querySelector('div')
-						// Add some elements first
-						div.innerHTML =
-							'<span>1</span><span>2</span><span>3</span>'
-
-						const cleanup = insertOrRemoveElement(() => -2, {
-							position: 'beforeend',
-						})(edgeComponent, div)
-
-						await animationFrame()
-						// Should remove 2 elements from the end
-						assert.equal(div.children.length, 1)
-						assert.equal(div.children[0].textContent, '1')
-
-						cleanup()
-					})
-				})
-
-				describe('Core updateElement Function', function () {
-					let edgeComponent
-
-					before(() => {
-						edgeComponent = document.querySelector('edge-case-test')
-					})
-
-					it('should handle different operation types', async function () {
-						const span = edgeComponent.querySelector('span')
-
-						// Test attribute operation
-						const attrCleanup = updateElement('value', {
-							op: 'a',
-							name: 'data-test',
-							read: el => el.getAttribute('data-test'),
-							update: (el, value) =>
-								el.setAttribute('data-test', value),
-							delete: el => el.removeAttribute('data-test'),
-						})(edgeComponent, span)
-
-						edgeComponent.value = 'attr-value'
-						await animationFrame()
-						assert.equal(
-							span.getAttribute('data-test'),
-							'attr-value',
-						)
-
-						// Test class operation
-						const classCleanup = updateElement(() => true, {
-							op: 'c',
-							name: 'test-class',
-							read: el => el.classList.contains('test-class'),
-							update: (el, value) =>
-								el.classList.toggle('test-class', value),
-						})(edgeComponent, span)
-
-						await animationFrame()
-						assert.equal(
-							span.classList.contains('test-class'),
+							singularElement.hidden,
 							true,
+							'Singular should be hidden with 0 tasks',
+						)
+						assert.equal(
+							pluralElement.hidden,
+							true,
+							'Plural should be hidden with 0 tasks',
+						)
+						assert.equal(
+							remainingElement.hidden,
+							true,
+							'Remaining should be hidden with 0 tasks',
+						)
+						assert.equal(
+							allDoneElement.hidden,
+							false,
+							'All done should be visible with 0 tasks',
 						)
 
-						attrCleanup()
-						classCleanup()
-					})
-
-					it('should call resolve/reject callbacks', async function () {
-						const span = edgeComponent.querySelector('span')
-						let resolved = false
-						let rejected = false
-
-						const cleanup = updateElement('value', {
-							op: 't',
-							read: el => el.textContent,
-							update: (el, value) => {
-								if (value === 'error')
-									throw new Error('Update error')
-								el.textContent = value
-							},
-							resolve: () => {
-								resolved = true
-							},
-							reject: () => {
-								rejected = true
-							},
-						})(edgeComponent, span)
-
-						// Test successful update
-						edgeComponent.value = 'success'
+						// Add one task
+						activeSignal.set(['task1'])
 						await animationFrame()
-						assert.equal(resolved, true)
-						assert.equal(span.textContent, 'success')
 
-						// Test error handling
-						edgeComponent.value = 'error'
+						assert.equal(
+							singularElement.hidden,
+							false,
+							'Singular should be visible with 1 task',
+						)
+						assert.equal(
+							pluralElement.hidden,
+							true,
+							'Plural should be hidden with 1 task',
+						)
+						assert.equal(
+							remainingElement.hidden,
+							false,
+							'Remaining should be visible with 1 task',
+						)
+						assert.equal(
+							allDoneElement.hidden,
+							true,
+							'All done should be hidden with 1 task',
+						)
+
+						// Add more tasks
+						activeSignal.set(['task1', 'task2', 'task3'])
 						await animationFrame()
-						assert.equal(rejected, true)
 
-						cleanup()
-					})
-				})
-
-				describe('on()', () => {
-					it('should attach and remove an event listener', async () => {
-						const div = document.getElementById('test-on-function')
-						let called = false
-
-						const off = on('click', () => {
-							called = true
-						})({}, div)
-
-						div.click()
-						const wasCalled = called
-
-						off() // Remove the event listener
-						called = false
-						div.click()
-
-						assert.equal(wasCalled, true)
-						assert.equal(called, false)
-					})
-
-					it('should throw TypeError for invalid handler', async () => {
-						const div = document.getElementById('test-on-invalid')
-						assert.throws(() => on('click', {})({}, div), TypeError)
-					})
-
-					it('should handle multiple event types', () => {
-						const element = document.createElement('input')
-						document.body.appendChild(element) // Add to DOM for focus/blur to work
-						let focusCount = 0
-						let blurCount = 0
-
-						const cleanup1 = on('focus', () => focusCount++)(
-							null,
-							element,
+						assert.equal(
+							singularElement.hidden,
+							true,
+							'Singular should be hidden with 3 tasks',
 						)
-						const cleanup2 = on('blur', () => blurCount++)(
-							null,
-							element,
+						assert.equal(
+							pluralElement.hidden,
+							false,
+							'Plural should be visible with 3 tasks',
 						)
-
-						element.focus()
-						element.blur()
-
-						assert.equal(focusCount, 1)
-						assert.equal(blurCount, 1)
+						assert.equal(
+							remainingElement.hidden,
+							false,
+							'Remaining should be visible with 3 tasks',
+						)
+						assert.equal(
+							allDoneElement.hidden,
+							true,
+							'All done should be hidden with 3 tasks',
+						)
 
 						cleanup1()
 						cleanup2()
-						document.body.removeChild(element) // Clean up
-					})
+						cleanup3()
+						cleanup4()
+					} finally {
+						singularElement.remove()
+						pluralElement.remove()
+						remainingElement.remove()
+						allDoneElement.remove()
+					}
 				})
 
-				describe('emitEvent()', () => {
-					it('should emit an event', async () => {
-						const el = document.querySelector('emit-test')
-						let called = false
-						const handler = () => {
-							called = true
-						}
+				it('should work with property name strings', async function () {
+					// Create reactive component with signal
+					const visibilitySignal = state(true)
+					const component = {
+						isVisible: true,
+						getSignal: function (prop) {
+							if (prop === 'isVisible')
+								return visibilitySignal
+							return { get: () => this[prop] }
+						},
+					}
 
-						el.addEventListener('custom-event', handler)
-						el.value = 'new value' // Should update reactive property and emit event
+					const element = document.createElement('div')
+					document.body.appendChild(element)
 
-						assert.equal(called, true)
-
-						el.removeEventListener('custom-event', handler)
-					})
-
-					it('should emit an event with detail', async () => {
-						const el = document.querySelector('emit-test')
-						let detailReceived = null
-						const handler = event => {
-							detailReceived = event.detail
-						}
-						el.addEventListener('custom-event', handler)
-						el.value = 'updated value' // Should update reactive property and emit event
-
-						assert.equal(detailReceived, 'updated value')
-
-						el.removeEventListener('custom-event', handler)
-					})
-
-					it('should emit event with function detail', () => {
-						const el = document.querySelector('emit-test')
-						let eventDetail = null
-						const handler = e => {
-							eventDetail = e.detail
-						}
-						el.addEventListener('test-event', handler)
-
-						el.value = 'something else' // Should update reactive property and emit event
-						assert.isFalse(eventDetail)
-
-						el.value = 'Content'
-						assert.isTrue(eventDetail)
-
-						el.removeEventListener('test-event', handler)
-					})
-
-					it('should make events bubble by default', () => {
-						const el = document.querySelector('emit-test')
-						el.value = 'from other-event on div'
+					try {
+						// Use property name string
+						const cleanup = show('isVisible')(
+							component,
+							element,
+						)
+						await animationFrame()
 
 						assert.equal(
-							el.other,
-							'from other-event on div',
-							'Event should bubble to parent',
+							element.hidden,
+							false,
+							'Element should be visible when isVisible is true',
 						)
-					})
+
+						// Change signal value (not direct property)
+						visibilitySignal.set(false)
+						await animationFrame()
+
+						assert.equal(
+							element.hidden,
+							true,
+							'Element should be hidden when isVisible is false',
+						)
+
+						cleanup()
+					} finally {
+						element.remove()
+					}
 				})
 
-				describe('pass()', function () {
-					it('Orphan component should do nothing at all', async function () {
-						const orphanComponent =
-							document.getElementById('orphan')
+				it('should work with signal objects directly', async function () {
+					const signal = state(true)
+					const element = document.createElement('div')
+					document.body.appendChild(element)
+
+					// Create a mock host component
+					const host = { getSignal: () => ({ get: () => true }) }
+
+					try {
+						const cleanup = show(signal)(host, element)
 						await animationFrame()
-						const headingContent = normalizeText(
-							orphanComponent.querySelector('h1').textContent,
-						)
-						const textContent = normalizeText(
-							orphanComponent.querySelector('p').textContent,
-						)
-						assert.equal(
-							headingContent,
-							'Hello from server',
-							'Should not change server-side rendered heading',
-						)
-						assert.equal(
-							textContent,
-							'Text from server',
-							'Should not change server-side rendered text',
-						)
-					})
-					it('Descendent component should receive state from attribute of ancestor component', async function () {
-						const childComponent = document.getElementById('child')
-						await customElements.whenDefined(
-							childComponent.localName,
-						)
-						const headingContent =
-							childComponent.querySelector('h1').textContent
-						assert.equal(
-							headingContent,
-							'Hello from attribute',
-							'Should have initial heading from attribute of ancestor component',
-						)
-					})
 
-					it('Descendent component should receive derived state from attribute of ancestor component', async function () {
-						const childComponent = document.getElementById('child')
-						await customElements.whenDefined(
-							childComponent.localName,
-						)
-						const textContent = normalizeText(
-							childComponent.querySelector('p').textContent,
-						)
 						assert.equal(
-							textContent,
-							'Hello from attribute'.toUpperCase(),
-							'Should have initial text derived from attribute of ancestor component',
+							element.hidden,
+							false,
+							'Element should be visible when signal is true',
 						)
-					})
 
-					it('Descendent component should receive passed and derived states from changed attribute of ancestor component', async function () {
-						const parentComponent =
-							document.getElementById('parent')
-						const childComponent = document.getElementById('child')
-						parentComponent.setAttribute(
-							'heading',
-							'Hello from changed attribute',
+						// Change signal value
+						signal.set(false)
+						await animationFrame()
+
+						assert.equal(
+							element.hidden,
+							true,
+							'Element should be hidden when signal is false',
+						)
+
+						// Change back
+						signal.set(true)
+						await animationFrame()
+
+						assert.equal(
+							element.hidden,
+							false,
+							'Element should be visible again when signal is true',
+						)
+
+						cleanup()
+					} finally {
+						element.remove()
+					}
+				})
+
+				it('should handle clear button pattern from form-textbox', async function () {
+					// Create reactive signal for input length
+					const lengthSignal = state(0)
+
+					const clearButton = document.createElement('button')
+					clearButton.className = 'clear'
+					clearButton.textContent = '✕'
+					clearButton.hidden = true // Initially hidden
+					document.body.appendChild(clearButton)
+
+					try {
+						// Create a mock host component
+						const host = {
+							getSignal: () => ({ get: () => true }),
+						}
+
+						// Apply show effect like in form-textbox using reactive signal
+						const cleanup = show(() => !!lengthSignal.get())(
+							host,
+							clearButton,
 						)
 						await animationFrame()
-						const headingContent = normalizeText(
-							childComponent.querySelector('h1').textContent,
-						)
-						const textContent = normalizeText(
-							childComponent.querySelector('p').textContent,
-						)
-						assert.equal(
-							headingContent,
-							'Hello from changed attribute',
-							'Should have changed heading from attribute of ancestor component',
-						)
-						assert.equal(
-							textContent,
-							'Hello from changed attribute'.toUpperCase(),
-							'Should have changed text derived from attribute of ancestor component',
-						)
-					})
 
-					it('Descendent component should change heading if inherited state is set', async function () {
-						const parentComponent =
-							document.getElementById('parent')
-						const childComponent = document.getElementById('child')
-						parentComponent.heading = 'Hello from state on ancestor'
+						// Initially no input, button should be hidden
+						assert.equal(
+							clearButton.hidden,
+							true,
+							'Clear button should be hidden when input is empty',
+						)
+
+						// Type some text
+						lengthSignal.set(5)
 						await animationFrame()
-						const headingContent =
-							childComponent.querySelector('h1').textContent
+
 						assert.equal(
-							headingContent,
-							'Hello from state on ancestor',
-							'Should have changed heading from state of ancestor component',
+							clearButton.hidden,
+							false,
+							'Clear button should be visible when input has text',
 						)
-					})
 
-					it('should throw TypeError if signals are not an object or provider', async function () {
-						const parentComponent =
-							document.getElementById('parent')
-						const childComponent = document.getElementById('child')
+						// Clear input
+						lengthSignal.set(0)
+						await animationFrame()
 
-						assert.throws(
-							() => {
-								pass(null)(parentComponent, childComponent)
+						assert.equal(
+							clearButton.hidden,
+							true,
+							'Clear button should be hidden when input is cleared',
+						)
+
+						cleanup()
+					} finally {
+						clearButton.remove()
+					}
+				})
+
+				it('should handle RESET and UNSET values properly', async function () {
+					const element = document.createElement('div')
+					element.hidden = true // Start with hidden
+					document.body.appendChild(element)
+
+					try {
+						// Create a mock host component
+						const host = {
+							getSignal: () => ({ get: () => true }),
+						}
+
+						// Test RESET - should revert to original DOM value
+						const cleanup1 = show(() => RESET)(host, element)
+						await animationFrame()
+
+						assert.equal(
+							element.hidden,
+							true,
+							'RESET should maintain original hidden state',
+						)
+						cleanup1()
+
+						// Test UNSET - should delete/fallback
+						const cleanup2 = show(() => UNSET)(host, element)
+						await animationFrame()
+
+						assert.equal(
+							element.hidden,
+							true,
+							'UNSET should fallback to original hidden state',
+						)
+						cleanup2()
+					} finally {
+						element.remove()
+					}
+				})
+			})
+
+			describe('dangerouslySetInnerHTML', () => {
+				let dangerous, shadowDangerous
+
+				before(() => {
+					dangerous = document.getElementById('dangerous')
+					shadowDangerous =
+						document.getElementById('shadow-dangerous')
+				})
+
+				it('should set inner HTML for non-shadow component', async () => {
+					assert.equal(
+						dangerous.innerHTML,
+						'<p>Initial content</p>',
+					)
+
+					dangerous.content = '<div>Updated content</div>'
+					await animationFrame()
+					assert.equal(
+						dangerous.innerHTML,
+						'<div>Updated content</div>',
+					)
+				})
+
+				it('should set inner HTML for shadow component', async () => {
+					assert.equal(
+						shadowDangerous.shadowRoot.innerHTML,
+						'<p>Initial shadow content</p>',
+					)
+
+					shadowDangerous.content =
+						'<div>Updated shadow content</div>'
+					await animationFrame()
+					assert.equal(
+						shadowDangerous.shadowRoot.innerHTML,
+						'<div>Updated shadow content</div>',
+					)
+				})
+
+				it('should ignore empty content', async () => {
+					dangerous.content = ''
+					await animationFrame()
+					assert.equal(
+						dangerous.innerHTML,
+						'<div>Updated content</div>',
+					)
+
+					shadowDangerous.content = ''
+					await animationFrame()
+					assert.equal(
+						shadowDangerous.shadowRoot.innerHTML,
+						'<div>Updated shadow content</div>',
+					)
+				})
+
+				it('should not execute scripts by default, but allow execution when specified', async () => {
+					const scriptContent =
+						'ipt>document.getElementById("test-p").textContent = "Modified";</scr'
+					const shadowScriptContent =
+						'ipt>document.querySelector("dangerous-with-scripts").shadowRoot.getElementById("test-p-shadow").textContent = "Modified";</scr'
+
+					// Test default behavior (scripts not executed)
+					dangerous.content = `<p id="test-p">Original</p><scr${scriptContent}ipt>`
+					await animationFrame()
+					assert.equal(
+						dangerous.querySelector('#test-p').textContent,
+						'Original',
+						'Script should not modify content by default',
+					)
+
+					const dangerousWithScripts = document.querySelector(
+						'dangerous-with-scripts',
+					)
+					dangerousWithScripts.content = `<p id="test-p-shadow">Original</p><scr${shadowScriptContent}ipt>`
+					await animationFrame()
+					assert.equal(
+						dangerousWithScripts.shadowRoot.querySelector(
+							'#test-p-shadow',
+						).textContent,
+						'Modified',
+						'Script should modify content when allowScripts is true',
+					)
+				})
+			})
+
+			describe('createElement', function () {
+				let createElementComponent
+
+				before(() => {
+					createElementComponent =
+						document.querySelector('create-element')
+				})
+
+				it('should insert a paragraph before the UL', async function () {
+					createElementComponent.before = 1
+					await animationFrame()
+					const insertedParagraph =
+						createElementComponent.querySelector(
+							'p:first-child',
+						)
+					assert.isNotNull(
+						insertedParagraph,
+						'Paragraph should be inserted before the UL',
+					)
+					assert.equal(
+						insertedParagraph.textContent,
+						'Before',
+						'Paragraph should have correct text content',
+					)
+					assert.equal(
+						createElementComponent.before,
+						0,
+						'Before signal should be reset to 0',
+					)
+				})
+
+				it('should insert a LI at the beginning of the UL', async function () {
+					createElementComponent.prepend = 1
+					await animationFrame()
+					const insertedLi =
+						createElementComponent.querySelector(
+							'ul li:first-child',
+						)
+					assert.isNotNull(
+						insertedLi,
+						'LI should be inserted at the beginning of the UL',
+					)
+					assert.equal(
+						insertedLi.textContent,
+						'Prepend',
+						'LI should have correct text content',
+					)
+					assert.equal(
+						insertedLi.getAttribute('value'),
+						'foo',
+						'LI should have correct attribute',
+					)
+					assert.equal(
+						createElementComponent.prepend,
+						0,
+						'Prepend signal should be reset to 0',
+					)
+				})
+
+				it('should insert a LI at the end of the UL', async function () {
+					createElementComponent.append = 1
+					await animationFrame()
+					const insertedLi =
+						createElementComponent.querySelector(
+							'ul li:last-child',
+						)
+					assert.isNotNull(
+						insertedLi,
+						'LI should be inserted at the end of the UL',
+					)
+					assert.equal(
+						insertedLi.textContent,
+						'',
+						'LI should have empty text content',
+					)
+					assert.equal(
+						createElementComponent.append,
+						0,
+						'Append signal should be reset to 0',
+					)
+				})
+
+				it('should insert a paragraph after the UL', async function () {
+					createElementComponent.after = 1
+					await animationFrame()
+					const insertedParagraph =
+						createElementComponent.querySelector('ul + p')
+					assert.isNotNull(
+						insertedParagraph,
+						'Paragraph should be inserted after the UL',
+					)
+					assert.equal(
+						insertedParagraph.textContent,
+						'',
+						'Paragraph should have empty text content',
+					)
+					assert.equal(
+						insertedParagraph.getAttribute('value'),
+						'bar',
+						'Paragraph should have correct attribute',
+					)
+					assert.equal(
+						createElementComponent.after,
+						0,
+						'After signal should be reset to 0',
+					)
+				})
+
+				it('should allow re-triggering effects', async function () {
+					// Re-trigger the 'before' effect
+					createElementComponent.before = true
+					await animationFrame()
+					const beforeParagraph2 =
+						createElementComponent.querySelector(
+							'p:first-child + p',
+						)
+					assert.isNotNull(
+						beforeParagraph2,
+						'LI should be inserted at the beginning of the UL',
+					)
+
+					// Re-trigger the 'prepend' effect
+					createElementComponent.prepend = true
+					await animationFrame()
+					const prependLis =
+						createElementComponent.querySelectorAll(
+							'li[value="foo"]',
+						)
+					assert.equal(
+						prependLis.length,
+						2,
+						'Should insert another LI at the beginning of the UL',
+					)
+
+					// Verify that all signals are reset to false
+					assert.equal(
+						createElementComponent.before,
+						false,
+						'Before signal should be reset to false',
+					)
+					assert.equal(
+						createElementComponent.prepend,
+						false,
+						'Prepend signal should be reset to false',
+					)
+					assert.equal(
+						createElementComponent.append,
+						false,
+						'Append signal should be reset to false',
+					)
+					assert.equal(
+						createElementComponent.after,
+						false,
+						'After signal should be reset to false',
+					)
+				})
+			})
+
+			describe('removeElement', function () {
+				let removeElementComponent
+
+				before(() => {
+					removeElementComponent =
+						document.querySelector('remove-element')
+				})
+
+				it('should remove an item using immutable update (toSpliced)', async function () {
+					removeElementComponent.items =
+						removeElementComponent.items.toSpliced(1, 1)
+					await animationFrame()
+					const items =
+						removeElementComponent.querySelectorAll('li')
+					assert.equal(
+						items.length,
+						2,
+						'Should have 2 items after removal',
+					)
+					assert.equal(
+						items[0].textContent,
+						'Item 1',
+						'First item should remain',
+					)
+					assert.equal(
+						items[1].textContent,
+						'Item 3',
+						'Third item should now be second',
+					)
+				})
+
+				/** Mutable updates don't work
+				 * @TODO log a warning
+				it('should remove an item using mutable update (splice)', async function () {
+					removeElementComponent.set('items', v => v.splice(0, 1));
+					await animationFrame();
+
+					const items = removeElementComponent.querySelectorAll('li');
+					assert.equal(items.length, 1, 'Should have 1 item after removal');
+					assert.equal(items[0].textContent, 'Item 3', 'Third item should remain last');
+				}); */
+
+				it('should handle removing all items', async function () {
+					removeElementComponent.items = []
+					await animationFrame()
+					const items =
+						removeElementComponent.querySelectorAll('li')
+					assert.equal(items.length, 0, 'Should remove all items')
+				})
+			})
+
+			describe('insertTemplate', function () {
+				const testInsertTemplate = async id => {
+					const component = document.getElementById(id)
+					const root =
+						id === 'insert-shadow'
+							? component.shadowRoot
+							: component
+					const ul = root.querySelector('ul')
+
+					await animationFrame()
+					assert.equal(
+						ul.children.length,
+						0,
+						'Initially, ul should be empty',
+					)
+
+					component.before = 1
+					await animationFrame()
+					assert.equal(
+						ul.previousElementSibling.tagName,
+						'P',
+						'Should insert p element before ul',
+					)
+
+					component.prepend = 1
+					await animationFrame()
+					assert.equal(
+						ul.firstElementChild.tagName,
+						'LI',
+						'Should prepend li element to ul',
+					)
+
+					component.append = 1
+					await animationFrame()
+					assert.equal(
+						ul.lastElementChild.tagName,
+						'LI',
+						'Should append li element to ul',
+					)
+
+					component.after = 1
+					await animationFrame()
+					assert.equal(
+						ul.nextElementSibling.tagName,
+						'P',
+						'Should insert p element after ul',
+					)
+				}
+
+				it('should prove insertTemplate() working correctly in light DOM', async function () {
+					await testInsertTemplate('insert-light')
+				})
+
+				it('should prove insertTemplate() working correctly in Shadow DOM', async function () {
+					await testInsertTemplate('insert-shadow')
+				})
+			})
+
+			describe('Security Tests', function () {
+				let securityComponent
+
+				before(() => {
+					securityComponent =
+						document.querySelector('security-test')
+				})
+
+				it('should reject unsafe attributes', async function () {
+					const div = securityComponent.querySelector('div')
+
+					// Test that onclick attribute is rejected
+					let threwError = false
+					let errorMessage = ''
+
+					const cleanup = updateElement(() => "alert('xss')", {
+						op: 'a',
+						name: 'onclick',
+						read: el => el.getAttribute('onclick'),
+						update: (el, value) => {
+							// This should throw due to safeSetAttribute
+							if (/^on/i.test('onclick'))
+								throw new Error(`Unsafe attribute: onclick`)
+							el.setAttribute('onclick', value)
+						},
+						reject: error => {
+							threwError = true
+							errorMessage = error.message
+						},
+					})(securityComponent, div)
+
+					await animationFrame()
+
+					assert.isTrue(
+						threwError,
+						'Should throw error for onclick attribute',
+					)
+					assert.match(errorMessage, /Unsafe attribute: onclick/)
+
+					cleanup()
+
+					// Test that onmouseover attribute is rejected
+					threwError = false
+					errorMessage = ''
+
+					const cleanup2 = updateElement(() => "alert('xss')", {
+						op: 'a',
+						name: 'onmouseover',
+						read: el => el.getAttribute('onmouseover'),
+						update: (el, value) => {
+							// This should throw due to safeSetAttribute
+							if (/^on/i.test('onmouseover'))
+								throw new Error(
+									`Unsafe attribute: onmouseover`,
+								)
+							el.setAttribute('onmouseover', value)
+						},
+						reject: error => {
+							threwError = true
+							errorMessage = error.message
+						},
+					})(securityComponent, div)
+
+					await animationFrame()
+
+					assert.isTrue(
+						threwError,
+						'Should throw error for onmouseover attribute',
+					)
+					assert.match(
+						errorMessage,
+						/Unsafe attribute: onmouseover/,
+					)
+
+					cleanup2()
+				})
+
+				it('should reject unsafe URLs', async function () {
+					const div = securityComponent.querySelector('div')
+
+					// Test that javascript: URLs are rejected
+					let threwError = false
+					let errorMessage = ''
+
+					const cleanup = updateElement(
+						() => "javascript:alert('xss')",
+						{
+							op: 'a',
+							name: 'href',
+							read: el => el.getAttribute('href'),
+							update: (el, value) => {
+								// This should throw due to safeSetAttribute
+								if (value.includes('javascript:'))
+									throw new Error(
+										`Unsafe URL for href: ${value}`,
+									)
+								el.setAttribute('href', value)
 							},
-							TypeError,
+							reject: error => {
+								threwError = true
+								errorMessage = error.message
+							},
+						},
+					)(securityComponent, div)
+
+					await animationFrame()
+
+					assert.isTrue(
+						threwError,
+						'Should throw error for javascript: URL',
+					)
+					assert.match(errorMessage, /Unsafe URL/)
+
+					cleanup()
+
+					// Test that data: URLs with javascript are rejected
+					threwError = false
+					errorMessage = ''
+
+					const cleanup2 = updateElement(
+						() =>
+							"data:text/html,<script>alert('xss')<\/script>",
+						{
+							op: 'a',
+							name: 'src',
+							read: el => el.getAttribute('src'),
+							update: (el, value) => {
+								// This should throw due to safeSetAttribute
+								if (
+									value.includes('data:')
+									&& value.includes('script')
+								)
+									throw new Error(
+										`Unsafe URL for src: ${value}`,
+									)
+								el.setAttribute('src', value)
+							},
+							reject: error => {
+								threwError = true
+								errorMessage = error.message
+							},
+						},
+					)(securityComponent, div)
+
+					await animationFrame()
+
+					assert.isTrue(
+						threwError,
+						'Should throw error for data: URL with script',
+					)
+					assert.match(errorMessage, /Unsafe URL/)
+
+					cleanup2()
+				})
+
+				it('should allow safe URLs', async function () {
+					const div = securityComponent.querySelector('div')
+
+					// Test that https URLs are allowed
+					const httpsEffect = setAttribute(
+						'href',
+						() => 'https://example.com',
+					)(securityComponent, div)
+					await animationFrame()
+					assert.equal(
+						div.getAttribute('href'),
+						'https://example.com',
+					)
+					httpsEffect()
+
+					// Test that mailto URLs are allowed
+					const mailtoEffect = setAttribute(
+						'href',
+						() => 'mailto:test@example.com',
+					)(securityComponent, div)
+					await animationFrame()
+					assert.equal(
+						div.getAttribute('href'),
+						'mailto:test@example.com',
+					)
+					mailtoEffect()
+
+					// Test that tel URLs are allowed
+					const telEffect = setAttribute(
+						'href',
+						() => 'tel:+1234567890',
+					)(securityComponent, div)
+					await animationFrame()
+					assert.equal(
+						div.getAttribute('href'),
+						'tel:+1234567890',
+					)
+					telEffect()
+
+					// Test that relative URLs are allowed
+					const relativeEffect = setAttribute(
+						'href',
+						() => '/relative/path',
+					)(securityComponent, div)
+					await animationFrame()
+					assert.equal(div.getAttribute('href'), '/relative/path')
+					relativeEffect()
+				})
+			})
+
+			describe('Reactive Type Variations', function () {
+				let signalComponent
+
+				before(() => {
+					signalComponent =
+						document.querySelector('signal-types-test')
+				})
+
+				it('should work with Signal objects directly', async function () {
+					const span = signalComponent.querySelector('span')
+					const textSignal = state('direct signal')
+
+					const cleanup = setText(textSignal)(
+						signalComponent,
+						span,
+					)
+					await animationFrame()
+					assert.equal(span.textContent, 'direct signal')
+
+					textSignal.set('updated signal')
+					await animationFrame()
+					assert.equal(span.textContent, 'updated signal')
+
+					cleanup()
+				})
+
+				it('should work with function-based Reactive', async function () {
+					const span = signalComponent.querySelector('span')
+
+					const cleanup = setText(
+						element => `Function result for ${element.tagName}`,
+					)(signalComponent, span)
+					await animationFrame()
+					assert.equal(
+						span.textContent,
+						'Function result for SPAN',
+					)
+
+					cleanup()
+				})
+
+				it('should work with property name strings', async function () {
+					const span = signalComponent.querySelector('span')
+
+					const cleanup = setText('textValue')(
+						signalComponent,
+						span,
+					)
+					await animationFrame()
+					assert.equal(span.textContent, 'signal text')
+
+					signalComponent.textValue = 'updated text'
+					await animationFrame()
+					assert.equal(span.textContent, 'updated text')
+
+					cleanup()
+				})
+			})
+
+			describe('UNSET vs RESET vs null Handling', function () {
+				let unsetComponent
+
+				before(() => {
+					unsetComponent = document.querySelector('unset-test')
+				})
+
+				it('should handle UNSET by deleting attributes', async function () {
+					const span = unsetComponent.querySelector('span')
+
+					// Set a value first
+					unsetComponent.titleValue = 'test title'
+					const cleanup = setAttribute('title', 'titleValue')(
+						unsetComponent,
+						span,
+					)
+					await animationFrame()
+					assert.equal(span.getAttribute('title'), 'test title')
+
+					unsetComponent.titleValue = UNSET
+					await animationFrame()
+					assert.equal(span.hasAttribute('title'), false)
+
+					cleanup()
+				})
+
+				it('should handle UNSET by removing style properties', async function () {
+					const span = unsetComponent.querySelector('span')
+
+					// Set a value first
+					unsetComponent.colorValue = 'red'
+					const cleanup = setStyle('color', 'colorValue')(
+						unsetComponent,
+						span,
+					)
+					await animationFrame()
+					assert.equal(span.style.color, 'red')
+
+					unsetComponent.colorValue = UNSET
+					await animationFrame()
+					assert.equal(span.style.color, '')
+
+					cleanup()
+				})
+
+				it('should handle RESET by reverting to original DOM value', async function () {
+					const span = unsetComponent.querySelector('span')
+
+					// Debug: Check initial DOM state
+					console.log(
+						'Initial title attribute:',
+						span.getAttribute('title'),
+					)
+					console.log(
+						'Component titleValue:',
+						unsetComponent.titleValue,
+					)
+
+					// Manually set the attribute first to test the RESET behavior
+					span.setAttribute('title', 'original')
+
+					// First set up the effect which will read the current DOM value
+					const cleanup = setAttribute('title', 'titleValue')(
+						unsetComponent,
+						span,
+					)
+
+					// Wait for effect to initialize
+					await animationFrame()
+
+					// Now change the value
+					unsetComponent.titleValue = 'changed title'
+					await animationFrame()
+					assert.equal(
+						span.getAttribute('title'),
+						'changed title',
+					)
+
+					// RESET should revert to the DOM value that was read when effect was created
+					unsetComponent.titleValue = RESET
+					await animationFrame()
+					assert.equal(span.getAttribute('title'), 'original')
+
+					cleanup()
+				})
+
+				it('should handle null as deletion for deletable operations', async function () {
+					const span = unsetComponent.querySelector('span')
+
+					const cleanup = setAttribute('title', () => null)(
+						unsetComponent,
+						span,
+					)
+					await animationFrame()
+					assert.equal(span.hasAttribute('title'), false)
+
+					cleanup()
+				})
+			})
+
+			describe('Error Handling and Edge Cases', function () {
+				let edgeComponent
+
+				before(() => {
+					edgeComponent = document.querySelector('edge-case-test')
+				})
+
+				it('should handle SignalLike resolution errors gracefully', async function () {
+					const span = edgeComponent.querySelector('span')
+
+					const cleanup = setText(() => {
+						throw new Error('Signal resolution error')
+					})(edgeComponent, span)
+
+					await animationFrame()
+					// Should not crash, original content should remain
+					assert.equal(span.textContent, '')
+
+					cleanup()
+				})
+
+				it('should handle multiple rapid updates with deduplication', async function () {
+					const span = edgeComponent.querySelector('span')
+					let updateCount = 0
+
+					const cleanup = updateElement('value', {
+						op: 't',
+						read: () => span.textContent,
+						update: (el, value) => {
+							updateCount++
+							el.textContent = value
+						},
+					})(edgeComponent, span)
+
+					// Initial update happens first
+					await animationFrame()
+					const initialCount = updateCount
+
+					// Trigger multiple rapid updates
+					edgeComponent.value = 'update1'
+					edgeComponent.value = 'update2'
+					edgeComponent.value = 'update3'
+
+					await animationFrame()
+
+					// Should have had minimal updates due to deduplication
+					assert.isBelow(
+						updateCount - initialCount,
+						4,
+						'Should not update for every single change',
+					)
+					assert.equal(span.textContent, 'update3')
+
+					cleanup()
+				})
+
+				it('should handle insertOrRemoveElement with null create result', async function () {
+					const div = edgeComponent.querySelector('div')
+					const initialChildCount = div.children.length
+
+					// Use a state to trigger the insertion
+					const insertionState = state(1)
+					const cleanup = insertOrRemoveElement(insertionState, {
+						create: () => null, // Returns null
+						position: 'beforeend',
+					})(edgeComponent, div)
+
+					await animationFrame()
+					// Should not crash when create returns null and should not add children
+					assert.equal(div.children.length, initialChildCount)
+
+					cleanup()
+				})
+
+				it('should handle negative removal counts', async function () {
+					const div = edgeComponent.querySelector('div')
+					// Add some elements first
+					div.innerHTML =
+						'<span>1</span><span>2</span><span>3</span>'
+
+					const cleanup = insertOrRemoveElement(() => -2, {
+						position: 'beforeend',
+					})(edgeComponent, div)
+
+					await animationFrame()
+					// Should remove 2 elements from the end
+					assert.equal(div.children.length, 1)
+					assert.equal(div.children[0].textContent, '1')
+
+					cleanup()
+				})
+			})
+
+			describe('Core updateElement Function', function () {
+				let edgeComponent
+
+				before(() => {
+					edgeComponent = document.querySelector('edge-case-test')
+				})
+
+				it('should handle different operation types', async function () {
+					const span = edgeComponent.querySelector('span')
+
+					// Test attribute operation
+					const attrCleanup = updateElement('value', {
+						op: 'a',
+						name: 'data-test',
+						read: el => el.getAttribute('data-test'),
+						update: (el, value) =>
+							el.setAttribute('data-test', value),
+						delete: el => el.removeAttribute('data-test'),
+					})(edgeComponent, span)
+
+					edgeComponent.value = 'attr-value'
+					await animationFrame()
+					assert.equal(
+						span.getAttribute('data-test'),
+						'attr-value',
+					)
+
+					// Test class operation
+					const classCleanup = updateElement(() => true, {
+						op: 'c',
+						name: 'test-class',
+						read: el => el.classList.contains('test-class'),
+						update: (el, value) =>
+							el.classList.toggle('test-class', value),
+					})(edgeComponent, span)
+
+					await animationFrame()
+					assert.equal(
+						span.classList.contains('test-class'),
+						true,
+					)
+
+					attrCleanup()
+					classCleanup()
+				})
+
+				it('should call resolve/reject callbacks', async function () {
+					const span = edgeComponent.querySelector('span')
+					let resolved = false
+					let rejected = false
+
+					const cleanup = updateElement('value', {
+						op: 't',
+						read: el => el.textContent,
+						update: (el, value) => {
+							if (value === 'error')
+								throw new Error('Update error')
+							el.textContent = value
+						},
+						resolve: () => {
+							resolved = true
+						},
+						reject: () => {
+							rejected = true
+						},
+					})(edgeComponent, span)
+
+					// Test successful update
+					edgeComponent.value = 'success'
+					await animationFrame()
+					assert.equal(resolved, true)
+					assert.equal(span.textContent, 'success')
+
+					// Test error handling
+					edgeComponent.value = 'error'
+					await animationFrame()
+					assert.equal(rejected, true)
+
+					cleanup()
+				})
+			})
+
+			describe('on()', () => {
+				it('should attach and remove an event listener', async () => {
+					const div = document.getElementById('test-on-function')
+					let called = false
+
+					const off = on('click', () => {
+						called = true
+					})({}, div)
+
+					div.click()
+					const wasCalled = called
+
+					off() // Remove the event listener
+					called = false
+					div.click()
+
+					assert.equal(wasCalled, true)
+					assert.equal(called, false)
+				})
+
+				it('should throw TypeError for invalid handler', async () => {
+					const div = document.getElementById('test-on-invalid')
+					assert.throws(() => on('click', {})({}, div), TypeError)
+				})
+
+				it('should handle multiple event types', () => {
+					const element = document.createElement('input')
+					document.body.appendChild(element) // Add to DOM for focus/blur to work
+					let focusCount = 0
+					let blurCount = 0
+
+					const cleanup1 = on('focus', () => focusCount++)(
+						null,
+						element,
+					)
+					const cleanup2 = on('blur', () => blurCount++)(
+						null,
+						element,
+					)
+
+					element.focus()
+					element.blur()
+
+					assert.equal(focusCount, 1)
+					assert.equal(blurCount, 1)
+
+					cleanup1()
+					cleanup2()
+					document.body.removeChild(element) // Clean up
+				})
+			})
+
+			describe('emitEvent()', () => {
+				it('should emit an event', async () => {
+					const el = document.querySelector('emit-test')
+					let called = false
+					const handler = () => {
+						called = true
+					}
+
+					el.addEventListener('custom-event', handler)
+					el.value = 'new value' // Should update reactive property and emit event
+
+					assert.equal(called, true)
+
+					el.removeEventListener('custom-event', handler)
+				})
+
+				it('should emit an event with detail', async () => {
+					const el = document.querySelector('emit-test')
+					let detailReceived = null
+					const handler = event => {
+						detailReceived = event.detail
+					}
+					el.addEventListener('custom-event', handler)
+					el.value = 'updated value' // Should update reactive property and emit event
+
+					assert.equal(detailReceived, 'updated value')
+
+					el.removeEventListener('custom-event', handler)
+				})
+
+				it('should emit event with function detail', () => {
+					const el = document.querySelector('emit-test')
+					let eventDetail = null
+					const handler = e => {
+						eventDetail = e.detail
+					}
+					el.addEventListener('test-event', handler)
+
+					el.value = 'something else' // Should update reactive property and emit event
+					assert.isFalse(eventDetail)
+
+					el.value = 'Content'
+					assert.isTrue(eventDetail)
+
+					el.removeEventListener('test-event', handler)
+				})
+
+				it('should make events bubble by default', () => {
+					const el = document.querySelector('emit-test')
+					el.value = 'from other-event on div'
+
+					assert.equal(
+						el.other,
+						'from other-event on div',
+						'Event should bubble to parent',
+					)
+				})
+			})
+
+			describe('pass()', function () {
+				it('Orphan component should do nothing at all', async function () {
+					const orphanComponent =
+						document.getElementById('orphan')
+					await animationFrame()
+					const headingContent = normalizeText(
+						orphanComponent.querySelector('h1').textContent,
+					)
+					const textContent = normalizeText(
+						orphanComponent.querySelector('p').textContent,
+					)
+					assert.equal(
+						headingContent,
+						'Hello from server',
+						'Should not change server-side rendered heading',
+					)
+					assert.equal(
+						textContent,
+						'Text from server',
+						'Should not change server-side rendered text',
+					)
+				})
+				it('Descendent component should receive state from attribute of ancestor component', async function () {
+					const childComponent = document.getElementById('child')
+					await customElements.whenDefined(
+						childComponent.localName,
+					)
+					const headingContent =
+						childComponent.querySelector('h1').textContent
+					assert.equal(
+						headingContent,
+						'Hello from attribute',
+						'Should have initial heading from attribute of ancestor component',
+					)
+				})
+
+				it('Descendent component should receive derived state from attribute of ancestor component', async function () {
+					const childComponent = document.getElementById('child')
+					await customElements.whenDefined(
+						childComponent.localName,
+					)
+					const textContent = normalizeText(
+						childComponent.querySelector('p').textContent,
+					)
+					assert.equal(
+						textContent,
+						'Hello from attribute'.toUpperCase(),
+						'Should have initial text derived from attribute of ancestor component',
+					)
+				})
+
+				it('Descendent component should receive passed and derived states from changed attribute of ancestor component', async function () {
+					const parentComponent =
+						document.getElementById('parent')
+					const childComponent = document.getElementById('child')
+					parentComponent.setAttribute(
+						'heading',
+						'Hello from changed attribute',
+					)
+					await animationFrame()
+					const headingContent = normalizeText(
+						childComponent.querySelector('h1').textContent,
+					)
+					const textContent = normalizeText(
+						childComponent.querySelector('p').textContent,
+					)
+					assert.equal(
+						headingContent,
+						'Hello from changed attribute',
+						'Should have changed heading from attribute of ancestor component',
+					)
+					assert.equal(
+						textContent,
+						'Hello from changed attribute'.toUpperCase(),
+						'Should have changed text derived from attribute of ancestor component',
+					)
+				})
+
+				it('Descendent component should change heading if inherited state is set', async function () {
+					const parentComponent =
+						document.getElementById('parent')
+					const childComponent = document.getElementById('child')
+					parentComponent.heading = 'Hello from state on ancestor'
+					await animationFrame()
+					const headingContent =
+						childComponent.querySelector('h1').textContent
+					assert.equal(
+						headingContent,
+						'Hello from state on ancestor',
+						'Should have changed heading from state of ancestor component',
+					)
+				})
+
+				it('should throw TypeError if signals are not an object or provider', async function () {
+					const parentComponent =
+						document.getElementById('parent')
+					const childComponent = document.getElementById('child')
+
+					assert.throws(
+						() => {
+							pass(null)(parentComponent, childComponent)
+						},
+						TypeError,
+						'Reactives must be an object of passed signals',
+					)
+				})
+
+				it('should throw TypeError if target is not a custom element', async function () {
+					const parentComponent =
+						document.getElementById('parent')
+					const regularDiv = document.createElement('div')
+					regularDiv.id = 'regular-div'
+
+					assert.throws(
+						() => {
+							pass({ heading: 'heading' })(
+								parentComponent,
+								regularDiv,
+							)
+						},
+						TypeError,
+						'Target <div#regular-div> is not a custom element',
+					)
+				})
+
+				it('should handle Signal objects directly', async () => {
+					const host = document.querySelector('parent-component')
+					const target = document.querySelector('child-component')
+
+					const directSignal = state('Direct Signal')
+
+					try {
+						pass({
+							heading: directSignal,
+						})(host, target)
+
+						await customElements.whenDefined('child-component')
+						await animationFrame()
+
+						assert.equal(target.heading, 'Direct Signal')
+
+						// Test reactivity
+						directSignal.set('Updated Signal')
+						await animationFrame()
+
+						assert.equal(target.heading, 'Updated Signal')
+					} catch (error) {
+						// If pass fails, test that error handling works
+						assert.include(
+							error.message,
 							'Reactives must be an object of passed signals',
 						)
-					})
-
-					it('should throw TypeError if target is not a custom element', async function () {
-						const parentComponent =
-							document.getElementById('parent')
-						const regularDiv = document.createElement('div')
-						regularDiv.id = 'regular-div'
-
-						assert.throws(
-							() => {
-								pass({ heading: 'heading' })(
-									parentComponent,
-									regularDiv,
-								)
-							},
-							TypeError,
-							'Target <div#regular-div> is not a custom element',
-						)
-					})
-
-					it('should handle Signal objects directly', async () => {
-						const host = document.querySelector('parent-component')
-						const target = document.querySelector('child-component')
-
-						const directSignal = state('Direct Signal')
-
-						try {
-							pass({
-								heading: directSignal,
-							})(host, target)
-
-							await customElements.whenDefined('child-component')
-							await animationFrame()
-
-							assert.equal(target.heading, 'Direct Signal')
-
-							// Test reactivity
-							directSignal.set('Updated Signal')
-							await animationFrame()
-
-							assert.equal(target.heading, 'Updated Signal')
-						} catch (error) {
-							// If pass fails, test that error handling works
-							assert.include(
-								error.message,
-								'Reactives must be an object of passed signals',
-							)
-						}
-					})
-
-					/* it('should pass signals using function', async () => {
-						const host = document.querySelector('parent-component')
-						const target = document.querySelector('child-component')
-
-						const dynamicSignal = state('Dynamic')
-
-						try {
-							pass(targetElement => ({
-								text: dynamicSignal,
-							}))(host, target)
-
-							await customElements.whenDefined('child-component')
-							await animationFrame()
-
-							assert.equal(target.text, 'Dynamic')
-						} catch (error) {
-							// If pass fails, test that error handling works
-							assert.include(
-								error.message,
-								'Reactives must be an object of passed signals',
-							)
-						}
-						}) */
+					}
 				})
 
-				describe('Enhanced Error Handling and Refactored Code', function () {
-					it('should handle RESOLVE_ERROR symbol correctly', async function () {
-						const div = document.createElement('div')
-						document.body.appendChild(div)
+				it('should pass signals using function', async () => {
+					const host = document.querySelector('parent-component')
+					const target = document.querySelector('child-component')
 
-						// Test that errors in reactive resolution are handled gracefully
-						const cleanup = setText(() => {
-							throw new Error('Test resolution error')
-						})({}, div)
+					const dynamicSignal = state('Dynamic')
 
+					try {
+						pass(targetElement => ({
+							text: dynamicSignal,
+						}))(host, target)
+
+						await customElements.whenDefined('child-component')
 						await animationFrame()
 
-						// Should not crash when resolution fails
-						assert.isString(div.textContent)
-						cleanup()
-						document.body.removeChild(div)
-					})
-
-					it('should handle utility function resilience', function () {
-						// Test that elementName handles null/undefined gracefully
-						const { elementName } = window
-						if (typeof elementName === 'function') {
-							// Should not throw with null/undefined
-							assert.isString(elementName(null))
-							assert.isString(elementName(undefined))
-
-							// Should work with real elements
-							const div = document.createElement('div')
-							div.id = 'test'
-							div.classList.add('example')
-							assert.include(elementName(div), 'div')
-							assert.include(elementName(div), 'test')
-							assert.include(elementName(div), 'example')
-						}
-					})
+						assert.equal(target.text, 'Dynamic')
+					} catch (error) {
+						// If pass fails, test that error handling works
+						assert.include(
+							error.message,
+							'Reactives must be an object of passed signals',
+						)
+					}
 				})
-
-				describe('Essential Edge Case Coverage', function () {
-					it('should handle setText with comment preservation', async function () {
-						const div = document.createElement('div')
-						div.innerHTML = 'text<!-- comment -->'
-						document.body.appendChild(div)
-
-						const signal = state('new text')
-						const cleanup = setText(signal)({}, div)
-						await animationFrame()
-
-						assert.equal(div.textContent, 'new text')
-						// Comment should still be there
-						assert.equal(div.childNodes.length, 2)
-
-						cleanup()
-						document.body.removeChild(div)
-					})
-
-					it('should handle setProperty with different types', async function () {
-						const input = document.createElement('input')
-						document.body.appendChild(input)
-
-						const boolSignal = state(true)
-						const cleanup = setProperty('disabled', boolSignal)(
-							{},
-							input,
-						)
-						await animationFrame()
-
-						assert.equal(input.disabled, true)
-
-						cleanup()
-						document.body.removeChild(input)
-					})
-
-					it('should handle CSS custom properties in setStyle', async function () {
-						const div = document.createElement('div')
-						document.body.appendChild(div)
-
-						const colorSignal = state('#ff0000')
-						const cleanup = setStyle('--main-color', colorSignal)(
-							{},
-							div,
-						)
-						await animationFrame()
-
-						assert.equal(
-							div.style.getPropertyValue('--main-color'),
-							'#ff0000',
-						)
-
-						cleanup()
-						document.body.removeChild(div)
-					})
-				})
-
-				// describe('callMethod()', function () {
-				// 	it('should call method when reactive value is true', async function () {
-				// 		const component =
-				// 			document.querySelector('call-method-test')
-				// 		const input = component.querySelector('input')
-				// 		const button = component.querySelector('button')
-
-				// 		// Track button clicks
-				// 		let clickCount = 0
-				// 		button.addEventListener('click', () => clickCount++)
-
-				// 		// Initially, no methods should be called
-				// 		assert.equal(clickCount, 0)
-
-				// 		// Set shouldClick to true
-				// 		component.setAttribute('should-click', 'true')
-				// 		await animationFrame()
-
-				// 		// Button should have been clicked
-				// 		assert.equal(clickCount, 1)
-
-				// 		// Set shouldClick to false
-				// 		component.setAttribute('should-click', 'false')
-				// 		await animationFrame()
-
-				// 		// Should not click again
-				// 		assert.equal(clickCount, 1)
-				// 	})
-
-				// 	it('should handle method calls with arguments', async function () {
-				// 		const component =
-				// 			document.querySelector('call-method-test')
-				// 		const input = component.querySelector('input')
-
-				// 		// Focus the input first
-				// 		input.focus()
-				// 		input.value = 'test selection'
-
-				// 		// Set shouldSelect to true to trigger setSelectionRange
-				// 		component.setAttribute('should-select', 'true')
-				// 		await animationFrame()
-
-				// 		// Check that selection was made (first 2 characters)
-				// 		assert.equal(input.selectionStart, 0)
-				// 		assert.equal(input.selectionEnd, 2)
-				// 	})
-
-				// 	it('should not call method when reactive value is false', async function () {
-				// 		const component =
-				// 			document.querySelector('call-method-test')
-				// 		const button = component.querySelector('button')
-
-				// 		let clickCount = 0
-				// 		button.addEventListener('click', () => clickCount++)
-
-				// 		// Set shouldClick to false
-				// 		component.setAttribute('should-click', 'false')
-				// 		await animationFrame()
-
-				// 		// Button should not have been clicked
-				// 		assert.equal(clickCount, 0)
-				// 	})
-
-				// 	it('should handle non-existent methods gracefully', async function () {
-				// 		const component =
-				// 			document.querySelector('call-method-test')
-
-				// 		// This should not throw an error even if method doesn't exist
-				// 		component.setAttribute('should-select', 'true')
-				// 		await animationFrame()
-
-				// 		// Test passes if no error is thrown
-				// 		assert.ok(true)
-				// 	})
-				// })
-
-				// describe('focus()', function () {
-				// 	it('should focus element when reactive value is true', async function () {
-				// 		const component = document.querySelector('focus-test')
-				// 		const input1 = component.querySelector('#input1')
-				// 		const input2 = component.querySelector('#input2')
-
-				// 		// Initially, no element should be focused
-				// 		assert.notEqual(document.activeElement, input1)
-				// 		assert.notEqual(document.activeElement, input2)
-
-				// 		// Set focusFirst to true
-				// 		component.setAttribute('focus-first', 'true')
-				// 		await animationFrame()
-
-				// 		// Input1 should be focused
-				// 		assert.equal(document.activeElement, input1)
-
-				// 		// Set focusSecond to true
-				// 		component.setAttribute('focus-second', 'true')
-				// 		await animationFrame()
-
-				// 		// Input2 should now be focused
-				// 		assert.equal(document.activeElement, input2)
-				// 	})
-
-				// 	it('should work with buttons', async function () {
-				// 		const component = document.querySelector('focus-test')
-				// 		const button = component.querySelector('#btn1')
-
-				// 		// Initially, button should not be focused
-				// 		assert.notEqual(document.activeElement, button)
-
-				// 		// Set focusButton to true
-				// 		component.setAttribute('focus-button', 'true')
-				// 		await animationFrame()
-
-				// 		// Button should be focused
-				// 		assert.equal(document.activeElement, button)
-				// 	})
-
-				// 	it('should not focus when reactive value is false', async function () {
-				// 		const component = document.querySelector('focus-test')
-				// 		const input1 = component.querySelector('#input1')
-				// 		const originalActiveElement = document.activeElement
-
-				// 		// Set focusFirst to false
-				// 		component.setAttribute('focus-first', 'false')
-				// 		await animationFrame()
-
-				// 		// Input1 should not be focused
-				// 		assert.notEqual(document.activeElement, input1)
-				// 		// Active element should remain the same
-				// 		assert.equal(
-				// 			document.activeElement,
-				// 			originalActiveElement,
-				// 		)
-				// 	})
-
-				// 	it('should handle elements without focus method gracefully', async function () {
-				// 		// Create a test element that doesn't have focus method
-				// 		const div = document.createElement('div')
-				// 		document.body.appendChild(div)
-
-				// 		try {
-				// 			// This should not throw an error
-				// 			const focusEffect = focus(() => true)
-				// 			focusEffect({}, div)
-				// 			await animationFrame()
-
-				// 			// Test passes if no error is thrown
-				// 			assert.ok(true)
-				// 		} finally {
-				// 			document.body.removeChild(div)
-				// 		}
-				// 	})
-
-				// 	it('should read current focus state correctly', async function () {
-				// 		const component = document.querySelector('focus-test')
-				// 		const input1 = component.querySelector('#input1')
-
-				// 		// Focus the input manually
-				// 		input1.focus()
-
-				// 		// The focus effect should be able to read the current state
-				// 		// (This tests the read function of the focus effect)
-				// 		assert.equal(document.activeElement, input1)
-				// 	})
-				// })
 			})
-		</script>
-	</body>
+
+			describe('Enhanced Error Handling and Refactored Code', function () {
+				it('should handle RESOLVE_ERROR symbol correctly', async function () {
+					const div = document.createElement('div')
+					document.body.appendChild(div)
+
+					// Test that errors in reactive resolution are handled gracefully
+					const cleanup = setText(() => {
+						throw new Error('Test resolution error')
+					})({}, div)
+
+					await animationFrame()
+
+					// Should not crash when resolution fails
+					assert.isString(div.textContent)
+					cleanup()
+					document.body.removeChild(div)
+				})
+
+				it('should handle utility function resilience', function () {
+					// Test that elementName handles null/undefined gracefully
+					const { elementName } = window
+					if (typeof elementName === 'function') {
+						// Should not throw with null/undefined
+						assert.isString(elementName(null))
+						assert.isString(elementName(undefined))
+
+						// Should work with real elements
+						const div = document.createElement('div')
+						div.id = 'test'
+						div.classList.add('example')
+						assert.include(elementName(div), 'div')
+						assert.include(elementName(div), 'test')
+						assert.include(elementName(div), 'example')
+					}
+				})
+			})
+
+			describe('Essential Edge Case Coverage', function () {
+				it('should handle setText with comment preservation', async function () {
+					const div = document.createElement('div')
+					div.innerHTML = 'text<!-- comment -->'
+					document.body.appendChild(div)
+
+					const signal = state('new text')
+					const cleanup = setText(signal)({}, div)
+					await animationFrame()
+
+					assert.equal(div.textContent, 'new text')
+					// Comment should still be there
+					assert.equal(div.childNodes.length, 2)
+
+					cleanup()
+					document.body.removeChild(div)
+				})
+
+				it('should handle setProperty with different types', async function () {
+					const input = document.createElement('input')
+					document.body.appendChild(input)
+
+					const boolSignal = state(true)
+					const cleanup = setProperty('disabled', boolSignal)(
+						{},
+						input,
+					)
+					await animationFrame()
+
+					assert.equal(input.disabled, true)
+
+					cleanup()
+					document.body.removeChild(input)
+				})
+
+				it('should handle CSS custom properties in setStyle', async function () {
+					const div = document.createElement('div')
+					document.body.appendChild(div)
+
+					const colorSignal = state('#ff0000')
+					const cleanup = setStyle('--main-color', colorSignal)(
+						{},
+						div,
+					)
+					await animationFrame()
+
+					assert.equal(
+						div.style.getPropertyValue('--main-color'),
+						'#ff0000',
+					)
+
+					cleanup()
+					document.body.removeChild(div)
+				})
+			})
+
+			// describe('callMethod()', function () {
+			// 	it('should call method when reactive value is true', async function () {
+			// 		const component =
+			// 			document.querySelector('call-method-test')
+			// 		const input = component.querySelector('input')
+			// 		const button = component.querySelector('button')
+
+			// 		// Track button clicks
+			// 		let clickCount = 0
+			// 		button.addEventListener('click', () => clickCount++)
+
+			// 		// Initially, no methods should be called
+			// 		assert.equal(clickCount, 0)
+
+			// 		// Set shouldClick to true
+			// 		component.setAttribute('should-click', 'true')
+			// 		await animationFrame()
+
+			// 		// Button should have been clicked
+			// 		assert.equal(clickCount, 1)
+
+			// 		// Set shouldClick to false
+			// 		component.setAttribute('should-click', 'false')
+			// 		await animationFrame()
+
+			// 		// Should not click again
+			// 		assert.equal(clickCount, 1)
+			// 	})
+
+			// 	it('should handle method calls with arguments', async function () {
+			// 		const component =
+			// 			document.querySelector('call-method-test')
+			// 		const input = component.querySelector('input')
+
+			// 		// Focus the input first
+			// 		input.focus()
+			// 		input.value = 'test selection'
+
+			// 		// Set shouldSelect to true to trigger setSelectionRange
+			// 		component.setAttribute('should-select', 'true')
+			// 		await animationFrame()
+
+			// 		// Check that selection was made (first 2 characters)
+			// 		assert.equal(input.selectionStart, 0)
+			// 		assert.equal(input.selectionEnd, 2)
+			// 	})
+
+			// 	it('should not call method when reactive value is false', async function () {
+			// 		const component =
+			// 			document.querySelector('call-method-test')
+			// 		const button = component.querySelector('button')
+
+			// 		let clickCount = 0
+			// 		button.addEventListener('click', () => clickCount++)
+
+			// 		// Set shouldClick to false
+			// 		component.setAttribute('should-click', 'false')
+			// 		await animationFrame()
+
+			// 		// Button should not have been clicked
+			// 		assert.equal(clickCount, 0)
+			// 	})
+
+			// 	it('should handle non-existent methods gracefully', async function () {
+			// 		const component =
+			// 			document.querySelector('call-method-test')
+
+			// 		// This should not throw an error even if method doesn't exist
+			// 		component.setAttribute('should-select', 'true')
+			// 		await animationFrame()
+
+			// 		// Test passes if no error is thrown
+			// 		assert.ok(true)
+			// 	})
+			// })
+
+			// describe('focus()', function () {
+			// 	it('should focus element when reactive value is true', async function () {
+			// 		const component = document.querySelector('focus-test')
+			// 		const input1 = component.querySelector('#input1')
+			// 		const input2 = component.querySelector('#input2')
+
+			// 		// Initially, no element should be focused
+			// 		assert.notEqual(document.activeElement, input1)
+			// 		assert.notEqual(document.activeElement, input2)
+
+			// 		// Set focusFirst to true
+			// 		component.setAttribute('focus-first', 'true')
+			// 		await animationFrame()
+
+			// 		// Input1 should be focused
+			// 		assert.equal(document.activeElement, input1)
+
+			// 		// Set focusSecond to true
+			// 		component.setAttribute('focus-second', 'true')
+			// 		await animationFrame()
+
+			// 		// Input2 should now be focused
+			// 		assert.equal(document.activeElement, input2)
+			// 	})
+
+			// 	it('should work with buttons', async function () {
+			// 		const component = document.querySelector('focus-test')
+			// 		const button = component.querySelector('#btn1')
+
+			// 		// Initially, button should not be focused
+			// 		assert.notEqual(document.activeElement, button)
+
+			// 		// Set focusButton to true
+			// 		component.setAttribute('focus-button', 'true')
+			// 		await animationFrame()
+
+			// 		// Button should be focused
+			// 		assert.equal(document.activeElement, button)
+			// 	})
+
+			// 	it('should not focus when reactive value is false', async function () {
+			// 		const component = document.querySelector('focus-test')
+			// 		const input1 = component.querySelector('#input1')
+			// 		const originalActiveElement = document.activeElement
+
+			// 		// Set focusFirst to false
+			// 		component.setAttribute('focus-first', 'false')
+			// 		await animationFrame()
+
+			// 		// Input1 should not be focused
+			// 		assert.notEqual(document.activeElement, input1)
+			// 		// Active element should remain the same
+			// 		assert.equal(
+			// 			document.activeElement,
+			// 			originalActiveElement,
+			// 		)
+			// 	})
+
+			// 	it('should handle elements without focus method gracefully', async function () {
+			// 		// Create a test element that doesn't have focus method
+			// 		const div = document.createElement('div')
+			// 		document.body.appendChild(div)
+
+			// 		try {
+			// 			// This should not throw an error
+			// 			const focusEffect = focus(() => true)
+			// 			focusEffect({}, div)
+			// 			await animationFrame()
+
+			// 			// Test passes if no error is thrown
+			// 			assert.ok(true)
+			// 		} finally {
+			// 			document.body.removeChild(div)
+			// 		}
+			// 	})
+
+			// 	it('should read current focus state correctly', async function () {
+			// 		const component = document.querySelector('focus-test')
+			// 		const input1 = component.querySelector('#input1')
+
+			// 		// Focus the input manually
+			// 		input1.focus()
+
+			// 		// The focus effect should be able to read the current state
+			// 		// (This tests the read function of the focus effect)
+			// 		assert.equal(document.activeElement, input1)
+			// 	})
+			// })
+		})
+	</script>
+</body>
+
 </html>

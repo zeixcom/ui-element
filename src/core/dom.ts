@@ -11,7 +11,7 @@ import {
 } from '@zeix/cause-effect'
 
 import type { ElementFromSelector, SignalProducer } from '../component'
-import { elementName, isUpgradedComponent } from './util'
+import { elementName, isCustomElement } from './util'
 
 /* === Types === */
 
@@ -327,11 +327,11 @@ const reduced = <
 /**
  * Read from a descendant element and map the result
  *
- * @since 0.13.3
+ * @since 0.13.4
  * @param {C} host - Host element
  * @param {S} selector - CSS selector for descendant element
- * @param {(element: ElementFromSelector<S, E> | null, isUpgraded: boolean) => T} map - Function to map over the element
- * @returns {T} The mapped result from the descendant element
+ * @param {(element: ElementFromSelector<S, E> | null) => T} fn - Function to map over the element
+ * @returns {Computed<T>} A computed signal of the mapped result from the descendant element
  */
 const read = <
 	T extends {},
@@ -341,11 +341,14 @@ const read = <
 >(
 	host: C,
 	selector: S,
-	map: (element: ElementFromSelector<S, E> | null, isUpgraded: boolean) => T,
-): T => {
-	const source = host.querySelector<ElementFromSelector<S, E>>(selector)
-	return map(source, source ? isUpgradedComponent(source) : false)
-}
+	fn: (element: ElementFromSelector<S, E> | null) => T,
+): Computed<T> =>
+	computed(async () => {
+		const target = host.querySelector<ElementFromSelector<S, E>>(selector)
+		if (target && isCustomElement(target))
+			await customElements.whenDefined(target.localName)
+		return fn(target)
+	})
 
 /**
  * Assert that an element contains an expected descendant element

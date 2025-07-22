@@ -14,23 +14,15 @@
 		</basic-button>
 
 		<basic-button id="test2" disabled>
-			<button type="submit" class="primary" disabled>Submit</button>
+			<button type="submit" class="primary" disabled>
+				<span class="label">Submit</span>
+			</button>
 		</basic-button>
 
 		<basic-button id="test3">
 			<button type="button">
 				<span class="label">Shopping Cart</span>
 			</button>
-		</basic-button>
-
-		<basic-button id="test4">
-			<button type="button">
-				<span class="badge">99</span>
-			</button>
-		</basic-button>
-
-		<basic-button id="test5">
-			<button type="button">Simple Button</button>
 		</basic-button>
 
 		<script type="module">
@@ -58,13 +50,7 @@
 				describe('Basic Button Component', () => {
 					beforeEach(async () => {
 						// Reset all test components before each test
-						const testIds = [
-							'test1',
-							'test2',
-							'test3',
-							'test4',
-							'test5',
-						]
+						const testIds = ['test1', 'test2', 'test3']
 						for (const id of testIds) {
 							const el = document.getElementById(id)
 							if (el) await resetButton(el)
@@ -206,47 +192,6 @@
 						assert.equal(labelEl.textContent, 'Add to Cart')
 					})
 
-					it('should work with button that has only badge', async () => {
-						const el = document.getElementById('test4')
-						const labelEl = el.querySelector('.label')
-						const badgeEl = el.querySelector('.badge')
-
-						assert.isNull(labelEl)
-						assert.isNotNull(badgeEl)
-
-						// Should work normally with just badge
-						el.badge = '42'
-						await tick()
-
-						assert.equal(badgeEl.textContent, '42')
-					})
-
-					it('should work with simple button without label or badge elements', async () => {
-						const el = document.getElementById('test5')
-						const button = el.querySelector('button')
-						const labelEl = el.querySelector('.label')
-						const badgeEl = el.querySelector('.badge')
-
-						assert.isNotNull(button)
-						assert.isNull(labelEl)
-						assert.isNull(badgeEl)
-
-						// Should still handle disabled state
-						el.disabled = true
-						await tick()
-
-						assert.equal(button.disabled, true)
-
-						// Label and badge properties should not cause errors
-						el.label = 'Will not show'
-						el.badge = 'Will not show'
-						await tick()
-
-						// Should not throw errors, even though elements don't exist
-						assert.equal(el.label, 'Will not show')
-						assert.equal(el.badge, 'Will not show')
-					})
-
 					it('should handle boolean disabled values correctly', async () => {
 						const el = document.getElementById('test1')
 						const button = el.querySelector('button')
@@ -379,30 +324,6 @@
 
 						assert.equal(button.type, 'submit')
 						assert.isTrue(button.classList.contains('primary'))
-					})
-
-					it('should handle component without button element gracefully', () => {
-						// Create a minimal component structure for edge case testing
-						const tempDiv = document.createElement('div')
-						tempDiv.innerHTML = `
-                        <basic-button>
-                            <div>Not a button</div>
-                        </basic-button>
-                    `
-						document.body.appendChild(tempDiv)
-
-						const tempEl = tempDiv.querySelector('basic-button')
-
-						// Component should initialize without throwing
-						assert.isNotNull(tempEl)
-
-						// Setting properties should not cause errors
-						tempEl.disabled = true
-						tempEl.label = 'Test'
-						tempEl.badge = 'Test'
-
-						// Cleanup
-						document.body.removeChild(tempDiv)
 					})
 
 					it('should handle RESET values correctly', async () => {

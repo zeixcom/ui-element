@@ -898,21 +898,17 @@
 							await customElements.whenDefined('mock-computed-2')
 
 							// Test initial read
-							const initialValue = read(
-								container,
-								'#computed',
-								target => target.count ?? 0,
-							)
-							assert.equal(initialValue, 0)
+							const reader = () =>
+								read(
+									container,
+									'#computed',
+									target => target.count ?? 0,
+								)
+							assert.equal(reader(), 0)
 
 							// Set count and test read again
 							container.querySelector('#computed').count = 1
-							const updatedValue = read(
-								container,
-								'#computed',
-								target => target.count ?? 0,
-							)
-							assert.equal(updatedValue, 1)
+							assert.equal(reader(), 1)
 						} finally {
 							container.remove()
 						}

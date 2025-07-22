@@ -105,10 +105,8 @@
 				const input = el.querySelector('input, textarea')
 				if (input) {
 					input.value = ''
-					// Reset component state directly to avoid triggering validation
-					el.value = ''
-					el.length = 0
 					el.error = ''
+					el.length = 0
 					await tick()
 				}
 			}
@@ -118,14 +116,12 @@
 				input.value = text
 				input.dispatchEvent(new Event('input', { bubbles: true }))
 				await tick()
-				await animationFrame() // Wait for all component updates
 			}
 
 			// Helper to simulate committing input value
 			const commitInput = async input => {
 				input.dispatchEvent(new Event('change', { bubbles: true }))
 				await tick()
-				await animationFrame() // Wait for all component updates
 			}
 
 			runTests(() => {

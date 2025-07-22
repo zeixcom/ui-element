@@ -1,7 +1,6 @@
 import {
 	type Component,
 	component,
-	focus,
 	fromEvents,
 	fromSelector,
 	setProperty,
@@ -10,8 +9,8 @@ import {
 import { requireDescendant } from '../../../src/core/dom'
 
 export type ModuleTabgroupProps = {
-	tabs: HTMLButtonElement[]
-	selected: string
+	readonly tabs: HTMLButtonElement[]
+	readonly selected: string
 }
 
 const getAriaControls = (target: HTMLElement) =>
@@ -47,7 +46,7 @@ const handleKeyup = ({ event, host, target }) => {
 	) {
 		event.preventDefault()
 		event.stopPropagation()
-		return getSelected(
+		const current = getSelected(
 			host.tabs,
 			tab => tab === target,
 			key === 'Home'
@@ -58,6 +57,12 @@ const handleKeyup = ({ event, host, target }) => {
 						? -1
 						: 1,
 		)
+		host.tabs
+			.filter(
+				(tab: HTMLButtonElement) => getAriaControls(tab) === current,
+			)[0]
+			.focus()
+		return current
 	}
 }
 
@@ -95,7 +100,6 @@ export default component(
 				setProperty('tabIndex', target =>
 					isCurrentTab(target) ? 0 : -1,
 				),
-				focus(isCurrentTab),
 			),
 			all(
 				'[role="tabpanel"]',

@@ -13,10 +13,11 @@ import {
 import type { BasicButtonProps } from '../basic-button/basic-button'
 import type { FormCheckboxProps } from '../form-checkbox/form-checkbox'
 import '../form-textbox/form-textbox'
+import '../form-radiogroup/form-radiogroup'
 
 export type ModuleTodoProps = {
-	active: HTMLElement[]
-	completed: HTMLElement[]
+	readonly active: HTMLElement[]
+	readonly completed: HTMLElement[]
 }
 
 export default component(
@@ -63,9 +64,12 @@ export default component(
 			// Control todo list
 			first(
 				'ol',
-				setAttribute('filter', () =>
-					read(el, 'form-radiogroup', (radiogroup, upgraded) =>
-						radiogroup && upgraded ? radiogroup.value : 'all',
+				setAttribute(
+					'filter',
+					read(
+						el,
+						'form-radiogroup',
+						target => target?.getSignal('value').get() ?? 'all',
 					),
 				),
 				on('click', (e: Event) => {

@@ -106,6 +106,11 @@
 
 			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 			const animationFrame = () => new Promise(requestAnimationFrame)
+			const microtask = () => new Promise(queueMicrotask)
+			const tick = async () => {
+				await animationFrame() // Wait for effects to execute
+				await microtask() // Wait for DOM to reflect changes
+			}
 
 			// Helper function to simulate keyboard events
 			const simulateKeydown = (element, key) => {
@@ -124,21 +129,16 @@
 						const el = document.getElementById('test1')
 
 						assert.isNotNull(el)
-						assert.equal(el.tagName.toLowerCase(), 'module-tabgroup')
+						assert.equal(
+							el.tagName.toLowerCase(),
+							'module-tabgroup',
+						)
 						assert.isDefined(el.selected)
 						assert.isString(el.selected)
 					})
 
 					it('should initialize with correct default selection', async () => {
 						const el = document.getElementById('test1')
-
-						// Reset component state to ensure clean test
-						el.selected = ''
-						await animationFrame()
-
-						// Re-initialize by setting to the expected initial state
-						el.selected = 'panel1'
-						await animationFrame() // Wait for scheduled effect execution
 
 						// Component reads aria-selected="true" from DOM to determine initial selection
 						assert.equal(el.selected, 'panel1')
@@ -147,7 +147,7 @@
 					it('should initialize with pre-selected tab', async () => {
 						const el = document.getElementById('test2')
 
-						await animationFrame() // Wait for scheduled effect execution
+						await tick()
 
 						assert.equal(el.selected, 'panel5')
 					})
@@ -155,21 +155,23 @@
 					it('should handle no initially selected tab', async () => {
 						const el = document.getElementById('test3')
 
-						await animationFrame() // Wait for scheduled effect execution
+						await tick()
 
-						assert.equal(el.selected, '')
+						// If no tab is has aria-selected="true" first tab is auto-selected
+						assert.equal(el.selected, 'panel6')
 					})
 
 					it('should update selection when tab is clicked', async () => {
 						const el = document.getElementById('test1')
+						const tab1 = el.querySelector('#trigger1')
 						const tab2 = el.querySelector('#trigger2')
 
 						// Reset component state to ensure clean test
-						el.selected = 'panel1'
-						await animationFrame()
+						tab1.click()
+						await tick()
 
 						tab2.click()
-						await animationFrame() // Wait for event handling and effect execution
+						await tick()
 
 						assert.equal(el.selected, 'panel2')
 					})
@@ -181,8 +183,8 @@
 						const tab3 = el.querySelector('#trigger3')
 
 						// Reset component state to ensure clean test
-						el.selected = 'panel1'
-						await animationFrame() // Wait for initial state
+						tab1.click()
+						await tick()
 						assert.equal(tab1.getAttribute('aria-selected'), 'true')
 						assert.equal(
 							tab2.getAttribute('aria-selected'),
@@ -195,8 +197,7 @@
 
 						// Click tab2
 						tab2.click()
-						await animationFrame() // Wait for event handling and effect execution
-						await animationFrame() // Extra frame for effect processing
+						await tick()
 
 						assert.equal(el.selected, 'panel2')
 						assert.equal(
@@ -217,16 +218,15 @@
 						const tab3 = el.querySelector('#trigger3')
 
 						// Reset component state to ensure clean test
-						el.selected = 'panel1'
-						await animationFrame()
+						tab1.click()
+						await tick()
 						assert.equal(tab1.tabIndex, 0)
 						assert.equal(tab2.tabIndex, -1)
 						assert.equal(tab3.tabIndex, -1)
 
 						// Click tab3
 						tab3.click()
-						await animationFrame() // Wait for event handling and effect execution
-						await animationFrame() // Extra frame for effect processing
+						await tick()
 
 						assert.equal(el.selected, 'panel3')
 						assert.equal(tab1.tabIndex, -1)
@@ -239,45 +239,23 @@
 						const panel1 = el.querySelector('#panel1')
 						const panel2 = el.querySelector('#panel2')
 						const panel3 = el.querySelector('#panel3')
+						const tab1 = el.querySelector('#trigger1')
 						const tab2 = el.querySelector('#trigger2')
 
 						// Reset component state to ensure clean test
-						el.selected = 'panel1'
-						await animationFrame() // Wait for initial state
+						tab1.click()
+						await tick()
 						assert.isFalse(panel1.hidden)
 						assert.isTrue(panel2.hidden)
 						assert.isTrue(panel3.hidden)
 
 						// Click tab2
 						tab2.click()
-						await animationFrame() // Wait for event handling and effect execution
-						await animationFrame() // Extra frame for effect processing
+						await tick()
 
 						assert.isTrue(panel1.hidden)
 						assert.isFalse(panel2.hidden)
 						assert.isTrue(panel3.hidden)
-					})
-
-					it('should handle programmatic selection changes', async () => {
-						const el = document.getElementById('test1')
-						const tab1 = el.querySelector('#trigger1')
-						const tab3 = el.querySelector('#trigger3')
-						const panel1 = el.querySelector('#panel1')
-						const panel3 = el.querySelector('#panel3')
-
-						// Set selected programmatically
-						el.selected = 'panel3'
-						await animationFrame() // Wait for scheduled effect execution
-
-						assert.equal(
-							tab1.getAttribute('aria-selected'),
-							'false',
-						)
-						assert.equal(tab3.getAttribute('aria-selected'), 'true')
-						assert.equal(tab1.tabIndex, -1)
-						assert.equal(tab3.tabIndex, 0)
-						assert.isTrue(panel1.hidden)
-						assert.isFalse(panel3.hidden)
 					})
 
 					it('should handle multiple rapid tab clicks', async () => {
@@ -287,17 +265,16 @@
 						const tab3 = el.querySelector('#trigger3')
 
 						// Reset component state to ensure clean test
-						el.selected = 'panel1'
-						await animationFrame()
+						tab1.click()
+						await tick()
 
 						// Click multiple tabs rapidly
 						tab2.click()
-						await animationFrame() // Wait for first click to process
+						await tick()
 						tab3.click()
-						await animationFrame() // Wait for second click to process
+						await tick()
 						tab1.click()
-						await animationFrame() // Wait for final click to process
-						await animationFrame() // Extra frame for effect processing
+						await tick()
 
 						assert.equal(el.selected, 'panel1')
 						assert.equal(tab1.getAttribute('aria-selected'), 'true')
@@ -317,13 +294,13 @@
 						const tab1 = el.querySelector('#trigger1')
 
 						// Reset component state to ensure clean test
-						el.selected = 'panel1'
-						await animationFrame()
+						tab1.click()
+						await tick()
 
 						// Focus first tab and simulate arrow key
 						tab1.focus()
 						simulateKeydown(tablist, 'ArrowRight')
-						await animationFrame() // Wait for focus management
+						await tick()
 
 						// Note: The actual focus change depends on manageArrowKeyFocus implementation
 						// We're testing that the keydown event is properly bound to the tablist
@@ -357,75 +334,14 @@
 						})
 					})
 
-					it('should handle selection with invalid panel ID', async () => {
-						const el = document.getElementById('test1')
-
-						// Reset component state first
-						el.selected = 'panel1'
-						await animationFrame()
-
-						// Set to invalid panel ID
-						el.selected = 'nonexistent-panel'
-						await animationFrame() // Wait for scheduled effect execution
-
-						// All panels should be hidden when selection doesn't match any panel
-						const panels = el.querySelectorAll('[role="tabpanel"]')
-						panels.forEach(panel => {
-							assert.isTrue(panel.hidden)
-						})
-
-						// All tabs should show as not selected
-						const tabs = el.querySelectorAll('[role="tab"]')
-						tabs.forEach(tab => {
-							assert.equal(
-								tab.getAttribute('aria-selected'),
-								'false',
-							)
-							assert.equal(tab.tabIndex, -1)
-						})
-					})
-
-					it('should handle empty selection', async () => {
-						const el = document.getElementById('test1')
-
-						// Reset component state first
-						el.selected = 'panel1'
-						await animationFrame()
-
-						// Set to empty selection
-						el.selected = ''
-						await animationFrame() // Wait for scheduled effect execution
-
-						// All panels should be hidden
-						const panels = el.querySelectorAll('[role="tabpanel"]')
-						panels.forEach(panel => {
-							assert.isTrue(panel.hidden)
-						})
-
-						// All tabs should show as not selected
-						const tabs = el.querySelectorAll('[role="tab"]')
-						tabs.forEach(tab => {
-							assert.equal(
-								tab.getAttribute('aria-selected'),
-								'false',
-							)
-							assert.equal(tab.tabIndex, -1)
-						})
-					})
-
 					it('should work with single tab', async () => {
 						const el = document.getElementById('test3')
 						const tab = el.querySelector('#trigger6')
 						const panel = el.querySelector('#panel6')
 
-						// Reset component state first
-						el.selected = ''
-						await animationFrame()
-
 						// Click the single tab
 						tab.click()
-						await animationFrame() // Wait for event handling and effect execution
-						await animationFrame() // Extra frame for effect processing
+						await tick()
 
 						assert.equal(el.selected, 'panel6')
 						assert.equal(tab.getAttribute('aria-selected'), 'true')
@@ -433,16 +349,48 @@
 						assert.isFalse(panel.hidden)
 					})
 
-					it('should preserve selected property type', async () => {
+					it('should not allow programmatic property updates', async () => {
 						const el = document.getElementById('test1')
+						const originalSelected = el.selected
+						const originalTabs = el.tabs
 
-						assert.isString(el.selected)
+						// Should throw TypeError when trying to set selected
+						assert.throws(() => {
+							el.selected = 'panel2'
+						}, TypeError)
 
-						el.selected = 'panel2'
-						await animationFrame() // Wait for property update
+						// Selected should remain unchanged after failed assignment
+						assert.equal(el.selected, originalSelected)
 
-						assert.isString(el.selected)
-						assert.equal(el.selected, 'panel2')
+						// Should throw for different value types
+						assert.throws(() => {
+							el.selected = 123
+						}, TypeError)
+
+						assert.throws(() => {
+							el.selected = null
+						}, TypeError)
+
+						assert.throws(() => {
+							el.selected = undefined
+						}, TypeError)
+
+						// Should throw TypeError when trying to set tabs
+						assert.throws(() => {
+							el.tabs = []
+						}, TypeError)
+
+						assert.throws(() => {
+							el.tabs = [document.createElement('button')]
+						}, TypeError)
+
+						assert.throws(() => {
+							el.tabs = null
+						}, TypeError)
+
+						// Verify properties are still the original values
+						assert.equal(el.selected, originalSelected)
+						assert.deepEqual(el.tabs, originalTabs)
 					})
 				})
 			})

@@ -103,11 +103,11 @@ declare const reduced: <
 /**
  * Read from a descendant element and map the result
  *
- * @since 0.13.3
+ * @since 0.13.4
  * @param {C} host - Host element
  * @param {S} selector - CSS selector for descendant element
- * @param {(element: ElementFromSelector<S, E> | null, isUpgraded: boolean) => T} map - Function to map over the element
- * @returns {T} The mapped result from the descendant element
+ * @param {(element: ElementFromSelector<S, E> | null) => T} fn - Function to map over the element
+ * @returns {Computed<T>} A computed signal of the mapped result from the descendant element
  */
 declare const read: <
 	T extends {},
@@ -117,8 +117,8 @@ declare const read: <
 >(
 	host: C,
 	selector: S,
-	map: (element: ElementFromSelector<S, E> | null, isUpgraded: boolean) => T,
-) => T
+	fn: (element: ElementFromSelector<S, E> | null) => T,
+) => Computed<T>
 /**
  * Assert that an element contains an expected descendant element
  *

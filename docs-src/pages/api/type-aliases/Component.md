@@ -8,7 +8,7 @@
 
 > **Component**\<`P`\> = `HTMLElement` & `P` & `object`
 
-Defined in: [src/component.ts:42](https://github.com/zeixcom/ui-element/blob/f80be4b02c5d1c80817271ddf0fad982e43ad03e/src/component.ts#L42)
+Defined in: [src/component.ts:42](https://github.com/zeixcom/ui-element/blob/62aded0dfd41b132db684ccc25a7494068f0d957/src/component.ts#L42)
 
 ## Type declaration
 
