@@ -13,6 +13,26 @@
 			<input type="text" />
 			<p></p>
 		</test-signal-producers-integration>
+		<module-todo-test id="todo-test">
+			<form-radiogroup value="all" class="filter">
+				<fieldset>
+					<legend>Filter</legend>
+					<label class="selected">
+						<input type="radio" name="filter" value="all" checked />
+						<span>All</span>
+					</label>
+					<label>
+						<input type="radio" name="filter" value="active" />
+						<span>Active</span>
+					</label>
+					<label>
+						<input type="radio" name="filter" value="completed" />
+						<span>Completed</span>
+					</label>
+				</fieldset>
+			</form-radiogroup>
+			<div class="filter-display"></div>
+		</module-todo-test>
 
 		<script type="module">
 			import { runTests } from '@web/test-runner-mocha'
@@ -38,6 +58,24 @@
 				new Promise(requestAnimationFrame)
 			const microtask = async () => new Promise(queueMicrotask)
 			const normalizeText = text => text.replace(/\s+/g, ' ').trim()
+
+			// Helper to wait for component to be fully upgraded with signal methods
+			const waitForComponentUpgrade = async (element, maxWait = 1000) => {
+				if (!element) return false
+
+				await customElements.whenDefined(element.localName)
+				await animationFrame()
+
+				// Poll until getSignal method is available or timeout
+				const startTime = Date.now()
+				while (Date.now() - startTime < maxWait) {
+					if (typeof element.getSignal === 'function') {
+						return true
+					}
+					await wait(10)
+				}
+				return false
+			}
 
 			component(
 				'read-component',
@@ -84,6 +122,36 @@
 				},
 				(_, { first }) => [first('p', setText('lastInput'))],
 			)
+
+			// Define form-radiogroup component for testing
+			component(
+				'form-radiogroup',
+				{
+					value: asString(),
+				},
+				(el, { all }) => [
+					all(
+						'input[type="radio"]',
+						on('change', e => {
+							if (e.target.checked) {
+								el.value = e.target.value
+							}
+						}),
+					),
+				],
+			)
+
+			// Define module-todo-test component that reads from form-radiogroup
+			component('module-todo-test', {}, (el, { first }) => {
+				const filter = el.querySelector('form-radiogroup')
+
+				return [
+					first(
+						'.filter-display',
+						setText(read(filter, 'value', 'all')),
+					),
+				]
+			})
 
 			class InvalidComponent extends HTMLElement {
 				constructor() {
@@ -620,37 +688,20 @@
 
 				describe('read()', () => {
 					it('should return fallback when source is null', () => {
-						const value = read(
-							document.body,
-							'.non-existent',
-							target => target?.value ?? 'default',
-						)
-						assert.equal(value, 'default')
+						const reader = read(null, 'value', 'default')
+						assert.equal(reader(), 'default')
 					})
 
 					it('should return fallback when property does not exist on source', () => {
 						const container = document.createElement('div')
-						const div = document.createElement('div')
-						container.appendChild(div)
-						const value = read(
-							container,
-							'div',
-							target => target.value ?? 'fallback',
+						const comp = document.createElement('my-component')
+						container.appendChild(comp)
+						const reader = read(
+							container.querySelector('my-component'),
+							'value',
+							'fallback',
 						)
-						assert.equal(value, 'fallback')
-					})
-
-					it('should return property value of source element for non custom elements', () => {
-						const container = document.createElement('div')
-						const div = document.createElement('div')
-						div.className = 'test'
-						container.appendChild(div)
-						const value = read(
-							container,
-							'div',
-							target => target.className ?? 'fallback',
-						)
-						assert.equal(value, 'test')
+						assert.equal(reader(), 'fallback')
 					})
 
 					it('should return fallback until component is defined', async () => {
@@ -660,29 +711,27 @@
 							'undefined-component',
 						)
 						container.appendChild(mockElement)
-						const value = read(
-							container,
-							'undefined-component',
-							(target, upgraded) =>
-								target && upgraded ? target.value : 'fallback',
+						const reader = read(
+							container.querySelector('undefined-component'),
+							'value',
+							'fallback',
 						)
-						assert.equal(value, 'fallback')
+						assert.equal(reader(), 'fallback')
 					})
 
 					it('should read component property after component is defined', async () => {
 						const element = document.getElementById('read')
-						const value = read(
-							document.body,
-							'#read',
-							(target, upgraded) =>
-								target && upgraded ? target.value : 'fallback',
-						)
+						const reader = read(element, 'value', 'fallback')
 
-						// Wait for component to be defined and upgraded
-						await customElements.whenDefined('read-component')
+						// Since async computed, initially returns UNSET, so fallback
+						assert.equal(reader(), 'fallback')
+
+						// Wait for component to be fully upgraded
+						const upgraded = await waitForComponentUpgrade(element)
+						assert.isTrue(upgraded, 'Component should be upgraded')
 
 						// Now should return component value
-						assert.equal(value, 'test-value')
+						assert.equal(reader(), 'test-value')
 					})
 
 					it('should work with module-todo pattern reading input length', async () => {
@@ -694,19 +743,22 @@
 						document.body.appendChild(textbox)
 
 						try {
-							const inputLength = () =>
-								read(
-									document.body,
-									'form-textbox',
-									(target, upgraded) =>
-										target && upgraded ? target.length : 0,
-								)
+							const inputLength = read(
+								document.body.querySelector('form-textbox'),
+								'length',
+								0,
+							)
 
 							// Should return fallback initially
 							assert.equal(inputLength(), 0)
 
-							// Wait for component to be defined
-							await customElements.whenDefined('form-textbox')
+							// Wait for component to be fully upgraded
+							const upgraded =
+								await waitForComponentUpgrade(textbox)
+							assert.isTrue(
+								upgraded,
+								'Component should be upgraded',
+							)
 
 							// Initially should be 0
 							assert.equal(inputLength(), 0)
@@ -750,92 +802,26 @@
 							)
 
 							// Create reader before component is defined
-							const reader = () =>
-								read(
-									container,
-									'timing-test-component',
-									(target, upgraded) =>
-										target && upgraded
-											? target.status
-											: 'not-ready',
-								)
+							const reader = read(element, 'status', 'not-ready')
 
 							// Should return fallback initially
 							assert.equal(reader(), 'not-ready')
 
 							// Now define the component
-							class TimingTestComponent extends HTMLElement {
-								constructor() {
-									super()
-									this.signals = new Map()
-									this.status = 'ready'
-								}
-
-								getSignal(prop) {
-									if (!this.signals.has(prop)) {
-										this.signals.set(prop, {
-											get: () => this[prop],
-										})
-									}
-									return this.signals.get(prop)
-								}
-							}
-
-							customElements.define(
+							component(
 								'timing-test-component',
-								TimingTestComponent,
+								{ status: 'ready' },
+								() => [],
 							)
 
 							// Wait for upgrade
 							await customElements.whenDefined(
 								'timing-test-component',
 							)
+							await animationFrame()
 
 							// Now should return component value
 							assert.equal(reader(), 'ready')
-						} finally {
-							container.remove()
-						}
-					})
-
-					it('should read signals from a descendant component', async () => {
-						// Create a mock child component
-						class MockChild1 extends HTMLElement {
-							constructor() {
-								super()
-								this.signals = new Map()
-								this.value = 'child-value'
-							}
-
-							getSignal(prop) {
-								if (!this.signals.has(prop)) {
-									this.signals.set(prop, {
-										get: () => this[prop],
-									})
-								}
-								return this.signals.get(prop)
-							}
-						}
-
-						customElements.define('mock-child-1', MockChild1)
-
-						const container = document.createElement('div')
-						container.innerHTML = `<mock-child-1 id="child"></mock-child-1>`
-						document.body.appendChild(container)
-
-						try {
-							const reader = () =>
-								read(container, '#child', (target, upgraded) =>
-									target && upgraded
-										? target.value
-										: 'fallback',
-								)
-
-							// Wait for component to be defined and upgraded
-							await customElements.whenDefined('mock-child-1')
-
-							// Should now return component value
-							assert.equal(reader(), 'child-value')
 						} finally {
 							container.remove()
 						}
@@ -846,72 +832,71 @@
 						document.body.appendChild(container)
 
 						try {
-							const value = read(
-								container,
-								'.nonexistent',
-								target => target?.value ?? 'fallback',
-							)
+							const reader = read(null, 'value', 'fallback')
 
-							assert.equal(value, 'fallback')
+							assert.equal(reader(), 'fallback')
 						} finally {
 							container.remove()
 						}
 					})
 
-					it('should work with computed signals', async () => {
-						class MockComputed2 extends HTMLElement {
-							constructor() {
-								super()
-								this.signals = new Map()
-								this._count = 0
-							}
+					it('should work with real-world server-rendered markup like module-todo', async () => {
+						const todoTest = document.getElementById('todo-test')
+						const radioGroup =
+							todoTest.querySelector('form-radiogroup')
+						const display =
+							todoTest.querySelector('.filter-display')
 
-							get count() {
-								return this._count
-							}
+						// Wait for components to be defined and upgraded
+						await customElements.whenDefined('module-todo-test')
+						await customElements.whenDefined('form-radiogroup')
+						await waitForComponentUpgrade(todoTest)
+						await waitForComponentUpgrade(radioGroup)
 
-							set count(value) {
-								this._count = value
-							}
+						console.log(
+							'Initial display text:',
+							display.textContent,
+						)
 
-							getSignal(prop) {
-								if (!this.signals.has(prop)) {
-									this.signals.set(prop, {
-										get: () => this._count,
-										set: value => {
-											this._count = value
-										},
-									})
-								}
-								return this.signals.get(prop)
-							}
-						}
+						// Initially should show "all" filter
+						assert.include(display.textContent, 'all')
 
-						customElements.define('mock-computed-2', MockComputed2)
+						// Change radio selection to "active"
+						const activeRadio = radioGroup.querySelector(
+							'input[value="active"]',
+						)
+						activeRadio.checked = true
+						activeRadio.dispatchEvent(
+							new Event('change', { bubbles: true }),
+						)
 
-						const container = document.createElement('div')
-						container.innerHTML = `<mock-computed-2 id="computed"></mock-computed-2>`
-						document.body.appendChild(container)
+						// Wait for read() to detect change and effect to update
+						await animationFrame()
 
-						try {
-							// Wait for component to be defined first
-							await customElements.whenDefined('mock-computed-2')
+						console.log('After active change:', display.textContent)
 
-							// Test initial read
-							const reader = () =>
-								read(
-									container,
-									'#computed',
-									target => target.count ?? 0,
-								)
-							assert.equal(reader(), 0)
+						// Display should update to show "active" filter
+						assert.include(display.textContent, 'active')
 
-							// Set count and test read again
-							container.querySelector('#computed').count = 1
-							assert.equal(reader(), 1)
-						} finally {
-							container.remove()
-						}
+						// Change radio selection to "completed"
+						const completedRadio = radioGroup.querySelector(
+							'input[value="completed"]',
+						)
+						completedRadio.checked = true
+						completedRadio.dispatchEvent(
+							new Event('change', { bubbles: true }),
+						)
+
+						// Wait for read() to detect change and effect to update
+						await animationFrame()
+
+						console.log(
+							'After completed change:',
+							display.textContent,
+						)
+
+						// Display should update to show "completed" filter
+						assert.include(display.textContent, 'completed')
 					})
 				})
 
@@ -1430,114 +1415,6 @@
 							await microtask()
 
 							assert.equal(lastValue, 'Click me')
-							cleanup()
-						} finally {
-							container.remove()
-						}
-					})
-
-					it('should provide UIElement component type safety', async () => {
-						// This test demonstrates TypeScript knows about UIElement component methods
-						// when components declare their HTMLElementTagNameMap extension
-
-						// Create a mock UIElement component for testing
-						class MockUIComponent extends HTMLElement {
-							#value = 42
-							#signals = new Map()
-
-							get value() {
-								return this.#value
-							}
-							set value(v) {
-								this.#value = v
-							}
-
-							getSignal(key) {
-								if (!this.#signals.has(key)) {
-									this.#signals.set(key, {
-										get: () => this[key],
-									})
-								}
-								return this.#signals.get(key)
-							}
-
-							setSignal(key, signal) {
-								this.#signals.set(key, signal)
-							}
-						}
-
-						customElements.define(
-							'mock-ui-component',
-							MockUIComponent,
-						)
-
-						const container = document.createElement('div')
-						container.innerHTML = `
-							<mock-ui-component></mock-ui-component>
-							<mock-ui-component></mock-ui-component>
-						`
-						document.body.appendChild(container)
-
-						try {
-							// Test fromSelector with UIElement components
-							const components =
-								fromSelector('mock-ui-component')(
-									container,
-								).get()
-							assert.equal(components.length, 2)
-							// In TypeScript, these would have full UIElement component methods
-							assert.equal(components[0].value, 42)
-							assert.equal(
-								typeof components[0].getSignal,
-								'function',
-							)
-
-							// Test reduced with UIElement components
-							const totalValue = reduced(
-								container,
-								'mock-ui-component',
-								(sum, component) => sum + component.value,
-								0,
-							).get()
-
-							assert.equal(totalValue, 84) // 42 + 42
-
-							// Test read with UIElement component
-							const value = read(
-								container,
-								'mock-ui-component',
-								component => component.value ?? 0,
-							)
-
-							assert.equal(value, 42)
-
-							// Test fromEvents with UIElement component
-							const eventSignal = fromEvents(
-								0,
-								'mock-ui-component',
-								{
-									customEvent: ({ target }) =>
-										target.value * 2,
-								},
-							)(container)
-
-							let lastValue = 0
-							const cleanup = effect(() => {
-								lastValue = eventSignal.get()
-							})
-
-							// Dispatch custom event
-							const component =
-								container.querySelector('mock-ui-component')
-							component.dispatchEvent(
-								new CustomEvent('customEvent', {
-									bubbles: true,
-								}),
-							)
-							await microtask()
-
-							assert.equal(lastValue, 84) // 42 * 2
-
 							cleanup()
 						} finally {
 							container.remove()

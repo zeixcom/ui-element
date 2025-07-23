@@ -411,7 +411,7 @@ var observeSubtree = (parent, selector, callback) => {
 };
 var fromSelector = (selector) => (host) => {
   const watchers = new Set;
-  const select = () => Array.from(host.querySelectorAll(selector));
+  const select = () => Array.from((host.shadowRoot ?? host).querySelectorAll(selector));
   let value = UNSET;
   let observer;
   let mutationDepth = 0;
@@ -455,12 +455,20 @@ var fromSelector = (selector) => (host) => {
   };
 };
 var reduced = (host, selector, reducer, initialValue) => computed(() => fromSelector(selector)(host).get().reduce(reducer, initialValue));
-var read = (host, selector, fn) => computed(async () => {
-  const target = host.querySelector(selector);
-  if (target && isCustomElement(target))
+var read = (target, prop, fallback) => {
+  if (!target)
+    return () => fallback;
+  if (!isCustomElement(target))
+    throw new TypeError(`Target element must be a custom element`);
+  const awaited = computed(async () => {
     await customElements.whenDefined(target.localName);
-  return fn(target);
-});
+    return target.getSignal(prop);
+  });
+  return () => {
+    const value = awaited.get();
+    return value === UNSET ? fallback : value.get();
+  };
+};
 var requireDescendant = (host, selector) => {
   const target = host.querySelector(selector);
   if (!target) {

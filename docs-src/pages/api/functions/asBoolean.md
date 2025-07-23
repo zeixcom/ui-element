@@ -8,7 +8,7 @@
 
 > **asBoolean**(): [`AttributeParser`](../type-aliases/AttributeParser.md)\<`boolean`\>
 
-Defined in: [src/lib/parsers.ts:23](https://github.com/zeixcom/ui-element/blob/62aded0dfd41b132db684ccc25a7494068f0d957/src/lib/parsers.ts#L23)
+Defined in: [src/lib/parsers.ts:23](https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/lib/parsers.ts#L23)
 
 Parse a boolean attribute as an actual boolean value
 

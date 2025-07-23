@@ -6,56 +6,52 @@
 
 # Function: read()
 
-> **read**\<`T`, `E`, `C`, `S`\>(`host`, `selector`, `fn`): [`Computed`](../type-aliases/Computed.md)\<`T`\>
+> **read**\<`Q`, `K`\>(`target`, `prop`, `fallback`): () => `Q`\[`K`\]
 
-Defined in: [src/core/dom.ts:336](https://github.com/zeixcom/ui-element/blob/62aded0dfd41b132db684ccc25a7494068f0d957/src/core/dom.ts#L336)
+Defined in: [src/core/dom.ts:343](https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/core/dom.ts#L343)
 
-Read from a descendant element and map the result
+Read a signal property from a custom element safely after it's defined
 
 ## Type Parameters
 
-### T
+### Q
 
-`T` *extends* `object`
+`Q` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
 
-### E
+### K
 
-`E` *extends* `Element` = `HTMLElement`
-
-### C
-
-`C` *extends* `HTMLElement` = `HTMLElement`
-
-### S
-
-`S` *extends* `string` = `string`
+`K` *extends* `string`
 
 ## Parameters
 
-### host
+### target
 
-`C`
+Taget descendant element
 
-Host element
+`null` | [`Component`](../type-aliases/Component.md)\<`Q`\>
 
-### selector
+### prop
 
-`S`
+`K`
 
-CSS selector for descendant element
+Property name to get signal for
 
-### fn
+### fallback
 
-(`element`) => `T`
+`Q`\[`K`\]
 
-Function to map over the element
+Fallback value to use until component is ready
 
 ## Returns
 
-[`Computed`](../type-aliases/Computed.md)\<`T`\>
+Function that returns signal value or fallback
 
-A computed signal of the mapped result from the descendant element
+> (): `Q`\[`K`\]
+
+### Returns
+
+`Q`\[`K`\]
 
 ## Since
 
-0.13.4
+0.13.1
