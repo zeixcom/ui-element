@@ -107,7 +107,7 @@ export {
 	setProperty,
 	show,
 	// callMethod,
-	focus,
+	// focus,
 	setAttribute,
 	toggleAttribute,
 	toggleClass,

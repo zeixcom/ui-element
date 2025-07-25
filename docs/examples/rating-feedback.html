@@ -191,7 +191,7 @@
 <span class="line"><span style="color:#F8F8F2">	show,</span></span>
 <span class="line"><span style="color:#F8F8F2">	state,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { BasicButtonProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../basic-button/basic-button'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#E6DB74"> '../basic-button/basic-button'</span></span>
 <span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { RatingStarsProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../rating-stars/rating-stars'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'rating-feedback'</span><span style="color:#F8F8F2">, {}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
@@ -203,11 +203,11 @@
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">		// Event listeners for rating changes and form submission</span></span>
-<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change-rating'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">			rating.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(e.detail)</span></span>
+<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change-rating'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">			rating.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(event.detail)</span></span>
 <span class="line"><span style="color:#F8F8F2">		}),</span></span>
-<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'submit'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">			e.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#A6E22E">		on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'submit'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">			event.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">			submitted.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">true</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">			console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Feedback submitted'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">		}),</span></span>
@@ -245,10 +245,7 @@
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Effect on empty state</span></span>
-<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">BasicButtonProps</span><span style="color:#F8F8F2">>>(</span></span>
-<span class="line"><span style="color:#E6DB74">			'basic-button'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">, empty),</span></span>
-<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'basic-button'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">, empty)),</span></span>
 <span class="line"><span style="color:#F8F8F2">	]</span></span>
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>

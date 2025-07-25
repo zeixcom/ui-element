@@ -30,11 +30,7 @@ export default component(
 	},
 	(_, { first }) => [
 		toggleAttribute('checked'),
-		first<HTMLInputElement>(
-			'input[type="checkbox"]',
-			[],
-			'Native checkbox needed.',
-		),
+		first('input[type="checkbox"]', [], 'Native checkbox needed.'),
 		first('.label', setText('label')),
 	],
 )

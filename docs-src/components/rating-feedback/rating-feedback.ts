@@ -6,7 +6,7 @@ import {
 	show,
 	state,
 } from '../../../'
-import type { BasicButtonProps } from '../basic-button/basic-button'
+import '../basic-button/basic-button'
 import type { RatingStarsProps } from '../rating-stars/rating-stars'
 
 export default component('rating-feedback', {}, (el, { all, first }) => {
@@ -18,11 +18,11 @@ export default component('rating-feedback', {}, (el, { all, first }) => {
 
 	return [
 		// Event listeners for rating changes and form submission
-		on('change-rating', e => {
-			rating.set(e.detail)
+		on('change-rating', ({ event }) => {
+			rating.set(event.detail)
 		}),
-		on('submit', e => {
-			e.preventDefault()
+		on('submit', ({ event }) => {
+			event.preventDefault()
 			submitted.set(true)
 			console.log('Feedback submitted')
 		}),
@@ -60,9 +60,6 @@ export default component('rating-feedback', {}, (el, { all, first }) => {
 		),
 
 		// Effect on empty state
-		first<Component<BasicButtonProps>>(
-			'basic-button',
-			setProperty('disabled', empty),
-		),
+		first('basic-button', setProperty('disabled', empty)),
 	]
 })

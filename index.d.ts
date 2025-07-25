@@ -11,5 +11,5 @@ export { type Effect, type Effects, type Reactive, resolveReactive, } from './sr
 export { type EventHandler, type EventType, type EventTransformer, type EventTransformers, emitEvent, fromEvents, on, } from './src/core/events';
 export { type Context, type UnknownContext, type ContextType, fromContext, provideContexts, } from './src/core/context';
 export { asBoolean, asInteger, asNumber, asString, asEnum, asJSON, } from './src/lib/parsers';
-export { type Reactives, type UpdateOperation, type ElementUpdater, type ElementInserter, type DangerouslySetInnerHTMLOptions, updateElement, insertOrRemoveElement, setText, setProperty, show, focus, setAttribute, toggleAttribute, toggleClass, setStyle, dangerouslySetInnerHTML, pass, } from './src/lib/effects';
+export { type Reactives, type UpdateOperation, type ElementUpdater, type ElementInserter, type DangerouslySetInnerHTMLOptions, updateElement, insertOrRemoveElement, setText, setProperty, show, setAttribute, toggleAttribute, toggleClass, setStyle, dangerouslySetInnerHTML, pass, } from './src/lib/effects';
 export { getText, getProperty, hasAttribute, getAttribute, hasClass, getStyle, getLabel, getDescription, } from './src/lib/extractors';

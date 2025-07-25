@@ -48,14 +48,18 @@ type Initializer<T extends {}, C extends HTMLElement> =
 	| Parser<T, C>
 	| SignalProducer<T, C>
 	| MethodProducer<C>
-type ElementSelector<P extends ComponentProps> = <
-	E extends Element = HTMLElement,
-	S extends string = string,
->(
-	selector: S,
-	effects: Effects<P, ElementFromSelector<S, E>>,
-	required?: string,
-) => (host: Component<P>) => Cleanup | void
+type ElementSelector<P extends ComponentProps> = {
+	<S extends string>(
+		selector: S,
+		effects: Effects<P, ElementFromSelector<S>>,
+		required?: string,
+	): (host: Component<P>) => Cleanup | void
+	<E extends Element>(
+		selector: string,
+		effects: Effects<P, E>,
+		required?: string,
+	): (host: Component<P>) => Cleanup | void
+}
 type ElementSelectors<P extends ComponentProps> = {
 	first: ElementSelector<P>
 	all: ElementSelector<P>

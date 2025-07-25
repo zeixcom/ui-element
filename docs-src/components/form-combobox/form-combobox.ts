@@ -191,7 +191,7 @@ export default component<FormComboboxProps>(
 			]),
 
 			// Effects and event listeners on options
-			all<HTMLLIElement>('[role="option"]', [
+			all('[role="option"]', [
 				setProperty('ariaSelected', target =>
 					String(
 						target.textContent?.trim().toLowerCase() ===

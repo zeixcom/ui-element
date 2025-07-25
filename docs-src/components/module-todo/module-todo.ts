@@ -10,7 +10,7 @@ import {
 	setText,
 	show,
 } from '../../..'
-import type { BasicButtonProps } from '../basic-button/basic-button'
+import '../basic-button/basic-button'
 import type { FormCheckboxProps } from '../form-checkbox/form-checkbox'
 import '../form-textbox/form-textbox'
 // import '../form-radiogroup/form-radiogroup'
@@ -45,7 +45,7 @@ export default component(
 
 		return [
 			// Control todo input form
-			first<Component<BasicButtonProps>>(
+			first(
 				'.submit',
 				pass({
 					disabled: () => !textbox.length,
@@ -109,7 +109,7 @@ export default component(
 			),
 
 			// Control clear-completed button
-			first<Component<BasicButtonProps>>('.clear-completed', [
+			first('.clear-completed', [
 				pass({
 					disabled: () => !el.completed.length,
 					badge: () =>

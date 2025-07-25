@@ -90,14 +90,18 @@ type Initializer<T extends {}, C extends HTMLElement> =
 	| SignalProducer<T, C>
 	| MethodProducer<C>
 
-type ElementSelector<P extends ComponentProps> = <
-	E extends Element = HTMLElement,
-	S extends string = string,
->(
-	selector: S,
-	effects: Effects<P, ElementFromSelector<S, E>>,
-	required?: string,
-) => (host: Component<P>) => Cleanup | void
+type ElementSelector<P extends ComponentProps> = {
+	<S extends string>(
+		selector: S,
+		effects: Effects<P, ElementFromSelector<S>>,
+		required?: string,
+	): (host: Component<P>) => Cleanup | void
+	<E extends Element>(
+		selector: string,
+		effects: Effects<P, E>,
+		required?: string,
+	): (host: Component<P>) => Cleanup | void
+}
 
 type ElementSelectors<P extends ComponentProps> = {
 	first: ElementSelector<P>
@@ -193,65 +197,58 @@ const select = <P extends ComponentProps>(): ElementSelectors<P> => ({
 	 *
 	 * @since 0.14.0
 	 * @param {S} selector - Selector to match descendant
-	 * @param {Effects<P, ElementFromSelector<S, E>>} effects - Effect functions to apply
+	 * @param {Effects<P, ElementFromSelector<S>>} effects - Effect functions to apply
 	 * @param {string} required - Optional error message to explain why the element is required; if not provided, missing elements will be silently ignored
 	 * @throws {MissingElementError} - Thrown when the element is required but not found
 	 */
-	first:
-		<E extends Element = HTMLElement, S extends string = string>(
-			selector: S,
-			effects: Effects<P, ElementFromSelector<S, E>>,
-			required?: string,
-		) =>
-		(host: Component<P>) => {
-			const target = (host.shadowRoot || host).querySelector<
-				ElementFromSelector<S, E>
-			>(selector)
+	first<S extends string, E extends Element = ElementFromSelector<S>>(
+		selector: S,
+		effects: Effects<P, E>,
+		required?: string,
+	): (host: Component<P>) => Cleanup | void {
+		return (host: Component<P>) => {
+			const target = (host.shadowRoot ?? host).querySelector<E>(selector)
 			if (!target && required != null)
 				throw new MissingElementError(host, selector, required)
 			if (target) runEffects(effects, host, target)
-		},
+		}
+	},
 
 	/**
 	 * Apply effect functions to all matching descendant elements within the custom element
 	 *
 	 * @since 0.14.0
 	 * @param {S} selector - Selector to match descendants
-	 * @param {Effects<P, ElementFromSelector<S, E>>} effects - Effect functions to apply
+	 * @param {Effects<P, ElementFromSelector<S>>} effects - Effect functions to apply
 	 * @param {string} required - Optional error message to explain why the element is required; if not provided, missing elements will be silently ignored
 	 * @throws {MissingElementError} - Thrown when the element is required but not found
 	 */
-	all:
-		<E extends Element = HTMLElement, S extends string = string>(
-			selector: S,
-			effects: Effects<P, ElementFromSelector<S, E>>,
-			required?: string,
-		) =>
-		(host: Component<P>) => {
-			const cleanups = new Map<ElementFromSelector<S, E>, Cleanup>()
-			const root = host.shadowRoot || host
+	all<S extends string, E extends Element = ElementFromSelector<S>>(
+		selector: S,
+		effects: Effects<P, E>,
+		required?: string,
+	): (host: Component<P>) => Cleanup | void {
+		return (host: Component<P>) => {
+			const cleanups = new Map<E, Cleanup>()
+			const root = host.shadowRoot ?? host
 
-			const attach = (target: ElementFromSelector<S, E>) => {
+			const attach = (target: E) => {
 				const cleanup = runEffects(effects, host, target)
 				if (cleanup && !cleanups.has(target))
 					cleanups.set(target, cleanup)
 			}
 
-			const detach = (target: ElementFromSelector<S, E>) => {
+			const detach = (target: E) => {
 				const cleanup = cleanups.get(target)
 				if (cleanup) cleanup()
 				cleanups.delete(target)
 			}
 
 			const applyToMatching =
-				(fn: (target: ElementFromSelector<S, E>) => void) =>
-				(node: Node) => {
+				(fn: (target: E) => void) => (node: Node) => {
 					if (isElement(node)) {
-						if (node.matches(selector))
-							fn(node as ElementFromSelector<S, E>)
-						node.querySelectorAll<ElementFromSelector<S, E>>(
-							selector,
-						).forEach(fn)
+						if (node.matches(selector)) fn(node as E)
+						node.querySelectorAll<E>(selector).forEach(fn)
 					}
 				}
 
@@ -262,8 +259,7 @@ const select = <P extends ComponentProps>(): ElementSelectors<P> => ({
 				}
 			})
 
-			const targets =
-				root.querySelectorAll<ElementFromSelector<S, E>>(selector)
+			const targets = root.querySelectorAll<E>(selector)
 			if (!targets.length && required != null)
 				throw new MissingElementError(host, selector, required)
 			if (targets.length) targets.forEach(attach)
@@ -273,7 +269,8 @@ const select = <P extends ComponentProps>(): ElementSelectors<P> => ({
 				cleanups.forEach(cleanup => cleanup())
 				cleanups.clear()
 			}
-		},
+		}
+	},
 })
 
 /* === Exported Functions === */

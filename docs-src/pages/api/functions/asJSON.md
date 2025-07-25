@@ -8,7 +8,7 @@
 
 > **asJSON**\<`T`, `E`\>(`fallback`): [`Parser`](../type-aliases/Parser.md)\<`T`, `E`\>
 
-Defined in: [src/lib/parsers.ts:111](https://github.com/zeixcom/ui-element/blob/59d79a082870e892722e0aaa0f251617218ab48f/src/lib/parsers.ts#L111)
+Defined in: [src/lib/parsers.ts:111](https://github.com/zeixcom/ui-element/blob/0e9cacf03a8f95418720628d5174fbb006152743/src/lib/parsers.ts#L111)
 
 Parse a string as a JSON serialized object with a fallback
 

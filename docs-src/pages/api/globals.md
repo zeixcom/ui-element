@@ -69,7 +69,6 @@
 - [effect](functions/effect.md)
 - [emitEvent](functions/emitEvent.md)
 - [enqueue](functions/enqueue.md)
-- [focus](functions/focus.md)
 - [fromComponent](functions/fromComponent.md)
 - [fromContext](functions/fromContext.md)
 - [fromDOM](functions/fromDOM.md)

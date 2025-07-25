@@ -530,49 +530,53 @@ var runEffects = (effects, host, target = host) => {
   };
 };
 var select = () => ({
-  first: (selector, effects, required) => (host) => {
-    const target = (host.shadowRoot || host).querySelector(selector);
-    if (!target && required != null)
-      throw new MissingElementError(host, selector, required);
-    if (target)
-      runEffects(effects, host, target);
+  first(selector, effects, required) {
+    return (host) => {
+      const target = (host.shadowRoot ?? host).querySelector(selector);
+      if (!target && required != null)
+        throw new MissingElementError(host, selector, required);
+      if (target)
+        runEffects(effects, host, target);
+    };
   },
-  all: (selector, effects, required) => (host) => {
-    const cleanups = new Map;
-    const root = host.shadowRoot || host;
-    const attach = (target) => {
-      const cleanup = runEffects(effects, host, target);
-      if (cleanup && !cleanups.has(target))
-        cleanups.set(target, cleanup);
-    };
-    const detach = (target) => {
-      const cleanup = cleanups.get(target);
-      if (cleanup)
-        cleanup();
-      cleanups.delete(target);
-    };
-    const applyToMatching = (fn) => (node) => {
-      if (isElement(node)) {
-        if (node.matches(selector))
-          fn(node);
-        node.querySelectorAll(selector).forEach(fn);
-      }
-    };
-    const observer = observeSubtree(root, selector, (mutations) => {
-      for (const mutation of mutations) {
-        mutation.addedNodes.forEach(applyToMatching(attach));
-        mutation.removedNodes.forEach(applyToMatching(detach));
-      }
-    });
-    const targets = root.querySelectorAll(selector);
-    if (!targets.length && required != null)
-      throw new MissingElementError(host, selector, required);
-    if (targets.length)
-      targets.forEach(attach);
-    return () => {
-      observer.disconnect();
-      cleanups.forEach((cleanup) => cleanup());
-      cleanups.clear();
+  all(selector, effects, required) {
+    return (host) => {
+      const cleanups = new Map;
+      const root = host.shadowRoot || host;
+      const attach = (target) => {
+        const cleanup = runEffects(effects, host, target);
+        if (cleanup && !cleanups.has(target))
+          cleanups.set(target, cleanup);
+      };
+      const detach = (target) => {
+        const cleanup = cleanups.get(target);
+        if (cleanup)
+          cleanup();
+        cleanups.delete(target);
+      };
+      const applyToMatching = (fn) => (node) => {
+        if (isElement(node)) {
+          if (node.matches(selector))
+            fn(node);
+          node.querySelectorAll(selector).forEach(fn);
+        }
+      };
+      const observer = observeSubtree(root, selector, (mutations) => {
+        for (const mutation of mutations) {
+          mutation.addedNodes.forEach(applyToMatching(attach));
+          mutation.removedNodes.forEach(applyToMatching(detach));
+        }
+      });
+      const targets = root.querySelectorAll(selector);
+      if (!targets.length && required != null)
+        throw new MissingElementError(host, selector, required);
+      if (targets.length)
+        targets.forEach(attach);
+      return () => {
+        observer.disconnect();
+        cleanups.forEach((cleanup) => cleanup());
+        cleanups.clear();
+      };
     };
   }
 });

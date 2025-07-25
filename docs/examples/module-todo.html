@@ -246,10 +246,10 @@
 <span class="line"><span style="color:#F8F8F2">	setText,</span></span>
 <span class="line"><span style="color:#F8F8F2">	show,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { BasicButtonProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../basic-button/basic-button'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#E6DB74"> '../basic-button/basic-button'</span></span>
 <span class="line"><span style="color:#F92672">import</span><span style="color:#F92672"> type</span><span style="color:#F8F8F2"> { FormCheckboxProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../form-checkbox/form-checkbox'</span></span>
 <span class="line"><span style="color:#F92672">import</span><span style="color:#E6DB74"> '../form-textbox/form-textbox'</span></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#E6DB74"> '../form-radiogroup/form-radiogroup'</span></span>
+<span class="line"><span style="color:#88846F">// import '../form-radiogroup/form-radiogroup'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">ModuleTodoProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	readonly</span><span style="color:#F8F8F2"> active</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[]</span></span>
@@ -281,7 +281,7 @@
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">			// Control todo input form</span></span>
-<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">BasicButtonProps</span><span style="color:#F8F8F2">>>(</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">				'.submit'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">				pass</span><span style="color:#F8F8F2">({</span></span>
 <span class="line"><span style="color:#A6E22E">					disabled</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">textbox.length,</span></span>
@@ -345,7 +345,7 @@
 <span class="line"><span style="color:#F8F8F2">			),</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">			// Control clear-completed button</span></span>
-<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">BasicButtonProps</span><span style="color:#F8F8F2">>>(</span><span style="color:#E6DB74">'.clear-completed'</span><span style="color:#F8F8F2">, [</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.clear-completed'</span><span style="color:#F8F8F2">, [</span></span>
 <span class="line"><span style="color:#A6E22E">				pass</span><span style="color:#F8F8F2">({</span></span>
 <span class="line"><span style="color:#A6E22E">					disabled</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">el.completed.length,</span></span>
 <span class="line"><span style="color:#A6E22E">					badge</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span></span>
