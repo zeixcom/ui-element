@@ -10,7 +10,12 @@ import {
 	subscribe,
 } from '@zeix/cause-effect'
 
-import type { ElementFromSelector, SignalProducer } from '../component'
+import type {
+	Component,
+	ComponentProps,
+	ElementFromSelector,
+	SignalProducer,
+} from '../component'
 import { elementName, isCustomElement } from './util'
 
 /* === Types === */
@@ -237,7 +242,9 @@ const fromSelector =
 		const watchers: Set<Watcher> = new Set()
 		const select = () =>
 			Array.from(
-				host.querySelectorAll<ElementFromSelector<S, E>>(selector),
+				(host.shadowRoot ?? host).querySelectorAll<
+					ElementFromSelector<S, E>
+				>(selector),
 			)
 		let value: ElementFromSelector<S, E>[] = UNSET
 		let observer: MutationObserver | undefined
@@ -325,30 +332,33 @@ const reduced = <
 	)
 
 /**
- * Read from a descendant element and map the result
+ * Read a signal property from a custom element safely after it's defined
  *
- * @since 0.13.4
- * @param {C} host - Host element
- * @param {S} selector - CSS selector for descendant element
- * @param {(element: ElementFromSelector<S, E> | null) => T} fn - Function to map over the element
- * @returns {Computed<T>} A computed signal of the mapped result from the descendant element
+ * @since 0.13.1
+ * @param {Component<Q> | null} target - Taget descendant element
+ * @param {K} prop - Property name to get signal for
+ * @param {Q[K]} fallback - Fallback value to use until component is ready
+ * @returns {() => Q[K]} Function that returns signal value or fallback
  */
-const read = <
-	T extends {},
-	E extends Element = HTMLElement,
-	C extends HTMLElement = HTMLElement,
-	S extends string = string,
->(
-	host: C,
-	selector: S,
-	fn: (element: ElementFromSelector<S, E> | null) => T,
-): Computed<T> =>
-	computed(async () => {
-		const target = host.querySelector<ElementFromSelector<S, E>>(selector)
-		if (target && isCustomElement(target))
-			await customElements.whenDefined(target.localName)
-		return fn(target)
+const read = <Q extends ComponentProps, K extends keyof Q & string>(
+	target: Component<Q> | null,
+	prop: K,
+	fallback: Q[K],
+): (() => Q[K]) => {
+	if (!target) return () => fallback
+	if (!isCustomElement(target))
+		throw new TypeError(`Target element must be a custom element`)
+
+	const awaited = computed(async () => {
+		await customElements.whenDefined(target.localName)
+		return target.getSignal(prop)
 	})
+
+	return () => {
+		const value = awaited.get()
+		return value === UNSET ? fallback : (value.get() as Q[K])
+	}
+}
 
 /**
  * Assert that an element contains an expected descendant element

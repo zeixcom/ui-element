@@ -8,7 +8,7 @@
 
 > **reduced**\<`T`, `E`, `C`, `S`\>(`host`, `selector`, `reducer`, `initialValue`): [`Computed`](../type-aliases/Computed.md)\<`T`\>
 
-Defined in: [src/core/dom.ts:301](https://github.com/zeixcom/ui-element/blob/62aded0dfd41b132db684ccc25a7494068f0d957/src/core/dom.ts#L301)
+Defined in: [src/core/dom.ts:308](https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/core/dom.ts#L308)
 
 Reduced properties of descendant elements
 

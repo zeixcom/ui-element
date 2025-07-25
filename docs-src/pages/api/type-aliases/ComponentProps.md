@@ -8,4 +8,4 @@
 
 > **ComponentProps** = `{ [K in string as ValidPropertyKey<K>]: {} }`
 
-Defined in: [src/component.ts:40](https://github.com/zeixcom/ui-element/blob/62aded0dfd41b132db684ccc25a7494068f0d957/src/component.ts#L40)
+Defined in: [src/component.ts:40](https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/component.ts#L40)

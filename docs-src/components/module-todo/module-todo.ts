@@ -13,7 +13,6 @@ import {
 import type { BasicButtonProps } from '../basic-button/basic-button'
 import type { FormCheckboxProps } from '../form-checkbox/form-checkbox'
 import '../form-textbox/form-textbox'
-import '../form-radiogroup/form-radiogroup'
 
 export type ModuleTodoProps = {
 	readonly active: HTMLElement[]
@@ -30,6 +29,7 @@ export default component(
 		const textbox = requireDescendant(el, 'form-textbox')
 		const template = requireDescendant(el, 'template')
 		const list = requireDescendant(el, 'ol')
+		const filter = el.querySelector('form-radiogroup')
 
 		return [
 			// Control todo input form
@@ -64,18 +64,10 @@ export default component(
 			// Control todo list
 			first(
 				'ol',
-				setAttribute(
-					'filter',
-					read(
-						el,
-						'form-radiogroup',
-						target => target?.getSignal('value').get() ?? 'all',
-					),
-				),
+				setAttribute('filter', read(filter, 'value', 'all')),
 				on('click', (e: Event) => {
 					const target = e.target as HTMLElement
-					if (target.localName === 'button')
-						target.closest('li')!.remove()
+					if (target.closest('button')) target.closest('li')!.remove()
 				}),
 			),
 

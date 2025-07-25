@@ -3,10 +3,10 @@ import {
 	component,
 	fromEvents,
 	fromSelector,
+	requireDescendant,
 	setProperty,
 	show,
 } from '../../..'
-import { requireDescendant } from '../../../src/core/dom'
 
 export type ModuleTabgroupProps = {
 	readonly tabs: HTMLButtonElement[]
