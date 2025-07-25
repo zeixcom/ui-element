@@ -12,7 +12,7 @@ import {
 } from '../../..'
 
 export type FormCheckboxProps = {
-	checked: boolean
+	readonly checked: boolean
 	label: string
 }
 

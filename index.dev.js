@@ -280,12 +280,6 @@ var isString = (value) => typeof value === "string";
 var hasMethod = (obj, methodName) => isString(methodName) && (methodName in obj) && isFunction(obj[methodName]);
 var isElement = (node) => node.nodeType === Node.ELEMENT_NODE;
 var isCustomElement = (element) => element.localName.includes("-");
-var isUpgradedComponent = (element) => {
-  if (!isCustomElement(element))
-    return true;
-  const ctor = customElements.get(element.localName);
-  return !!ctor && element instanceof ctor;
-};
 var elementName = (el) => el ? `<${el.localName}${idString(el.id)}${classString(el.classList)}>` : "<unknown>";
 var valueString = (value) => isString(value) ? `"${value}"` : isDefinedObject(value) ? JSON.stringify(value) : String(value);
 var typeString = (value) => {
@@ -422,7 +416,7 @@ var observeSubtree = (parent, selector, callback) => {
 };
 var fromSelector = (selector) => (host) => {
   const watchers = new Set;
-  const select = () => Array.from((host.shadowRoot || host).querySelectorAll(selector));
+  const select = () => Array.from((host.shadowRoot ?? host).querySelectorAll(selector));
   let value = UNSET;
   let observer;
   let mutationDepth = 0;
@@ -466,9 +460,19 @@ var fromSelector = (selector) => (host) => {
   };
 };
 var reduced = (host, selector, reducer, initialValue) => computed(() => fromSelector(selector)(host).get().reduce(reducer, initialValue));
-var read = (host, selector, map) => {
-  const source = host.querySelector(selector);
-  return map(source, source ? isUpgradedComponent(source) : false);
+var read = (target, prop, fallback) => {
+  if (!target)
+    return () => fallback;
+  if (!isCustomElement(target))
+    throw new TypeError(`Target element must be a custom element`);
+  const awaited = computed(async () => {
+    await customElements.whenDefined(target.localName);
+    return target.getSignal(prop);
+  });
+  return () => {
+    const value = awaited.get();
+    return value === UNSET ? fallback : value.get();
+  };
 };
 var requireElement = (host, selector, required, assertCustomElement) => {
   const target = (host.shadowRoot || host).querySelector(selector);

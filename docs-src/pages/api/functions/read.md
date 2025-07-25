@@ -6,56 +6,52 @@
 
 # Function: read()
 
-> **read**\<`T`, `E`, `C`, `S`\>(`host`, `selector`, `map`): `T`
+> **read**\<`Q`, `K`\>(`target`, `prop`, `fallback`): () => `Q`\[`K`\]
 
-Defined in: [src/core/dom.ts:327](https://github.com/zeixcom/ui-element/blob/1c318eb583bce4633e1df4a42dee77859303e28e/src/core/dom.ts#L327)
+Defined in: [src/core/dom.ts:328](https://github.com/zeixcom/ui-element/blob/59d79a082870e892722e0aaa0f251617218ab48f/src/core/dom.ts#L328)
 
-Read from a descendant element and map the result
+Read a signal property from a custom element safely after it's defined
 
 ## Type Parameters
 
-### T
+### Q
 
-`T` *extends* `object`
+`Q` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
 
-### E
+### K
 
-`E` *extends* `Element` = `HTMLElement`
-
-### C
-
-`C` *extends* `HTMLElement` = `HTMLElement`
-
-### S
-
-`S` *extends* `string` = `string`
+`K` *extends* `string`
 
 ## Parameters
 
-### host
+### target
 
-`C`
+Taget descendant element
 
-Host element
+`null` | [`Component`](../type-aliases/Component.md)\<`Q`\>
 
-### selector
+### prop
 
-`S`
+`K`
 
-CSS selector for descendant element
+Property name to get signal for
 
-### map
+### fallback
 
-(`element`, `isUpgraded`) => `T`
+`Q`\[`K`\]
 
-Function to map over the element
+Fallback value to use until component is ready
 
 ## Returns
 
-`T`
+Function that returns signal value or fallback
 
-The mapped result from the descendant element
+> (): `Q`\[`K`\]
+
+### Returns
+
+`Q`\[`K`\]
 
 ## Since
 
-0.13.3
+0.13.1

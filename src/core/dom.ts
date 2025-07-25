@@ -9,12 +9,13 @@ import {
 	subscribe,
 } from '@zeix/cause-effect'
 
+import type { Component, ComponentProps } from '../component'
 import {
 	CircularMutationError,
 	InvalidCustomElementError,
 	MissingElementError,
 } from './errors'
-import { isCustomElement, isString, isUpgradedComponent } from './util'
+import { isCustomElement, isString } from './util'
 
 /* === Types === */
 
@@ -228,7 +229,7 @@ const fromSelector =
 		const watchers: Set<Watcher> = new Set()
 		const select = () =>
 			Array.from(
-				(host.shadowRoot || host).querySelectorAll<
+				(host.shadowRoot ?? host).querySelectorAll<
 					ElementFromSelector<S, E>
 				>(selector),
 			)
@@ -316,26 +317,32 @@ const reduced = <
 	)
 
 /**
- * Read from a descendant element and map the result
+ * Read a signal property from a custom element safely after it's defined
  *
- * @since 0.13.3
- * @param {C} host - Host element
- * @param {S} selector - CSS selector for descendant element
- * @param {(element: ElementFromSelector<S, E> | null, isUpgraded: boolean) => T} map - Function to map over the element
- * @returns {T} The mapped result from the descendant element
+ * @since 0.13.1
+ * @param {Component<Q> | null} target - Taget descendant element
+ * @param {K} prop - Property name to get signal for
+ * @param {Q[K]} fallback - Fallback value to use until component is ready
+ * @returns {() => Q[K]} Function that returns signal value or fallback
  */
-const read = <
-	T extends {},
-	E extends Element = HTMLElement,
-	C extends HTMLElement = HTMLElement,
-	S extends string = string,
->(
-	host: C,
-	selector: S,
-	map: (element: ElementFromSelector<S, E> | null, isUpgraded: boolean) => T,
-): T => {
-	const source = host.querySelector<ElementFromSelector<S, E>>(selector)
-	return map(source, source ? isUpgradedComponent(source) : false)
+const read = <Q extends ComponentProps, K extends keyof Q & string>(
+	target: Component<Q> | null,
+	prop: K,
+	fallback: Q[K],
+): (() => Q[K]) => {
+	if (!target) return () => fallback
+	if (!isCustomElement(target))
+		throw new TypeError(`Target element must be a custom element`)
+
+	const awaited = computed(async () => {
+		await customElements.whenDefined(target.localName)
+		return target.getSignal(prop)
+	})
+
+	return () => {
+		const value = awaited.get()
+		return value === UNSET ? fallback : (value.get() as Q[K])
+	}
 }
 
 /**

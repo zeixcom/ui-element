@@ -8,10 +8,10 @@ import {
 } from '../../../'
 
 export type ContextMediaProps = {
-	'media-motion': boolean
-	'media-theme': 'light' | 'dark'
-	'media-viewport': 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-	'media-orientation': 'portrait' | 'landscape'
+	readonly 'media-motion': boolean
+	readonly 'media-theme': 'light' | 'dark'
+	readonly 'media-viewport': 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+	readonly 'media-orientation': 'portrait' | 'landscape'
 }
 
 /* === Exported Contexts === */

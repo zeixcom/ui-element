@@ -8,7 +8,7 @@
 
 > **emitEvent**\<`T`, `P`, `E`\>(`type`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/core/events.ts:193](https://github.com/zeixcom/ui-element/blob/1c318eb583bce4633e1df4a42dee77859303e28e/src/core/events.ts#L193)
+Defined in: [src/core/events.ts:193](https://github.com/zeixcom/ui-element/blob/59d79a082870e892722e0aaa0f251617218ab48f/src/core/events.ts#L193)
 
 Effect for emitting custom events with reactive detail values.
 Creates and dispatches CustomEvent instances with bubbling enabled by default.

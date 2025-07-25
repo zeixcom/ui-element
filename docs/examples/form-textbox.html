@@ -225,9 +225,9 @@
 		</p>
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
+<span class="line"><span style="color:#F8F8F2">	batch,</span></span>
 <span class="line"><span style="color:#F8F8F2">	component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	computed,</span></span>
-<span class="line"><span style="color:#F8F8F2">	fromEvents,</span></span>
 <span class="line"><span style="color:#F8F8F2">	on,</span></span>
 <span class="line"><span style="color:#F8F8F2">	requireElement,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setAttribute,</span></span>
@@ -248,24 +248,8 @@
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">FormTextboxProps</span><span style="color:#F8F8F2">>(</span></span>
 <span class="line"><span style="color:#E6DB74">	'form-textbox'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
-<span class="line"><span style="color:#F8F8F2">		value: fromEvents</span><span style="color:#F92672">&#x3C;</span></span>
-<span class="line"><span style="color:#F8F8F2">			string,</span></span>
-<span class="line"><span style="color:#F8F8F2">			HTMLInputElement | HTMLTextAreaElement,</span></span>
-<span class="line"><span style="color:#F8F8F2">			HTMLElement &#x26; { error: string }</span></span>
-<span class="line"><span style="color:#F8F8F2">		>(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'input, textarea'</span><span style="color:#F8F8F2">, {</span></span>
-<span class="line"><span style="color:#F8F8F2">			change: ({ </span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">				target.</span><span style="color:#A6E22E">checkValidity</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">				host.error </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> target.validationMessage</span></span>
-<span class="line"><span style="color:#F92672">				return</span><span style="color:#F8F8F2"> target.value</span></span>
-<span class="line"><span style="color:#F8F8F2">			},</span></span>
-<span class="line"><span style="color:#F8F8F2">		}),</span></span>
-<span class="line"><span style="color:#F8F8F2">		length: </span><span style="color:#A6E22E">fromEvents</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">number</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">HTMLInputElement</span><span style="color:#F92672"> |</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLTextAreaElement</span><span style="color:#F8F8F2">>(</span></span>
-<span class="line"><span style="color:#AE81FF">			0</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#E6DB74">			'input, textarea'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">			{</span></span>
-<span class="line"><span style="color:#A6E22E">				input</span><span style="color:#F8F8F2">: ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> target.value.length,</span></span>
-<span class="line"><span style="color:#F8F8F2">			},</span></span>
-<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"><span style="color:#F8F8F2">		value: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">		length: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		error: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		description: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">		clear</span><span style="color:#F8F8F2">() {},</span></span>
@@ -280,7 +264,7 @@
 <span class="line"><span style="color:#88846F">		// Add clear method to component using shared functionality</span></span>
 <span class="line"><span style="color:#F8F8F2">		el.clear </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> createClearFunction</span><span style="color:#F8F8F2">(input)</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#88846F">		// If there's a description with data-remaining attribute we set a computed signal to update the description text</span></span>
+<span class="line"><span style="color:#88846F">		// Initialize description with existing content or set up computed signal for remaining characters</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> description </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'.description'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (description?.dataset.remaining </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> input.maxLength) {</span></span>
 <span class="line"><span style="color:#F8F8F2">			el.</span><span style="color:#A6E22E">setSignal</span><span style="color:#F8F8F2">(</span></span>
@@ -292,6 +276,8 @@
 <span class="line"><span style="color:#F8F8F2">					),</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
 <span class="line"><span style="color:#F8F8F2">			)</span></span>
+<span class="line"><span style="color:#F8F8F2">		} </span><span style="color:#F92672">else</span><span style="color:#F92672"> if</span><span style="color:#F8F8F2"> (description?.textContent) {</span></span>
+<span class="line"><span style="color:#F8F8F2">			el.description </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> description.textContent.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> errorId </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.error'</span><span style="color:#F8F8F2">)?.id</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> descriptionId </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> description?.id</span></span>
@@ -308,18 +294,16 @@
 <span class="line"><span style="color:#A6E22E">				setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-describedby'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span></span>
 <span class="line"><span style="color:#F8F8F2">					el.description </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> descriptionId </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> descriptionId </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> null</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
-<span class="line"><span style="color:#88846F">				/* on({</span></span>
-<span class="line"><span style="color:#88846F">					input: () => {</span></span>
-<span class="line"><span style="color:#88846F">						el.length = input.value.length</span></span>
-<span class="line"><span style="color:#88846F">					},</span></span>
-<span class="line"><span style="color:#88846F">					change: () => {</span></span>
-<span class="line"><span style="color:#88846F">						input.checkValidity()</span></span>
-<span class="line"><span style="color:#88846F">						batch(() => {</span></span>
-<span class="line"><span style="color:#88846F">							el.value = input.value</span></span>
-<span class="line"><span style="color:#88846F">							el.error = input.validationMessage ?? ''</span></span>
-<span class="line"><span style="color:#88846F">						})</span></span>
-<span class="line"><span style="color:#88846F">					},</span></span>
-<span class="line"><span style="color:#88846F">				}), */</span></span>
+<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">					input.</span><span style="color:#A6E22E">checkValidity</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#A6E22E">					batch</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">						el.value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> input.value</span></span>
+<span class="line"><span style="color:#F8F8F2">						el.error </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> input.validationMessage </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#F8F8F2">					})</span></span>
+<span class="line"><span style="color:#F8F8F2">				}),</span></span>
+<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">					el.length </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> input.value.length</span></span>
+<span class="line"><span style="color:#F8F8F2">				}),</span></span>
 <span class="line"><span style="color:#F8F8F2">			]),</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">			// Effects and event listeners on clear button</span></span>

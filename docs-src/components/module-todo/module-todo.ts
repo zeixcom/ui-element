@@ -4,6 +4,7 @@ import {
 	fromSelector,
 	on,
 	pass,
+	read,
 	requireElement,
 	setAttribute,
 	setText,
@@ -12,11 +13,11 @@ import {
 import type { BasicButtonProps } from '../basic-button/basic-button'
 import type { FormCheckboxProps } from '../form-checkbox/form-checkbox'
 import '../form-textbox/form-textbox'
-import '../form-radiogroup/form-radiogroup'
+// import '../form-radiogroup/form-radiogroup'
 
 export type ModuleTodoProps = {
-	active: HTMLElement[]
-	completed: HTMLElement[]
+	readonly active: HTMLElement[]
+	readonly completed: HTMLElement[]
 }
 
 export default component(
@@ -76,12 +77,7 @@ export default component(
 			first('ol', [
 				setAttribute(
 					'filter',
-					() =>
-						requireElement(
-							el,
-							'form-radiogroup',
-							'Needed to filter for the todo list.',
-						).value,
+					read(el.querySelector('form-radiogroup'), 'value', 'all'),
 				),
 				on('click', ({ event }) => {
 					const target = event.target

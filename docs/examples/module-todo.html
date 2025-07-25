@@ -46,7 +46,7 @@
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">form-textbox</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">basic-button</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"submit"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"submit"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"constructive"</span><span style="color:#A6E22E"> disabled</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">				Add Todo</span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>Add Todo&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">basic-button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">form</span><span style="color:#F8F8F2">></span></span>
@@ -56,11 +56,19 @@
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">form-checkbox</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"todo"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"checkbox"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"visually-hidden"</span><span style="color:#F8F8F2"> /></span></span>
-<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>&#x3C;</span><span style="color:#F92672">slot</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">slot</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">						&#x3C;</span><span style="color:#F92672">slot</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">slot</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">form-checkbox</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">basic-button</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"delete"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"destructive small"</span><span style="color:#F8F8F2">>Delete&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">button</span></span>
+<span class="line"><span style="color:#A6E22E">					type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span></span>
+<span class="line"><span style="color:#A6E22E">					class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"tertiary destructive small"</span></span>
+<span class="line"><span style="color:#A6E22E">					aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Delete"</span></span>
+<span class="line"><span style="color:#F8F8F2">				></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>✕&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">basic-button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">li</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">template</span><span style="color:#F8F8F2">></span></span>
@@ -108,7 +116,7 @@
 <span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">fieldset</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">form-radiogroup</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">basic-button</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"clear-completed"</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"destructive"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"tertiary destructive"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"label"</span><span style="color:#F8F8F2">>Clear Completed&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"badge"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
@@ -171,12 +179,14 @@
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">footer</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">grid</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		grid-template-columns</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">fr</span><span style="color:#AE81FF"> 1</span><span style="color:#F92672">fr</span><span style="color:#AE81FF"> 1</span><span style="color:#F92672">fr</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		grid-template-columns</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">fr</span><span style="color:#AE81FF"> 1</span><span style="color:#F92672">fr</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		grid-template-areas</span><span style="color:#F8F8F2">: </span><span style="color:#E6DB74">'filter filter'</span><span style="color:#E6DB74"> 'count clear'</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		align-items</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">center</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-m);</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">		.todo-count {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			grid-area</span><span style="color:#F8F8F2">: count;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">			justify-self</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">start</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">			&#x26; p {</span></span>
@@ -185,19 +195,31 @@
 <span class="line"><span style="color:#F8F8F2">			}</span></span>
 <span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"></span>
+<span class="line"><span style="color:#A6E22E">		.split-button</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			grid-area</span><span style="color:#F8F8F2">: filter;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			justify-self</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">center</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
 <span class="line"><span style="color:#A6E22E">		.clear-completed</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			grid-area</span><span style="color:#F8F8F2">: clear;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">			justify-self</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">end</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">@container</span><span style="color:#F8F8F2"> (width > 32rem) {</span></span>
-<span class="line"><span style="color:#F92672">	module-todo</span><span style="color:#F92672"> form</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		flex-direction</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">row</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		align-items</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex-end</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F92672">	module-todo</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26; form {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			flex-direction</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">row</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			align-items</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex-end</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26; </span><span style="color:#F92672">footer</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			grid-template-columns</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">fr</span><span style="color:#AE81FF"> 1</span><span style="color:#F92672">fr</span><span style="color:#AE81FF"> 1</span><span style="color:#F92672">fr</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			grid-template-areas</span><span style="color:#F8F8F2">: </span><span style="color:#E6DB74">'count filter clear'</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
-<span class="line"><span style="color:#F8F8F2">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#F8F8F2">}</span></span></code></pre>
 		<basic-button class="copy">
 			<button type="button" class="secondary small">
 				<span class="label">Copy</span>
@@ -218,6 +240,7 @@
 <span class="line"><span style="color:#F8F8F2">	fromSelector,</span></span>
 <span class="line"><span style="color:#F8F8F2">	on,</span></span>
 <span class="line"><span style="color:#F8F8F2">	pass,</span></span>
+<span class="line"><span style="color:#F8F8F2">	read,</span></span>
 <span class="line"><span style="color:#F8F8F2">	requireElement,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setAttribute,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setText,</span></span>
@@ -229,8 +252,8 @@
 <span class="line"><span style="color:#F92672">import</span><span style="color:#E6DB74"> '../form-radiogroup/form-radiogroup'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">ModuleTodoProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">	active</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[]</span></span>
-<span class="line"><span style="color:#F8F8F2">	completed</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[]</span></span>
+<span class="line"><span style="color:#F92672">	readonly</span><span style="color:#F8F8F2"> active</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[]</span></span>
+<span class="line"><span style="color:#F92672">	readonly</span><span style="color:#F8F8F2"> completed</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[]</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
@@ -290,12 +313,7 @@
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ol'</span><span style="color:#F8F8F2">, [</span></span>
 <span class="line"><span style="color:#A6E22E">				setAttribute</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">					'filter'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">					() </span><span style="color:#66D9EF;font-style:italic">=></span></span>
-<span class="line"><span style="color:#A6E22E">						requireElement</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">							el,</span></span>
-<span class="line"><span style="color:#E6DB74">							'form-radiogroup'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#E6DB74">							'Needed to filter for the todo list.'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">						).value,</span></span>
+<span class="line"><span style="color:#A6E22E">					read</span><span style="color:#F8F8F2">(el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-radiogroup'</span><span style="color:#F8F8F2">), </span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'all'</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
 <span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> target </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> event.target</span></span>

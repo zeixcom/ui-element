@@ -42,6 +42,11 @@
 
 			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 			const animationFrame = () => new Promise(requestAnimationFrame)
+			const microtask = () => new Promise(queueMicrotask)
+			const tick = async () => {
+				await animationFrame() // Wait for effects to execute
+				await microtask() // Wait for DOM to reflect changes
+			}
 
 			runTests(() => {
 				describe('Client Router Component - Structure', () => {
@@ -126,7 +131,7 @@
 						invalidLink.href = 'not-a-valid-url'
 						el.querySelector('nav').appendChild(invalidLink)
 
-						await animationFrame()
+						await tick()
 
 						// Should not crash and should not be marked as active
 						assert.isFalse(invalidLink.classList.contains('active'))

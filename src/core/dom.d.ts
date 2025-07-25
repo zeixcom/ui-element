@@ -1,4 +1,5 @@
 import { type Computed } from '@zeix/cause-effect'
+import type { Component, ComponentProps } from '../component'
 type ElementFromSelector<
 	K extends string,
 	E extends Element = HTMLElement,
@@ -127,24 +128,19 @@ declare const reduced: <
 	initialValue: T,
 ) => Computed<T>
 /**
- * Read from a descendant element and map the result
+ * Read a signal property from a custom element safely after it's defined
  *
- * @since 0.13.3
- * @param {C} host - Host element
- * @param {S} selector - CSS selector for descendant element
- * @param {(element: ElementFromSelector<S, E> | null, isUpgraded: boolean) => T} map - Function to map over the element
- * @returns {T} The mapped result from the descendant element
+ * @since 0.13.1
+ * @param {Component<Q> | null} target - Taget descendant element
+ * @param {K} prop - Property name to get signal for
+ * @param {Q[K]} fallback - Fallback value to use until component is ready
+ * @returns {() => Q[K]} Function that returns signal value or fallback
  */
-declare const read: <
-	T extends {},
-	E extends Element = HTMLElement,
-	C extends HTMLElement = HTMLElement,
-	S extends string = string,
->(
-	host: C,
-	selector: S,
-	map: (element: ElementFromSelector<S, E> | null, isUpgraded: boolean) => T,
-) => T
+declare const read: <Q extends ComponentProps, K extends keyof Q & string>(
+	target: Component<Q> | null,
+	prop: K,
+	fallback: Q[K],
+) => () => Q[K]
 /**
  * Get the first descendant element matching a selector
  *

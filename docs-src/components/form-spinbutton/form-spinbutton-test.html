@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Form Spinbutton Component Tests</title>
+	</head>
+	<body>
+		<!-- Test fixtures -->
+		<form-spinbutton id="test1" value="0" zero-label="Add to Cart">
+			<button
+				type="button"
+				class="decrement"
+				aria-label="Decrement"
+				hidden
+			>
+				−
+			</button>
+			<p class="value" hidden>0</p>
+			<button type="button" class="increment primary">Add to Cart</button>
+		</form-spinbutton>
+
+		<form-spinbutton id="test2" value="5">
+			<button type="button" class="decrement" aria-label="Decrement">
+				−
+			</button>
+			<p class="value">5</p>
+			<button type="button" class="increment primary">+</button>
+		</form-spinbutton>
+
+		<form-spinbutton id="test3" value="0" max="3">
+			<button
+				type="button"
+				class="decrement"
+				aria-label="Decrement"
+				hidden
+			>
+				−
+			</button>
+			<p class="value" hidden>0</p>
+			<button type="button" class="increment primary">Add to Cart</button>
+		</form-spinbutton>
+
+		<form-spinbutton id="test4" value="9" max="9">
+			<button type="button" class="decrement" aria-label="Decrement">
+				−
+			</button>
+			<p class="value">9</p>
+			<button type="button" class="increment primary" disabled>+</button>
+		</form-spinbutton>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import '../../../docs/assets/main.js' // Built components bundle
+
+			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+			const animationFrame = () => new Promise(requestAnimationFrame)
+			const microtask = () => new Promise(queueMicrotask)
+			const tick = async () => {
+				await animationFrame() // Wait for effects to execute
+				await microtask() // Wait for DOM to reflect changes
+			}
+
+			// Helper to simulate keyboard events
+			const simulateKeyEvent = (
+				element,
+				eventType,
+				key,
+				options = {},
+			) => {
+				const event = new KeyboardEvent(eventType, {
+					key: key,
+					bubbles: true,
+					cancelable: true,
+					...options,
+				})
+				element.dispatchEvent(event)
+				return event
+			}
+
+			// Helper to reset component state
+			const resetComponent = async el => {
+				// Reset to initial state by finding the initial value from the DOM
+				const initialValue = parseInt(el.getAttribute('value') || '0')
+
+				// If component is not at initial value, click buttons to get back to it
+				while (el.value !== initialValue) {
+					if (el.value > initialValue) {
+						const decrementBtn = el.querySelector('.decrement')
+						if (decrementBtn && !decrementBtn.hidden) {
+							decrementBtn.click()
+						} else {
+							break
+						}
+					} else {
+						const incrementBtn = el.querySelector('.increment')
+						if (incrementBtn && !incrementBtn.disabled) {
+							incrementBtn.click()
+						} else {
+							break
+						}
+					}
+					await tick()
+				}
+			}
+
+			runTests(() => {
+				describe('Form Spinbutton Component', () => {
+					beforeEach(async () => {
+						// Reset all test components before each test
+						const testComponents = [
+							'test1',
+							'test2',
+							'test3',
+							'test4',
+						]
+						for (const id of testComponents) {
+							const el = document.getElementById(id)
+							if (el) {
+								await resetComponent(el)
+							}
+						}
+					})
+					it('should verify component exists and has expected structure', () => {
+						const el = document.getElementById('test1')
+
+						assert.isNotNull(el)
+						assert.equal(
+							el.tagName.toLowerCase(),
+							'form-spinbutton',
+						)
+
+						// Check for required elements
+						const incrementBtn = el.querySelector('.increment')
+						const decrementBtn = el.querySelector('.decrement')
+						const valueDisplay = el.querySelector('.value')
+
+						assert.isNotNull(incrementBtn)
+						assert.isNotNull(decrementBtn)
+						assert.isNotNull(valueDisplay)
+
+						// Check initial properties exist
+						assert.isDefined(el.value)
+						assert.isNumber(el.value)
+					})
+
+					it('should initialize with correct default state', async () => {
+						const el = document.getElementById('test1')
+						const incrementBtn = el.querySelector('.increment')
+						const decrementBtn = el.querySelector('.decrement')
+						const valueDisplay = el.querySelector('.value')
+
+						await tick()
+
+						// Should start at 0
+						assert.equal(el.value, 0)
+
+						// At zero state: increment shows label, decrement is hidden, value is hidden
+						assert.equal(incrementBtn.textContent, 'Add to Cart')
+						assert.isTrue(decrementBtn.hidden)
+						assert.isTrue(valueDisplay.hidden)
+					})
+
+					it('should initialize with non-zero value', async () => {
+						const el = document.getElementById('test2')
+						const incrementBtn = el.querySelector('.increment')
+						const decrementBtn = el.querySelector('.decrement')
+						const valueDisplay = el.querySelector('.value')
+
+						await tick()
+
+						// Should start at 5
+						assert.equal(el.value, 5)
+
+						// At non-zero state: increment shows +, decrement is visible, value is visible
+						assert.equal(incrementBtn.textContent, '+')
+						assert.isFalse(decrementBtn.hidden)
+						assert.isFalse(valueDisplay.hidden)
+						assert.equal(valueDisplay.textContent, '5')
+					})
+
+					it('should increment value when increment button clicked', async () => {
+						const el = document.getElementById('test1')
+						const incrementBtn = el.querySelector('.increment')
+						const valueDisplay = el.querySelector('.value')
+
+						// Start at 0
+						assert.equal(el.value, 0)
+
+						incrementBtn.click()
+						await tick()
+
+						assert.equal(el.value, 1)
+						assert.equal(valueDisplay.textContent, '1')
+						assert.isFalse(valueDisplay.hidden)
+					})
+
+					it('should decrement value when decrement button clicked', async () => {
+						const el = document.getElementById('test2')
+						const decrementBtn = el.querySelector('.decrement')
+						const valueDisplay = el.querySelector('.value')
+
+						// Start at 5
+						assert.equal(el.value, 5)
+
+						decrementBtn.click()
+						await tick()
+
+						assert.equal(el.value, 4)
+						assert.equal(valueDisplay.textContent, '4')
+					})
+
+					it('should show/hide elements based on value state', async () => {
+						const el = document.getElementById('test1')
+						const incrementBtn = el.querySelector('.increment')
+						const decrementBtn = el.querySelector('.decrement')
+						const valueDisplay = el.querySelector('.value')
+
+						// At zero
+						await tick()
+						assert.equal(el.value, 0)
+						assert.isTrue(decrementBtn.hidden)
+						assert.isTrue(valueDisplay.hidden)
+						assert.equal(incrementBtn.textContent, 'Add to Cart')
+
+						// Increment to 1
+						incrementBtn.click()
+						await tick()
+						assert.equal(el.value, 1)
+						assert.isFalse(decrementBtn.hidden)
+						assert.isFalse(valueDisplay.hidden)
+						assert.equal(incrementBtn.textContent, '+')
+
+						// Decrement back to 0
+						decrementBtn.click()
+						await tick()
+						assert.equal(el.value, 0)
+						assert.isTrue(decrementBtn.hidden)
+						assert.isTrue(valueDisplay.hidden)
+						assert.equal(incrementBtn.textContent, 'Add to Cart')
+					})
+
+					it('should handle keyboard navigation', async () => {
+						const el = document.getElementById('test2')
+						const incrementBtn = el.querySelector('.increment')
+
+						const initialValue = el.value
+
+						// ArrowUp should increment
+						incrementBtn.focus()
+						simulateKeyEvent(incrementBtn, 'keydown', 'ArrowUp')
+						await tick()
+
+						assert.equal(el.value, initialValue + 1)
+
+						// ArrowDown should decrement
+						simulateKeyEvent(incrementBtn, 'keydown', 'ArrowDown')
+						await tick()
+
+						assert.equal(el.value, initialValue)
+
+						// + key should increment
+						simulateKeyEvent(incrementBtn, 'keydown', '+')
+						await tick()
+
+						assert.equal(el.value, initialValue + 1)
+
+						// - key should decrement
+						simulateKeyEvent(incrementBtn, 'keydown', '-')
+						await tick()
+
+						assert.equal(el.value, initialValue)
+					})
+
+					it('should respect max value constraint', async () => {
+						const el = document.getElementById('test3')
+						const incrementBtn = el.querySelector('.increment')
+
+						// Start at 0, max is 3
+						assert.equal(el.value, 0)
+						assert.isFalse(incrementBtn.disabled)
+
+						// Increment to max
+						incrementBtn.click()
+						await tick()
+						incrementBtn.click()
+						await tick()
+						incrementBtn.click()
+						await tick()
+
+						assert.equal(el.value, 3)
+						assert.isTrue(incrementBtn.disabled)
+
+						// Try to increment beyond max
+						incrementBtn.click()
+						await tick()
+
+						assert.equal(el.value, 3) // Should remain at max
+					})
+
+					it('should handle rapid button clicks', async () => {
+						const el = document.getElementById('test1')
+						const incrementBtn = el.querySelector('.increment')
+
+						// Click multiple times rapidly
+						incrementBtn.click()
+						incrementBtn.click()
+						incrementBtn.click()
+						await tick()
+
+						assert.equal(el.value, 3)
+					})
+
+					it('should update aria-label appropriately', async () => {
+						const el = document.getElementById('test1')
+						const incrementBtn = el.querySelector('.increment')
+
+						await tick()
+
+						// At zero, should show zero-label
+						assert.equal(
+							incrementBtn.getAttribute('aria-label'),
+							'Add to Cart',
+						)
+
+						// After increment, should show increment-label (or default)
+						incrementBtn.click()
+						await tick()
+
+						assert.equal(
+							incrementBtn.getAttribute('aria-label'),
+							'Increment',
+						)
+					})
+
+					it('should handle missing attributes gracefully', async () => {
+						const el = document.getElementById('test2')
+						const incrementBtn = el.querySelector('.increment')
+
+						await tick()
+
+						// Should use default labels when attributes not provided
+						assert.isNotNull(
+							incrementBtn.getAttribute('aria-label'),
+						)
+					})
+
+					it('should not allow programmatic value updates', async () => {
+						const el = document.getElementById('test2')
+						const valueDisplay = el.querySelector('.value')
+						const originalValue = el.value
+
+						// Should throw TypeError when trying to set value
+						assert.throws(() => {
+							el.value = 100
+						}, TypeError)
+
+						// Value should remain unchanged after failed assignment
+						assert.equal(el.value, originalValue)
+						assert.equal(
+							valueDisplay.textContent,
+							String(originalValue),
+						)
+
+						// Should throw for different value types
+						assert.throws(() => {
+							el.value = 'invalid'
+						}, TypeError)
+
+						assert.throws(() => {
+							el.value = null
+						}, TypeError)
+
+						assert.throws(() => {
+							el.value = undefined
+						}, TypeError)
+
+						// Verify value is still the original value
+						assert.equal(el.value, originalValue)
+					})
+
+					it('should maintain value constraints across operations', async () => {
+						const el = document.getElementById('test4')
+						const decrementBtn = el.querySelector('.decrement')
+						const incrementBtn = el.querySelector('.increment')
+
+						// Start at max (9)
+						assert.equal(el.value, 9)
+						assert.isTrue(incrementBtn.disabled)
+
+						// Decrement should enable increment
+						decrementBtn.click()
+						await tick()
+
+						assert.equal(el.value, 8)
+						assert.isFalse(incrementBtn.disabled)
+
+						// Increment back to max
+						incrementBtn.click()
+						await tick()
+
+						assert.equal(el.value, 9)
+						assert.isTrue(incrementBtn.disabled)
+					})
+
+					it('should handle keyboard events only on navigation keys', async () => {
+						const el = document.getElementById('test2')
+						const incrementBtn = el.querySelector('.increment')
+						const initialValue = el.value
+
+						// Non-navigation keys should not affect value
+						simulateKeyEvent(incrementBtn, 'keydown', 'Enter')
+						simulateKeyEvent(incrementBtn, 'keydown', 'Space')
+						simulateKeyEvent(incrementBtn, 'keydown', 'a')
+						await tick()
+
+						assert.equal(el.value, initialValue)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

@@ -8,7 +8,7 @@
 
 > **fromSelector**\<`E`, `C`, `S`\>(`selector`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>[]\>, `C`\>
 
-Defined in: [src/core/dom.ts:220](https://github.com/zeixcom/ui-element/blob/1c318eb583bce4633e1df4a42dee77859303e28e/src/core/dom.ts#L220)
+Defined in: [src/core/dom.ts:221](https://github.com/zeixcom/ui-element/blob/59d79a082870e892722e0aaa0f251617218ab48f/src/core/dom.ts#L221)
 
 Produce a computed signal of an array of elements matching a selector
 

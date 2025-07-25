@@ -1,7 +1,6 @@
 import {
 	type Component,
 	component,
-	focus,
 	fromEvents,
 	fromSelector,
 	setProperty,
@@ -9,8 +8,8 @@ import {
 } from '../../..'
 
 export type ModuleTabgroupProps = {
-	tabs: HTMLButtonElement[]
-	selected: string
+	readonly tabs: HTMLButtonElement[]
+	readonly selected: string
 }
 
 const getAriaControls = (element: HTMLElement) =>
@@ -46,7 +45,7 @@ const handleKeyup = ({ event, host, target }) => {
 	) {
 		event.preventDefault()
 		event.stopPropagation()
-		return getSelected(
+		const current = getSelected(
 			host.tabs,
 			tab => tab === target,
 			key === 'Home'
@@ -57,6 +56,12 @@ const handleKeyup = ({ event, host, target }) => {
 						? -1
 						: 1,
 		)
+		host.tabs
+			.filter(
+				(tab: HTMLButtonElement) => getAriaControls(tab) === current,
+			)[0]
+			.focus()
+		return current
 	}
 }
 
@@ -92,7 +97,6 @@ export default component(
 					setProperty('tabIndex', target =>
 						isCurrentTab(target) ? 0 : -1,
 					),
-					focus(isCurrentTab),
 				],
 				'At least 2 tabs as children of a <[role="tablist"]> element are needed. Each tab must reference a unique id of a <[role="tabpanel"]> element.',
 			),

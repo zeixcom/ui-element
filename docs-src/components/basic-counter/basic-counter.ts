@@ -9,7 +9,7 @@ import {
 } from '../../..'
 
 export type BasicCounterProps = {
-	count: number
+	readonly count: number
 }
 
 export default component(

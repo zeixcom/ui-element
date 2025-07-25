@@ -1,8 +1,8 @@
 import {
 	type Component,
+	batch,
 	component,
 	computed,
-	fromEvents,
 	on,
 	requireElement,
 	setAttribute,
@@ -23,24 +23,8 @@ export type FormTextboxProps = {
 export default component<FormTextboxProps>(
 	'form-textbox',
 	{
-		value: fromEvents<
-			string,
-			HTMLInputElement | HTMLTextAreaElement,
-			HTMLElement & { error: string }
-		>('', 'input, textarea', {
-			change: ({ host, target }) => {
-				target.checkValidity()
-				host.error = target.validationMessage
-				return target.value
-			},
-		}),
-		length: fromEvents<number, HTMLInputElement | HTMLTextAreaElement>(
-			0,
-			'input, textarea',
-			{
-				input: ({ target }) => target.value.length,
-			},
-		),
+		value: '',
+		length: 0,
 		error: '',
 		description: '',
 		clear() {},
@@ -55,7 +39,7 @@ export default component<FormTextboxProps>(
 		// Add clear method to component using shared functionality
 		el.clear = createClearFunction(input)
 
-		// If there's a description with data-remaining attribute we set a computed signal to update the description text
+		// Initialize description with existing content or set up computed signal for remaining characters
 		const description = el.querySelector<HTMLElement>('.description')
 		if (description?.dataset.remaining && input.maxLength) {
 			el.setSignal(
@@ -67,6 +51,8 @@ export default component<FormTextboxProps>(
 					),
 				),
 			)
+		} else if (description?.textContent) {
+			el.description = description.textContent.trim()
 		}
 		const errorId = el.querySelector('.error')?.id
 		const descriptionId = description?.id
@@ -83,18 +69,16 @@ export default component<FormTextboxProps>(
 				setAttribute('aria-describedby', () =>
 					el.description && descriptionId ? descriptionId : null,
 				),
-				/* on({
-					input: () => {
-						el.length = input.value.length
-					},
-					change: () => {
-						input.checkValidity()
-						batch(() => {
-							el.value = input.value
-							el.error = input.validationMessage ?? ''
-						})
-					},
-				}), */
+				on('change', () => {
+					input.checkValidity()
+					batch(() => {
+						el.value = input.value
+						el.error = input.validationMessage ?? ''
+					})
+				}),
+				on('input', () => {
+					el.length = input.value.length
+				}),
 			]),
 
 			// Effects and event listeners on clear button

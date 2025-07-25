@@ -2,7 +2,7 @@ form-checkbox {
 	flex-grow: 1;
 	border-radius: var(--space-xs);
 
-	&:focus-within {
+	&:has(:focus-visible) {
 		box-shadow: 0 0 var(--space-xxs) 2px var(--color-selection);
 	}
 

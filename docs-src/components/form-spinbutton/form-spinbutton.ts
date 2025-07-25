@@ -11,7 +11,7 @@ import {
 } from '../../..'
 
 export type FormSpinbuttonProps = {
-	value: number
+	readonly value: number
 }
 
 const clickHandler = ({ target, value }) =>

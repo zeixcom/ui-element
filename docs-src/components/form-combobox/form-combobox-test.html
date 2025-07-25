@@ -380,7 +380,7 @@
 						const listbox = el.querySelector('[role="listbox"]')
 
 						await typeInInput(input, 'a')
-						await animationFrame()
+						await tick()
 
 						// Ensure listbox is open first
 						if (listbox.hidden) {
@@ -390,7 +390,7 @@
 
 						// Press Escape
 						simulateKeyEvent(listbox, 'keyup', 'Escape')
-						await animationFrame()
+						await tick()
 
 						assert.isTrue(listbox.hidden)
 						assert.equal(
@@ -475,7 +475,7 @@
 							el.querySelectorAll('[role="option"]'),
 						).find(option => option.textContent.trim() === 'Berlin')
 
-						await animationFrame()
+						await tick()
 						assert.equal(
 							berlinOption.getAttribute('aria-selected'),
 							'true',
@@ -516,22 +516,22 @@
 						const input = el.querySelector('input')
 						const listbox = el.querySelector('[role="listbox"]')
 
-						await animationFrame()
+						await tick()
 						assert.isTrue(listbox.hidden)
 
 						// First ensure we're in the right state - typing triggers editing mode
 						await typeInInput(input, 'a')
-						await animationFrame()
+						await tick()
 
 						// Clear and try Alt+ArrowDown
 						await typeInInput(input, '')
-						await animationFrame()
+						await tick()
 
 						// Alt+ArrowDown should show popup
 						simulateKeyEvent(el, 'keydown', 'ArrowDown', {
 							altKey: true,
 						})
-						await animationFrame()
+						await tick()
 
 						// Component behavior may vary based on state
 						// Just ensure the component handles the event without errors
@@ -544,11 +544,11 @@
 
 						// Focus input
 						input.focus()
-						await animationFrame()
+						await tick()
 
 						// Start typing to enter editing mode
 						await typeInInput(input, 'a')
-						await animationFrame()
+						await tick()
 
 						// Check if editing mode is active (listbox should be visible)
 						const isEditingBefore =
@@ -562,7 +562,7 @@
 						el.dispatchEvent(
 							new Event('focusout', { bubbles: true }),
 						)
-						await animationFrame()
+						await tick()
 						await wait(50) // Wait for requestAnimationFrame in focusout handler
 
 						// Should exit editing mode (may depend on exact focus implementation)
@@ -614,8 +614,7 @@
 						const input = el.querySelector('input')
 
 						await typeInInput(input, 'xyz')
-						await animationFrame()
-						await microtask() // Wait for DOM updates to take effect for :not([hidden]) selector
+						await tick()
 
 						const visibleOptions = getVisibleOptions(el)
 						const allOptions =
@@ -647,7 +646,7 @@
 						const input = el.querySelector('input')
 						const listbox = el.querySelector('[role="listbox"]')
 
-						await animationFrame()
+						await tick()
 
 						// Check ARIA controls relationship
 						assert.equal(

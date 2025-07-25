@@ -166,7 +166,6 @@
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	component,</span></span>
-<span class="line"><span style="color:#F8F8F2">	focus,</span></span>
 <span class="line"><span style="color:#F8F8F2">	fromEvents,</span></span>
 <span class="line"><span style="color:#F8F8F2">	fromSelector,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
@@ -174,8 +173,8 @@
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">ModuleTabgroupProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">	tabs</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">[]</span></span>
-<span class="line"><span style="color:#F8F8F2">	selected</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
+<span class="line"><span style="color:#F92672">	readonly</span><span style="color:#F8F8F2"> tabs</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">[]</span></span>
+<span class="line"><span style="color:#F92672">	readonly</span><span style="color:#F8F8F2"> selected</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> getAriaControls</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">element</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
@@ -211,7 +210,7 @@
 <span class="line"><span style="color:#F8F8F2">	) {</span></span>
 <span class="line"><span style="color:#F8F8F2">		event.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">		event.</span><span style="color:#A6E22E">stopPropagation</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F92672">		return</span><span style="color:#A6E22E"> getSelected</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> current </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> getSelected</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#F8F8F2">			host.tabs,</span></span>
 <span class="line"><span style="color:#FD971F;font-style:italic">			tab</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> tab </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> target,</span></span>
 <span class="line"><span style="color:#F8F8F2">			key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'Home'</span></span>
@@ -222,6 +221,12 @@
 <span class="line"><span style="color:#F92672">						?</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span></span>
 <span class="line"><span style="color:#F92672">						:</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		)</span></span>
+<span class="line"><span style="color:#F8F8F2">		host.tabs</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">filter</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">				(</span><span style="color:#FD971F;font-style:italic">tab</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> getAriaControls</span><span style="color:#F8F8F2">(tab) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> current,</span></span>
+<span class="line"><span style="color:#F8F8F2">			)[</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">]</span></span>
+<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">focus</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> current</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
@@ -257,7 +262,6 @@
 <span class="line"><span style="color:#A6E22E">					setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tabIndex'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
 <span class="line"><span style="color:#A6E22E">						isCurrentTab</span><span style="color:#F8F8F2">(target) </span><span style="color:#F92672">?</span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> :</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">					),</span></span>
-<span class="line"><span style="color:#A6E22E">					focus</span><span style="color:#F8F8F2">(isCurrentTab),</span></span>
 <span class="line"><span style="color:#F8F8F2">				],</span></span>
 <span class="line"><span style="color:#E6DB74">				'At least 2 tabs as children of a &#x3C;[role="tablist"]> element are needed. Each tab must reference a unique id of a &#x3C;[role="tabpanel"]> element.'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">			),</span></span>

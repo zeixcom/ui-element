@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>DangerouslySetInnerHTMLOptions – UIElement Docs</title>
+		<title>ValidateComponentProps\<P\> – UIElement Docs</title>
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="../../assets/main.css" />
 		<script type="module" src="../../assets/main.js"></script>
@@ -99,43 +99,29 @@
 				</card-callout>
 			</header>
 			<main class="content-grid"><section class="api-content">
-<h1 id="type-alias-dangerouslysetinnerhtmloptions">
-                <a name="type-alias-dangerouslysetinnerhtmloptions" class="anchor" href="#type-alias-dangerouslysetinnerhtmloptions">
+<h1 id="type-alias-validatecomponentpropsltpgt">
+                <a name="type-alias-validatecomponentpropsltpgt" class="anchor" href="#type-alias-validatecomponentpropsltpgt">
 	                <span class="permalink">🔗</span>
                 </a>
-                Type Alias: DangerouslySetInnerHTMLOptions
+                Type Alias: ValidateComponentProps&lt;P&gt;
             </h1>
 <blockquote>
-<p><strong>DangerouslySetInnerHTMLOptions</strong> = <code>object</code></p>
+<p><strong>ValidateComponentProps</strong>&lt;<code>P</code>&gt; = <code>{ [K in keyof P]: ValidPropertyKey&lt;K&gt; extends never ? never : P[K] }</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/59d79a082870e892722e0aaa0f251617218ab48f/src/lib/effects.ts#L55">src/lib/effects.ts:55</a></p>
-<h2 id="properties">
-                <a name="properties" class="anchor" href="#properties">
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/59d79a082870e892722e0aaa0f251617218ab48f/src/component.ts#L54">src/component.ts:54</a></p>
+<h2 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
                 </a>
-                Properties
+                Type Parameters
             </h2>
-<h3 id="allowscripts">
-                <a name="allowscripts" class="anchor" href="#allowscripts">
+<h3 id="p">
+                <a name="p" class="anchor" href="#p">
 	                <span class="permalink">🔗</span>
                 </a>
-                allowScripts?
+                P
             </h3>
-<blockquote>
-<p><code>optional</code> <strong>allowScripts</strong>: <code>boolean</code></p>
-</blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/59d79a082870e892722e0aaa0f251617218ab48f/src/lib/effects.ts#L57">src/lib/effects.ts:57</a></p>
-<hr>
-<h3 id="shadowrootmode">
-                <a name="shadowrootmode" class="anchor" href="#shadowrootmode">
-	                <span class="permalink">🔗</span>
-                </a>
-                shadowRootMode?
-            </h3>
-<blockquote>
-<p><code>optional</code> <strong>shadowRootMode</strong>: <code>ShadowRootMode</code></p>
-</blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/59d79a082870e892722e0aaa0f251617218ab48f/src/lib/effects.ts#L56">src/lib/effects.ts:56</a></p>
+<p><code>P</code></p>
 
 </section></main>
 			<footer class="content-grid">
