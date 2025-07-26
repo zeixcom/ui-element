@@ -68,6 +68,7 @@ export {
 	type Effect,
 	type Effects,
 	type Reactive,
+	RESET,
 	resolveReactive,
 } from './src/core/reactive'
 export {
@@ -86,6 +87,15 @@ export {
 	fromContext,
 	provideContexts,
 } from './src/core/context'
+export {
+	CircularMutationError,
+	InvalidComponentNameError,
+	InvalidCustomElementError,
+	InvalidPropertyNameError,
+	InvalidEffectsError,
+	InvalidSignalError,
+	MissingElementError,
+} from './src/core/errors'
 
 // Lib
 export {

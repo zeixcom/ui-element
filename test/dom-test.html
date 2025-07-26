@@ -38,6 +38,7 @@
 			import { runTests } from '@web/test-runner-mocha'
 			import { assert } from '@esm-bundle/chai'
 			import {
+				MissingElementError,
 				RESET,
 				asString,
 				component,
@@ -48,9 +49,9 @@
 				on,
 				read,
 				reduced,
-				requireDescendant,
 				setText,
 				state,
+				useElement,
 			} from '../index.dev.js'
 
 			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -91,17 +92,15 @@
 					value: asString(),
 					length: 0,
 				},
-				(el, { first }) => [
-					first(
-						'input',
+				(el, { first }) =>
+					first('input', [
 						on('input', e => {
 							el.length = e.target.value.length
 						}),
 						on('change', e => {
 							el.value = e.target.value
 						}),
-					),
-				],
+					]),
 			)
 
 			component(
@@ -120,7 +119,7 @@
 						input: ({ target }) => target.value,
 					}),
 				},
-				(_, { first }) => [first('p', setText('lastInput'))],
+				(_, { first }) => first('p', setText('lastInput')),
 			)
 
 			// Define form-radiogroup component for testing
@@ -129,7 +128,7 @@
 				{
 					value: asString(),
 				},
-				(el, { all }) => [
+				(el, { all }) =>
 					all(
 						'input[type="radio"]',
 						on('change', e => {
@@ -138,20 +137,23 @@
 							}
 						}),
 					),
-				],
 			)
 
 			// Define module-todo-test component that reads from form-radiogroup
-			component('module-todo-test', {}, (el, { first }) => {
-				const filter = el.querySelector('form-radiogroup')
-
-				return [
+			component(
+				'module-todo-test',
+				{},
+				(el, { first }) =>
 					first(
 						'.filter-display',
-						setText(read(filter, 'value', 'all')),
+						setText(
+							() =>
+								el.querySelector('form-radiogroup')?.value
+								?? 'all',
+						),
 					),
-				]
-			})
+				['form-radiogroup'],
+			)
 
 			class InvalidComponent extends HTMLElement {
 				constructor() {
@@ -1650,7 +1652,7 @@
 					})
 				})
 
-				describe('requireDescendant()', () => {
+				describe('useElement()', () => {
 					it('should return the element when it exists', () => {
 						const container = document.createElement('div')
 						container.innerHTML = `
@@ -1662,10 +1664,7 @@
 						document.body.appendChild(container)
 
 						try {
-							const input = requireDescendant(
-								container,
-								'#test-input',
-							)
+							const input = useElement(container, '#test-input')
 							assert.instanceOf(input, HTMLInputElement)
 							assert.equal(input.id, 'test-input')
 							assert.equal(input.type, 'text')
@@ -1687,25 +1686,16 @@
 						document.body.appendChild(container)
 
 						try {
-							const input = requireDescendant(container, 'input')
+							const input = useElement(container, 'input')
 							assert.instanceOf(input, HTMLInputElement)
 
-							const button = requireDescendant(
-								container,
-								'button',
-							)
+							const button = useElement(container, 'button')
 							assert.instanceOf(button, HTMLButtonElement)
 
-							const textarea = requireDescendant(
-								container,
-								'textarea',
-							)
+							const textarea = useElement(container, 'textarea')
 							assert.instanceOf(textarea, HTMLTextAreaElement)
 
-							const select = requireDescendant(
-								container,
-								'select',
-							)
+							const select = useElement(container, 'select')
 							assert.instanceOf(select, HTMLSelectElement)
 						} finally {
 							container.remove()
@@ -1724,7 +1714,7 @@
 						document.body.appendChild(container)
 
 						try {
-							const firstLi = requireDescendant(container, 'li')
+							const firstLi = useElement(container, 'li')
 							assert.instanceOf(firstLi, HTMLLIElement)
 							assert.equal(firstLi.dataset.value, '1')
 							assert.equal(firstLi.textContent, 'First')
@@ -1749,28 +1739,22 @@
 						document.body.appendChild(container)
 
 						try {
-							const form = requireDescendant(
-								container,
-								'form.todo-form',
-							)
+							const form = useElement(container, 'form.todo-form')
 							assert.instanceOf(form, HTMLFormElement)
 							assert.equal(form.className, 'todo-form')
 
-							const input = requireDescendant(
+							const input = useElement(
 								container,
 								'input.todo-input',
 							)
 							assert.instanceOf(input, HTMLInputElement)
 							assert.equal(input.className, 'todo-input')
 
-							const list = requireDescendant(
-								container,
-								'ol.todo-list',
-							)
+							const list = useElement(container, 'ol.todo-list')
 							assert.instanceOf(list, HTMLOListElement)
 							assert.equal(list.className, 'todo-list')
 
-							const button = requireDescendant(
+							const button = useElement(
 								container,
 								'button[type="submit"]',
 							)
@@ -1788,25 +1772,35 @@
 
 						try {
 							assert.throws(
-								() => requireDescendant(container, 'form'),
-								Error,
+								() =>
+									useElement(
+										container,
+										'form',
+										'Needed to submit data.',
+									),
+								MissingElementError,
 								'Component <div> does not contain required <form> element',
 							)
 
 							assert.throws(
 								() =>
-									requireDescendant(container, '#missing-id'),
-								Error,
+									useElement(
+										container,
+										'#missing-id',
+										'Needed to display data.',
+									),
+								MissingElementError,
 								'Component <div> does not contain required <#missing-id> element',
 							)
 
 							assert.throws(
 								() =>
-									requireDescendant(
+									useElement(
 										container,
 										'.missing-class',
+										'Needed to display data.',
 									),
-								Error,
+								MissingElementError,
 								'Component <div> does not contain required <.missing-class> element',
 							)
 						} finally {
@@ -1822,23 +1816,34 @@
 						try {
 							assert.throws(
 								() =>
-									requireDescendant(
+									useElement(
 										container,
 										'form-textbox',
+										'Needed to enter data.',
 									),
-								Error,
+								MissingElementError,
 								'Component <module-todo> does not contain required <form-textbox> element',
 							)
 
 							assert.throws(
-								() => requireDescendant(container, 'template'),
-								Error,
+								() =>
+									useElement(
+										container,
+										'template',
+										'Needed to create new items.',
+									),
+								MissingElementError,
 								'Component <module-todo> does not contain required <template> element',
 							)
 
 							assert.throws(
-								() => requireDescendant(container, 'ol'),
-								Error,
+								() =>
+									useElement(
+										container,
+										'ol',
+										'Needed to display tasks.',
+									),
+								MissingElementError,
 								'Component <module-todo> does not contain required <ol> element',
 							)
 						} finally {
@@ -1871,9 +1876,10 @@
 						document.body.appendChild(container)
 
 						try {
-							const customElement = requireDescendant(
+							const customElement = useElement(
 								container,
 								'test-custom-element',
+								'Needed to display custom elements.',
 							)
 							assert.instanceOf(customElement, HTMLElement)
 							assert.equal(
@@ -1900,10 +1906,7 @@
 						document.body.appendChild(container)
 
 						try {
-							const template = requireDescendant(
-								container,
-								'template',
-							)
+							const template = useElement(container, 'template')
 							assert.instanceOf(template, HTMLTemplateElement)
 							assert.equal(template.id, 'todo-template')
 							assert.instanceOf(
@@ -1927,7 +1930,7 @@
 
 						try {
 							// Test that TypeScript would infer HTMLInputElement for input selector
-							const input = requireDescendant(
+							const input = useElement(
 								container,
 								'input[type="email"]',
 							)
@@ -1937,7 +1940,7 @@
 							assert.equal(input.required, true)
 
 							// Test that TypeScript would infer HTMLButtonElement for button selector
-							const button = requireDescendant(
+							const button = useElement(
 								container,
 								'button[type="submit"]',
 							)

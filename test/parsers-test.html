@@ -461,11 +461,11 @@
 
 				describe('asJSON()', function () {
 					it('should throw for undefined', function () {
-						assert.throws(() => asJSON()(), ReferenceError)
+						assert.throws(() => asJSON()(), TypeError)
 					})
 
 					it('should throw for boolean attribute', function () {
-						assert.throws(() => asJSON({})(body, ''), SyntaxError)
+						assert.throws(() => asJSON({})(body, ''), TypeError)
 					})
 
 					it('should be {} for "null"', function () {

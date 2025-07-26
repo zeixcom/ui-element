@@ -123,8 +123,10 @@
 			</card-callout>
 		</module-lazy>
 		<module-lazy src="/test/mock/recursion.html" id="lazy-recursion">
-			<p class="loading" role="status">Loading...</p>
-			<p class="error" role="alert" aria-live="polite" hidden></p>
+			<card-callout>
+				<p class="loading" role="status">Loading...</p>
+				<p class="error" role="alert" aria-live="polite" hidden></p>
+			</card-callout>
 		</module-lazy>
 		<module-tabgroup>
 			<div role="tablist">
@@ -202,7 +204,6 @@
 				RESET,
 				component,
 				on,
-				pass,
 				state,
 				asBoolean,
 				asInteger,
@@ -217,6 +218,7 @@
 				setStyle,
 				dangerouslySetInnerHTML,
 				insertOrRemoveElement,
+				fromSelector,
 			} from '../index.dev.js'
 
 			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -233,7 +235,7 @@
 				{
 					heading: 'Hello from Internal State',
 				},
-				(_, { first }) => [first('h1', setText('heading'))],
+				(_, { first }) => first('h1', setText('heading')),
 			)
 
 			component(
@@ -252,9 +254,12 @@
 					selected: asBoolean(),
 				},
 				(_, { first }) => [
-					first('h1', setText('heading'), toggleClass('selected')),
+					first('h1', [setText('heading'), toggleClass('selected')]),
 					first('span', setText('count')),
-					first('input', setAttribute('step'), setProperty('value')),
+					first('input', [
+						setAttribute('step'),
+						setProperty('value'),
+					]),
 				],
 			)
 
@@ -291,14 +296,13 @@
 			component('greeting-configurator', {}, (el, { first }) => [
 				first(
 					'hello-world',
-					pass({
-						name: () => {
-							const firstName = el.querySelector('.first')
-							const lastName = el.querySelector('.last')
-							return el.querySelector('form-checkbox').checked
-								? `${firstName.value} ${lastName.value}`
-								: firstName.value
-						},
+					setProperty('name', () => {
+						const firstName = el.querySelector('.first')
+						const lastName = el.querySelector('.last')
+						const checkbox = el.querySelector('form-checkbox')
+						return checkbox?.checked
+							? `${firstName?.value} ${lastName?.value}`
+							: firstName?.value
 					}),
 				),
 			])
@@ -321,13 +325,12 @@
 					value: asString(RESET),
 				},
 				(el, { first }) => [
-					first(
-						'input',
+					first('input', [
 						setProperty('value'),
-						on('change', e => {
-							el.value = e.target.value
+						on('change', ({ event }) => {
+							el.value = event.target.value
 						}),
-					),
+					]),
 				],
 			)
 
@@ -340,8 +343,8 @@
 					first(
 						'input',
 						setProperty('checked'),
-						on('change', e => {
-							el.checked = e.target.checked
+						on('change', ({ event }) => {
+							el.checked = event.target.checked
 						}),
 					),
 				],
@@ -392,11 +395,7 @@
 					},
 				},
 				(el, { first }) => [
-					first(
-						'.error',
-						setText('error'),
-						show(() => !!el.error),
-					),
+					first('.error', [setText('error'), show(() => !!el.error)]),
 					dangerouslySetInnerHTML('content', {
 						shadowRootMode: 'open',
 					}),
@@ -423,11 +422,10 @@
 							'[role="tablist"]',
 							on('keydown', () => {}),
 						),
-						all(
-							'[role="tab"]',
-							on('click', e => {
+						all('[role="tab"]', [
+							on('click', ({ event }) => {
 								el.selected =
-									e.currentTarget.getAttribute(
+									event.currentTarget.getAttribute(
 										'aria-controls',
 									) ?? ''
 								focusIndex = tabs.findIndex(tab =>
@@ -440,7 +438,7 @@
 							setProperty('tabIndex', target =>
 								isSelected(target) ? 0 : -1,
 							),
-						),
+						]),
 						all(
 							'[role="tabpanel"]',
 							setProperty(
@@ -462,15 +460,14 @@
 							formVisible.set(true)
 						}),
 					),
-					first(
-						'form',
-						on('submit', e => {
-							e.preventDefault()
+					first('form', [
+						on('submit', ({ event }) => {
+							event.preventDefault()
 							message.set(el.querySelector('textarea').value)
 							formVisible.set(false)
 						}),
 						show(formVisible),
-					),
+					]),
 					insertOrRemoveElement(() => !!message.get(), {
 						create: () => {
 							const post = document.importNode(
@@ -1114,7 +1111,7 @@
 									state('invalid'),
 								)
 							},
-							TypeError,
+							Error,
 							'Property name "constructor" is a reserved word',
 						)
 					})
@@ -1140,7 +1137,7 @@
 									state('invalid'),
 								)
 							},
-							TypeError,
+							Error,
 							'Property name "innerHTML" conflicts with inherited HTMLElement property',
 						)
 					})
@@ -1157,7 +1154,7 @@
 									'not a signal',
 								)
 							},
-							TypeError,
+							Error,
 							'Expected signal as value',
 						)
 					})
@@ -1194,8 +1191,8 @@
 									() => [],
 								)
 							},
-							TypeError,
-							'Property name "constructor" is a reserved word in component "invalid-reserved-def"',
+							Error,
+							'Invalid property name "constructor" for component <invalid-reserved-def>. Property name "constructor" is a reserved word',
 						)
 					})
 
@@ -1210,8 +1207,8 @@
 									() => [],
 								)
 							},
-							TypeError,
-							'Property name "innerHTML" conflicts with inherited HTMLElement property in component "invalid-htmlelement-def"',
+							Error,
+							'Invalid property name "innerHTML" for component <invalid-htmlelement-def>. Property name "innerHTML" conflicts with inherited HTMLElement property',
 						)
 					})
 
@@ -1228,8 +1225,8 @@
 									() => [],
 								)
 							},
-							TypeError,
-							'Property name "className" conflicts with inherited HTMLElement property in component "invalid-multiple-def"',
+							Error,
+							'Invalid property name "className" for component <invalid-multiple-def>. Property name "className" conflicts with inherited HTMLElement property',
 						)
 					})
 				})
@@ -1579,6 +1576,7 @@
 						)
 
 						const instance = document.createElement(name)
+						document.body.appendChild(instance)
 
 						// Should not crash with invalid initializer
 						assert.doesNotThrow(() => {
@@ -1587,6 +1585,8 @@
 
 						assert.equal(instance.validProp, 'valid')
 						assert.isUndefined(instance.invalidProp)
+
+						document.body.removeChild(instance)
 					})
 
 					it('should handle setup function errors', function () {

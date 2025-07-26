@@ -96,7 +96,7 @@
 				{
 					reducedMotion: fromContext('reduced-motion', false),
 				},
-				(_, { first }) => [first('span', setText('reducedMotion'))],
+				(_, { first }) => first('span', setText('reducedMotion')),
 			)
 
 			component(
@@ -112,7 +112,7 @@
 				{
 					displayName: fromContext('display-name', 'World'),
 				},
-				(_, { first }) => [first('span', setText('displayName'))],
+				(_, { first }) => first('span', setText('displayName')),
 			)
 
 			// Test nested context providers
@@ -133,7 +133,7 @@
 				{
 					value: asString(),
 				},
-				() => [provideContexts(['value'])],
+				() => provideContexts(['value']),
 			)
 
 			component(
@@ -141,7 +141,7 @@
 				{
 					contextValue: fromContext('value', 'fallback'),
 				},
-				(_, { first }) => [first('span', setText('contextValue'))],
+				(_, { first }) => first('span', setText('contextValue')),
 			)
 
 			component(
@@ -157,12 +157,11 @@
 				{
 					count: fromContext('count', 42),
 				},
-				(el, { first }) => [
+				(el, { first }) =>
 					first(
 						'span',
 						setText(() => String(el.count)),
 					),
-				],
 			)
 
 			component(
@@ -173,7 +172,7 @@
 						'fallback',
 					),
 				},
-				(_, { first }) => [first('span', setText('missingContext'))],
+				(_, { first }) => first('span', setText('missingContext')),
 			)
 
 			component(
@@ -197,7 +196,7 @@
 				{
 					theme: fromContext('theme', 'light'),
 				},
-				(_, { first }) => [first('span', setText('theme'))],
+				(_, { first }) => first('span', setText('theme')),
 			)
 
 			component(

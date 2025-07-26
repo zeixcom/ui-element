@@ -8,9 +8,9 @@ export default {
 		playwrightLauncher({ product: 'firefox' }),
 		playwrightLauncher({ product: 'webkit' }),
 	],
-	testsStartTimeout: 60000,
+	testsStartTimeout: 1000,
 	testsFinishTimeout: 120000,
-	browserStartTimeout: 60000,
+	browserStartTimeout: 2000,
 	concurrency: 1,
 	watch: false,
 }

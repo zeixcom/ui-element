@@ -1189,8 +1189,16 @@ export {
   asEnum,
   asBoolean,
   UNSET,
+  RESET,
+  MissingElementError,
   LOG_WARN,
   LOG_INFO,
   LOG_ERROR,
-  LOG_DEBUG
+  LOG_DEBUG,
+  InvalidSignalError,
+  InvalidPropertyNameError,
+  InvalidEffectsError,
+  InvalidCustomElementError,
+  InvalidComponentNameError,
+  CircularMutationError
 };
