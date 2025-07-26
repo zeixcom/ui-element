@@ -144,24 +144,57 @@ declare const read: <Q extends ComponentProps, K extends keyof Q & string>(
  * @since 0.14.0
  * @param {HTMLElement} host - Host element
  * @param {S} selector - Selector for element to check for
- * @param {string} required - Reason for the assertion
- * @param {boolean} assertCustomElement - Whether to assert that the element is a custom element
- * @returns {ElementFromSelector<S>} First matching descendant element
- * @throws {MissingElementError} If the element does not contain the required descendant element
- * @throws {InvalidCustomElementError} If assertCustomElement is true and the element is not a custom element
+ * @param {string} [required] - Optional reason for the assertion; if provided, throws on missing element
+ * @returns {ElementFromSelector<S> | null} First matching descendant element, or null if not found and not required
+ * @throws {MissingElementError} If the element does not contain the required descendant element and required is specified
  */
-declare function requireElement<S extends string>(
+declare function useElement<S extends string>(
 	host: HTMLElement,
 	selector: S,
 	required: string,
-	assertCustomElement?: boolean,
 ): ElementFromSelector<S>
-declare function requireElement<E extends Element>(
+declare function useElement<S extends string>(
+	host: HTMLElement,
+	selector: S,
+): ElementFromSelector<S> | null
+declare function useElement<E extends Element>(
 	host: HTMLElement,
 	selector: string,
 	required: string,
-	assertCustomElement?: boolean,
 ): E
+declare function useElement<E extends Element>(
+	host: HTMLElement,
+	selector: string,
+): E | null
+/**
+ * Get a descendant custom element matching a selector awaited to be defined
+ *
+ * @since 0.14.0
+ * @param {HTMLElement} host - Host element
+ * @param {S} selector - Selector for the descendant element
+ * @param {string} [required] - Optional explanation why the element is required; if provided, throws on missing element
+ * @returns {Promise<ElementFromSelector<S> | null>} The element or null if not found and not required
+ * @throws {MissingElementError} If the element does not contain the required descendant element and required is specified
+ * @throws {InvalidCustomElementError} If the element is not a custom element
+ */
+declare function useComponent<S extends string>(
+	host: HTMLElement,
+	selector: S,
+	required: string,
+): Promise<ElementFromSelector<S>>
+declare function useComponent<S extends string>(
+	host: HTMLElement,
+	selector: S,
+): Promise<ElementFromSelector<S> | null>
+declare function useComponent<E extends Element>(
+	host: HTMLElement,
+	selector: string,
+	required: string,
+): Promise<E>
+declare function useComponent<E extends Element>(
+	host: HTMLElement,
+	selector: string,
+): Promise<E | null>
 /**
  * Create a computed signal from a required descendant component's property
  *
@@ -172,25 +205,38 @@ declare function requireElement<E extends Element>(
  * @returns {Extractor<Computed<T>, C>} Extractor that returns a computed signal that computes the value from the element
  * @throws {MissingElementError} If the element does not contain the required descendant element
  * @throws {InvalidCustomElementError} If the element is not a custom element
- */
-declare function fromComponent<
-	T extends {},
-	S extends string,
-	C extends HTMLElement = HTMLElement,
+ * /
+function fromComponent<
+    T extends {},
+    S extends string,
+    C extends HTMLElement = HTMLElement,
 >(
-	selector: S,
-	extractor: Extractor<T, ElementFromSelector<S>>,
-	required: string,
+    selector: S,
+    extractor: Extractor<T, ElementFromSelector<S>>,
+    required: string,
 ): Extractor<Computed<T>, C>
-declare function fromComponent<
-	T extends {},
-	E extends Element,
-	C extends HTMLElement = HTMLElement,
+function fromComponent<
+    T extends {},
+    E extends Element,
+    C extends HTMLElement = HTMLElement,
 >(
-	selector: string,
-	extractor: Extractor<T, E>,
-	required: string,
+    selector: string,
+    extractor: Extractor<T, E>,
+    required: string,
 ): Extractor<Computed<T>, C>
+function fromComponent<T extends {}, C extends HTMLElement = HTMLElement>(
+    selector: string,
+    extractor: Extractor<T, any>,
+    required: string,
+): Extractor<Computed<T>, C> {
+    return (host: C): Computed<T> => {
+        const target = requireElement(host, selector, required, true)
+        return computed(async () => {
+            await customElements.whenDefined(target.localName)
+            return extractor(target)
+        })
+    }
+} */
 export {
 	type ElementFromSelector,
 	type Extractor,
@@ -198,7 +244,6 @@ export {
 	type LooseExtractor,
 	type Parser,
 	type ParserOrFallback,
-	fromComponent,
 	fromDOM,
 	fromSelector,
 	getFallback,
@@ -206,5 +251,6 @@ export {
 	reduced,
 	read,
 	observeSubtree,
-	requireElement,
+	useElement,
+	useComponent,
 }

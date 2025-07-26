@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>ElementFromSelector\<K, E\> – UIElement Docs</title>
+		<title>ElementFromSelector\<K\> – UIElement Docs</title>
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="../../assets/main.css" />
 		<script type="module" src="../../assets/main.js"></script>
@@ -99,16 +99,16 @@
 				</card-callout>
 			</header>
 			<main class="content-grid"><section class="api-content">
-<h1 id="type-alias-elementfromselectorltk-egt">
-                <a name="type-alias-elementfromselectorltk-egt" class="anchor" href="#type-alias-elementfromselectorltk-egt">
+<h1 id="type-alias-elementfromselectorltkgt">
+                <a name="type-alias-elementfromselectorltkgt" class="anchor" href="#type-alias-elementfromselectorltkgt">
 	                <span class="permalink">🔗</span>
                 </a>
-                Type Alias: ElementFromSelector&lt;K, E&gt;
+                Type Alias: ElementFromSelector&lt;K&gt;
             </h1>
 <blockquote>
-<p><strong>ElementFromSelector</strong>&lt;<code>K</code>, <code>E</code>&gt; = <code>K</code> <em>extends</em> keyof <code>HTMLElementTagNameMap</code> ? <code>HTMLElementTagNameMap</code>[<code>K</code>] : <code>K</code> <em>extends</em> keyof <code>SVGElementTagNameMap</code> ? <code>SVGElementTagNameMap</code>[<code>K</code>] : <code>K</code> <em>extends</em> keyof <code>MathMLElementTagNameMap</code> ? <code>MathMLElementTagNameMap</code>[<code>K</code>] : <code>E</code></p>
+<p><strong>ElementFromSelector</strong>&lt;<code>K</code>&gt; = <code>K</code> <em>extends</em> keyof <code>HTMLElementTagNameMap</code> ? <code>HTMLElementTagNameMap</code>[<code>K</code>] : <code>K</code> <em>extends</em> keyof <code>SVGElementTagNameMap</code> ? <code>SVGElementTagNameMap</code>[<code>K</code>] : <code>K</code> <em>extends</em> keyof <code>MathMLElementTagNameMap</code> ? <code>MathMLElementTagNameMap</code>[<code>K</code>] : <code>HTMLElement</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/0e9cacf03a8f95418720628d5174fbb006152743/src/core/dom.ts#L22">src/core/dom.ts:22</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/core/dom.ts#L22">src/core/dom.ts:22</a></p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -122,13 +122,6 @@
                 K
             </h3>
 <p><code>K</code> <em>extends</em> <code>string</code></p>
-<h3 id="e">
-                <a name="e" class="anchor" href="#e">
-	                <span class="permalink">🔗</span>
-                </a>
-                E
-            </h3>
-<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
 
 </section></main>
 			<footer class="content-grid">

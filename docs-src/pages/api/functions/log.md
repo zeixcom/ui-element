@@ -8,7 +8,7 @@
 
 > **log**\<`T`\>(`value`, `msg`, `level`): `T`
 
-Defined in: [src/core/util.ts:141](https://github.com/zeixcom/ui-element/blob/1e2981711e0b3b45697eacbe8601e2ce3440aa11/src/core/util.ts#L141)
+Defined in: [src/core/util.ts:141](https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/core/util.ts#L141)
 
 Log a message to the console with the specified level
 

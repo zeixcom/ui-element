@@ -316,8 +316,8 @@ class InvalidComponentNameError extends Error {
 }
 
 class InvalidCustomElementError extends Error {
-  constructor(host, target, required) {
-    super(`Expected element ${elementName(target)} in ${elementName(host)} to be a custom element.${required ? ` ${required}` : ""}`);
+  constructor(host, target) {
+    super(`Expected element ${elementName(target)} in ${elementName(host)} to be a custom element.`);
     this.name = "InvalidCustomElementError";
   }
 }
@@ -478,23 +478,23 @@ var read = (target, prop, fallback) => {
     return value === UNSET ? fallback : value.get();
   };
 };
-function requireElement(host, selector, required, assertCustomElement) {
+function useElement(host, selector, required) {
   const target = (host.shadowRoot || host).querySelector(selector);
-  if (target) {
-    if (assertCustomElement && !isCustomElement(target))
-      throw new InvalidCustomElementError(host, target, required);
-    return target;
-  }
-  throw new MissingElementError(host, selector, required);
+  if (required && !target)
+    throw new MissingElementError(host, selector, required);
+  return target;
 }
-function fromComponent(selector, extractor, required) {
-  return (host) => {
-    const target = requireElement(host, selector, required, true);
-    return computed(async () => {
+async function useComponent(host, selector, required) {
+  const target = isString(required) ? useElement(host, selector, required) : useElement(host, selector);
+  if (target) {
+    if (isCustomElement(target)) {
       await customElements.whenDefined(target.localName);
-      return extractor(target);
-    });
-  };
+      return target;
+    } else {
+      throw new InvalidCustomElementError(host, target);
+    }
+  }
+  return null;
 }
 
 // src/component.ts
@@ -548,11 +548,10 @@ var runEffects = (effects, host, target = host) => {
 var select = () => ({
   first(selector, effects, required) {
     return (host) => {
-      const target = (host.shadowRoot ?? host).querySelector(selector);
-      if (!target && required != null)
-        throw new MissingElementError(host, selector, required);
-      if (target)
-        runEffects(effects, host, target);
+      const target = required != null ? useElement(host, selector, required) : useElement(host, selector);
+      if (target) {
+        return runEffects(effects, host, target);
+      }
     };
   },
   all(selector, effects, required) {
@@ -1117,6 +1116,8 @@ var getDescription = (selector) => fromDOM("", {
   [selector]: getAttribute("aria-describedby")
 });
 export {
+  useElement,
+  useComponent,
   updateElement,
   toggleClass,
   toggleAttribute,
@@ -1128,7 +1129,6 @@ export {
   setProperty,
   setAttribute,
   resolveReactive,
-  requireElement,
   reduced,
   read,
   provideContexts,
@@ -1153,7 +1153,6 @@ export {
   fromEvents,
   fromDOM,
   fromContext,
-  fromComponent,
   focus,
   enqueue,
   emitEvent,

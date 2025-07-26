@@ -105,73 +105,139 @@
                 </a>
                 Function: fromSelector()
             </h1>
+<h2 id="call-signature">
+                <a name="call-signature" class="anchor" href="#call-signature">
+	                <span class="permalink">🔗</span>
+                </a>
+                Call Signature
+            </h2>
 <blockquote>
-<p><strong>fromSelector</strong>&lt;<code>E</code>, <code>C</code>, <code>S</code>&gt;(<code>selector</code>): <a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[]&gt;, <code>C</code>&gt;</p>
+<p><strong>fromSelector</strong>&lt;<code>S</code>, <code>C</code>&gt;(<code>selector</code>): <a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>&gt;[]&gt;, <code>C</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/0e9cacf03a8f95418720628d5174fbb006152743/src/core/dom.ts#L221">src/core/dom.ts:221</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/core/dom.ts#L216">src/core/dom.ts:216</a></p>
 <p>Produce a computed signal of an array of elements matching a selector</p>
-<h2 id="type-parameters">
+<h3 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Type Parameters
-            </h2>
-<h3 id="e">
-                <a name="e" class="anchor" href="#e">
-	                <span class="permalink">🔗</span>
-                </a>
-                E
             </h3>
-<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
-<h3 id="c">
-                <a name="c" class="anchor" href="#c">
-	                <span class="permalink">🔗</span>
-                </a>
-                C
-            </h3>
-<p><code>C</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
-<h3 id="s">
+<h4 id="s">
                 <a name="s" class="anchor" href="#s">
 	                <span class="permalink">🔗</span>
                 </a>
                 S
-            </h3>
-<p><code>S</code> <em>extends</em> <code>string</code> = <code>string</code></p>
-<h2 id="parameters">
+            </h4>
+<p><code>S</code> <em>extends</em> <code>string</code></p>
+<h4 id="c">
+                <a name="c" class="anchor" href="#c">
+	                <span class="permalink">🔗</span>
+                </a>
+                C
+            </h4>
+<p><code>C</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
+<h3 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Parameters
-            </h2>
-<h3 id="selector">
+            </h3>
+<h4 id="selector">
                 <a name="selector" class="anchor" href="#selector">
 	                <span class="permalink">🔗</span>
                 </a>
                 selector
-            </h3>
+            </h4>
 <p><code>S</code></p>
 <p>CSS selector for descendant elements</p>
-<h2 id="returns">
+<h3 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
-            </h2>
-<p><a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;[]&gt;, <code>C</code>&gt;</p>
+            </h3>
+<p><a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>&gt;[]&gt;, <code>C</code>&gt;</p>
 <p>Signal producer for descendant element collection from a selector</p>
-<h2 id="since">
+<h3 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
                 </a>
                 Since
-            </h2>
+            </h3>
 <p>0.13.1</p>
-<h2 id="throws">
+<h3 id="throws">
                 <a name="throws" class="anchor" href="#throws">
 	                <span class="permalink">🔗</span>
                 </a>
                 Throws
+            </h3>
+<p>If observed mutations would trigger infinite mutation cycles</p>
+<h2 id="call-signature">
+                <a name="call-signature" class="anchor" href="#call-signature">
+	                <span class="permalink">🔗</span>
+                </a>
+                Call Signature
             </h2>
+<blockquote>
+<p><strong>fromSelector</strong>&lt;<code>E</code>, <code>C</code>&gt;(<code>selector</code>): <a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>E</code>[]&gt;, <code>C</code>&gt;</p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/core/dom.ts#L219">src/core/dom.ts:219</a></p>
+<p>Produce a computed signal of an array of elements matching a selector</p>
+<h3 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type Parameters
+            </h3>
+<h4 id="e">
+                <a name="e" class="anchor" href="#e">
+	                <span class="permalink">🔗</span>
+                </a>
+                E
+            </h4>
+<p><code>E</code> <em>extends</em> <code>Element</code></p>
+<h4 id="c">
+                <a name="c" class="anchor" href="#c">
+	                <span class="permalink">🔗</span>
+                </a>
+                C
+            </h4>
+<p><code>C</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
+<h3 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Parameters
+            </h3>
+<h4 id="selector">
+                <a name="selector" class="anchor" href="#selector">
+	                <span class="permalink">🔗</span>
+                </a>
+                selector
+            </h4>
+<p><code>string</code></p>
+<p>CSS selector for descendant elements</p>
+<h3 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h3>
+<p><a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>E</code>[]&gt;, <code>C</code>&gt;</p>
+<p>Signal producer for descendant element collection from a selector</p>
+<h3 id="since">
+                <a name="since" class="anchor" href="#since">
+	                <span class="permalink">🔗</span>
+                </a>
+                Since
+            </h3>
+<p>0.13.1</p>
+<h3 id="throws">
+                <a name="throws" class="anchor" href="#throws">
+	                <span class="permalink">🔗</span>
+                </a>
+                Throws
+            </h3>
 <p>If observed mutations would trigger infinite mutation cycles</p>
 
 </section></main>

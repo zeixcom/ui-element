@@ -28,9 +28,8 @@ declare class InvalidCustomElementError extends Error {
 	/**
 	 * @param {HTMLElement} host - Host component
 	 * @param {Element} target - Target element
-	 * @param {string} required - Explanation why the element is required
 	 */
-	constructor(host: HTMLElement, target: Element, required?: string)
+	constructor(host: HTMLElement, target: Element)
 }
 /**
  * Error thrown when trying to assign a property name that conflicts with reserved words or inherited HTMLElement properties

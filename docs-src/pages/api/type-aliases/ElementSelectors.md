@@ -8,7 +8,7 @@
 
 > **ElementSelectors**\<`P`\> = `object`
 
-Defined in: [src/component.ts:106](https://github.com/zeixcom/ui-element/blob/1e2981711e0b3b45697eacbe8601e2ce3440aa11/src/component.ts#L106)
+Defined in: [src/component.ts:107](https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/component.ts#L107)
 
 ## Type Parameters
 
@@ -22,7 +22,7 @@ Defined in: [src/component.ts:106](https://github.com/zeixcom/ui-element/blob/1e
 
 > **all**: [`ElementSelector`](ElementSelector.md)\<`P`\>
 
-Defined in: [src/component.ts:108](https://github.com/zeixcom/ui-element/blob/1e2981711e0b3b45697eacbe8601e2ce3440aa11/src/component.ts#L108)
+Defined in: [src/component.ts:109](https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/component.ts#L109)
 
 ***
 
@@ -30,4 +30,4 @@ Defined in: [src/component.ts:108](https://github.com/zeixcom/ui-element/blob/1e
 
 > **first**: [`ElementSelector`](ElementSelector.md)\<`P`\>
 
-Defined in: [src/component.ts:107](https://github.com/zeixcom/ui-element/blob/1e2981711e0b3b45697eacbe8601e2ce3440aa11/src/component.ts#L107)
+Defined in: [src/component.ts:108](https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/component.ts#L108)

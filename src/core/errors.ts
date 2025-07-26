@@ -44,11 +44,10 @@ class InvalidCustomElementError extends Error {
 	/**
 	 * @param {HTMLElement} host - Host component
 	 * @param {Element} target - Target element
-	 * @param {string} required - Explanation why the element is required
 	 */
-	constructor(host: HTMLElement, target: Element, required?: string) {
+	constructor(host: HTMLElement, target: Element) {
 		super(
-			`Expected element ${elementName(target)} in ${elementName(host)} to be a custom element.${required ? ` ${required}` : ''}`,
+			`Expected element ${elementName(target)} in ${elementName(host)} to be a custom element.`,
 		)
 		this.name = 'InvalidCustomElementError'
 	}

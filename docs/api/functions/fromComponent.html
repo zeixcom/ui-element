@@ -105,103 +105,199 @@
                 </a>
                 Function: fromComponent()
             </h1>
+<h2 id="call-signature">
+                <a name="call-signature" class="anchor" href="#call-signature">
+	                <span class="permalink">🔗</span>
+                </a>
+                Call Signature
+            </h2>
 <blockquote>
-<p><strong>fromComponent</strong>&lt;<code>T</code>, <code>E</code>, <code>C</code>, <code>S</code>&gt;(<code>selector</code>, <code>extractor</code>, <code>required</code>): <a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;, <code>C</code>&gt;</p>
+<p><strong>fromComponent</strong>&lt;<code>T</code>, <code>S</code>, <code>C</code>&gt;(<code>selector</code>, <code>extractor</code>, <code>required</code>): <a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;, <code>C</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/0e9cacf03a8f95418720628d5174fbb006152743/src/core/dom.ts#L392">src/core/dom.ts:392</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/1e2981711e0b3b45697eacbe8601e2ce3440aa11/src/core/dom.ts#L391">src/core/dom.ts:391</a></p>
 <p>Create a computed signal from a required descendant component&#39;s property</p>
-<h2 id="type-parameters">
+<h3 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Type Parameters
-            </h2>
-<h3 id="t">
+            </h3>
+<h4 id="t">
                 <a name="t" class="anchor" href="#t">
 	                <span class="permalink">🔗</span>
                 </a>
                 T
-            </h3>
+            </h4>
 <p><code>T</code> <em>extends</em> <code>object</code></p>
-<h3 id="e">
-                <a name="e" class="anchor" href="#e">
-	                <span class="permalink">🔗</span>
-                </a>
-                E
-            </h3>
-<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
-<h3 id="c">
-                <a name="c" class="anchor" href="#c">
-	                <span class="permalink">🔗</span>
-                </a>
-                C
-            </h3>
-<p><code>C</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
-<h3 id="s">
+<h4 id="s">
                 <a name="s" class="anchor" href="#s">
 	                <span class="permalink">🔗</span>
                 </a>
                 S
-            </h3>
-<p><code>S</code> <em>extends</em> <code>string</code> = <code>string</code></p>
-<h2 id="parameters">
+            </h4>
+<p><code>S</code> <em>extends</em> <code>string</code></p>
+<h4 id="c">
+                <a name="c" class="anchor" href="#c">
+	                <span class="permalink">🔗</span>
+                </a>
+                C
+            </h4>
+<p><code>C</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
+<h3 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Parameters
-            </h2>
-<h3 id="selector">
+            </h3>
+<h4 id="selector">
                 <a name="selector" class="anchor" href="#selector">
 	                <span class="permalink">🔗</span>
                 </a>
                 selector
-            </h3>
+            </h4>
 <p><code>S</code></p>
 <p>Selector for the required descendant element</p>
-<h3 id="extractor">
+<h4 id="extractor">
                 <a name="extractor" class="anchor" href="#extractor">
 	                <span class="permalink">🔗</span>
                 </a>
                 extractor
-            </h3>
-<p><a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<code>T</code>, <a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;&gt;</p>
+            </h4>
+<p><a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<code>T</code>, <a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>&gt;&gt;</p>
 <p>Function to extract the value from the element</p>
-<h3 id="required">
+<h4 id="required">
                 <a name="required" class="anchor" href="#required">
 	                <span class="permalink">🔗</span>
                 </a>
                 required
-            </h3>
+            </h4>
 <p><code>string</code></p>
 <p>Explanation why the element is required</p>
-<h2 id="returns">
+<h3 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
-            </h2>
+            </h3>
 <p><a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;, <code>C</code>&gt;</p>
 <p>Extractor that returns a computed signal that computes the value from the element</p>
-<h2 id="since">
+<h3 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
                 </a>
                 Since
-            </h2>
+            </h3>
 <p>0.14.0</p>
-<h2 id="throws">
+<h3 id="throws">
                 <a name="throws" class="anchor" href="#throws">
 	                <span class="permalink">🔗</span>
                 </a>
                 Throws
-            </h2>
+            </h3>
 <p>If the element does not contain the required descendant element</p>
-<h2 id="throws">
+<h3 id="throws">
                 <a name="throws" class="anchor" href="#throws">
 	                <span class="permalink">🔗</span>
                 </a>
                 Throws
+            </h3>
+<p>If the element is not a custom element</p>
+<h2 id="call-signature">
+                <a name="call-signature" class="anchor" href="#call-signature">
+	                <span class="permalink">🔗</span>
+                </a>
+                Call Signature
             </h2>
+<blockquote>
+<p><strong>fromComponent</strong>&lt;<code>T</code>, <code>E</code>, <code>C</code>&gt;(<code>selector</code>, <code>extractor</code>, <code>required</code>): <a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;, <code>C</code>&gt;</p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/1e2981711e0b3b45697eacbe8601e2ce3440aa11/src/core/dom.ts#L400">src/core/dom.ts:400</a></p>
+<p>Create a computed signal from a required descendant component&#39;s property</p>
+<h3 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type Parameters
+            </h3>
+<h4 id="t">
+                <a name="t" class="anchor" href="#t">
+	                <span class="permalink">🔗</span>
+                </a>
+                T
+            </h4>
+<p><code>T</code> <em>extends</em> <code>object</code></p>
+<h4 id="e">
+                <a name="e" class="anchor" href="#e">
+	                <span class="permalink">🔗</span>
+                </a>
+                E
+            </h4>
+<p><code>E</code> <em>extends</em> <code>Element</code></p>
+<h4 id="c">
+                <a name="c" class="anchor" href="#c">
+	                <span class="permalink">🔗</span>
+                </a>
+                C
+            </h4>
+<p><code>C</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
+<h3 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Parameters
+            </h3>
+<h4 id="selector">
+                <a name="selector" class="anchor" href="#selector">
+	                <span class="permalink">🔗</span>
+                </a>
+                selector
+            </h4>
+<p><code>string</code></p>
+<p>Selector for the required descendant element</p>
+<h4 id="extractor">
+                <a name="extractor" class="anchor" href="#extractor">
+	                <span class="permalink">🔗</span>
+                </a>
+                extractor
+            </h4>
+<p><a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<code>T</code>, <code>E</code>&gt;</p>
+<p>Function to extract the value from the element</p>
+<h4 id="required">
+                <a name="required" class="anchor" href="#required">
+	                <span class="permalink">🔗</span>
+                </a>
+                required
+            </h4>
+<p><code>string</code></p>
+<p>Explanation why the element is required</p>
+<h3 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h3>
+<p><a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;, <code>C</code>&gt;</p>
+<p>Extractor that returns a computed signal that computes the value from the element</p>
+<h3 id="since">
+                <a name="since" class="anchor" href="#since">
+	                <span class="permalink">🔗</span>
+                </a>
+                Since
+            </h3>
+<p>0.14.0</p>
+<h3 id="throws">
+                <a name="throws" class="anchor" href="#throws">
+	                <span class="permalink">🔗</span>
+                </a>
+                Throws
+            </h3>
+<p>If the element does not contain the required descendant element</p>
+<h3 id="throws">
+                <a name="throws" class="anchor" href="#throws">
+	                <span class="permalink">🔗</span>
+                </a>
+                Throws
+            </h3>
 <p>If the element is not a custom element</p>
 
 </section></main>

@@ -8,7 +8,7 @@
 
 > **setText**\<`P`, `E`\>(`reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:309](https://github.com/zeixcom/ui-element/blob/1e2981711e0b3b45697eacbe8601e2ce3440aa11/src/lib/effects.ts#L309)
+Defined in: [src/lib/effects.ts:309](https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/lib/effects.ts#L309)
 
 Effect for setting the text content of an element.
 Replaces all child nodes (except comments) with a single text node.

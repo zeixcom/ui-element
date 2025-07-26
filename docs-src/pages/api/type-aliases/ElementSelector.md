@@ -8,7 +8,7 @@
 
 > **ElementSelector**\<`P`\> = \{\<`S`\>(`selector`, `effects`, `required?`): (`host`) => `void` \| [`Cleanup`](Cleanup.md); \<`E`\>(`selector`, `effects`, `required?`): (`host`) => `void` \| [`Cleanup`](Cleanup.md); \}
 
-Defined in: [src/component.ts:93](https://github.com/zeixcom/ui-element/blob/1e2981711e0b3b45697eacbe8601e2ce3440aa11/src/component.ts#L93)
+Defined in: [src/component.ts:94](https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/component.ts#L94)
 
 ## Type Parameters
 

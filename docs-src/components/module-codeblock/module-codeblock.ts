@@ -3,8 +3,8 @@ import {
 	asBoolean,
 	component,
 	on,
-	requireElement,
 	toggleAttribute,
+	useElement,
 } from '../../..'
 import { copyToClipboard } from '../basic-button/copy-to-clipboard'
 
@@ -28,7 +28,7 @@ export default component(
 		first(
 			'.copy',
 			copyToClipboard(
-				requireElement(
+				useElement(
 					el,
 					'code',
 					'Needed as source container to copy from.',

@@ -54,14 +54,14 @@ export {
 	type LooseExtractor,
 	type Parser,
 	type ParserOrFallback,
-	fromComponent,
 	fromDOM,
 	fromSelector,
 	getFallback,
 	isParser,
 	reduced,
 	read,
-	requireElement,
+	useElement,
+	useComponent,
 } from './src/core/dom'
 export {
 	type Effect,

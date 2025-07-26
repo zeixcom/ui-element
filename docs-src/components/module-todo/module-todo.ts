@@ -5,14 +5,13 @@ import {
 	on,
 	pass,
 	read,
-	requireElement,
 	setAttribute,
-	setText,
-	show,
+	useComponent,
+	useElement,
 } from '../../..'
-import '../basic-button/basic-button'
-import type { FormCheckboxProps } from '../form-checkbox/form-checkbox'
-import '../form-textbox/form-textbox'
+// import '../basic-button/basic-button'
+// import '../form-checkbox/form-checkbox'
+// import '../form-textbox/form-textbox'
 // import '../form-radiogroup/form-radiogroup'
 
 export type ModuleTodoProps = {
@@ -26,18 +25,18 @@ export default component(
 		active: fromSelector('form-checkbox:not([checked])'),
 		completed: fromSelector('form-checkbox[checked]'),
 	},
-	(el, { first }) => {
-		const textbox = requireElement(
+	async (el, { first }) => {
+		const textbox = await useComponent(
 			el,
 			'form-textbox',
 			'Needed to enter a new todo item.',
 		)
-		const template = requireElement(
+		const template = useElement(
 			el,
 			'template',
 			'Needed to define the list item template.',
 		)
-		const list = requireElement(
+		const list = useElement(
 			el,
 			'ol',
 			'Needed to display the list of todos.',
@@ -87,26 +86,7 @@ export default component(
 			]),
 
 			// Update count elements
-			first(
-				'.count',
-				setText(() => String(el.active.length)),
-			),
-			first(
-				'.singular',
-				show(() => el.active.length === 1),
-			),
-			first(
-				'.plural',
-				show(() => el.active.length > 1),
-			),
-			first(
-				'.remaining',
-				show(() => !!el.active.length),
-			),
-			first(
-				'.all-done',
-				show(() => !el.active.length),
-			),
+			first('basic-pluralize', pass({ count: () => el.active.length })),
 
 			// Control clear-completed button
 			first('.clear-completed', [
@@ -120,9 +100,7 @@ export default component(
 				on('click', () => {
 					const items = Array.from(el.querySelectorAll('ol li'))
 					for (let i = items.length - 1; i >= 0; i--) {
-						const task = items[i].querySelector<
-							HTMLElement & FormCheckboxProps
-						>('form-checkbox')
+						const task = items[i].querySelector('form-checkbox')
 						if (task?.checked) items[i].remove()
 					}
 				}),

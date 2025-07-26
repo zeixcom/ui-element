@@ -16,6 +16,7 @@ import {
 	type Parser,
 	isParser,
 	observeSubtree,
+	useElement,
 } from './core/dom'
 import {
 	InvalidComponentNameError,
@@ -206,6 +207,7 @@ const runEffects = <P extends ComponentProps, E extends Element = Component<P>>(
 const select = <P extends ComponentProps>(): ElementSelectors<P> => ({
 	/**
 	 * Apply effect functions to a first matching descendant within the custom element
+	 * If the target element is a custom element, waits for it to be defined before running effects
 	 *
 	 * @since 0.14.0
 	 * @param {S} selector - Selector to match descendant
@@ -219,15 +221,31 @@ const select = <P extends ComponentProps>(): ElementSelectors<P> => ({
 		required?: string,
 	): (host: Component<P>) => Cleanup | void {
 		return (host: Component<P>) => {
-			const target = (host.shadowRoot ?? host).querySelector<E>(selector)
-			if (!target && required != null)
-				throw new MissingElementError(host, selector, required)
-			if (target) runEffects(effects, host, target)
+			const target =
+				required != null
+					? useElement(host, selector, required)
+					: useElement(host, selector)
+			if (target) {
+				/* if (isCustomElement(target)) {
+					return runEffects(
+						customElements
+							.whenDefined(target.localName)
+							.then(() => effects) as
+							| Promise<Effect<P, E>>
+							| Promise<Effect<P, E>[]>,
+						host,
+						target as unknown as E,
+					)
+				} else { */
+				return runEffects(effects, host, target as unknown as E)
+				//}
+			}
 		}
 	},
 
 	/**
 	 * Apply effect functions to all matching descendant elements within the custom element
+	 * If any target element is a custom element, waits for it to be defined before running effects
 	 *
 	 * @since 0.14.0
 	 * @param {S} selector - Selector to match descendants
@@ -245,9 +263,23 @@ const select = <P extends ComponentProps>(): ElementSelectors<P> => ({
 			const root = host.shadowRoot ?? host
 
 			const attach = (target: E) => {
+				/* if (isCustomElement(target)) {
+					const cleanup = runEffects(
+						customElements
+							.whenDefined(target.localName)
+							.then(() => effects) as
+							| Promise<Effect<P, E>>
+							| Promise<Effect<P, E>[]>,
+						host,
+						target,
+					)
+					if (cleanup && !cleanups.has(target))
+						cleanups.set(target, cleanup)
+				} else { */
 				const cleanup = runEffects(effects, host, target)
 				if (cleanup && !cleanups.has(target))
 					cleanups.set(target, cleanup)
+				// }
 			}
 
 			const detach = (target: E) => {

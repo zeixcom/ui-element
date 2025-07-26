@@ -4,11 +4,11 @@ import {
 	component,
 	computed,
 	on,
-	requireElement,
 	setAttribute,
 	setProperty,
 	setText,
 	show,
+	useElement,
 } from '../../..'
 import { createClearFunction } from '../../functions/shared/clear-input'
 
@@ -30,7 +30,7 @@ export default component<FormTextboxProps>(
 		clear() {},
 	},
 	(el, { first }) => {
-		const input = requireElement<HTMLInputElement | HTMLTextAreaElement>(
+		const input = useElement<HTMLInputElement | HTMLTextAreaElement>(
 			el,
 			'input, textarea',
 			'Native input or textarea element needed.',
