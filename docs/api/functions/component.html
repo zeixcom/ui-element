@@ -106,10 +106,10 @@
                 Function: component()
             </h1>
 <blockquote>
-<p><strong>component</strong>&lt;<code>P</code>&gt;(<code>name</code>, <code>init</code>, <code>setup</code>): <code>void</code></p>
+<p><strong>component</strong>&lt;<code>P</code>&gt;(<code>name</code>, <code>init</code>, <code>setup</code>, <code>dependencies?</code>): <code>void</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/component.ts#L334">src/component.ts:334</a></p>
-<p>Define a component with its states and setup function (connectedCallback)</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/e3fa79e199a97014fba6af2a6cf8cb55be8076c3/src/component.ts#L310">src/component.ts:310</a></p>
+<p>Define a component with dependency resolution and setup function (connectedCallback)</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -151,8 +151,16 @@
                 </a>
                 setup
             </h3>
-<p>(<code>host</code>, <code>select</code>) =&gt; <a href="../type-aliases/Effects.html"><code>Effects</code></a>&lt;<code>P</code>, <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;&gt;</p>
-<p>Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()</p>
+<p><a href="../type-aliases/Setup.html"><code>Setup</code></a>&lt;<code>P</code>&gt;</p>
+<p>Setup function to be called after dependencies are resolved</p>
+<h3 id="dependencies">
+                <a name="dependencies" class="anchor" href="#dependencies">
+	                <span class="permalink">🔗</span>
+                </a>
+                dependencies?
+            </h3>
+<p><code>string</code>[]</p>
+<p>Array of custom element names the component depends on</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
@@ -166,7 +174,7 @@
                 </a>
                 Since
             </h2>
-<p>0.12.0</p>
+<p>0.14.0</p>
 <h2 id="throws">
                 <a name="throws" class="anchor" href="#throws">
 	                <span class="permalink">🔗</span>
@@ -181,13 +189,6 @@
                 Throws
             </h2>
 <p>If property name is invalid</p>
-<h2 id="throws">
-                <a name="throws" class="anchor" href="#throws">
-	                <span class="permalink">🔗</span>
-                </a>
-                Throws
-            </h2>
-<p>If setup function is invalid</p>
 
 </section></main>
 			<footer class="content-grid">

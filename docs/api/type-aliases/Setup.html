@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>setText – UIElement Docs</title>
+		<title>Setup()\<P\> – UIElement Docs</title>
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="../../assets/main.css" />
 		<script type="module" src="../../assets/main.js"></script>
@@ -99,17 +99,16 @@
 				</card-callout>
 			</header>
 			<main class="content-grid"><section class="api-content">
-<h1 id="function-settext">
-                <a name="function-settext" class="anchor" href="#function-settext">
+<h1 id="type-alias-setupltpgt">
+                <a name="type-alias-setupltpgt" class="anchor" href="#type-alias-setupltpgt">
 	                <span class="permalink">🔗</span>
                 </a>
-                Function: setText()
+                Type Alias: Setup()&lt;P&gt;
             </h1>
 <blockquote>
-<p><strong>setText</strong>&lt;<code>P</code>, <code>E</code>&gt;(<code>reactive</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
+<p><strong>Setup</strong>&lt;<code>P</code>&gt; = (<code>host</code>, <code>select</code>) =&gt; <a href="Effects.html"><code>Effects</code></a>&lt;<code>P</code>, <a href="Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/e3fa79e199a97014fba6af2a6cf8cb55be8076c3/src/lib/effects.ts#L309">src/lib/effects.ts:309</a></p>
-<p>Effect for setting the text content of an element.<br>Replaces all child nodes (except comments) with a single text node.</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/e3fa79e199a97014fba6af2a6cf8cb55be8076c3/src/component.ts#L112">src/component.ts:112</a></p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
@@ -122,43 +121,34 @@
                 </a>
                 P
             </h3>
-<p><code>P</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
-<h3 id="e">
-                <a name="e" class="anchor" href="#e">
-	                <span class="permalink">🔗</span>
-                </a>
-                E
-            </h3>
-<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
+<p><code>P</code> <em>extends</em> <a href="ComponentProps.html"><code>ComponentProps</code></a></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
                 </a>
                 Parameters
             </h2>
-<h3 id="reactive">
-                <a name="reactive" class="anchor" href="#reactive">
+<h3 id="host">
+                <a name="host" class="anchor" href="#host">
 	                <span class="permalink">🔗</span>
                 </a>
-                reactive
+                host
             </h3>
-<p><a href="../type-aliases/Reactive.html"><code>Reactive</code></a>&lt;<code>string</code>, <code>P</code>, <code>E</code>&gt;</p>
-<p>Reactive value bound to the text content</p>
+<p><a href="Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;</p>
+<h3 id="select">
+                <a name="select" class="anchor" href="#select">
+	                <span class="permalink">🔗</span>
+                </a>
+                select
+            </h3>
+<p><a href="ElementSelectors.html"><code>ElementSelectors</code></a>&lt;<code>P</code>&gt;</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
                 </a>
                 Returns
             </h2>
-<p><a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
-<p>Effect function that sets the text content of the element</p>
-<h2 id="since">
-                <a name="since" class="anchor" href="#since">
-	                <span class="permalink">🔗</span>
-                </a>
-                Since
-            </h2>
-<p>0.8.0</p>
+<p><a href="Effects.html"><code>Effects</code></a>&lt;<code>P</code>, <a href="Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;&gt;</p>
 
 </section></main>
 			<footer class="content-grid">

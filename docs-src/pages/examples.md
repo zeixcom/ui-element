@@ -244,15 +244,15 @@ description: 'Common use cases and demos'
 				</li>
 			</template>
 			<footer>
-				<div class="todo-count">
-					<p class="all-done">Well done, all done!</p>
-					<p class="remaining">
-						<span class="count"></span>
-						<span class="singular">task</span>
-						<span class="plural">tasks</span>
-						remaining
-					</p>
-				</div>
+  			<basic-pluralize>
+  				<p class="none">Well done, all done!</p>
+  				<p class="some">
+  					<span class="count"></span>
+  					<span class="singular">task</span>
+  					<span class="plural">tasks</span>
+  					remaining
+  				</p>
+  			</basic-pluralize>
 				<form-radiogroup value="all" class="split-button">
 					<fieldset>
 						<legend class="visually-hidden">Filter</legend>

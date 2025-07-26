@@ -10,7 +10,7 @@
 
 > **useComponent**\<`S`\>(`host`, `selector`, `required?`): `Promise`\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`\>\>
 
-Defined in: [src/core/dom.ts:391](https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/core/dom.ts#L391)
+Defined in: [src/core/dom.ts:391](https://github.com/zeixcom/ui-element/blob/e3fa79e199a97014fba6af2a6cf8cb55be8076c3/src/core/dom.ts#L391)
 
 Get a descendant custom element matching a selector awaited to be defined
 
@@ -62,7 +62,7 @@ If the element is not a custom element
 
 > **useComponent**\<`S`\>(`host`, `selector`): `Promise`\<`null` \| [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`\>\>
 
-Defined in: [src/core/dom.ts:396](https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/core/dom.ts#L396)
+Defined in: [src/core/dom.ts:396](https://github.com/zeixcom/ui-element/blob/e3fa79e199a97014fba6af2a6cf8cb55be8076c3/src/core/dom.ts#L396)
 
 Get a descendant custom element matching a selector awaited to be defined
 
@@ -108,7 +108,7 @@ If the element is not a custom element
 
 > **useComponent**\<`E`\>(`host`, `selector`, `required`): `Promise`\<`E`\>
 
-Defined in: [src/core/dom.ts:400](https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/core/dom.ts#L400)
+Defined in: [src/core/dom.ts:400](https://github.com/zeixcom/ui-element/blob/e3fa79e199a97014fba6af2a6cf8cb55be8076c3/src/core/dom.ts#L400)
 
 Get a descendant custom element matching a selector awaited to be defined
 
@@ -160,7 +160,7 @@ If the element is not a custom element
 
 > **useComponent**\<`E`\>(`host`, `selector`): `Promise`\<`null` \| `E`\>
 
-Defined in: [src/core/dom.ts:405](https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/core/dom.ts#L405)
+Defined in: [src/core/dom.ts:405](https://github.com/zeixcom/ui-element/blob/e3fa79e199a97014fba6af2a6cf8cb55be8076c3/src/core/dom.ts#L405)
 
 Get a descendant custom element matching a selector awaited to be defined
 

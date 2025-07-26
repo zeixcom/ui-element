@@ -38,6 +38,7 @@
 - [Reactive](type-aliases/Reactive.md)
 - [Reactives](type-aliases/Reactives.md)
 - [ReservedWords](type-aliases/ReservedWords.md)
+- [Setup](type-aliases/Setup.md)
 - [Signal](type-aliases/Signal.md)
 - [SignalProducer](type-aliases/SignalProducer.md)
 - [State](type-aliases/State.md)

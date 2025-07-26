@@ -6,11 +6,11 @@
 
 # Function: component()
 
-> **component**\<`P`\>(`name`, `init`, `setup`): `void`
+> **component**\<`P`\>(`name`, `init`, `setup`, `dependencies?`): `void`
 
-Defined in: [src/component.ts:333](https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/component.ts#L333)
+Defined in: [src/component.ts:310](https://github.com/zeixcom/ui-element/blob/e3fa79e199a97014fba6af2a6cf8cb55be8076c3/src/component.ts#L310)
 
-Define a component with its states and setup function (connectedCallback)
+Define a component with dependency resolution and setup function (connectedCallback)
 
 ## Type Parameters
 
@@ -34,9 +34,15 @@ Signals of the component
 
 ### setup
 
-(`host`, `select`) => [`Effects`](../type-aliases/Effects.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`P`\>\>
+[`Setup`](../type-aliases/Setup.md)\<`P`\>
 
-Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
+Setup function to be called after dependencies are resolved
+
+### dependencies?
+
+`string`[]
+
+Array of custom element names the component depends on
 
 ## Returns
 
@@ -44,7 +50,7 @@ Setup function to be called in connectedCallback(), may return cleanup function 
 
 ## Since
 
-0.12.0
+0.14.0
 
 ## Throws
 
@@ -53,7 +59,3 @@ If component name is invalid
 ## Throws
 
 If property name is invalid
-
-## Throws
-
-If setup function is invalid

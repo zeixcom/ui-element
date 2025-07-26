@@ -595,7 +595,7 @@ var select = () => ({
     };
   }
 });
-var component = (name, init = {}, setup) => {
+function component(name, init = {}, setup, dependencies) {
   if (!name.includes("-") || !name.match(/^[a-z][a-z0-9-]*$/))
     throw new InvalidComponentNameError(name);
   for (const prop of Object.keys(init)) {
@@ -622,9 +622,29 @@ var component = (name, init = {}, setup) => {
         if (result != null)
           this.setSignal(prop, toSignal(result));
       }
-      const cleanup = runEffects(setup(this, select()), this);
-      if (cleanup)
-        this.#cleanup = cleanup;
+      const runSetup = () => {
+        const result = runEffects(setup(this, select()), this);
+        if (result)
+          this.#cleanup = result;
+      };
+      if (dependencies?.length) {
+        Promise.race([
+          Promise.all(dependencies.map((dep) => customElements.whenDefined(dep))),
+          new Promise((_, reject) => {
+            setTimeout(() => {
+              const missing = dependencies.filter((dep) => !customElements.get(dep));
+              reject(new Error(`Timeout waiting for: [${missing.join(", ")}]`));
+            }, 50);
+          })
+        ]).then(runSetup).catch((error) => {
+          if (DEV_MODE) {
+            console.warn(`Component "${name}": ${error.message}. Running setup anyway.`);
+          }
+          runSetup();
+        });
+      } else {
+        runSetup();
+      }
     }
     disconnectedCallback() {
       if (isFunction(this.#cleanup))
@@ -674,7 +694,7 @@ var component = (name, init = {}, setup) => {
     }
   }
   customElements.define(name, CustomElement);
-};
+}
 // src/core/reactive.ts
 var RESET = Symbol("RESET");
 var resolveReactive = (reactive, host, target, context) => {

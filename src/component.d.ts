@@ -64,25 +64,29 @@ type ElementSelectors<P extends ComponentProps> = {
 	first: ElementSelector<P>
 	all: ElementSelector<P>
 }
+type Setup<P extends ComponentProps> = (
+	host: Component<P>,
+	select: ElementSelectors<P>,
+) => Effects<P, Component<P>>
 /**
- * Define a component with its states and setup function (connectedCallback)
+ * Define a component with dependency resolution and setup function (connectedCallback)
  *
- * @since 0.12.0
+ * @since 0.14.0
  * @param {string} name - Name of the custom element
  * @param {{ [K in keyof P]: Initializer<P[K], Component<P>> }} init - Signals of the component
- * @param {Effects<P, Component<P>>} setup - Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
+ * @param {Setup<P>} setup - Setup function to be called after dependencies are resolved
+ * @param {string[]} dependencies - Array of custom element names the component depends on
  * @throws {InvalidComponentNameError} If component name is invalid
  * @throws {InvalidPropertyNameError} If property name is invalid
- * @throws {InvalidSetupFunctionError} If setup function is invalid
  */
-declare const component: <P extends ComponentProps & ValidateComponentProps<P>>(
+declare function component<
+	P extends ComponentProps & ValidateComponentProps<P>,
+>(
 	name: string,
 	init: { [K in keyof P]: Initializer<P[K], Component<P>> } | undefined,
-	setup: (
-		host: Component<P>,
-		select: ElementSelectors<P>,
-	) => Effects<P, Component<P>>,
-) => void
+	setup: Setup<P>,
+	dependencies?: string[],
+): void
 export {
 	type Component,
 	type ComponentProps,
@@ -94,5 +98,6 @@ export {
 	type MethodProducer,
 	type ElementSelector,
 	type ElementSelectors,
+	type Setup,
 	component,
 }

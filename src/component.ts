@@ -109,6 +109,11 @@ type ElementSelectors<P extends ComponentProps> = {
 	all: ElementSelector<P>
 }
 
+type Setup<P extends ComponentProps> = (
+	host: Component<P>,
+	select: ElementSelectors<P>,
+) => Effects<P, Component<P>>
+
 /* === Constants === */
 
 // Reserved words that should never be used as property names
@@ -199,10 +204,10 @@ const runEffects = <P extends ComponentProps, E extends Element = Component<P>>(
 }
 
 /**
- * Create partially applied helper functions to select sub-elements
+ * Create partially applied helper functions to select descendants
  *
  * @since 0.13.0
- * @returns {ElementSelectors<P>} - Helper functions for selecting sub-elements
+ * @returns {ElementSelectors<P>} - Helper functions for selecting descendants
  */
 const select = <P extends ComponentProps>(): ElementSelectors<P> => ({
 	/**
@@ -226,19 +231,7 @@ const select = <P extends ComponentProps>(): ElementSelectors<P> => ({
 					? useElement(host, selector, required)
 					: useElement(host, selector)
 			if (target) {
-				/* if (isCustomElement(target)) {
-					return runEffects(
-						customElements
-							.whenDefined(target.localName)
-							.then(() => effects) as
-							| Promise<Effect<P, E>>
-							| Promise<Effect<P, E>[]>,
-						host,
-						target as unknown as E,
-					)
-				} else { */
 				return runEffects(effects, host, target as unknown as E)
-				//}
 			}
 		}
 	},
@@ -263,23 +256,9 @@ const select = <P extends ComponentProps>(): ElementSelectors<P> => ({
 			const root = host.shadowRoot ?? host
 
 			const attach = (target: E) => {
-				/* if (isCustomElement(target)) {
-					const cleanup = runEffects(
-						customElements
-							.whenDefined(target.localName)
-							.then(() => effects) as
-							| Promise<Effect<P, E>>
-							| Promise<Effect<P, E>[]>,
-						host,
-						target,
-					)
-					if (cleanup && !cleanups.has(target))
-						cleanups.set(target, cleanup)
-				} else { */
 				const cleanup = runEffects(effects, host, target)
 				if (cleanup && !cleanups.has(target))
 					cleanups.set(target, cleanup)
-				// }
 			}
 
 			const detach = (target: E) => {
@@ -315,33 +294,29 @@ const select = <P extends ComponentProps>(): ElementSelectors<P> => ({
 			}
 		}
 	},
-})
-
-/* === Exported Functions === */
+}) /* === Exported Functions === */
 
 /**
- * Define a component with its states and setup function (connectedCallback)
+ * Define a component with dependency resolution and setup function (connectedCallback)
  *
- * @since 0.12.0
+ * @since 0.14.0
  * @param {string} name - Name of the custom element
  * @param {{ [K in keyof P]: Initializer<P[K], Component<P>> }} init - Signals of the component
- * @param {Effects<P, Component<P>>} setup - Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
+ * @param {Setup<P>} setup - Setup function to be called after dependencies are resolved
+ * @param {string[]} dependencies - Array of custom element names the component depends on
  * @throws {InvalidComponentNameError} If component name is invalid
  * @throws {InvalidPropertyNameError} If property name is invalid
- * @throws {InvalidSetupFunctionError} If setup function is invalid
  */
-const component = <P extends ComponentProps & ValidateComponentProps<P>>(
+function component<P extends ComponentProps & ValidateComponentProps<P>>(
 	name: string,
 	init: {
 		[K in keyof P]: Initializer<P[K], Component<P>>
 	} = {} as {
 		[K in keyof P]: Initializer<P[K], Component<P>>
 	},
-	setup: (
-		host: Component<P>,
-		select: ElementSelectors<P>,
-	) => Effects<P, Component<P>>,
-): void => {
+	setup: Setup<P>,
+	dependencies?: string[],
+): void {
 	if (!name.includes('-') || !name.match(/^[a-z][a-z0-9-]*$/))
 		throw new InvalidComponentNameError(name)
 	for (const prop of Object.keys(init)) {
@@ -381,12 +356,46 @@ const component = <P extends ComponentProps & ValidateComponentProps<P>>(
 				if (result != null) this.setSignal(prop, toSignal(result))
 			}
 
-			// Run setup function
-			const cleanup = runEffects(
-				setup(this as unknown as Component<P>, select()),
-				this as unknown as Component<P>,
-			)
-			if (cleanup) this.#cleanup = cleanup
+			// Resolve dependencies and run setup function
+			const runSetup = () => {
+				const result = runEffects(
+					setup(this as unknown as Component<P>, select()),
+					this as unknown as Component<P>,
+				)
+				if (result) this.#cleanup = result
+			}
+			if (dependencies?.length) {
+				Promise.race([
+					Promise.all(
+						dependencies.map(dep =>
+							customElements.whenDefined(dep),
+						),
+					),
+					new Promise<never>((_, reject) => {
+						setTimeout(() => {
+							const missing = dependencies.filter(
+								dep => !customElements.get(dep),
+							)
+							reject(
+								new Error(
+									`Timeout waiting for: [${missing.join(', ')}]`,
+								),
+							)
+						}, 50)
+					}),
+				])
+					.then(runSetup)
+					.catch(error => {
+						if (DEV_MODE) {
+							console.warn(
+								`Component "${name}": ${error.message}. Running setup anyway.`,
+							)
+						}
+						runSetup()
+					})
+			} else {
+				runSetup()
+			}
 		}
 
 		/**
@@ -489,5 +498,6 @@ export {
 	type MethodProducer,
 	type ElementSelector,
 	type ElementSelectors,
+	type Setup,
 	component,
 }

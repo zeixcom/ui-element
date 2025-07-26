@@ -8,7 +8,7 @@
 
 > **ParserOrFallback**\<`T`, `E`\> = [`Parser`](Parser.md)\<`T`, `E`\> \| [`Fallback`](Fallback.md)\<`T`, `E`\>
 
-Defined in: [src/core/dom.ts:49](https://github.com/zeixcom/ui-element/blob/e844a8875dcc0f1e1c331a07fc308d56d924c955/src/core/dom.ts#L49)
+Defined in: [src/core/dom.ts:49](https://github.com/zeixcom/ui-element/blob/e3fa79e199a97014fba6af2a6cf8cb55be8076c3/src/core/dom.ts#L49)
 
 ## Type Parameters
 

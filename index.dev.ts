@@ -37,6 +37,7 @@ export {
 	type MethodProducer,
 	type ElementSelector,
 	type ElementSelectors,
+	type Setup,
 	component,
 } from './src/component'
 export {
