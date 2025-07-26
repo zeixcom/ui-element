@@ -236,11 +236,9 @@
 <span class="line"><span style="color:#F8F8F2">		tabs: </span><span style="color:#A6E22E">fromSelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'[role="tab"]'</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#F8F8F2">		selected: fromEvents</span><span style="color:#F92672">&#x3C;</span></span>
 <span class="line"><span style="color:#F8F8F2">			string,</span></span>
-<span class="line"><span style="color:#F8F8F2">			HTMLButtonElement,</span></span>
 <span class="line"><span style="color:#F8F8F2">			HTMLElement &#x26; { tabs: HTMLButtonElement[] }</span></span>
 <span class="line"><span style="color:#F8F8F2">		>(</span></span>
-<span class="line"><span style="color:#F8F8F2">			(el: HTMLElement </span><span style="color:#F92672">&#x26;</span><span style="color:#F8F8F2"> { tabs: HTMLButtonElement[] }) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
-<span class="line"><span style="color:#A6E22E">				getSelected</span><span style="color:#F8F8F2">(el.tabs, </span><span style="color:#FD971F;font-style:italic">tab</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> tab.ariaSelected </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'true'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">			el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> getSelected</span><span style="color:#F8F8F2">(el.tabs, </span><span style="color:#FD971F;font-style:italic">tab</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> tab.ariaSelected </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'true'</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#E6DB74">			'[role="tab"]'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">			{</span></span>
 <span class="line"><span style="color:#F8F8F2">				click: handleClick,</span></span>

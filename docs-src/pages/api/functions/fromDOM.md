@@ -6,9 +6,9 @@
 
 # Function: fromDOM()
 
-> **fromDOM**\<`T`, `E`, `C`, `S`\>(`fallback`, `extractors`): [`Extractor`](../type-aliases/Extractor.md)\<`T`, `C`\>
+> **fromDOM**\<`T`, `C`, `S`\>(`fallback`, `extractors`): [`Extractor`](../type-aliases/Extractor.md)\<`T`, `C`\>
 
-Defined in: [src/core/dom.ts:138](https://github.com/zeixcom/ui-element/blob/0e9cacf03a8f95418720628d5174fbb006152743/src/core/dom.ts#L138)
+Defined in: [src/core/dom.ts:136](https://github.com/zeixcom/ui-element/blob/1e2981711e0b3b45697eacbe8601e2ce3440aa11/src/core/dom.ts#L136)
 
 Get a value from elements in the DOM
 
@@ -18,17 +18,13 @@ Get a value from elements in the DOM
 
 `T` *extends* `object`
 
-### E
-
-`E` *extends* `Element` = `HTMLElement`
-
 ### C
 
 `C` *extends* `HTMLElement` = `HTMLElement`
 
 ### S
 
-`S` *extends* \{ \[K in string\]: LooseExtractor\<string \| T, ElementFromSelector\<K, E\>\> \} = \{ \}
+`S` *extends* \{ \[K in string\]: LooseExtractor\<string \| T, ElementFromSelector\<K\>\> \} = \{ \}
 
 ## Parameters
 

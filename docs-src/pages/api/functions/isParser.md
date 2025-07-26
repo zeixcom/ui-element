@@ -8,7 +8,7 @@
 
 > **isParser**\<`T`, `E`\>(`value`): `value is Parser<T, E>`
 
-Defined in: [src/core/dom.ts:111](https://github.com/zeixcom/ui-element/blob/0e9cacf03a8f95418720628d5174fbb006152743/src/core/dom.ts#L111)
+Defined in: [src/core/dom.ts:109](https://github.com/zeixcom/ui-element/blob/1e2981711e0b3b45697eacbe8601e2ce3440aa11/src/core/dom.ts#L109)
 
 Check if a value is a string parser
 

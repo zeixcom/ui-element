@@ -78,15 +78,17 @@ class InvalidPropertyNameError extends Error {
  *
  * @since 0.14.0
  */
-class InvalidSetupFunctionError extends Error {
+class InvalidEffectsError extends Error {
 	/**
 	 * @param {HTMLElement} host - Host component
+	 * @param {Error} cause - Error that caused the invalid effects
 	 */
-	constructor(host: HTMLElement) {
+	constructor(host: HTMLElement, cause?: Error) {
 		super(
-			`Invalid setup function in component <${elementName(host)}>. Setup function must return an array of effects or a single effect function.`,
+			`Invalid effects in component <${elementName(host)}>. Effects must be an array of effects, a single effect function, or a Promise that resolves to effects.`,
 		)
-		this.name = 'InvalidSetupFunctionError'
+		this.name = 'InvalidEffectsError'
+		if (cause) this.cause = cause
 	}
 }
 /**
@@ -127,7 +129,7 @@ export {
 	InvalidComponentNameError,
 	InvalidCustomElementError,
 	InvalidPropertyNameError,
-	InvalidSetupFunctionError,
+	InvalidEffectsError,
 	InvalidSignalError,
 	MissingElementError,
 }

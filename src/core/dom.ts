@@ -19,16 +19,14 @@ import { isCustomElement, isString } from './util'
 
 /* === Types === */
 
-type ElementFromSelector<
-	K extends string,
-	E extends Element = HTMLElement,
-> = K extends keyof HTMLElementTagNameMap
-	? HTMLElementTagNameMap[K]
-	: K extends keyof SVGElementTagNameMap
-		? SVGElementTagNameMap[K]
-		: K extends keyof MathMLElementTagNameMap
-			? MathMLElementTagNameMap[K]
-			: E
+type ElementFromSelector<K extends string> =
+	K extends keyof HTMLElementTagNameMap
+		? HTMLElementTagNameMap[K]
+		: K extends keyof SVGElementTagNameMap
+			? SVGElementTagNameMap[K]
+			: K extends keyof MathMLElementTagNameMap
+				? MathMLElementTagNameMap[K]
+				: HTMLElement
 
 type Extractor<T extends {}, E extends Element = HTMLElement> = (
 	element: E,
@@ -131,18 +129,17 @@ const getFallback = <T extends {}, E extends Element = HTMLElement>(
  * @since 0.14.0
  * @param {ParserOrFallback<T, E>} fallback - Fallback value or parser function
  * @param {S} extractors - An object of extractor functions for selectors as keys to get a value from
- * @param {LooseExtractor<T | string | null | undefined, ElementFromSelector<S, E>>[]} extractors - Extractor functions to apply to the element
+ * @param {LooseExtractor<T | string | null | undefined, ElementFromSelector<S>>[]} extractors - Extractor functions to apply to the element
  * @returns {LooseExtractor<T | string | null | undefined, C>} Loose extractor function to apply to the host element
  */
 const fromDOM =
 	<
 		T extends {},
-		E extends Element = HTMLElement,
 		C extends HTMLElement = HTMLElement,
 		S extends {
 			[K in keyof S & string]: LooseExtractor<
 				T | string,
-				ElementFromSelector<K, E>
+				ElementFromSelector<K>
 			>
 		} = {},
 	>(
@@ -154,10 +151,9 @@ const fromDOM =
 
 		const fromFirst = <K extends keyof S & string>(
 			selector: K,
-			extractor: LooseExtractor<T | string, ElementFromSelector<K, E>>,
+			extractor: LooseExtractor<T | string, ElementFromSelector<K>>,
 		) => {
-			const target =
-				root.querySelector<ElementFromSelector<K, E>>(selector)
+			const target = root.querySelector<ElementFromSelector<K>>(selector)
 			if (!target) return
 			// for (const extractor of extractors) {
 			const value = extractor(target)
@@ -171,7 +167,7 @@ const fromDOM =
 				selector as keyof S & string,
 				extractor as LooseExtractor<
 					T,
-					ElementFromSelector<keyof S & string, E>
+					ElementFromSelector<keyof S & string>
 				>,
 			)
 			if (value != null) break
@@ -214,26 +210,23 @@ const observeSubtree = (
  *
  * @since 0.13.1
  * @param {K} selector - CSS selector for descendant elements
- * @returns {Extractor<Computed<ElementFromSelector<S, E>[]>, C>} Signal producer for descendant element collection from a selector
+ * @returns {Extractor<Computed<ElementFromSelector<S>[]>, C>} Signal producer for descendant element collection from a selector
  * @throws {CircularMutationError} If observed mutations would trigger infinite mutation cycles
  */
-const fromSelector =
-	<
-		E extends Element = HTMLElement,
-		C extends HTMLElement = HTMLElement,
-		S extends string = string,
-	>(
-		selector: S,
-	): Extractor<Computed<ElementFromSelector<S, E>[]>, C> =>
-	(host: C): Computed<ElementFromSelector<S, E>[]> => {
+function fromSelector<S extends string, C extends HTMLElement = HTMLElement>(
+	selector: S,
+): Extractor<Computed<ElementFromSelector<S>[]>, C>
+function fromSelector<E extends Element, C extends HTMLElement = HTMLElement>(
+	selector: string,
+): Extractor<Computed<E[]>, C>
+function fromSelector<C extends HTMLElement = HTMLElement>(
+	selector: string,
+): Extractor<Computed<any[]>, C> {
+	return (host: C): Computed<any[]> => {
 		const watchers: Set<Watcher> = new Set()
 		const select = () =>
-			Array.from(
-				(host.shadowRoot ?? host).querySelectorAll<
-					ElementFromSelector<S, E>
-				>(selector),
-			)
-		let value: ElementFromSelector<S, E>[] = UNSET
+			Array.from((host.shadowRoot ?? host).querySelectorAll(selector))
+		let value: any[] = UNSET
 		let observer: MutationObserver | undefined
 		let mutationDepth = 0
 		const MAX_MUTATION_DEPTH = 2 // Consider a depth > 2 as circular
@@ -271,7 +264,7 @@ const fromSelector =
 		return {
 			[Symbol.toStringTag]: TYPE_COMPUTED,
 
-			get(): ElementFromSelector<S, E>[] {
+			get(): any[] {
 				subscribe(watchers)
 				if (!watchers.size) value = select()
 				else if (!observer) observe()
@@ -279,6 +272,7 @@ const fromSelector =
 			},
 		}
 	}
+}
 
 /**
  * Reduced properties of descendant elements
@@ -286,13 +280,12 @@ const fromSelector =
  * @since 0.13.3
  * @param {C} host - Host element for computed property
  * @param {S} selector - CSS selector for descendant elements
- * @param {(accumulator: T, currentElement: ElementFromSelector<S, E>, currentIndex: number, array: ElementFromSelector<S, E>[]) => T} reducer - Function to reduce values
+ * @param {(accumulator: T, currentElement: ElementFromSelector<S>, currentIndex: number, array: ElementFromSelector<S>[]) => T} reducer - Function to reduce values
  * @param {T} initialValue - Initial value function for reduction
  * @returns {Computed<T>} Computed signal of reduced values of descendant elements
  */
 const reduced = <
 	T extends {},
-	E extends Element = HTMLElement,
 	C extends HTMLElement = HTMLElement,
 	S extends string = string,
 >(
@@ -300,16 +293,16 @@ const reduced = <
 	selector: S,
 	reducer: (
 		accumulator: T,
-		currentElement: ElementFromSelector<S, E>,
+		currentElement: ElementFromSelector<S>,
 		currentIndex: number,
-		array: ElementFromSelector<S, E>[],
+		array: ElementFromSelector<S>[],
 	) => T,
 	initialValue: T,
 ): Computed<T> =>
 	computed(() =>
 		(
-			fromSelector<ElementFromSelector<S, E>>(selector)(host) as Computed<
-				ElementFromSelector<S, E>[]
+			fromSelector<S, C>(selector)(host) as Computed<
+				ElementFromSelector<S>[]
 			>
 		)
 			.get()
@@ -353,22 +346,29 @@ const read = <Q extends ComponentProps, K extends keyof Q & string>(
  * @param {S} selector - Selector for element to check for
  * @param {string} required - Reason for the assertion
  * @param {boolean} assertCustomElement - Whether to assert that the element is a custom element
- * @returns {ElementFromSelector<S, E>} First matching descendant element
+ * @returns {ElementFromSelector<S>} First matching descendant element
  * @throws {MissingElementError} If the element does not contain the required descendant element
  * @throws {InvalidCustomElementError} If assertCustomElement is true and the element is not a custom element
  */
-const requireElement = <
-	E extends Element = HTMLElement,
-	S extends string = string,
->(
+function requireElement<S extends string>(
 	host: HTMLElement,
 	selector: S,
 	required: string,
 	assertCustomElement?: boolean,
-): ElementFromSelector<S, E> => {
-	const target = (host.shadowRoot || host).querySelector<
-		ElementFromSelector<S, E>
-	>(selector)
+): ElementFromSelector<S>
+function requireElement<E extends Element>(
+	host: HTMLElement,
+	selector: string,
+	required: string,
+	assertCustomElement?: boolean,
+): E
+function requireElement(
+	host: HTMLElement,
+	selector: string,
+	required: string,
+	assertCustomElement?: boolean,
+): any {
+	const target = (host.shadowRoot || host).querySelector(selector)
 	if (target) {
 		if (assertCustomElement && !isCustomElement(target))
 			throw new InvalidCustomElementError(host, target, required)
@@ -382,30 +382,43 @@ const requireElement = <
  *
  * @since 0.14.0
  * @param {S} selector - Selector for the required descendant element
- * @param {Extractor<T, ElementFromSelector<S, E>>} extractor - Function to extract the value from the element
+ * @param {Extractor<T, ElementFromSelector<S>>} extractor - Function to extract the value from the element
  * @param {string} required - Explanation why the element is required
  * @returns {Extractor<Computed<T>, C>} Extractor that returns a computed signal that computes the value from the element
  * @throws {MissingElementError} If the element does not contain the required descendant element
  * @throws {InvalidCustomElementError} If the element is not a custom element
  */
-const fromComponent =
-	<
-		T extends {},
-		E extends Element = HTMLElement,
-		C extends HTMLElement = HTMLElement,
-		S extends string = string,
-	>(
-		selector: S,
-		extractor: Extractor<T, ElementFromSelector<S, E>>,
-		required: string,
-	): Extractor<Computed<T>, C> =>
-	(host: C): Computed<T> => {
-		const target = requireElement<E, S>(host, selector, required, true)
+function fromComponent<
+	T extends {},
+	S extends string,
+	C extends HTMLElement = HTMLElement,
+>(
+	selector: S,
+	extractor: Extractor<T, ElementFromSelector<S>>,
+	required: string,
+): Extractor<Computed<T>, C>
+function fromComponent<
+	T extends {},
+	E extends Element,
+	C extends HTMLElement = HTMLElement,
+>(
+	selector: string,
+	extractor: Extractor<T, E>,
+	required: string,
+): Extractor<Computed<T>, C>
+function fromComponent<T extends {}, C extends HTMLElement = HTMLElement>(
+	selector: string,
+	extractor: Extractor<T, any>,
+	required: string,
+): Extractor<Computed<T>, C> {
+	return (host: C): Computed<T> => {
+		const target = requireElement(host, selector, required, true)
 		return computed(async () => {
 			await customElements.whenDefined(target.localName)
 			return extractor(target)
 		})
 	}
+}
 
 export {
 	type ElementFromSelector,

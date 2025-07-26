@@ -8,6 +8,8 @@ type Effect<P extends ComponentProps, E extends Element> = (
 type Effects<P extends ComponentProps, E extends Element> =
 	| Effect<P, E>
 	| Effect<P, E>[]
+	| Promise<Effect<P, E>>
+	| Promise<Effect<P, E>[]>
 type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 	| keyof P
 	| Signal<NonNullable<T>>

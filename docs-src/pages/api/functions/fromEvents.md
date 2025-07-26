@@ -6,9 +6,9 @@
 
 # Function: fromEvents()
 
-> **fromEvents**\<`T`, `E`, `C`, `S`\>(`initialize`, `selector`, `events`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`T`\>, `C`\>
+> **fromEvents**\<`T`, `C`, `S`\>(`initialize`, `selector`, `events`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`T`\>, `C`\>
 
-Defined in: [src/core/events.ts:71](https://github.com/zeixcom/ui-element/blob/0e9cacf03a8f95418720628d5174fbb006152743/src/core/events.ts#L71)
+Defined in: [src/core/events.ts:71](https://github.com/zeixcom/ui-element/blob/1e2981711e0b3b45697eacbe8601e2ce3440aa11/src/core/events.ts#L71)
 
 Produce a computed signal from transformed event data
 
@@ -17,10 +17,6 @@ Produce a computed signal from transformed event data
 ### T
 
 `T` *extends* `object`
-
-### E
-
-`E` *extends* `Element` = `HTMLElement`
 
 ### C
 
@@ -46,7 +42,7 @@ CSS selector for the source element
 
 ### events
 
-[`EventTransformers`](../type-aliases/EventTransformers.md)\<`T`, [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>, `C`\>
+[`EventTransformers`](../type-aliases/EventTransformers.md)\<`T`, [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`\>, `C`\>
 
 Transformation functions for events
 

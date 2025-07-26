@@ -1,15 +1,13 @@
 import { type Computed } from '@zeix/cause-effect'
 import type { Component, ComponentProps } from '../component'
-type ElementFromSelector<
-	K extends string,
-	E extends Element = HTMLElement,
-> = K extends keyof HTMLElementTagNameMap
-	? HTMLElementTagNameMap[K]
-	: K extends keyof SVGElementTagNameMap
-		? SVGElementTagNameMap[K]
-		: K extends keyof MathMLElementTagNameMap
-			? MathMLElementTagNameMap[K]
-			: E
+type ElementFromSelector<K extends string> =
+	K extends keyof HTMLElementTagNameMap
+		? HTMLElementTagNameMap[K]
+		: K extends keyof SVGElementTagNameMap
+			? SVGElementTagNameMap[K]
+			: K extends keyof MathMLElementTagNameMap
+				? MathMLElementTagNameMap[K]
+				: HTMLElement
 type Extractor<T extends {}, E extends Element = HTMLElement> = (
 	element: E,
 ) => T
@@ -55,17 +53,16 @@ declare const getFallback: <T extends {}, E extends Element = HTMLElement>(
  * @since 0.14.0
  * @param {ParserOrFallback<T, E>} fallback - Fallback value or parser function
  * @param {S} extractors - An object of extractor functions for selectors as keys to get a value from
- * @param {LooseExtractor<T | string | null | undefined, ElementFromSelector<S, E>>[]} extractors - Extractor functions to apply to the element
+ * @param {LooseExtractor<T | string | null | undefined, ElementFromSelector<S>>[]} extractors - Extractor functions to apply to the element
  * @returns {LooseExtractor<T | string | null | undefined, C>} Loose extractor function to apply to the host element
  */
 declare const fromDOM: <
 	T extends {},
-	E extends Element = HTMLElement,
 	C extends HTMLElement = HTMLElement,
 	S extends {
 		[K in keyof S & string]: LooseExtractor<
 			T | string,
-			ElementFromSelector<K, E>
+			ElementFromSelector<K>
 		>
 	} = {},
 >(
@@ -91,29 +88,29 @@ declare const observeSubtree: (
  *
  * @since 0.13.1
  * @param {K} selector - CSS selector for descendant elements
- * @returns {Extractor<Computed<ElementFromSelector<S, E>[]>, C>} Signal producer for descendant element collection from a selector
+ * @returns {Extractor<Computed<ElementFromSelector<S>[]>, C>} Signal producer for descendant element collection from a selector
  * @throws {CircularMutationError} If observed mutations would trigger infinite mutation cycles
  */
-declare const fromSelector: <
-	E extends Element = HTMLElement,
+declare function fromSelector<
+	S extends string,
 	C extends HTMLElement = HTMLElement,
-	S extends string = string,
->(
-	selector: S,
-) => Extractor<Computed<ElementFromSelector<S, E>[]>, C>
+>(selector: S): Extractor<Computed<ElementFromSelector<S>[]>, C>
+declare function fromSelector<
+	E extends Element,
+	C extends HTMLElement = HTMLElement,
+>(selector: string): Extractor<Computed<E[]>, C>
 /**
  * Reduced properties of descendant elements
  *
  * @since 0.13.3
  * @param {C} host - Host element for computed property
  * @param {S} selector - CSS selector for descendant elements
- * @param {(accumulator: T, currentElement: ElementFromSelector<S, E>, currentIndex: number, array: ElementFromSelector<S, E>[]) => T} reducer - Function to reduce values
+ * @param {(accumulator: T, currentElement: ElementFromSelector<S>, currentIndex: number, array: ElementFromSelector<S>[]) => T} reducer - Function to reduce values
  * @param {T} initialValue - Initial value function for reduction
  * @returns {Computed<T>} Computed signal of reduced values of descendant elements
  */
 declare const reduced: <
 	T extends {},
-	E extends Element = HTMLElement,
 	C extends HTMLElement = HTMLElement,
 	S extends string = string,
 >(
@@ -121,9 +118,9 @@ declare const reduced: <
 	selector: S,
 	reducer: (
 		accumulator: T,
-		currentElement: ElementFromSelector<S, E>,
+		currentElement: ElementFromSelector<S>,
 		currentIndex: number,
-		array: ElementFromSelector<S, E>[],
+		array: ElementFromSelector<S>[],
 	) => T,
 	initialValue: T,
 ) => Computed<T>
@@ -149,40 +146,51 @@ declare const read: <Q extends ComponentProps, K extends keyof Q & string>(
  * @param {S} selector - Selector for element to check for
  * @param {string} required - Reason for the assertion
  * @param {boolean} assertCustomElement - Whether to assert that the element is a custom element
- * @returns {ElementFromSelector<S, E>} First matching descendant element
+ * @returns {ElementFromSelector<S>} First matching descendant element
  * @throws {MissingElementError} If the element does not contain the required descendant element
  * @throws {InvalidCustomElementError} If assertCustomElement is true and the element is not a custom element
  */
-declare const requireElement: <
-	E extends Element = HTMLElement,
-	S extends string = string,
->(
+declare function requireElement<S extends string>(
 	host: HTMLElement,
 	selector: S,
 	required: string,
 	assertCustomElement?: boolean,
-) => ElementFromSelector<S, E>
+): ElementFromSelector<S>
+declare function requireElement<E extends Element>(
+	host: HTMLElement,
+	selector: string,
+	required: string,
+	assertCustomElement?: boolean,
+): E
 /**
  * Create a computed signal from a required descendant component's property
  *
  * @since 0.14.0
  * @param {S} selector - Selector for the required descendant element
- * @param {Extractor<T, ElementFromSelector<S, E>>} extractor - Function to extract the value from the element
+ * @param {Extractor<T, ElementFromSelector<S>>} extractor - Function to extract the value from the element
  * @param {string} required - Explanation why the element is required
  * @returns {Extractor<Computed<T>, C>} Extractor that returns a computed signal that computes the value from the element
  * @throws {MissingElementError} If the element does not contain the required descendant element
  * @throws {InvalidCustomElementError} If the element is not a custom element
  */
-declare const fromComponent: <
+declare function fromComponent<
 	T extends {},
-	E extends Element = HTMLElement,
+	S extends string,
 	C extends HTMLElement = HTMLElement,
-	S extends string = string,
 >(
 	selector: S,
-	extractor: Extractor<T, ElementFromSelector<S, E>>,
+	extractor: Extractor<T, ElementFromSelector<S>>,
 	required: string,
-) => Extractor<Computed<T>, C>
+): Extractor<Computed<T>, C>
+declare function fromComponent<
+	T extends {},
+	E extends Element,
+	C extends HTMLElement = HTMLElement,
+>(
+	selector: string,
+	extractor: Extractor<T, E>,
+	required: string,
+): Extractor<Computed<T>, C>
 export {
 	type ElementFromSelector,
 	type Extractor,

@@ -6,9 +6,9 @@
 
 # Function: reduced()
 
-> **reduced**\<`T`, `E`, `C`, `S`\>(`host`, `selector`, `reducer`, `initialValue`): [`Computed`](../type-aliases/Computed.md)\<`T`\>
+> **reduced**\<`T`, `C`, `S`\>(`host`, `selector`, `reducer`, `initialValue`): [`Computed`](../type-aliases/Computed.md)\<`T`\>
 
-Defined in: [src/core/dom.ts:293](https://github.com/zeixcom/ui-element/blob/0e9cacf03a8f95418720628d5174fbb006152743/src/core/dom.ts#L293)
+Defined in: [src/core/dom.ts:287](https://github.com/zeixcom/ui-element/blob/1e2981711e0b3b45697eacbe8601e2ce3440aa11/src/core/dom.ts#L287)
 
 Reduced properties of descendant elements
 
@@ -17,10 +17,6 @@ Reduced properties of descendant elements
 ### T
 
 `T` *extends* `object`
-
-### E
-
-`E` *extends* `Element` = `HTMLElement`
 
 ### C
 

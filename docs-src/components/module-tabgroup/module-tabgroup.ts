@@ -71,11 +71,9 @@ export default component(
 		tabs: fromSelector<HTMLButtonElement>('[role="tab"]'),
 		selected: fromEvents<
 			string,
-			HTMLButtonElement,
 			HTMLElement & { tabs: HTMLButtonElement[] }
 		>(
-			(el: HTMLElement & { tabs: HTMLButtonElement[] }) =>
-				getSelected(el.tabs, tab => tab.ariaSelected === 'true'),
+			el => getSelected(el.tabs, tab => tab.ariaSelected === 'true'),
 			'[role="tab"]',
 			{
 				click: handleClick,

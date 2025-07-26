@@ -19,8 +19,8 @@ import {
 } from './core/dom'
 import {
 	InvalidComponentNameError,
+	InvalidEffectsError,
 	InvalidPropertyNameError,
-	InvalidSetupFunctionError,
 	InvalidSignalError,
 	MissingElementError,
 } from './core/errors'
@@ -175,13 +175,25 @@ const runEffects = <P extends ComponentProps, E extends Element = Component<P>>(
 	host: Component<P>,
 	target: E = host as unknown as E,
 ): void | Cleanup => {
-	if (!Array.isArray(effects)) return effects(host, target)
-	const cleanups = effects
-		.filter(isFunction)
-		.map(effect => effect(host, target))
-	return () => {
-		cleanups.filter(isFunction).forEach(cleanup => cleanup())
-		cleanups.length = 0
+	try {
+		if (effects instanceof Promise) throw effects
+		if (!Array.isArray(effects)) return effects(host, target)
+		const cleanups = effects
+			.filter(isFunction)
+			.map(effect => effect(host, target))
+		return () => {
+			cleanups.filter(isFunction).forEach(cleanup => cleanup())
+			cleanups.length = 0
+		}
+	} catch (error) {
+		if (error instanceof Promise) {
+			error.then(() => runEffects(effects, host, target))
+		} else {
+			throw new InvalidEffectsError(
+				host,
+				error instanceof Error ? error : new Error(String(error)),
+			)
+		}
 	}
 }
 
@@ -338,16 +350,11 @@ const component = <P extends ComponentProps & ValidateComponentProps<P>>(
 			}
 
 			// Run setup function
-			const effects = setup(this as unknown as Component<P>, select())
-			if (Array.isArray(effects) || isFunction(effects)) {
-				const cleanup = runEffects(
-					effects,
-					this as unknown as Component<P>,
-				)
-				if (cleanup) this.#cleanup = cleanup
-			} else {
-				throw new InvalidSetupFunctionError(this)
-			}
+			const cleanup = runEffects(
+				setup(this as unknown as Component<P>, select()),
+				this as unknown as Component<P>,
+			)
+			if (cleanup) this.#cleanup = cleanup
 		}
 
 		/**

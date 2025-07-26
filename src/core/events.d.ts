@@ -42,18 +42,17 @@ type EventHandler<
  * @since 0.13.3
  * @param {ValueOrExtractor<T>} initialize - Initial value or extractor function
  * @param {S} selector - CSS selector for the source element
- * @param {EventTransformers<T, ElementFromSelector<S, E>, C>} events - Transformation functions for events
+ * @param {EventTransformers<T, ElementFromSelector<S>, C>} events - Transformation functions for events
  * @returns {Extractor<Computed<T>, C>} Extractor function for value from event
  */
 declare const fromEvents: <
 	T extends {},
-	E extends Element = HTMLElement,
 	C extends HTMLElement = HTMLElement,
 	S extends string = string,
 >(
 	initialize: Fallback<T, C>,
 	selector: S,
-	events: EventTransformers<T, ElementFromSelector<S, E>, C>,
+	events: EventTransformers<T, ElementFromSelector<S>, C>,
 ) => Extractor<Computed<T>, C>
 /**
  * Effect for attaching an event listener to an element.

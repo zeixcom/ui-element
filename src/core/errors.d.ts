@@ -50,11 +50,12 @@ declare class InvalidPropertyNameError extends Error {
  *
  * @since 0.14.0
  */
-declare class InvalidSetupFunctionError extends Error {
+declare class InvalidEffectsError extends Error {
 	/**
 	 * @param {HTMLElement} host - Host component
+	 * @param {Error} cause - Error that caused the invalid effects
 	 */
-	constructor(host: HTMLElement)
+	constructor(host: HTMLElement, cause?: Error)
 }
 /**
  * Error thrown when setSignal on component is called with a non-signal value
@@ -82,7 +83,7 @@ export {
 	InvalidComponentNameError,
 	InvalidCustomElementError,
 	InvalidPropertyNameError,
-	InvalidSetupFunctionError,
+	InvalidEffectsError,
 	InvalidSignalError,
 	MissingElementError,
 }

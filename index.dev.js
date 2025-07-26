@@ -329,10 +329,12 @@ class InvalidPropertyNameError extends Error {
   }
 }
 
-class InvalidSetupFunctionError extends Error {
-  constructor(host) {
-    super(`Invalid setup function in component <${elementName(host)}>. Setup function must return an array of effects or a single effect function.`);
-    this.name = "InvalidSetupFunctionError";
+class InvalidEffectsError extends Error {
+  constructor(host, cause) {
+    super(`Invalid effects in component <${elementName(host)}>. Effects must be an array of effects, a single effect function, or a Promise that resolves to effects.`);
+    this.name = "InvalidEffectsError";
+    if (cause)
+      this.cause = cause;
   }
 }
 
@@ -414,51 +416,53 @@ var observeSubtree = (parent, selector, callback) => {
   observer.observe(parent, observerConfig);
   return observer;
 };
-var fromSelector = (selector) => (host) => {
-  const watchers = new Set;
-  const select = () => Array.from((host.shadowRoot ?? host).querySelectorAll(selector));
-  let value = UNSET;
-  let observer;
-  let mutationDepth = 0;
-  const MAX_MUTATION_DEPTH = 2;
-  const observe2 = () => {
-    value = select();
-    observer = observeSubtree(host, selector, () => {
-      if (!watchers.size) {
-        observer?.disconnect();
-        observer = undefined;
-        return;
-      }
-      mutationDepth++;
-      if (mutationDepth > MAX_MUTATION_DEPTH) {
-        observer?.disconnect();
-        observer = undefined;
-        mutationDepth = 0;
-        throw new CircularMutationError(host, selector);
-      }
-      try {
-        const newElements = select();
-        if (!areElementArraysEqual(value, newElements)) {
-          value = newElements;
-          notify(watchers);
+function fromSelector(selector) {
+  return (host) => {
+    const watchers = new Set;
+    const select = () => Array.from((host.shadowRoot ?? host).querySelectorAll(selector));
+    let value = UNSET;
+    let observer;
+    let mutationDepth = 0;
+    const MAX_MUTATION_DEPTH = 2;
+    const observe2 = () => {
+      value = select();
+      observer = observeSubtree(host, selector, () => {
+        if (!watchers.size) {
+          observer?.disconnect();
+          observer = undefined;
+          return;
         }
-      } finally {
-        mutationDepth--;
+        mutationDepth++;
+        if (mutationDepth > MAX_MUTATION_DEPTH) {
+          observer?.disconnect();
+          observer = undefined;
+          mutationDepth = 0;
+          throw new CircularMutationError(host, selector);
+        }
+        try {
+          const newElements = select();
+          if (!areElementArraysEqual(value, newElements)) {
+            value = newElements;
+            notify(watchers);
+          }
+        } finally {
+          mutationDepth--;
+        }
+      });
+    };
+    return {
+      [Symbol.toStringTag]: TYPE_COMPUTED,
+      get() {
+        subscribe(watchers);
+        if (!watchers.size)
+          value = select();
+        else if (!observer)
+          observe2();
+        return value;
       }
-    });
+    };
   };
-  return {
-    [Symbol.toStringTag]: TYPE_COMPUTED,
-    get() {
-      subscribe(watchers);
-      if (!watchers.size)
-        value = select();
-      else if (!observer)
-        observe2();
-      return value;
-    }
-  };
-};
+}
 var reduced = (host, selector, reducer, initialValue) => computed(() => fromSelector(selector)(host).get().reduce(reducer, initialValue));
 var read = (target, prop, fallback) => {
   if (!target)
@@ -474,7 +478,7 @@ var read = (target, prop, fallback) => {
     return value === UNSET ? fallback : value.get();
   };
 };
-var requireElement = (host, selector, required, assertCustomElement) => {
+function requireElement(host, selector, required, assertCustomElement) {
   const target = (host.shadowRoot || host).querySelector(selector);
   if (target) {
     if (assertCustomElement && !isCustomElement(target))
@@ -482,14 +486,16 @@ var requireElement = (host, selector, required, assertCustomElement) => {
     return target;
   }
   throw new MissingElementError(host, selector, required);
-};
-var fromComponent = (selector, extractor, required) => (host) => {
-  const target = requireElement(host, selector, required, true);
-  return computed(async () => {
-    await customElements.whenDefined(target.localName);
-    return extractor(target);
-  });
-};
+}
+function fromComponent(selector, extractor, required) {
+  return (host) => {
+    const target = requireElement(host, selector, required, true);
+    return computed(async () => {
+      await customElements.whenDefined(target.localName);
+      return extractor(target);
+    });
+  };
+}
 
 // src/component.ts
 var RESERVED_WORDS = new Set([
@@ -521,13 +527,23 @@ var validatePropertyName = (prop) => {
   return null;
 };
 var runEffects = (effects, host, target = host) => {
-  if (!Array.isArray(effects))
-    return effects(host, target);
-  const cleanups = effects.filter(isFunction).map((effect2) => effect2(host, target));
-  return () => {
-    cleanups.filter(isFunction).forEach((cleanup) => cleanup());
-    cleanups.length = 0;
-  };
+  try {
+    if (effects instanceof Promise)
+      throw effects;
+    if (!Array.isArray(effects))
+      return effects(host, target);
+    const cleanups = effects.filter(isFunction).map((effect2) => effect2(host, target));
+    return () => {
+      cleanups.filter(isFunction).forEach((cleanup) => cleanup());
+      cleanups.length = 0;
+    };
+  } catch (error) {
+    if (error instanceof Promise) {
+      error.then(() => runEffects(effects, host, target));
+    } else {
+      throw new InvalidEffectsError(host, error instanceof Error ? error : new Error(String(error)));
+    }
+  }
 };
 var select = () => ({
   first(selector, effects, required) {
@@ -542,7 +558,7 @@ var select = () => ({
   all(selector, effects, required) {
     return (host) => {
       const cleanups = new Map;
-      const root = host.shadowRoot || host;
+      const root = host.shadowRoot ?? host;
       const attach = (target) => {
         const cleanup = runEffects(effects, host, target);
         if (cleanup && !cleanups.has(target))
@@ -607,14 +623,9 @@ var component = (name, init = {}, setup) => {
         if (result != null)
           this.setSignal(prop, toSignal(result));
       }
-      const effects = setup(this, select());
-      if (Array.isArray(effects) || isFunction(effects)) {
-        const cleanup = runEffects(effects, this);
-        if (cleanup)
-          this.#cleanup = cleanup;
-      } else {
-        throw new InvalidSetupFunctionError(this);
-      }
+      const cleanup = runEffects(setup(this, select()), this);
+      if (cleanup)
+        this.#cleanup = cleanup;
     }
     disconnectedCallback() {
       if (isFunction(this.#cleanup))
