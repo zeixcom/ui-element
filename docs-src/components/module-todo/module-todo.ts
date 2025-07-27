@@ -5,7 +5,6 @@ import {
 	on,
 	setAttribute,
 	setProperty,
-	useElement,
 } from '../../..'
 import { BasicButtonProps } from '../basic-button/basic-button'
 
@@ -20,32 +19,18 @@ export default component(
 		active: fromSelector('form-checkbox:not([checked])'),
 		completed: fromSelector('form-checkbox[checked]'),
 	},
-	(el, { first }) => {
-		const textbox = useElement(
-			el,
-			'form-textbox',
-			'Needed to enter a new todo item.',
-		)
-		const template = useElement(
-			el,
-			'template',
-			'Needed to define the list item template.',
-		)
-		const list = useElement(
-			el,
-			'ol',
-			'Needed to display the list of todos.',
-		)
-		const filter = useElement(el, 'form-radiogroup')
+	(el, { first, useElement }) => {
+		const textbox = useElement('form-textbox', 'Needed to enter a new todo item.')
+		const template = useElement('template', 'Needed to define the list item template.')
+		const list = useElement('ol', 'Needed to display the list of todos.')
+		const filter = useElement('form-radiogroup')
 
 		return [
 			// Control todo input form
-			first<Component<BasicButtonProps>>(
-				'.submit',
+			first<Component<BasicButtonProps>>('.submit', [
 				setProperty('disabled', () => !textbox.length),
-			),
-			first(
-				'form',
+			]),
+			first('form', [
 				on('submit', ({ event }) => {
 					event.preventDefault()
 					queueMicrotask(() => {
@@ -64,7 +49,7 @@ export default component(
 						textbox.clear()
 					})
 				}),
-			),
+			]),
 
 			// Control todo list
 			first('ol', [
@@ -77,10 +62,9 @@ export default component(
 			]),
 
 			// Update count elements
-			first(
-				'basic-pluralize',
+			first('basic-pluralize', [
 				setProperty('count', () => el.active.length),
-			),
+			]),
 
 			// Control clear-completed button
 			first<Component<BasicButtonProps>>('.clear-completed', [
@@ -97,14 +81,7 @@ export default component(
 				}),
 			]),
 		]
-	},
-	[
-		'basic-button',
-		'basic-pluralize',
-		'form-checkbox',
-		'form-radiogroup',
-		'form-textbox',
-	],
+	}
 )
 
 declare global {

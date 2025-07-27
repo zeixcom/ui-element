@@ -6,9 +6,9 @@
 
 # Type Alias: Setup()\<P\>
 
-> **Setup**\<`P`\> = (`host`, `select`) => [`Effects`](Effects.md)\<`P`, [`Component`](Component.md)\<`P`\>\>
+> **Setup**\<`P`\> = (`host`, `helpers`) => [`Effects`](Effects.md)\<`P`, [`Component`](Component.md)\<`P`\>\>
 
-Defined in: [src/component.ts:112](https://github.com/zeixcom/ui-element/blob/e3fa79e199a97014fba6af2a6cf8cb55be8076c3/src/component.ts#L112)
+Defined in: [src/component.ts:92](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/component.ts#L92)
 
 ## Type Parameters
 
@@ -22,9 +22,9 @@ Defined in: [src/component.ts:112](https://github.com/zeixcom/ui-element/blob/e3
 
 [`Component`](Component.md)\<`P`\>
 
-### select
+### helpers
 
-[`ElementSelectors`](ElementSelectors.md)\<`P`\>
+[`Helpers`](Helpers.md)\<`P`\>
 
 ## Returns
 

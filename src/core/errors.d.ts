@@ -22,16 +22,6 @@ declare class InvalidComponentNameError extends Error {
 	constructor(component: string)
 }
 /**
- * Error thrown when passed element is not a custom element
- */
-declare class InvalidCustomElementError extends Error {
-	/**
-	 * @param {HTMLElement} host - Host component
-	 * @param {Element} target - Target element
-	 */
-	constructor(host: HTMLElement, target: Element)
-}
-/**
  * Error thrown when trying to assign a property name that conflicts with reserved words or inherited HTMLElement properties
  *
  * @since 0.14.0
@@ -77,10 +67,18 @@ declare class MissingElementError extends Error {
 	 */
 	constructor(host: HTMLElement, selector: string, required: string)
 }
+/**
+ * Error when a component's dependencies are not met within a specified timeout
+ *
+ * @since 0.14.0
+ */
+declare class DependencyTimeoutError extends Error {
+	constructor(host: HTMLElement, missing: string[])
+}
 export {
 	CircularMutationError,
+	DependencyTimeoutError,
 	InvalidComponentNameError,
-	InvalidCustomElementError,
 	InvalidPropertyNameError,
 	InvalidEffectsError,
 	InvalidSignalError,

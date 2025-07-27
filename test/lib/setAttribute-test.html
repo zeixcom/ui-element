@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+	<head>
+		<title>setAttribute and toggleAttribute Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<update-attribute required="true">
+			<input type="text" required />
+		</update-attribute>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				component,
+				asBoolean,
+				asString,
+				setAttribute,
+				toggleAttribute,
+				fromEvents,
+				RESET,
+			} from '../../index.dev.js'
+
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+
+			component(
+				'update-attribute',
+				{
+					required: asBoolean(),
+					value: fromEvents('', 'input', {
+						change: ({ target }) => target.value,
+					}),
+					isEmpty: el => el.value === '',
+				},
+				(_, { first }) => [
+					first('input', [
+						setAttribute('required', 'required'),
+						toggleAttribute('aria-errormessage', el =>
+							el.required && el.isEmpty ? 'error-message' : false
+						),
+					]),
+				]
+			)
+
+			runTests(() => {
+				describe('setAttribute and toggleAttribute', function () {
+					it('should prove setAttribute() and toggleAttribute() working correctly', async function () {
+						const component =
+							document.querySelector('update-attribute')
+						const input = component.querySelector('input')
+						await animationFrame()
+						assert.equal(
+							input.required,
+							true,
+							'Should set required property from attribute',
+						)
+						assert.equal(
+							input.hasAttribute('aria-errormessage'),
+							false,
+							'Should not have aria-errormessage before interaction',
+						)
+						input.value = 'New Value'
+						input.dispatchEvent(new Event('change'))
+						await animationFrame()
+						assert.equal(
+							input.hasAttribute('aria-errormessage'),
+							false,
+							'Should not have aria-errormessage if field is not empty',
+						)
+						input.value = ''
+						input.dispatchEvent(new Event('change'))
+						await animationFrame()
+						assert.equal(
+							input.hasAttribute('aria-errormessage'),
+							true,
+							'Should have aria-errormessage if field is empty and required',
+						)
+						component.required = false
+						await animationFrame()
+						assert.equal(
+							input.hasAttribute('aria-errormessage'),
+							false,
+							'Should not have aria-errormessage if field is not required',
+						)
+						component.required = RESET
+						await animationFrame()
+						assert.equal(
+							input.required,
+							true,
+							'Should revert required attribute to server-rendered version',
+						)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

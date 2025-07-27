@@ -6,9 +6,9 @@
 
 # Function: component()
 
-> **component**\<`P`\>(`name`, `init`, `setup`, `dependencies?`): `void`
+> **component**\<`P`\>(`name`, `init`, `setup`): `void`
 
-Defined in: [src/component.ts:310](https://github.com/zeixcom/ui-element/blob/e3fa79e199a97014fba6af2a6cf8cb55be8076c3/src/component.ts#L310)
+Defined in: [src/component.ts:164](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/component.ts#L164)
 
 Define a component with dependency resolution and setup function (connectedCallback)
 
@@ -37,12 +37,6 @@ Signals of the component
 [`Setup`](../type-aliases/Setup.md)\<`P`\>
 
 Setup function to be called after dependencies are resolved
-
-### dependencies?
-
-`string`[]
-
-Array of custom element names the component depends on
 
 ## Returns
 

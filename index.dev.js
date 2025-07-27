@@ -315,13 +315,6 @@ class InvalidComponentNameError extends Error {
   }
 }
 
-class InvalidCustomElementError extends Error {
-  constructor(host, target) {
-    super(`Expected element ${elementName(target)} in ${elementName(host)} to be a custom element.`);
-    this.name = "InvalidCustomElementError";
-  }
-}
-
 class InvalidPropertyNameError extends Error {
   constructor(component, prop, reason) {
     super(`Invalid property name "${prop}" for component <${component}>. ${reason}`);
@@ -351,6 +344,45 @@ class MissingElementError extends Error {
     this.name = "MissingElementError";
   }
 }
+
+class DependencyTimeoutError extends Error {
+  constructor(host, missing) {
+    super(`Timeout waiting for: [${missing.join(", ")}] in component ${elementName(host)}.`);
+    this.name = "DependencyTimeoutError";
+  }
+}
+
+// src/core/reactive.ts
+var RESET = Symbol("RESET");
+var runEffects = (effects, host, target = host) => {
+  try {
+    if (effects instanceof Promise)
+      throw effects;
+    if (!Array.isArray(effects))
+      return effects(host, target);
+    const cleanups = effects.filter(isFunction).map((effect2) => effect2(host, target));
+    return () => {
+      cleanups.filter(isFunction).forEach((cleanup) => cleanup());
+      cleanups.length = 0;
+    };
+  } catch (error) {
+    if (error instanceof Promise) {
+      error.then(() => runEffects(effects, host, target));
+    } else {
+      throw new InvalidEffectsError(host, error instanceof Error ? error : new Error(String(error)));
+    }
+  }
+};
+var resolveReactive = (reactive, host, target, context) => {
+  try {
+    return isString(reactive) ? host.getSignal(reactive).get() : isSignal(reactive) ? reactive.get() : isFunction(reactive) ? reactive(target) : RESET;
+  } catch (error) {
+    if (context) {
+      log(error, `Failed to resolve value of ${valueString(reactive)}${context ? ` for ${context}` : ""} in ${elementName(target)}${host !== target ? ` in ${elementName(host)}` : ""}`, LOG_ERROR);
+    }
+    return RESET;
+  }
+};
 
 // src/core/dom.ts
 var extractAttributes = (selector) => {
@@ -416,6 +448,77 @@ var observeSubtree = (parent, selector, callback) => {
   observer.observe(parent, observerConfig);
   return observer;
 };
+var getHelpers = (host) => {
+  const root = host.shadowRoot ?? host;
+  const dependencies = new Set;
+  function useElement(selector, required) {
+    const target = root.querySelector(selector);
+    if (required != null && !target)
+      throw new MissingElementError(host, selector, required);
+    if (target && isCustomElement(target))
+      dependencies.add(target.localName);
+    return target;
+  }
+  function useElements(selector, required) {
+    const targets = root.querySelectorAll(selector);
+    if (required != null && !targets.length)
+      throw new MissingElementError(host, selector, required);
+    if (targets.length)
+      targets.forEach((target) => {
+        if (isCustomElement(target))
+          dependencies.add(target.localName);
+      });
+    return targets;
+  }
+  const first = (selector, effects, required) => {
+    const target = required != null ? useElement(selector, required) : useElement(selector);
+    return () => {
+      if (target)
+        return runEffects(effects, host, target);
+    };
+  };
+  const all = (selector, effects, required) => {
+    const targets = required != null ? useElements(selector, required) : useElements(selector);
+    return () => {
+      const cleanups = new Map;
+      const attach = (target) => {
+        const cleanup = runEffects(effects, host, target);
+        if (cleanup && !cleanups.has(target))
+          cleanups.set(target, cleanup);
+      };
+      const detach = (target) => {
+        const cleanup = cleanups.get(target);
+        if (cleanup)
+          cleanup();
+        cleanups.delete(target);
+      };
+      const applyToMatching = (fn) => (node) => {
+        if (isElement(node)) {
+          if (node.matches(selector))
+            fn(node);
+          node.querySelectorAll(selector).forEach(fn);
+        }
+      };
+      const observer = observeSubtree(root, selector, (mutations) => {
+        for (const mutation of mutations) {
+          mutation.addedNodes.forEach(applyToMatching(attach));
+          mutation.removedNodes.forEach(applyToMatching(detach));
+        }
+      });
+      if (targets.length)
+        targets.forEach(attach);
+      return () => {
+        observer.disconnect();
+        cleanups.forEach((cleanup) => cleanup());
+        cleanups.clear();
+      };
+    };
+  };
+  return [
+    { useElement, useElements, first, all },
+    () => Array.from(dependencies)
+  ];
+};
 function fromSelector(selector) {
   return (host) => {
     const watchers = new Set;
@@ -463,41 +566,9 @@ function fromSelector(selector) {
     };
   };
 }
-var reduced = (host, selector, reducer, initialValue) => computed(() => fromSelector(selector)(host).get().reduce(reducer, initialValue));
-var read = (target, prop, fallback) => {
-  if (!target)
-    return () => fallback;
-  if (!isCustomElement(target))
-    throw new TypeError(`Target element must be a custom element`);
-  const awaited = computed(async () => {
-    await customElements.whenDefined(target.localName);
-    return target.getSignal(prop);
-  });
-  return () => {
-    const value = awaited.get();
-    return value === UNSET ? fallback : value.get();
-  };
-};
-function useElement(host, selector, required) {
-  const target = (host.shadowRoot || host).querySelector(selector);
-  if (required && !target)
-    throw new MissingElementError(host, selector, required);
-  return target;
-}
-async function useComponent(host, selector, required) {
-  const target = isString(required) ? useElement(host, selector, required) : useElement(host, selector);
-  if (target) {
-    if (isCustomElement(target)) {
-      await customElements.whenDefined(target.localName);
-      return target;
-    } else {
-      throw new InvalidCustomElementError(host, target);
-    }
-  }
-  return null;
-}
 
 // src/component.ts
+var DEPENDENCY_TIMEOUT = 50;
 var RESERVED_WORDS = new Set([
   "constructor",
   "prototype"
@@ -526,76 +597,7 @@ var validatePropertyName = (prop) => {
     return `Property name "${prop}" conflicts with inherited HTMLElement property`;
   return null;
 };
-var runEffects = (effects, host, target = host) => {
-  try {
-    if (effects instanceof Promise)
-      throw effects;
-    if (!Array.isArray(effects))
-      return effects(host, target);
-    const cleanups = effects.filter(isFunction).map((effect2) => effect2(host, target));
-    return () => {
-      cleanups.filter(isFunction).forEach((cleanup) => cleanup());
-      cleanups.length = 0;
-    };
-  } catch (error) {
-    if (error instanceof Promise) {
-      error.then(() => runEffects(effects, host, target));
-    } else {
-      throw new InvalidEffectsError(host, error instanceof Error ? error : new Error(String(error)));
-    }
-  }
-};
-var select = () => ({
-  first(selector, effects, required) {
-    return (host) => {
-      const target = required != null ? useElement(host, selector, required) : useElement(host, selector);
-      if (target) {
-        return runEffects(effects, host, target);
-      }
-    };
-  },
-  all(selector, effects, required) {
-    return (host) => {
-      const cleanups = new Map;
-      const root = host.shadowRoot ?? host;
-      const attach = (target) => {
-        const cleanup = runEffects(effects, host, target);
-        if (cleanup && !cleanups.has(target))
-          cleanups.set(target, cleanup);
-      };
-      const detach = (target) => {
-        const cleanup = cleanups.get(target);
-        if (cleanup)
-          cleanup();
-        cleanups.delete(target);
-      };
-      const applyToMatching = (fn) => (node) => {
-        if (isElement(node)) {
-          if (node.matches(selector))
-            fn(node);
-          node.querySelectorAll(selector).forEach(fn);
-        }
-      };
-      const observer = observeSubtree(root, selector, (mutations) => {
-        for (const mutation of mutations) {
-          mutation.addedNodes.forEach(applyToMatching(attach));
-          mutation.removedNodes.forEach(applyToMatching(detach));
-        }
-      });
-      const targets = root.querySelectorAll(selector);
-      if (!targets.length && required != null)
-        throw new MissingElementError(host, selector, required);
-      if (targets.length)
-        targets.forEach(attach);
-      return () => {
-        observer.disconnect();
-        cleanups.forEach((cleanup) => cleanup());
-        cleanups.clear();
-      };
-    };
-  }
-});
-function component(name, init = {}, setup, dependencies) {
+function component(name, init = {}, setup) {
   if (!name.includes("-") || !name.match(/^[a-z][a-z0-9-]*$/))
     throw new InvalidComponentNameError(name);
   for (const prop of Object.keys(init)) {
@@ -622,24 +624,25 @@ function component(name, init = {}, setup, dependencies) {
         if (result != null)
           this.setSignal(prop, toSignal(result));
       }
+      const [helpers, getDependencies] = getHelpers(this);
+      const effects = setup(this, helpers);
+      const deps = getDependencies();
       const runSetup = () => {
-        const result = runEffects(setup(this, select()), this);
-        if (result)
-          this.#cleanup = result;
+        const cleanup = runEffects(effects, this);
+        if (cleanup)
+          this.#cleanup = cleanup;
       };
-      if (dependencies?.length) {
+      if (deps.length) {
         Promise.race([
-          Promise.all(dependencies.map((dep) => customElements.whenDefined(dep))),
+          Promise.all(deps.map((dep) => customElements.whenDefined(dep))),
           new Promise((_, reject) => {
             setTimeout(() => {
-              const missing = dependencies.filter((dep) => !customElements.get(dep));
-              reject(new Error(`Timeout waiting for: [${missing.join(", ")}]`));
-            }, 50);
+              reject(new DependencyTimeoutError(this, deps.filter((dep) => !customElements.get(dep))));
+            }, DEPENDENCY_TIMEOUT);
           })
         ]).then(runSetup).catch((error) => {
-          if (DEV_MODE) {
-            console.warn(`Component "${name}": ${error.message}. Running setup anyway.`);
-          }
+          if (DEV_MODE)
+            log(error, `Error during setup of <${name}>. Trying to run effects anyway.`, LOG_WARN);
           runSetup();
         });
       } else {
@@ -695,18 +698,6 @@ function component(name, init = {}, setup, dependencies) {
   }
   customElements.define(name, CustomElement);
 }
-// src/core/reactive.ts
-var RESET = Symbol("RESET");
-var resolveReactive = (reactive, host, target, context) => {
-  try {
-    return isString(reactive) ? host.getSignal(reactive).get() : isSignal(reactive) ? reactive.get() : isFunction(reactive) ? reactive(target) : RESET;
-  } catch (error) {
-    if (context) {
-      log(error, `Failed to resolve value of ${valueString(reactive)}${context ? ` for ${context}` : ""} in ${elementName(target)}${host !== target ? ` in ${elementName(host)}` : ""}`, LOG_ERROR);
-    }
-    return RESET;
-  }
-};
 // src/core/events.ts
 var fromEvents = (initialize, selector, events) => (host) => {
   const watchers = new Set;
@@ -921,8 +912,8 @@ var safeSetAttribute = (element, attr, value) => {
   element.setAttribute(attr, value);
 };
 var updateElement = (reactive, updater) => (host, target) => {
-  const { op, name = "", read: read2, update } = updater;
-  const fallback = read2(target);
+  const { op, name = "", read, update } = updater;
+  const fallback = read(target);
   const operationDesc = getOperationDescription(op, name);
   if (isString(reactive) && isString(fallback) && host[reactive] === RESET) {
     host.attributeChangedCallback(reactive, null, fallback);
@@ -938,7 +929,7 @@ var updateElement = (reactive, updater) => (host, target) => {
         return true;
       }, updateSymbol).then(ok("Deleted")).catch(err("delete"));
     } else if (resolvedValue != null) {
-      const current = read2(target);
+      const current = read(target);
       if (Object.is(resolvedValue, current))
         return;
       enqueue(() => {
@@ -1136,8 +1127,6 @@ var getDescription = (selector) => fromDOM("", {
   [selector]: getAttribute("aria-describedby")
 });
 export {
-  useElement,
-  useComponent,
   updateElement,
   toggleClass,
   toggleAttribute,
@@ -1149,8 +1138,6 @@ export {
   setProperty,
   setAttribute,
   resolveReactive,
-  reduced,
-  read,
   provideContexts,
   pass,
   on,
@@ -1198,7 +1185,7 @@ export {
   InvalidSignalError,
   InvalidPropertyNameError,
   InvalidEffectsError,
-  InvalidCustomElementError,
   InvalidComponentNameError,
+  DependencyTimeoutError,
   CircularMutationError
 };

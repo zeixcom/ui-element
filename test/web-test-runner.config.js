@@ -1,7 +1,11 @@
 import { playwrightLauncher } from '@web/test-runner-playwright'
 
 export default {
-	files: ['test/*-test.html'],
+	files: [
+		'test/*-test.html',
+		'test/core/*-test.html',
+		'test/lib/*-test.html',
+	],
 	nodeResolve: true,
 	browsers: [
 		playwrightLauncher({ product: 'chromium' }),

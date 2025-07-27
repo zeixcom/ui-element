@@ -1,21 +1,18 @@
 import {
+	type Cleanup,
 	type Computed,
 	TYPE_COMPUTED,
 	UNSET,
 	type Watcher,
-	computed,
 	isFunction,
 	notify,
 	subscribe,
 } from '@zeix/cause-effect'
 
 import type { Component, ComponentProps } from '../component'
-import {
-	CircularMutationError,
-	InvalidCustomElementError,
-	MissingElementError,
-} from './errors'
-import { isCustomElement, isString } from './util'
+import { CircularMutationError, MissingElementError } from './errors'
+import { type Effects, runEffects } from './reactive'
+import { isCustomElement, isElement, isString } from './util'
 
 /* === Types === */
 
@@ -49,6 +46,39 @@ type Fallback<T extends {}, E extends Element = HTMLElement> =
 type ParserOrFallback<T extends {}, E extends Element = HTMLElement> =
 	| Parser<T, E>
 	| Fallback<T, E>
+
+type ElementUsage = {
+	<S extends string>(selector: S, required: string): ElementFromSelector<S>
+	<S extends string>(selector: S): ElementFromSelector<S> | null
+}
+
+type ElementsUsage = {
+	<S extends string>(
+		selector: S,
+		required: string,
+	): NodeListOf<ElementFromSelector<S>>
+	<S extends string>(selector: S): NodeListOf<ElementFromSelector<S>>
+}
+
+type ElementEffects<P extends ComponentProps> = {
+	<S extends string>(
+		selector: S,
+		effects: Effects<P, ElementFromSelector<S>>,
+		required?: string,
+	): () => Cleanup | void
+	<E extends Element>(
+		selector: string,
+		effects: Effects<P, E>,
+		required?: string,
+	): () => Cleanup | void
+}
+
+type Helpers<P extends ComponentProps> = {
+	useElement: ElementUsage
+	useElements: ElementsUsage
+	first: ElementEffects<P>
+	all: ElementEffects<P>
+}
 
 /* === Internal Functions === */
 
@@ -206,6 +236,173 @@ const observeSubtree = (
 }
 
 /**
+ * Create partially applied helper functions to get descendants and run effects on them
+ *
+ * @since 0.14.0
+ * @param {Component<P>} host - Host component
+ * @returns {ElementSelectors<P>} - Helper functions for selecting descendants
+ */
+const getHelpers = <P extends ComponentProps>(
+	host: Component<P>,
+): [Helpers<P>, () => string[]] => {
+	const root = host.shadowRoot ?? host
+	const dependencies: Set<string> = new Set()
+
+	/**
+	 * Get the first descendant element matching a selector
+	 * If the element is a custom elements it will be added to dependencies
+	 *
+	 * @since 0.14.0
+	 * @param {S} selector - Selector for element to check for
+	 * @param {string} [required] - Optional reason for the assertion; if provided, throws on missing element
+	 * @returns {ElementFromSelector<S> | null} First matching descendant element, or null if not found and not required
+	 * @throws {MissingElementError} - Thrown when the element is required but not found
+	 */
+	function useElement<S extends string>(
+		selector: S,
+		required: string,
+	): ElementFromSelector<S>
+	function useElement<S extends string>(
+		selector: S,
+	): ElementFromSelector<S> | null
+	function useElement<S extends string>(
+		selector: S,
+		required?: string,
+	): ElementFromSelector<S> | null {
+		const target = root.querySelector<ElementFromSelector<S>>(selector)
+		if (required != null && !target)
+			throw new MissingElementError(host, selector, required)
+		if (target && isCustomElement(target))
+			dependencies.add(target.localName)
+		return target
+	}
+
+	/**
+	 * Get all descendant elements matching a selector
+	 * If any element is a custom element it will be added to dependencies
+	 *
+	 * @since 0.14.0
+	 * @param {S} selector - Selector for elements to check for
+	 * @param {string} [required] - Optional reason for the assertion; if provided, throws on missing elements
+	 * @returns {NodeListOf<ElementFromSelector<S>>} All matching descendant elements
+	 * @throws {MissingElementError} - Thrown when elements are required but not found
+	 */
+	function useElements<S extends string>(
+		selector: S,
+		required: string,
+	): NodeListOf<ElementFromSelector<S>>
+	function useElements<S extends string>(
+		selector: S,
+	): NodeListOf<ElementFromSelector<S>>
+	function useElements<S extends string>(
+		selector: S,
+		required?: string,
+	): NodeListOf<ElementFromSelector<S>> {
+		const targets = root.querySelectorAll<ElementFromSelector<S>>(selector)
+		if (required != null && !targets.length)
+			throw new MissingElementError(host, selector, required)
+		if (targets.length)
+			targets.forEach(target => {
+				if (isCustomElement(target)) dependencies.add(target.localName)
+			})
+		return targets
+	}
+
+	/**
+	 * Apply effect functions to a first matching descendant within the custom element
+	 * If the target element is a custom element, waits for it to be defined before running effects
+	 *
+	 * @since 0.14.0
+	 * @param {S} selector - Selector to match descendant
+	 * @param {Effects<P, E>} effects - Effect functions to apply
+	 * @param {string} [required] - Optional reason for the assertion; if provided, throws on missing element
+	 * @throws {MissingElementError} - Thrown when the element is required but not found
+	 */
+	const first = <
+		S extends string,
+		E extends Element = ElementFromSelector<S>,
+	>(
+		selector: S,
+		effects: Effects<P, E>,
+		required?: string,
+	) => {
+		const target =
+			required != null
+				? useElement(selector, required)
+				: useElement(selector)
+		return () => {
+			if (target) return runEffects(effects, host, target as unknown as E)
+		}
+	}
+
+	/**
+	 * Apply effect functions to all matching descendant elements within the custom element
+	 * If any target element is a custom element, waits for it to be defined before running effects
+	 *
+	 * @since 0.14.0
+	 * @param {S} selector - Selector to match descendants
+	 * @param {Effects<P, ElementFromSelector<S>>} effects - Effect functions to apply
+	 * @param {string} [required] - Optional reason for the assertion; if provided, throws on missing element
+	 * @throws {MissingElementError} - Thrown when the element is required but not found
+	 */
+	const all = <S extends string, E extends Element = ElementFromSelector<S>>(
+		selector: S,
+		effects: Effects<P, E>,
+		required?: string,
+	) => {
+		const targets =
+			required != null
+				? useElements(selector, required)
+				: useElements(selector)
+
+		return () => {
+			const cleanups = new Map<E, Cleanup>()
+
+			const attach = (target: E) => {
+				const cleanup = runEffects(effects, host, target)
+				if (cleanup && !cleanups.has(target))
+					cleanups.set(target, cleanup)
+			}
+
+			const detach = (target: E) => {
+				const cleanup = cleanups.get(target)
+				if (cleanup) cleanup()
+				cleanups.delete(target)
+			}
+
+			const applyToMatching =
+				(fn: (target: E) => void) => (node: Node) => {
+					if (isElement(node)) {
+						if (node.matches(selector)) fn(node as E)
+						node.querySelectorAll<E>(selector).forEach(fn)
+					}
+				}
+
+			const observer = observeSubtree(root, selector, mutations => {
+				for (const mutation of mutations) {
+					mutation.addedNodes.forEach(applyToMatching(attach))
+					mutation.removedNodes.forEach(applyToMatching(detach))
+				}
+			})
+
+			if (targets.length)
+				(targets as unknown as NodeListOf<E>).forEach(attach)
+
+			return () => {
+				observer.disconnect()
+				cleanups.forEach(cleanup => cleanup())
+				cleanups.clear()
+			}
+		}
+	}
+
+	return [
+		{ useElement, useElements, first, all },
+		() => Array.from(dependencies),
+	]
+}
+
+/**
  * Produce a computed signal of an array of elements matching a selector
  *
  * @since 0.13.1
@@ -274,200 +471,6 @@ function fromSelector<C extends HTMLElement = HTMLElement>(
 	}
 }
 
-/**
- * Reduced properties of descendant elements
- *
- * @since 0.13.3
- * @param {C} host - Host element for computed property
- * @param {S} selector - CSS selector for descendant elements
- * @param {(accumulator: T, currentElement: ElementFromSelector<S>, currentIndex: number, array: ElementFromSelector<S>[]) => T} reducer - Function to reduce values
- * @param {T} initialValue - Initial value function for reduction
- * @returns {Computed<T>} Computed signal of reduced values of descendant elements
- */
-const reduced = <
-	T extends {},
-	C extends HTMLElement = HTMLElement,
-	S extends string = string,
->(
-	host: C,
-	selector: S,
-	reducer: (
-		accumulator: T,
-		currentElement: ElementFromSelector<S>,
-		currentIndex: number,
-		array: ElementFromSelector<S>[],
-	) => T,
-	initialValue: T,
-): Computed<T> =>
-	computed(() =>
-		(
-			fromSelector<S, C>(selector)(host) as Computed<
-				ElementFromSelector<S>[]
-			>
-		)
-			.get()
-			.reduce(reducer, initialValue),
-	)
-
-/**
- * Read a signal property from a custom element safely after it's defined
- *
- * @since 0.13.1
- * @param {Component<Q> | null} target - Taget descendant element
- * @param {K} prop - Property name to get signal for
- * @param {Q[K]} fallback - Fallback value to use until component is ready
- * @returns {() => Q[K]} Function that returns signal value or fallback
- */
-const read = <Q extends ComponentProps, K extends keyof Q & string>(
-	target: Component<Q> | null,
-	prop: K,
-	fallback: Q[K],
-): (() => Q[K]) => {
-	if (!target) return () => fallback
-	if (!isCustomElement(target))
-		throw new TypeError(`Target element must be a custom element`)
-
-	const awaited = computed(async () => {
-		await customElements.whenDefined(target.localName)
-		return target.getSignal(prop)
-	})
-
-	return () => {
-		const value = awaited.get()
-		return value === UNSET ? fallback : (value.get() as Q[K])
-	}
-}
-
-/**
- * Get the first descendant element matching a selector
- *
- * @since 0.14.0
- * @param {HTMLElement} host - Host element
- * @param {S} selector - Selector for element to check for
- * @param {string} [required] - Optional reason for the assertion; if provided, throws on missing element
- * @returns {ElementFromSelector<S> | null} First matching descendant element, or null if not found and not required
- * @throws {MissingElementError} If the element does not contain the required descendant element and required is specified
- */
-function useElement<S extends string>(
-	host: HTMLElement,
-	selector: S,
-	required: string,
-): ElementFromSelector<S>
-function useElement<S extends string>(
-	host: HTMLElement,
-	selector: S,
-): ElementFromSelector<S> | null
-function useElement<E extends Element>(
-	host: HTMLElement,
-	selector: string,
-	required: string,
-): E
-function useElement<E extends Element>(
-	host: HTMLElement,
-	selector: string,
-): E | null
-function useElement(
-	host: HTMLElement,
-	selector: string,
-	required?: string,
-): any {
-	const target = (host.shadowRoot || host).querySelector(selector)
-	if (required && !target)
-		throw new MissingElementError(host, selector, required)
-	return target
-}
-
-/**
- * Get a descendant custom element matching a selector awaited to be defined
- *
- * @since 0.14.0
- * @param {HTMLElement} host - Host element
- * @param {S} selector - Selector for the descendant element
- * @param {string} [required] - Optional explanation why the element is required; if provided, throws on missing element
- * @returns {Promise<ElementFromSelector<S> | null>} The element or null if not found and not required
- * @throws {MissingElementError} If the element does not contain the required descendant element and required is specified
- * @throws {InvalidCustomElementError} If the element is not a custom element
- */
-async function useComponent<S extends string>(
-	host: HTMLElement,
-	selector: S,
-	required: string,
-): Promise<ElementFromSelector<S>>
-async function useComponent<S extends string>(
-	host: HTMLElement,
-	selector: S,
-): Promise<ElementFromSelector<S> | null>
-async function useComponent<E extends Element>(
-	host: HTMLElement,
-	selector: string,
-	required: string,
-): Promise<E>
-async function useComponent<E extends Element>(
-	host: HTMLElement,
-	selector: string,
-): Promise<E | null>
-async function useComponent(
-	host: HTMLElement,
-	selector: string,
-	required?: string,
-): Promise<Element | null> {
-	const target = isString(required)
-		? useElement(host, selector, required)
-		: useElement(host, selector)
-	if (target) {
-		if (isCustomElement(target)) {
-			await customElements.whenDefined(target.localName)
-			return target
-		} else {
-			throw new InvalidCustomElementError(host, target)
-		}
-	}
-	return null
-}
-
-/**
- * Create a computed signal from a required descendant component's property
- *
- * @since 0.14.0
- * @param {S} selector - Selector for the required descendant element
- * @param {Extractor<T, ElementFromSelector<S>>} extractor - Function to extract the value from the element
- * @param {string} required - Explanation why the element is required
- * @returns {Extractor<Computed<T>, C>} Extractor that returns a computed signal that computes the value from the element
- * @throws {MissingElementError} If the element does not contain the required descendant element
- * @throws {InvalidCustomElementError} If the element is not a custom element
- * /
-function fromComponent<
-	T extends {},
-	S extends string,
-	C extends HTMLElement = HTMLElement,
->(
-	selector: S,
-	extractor: Extractor<T, ElementFromSelector<S>>,
-	required: string,
-): Extractor<Computed<T>, C>
-function fromComponent<
-	T extends {},
-	E extends Element,
-	C extends HTMLElement = HTMLElement,
->(
-	selector: string,
-	extractor: Extractor<T, E>,
-	required: string,
-): Extractor<Computed<T>, C>
-function fromComponent<T extends {}, C extends HTMLElement = HTMLElement>(
-	selector: string,
-	extractor: Extractor<T, any>,
-	required: string,
-): Extractor<Computed<T>, C> {
-	return (host: C): Computed<T> => {
-		const target = requireElement(host, selector, required, true)
-		return computed(async () => {
-			await customElements.whenDefined(target.localName)
-			return extractor(target)
-		})
-	}
-} */
-
 export {
 	type ElementFromSelector,
 	type Extractor,
@@ -475,13 +478,14 @@ export {
 	type LooseExtractor,
 	type Parser,
 	type ParserOrFallback,
+	type ElementUsage,
+	type ElementsUsage,
+	type ElementEffects,
+	type Helpers,
 	fromDOM,
 	fromSelector,
 	getFallback,
+	getHelpers,
 	isParser,
-	reduced,
-	read,
 	observeSubtree,
-	useElement,
-	useComponent,
 }

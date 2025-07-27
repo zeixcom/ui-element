@@ -8,7 +8,7 @@
 
 > **ValidPropertyKey**\<`T`\> = `T` *extends* keyof `HTMLElement` \| [`ReservedWords`](ReservedWords.md) ? `never` : `T`
 
-Defined in: [src/component.ts:51](https://github.com/zeixcom/ui-element/blob/e3fa79e199a97014fba6af2a6cf8cb55be8076c3/src/component.ts#L51)
+Defined in: [src/component.ts:49](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/component.ts#L49)
 
 ## Type Parameters
 

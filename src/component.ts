@@ -11,25 +11,23 @@ import {
 } from '@zeix/cause-effect'
 
 import {
-	type ElementFromSelector,
 	type Extractor,
+	type Helpers,
 	type Parser,
+	getHelpers,
 	isParser,
-	observeSubtree,
-	useElement,
 } from './core/dom'
 import {
+	DependencyTimeoutError,
 	InvalidComponentNameError,
-	InvalidEffectsError,
 	InvalidPropertyNameError,
 	InvalidSignalError,
-	MissingElementError,
 } from './core/errors'
-import type { Effects } from './core/reactive'
+import { type Effects, runEffects } from './core/reactive'
 import {
 	DEV_MODE,
+	LOG_WARN,
 	elementName,
-	isElement,
 	log,
 	typeString,
 	valueString,
@@ -91,30 +89,14 @@ type Initializer<T extends {}, C extends HTMLElement> =
 	| SignalProducer<T, C>
 	| MethodProducer<C>
 
-type ElementSelector<P extends ComponentProps> = {
-	<S extends string>(
-		selector: S,
-		effects: Effects<P, ElementFromSelector<S>>,
-		required?: string,
-	): (host: Component<P>) => Cleanup | void
-	<E extends Element>(
-		selector: string,
-		effects: Effects<P, E>,
-		required?: string,
-	): (host: Component<P>) => Cleanup | void
-}
-
-type ElementSelectors<P extends ComponentProps> = {
-	first: ElementSelector<P>
-	all: ElementSelector<P>
-}
-
 type Setup<P extends ComponentProps> = (
 	host: Component<P>,
-	select: ElementSelectors<P>,
+	helpers: Helpers<P>,
 ) => Effects<P, Component<P>>
 
 /* === Constants === */
+
+const DEPENDENCY_TIMEOUT = 50
 
 // Reserved words that should never be used as property names
 // These are fundamental JavaScript/Object properties that cause serious issues
@@ -167,134 +149,7 @@ const validatePropertyName = (prop: string): string | null => {
 	return null
 }
 
-/**
- * Run one or more effect functions on a component's element
- *
- * @since 0.12.0
- * @param {Effects<P, E>} effects - Effect functions to run
- * @param {Component<P>} host - Component host element
- * @param {E} target - Target element
- * @returns {Cleanup} - Cleanup function that runs collected cleanup functions
- */
-const runEffects = <P extends ComponentProps, E extends Element = Component<P>>(
-	effects: Effects<P, E>,
-	host: Component<P>,
-	target: E = host as unknown as E,
-): void | Cleanup => {
-	try {
-		if (effects instanceof Promise) throw effects
-		if (!Array.isArray(effects)) return effects(host, target)
-		const cleanups = effects
-			.filter(isFunction)
-			.map(effect => effect(host, target))
-		return () => {
-			cleanups.filter(isFunction).forEach(cleanup => cleanup())
-			cleanups.length = 0
-		}
-	} catch (error) {
-		if (error instanceof Promise) {
-			error.then(() => runEffects(effects, host, target))
-		} else {
-			throw new InvalidEffectsError(
-				host,
-				error instanceof Error ? error : new Error(String(error)),
-			)
-		}
-	}
-}
-
-/**
- * Create partially applied helper functions to select descendants
- *
- * @since 0.13.0
- * @returns {ElementSelectors<P>} - Helper functions for selecting descendants
- */
-const select = <P extends ComponentProps>(): ElementSelectors<P> => ({
-	/**
-	 * Apply effect functions to a first matching descendant within the custom element
-	 * If the target element is a custom element, waits for it to be defined before running effects
-	 *
-	 * @since 0.14.0
-	 * @param {S} selector - Selector to match descendant
-	 * @param {Effects<P, ElementFromSelector<S>>} effects - Effect functions to apply
-	 * @param {string} required - Optional error message to explain why the element is required; if not provided, missing elements will be silently ignored
-	 * @throws {MissingElementError} - Thrown when the element is required but not found
-	 */
-	first<S extends string, E extends Element = ElementFromSelector<S>>(
-		selector: S,
-		effects: Effects<P, E>,
-		required?: string,
-	): (host: Component<P>) => Cleanup | void {
-		return (host: Component<P>) => {
-			const target =
-				required != null
-					? useElement(host, selector, required)
-					: useElement(host, selector)
-			if (target) {
-				return runEffects(effects, host, target as unknown as E)
-			}
-		}
-	},
-
-	/**
-	 * Apply effect functions to all matching descendant elements within the custom element
-	 * If any target element is a custom element, waits for it to be defined before running effects
-	 *
-	 * @since 0.14.0
-	 * @param {S} selector - Selector to match descendants
-	 * @param {Effects<P, ElementFromSelector<S>>} effects - Effect functions to apply
-	 * @param {string} required - Optional error message to explain why the element is required; if not provided, missing elements will be silently ignored
-	 * @throws {MissingElementError} - Thrown when the element is required but not found
-	 */
-	all<S extends string, E extends Element = ElementFromSelector<S>>(
-		selector: S,
-		effects: Effects<P, E>,
-		required?: string,
-	): (host: Component<P>) => Cleanup | void {
-		return (host: Component<P>) => {
-			const cleanups = new Map<E, Cleanup>()
-			const root = host.shadowRoot ?? host
-
-			const attach = (target: E) => {
-				const cleanup = runEffects(effects, host, target)
-				if (cleanup && !cleanups.has(target))
-					cleanups.set(target, cleanup)
-			}
-
-			const detach = (target: E) => {
-				const cleanup = cleanups.get(target)
-				if (cleanup) cleanup()
-				cleanups.delete(target)
-			}
-
-			const applyToMatching =
-				(fn: (target: E) => void) => (node: Node) => {
-					if (isElement(node)) {
-						if (node.matches(selector)) fn(node as E)
-						node.querySelectorAll<E>(selector).forEach(fn)
-					}
-				}
-
-			const observer = observeSubtree(root, selector, mutations => {
-				for (const mutation of mutations) {
-					mutation.addedNodes.forEach(applyToMatching(attach))
-					mutation.removedNodes.forEach(applyToMatching(detach))
-				}
-			})
-
-			const targets = root.querySelectorAll<E>(selector)
-			if (!targets.length && required != null)
-				throw new MissingElementError(host, selector, required)
-			if (targets.length) targets.forEach(attach)
-
-			return () => {
-				observer.disconnect()
-				cleanups.forEach(cleanup => cleanup())
-				cleanups.clear()
-			}
-		}
-	},
-}) /* === Exported Functions === */
+/* === Exported Functions === */
 
 /**
  * Define a component with dependency resolution and setup function (connectedCallback)
@@ -303,7 +158,6 @@ const select = <P extends ComponentProps>(): ElementSelectors<P> => ({
  * @param {string} name - Name of the custom element
  * @param {{ [K in keyof P]: Initializer<P[K], Component<P>> }} init - Signals of the component
  * @param {Setup<P>} setup - Setup function to be called after dependencies are resolved
- * @param {string[]} dependencies - Array of custom element names the component depends on
  * @throws {InvalidComponentNameError} If component name is invalid
  * @throws {InvalidPropertyNameError} If property name is invalid
  */
@@ -315,7 +169,6 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 		[K in keyof P]: Initializer<P[K], Component<P>>
 	},
 	setup: Setup<P>,
-	dependencies?: string[],
 ): void {
 	if (!name.includes('-') || !name.match(/^[a-z][a-z0-9-]*$/))
 		throw new InvalidComponentNameError(name)
@@ -356,41 +209,47 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 				if (result != null) this.setSignal(prop, toSignal(result))
 			}
 
+			// Getting effects collects dependencies as a side-effect
+			const [helpers, getDependencies] = getHelpers(
+				this as unknown as Component<P>,
+			)
+			const effects = setup(this as unknown as Component<P>, helpers)
+
 			// Resolve dependencies and run setup function
+			const deps = getDependencies()
 			const runSetup = () => {
-				const result = runEffects(
-					setup(this as unknown as Component<P>, select()),
+				const cleanup = runEffects(
+					effects,
 					this as unknown as Component<P>,
 				)
-				if (result) this.#cleanup = result
+				if (cleanup) this.#cleanup = cleanup
 			}
-			if (dependencies?.length) {
+			if (deps.length) {
 				Promise.race([
 					Promise.all(
-						dependencies.map(dep =>
-							customElements.whenDefined(dep),
-						),
+						deps.map(dep => customElements.whenDefined(dep)),
 					),
 					new Promise<never>((_, reject) => {
 						setTimeout(() => {
-							const missing = dependencies.filter(
-								dep => !customElements.get(dep),
-							)
 							reject(
-								new Error(
-									`Timeout waiting for: [${missing.join(', ')}]`,
+								new DependencyTimeoutError(
+									this,
+									deps.filter(
+										dep => !customElements.get(dep),
+									),
 								),
 							)
-						}, 50)
+						}, DEPENDENCY_TIMEOUT)
 					}),
 				])
 					.then(runSetup)
 					.catch(error => {
-						if (DEV_MODE) {
-							console.warn(
-								`Component "${name}": ${error.message}. Running setup anyway.`,
+						if (DEV_MODE)
+							log(
+								error,
+								`Error during setup of <${name}>. Trying to run effects anyway.`,
+								LOG_WARN,
 							)
-						}
 						runSetup()
 					})
 			} else {
@@ -496,8 +355,6 @@ export {
 	type Initializer,
 	type SignalProducer,
 	type MethodProducer,
-	type ElementSelector,
-	type ElementSelectors,
 	type Setup,
 	component,
 }

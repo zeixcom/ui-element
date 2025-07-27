@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+	<head>
+		<title>setProperty Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<update-property value="Value from Attribute">
+			<input type="text" value="Value from Server" />
+		</update-property>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				component,
+				asString,
+				setProperty,
+				RESET,
+			} from '../../index.dev.js'
+
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+
+			component(
+				'update-property',
+				{
+					value: asString(),
+				},
+				(_, { first }) => first('input', setProperty('value', 'value')),
+			)
+
+			runTests(() => {
+				describe('setProperty', function () {
+					it('should prove setProperty() working correctly', async function () {
+						const component =
+							document.querySelector('update-property')
+						const input = component.querySelector('input')
+						await animationFrame()
+						assert.equal(
+							input.value,
+							'Value from Attribute',
+							'Should display value from attribute',
+						)
+						component.value = 'New Value'
+						await animationFrame()
+						assert.equal(
+							input.value,
+							'New Value',
+							'Should update value from text signal',
+						)
+						component.value = RESET
+						await animationFrame()
+						assert.equal(
+							input.value,
+							'Value from Server',
+							'Should revert value to server-rendered version',
+						)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

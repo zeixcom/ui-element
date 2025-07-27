@@ -11,7 +11,6 @@ import {
 	setText,
 	show,
 	state,
-	useElement,
 } from '../../..'
 import { createClearFunction } from '../../functions/shared/clear-input'
 
@@ -34,8 +33,8 @@ export default component<FormComboboxProps>(
 		description: '',
 		clear() {},
 	},
-	(el, { first, all }) => {
-		const input = useElement(el, 'input', 'Native input element needed.')
+	(el, { first, all, useElement }) => {
+		const input = useElement('input', 'Native input element needed.')
 
 		// Internal signals
 		const mode = state<FormComboboxMode>('idle')

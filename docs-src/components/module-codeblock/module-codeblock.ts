@@ -19,14 +19,12 @@ export default component(
 	},
 	(el, { first }) => [
 		toggleAttribute('collapsed'),
-		first(
-			'.overlay',
+		first('.overlay', [
 			on('click', () => {
 				el.collapsed = false
 			}),
-		),
-		first(
-			'.copy',
+		]),
+		first('.copy', [
 			copyToClipboard(
 				useElement(
 					el,
@@ -40,7 +38,7 @@ export default component(
 						'Error trying to copy to clipboard!',
 				},
 			),
-		),
+		]),
 	],
 )
 

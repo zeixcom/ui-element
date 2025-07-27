@@ -4,6 +4,17 @@
 
 # @zeix/ui-element
 
+## Classes
+
+- [CircularMutationError](classes/CircularMutationError.md)
+- [DependencyTimeoutError](classes/DependencyTimeoutError.md)
+- [InvalidComponentNameError](classes/InvalidComponentNameError.md)
+- [InvalidCustomElementError](classes/InvalidCustomElementError.md)
+- [InvalidEffectsError](classes/InvalidEffectsError.md)
+- [InvalidPropertyNameError](classes/InvalidPropertyNameError.md)
+- [InvalidSignalError](classes/InvalidSignalError.md)
+- [MissingElementError](classes/MissingElementError.md)
+
 ## Type Aliases
 
 - [Cleanup](type-aliases/Cleanup.md)
@@ -17,17 +28,19 @@
 - [Effect](type-aliases/Effect.md)
 - [EffectMatcher](type-aliases/EffectMatcher.md)
 - [Effects](type-aliases/Effects.md)
+- [ElementEffects](type-aliases/ElementEffects.md)
 - [ElementFromSelector](type-aliases/ElementFromSelector.md)
 - [ElementInserter](type-aliases/ElementInserter.md)
-- [ElementSelector](type-aliases/ElementSelector.md)
-- [ElementSelectors](type-aliases/ElementSelectors.md)
+- [ElementsUsage](type-aliases/ElementsUsage.md)
 - [ElementUpdater](type-aliases/ElementUpdater.md)
+- [ElementUsage](type-aliases/ElementUsage.md)
 - [EventHandler](type-aliases/EventHandler.md)
 - [EventTransformer](type-aliases/EventTransformer.md)
 - [EventTransformers](type-aliases/EventTransformers.md)
 - [EventType](type-aliases/EventType.md)
 - [Extractor](type-aliases/Extractor.md)
 - [Fallback](type-aliases/Fallback.md)
+- [Helpers](type-aliases/Helpers.md)
 - [Initializer](type-aliases/Initializer.md)
 - [LogLevel](type-aliases/LogLevel.md)
 - [LooseExtractor](type-aliases/LooseExtractor.md)
@@ -53,6 +66,7 @@
 - [LOG\_ERROR](variables/LOG_ERROR.md)
 - [LOG\_INFO](variables/LOG_INFO.md)
 - [LOG\_WARN](variables/LOG_WARN.md)
+- [RESET](variables/RESET.md)
 - [UNSET](variables/UNSET.md)
 
 ## Functions
@@ -92,8 +106,6 @@
 - [on](functions/on.md)
 - [pass](functions/pass.md)
 - [provideContexts](functions/provideContexts.md)
-- [read](functions/read.md)
-- [reduced](functions/reduced.md)
 - [resolveReactive](functions/resolveReactive.md)
 - [setAttribute](functions/setAttribute.md)
 - [setProperty](functions/setProperty.md)
@@ -105,5 +117,3 @@
 - [toggleClass](functions/toggleClass.md)
 - [toSignal](functions/toSignal.md)
 - [updateElement](functions/updateElement.md)
-- [useComponent](functions/useComponent.md)
-- [useElement](functions/useElement.md)

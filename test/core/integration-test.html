@@ -1,0 +1,332 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Integration Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<test-signal-producers-integration>
+			<div class="item" data-value="10">Item 1</div>
+			<div class="item" data-value="20">Item 2</div>
+			<input type="text" placeholder="Type something..." />
+			<div class="display"></div>
+		</test-signal-producers-integration>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				component,
+				asString,
+				asNumber,
+				fromSelector,
+				fromEvents,
+				setText,
+				on,
+			} from '../../index.dev.js'
+
+			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+			const microtask = async () => new Promise(queueMicrotask)
+
+			// Define the test component that integrates multiple signal producers
+			component(
+				'test-signal-producers-integration',
+				{
+					items: fromSelector('.item'),
+					total: el => {
+						// Manually implement reduction since reduced() was removed
+						return Array.from(
+							el.querySelectorAll('[data-value]'),
+						).reduce(
+							(sum, element) =>
+								sum + parseInt(element.dataset.value || '0'),
+							0,
+						)
+					},
+					lastInput: fromEvents('', 'input', {
+						input: ({ target }) => target.value,
+					}),
+				},
+				(_, { first }) => first('.display', setText('lastInput')),
+			)
+
+			runTests(() => {
+				describe('Integration: Signal Producers in Components', () => {
+					/* it('should work together in a component setup', async () => {
+						const name = 'test-signal-producers-integration'
+						const container = document.querySelector(name)
+						await customElements.whenDefined(name)
+
+						// Test fromSelector
+						assert.equal(container.items.length, 2)
+
+						// Test reduced
+						assert.equal(container.total, 30)
+
+						// Test fromEvent
+						assert.equal(container.lastInput, '')
+
+						const input = container.querySelector('input')
+						input.value = 'hello'
+						input.dispatchEvent(
+							new Event('input', { bubbles: true }),
+						)
+						assert.equal(container.lastInput, 'hello')
+
+						// Add new item
+						const newItem = document.createElement('div')
+						newItem.className = 'item'
+						newItem.dataset.value = '15'
+						newItem.textContent = 'Item 3'
+						container.appendChild(newItem)
+						await microtask()
+
+						assert.equal(container.items.length, 3)
+						assert.equal(container.total, 45) // 10 + 20 + 15
+						}) */
+					/* it('should handle complex component interactions', async () => {
+						component(
+							'test-complex-integration',
+							{
+								selectedItems: fromSelector('.selected'),
+								formData: fromEvents({}, 'form', {
+									input: ({ event, value }) => ({
+										...value,
+										[event.target.name]: event.target.value,
+									}),
+									submit: ({ event, target, value }) => {
+										event.preventDefault()
+										const formData = new FormData(target)
+										return Object.fromEntries(formData)
+									},
+								}),
+								clickCount: fromEvents(0, 'button', {
+									click: ({ value }) => value + 1,
+								}),
+							},
+							(el, { all, first }) => [
+								// Toggle selection on click
+								all(
+									'.item',
+									on('click', event => {
+										event.target.classList.toggle(
+											'selected',
+										)
+									}),
+								),
+
+								// Update display
+								first(
+									'.status',
+									setText(() => {
+										const selected = el.selectedItems.length
+										const clicks = el.clickCount
+										return `Selected: ${selected}, Clicks: ${clicks}`
+									}),
+								),
+							],
+						)
+
+						const container = document.createElement(
+							'test-complex-integration',
+						)
+						container.innerHTML = `
+							<div class="item">Item 1</div>
+							<div class="item">Item 2</div>
+							<div class="item">Item 3</div>
+							<button>Click me</button>
+							<div class="status"></div>
+							<form>
+								<input type="text" name="username" />
+								<input type="email" name="email" />
+								<button type="submit">Submit</button>
+							</form>
+						`
+						document.body.appendChild(container)
+
+						try {
+							await customElements.whenDefined(
+								'test-complex-integration',
+							)
+							await animationFrame()
+
+							// Initial state
+							assert.equal(container.selectedItems.length, 0)
+							assert.equal(container.clickCount, 0)
+							assert.include(
+								container.querySelector('.status').textContent,
+								'Selected: 0, Clicks: 0',
+							)
+
+							// Click an item to select it
+							const items = container.querySelectorAll('.item')
+							items[0].click()
+							await animationFrame()
+
+							assert.equal(container.selectedItems.length, 1)
+							assert.include(
+								container.querySelector('.status').textContent,
+								'Selected: 1',
+							)
+
+							// Click button to increment counter
+							const button = container.querySelector('button')
+							button.click()
+							await animationFrame()
+
+							assert.equal(container.clickCount, 1)
+							assert.include(
+								container.querySelector('.status').textContent,
+								'Clicks: 1',
+							)
+
+							// Test form events
+							const usernameInput = container.querySelector(
+								'input[name="username"]',
+							)
+							usernameInput.value = 'testuser'
+							usernameInput.dispatchEvent(
+								new Event('input', { bubbles: true }),
+							)
+							await microtask()
+
+							assert.equal(
+								container.formData.username,
+								'testuser',
+							)
+						} finally {
+							container.remove()
+						}
+					}) */
+					/* it('should handle signal dependencies correctly', async () => {
+						component(
+							'test-signal-dependencies',
+							{
+								items: fromSelector('.dep-item'),
+								itemCount: el => el.items.length,
+								isEmpty: el => el.itemCount === 0,
+								summary: el =>
+									`Total: ${el.itemCount}, Empty: ${el.isEmpty}`,
+							},
+							(el, { first }) => [
+								first('.summary', setText('summary')),
+							],
+						)
+
+						const container = document.createElement(
+							'test-signal-dependencies',
+						)
+						container.innerHTML = `
+							<div class="dep-item">Item 1</div>
+							<div class="dep-item">Item 2</div>
+							<div class="summary"></div>
+						`
+						document.body.appendChild(container)
+
+						try {
+							await customElements.whenDefined(
+								'test-signal-dependencies',
+							)
+							await animationFrame()
+
+							// Initial state
+							assert.equal(container.itemCount, 2)
+							assert.isFalse(container.isEmpty)
+							assert.equal(
+								container.summary,
+								'Total: 2, Empty: false',
+							)
+							assert.include(
+								container.querySelector('.summary').textContent,
+								'Total: 2, Empty: false',
+							)
+
+							// Remove all items
+							container
+								.querySelectorAll('.dep-item')
+								.forEach(item => item.remove())
+							await animationFrame()
+
+							assert.equal(container.itemCount, 0)
+							assert.isTrue(container.isEmpty)
+							assert.equal(
+								container.summary,
+								'Total: 0, Empty: true',
+							)
+							assert.include(
+								container.querySelector('.summary').textContent,
+								'Total: 0, Empty: true',
+							)
+						} finally {
+							container.remove()
+						}
+					}) */
+					/* it('should handle async signal producers', async () => {
+						component(
+							'test-async-integration',
+							{
+								loadingState: 'loading',
+								data: async () => {
+									await new Promise(resolve =>
+										setTimeout(resolve, 100),
+									)
+									return { message: 'Loaded successfully' }
+								},
+								displayText: el =>
+									el.loadingState === 'loading'
+										? 'Loading...'
+										: el.data?.message || 'Error',
+							},
+							(el, { first }) => [
+								first('.display', setText('displayText')),
+								() => {
+									// Update loading state when data is available
+									if (
+										el.data
+										&& el.loadingState === 'loading'
+									) {
+										el.loadingState = 'loaded'
+									}
+								},
+							],
+						)
+
+						const container = document.createElement(
+							'test-async-integration',
+						)
+						container.innerHTML = `<div class="display"></div>`
+						document.body.appendChild(container)
+
+						try {
+							await customElements.whenDefined(
+								'test-async-integration',
+							)
+							await animationFrame()
+
+							// Initial loading state
+							assert.equal(container.loadingState, 'loading')
+							assert.include(
+								container.querySelector('.display').textContent,
+								'Loading...',
+							)
+
+							// Wait for async data to load
+							await wait(150)
+							await animationFrame()
+
+							assert.equal(container.loadingState, 'loaded')
+							assert.include(
+								container.querySelector('.display').textContent,
+								'Loaded successfully',
+							)
+						} finally {
+							container.remove()
+						}
+						}) */
+				})
+			})
+		</script>
+	</body>
+</html>

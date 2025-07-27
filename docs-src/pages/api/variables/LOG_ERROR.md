@@ -8,4 +8,4 @@
 
 > `const` **LOG\_ERROR**: [`LogLevel`](../type-aliases/LogLevel.md) = `'error'`
 
-Defined in: [src/core/util.ts:14](https://github.com/zeixcom/ui-element/blob/e3fa79e199a97014fba6af2a6cf8cb55be8076c3/src/core/util.ts#L14)
+Defined in: [src/core/util.ts:14](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/core/util.ts#L14)

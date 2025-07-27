@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+	<head>
+		<title>setText Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<update-text text="Text from Attribute">
+			<p>Text from Server</p>
+		</update-text>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				component,
+				asString,
+				setText,
+				RESET,
+			} from '../../index.dev.js'
+
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+			const normalizeText = text => text.replace(/\s+/g, ' ').trim()
+
+			component(
+				'update-text',
+				{
+					text: asString(),
+				},
+				(_, { first }) => first('p', setText('text')),
+			)
+
+			runTests(() => {
+				describe('setText', function () {
+					it('should prove setText() working correctly', async function () {
+						const component = document.querySelector('update-text')
+						const paragraph = component.querySelector('p')
+						await animationFrame()
+						let textContent = normalizeText(paragraph.textContent)
+						assert.equal(
+							textContent,
+							'Text from Attribute',
+							'Should display text content from attribute',
+						)
+						component.text = 'New Text'
+						await animationFrame()
+						textContent = normalizeText(paragraph.textContent)
+						assert.equal(
+							textContent,
+							'New Text',
+							'Should update text content from text signal',
+						)
+						component.text = RESET
+						await animationFrame()
+						textContent = normalizeText(paragraph.textContent)
+						assert.equal(
+							textContent,
+							'Text from Server',
+							'Should revert text content to server-rendered version',
+						)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

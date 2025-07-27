@@ -38,22 +38,6 @@ class InvalidComponentNameError extends Error {
 }
 
 /**
- * Error thrown when passed element is not a custom element
- */
-class InvalidCustomElementError extends Error {
-	/**
-	 * @param {HTMLElement} host - Host component
-	 * @param {Element} target - Target element
-	 */
-	constructor(host: HTMLElement, target: Element) {
-		super(
-			`Expected element ${elementName(target)} in ${elementName(host)} to be a custom element.`,
-		)
-		this.name = 'InvalidCustomElementError'
-	}
-}
-
-/**
  * Error thrown when trying to assign a property name that conflicts with reserved words or inherited HTMLElement properties
  *
  * @since 0.14.0
@@ -123,10 +107,24 @@ class MissingElementError extends Error {
 	}
 }
 
+/**
+ * Error when a component's dependencies are not met within a specified timeout
+ *
+ * @since 0.14.0
+ */
+class DependencyTimeoutError extends Error {
+	constructor(host: HTMLElement, missing: string[]) {
+		super(
+			`Timeout waiting for: [${missing.join(', ')}] in component ${elementName(host)}.`,
+		)
+		this.name = 'DependencyTimeoutError'
+	}
+}
+
 export {
 	CircularMutationError,
+	DependencyTimeoutError,
 	InvalidComponentNameError,
-	InvalidCustomElementError,
 	InvalidPropertyNameError,
 	InvalidEffectsError,
 	InvalidSignalError,

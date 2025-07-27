@@ -8,4 +8,4 @@
 
 > `const` **LOG\_WARN**: [`LogLevel`](../type-aliases/LogLevel.md) = `'warn'`
 
-Defined in: [src/core/util.ts:13](https://github.com/zeixcom/ui-element/blob/e3fa79e199a97014fba6af2a6cf8cb55be8076c3/src/core/util.ts#L13)
+Defined in: [src/core/util.ts:13](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/core/util.ts#L13)

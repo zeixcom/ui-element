@@ -1,5 +1,6 @@
-import { type Computed } from '@zeix/cause-effect'
+import { type Cleanup, type Computed } from '@zeix/cause-effect'
 import type { Component, ComponentProps } from '../component'
+import { type Effects } from './reactive'
 type ElementFromSelector<K extends string> =
 	K extends keyof HTMLElementTagNameMap
 		? HTMLElementTagNameMap[K]
@@ -25,6 +26,35 @@ type Fallback<T extends {}, E extends Element = HTMLElement> =
 type ParserOrFallback<T extends {}, E extends Element = HTMLElement> =
 	| Parser<T, E>
 	| Fallback<T, E>
+type ElementUsage = {
+	<S extends string>(selector: S, required: string): ElementFromSelector<S>
+	<S extends string>(selector: S): ElementFromSelector<S> | null
+}
+type ElementsUsage = {
+	<S extends string>(
+		selector: S,
+		required: string,
+	): NodeListOf<ElementFromSelector<S>>
+	<S extends string>(selector: S): NodeListOf<ElementFromSelector<S>>
+}
+type ElementEffects<P extends ComponentProps> = {
+	<S extends string>(
+		selector: S,
+		effects: Effects<P, ElementFromSelector<S>>,
+		required?: string,
+	): () => Cleanup | void
+	<E extends Element>(
+		selector: string,
+		effects: Effects<P, E>,
+		required?: string,
+	): () => Cleanup | void
+}
+type Helpers<P extends ComponentProps> = {
+	useElement: ElementUsage
+	useElements: ElementsUsage
+	first: ElementEffects<P>
+	all: ElementEffects<P>
+}
 /**
  * Check if a value is a string parser
  *
@@ -84,6 +114,16 @@ declare const observeSubtree: (
 	callback: MutationCallback,
 ) => MutationObserver
 /**
+ * Create partially applied helper functions to get descendants and run effects on them
+ *
+ * @since 0.14.0
+ * @param {Component<P>} host - Host component
+ * @returns {ElementSelectors<P>} - Helper functions for selecting descendants
+ */
+declare const getHelpers: <P extends ComponentProps>(
+	host: Component<P>,
+) => [Helpers<P>, () => string[]]
+/**
  * Produce a computed signal of an array of elements matching a selector
  *
  * @since 0.13.1
@@ -99,144 +139,6 @@ declare function fromSelector<
 	E extends Element,
 	C extends HTMLElement = HTMLElement,
 >(selector: string): Extractor<Computed<E[]>, C>
-/**
- * Reduced properties of descendant elements
- *
- * @since 0.13.3
- * @param {C} host - Host element for computed property
- * @param {S} selector - CSS selector for descendant elements
- * @param {(accumulator: T, currentElement: ElementFromSelector<S>, currentIndex: number, array: ElementFromSelector<S>[]) => T} reducer - Function to reduce values
- * @param {T} initialValue - Initial value function for reduction
- * @returns {Computed<T>} Computed signal of reduced values of descendant elements
- */
-declare const reduced: <
-	T extends {},
-	C extends HTMLElement = HTMLElement,
-	S extends string = string,
->(
-	host: C,
-	selector: S,
-	reducer: (
-		accumulator: T,
-		currentElement: ElementFromSelector<S>,
-		currentIndex: number,
-		array: ElementFromSelector<S>[],
-	) => T,
-	initialValue: T,
-) => Computed<T>
-/**
- * Read a signal property from a custom element safely after it's defined
- *
- * @since 0.13.1
- * @param {Component<Q> | null} target - Taget descendant element
- * @param {K} prop - Property name to get signal for
- * @param {Q[K]} fallback - Fallback value to use until component is ready
- * @returns {() => Q[K]} Function that returns signal value or fallback
- */
-declare const read: <Q extends ComponentProps, K extends keyof Q & string>(
-	target: Component<Q> | null,
-	prop: K,
-	fallback: Q[K],
-) => () => Q[K]
-/**
- * Get the first descendant element matching a selector
- *
- * @since 0.14.0
- * @param {HTMLElement} host - Host element
- * @param {S} selector - Selector for element to check for
- * @param {string} [required] - Optional reason for the assertion; if provided, throws on missing element
- * @returns {ElementFromSelector<S> | null} First matching descendant element, or null if not found and not required
- * @throws {MissingElementError} If the element does not contain the required descendant element and required is specified
- */
-declare function useElement<S extends string>(
-	host: HTMLElement,
-	selector: S,
-	required: string,
-): ElementFromSelector<S>
-declare function useElement<S extends string>(
-	host: HTMLElement,
-	selector: S,
-): ElementFromSelector<S> | null
-declare function useElement<E extends Element>(
-	host: HTMLElement,
-	selector: string,
-	required: string,
-): E
-declare function useElement<E extends Element>(
-	host: HTMLElement,
-	selector: string,
-): E | null
-/**
- * Get a descendant custom element matching a selector awaited to be defined
- *
- * @since 0.14.0
- * @param {HTMLElement} host - Host element
- * @param {S} selector - Selector for the descendant element
- * @param {string} [required] - Optional explanation why the element is required; if provided, throws on missing element
- * @returns {Promise<ElementFromSelector<S> | null>} The element or null if not found and not required
- * @throws {MissingElementError} If the element does not contain the required descendant element and required is specified
- * @throws {InvalidCustomElementError} If the element is not a custom element
- */
-declare function useComponent<S extends string>(
-	host: HTMLElement,
-	selector: S,
-	required: string,
-): Promise<ElementFromSelector<S>>
-declare function useComponent<S extends string>(
-	host: HTMLElement,
-	selector: S,
-): Promise<ElementFromSelector<S> | null>
-declare function useComponent<E extends Element>(
-	host: HTMLElement,
-	selector: string,
-	required: string,
-): Promise<E>
-declare function useComponent<E extends Element>(
-	host: HTMLElement,
-	selector: string,
-): Promise<E | null>
-/**
- * Create a computed signal from a required descendant component's property
- *
- * @since 0.14.0
- * @param {S} selector - Selector for the required descendant element
- * @param {Extractor<T, ElementFromSelector<S>>} extractor - Function to extract the value from the element
- * @param {string} required - Explanation why the element is required
- * @returns {Extractor<Computed<T>, C>} Extractor that returns a computed signal that computes the value from the element
- * @throws {MissingElementError} If the element does not contain the required descendant element
- * @throws {InvalidCustomElementError} If the element is not a custom element
- * /
-function fromComponent<
-    T extends {},
-    S extends string,
-    C extends HTMLElement = HTMLElement,
->(
-    selector: S,
-    extractor: Extractor<T, ElementFromSelector<S>>,
-    required: string,
-): Extractor<Computed<T>, C>
-function fromComponent<
-    T extends {},
-    E extends Element,
-    C extends HTMLElement = HTMLElement,
->(
-    selector: string,
-    extractor: Extractor<T, E>,
-    required: string,
-): Extractor<Computed<T>, C>
-function fromComponent<T extends {}, C extends HTMLElement = HTMLElement>(
-    selector: string,
-    extractor: Extractor<T, any>,
-    required: string,
-): Extractor<Computed<T>, C> {
-    return (host: C): Computed<T> => {
-        const target = requireElement(host, selector, required, true)
-        return computed(async () => {
-            await customElements.whenDefined(target.localName)
-            return extractor(target)
-        })
-    }
-} */
 export {
 	type ElementFromSelector,
 	type Extractor,
@@ -244,13 +146,14 @@ export {
 	type LooseExtractor,
 	type Parser,
 	type ParserOrFallback,
+	type ElementUsage,
+	type ElementsUsage,
+	type ElementEffects,
+	type Helpers,
 	fromDOM,
 	fromSelector,
 	getFallback,
+	getHelpers,
 	isParser,
-	reduced,
-	read,
 	observeSubtree,
-	useElement,
-	useComponent,
 }

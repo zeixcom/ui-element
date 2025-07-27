@@ -47,13 +47,12 @@ export default component(
 				inputs => inputs.findIndex(input => input.checked),
 			),
 		]),
-		all(
-			'label',
+		all('label', [
 			toggleClass(
 				'selected',
 				target => el.value === target.querySelector('input')?.value,
 			),
-		),
+		]),
 	],
 )
 

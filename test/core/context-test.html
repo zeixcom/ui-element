@@ -72,7 +72,7 @@
 				provideContexts,
 				setText,
 				state,
-			} from '../index.dev.js'
+			} from '../../index.dev.js'
 
 			const animationFrame = async () =>
 				new Promise(requestAnimationFrame)
@@ -116,9 +116,7 @@
 			)
 
 			// Test nested context providers
-			component('nested-context-test', {}, (_, { first }) => [
-				first('outer-provider'),
-			])
+			component('nested-context-test', {}, (_, { first }) => [])
 
 			component(
 				'outer-provider',

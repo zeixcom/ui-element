@@ -1,0 +1,660 @@
+<!doctype html>
+<html>
+	<head>
+		<title>fromEvents Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				fromEvents,
+				computed,
+				effect,
+				component,
+				asString,
+			} from '../../index.dev.js'
+
+			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+			const microtask = async () => new Promise(queueMicrotask)
+
+			runTests(() => {
+				describe('fromEvents()', () => {
+					it('should create a computed signal from event data', async () => {
+						const button = document.createElement('button')
+						button.className = 'click-me'
+						button.textContent = 'Click me'
+						document.body.appendChild(button)
+
+						try {
+							const clickSignal = fromEvents(
+								0,
+								'button.click-me',
+								{
+									click: ({ event, host, target, value }) => {
+										assert.equal(host, document.body)
+										assert.equal(target, button)
+										assert.instanceOf(event, MouseEvent)
+										return value + 1
+									},
+								},
+							)(document.body)
+
+							// Use effect to watch signal for updates
+							let currentValue = 0
+							const cleanup = effect(() => {
+								currentValue = clickSignal.get()
+							})
+
+							// Initial value
+							assert.equal(currentValue, 0)
+
+							// Trigger click
+							button.click()
+							await microtask()
+							assert.equal(currentValue, 1)
+
+							// Another click
+							button.click()
+							await microtask()
+							assert.equal(currentValue, 2)
+
+							cleanup()
+						} finally {
+							button.remove()
+						}
+					})
+
+					/* it('should handle input events with proper typing', async () => {
+						const input = document.createElement('input')
+						input.type = 'text'
+						input.className = 'test-input'
+						document.body.appendChild(input)
+
+						try {
+							const inputSignal = fromEvents(
+								'',
+								'input.test-input',
+								{
+									input: ({ event, target }) => {
+										assert.instanceOf(event, Event)
+										assert.instanceOf(
+											target,
+											HTMLInputElement,
+										)
+										return target.value
+									},
+								},
+							)(document.body)
+
+							// Use effect to watch signal for updates
+							let currentValue = ''
+							const cleanup = effect(() => {
+								currentValue = inputSignal.get()
+							})
+
+							// Initial value
+							assert.equal(currentValue, '')
+
+							// Change input value
+							input.value = 'hello'
+							input.dispatchEvent(new Event('input'))
+							await microtask()
+							assert.equal(currentValue, 'hello')
+
+							// Change again
+							input.value = 'world'
+							input.dispatchEvent(new Event('input'))
+							await microtask()
+							assert.equal(currentValue, 'world')
+
+							cleanup()
+						} finally {
+							input.remove()
+						}
+						}) */
+
+					/* it('should work with computed signals', async () => {
+						const input = document.createElement('input')
+						input.type = 'text'
+						input.className = 'computed-input'
+						document.body.appendChild(input)
+
+						try {
+							const inputSignal = fromEvents(
+								'',
+								'input.computed-input',
+								{
+									input: ({ target }) => target.value,
+								},
+							)(document.body)
+
+							const lengthSignal = computed(
+								() => inputSignal.get().length,
+							)
+
+							// Use effects to watch signals for updates
+							let currentValue = ''
+							let currentLength = 0
+							const cleanupValue = effect(() => {
+								currentValue = inputSignal.get()
+							})
+							const cleanupLength = effect(() => {
+								currentLength = lengthSignal.get()
+							})
+
+							// Initial values
+							assert.equal(currentValue, '')
+							assert.equal(currentLength, 0)
+
+							// Change input
+							input.value = 'test'
+							input.dispatchEvent(new Event('input'))
+							await microtask()
+							assert.equal(currentValue, 'test')
+							assert.equal(currentLength, 4)
+
+							cleanupValue()
+							cleanupLength()
+						} finally {
+							input.remove()
+						}
+						}) */
+
+					it('should cleanup event listeners when no watchers remain', async () => {
+						const button = document.createElement('button')
+						button.className = 'cleanup-test'
+						document.body.appendChild(button)
+
+						try {
+							const clickSignal = fromEvents(
+								0,
+								'button.cleanup-test',
+								{
+									click: ({ value }) => value + 1,
+								},
+							)(document.body)
+
+							let effectRuns = 0
+							const cleanup = effect({
+								signals: [clickSignal],
+								ok: () => {
+									effectRuns++
+								},
+							})
+
+							// Initial effect run
+							await microtask()
+							assert.equal(effectRuns, 1)
+
+							// Click button
+							button.click()
+							await microtask()
+							assert.equal(effectRuns, 2)
+
+							// Cleanup effect
+							cleanup()
+
+							// Click button again - should not trigger effect
+							const previousRuns = effectRuns
+							button.click()
+							await microtask()
+							assert.equal(effectRuns, previousRuns)
+
+							// But signal should still update
+							assert.equal(clickSignal.get(), 2)
+						} finally {
+							button.remove()
+						}
+					})
+
+					/* it('should create a signal producer from input events', async () => {
+						const form = document.createElement('form')
+						form.innerHTML = `
+							<input type="text" name="username" class="username-input" />
+							<input type="email" name="email" class="email-input" />
+						`
+						document.body.appendChild(form)
+
+						try {
+							const usernameSignal = fromEvents(
+								'',
+								'input.username-input',
+								{
+									input: ({ target }) => target.value,
+									change: ({ target }) => target.value.trim(),
+								},
+							)(form)
+
+							const emailSignal = fromEvents(
+								'',
+								'input.email-input',
+								{
+									input: ({ target }) =>
+										target.value.toLowerCase(),
+								},
+							)(form)
+
+							// Test username input
+							const usernameInput =
+								form.querySelector('.username-input')
+							// Use effects to watch signals for updates
+							let usernameValue = ''
+							let emailValue = ''
+							const cleanupUsername = effect(() => {
+								usernameValue = usernameSignal.get()
+							})
+							const cleanupEmail = effect(() => {
+								emailValue = emailSignal.get()
+							})
+
+							usernameInput.value = 'john_doe'
+							usernameInput.dispatchEvent(new Event('input'))
+							await microtask()
+							assert.equal(usernameValue, 'john_doe')
+
+							// Test change event with trimming
+							usernameInput.value = '  john_doe  '
+							usernameInput.dispatchEvent(new Event('change'))
+							await microtask()
+							assert.equal(usernameValue, 'john_doe')
+
+							// Test email input with lowercase
+							const emailInput =
+								form.querySelector('.email-input')
+							emailInput.value = 'John@Example.COM'
+							emailInput.dispatchEvent(new Event('input'))
+							await microtask()
+							assert.equal(emailValue, 'john@example.com')
+
+							cleanupUsername()
+							cleanupEmail()
+						} finally {
+							form.remove()
+						}
+						}) */
+
+					it('should do nothing when element not found', async () => {
+						const nonExistentSignal = fromEvents(
+							'default',
+							'.non-existent-element',
+							{
+								click: () => 'clicked',
+							},
+						)(document.body)
+
+						// Use effect to watch signal
+						let currentValue = 'default'
+						const cleanup = effect(() => {
+							currentValue = nonExistentSignal.get()
+						})
+
+						// Should return initial value when element not found
+						assert.equal(currentValue, 'default')
+
+						// Should not crash when trying to access non-existent element
+						await microtask()
+						assert.equal(currentValue, 'default')
+
+						cleanup()
+					})
+
+					/* it('should work with function initializers', async () => {
+						const button = document.createElement('button')
+						button.className = 'function-init'
+						button.dataset.initialValue = '10'
+						document.body.appendChild(button)
+
+						try {
+							const clickSignal = fromEvents(
+								() =>
+									parseInt(
+										button.dataset.initialValue || '0',
+									),
+								'button.function-init',
+								{
+									click: ({ value }) => value + 5,
+								},
+							)(document.body)
+
+							// Use effect to watch signal
+							let currentValue = 0
+							const cleanup = effect(() => {
+								currentValue = clickSignal.get()
+							})
+
+							// Initial value from function
+							assert.equal(currentValue, 10)
+
+							// Click to increment
+							button.click()
+							await microtask()
+							assert.equal(currentValue, 15)
+
+							// Change initial value and click again
+							button.dataset.initialValue = '20'
+							button.click()
+							await microtask()
+							assert.equal(currentValue, 16) // Should increment from 15, not re-init
+
+							cleanup()
+						} finally {
+							button.remove()
+						}
+					}) */
+
+					/* it('should handle form events', async () => {
+						const form = document.createElement('form')
+						form.innerHTML = `
+							<input type="text" name="name" required />
+							<input type="email" name="email" required />
+							<button type="submit">Submit</button>
+						`
+						document.body.appendChild(form)
+
+						try {
+							const formSignal = fromEvents(
+								{ submitted: false, valid: false },
+								'form',
+								{
+									submit: ({ event, target, value }) => {
+										event.preventDefault()
+										const formData = new FormData(target)
+										return {
+											submitted: true,
+											valid: target.checkValidity(),
+											data: Object.fromEntries(formData),
+										}
+									},
+									input: ({ target, value }) => {
+										return {
+											...value,
+											valid: target.checkValidity(),
+										}
+									},
+								},
+							)(document.body)
+
+							// Use effect to watch signal
+							let formState = { submitted: false, valid: false }
+							const cleanup = effect(() => {
+								formState = formSignal.get()
+							})
+
+							// Initial state
+							assert.deepEqual(formState, {
+								submitted: false,
+								valid: false,
+							})
+
+							// Fill form
+							const nameInput =
+								form.querySelector('input[name="name"]')
+							const emailInput = form.querySelector(
+								'input[name="email"]',
+							)
+
+							nameInput.value = 'John Doe'
+							nameInput.dispatchEvent(
+								new Event('input', { bubbles: true }),
+							)
+							await microtask()
+
+							emailInput.value = 'john@example.com'
+							emailInput.dispatchEvent(
+								new Event('input', { bubbles: true }),
+							)
+							await microtask()
+
+							// Should be valid now
+							assert.isTrue(formState.valid)
+
+							// Submit form
+							form.dispatchEvent(new Event('submit'))
+							await microtask()
+
+							assert.isTrue(formState.submitted)
+							assert.isTrue(formState.valid)
+							assert.deepEqual(formState.data, {
+								name: 'John Doe',
+								email: 'john@example.com',
+							})
+
+							cleanup()
+						} finally {
+							form.remove()
+						}
+					}) */
+
+					/* it('should reproduce fromEvents component issue', async () => {
+						// This test reproduces a specific component integration issue
+						component(
+							'test-fromevents-component',
+							{
+								clickCount: 0,
+								lastEvent: '',
+							},
+							el => {
+								const clickSignal = fromEvents(0, 'button', {
+									click: ({ value, target }) => {
+										el.lastEvent = `clicked ${target.textContent}`
+										return value + 1
+									},
+								})(el)
+
+								return () => {
+									el.clickCount = clickSignal.get()
+								}
+							},
+						)
+
+						const container = document.createElement(
+							'test-fromevents-component',
+						)
+						container.innerHTML = `
+							<button>Button 1</button>
+							<button>Button 2</button>
+						`
+						document.body.appendChild(container)
+
+						try {
+							await customElements.whenDefined(
+								'test-fromevents-component',
+							)
+							await animationFrame()
+
+							// Initial state
+							assert.equal(container.clickCount, 0)
+							assert.equal(container.lastEvent, '')
+
+							// Click first button
+							const button1 = container.querySelector('button')
+							button1.click()
+							await animationFrame()
+
+							assert.equal(container.clickCount, 1)
+							assert.equal(
+								container.lastEvent,
+								'clicked Button 1',
+							)
+
+							// Click second button
+							const button2 =
+								container.querySelectorAll('button')[1]
+							button2.click()
+							await animationFrame()
+
+							assert.equal(container.clickCount, 2)
+							assert.equal(
+								container.lastEvent,
+								'clicked Button 2',
+							)
+						} finally {
+							container.remove()
+						}
+					}) */
+
+					it('should handle custom events', async () => {
+						const container = document.createElement('div')
+						container.className = 'custom-events'
+						document.body.appendChild(container)
+
+						try {
+							const customSignal = fromEvents(
+								{ count: 0, data: null },
+								'.custom-events',
+								{
+									'custom:increment': ({ value, event }) => ({
+										count:
+											value.count
+											+ (event.detail?.amount || 1),
+										data: event.detail,
+									}),
+									'custom:reset': ({ value }) => ({
+										count: 0,
+										data: value.data,
+									}),
+								},
+							)(container)
+
+							// Use effect to watch signal
+							let result = { count: 0, data: null }
+							const cleanup = effect(() => {
+								result = customSignal.get()
+							})
+
+							// Initial state
+							assert.deepEqual(result, { count: 0, data: null })
+
+							// Dispatch custom increment event
+							container.dispatchEvent(
+								new CustomEvent('custom:increment', {
+									detail: { amount: 5, message: 'hello' },
+								}),
+							)
+							await microtask()
+
+							assert.equal(result.count, 5)
+							assert.deepEqual(result.data, {
+								amount: 5,
+								message: 'hello',
+							})
+
+							// Dispatch another increment
+							container.dispatchEvent(
+								new CustomEvent('custom:increment', {
+									detail: { amount: 3 },
+								}),
+							)
+							await microtask()
+
+							assert.equal(result.count, 8)
+
+							// Reset
+							container.dispatchEvent(
+								new CustomEvent('custom:reset'),
+							)
+							await microtask()
+
+							assert.equal(result.count, 0)
+							assert.deepEqual(result.data, { amount: 3 }) // Previous data preserved
+
+							cleanup()
+						} finally {
+							container.remove()
+						}
+					})
+
+					/* it('should handle multiple event listeners (click and keyup)', async () => {
+						const input = document.createElement('input')
+						input.type = 'text'
+						input.className = 'multi-event'
+						document.body.appendChild(input)
+
+						const button = document.createElement('button')
+						button.className = 'multi-event'
+						button.textContent = 'Click me'
+						document.body.appendChild(button)
+
+						try {
+							const multiSignal = fromEvents(
+								{
+									clicks: 0,
+									keyups: 0,
+									lastKey: '',
+									lastValue: '',
+								},
+								'.multi-event',
+								{
+									click: ({ value, target }) => ({
+										...value,
+										clicks: value.clicks + 1,
+										lastElement:
+											target.tagName.toLowerCase(),
+									}),
+									keyup: ({ value, event, target }) => ({
+										...value,
+										keyups: value.keyups + 1,
+										lastKey: event.key,
+										lastValue: target.value,
+									}),
+								},
+							)(document.body)
+
+							// Use effect to watch signal
+							let result = {
+								clicks: 0,
+								keyups: 0,
+								lastKey: '',
+								lastValue: '',
+							}
+							const cleanup = effect(() => {
+								result = multiSignal.get()
+							})
+
+							// Initial state
+							assert.equal(result.clicks, 0)
+							assert.equal(result.keyups, 0)
+
+							// Click button
+							button.click()
+							await microtask()
+
+							assert.equal(result.clicks, 1)
+							assert.equal(result.keyups, 0)
+							assert.equal(result.lastElement, 'button')
+
+							// Type in input
+							input.value = 'test'
+							input.dispatchEvent(
+								new KeyboardEvent('keyup', { key: 't' }),
+							)
+							await microtask()
+
+							assert.equal(result.clicks, 1)
+							assert.equal(result.keyups, 1)
+							assert.equal(result.lastKey, 't')
+							assert.equal(result.lastValue, 'test')
+
+							// Click input (should also trigger click handler)
+							input.click()
+							await microtask()
+
+							assert.equal(result.clicks, 2)
+							assert.equal(result.keyups, 1)
+							assert.equal(result.lastElement, 'input')
+
+							cleanup()
+						} finally {
+							input.remove()
+							button.remove()
+						}
+						}) */
+				})
+			})
+		</script>
+	</body>
+</html>

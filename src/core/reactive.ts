@@ -7,6 +7,7 @@ import {
 
 import type { Component, ComponentProps } from '../component'
 import type { LooseExtractor } from './dom'
+import { InvalidEffectsError } from './errors'
 import { LOG_ERROR, elementName, isString, log, valueString } from './util'
 
 /* === Types === */
@@ -33,6 +34,43 @@ type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 const RESET: any = Symbol('RESET')
 
 /* === Exported Functions === */
+
+/**
+ * Run one or more effect functions on a component's element
+ *
+ * @since 0.14.0
+ * @param {Effects<P, E>} effects - Effect functions to run
+ * @param {Component<P>} host - Component host element
+ * @param {E} target - Target element
+ * @returns {Cleanup} - Cleanup function that runs collected cleanup functions
+ * @throws {InvalidEffectsError} - If the effects are invalid
+ */
+const runEffects = <P extends ComponentProps, E extends Element = Component<P>>(
+	effects: Effects<P, E>,
+	host: Component<P>,
+	target: E = host as unknown as E,
+): void | Cleanup => {
+	try {
+		if (effects instanceof Promise) throw effects
+		if (!Array.isArray(effects)) return effects(host, target)
+		const cleanups = effects
+			.filter(isFunction)
+			.map(effect => effect(host, target))
+		return () => {
+			cleanups.filter(isFunction).forEach(cleanup => cleanup())
+			cleanups.length = 0
+		}
+	} catch (error) {
+		if (error instanceof Promise) {
+			error.then(() => runEffects(effects, host, target))
+		} else {
+			throw new InvalidEffectsError(
+				host,
+				error instanceof Error ? error : new Error(String(error)),
+			)
+		}
+	}
+}
 
 const resolveReactive = <
 	T extends {},
@@ -72,4 +110,11 @@ const resolveReactive = <
 
 /* === Exports === */
 
-export { type Effect, type Effects, type Reactive, RESET, resolveReactive }
+export {
+	type Effect,
+	type Effects,
+	type Reactive,
+	RESET,
+	resolveReactive,
+	runEffects,
+}

@@ -35,8 +35,6 @@ export {
 	type Initializer,
 	type SignalProducer,
 	type MethodProducer,
-	type ElementSelector,
-	type ElementSelectors,
 	type Setup,
 	component,
 } from './src/component'
@@ -55,14 +53,14 @@ export {
 	type LooseExtractor,
 	type Parser,
 	type ParserOrFallback,
+	type ElementUsage,
+	type ElementsUsage,
+	type ElementEffects,
+	type Helpers,
 	fromDOM,
 	fromSelector,
 	getFallback,
 	isParser,
-	reduced,
-	read,
-	useElement,
-	useComponent,
 } from './src/core/dom'
 export {
 	type Effect,
@@ -90,11 +88,11 @@ export {
 export {
 	CircularMutationError,
 	InvalidComponentNameError,
-	InvalidCustomElementError,
 	InvalidPropertyNameError,
 	InvalidEffectsError,
 	InvalidSignalError,
 	MissingElementError,
+	DependencyTimeoutError,
 } from './src/core/errors'
 
 // Lib

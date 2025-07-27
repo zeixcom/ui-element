@@ -8,7 +8,7 @@
 
 > **SignalProducer**\<`T`, `C`\> = [`Extractor`](Extractor.md)\<[`MaybeSignal`](MaybeSignal.md)\<`T`\>, `C`\>
 
-Defined in: [src/component.ts:81](https://github.com/zeixcom/ui-element/blob/e3fa79e199a97014fba6af2a6cf8cb55be8076c3/src/component.ts#L81)
+Defined in: [src/component.ts:79](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/component.ts#L79)
 
 ## Type Parameters
 

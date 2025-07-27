@@ -155,17 +155,13 @@ export default component(
 			]),
 
 			// Render content
-			first(
-				outlet,
+			first(outlet, [
 				dangerouslySetInnerHTML(content, { allowScripts: true }),
-			),
+			]),
 
 			// Error display with aria-live
-			first(
-				'card-callout',
-				show(() => !!error.get()),
-			),
-			first('.error', setText(error)),
+			first('card-callout', [show(() => !!error.get())]),
+			first('.error', [setText(error)]),
 
 			// Handle browser history navigation
 			() => {

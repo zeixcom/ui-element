@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+	<head>
+		<title>toggleClass Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<update-class active="0">
+			<ul>
+				<li class="selected">Item 0</li>
+				<li>Item 1</li>
+				<li>Item 2</li>
+			</ul>
+		</update-class>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				component,
+				asNumber,
+				toggleClass,
+				RESET,
+			} from '../../index.dev.js'
+
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+
+			component(
+				'update-class',
+				{
+					active: asNumber(),
+				},
+				(el, { all }) =>
+					all('li', (target, index) =>
+						toggleClass('selected', () => el.active === index)
+					),
+			)
+
+			runTests(() => {
+				describe('toggleClass', function () {
+					it('should prove toggleClass() working correctly', async function () {
+						const component = document.querySelector('update-class')
+						const items = Array.from(
+							component.querySelectorAll('li'),
+						)
+						await animationFrame()
+						assert.equal(
+							items[0].classList.contains('selected'),
+							true,
+							'First item should have selected class from active attribute',
+						)
+						assert.equal(
+							items[2].classList.contains('selected'),
+							false,
+							'Third item should not have selected class removed',
+						)
+						component.active = 1
+						await animationFrame()
+						assert.equal(
+							items[1].classList.contains('selected'),
+							true,
+							'Second item should have selected class from active signal',
+						)
+						assert.equal(
+							items[0].classList.contains('selected'),
+							false,
+							'First item should not have selected class removed',
+						)
+						component.active = RESET
+						await animationFrame()
+						assert.equal(
+							items[1].classList.contains('selected'),
+							false,
+							'Second item should have selected class removed',
+						)
+						// restore can't work because the selected class for each item is derived on the fly and not stored in a signal
+						// assert.equal(items[2].classList.contains('selected'), true, 'Third item should not have selected class restored to server-rendered version')
+					})
+				})
+			})
+		</script>
+	</body>
+</html>
