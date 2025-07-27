@@ -12,29 +12,40 @@ author: Esther Brunner
 
 architecture_overview: >
   UIElement extends HTMLElement to create reactive Web Components with three main parts:
-  1. Reactive properties defined with initializers (direct values, attribute parsers like asBoolean / asInteger, or signal producers like fromEvents / fromSelector)
-  2. A setup function that returns an array of effect functions to run on component connection
-  3. A rich effects system for declarative DOM manipulation (setText, toggleClass, on, etc.)
+  1. Reactive properties defined with initializers (direct values, attribute parsers like asBoolean/asInteger, or signal producers like fromEvents/fromSelector)
+  2. A setup function that receives helper functions and returns effects to run on component connection
+  3. A rich effects system for declarative DOM manipulation with proper cleanup management
 
   Built on @zeix/cause-effect signals for efficient reactivity. Signal producers enable reactive data flow between components by observing DOM changes and events. Supports both Light DOM and Shadow DOM.
-  Components follow standard Web Components lifecycle with connectedCallback / disconnectedCallback.
+  Components follow standard Web Components lifecycle with connectedCallback/disconnectedCallback and automatic dependency resolution.
 
 core_api: >
   component(name, init, setup) - Main function to define components
-  - name: Custom element tag name (kebab-case)
-  - init: Object defining reactive properties with their parsers/initializers/signal producers
-  - setup: (host, {first, all}) => Effect[] - returns array of effects to apply
+  - name: Custom element tag name (kebab-case, must contain hyphen)
+  - init: Object defining reactive properties with their initializers/parsers/signal producers
+  - setup: (host, helpers) => Effects - function receiving host component and helper functions, returns effects
 
-  Element selection helpers:
-  - first(selector, ...effects) - apply effects to first matching element
-  - all(selector, ...effects) - apply effects to all matching elements
+  Helper functions (provided to setup function):
+  - useElement(selector, required?) - get first descendant element matching selector
+  - useElements(selector, required?) - get all descendant elements matching selector
+  - first(selector, effects, required?) - apply effects to first matching descendant
+  - all(selector, effects, required?) - apply effects to all matching descendants
 
-  DOM utilities:
-  - read(host, selector, mapFn) - read from descendant element and map the result
-  - reduced(host, selector, reducerFn, initialValue) - reduce descendant elements to computed value
-  - requireDescendant(host, selector) - assert that element contains required descendant
+  Component signal management:
+  - host.getSignal(prop) - get signal for a component property
+  - host.setSignal(prop, signal) - set signal for a component property
+  - Automatic dependency resolution for custom elements in DOM queries
 
-  Common effects: setText(), setProperty(), show(), setAttribute(), toggleAttribute(), toggleClass(), setStyle(), on(), emitEvent(), pass(), dangerouslySetInnerHTML()
+  Effects system:
+  - Effects are functions: (host, target) => Cleanup | void
+  - Effects can be single function, array of functions, or Promise resolving to effects
+  - Automatic cleanup management when component disconnects or effects re-run
+
+dom_utilities: >
+  - fromDOM(fallback, extractors) - extract values from DOM elements using selector-extractor pairs
+  - fromSelector(selector) - reactive computed signal of elements matching CSS selector
+  - observeSubtree(parent, selector, callback) - observe DOM mutations matching selector
+  - Property validation prevents conflicts with HTMLElement properties and reserved words
 
 attribute_parsers: >
   Type-safe parsers that convert HTML attributes to typed component properties:
@@ -44,11 +55,11 @@ attribute_parsers: >
   - asBoolean() - boolean attributes (presence = true)
   - asEnum(options) - constrained string values
   - asJSON() - JSON.parse() for complex data
-  - RESET - special symbol to read initial value from DOM: string
+  - RESET - special symbol to read initial value from DOM
 
 signal_producers: >
   Functions that create reactive data flows by observing DOM elements and events:
-  - fromSelector(selector) - reactive array of elements matching CSS selector, updates when DOM changes
+  - fromSelector(selector) - reactive computed array of elements matching CSS selector, updates when DOM changes
   - fromEvents(initialize, selector, eventTransformers) - transforms events into reactive values
     * initialize: initial value or function to compute initial value
     * selector: CSS selector for event source elements
@@ -58,10 +69,53 @@ signal_producers: >
   These enable parent components to coordinate child state without tight coupling
 
 context_system: >
-  Global state sharing between components:
+  Global state sharing between components using Context Protocol:
+  - Context<name, SignalType> - typed context definitions
   - provideContexts(contexts) - provide multiple contexts to descendant components
   - fromContext(context, fallback) - consume state from ancestor providers
-  - Context<name, SignalType> - typed context definitions
+  - Uses standard 'context-request' events for decoupled communication
+  - Supports subscription-based updates when context values change
+
+effects_api: >
+  Core effects for DOM manipulation:
+  - on(eventType, handler, options?) - attach event listener with cleanup
+  - emitEvent(type, reactive) - emit custom events with reactive detail values
+  - Handler functions receive { event, host, target } and can return property updates
+  - Event handlers can update component state by returning { [prop]: value } object
+  - Automatic batching of property updates from event handlers
+
+error_handling: >
+  Comprehensive error system with specific error types:
+  - InvalidComponentNameError - invalid custom element names
+  - InvalidPropertyNameError - property names conflicting with HTMLElement or reserved words
+  - InvalidSignalError - attempting to set non-signal values
+  - MissingElementError - required descendant elements not found
+  - CircularMutationError - infinite mutation loops in fromSelector
+  - DependencyTimeoutError - custom element dependencies not resolved in time
+  - InvalidEffectsError - setup function returns invalid effects
+
+bundled_parsers: >
+  Type-safe attribute parsers (tree-shakeable):
+  - asBoolean() - boolean attributes (presence = true, 'false' = false)
+  - asInteger(fallback?) - integer parsing with hex/scientific notation support
+  - asNumber(fallback?) - number parsing with validation
+  - asString(fallback?) - string values with fallback
+  - asEnum(validOptions) - constrained string values with case-insensitive matching
+  - asJSON(fallback) - JSON.parse() for complex data with error handling
+
+bundled_effects: >
+  DOM manipulation effects (tree-shakeable):
+  - setText(reactive) - set element text content
+  - setProperty(prop, reactive) - set element property
+  - show(reactive) - toggle element visibility
+  - setAttribute(attr, reactive) - set HTML attribute
+  - toggleAttribute(attr, reactive) - toggle attribute presence
+  - toggleClass(className, reactive) - toggle CSS class
+  - setStyle(prop, reactive) - set CSS style property
+  - dangerouslySetInnerHTML(reactive, options?) - set innerHTML with sanitization options
+  - pass(reactive) - pass reactive values through without DOM effects
+  - callMethod(method, ...args) - call element methods
+  - focus(reactive) - focus element conditionally
 
 capabilities: >
   - Create reactive Web Components with declarative DOM updates
@@ -71,20 +125,24 @@ capabilities: >
   - Component coordination through signal producers (parent observes child state)
   - Data flow patterns: pass state down, events up, context for global state
   - Global state management via context providers
+  - Automatic dependency resolution for custom elements
   - Light DOM by default, Shadow DOM when needed for encapsulation
   - Integration with any backend, SSG, or existing HTML
-  - Utilities for reading and reducing descendant element data
+  - Comprehensive error handling and validation
+  - Memory leak prevention through automatic cleanup
 
 limitations: >
-  - Smaller ecosystem compared to React / Vue / Angular
+  - Smaller ecosystem compared to React/Vue/Angular
   - No built-in routing or state persistence (but possible to implement as components)
   - Requires understanding of Web Components and signal-based reactivity
   - Limited to modern browsers that support Custom Elements
+  - Property names cannot conflict with HTMLElement properties or reserved words
 
 intended_use: >
   Perfect for developers building performance-critical applications who want:
   - Fine-grained reactivity without virtual DOM overhead
   - Progressive enhancement of existing HTML
-  - Type-safe component APIs
+  - Type-safe component APIs with compile-time validation
   - Integration with server-rendered content
   - Standards-based Web Components that work anywhere
+  - Robust error handling and debugging capabilities
