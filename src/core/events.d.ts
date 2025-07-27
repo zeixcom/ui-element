@@ -58,7 +58,7 @@ declare const fromEvents: <
  * Effect for attaching an event listener to an element.
  * Provides proper cleanup when the effect is disposed.
  *
- * @since 0.12.0
+ * @since 0.14.0
  * @param {K} type - Event type
  * @param {EventHandler<P, E, EventType<K>>} handler - Event handler function
  * @param {AddEventListenerOptions | boolean} options - Event listener options

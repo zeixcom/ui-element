@@ -1,0 +1,455 @@
+<!doctype html>
+<html>
+	<head>
+		<title>callMethod Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<call-method-test value="initial" action="focus">
+			<input type="text" placeholder="Test input" />
+			<button>Test button</button>
+			<form>
+				<input name="test" value="form-value" />
+				<button type="submit">Submit</button>
+			</form>
+			<div class="custom-element"></div>
+		</call-method-test>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				component,
+				asString,
+				asBoolean,
+				callMethod,
+				setText,
+				setAttribute,
+				effect,
+				state,
+				RESET,
+			} from '../../index.dev.js'
+
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+
+			component(
+				'call-method-test',
+				{
+					value: asString(),
+					action: asString(),
+					shouldFocus: asBoolean(false),
+					shouldSubmit: asBoolean(false),
+				},
+				(el, { first }) => [
+					// Test callMethod with simple method name
+					first('input', callMethod('action')),
+
+					// Test callMethod with method and arguments
+					first('button', callMethod('scrollIntoView', () => ({ behavior: 'smooth' }))),
+
+					// Test callMethod with conditional execution
+					first('input', callMethod('focus', 'shouldFocus')),
+
+					// Test callMethod on form
+					first('form', callMethod('submit', 'shouldSubmit')),
+
+					// Test callMethod with custom method
+					first('.custom-element', callMethod('customMethod', () => [el.value, 'extra-arg'])),
+				],
+			)
+
+			runTests(() => {
+				describe('callMethod()', () => {
+					it('should call method when property value matches method name', async () => {
+						const el = document.querySelector('call-method-test')
+						const input = el.querySelector('input')
+
+						// Mock the focus method to track calls
+						let focusCalled = false
+						const originalFocus = input.focus
+						input.focus = function() {
+							focusCalled = true
+							return originalFocus.call(this)
+						}
+
+						await animationFrame()
+
+						// Initially action is "focus", so focus should be called
+						assert.isTrue(focusCalled, 'Should call focus method when action is "focus"')
+
+						// Reset and change action
+						focusCalled = false
+						el.action = 'blur'
+						await animationFrame()
+
+						// Now blur should be called (but we can't easily test blur)
+						// The important thing is that focus wasn't called again
+						assert.isFalse(focusCalled, 'Should not call focus when action changes')
+
+						// Restore original method
+						input.focus = originalFocus
+					})
+
+					it('should call method with arguments from function', async () => {
+						const el = document.querySelector('call-method-test')
+						const button = el.querySelector('button')
+
+						// Mock scrollIntoView to track arguments
+						let scrollCalled = false
+						let scrollArgs = null
+						button.scrollIntoView = function(options) {
+							scrollCalled = true
+							scrollArgs = options
+						}
+
+						// Set action to trigger the method
+						el.action = 'scrollIntoView'
+						await animationFrame()
+
+						assert.isTrue(scrollCalled, 'Should call scrollIntoView method')
+						assert.deepEqual(
+							scrollArgs,
+							{ behavior: 'smooth' },
+							'Should pass correct arguments to method'
+						)
+					})
+
+					it('should call method conditionally based on predicate', async () => {
+						const el = document.querySelector('call-method-test')
+						const input = el.querySelector('input')
+
+						// Mock focus method
+						let focusCallCount = 0
+						const originalFocus = input.focus
+						input.focus = function() {
+							focusCallCount++
+							return originalFocus.call(this)
+						}
+
+						await animationFrame()
+
+						// Initially shouldFocus is false, so focus should not be called
+						assert.equal(focusCallCount, 0, 'Should not call focus when shouldFocus is false')
+
+						// Enable focus
+						el.shouldFocus = true
+						await animationFrame()
+
+						assert.equal(focusCallCount, 1, 'Should call focus when shouldFocus becomes true')
+
+						// Disable focus again
+						el.shouldFocus = false
+						await animationFrame()
+
+						// Focus should not be called again
+						assert.equal(focusCallCount, 1, 'Should not call focus when shouldFocus becomes false')
+
+						// Restore original method
+						input.focus = originalFocus
+					})
+
+					it('should handle form submission conditionally', async () => {
+						const el = document.querySelector('call-method-test')
+						const form = el.querySelector('form')
+
+						// Mock submit method and preventDefault to avoid actual submission
+						let submitCalled = false
+						const originalSubmit = form.submit
+						form.submit = function() {
+							submitCalled = true
+						}
+
+						// Add event listener to prevent actual form submission
+						form.addEventListener('submit', (e) => e.preventDefault())
+
+						await animationFrame()
+
+						// Initially shouldSubmit is false
+						assert.isFalse(submitCalled, 'Should not submit form when shouldSubmit is false')
+
+						// Enable submission
+						el.shouldSubmit = true
+						await animationFrame()
+
+						assert.isTrue(submitCalled, 'Should submit form when shouldSubmit becomes true')
+
+						// Restore original method
+						form.submit = originalSubmit
+					})
+
+					it('should call custom methods with multiple arguments', async () => {
+						const el = document.querySelector('call-method-test')
+						const customElement = el.querySelector('.custom-element')
+
+						// Add custom method to element
+						let methodCalled = false
+						let methodArgs = null
+						customElement.customMethod = function(...args) {
+							methodCalled = true
+							methodArgs = args
+						}
+
+						// Set action to trigger custom method
+						el.action = 'customMethod'
+						await animationFrame()
+
+						assert.isTrue(methodCalled, 'Should call custom method')
+						assert.deepEqual(
+							methodArgs,
+							['initial', 'extra-arg'],
+							'Should pass correct arguments to custom method'
+						)
+
+						// Change value and test again
+						methodCalled = false
+						el.value = 'updated'
+						await animationFrame()
+
+						assert.isTrue(methodCalled, 'Should call custom method again when value changes')
+						assert.deepEqual(
+							methodArgs,
+							['updated', 'extra-arg'],
+							'Should pass updated arguments to custom method'
+						)
+					})
+
+					it('should handle RESET value properly', async () => {
+						const el = document.querySelector('call-method-test')
+						const input = el.querySelector('input')
+
+						// Mock focus method
+						let focusCallCount = 0
+						const originalFocus = input.focus
+						input.focus = function() {
+							focusCallCount++
+							return originalFocus.call(this)
+						}
+
+						// Change action then reset
+						el.action = 'blur'
+						await animationFrame()
+
+						el.action = RESET
+						await animationFrame()
+
+						// Should call focus again (original action was "focus")
+						assert.equal(focusCallCount, 1, 'Should call method when RESET to original value')
+
+						// Restore original method
+						input.focus = originalFocus
+					})
+
+					it('should work with signal objects directly', async () => {
+						const methodSignal = state('click')
+						const element = document.createElement('button')
+						element.textContent = 'Test Button'
+						document.body.appendChild(element)
+
+						try {
+							// Mock click method
+							let clickCalled = false
+							const originalClick = element.click
+							element.click = function() {
+								clickCalled = true
+								return originalClick.call(this)
+							}
+
+							// Create mock host component
+							const host = {
+								getSignal: () => methodSignal,
+							}
+
+							// Apply callMethod with signal
+							const cleanup = callMethod(methodSignal)(host, element)
+							await animationFrame()
+
+							assert.isTrue(clickCalled, 'Should call method from signal value')
+
+							// Change signal value
+							clickCalled = false
+							methodSignal.set('focus')
+							await animationFrame()
+
+							// Focus should be called now (if element supports it)
+							assert.isFalse(clickCalled, 'Should not call click when signal changes')
+
+							cleanup()
+							// Restore original method
+							element.click = originalClick
+						} finally {
+							element.remove()
+						}
+					})
+
+					it('should handle non-existent methods gracefully', async () => {
+						const element = document.createElement('div')
+						document.body.appendChild(element)
+
+						try {
+							// Create mock host component
+							const host = {
+								getSignal: () => ({ get: () => 'nonExistentMethod' }),
+							}
+
+							// This should not throw an error
+							const cleanup = callMethod(() => 'nonExistentMethod')(host, element)
+							await animationFrame()
+
+							// Element should still exist and be unchanged
+							assert.equal(element.tagName, 'DIV', 'Element should remain unchanged')
+
+							cleanup()
+						} finally {
+							element.remove()
+						}
+					})
+
+					it('should work with method arguments as signals', async () => {
+						const argsSignal = state({ behavior: 'auto' })
+						const element = document.createElement('div')
+						document.body.appendChild(element)
+
+						try {
+							// Mock scrollIntoView
+							let scrollCalled = false
+							let scrollArgs = null
+							element.scrollIntoView = function(options) {
+								scrollCalled = true
+								scrollArgs = options
+							}
+
+							// Create mock host component
+							const host = {
+								getSignal: () => argsSignal,
+							}
+
+							// Apply callMethod with signal arguments
+							const cleanup = callMethod('scrollIntoView', argsSignal)(host, element)
+							await animationFrame()
+
+							assert.isTrue(scrollCalled, 'Should call method with signal arguments')
+							assert.deepEqual(
+								scrollArgs,
+								{ behavior: 'auto' },
+								'Should pass signal value as arguments'
+							)
+
+							// Update signal
+							scrollCalled = false
+							argsSignal.set({ behavior: 'smooth', block: 'center' })
+							await animationFrame()
+
+							assert.isTrue(scrollCalled, 'Should call method again when arguments change')
+							assert.deepEqual(
+								scrollArgs,
+								{ behavior: 'smooth', block: 'center' },
+								'Should pass updated signal value as arguments'
+							)
+
+							cleanup()
+						} finally {
+							element.remove()
+						}
+					})
+
+					it('should handle complex reactive patterns', async () => {
+						const actionSignal = state('none')
+						const enabledSignal = state(false)
+						const valueSignal = state('test')
+						const element = document.createElement('input')
+						element.type = 'text'
+						document.body.appendChild(element)
+
+						try {
+							// Mock methods
+							let focusCalled = false
+							let selectCalled = false
+							let setValue = null
+
+							const originalFocus = element.focus
+							const originalSelect = element.select
+							const originalSetValue = element.value
+
+							element.focus = function() {
+								focusCalled = true
+								return originalFocus.call(this)
+							}
+
+							element.select = function() {
+								selectCalled = true
+								return originalSelect.call(this)
+							}
+
+							Object.defineProperty(element, 'value', {
+								get: () => originalSetValue,
+								set: (val) => {
+									setValue = val
+									originalSetValue = val
+								}
+							})
+
+							// Create mock host component
+							const host = {
+								getSignal: prop => {
+									if (prop === 'action') return actionSignal
+									if (prop === 'enabled') return enabledSignal
+									if (prop === 'value') return valueSignal
+									return { get: () => null }
+								},
+							}
+
+							// Apply multiple callMethod effects
+							const cleanup1 = callMethod(
+								'focus',
+								() => actionSignal.get() === 'focus' && enabledSignal.get()
+							)(host, element)
+
+							const cleanup2 = callMethod(
+								'select',
+								() => actionSignal.get() === 'select' && enabledSignal.get()
+							)(host, element)
+
+							await animationFrame()
+
+							// Initially nothing should happen
+							assert.isFalse(focusCalled, 'Should not call focus initially')
+							assert.isFalse(selectCalled, 'Should not call select initially')
+
+							// Enable and set action to focus
+							enabledSignal.set(true)
+							actionSignal.set('focus')
+							await animationFrame()
+
+							assert.isTrue(focusCalled, 'Should call focus when enabled and action is focus')
+							assert.isFalse(selectCalled, 'Should not call select')
+
+							// Reset and change to select
+							focusCalled = false
+							actionSignal.set('select')
+							await animationFrame()
+
+							assert.isFalse(focusCalled, 'Should not call focus when action changes')
+							assert.isTrue(selectCalled, 'Should call select when action is select')
+
+							// Disable
+							selectCalled = false
+							enabledSignal.set(false)
+							await animationFrame()
+
+							assert.isFalse(selectCalled, 'Should not call select when disabled')
+
+							cleanup1()
+							cleanup2()
+							// Restore original methods
+							element.focus = originalFocus
+							element.select = originalSelect
+						} finally {
+							element.remove()
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

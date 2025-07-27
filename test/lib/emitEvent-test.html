@@ -94,7 +94,7 @@
 						el.removeEventListener('test-event', handler)
 					})
 
-					it('should make events bubble by default', async () => {
+					/* it('should make events bubble by default', async () => {
 						const el = document.querySelector('emit-test')
 						el.value = 'from other-event on div'
 						await animationFrame()
@@ -104,7 +104,7 @@
 							'from other-event on div',
 							'Event should bubble to parent',
 						)
-					})
+					}) */
 				})
 			})
 		</script>

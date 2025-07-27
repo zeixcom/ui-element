@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { readFileSync, readdirSync } from 'fs'
+import { readFileSync, readdirSync, statSync } from 'fs'
 import process from 'node:process'
 import { join } from 'path'
 
@@ -119,35 +119,73 @@ const COMMON_ISSUES = {
 				imports.forEach(imp => importedFunctions.add(imp))
 			}
 
-			// Find used functions that should be imported (not test framework functions)
+			// Find used functions that should be imported (based on actual exports from index.ts)
 			const libraryFunctions = [
+				// From Cause & Effect
+				'UNSET',
+				'state',
+				'computed',
+				'effect',
+				'batch',
+				'enqueue',
+				'isState',
+				'isComputed',
+				'isSignal',
+				'toSignal',
+				// Core
+				'component',
+				'log',
+				'LOG_DEBUG',
+				'LOG_INFO',
+				'LOG_WARN',
+				'LOG_ERROR',
+				'fromDOM',
+				'fromSelector',
+				'getFallback',
+				'isParser',
+				'RESET',
+				'resolveReactive',
+				'emitEvent',
+				'fromEvents',
+				'on',
+				'fromContext',
+				'provideContexts',
+				// Errors
+				'CircularMutationError',
+				'InvalidComponentNameError',
+				'InvalidPropertyNameError',
+				'InvalidEffectsError',
+				'InvalidSignalError',
+				'MissingElementError',
+				'DependencyTimeoutError',
+				// Lib - Parsers
+				'asBoolean',
+				'asInteger',
+				'asNumber',
+				'asString',
+				'asEnum',
+				'asJSON',
+				// Lib - Effects
+				'updateElement',
+				'insertOrRemoveElement',
 				'setText',
 				'setProperty',
+				'show',
 				'setAttribute',
 				'toggleAttribute',
 				'toggleClass',
 				'setStyle',
-				'show',
-				'on',
-				'emit',
-				'pass',
-				'state',
-				'computed',
-				'effect',
-				'component',
-				'updateElement',
-				'insertOrRemoveElement',
 				'dangerouslySetInnerHTML',
-				'RESET',
-				'UNSET',
-				'asString',
-				'asNumber',
-				'asInteger',
-				'asBoolean',
-				'fromDescendants',
-				'fromDescendant',
-				'fromEvent',
-				'fromSelector',
+				'pass',
+				// Lib - Extractors
+				'getText',
+				'getProperty',
+				'hasAttribute',
+				'getAttribute',
+				'hasClass',
+				'getStyle',
+				'getLabel',
+				'getDescription',
 			]
 
 			libraryFunctions.forEach(fn => {
@@ -289,6 +327,31 @@ function validateFile(filePath) {
 	}
 }
 
+function findTestFiles(dir, files = []) {
+	try {
+		const items = readdirSync(dir)
+
+		for (const item of items) {
+			const fullPath = join(dir, item)
+			const stat = statSync(fullPath)
+
+			if (stat.isDirectory()) {
+				// Recursively search subdirectories
+				findTestFiles(fullPath, files)
+			} else if (
+				item.endsWith('-test.html') ||
+				item.endsWith('-test.js')
+			) {
+				files.push(fullPath)
+			}
+		}
+	} catch (error) {
+		console.error(`❌ Error reading directory ${dir}: ${error.message}`)
+	}
+
+	return files
+}
+
 function main() {
 	console.log('🔍 Validating test files...')
 
@@ -296,10 +359,7 @@ function main() {
 	let allValid = true
 
 	try {
-		const files = readdirSync(testDir)
-		const testFiles = files.filter(
-			file => file.endsWith('-test.html') || file.endsWith('-test.js'),
-		)
+		const testFiles = findTestFiles(testDir)
 
 		if (testFiles.length === 0) {
 			console.log('⚠️  No test files found in test directory')
@@ -308,8 +368,7 @@ function main() {
 
 		console.log(`Found ${testFiles.length} test file(s)`)
 
-		for (const file of testFiles) {
-			const filePath = join(testDir, file)
+		for (const filePath of testFiles) {
 			const isValid = validateFile(filePath)
 			if (!isValid) {
 				allValid = false

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>asNumber Tests</title>
+	</head>
+	<body>
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import { asNumber } from '../../index.dev.js'
+
+			runTests(() => {
+				const body = document.querySelector('body')
+
+				describe('asNumber()', function () {
+					it('should be 0 for empty string', function () {
+						const result = asNumber()(body, '')
+						assert.equal(
+							result,
+							0,
+							'Should return 0 for boolean attribute',
+						)
+					})
+
+					it('should be 0 for non-parsable string', function () {
+						const result = asNumber()(body, 'any')
+						assert.equal(
+							result,
+							0,
+							'Should return 0 for non-parsable attribute',
+						)
+					})
+
+					it('should be 0 for undefined', function () {
+						const result = asNumber()()
+						assert.equal(
+							result,
+							0,
+							'Should return 0 for undefined attribute',
+						)
+					})
+
+					it('should be 42 for "42"', function () {
+						const result = asNumber()(body, '42')
+						assert.equal(
+							result,
+							42,
+							'Should return number for parsable attribute with integer value',
+						)
+					})
+
+					it('should be 3.14 for "3.14"', function () {
+						const result = asNumber()(body, '3.14')
+						assert.equal(
+							result,
+							3.14,
+							'Should return number for parsable attribute with floating point value',
+						)
+					})
+
+					it('should be 9007199254740991.1 for String(Number.MAX_SAFE_INTEGER + 0.1)', function () {
+						const result = asNumber()(
+							body,
+							String(Number.MAX_SAFE_INTEGER + 0.1),
+						)
+						assert.equal(
+							result,
+							9007199254740991.1,
+							'Should return number for parsable attribute with floating point value outside safe range',
+						)
+					})
+
+					it('should be -4 for " -4  "', function () {
+						const result = asNumber()(body, ' -4  ')
+						assert.equal(
+							result,
+							-4,
+							'Should return number for parsable attribute with integer value and ignored whitespace',
+						)
+					})
+
+					it('should use custom fallback for undefined', function () {
+						const result = asNumber(3.14)()
+						assert.equal(
+							result,
+							3.14,
+							'Should return custom fallback for undefined attribute',
+						)
+					})
+
+					it('should use custom fallback for null', function () {
+						const result = asNumber(2.718)(body, null)
+						assert.equal(
+							result,
+							2.718,
+							'Should return custom fallback for null attribute',
+						)
+					})
+
+					it('should be 100000 for "1e5"', function () {
+						const result = asNumber()(body, '1e5')
+						assert.equal(
+							result,
+							100000,
+							'Should parse scientific notation',
+						)
+					})
+
+					it('should be 0.0025 for "2.5e-3"', function () {
+						const result = asNumber()(body, '2.5e-3')
+						assert.equal(
+							result,
+							0.0025,
+							'Should parse negative scientific notation',
+						)
+					})
+
+					it('should be 0 for "Infinity"', function () {
+						const result = asNumber()(body, 'Infinity')
+						assert.equal(
+							result,
+							0,
+							'Should return fallback for Infinity (not finite)',
+						)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

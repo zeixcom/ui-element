@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>asBoolean Tests</title>
+	</head>
+	<body>
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import { asBoolean } from '../../index.dev.js'
+
+			runTests(() => {
+				const body = document.querySelector('body')
+
+				describe('asBoolean', function () {
+					it('should be true for empty string', function () {
+						const result = asBoolean()(body, '')
+						assert.isTrue(
+							result,
+							'Should return true for boolean attribute',
+						)
+					})
+
+					it('should be true for any string', function () {
+						const result = asBoolean()(body, 'any')
+						assert.isTrue(
+							result,
+							'Should return true for any defined attribute',
+						)
+					})
+
+					it('should be false for undefined', function () {
+						const result = asBoolean()()
+						assert.isFalse(
+							result,
+							'Should return false for undefined attribute',
+						)
+					})
+
+					it('should be false for null', function () {
+						const result = asBoolean()(body, null)
+						assert.isFalse(
+							result,
+							'Should return false for null attribute',
+						)
+					})
+
+					it('should be false for "false" string', function () {
+						const result = asBoolean()(body, 'false')
+						assert.isFalse(
+							result,
+							'Should return false for "false" string',
+						)
+					})
+
+					it('should be true for "0" string', function () {
+						const result = asBoolean()(body, '0')
+						assert.isTrue(
+							result,
+							'Should return true for "0" string (only "false" is falsy)',
+						)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,376 @@
+<!doctype html>
+<html>
+	<head>
+		<title>insertOrRemoveElement Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<create-element before="0" prepend="0" append="0" after="0">
+			<ul></ul>
+		</create-element>
+
+		<remove-element>
+			<li data-key="1">Item 1</li>
+			<li data-key="2">Item 2</li>
+			<li data-key="3">Item 3</li>
+		</remove-element>
+
+		<insert-template
+			id="insert-light"
+			before="0"
+			prepend="0"
+			append="0"
+			after="0"
+		>
+			<ul></ul>
+			<template class="p">
+				<p>Template paragraph</p>
+			</template>
+			<template class="li">
+				<li>Template list item</li>
+			</template>
+		</insert-template>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				component,
+				asNumber,
+				insertOrRemoveElement,
+			} from '../../index.dev.js'
+
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+
+			component(
+				'create-element',
+				{
+					before: asNumber(),
+					prepend: asNumber(),
+					append: asNumber(),
+					after: asNumber(),
+				},
+				(el, { first }) => [
+					first(
+						'ul',
+						insertOrRemoveElement('before', {
+							create: () => {
+								const p = document.createElement('p')
+								p.textContent = 'Before'
+								return p
+							},
+							position: 'beforebegin',
+						}),
+						insertOrRemoveElement('prepend', {
+							create: () => {
+								const li = document.createElement('li')
+								li.textContent = 'Prepend'
+								li.setAttribute('value', 'foo')
+								return li
+							},
+							position: 'afterbegin',
+						}),
+						insertOrRemoveElement('append', {
+							create: () => document.createElement('li'),
+						}),
+						insertOrRemoveElement('after', {
+							create: () => {
+								const p = document.createElement('p')
+								p.setAttribute('value', 'bar')
+								return p
+							},
+							position: 'afterend',
+						}),
+					),
+				],
+			)
+
+			component(
+				'remove-element',
+				{
+					items: [1, 2, 3],
+				},
+				(el, { all }) => [
+					all(
+						'li',
+						insertOrRemoveElement(li =>
+							el.items.includes(parseInt(li.dataset.key))
+								? 0
+								: -1,
+						),
+					),
+				],
+			)
+
+			component(
+				'insert-template',
+				{
+					before: asNumber(),
+					prepend: asNumber(),
+					append: asNumber(),
+					after: asNumber(),
+				},
+				(el, { first }) => {
+					const pTemplate = el.querySelector('.p')
+					const liTemplate = el.querySelector('.li')
+					return [
+						first(
+							'ul',
+							insertOrRemoveElement('before', {
+								create: () =>
+									document.importNode(pTemplate.content, true)
+										.firstElementChild,
+								position: 'beforebegin',
+							}),
+							insertOrRemoveElement('prepend', {
+								create: () =>
+									document.importNode(
+										liTemplate.content,
+										true,
+									).firstElementChild,
+								position: 'afterbegin',
+							}),
+							insertOrRemoveElement('append', {
+								create: () =>
+									document.importNode(
+										liTemplate.content,
+										true,
+									).firstElementChild,
+							}),
+							insertOrRemoveElement('after', {
+								create: () =>
+									document.importNode(pTemplate.content, true)
+										.firstElementChild,
+								position: 'afterend',
+							}),
+						),
+					]
+				},
+			)
+
+			runTests(() => {
+				describe('insertOrRemoveElement()', function () {
+					describe('createElement', function () {
+						let createElementComponent
+
+						before(() => {
+							createElementComponent =
+								document.querySelector('create-element')
+						})
+
+						it('should insert a paragraph before the UL', async function () {
+							createElementComponent.before = 1
+							await animationFrame()
+							const insertedParagraph =
+								createElementComponent.querySelector(
+									'p:first-child',
+								)
+							assert.isNotNull(
+								insertedParagraph,
+								'Paragraph should be inserted before the UL',
+							)
+							assert.equal(
+								insertedParagraph.textContent,
+								'Before',
+								'Paragraph should have correct text content',
+							)
+							assert.equal(
+								createElementComponent.before,
+								0,
+								'Before signal should be reset to 0',
+							)
+						})
+
+						it('should insert a LI at the beginning of the UL', async function () {
+							createElementComponent.prepend = 1
+							await animationFrame()
+							const insertedLi =
+								createElementComponent.querySelector(
+									'ul li:first-child',
+								)
+							assert.isNotNull(
+								insertedLi,
+								'LI should be inserted at the beginning of the UL',
+							)
+							assert.equal(
+								insertedLi.textContent,
+								'Prepend',
+								'LI should have correct text content',
+							)
+							assert.equal(
+								insertedLi.getAttribute('value'),
+								'foo',
+								'LI should have correct attribute',
+							)
+							assert.equal(
+								createElementComponent.prepend,
+								0,
+								'Prepend signal should be reset to 0',
+							)
+						})
+
+						it('should insert a LI at the end of the UL', async function () {
+							createElementComponent.append = 1
+							await animationFrame()
+							const insertedLi =
+								createElementComponent.querySelector(
+									'ul li:last-child',
+								)
+							assert.isNotNull(
+								insertedLi,
+								'LI should be inserted at the end of the UL',
+							)
+							assert.equal(
+								insertedLi.textContent,
+								'',
+								'LI should have empty text content',
+							)
+							assert.equal(
+								createElementComponent.append,
+								0,
+								'Append signal should be reset to 0',
+							)
+						})
+
+						it('should insert a paragraph after the UL', async function () {
+							createElementComponent.after = 1
+							await animationFrame()
+							const insertedParagraph =
+								createElementComponent.querySelector('ul + p')
+							assert.isNotNull(
+								insertedParagraph,
+								'Paragraph should be inserted after the UL',
+							)
+							assert.equal(
+								insertedParagraph.textContent,
+								'',
+								'Paragraph should have empty text content',
+							)
+							assert.equal(
+								insertedParagraph.getAttribute('value'),
+								'bar',
+								'Paragraph should have correct attribute',
+							)
+							assert.equal(
+								createElementComponent.after,
+								0,
+								'After signal should be reset to 0',
+							)
+						})
+
+						it('should insert multiple elements when value is greater than 1', async function () {
+							createElementComponent.append = 3
+							await animationFrame()
+							const insertedLis =
+								createElementComponent.querySelectorAll('ul li')
+							assert.equal(
+								insertedLis.length,
+								4, // 3 new + 1 from previous test
+								'Should insert 3 new LI elements',
+							)
+							assert.equal(
+								createElementComponent.append,
+								0,
+								'Append signal should be reset to 0',
+							)
+						})
+					})
+
+					describe('removeElement', function () {
+						let removeElementComponent
+
+						before(() => {
+							removeElementComponent =
+								document.querySelector('remove-element')
+						})
+
+						it('should remove an item using immutable update', async function () {
+							const originalItems = removeElementComponent.items
+							removeElementComponent.items =
+								originalItems.toSpliced(1, 1)
+							await animationFrame()
+							const items =
+								removeElementComponent.querySelectorAll('li')
+							assert.equal(
+								items.length,
+								2,
+								'Should have 2 items after removal',
+							)
+							assert.equal(
+								items[0].textContent,
+								'Item 1',
+								'First item should remain',
+							)
+							assert.equal(
+								items[1].textContent,
+								'Item 3',
+								'Third item should now be second',
+							)
+						})
+
+						it('should handle removing all items', async function () {
+							removeElementComponent.items = []
+							await animationFrame()
+							const items =
+								removeElementComponent.querySelectorAll('li')
+							assert.equal(
+								items.length,
+								0,
+								'Should remove all items',
+							)
+						})
+					})
+
+					describe('insertTemplate', function () {
+						it('should work with template elements', async function () {
+							const component =
+								document.getElementById('insert-light')
+							const ul = component.querySelector('ul')
+							await customElements.whenDefined('insert-template')
+							await animationFrame()
+
+							assert.equal(
+								ul.children.length,
+								0,
+								'Initially, ul should be empty',
+							)
+
+							component.before = 1
+							await animationFrame()
+							assert.equal(
+								ul.previousElementSibling.tagName,
+								'P',
+								'Should insert p element before ul',
+							)
+
+							component.prepend = 1
+							await animationFrame()
+							assert.equal(
+								ul.firstElementChild.tagName,
+								'LI',
+								'Should prepend li element to ul',
+							)
+
+							component.append = 1
+							await animationFrame()
+							assert.equal(
+								ul.lastElementChild.tagName,
+								'LI',
+								'Should append li element to ul',
+							)
+
+							component.after = 1
+							await animationFrame()
+							assert.equal(
+								ul.nextElementSibling.tagName,
+								'P',
+								'Should insert p element after ul',
+							)
+						})
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

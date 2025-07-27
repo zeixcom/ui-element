@@ -68,7 +68,7 @@
 						}
 					})
 
-					/* it('should handle input events with proper typing', async () => {
+					it('should handle input events with proper typing', async () => {
 						const input = document.createElement('input')
 						input.type = 'text'
 						input.className = 'test-input'
@@ -101,13 +101,17 @@
 
 							// Change input value
 							input.value = 'hello'
-							input.dispatchEvent(new Event('input'))
+							input.dispatchEvent(
+								new Event('input', { bubbles: true }),
+							)
 							await microtask()
 							assert.equal(currentValue, 'hello')
 
 							// Change again
 							input.value = 'world'
-							input.dispatchEvent(new Event('input'))
+							input.dispatchEvent(
+								new Event('input', { bubbles: true }),
+							)
 							await microtask()
 							assert.equal(currentValue, 'world')
 
@@ -115,9 +119,9 @@
 						} finally {
 							input.remove()
 						}
-						}) */
+					})
 
-					/* it('should work with computed signals', async () => {
+					it('should work with computed signals', async () => {
 						const input = document.createElement('input')
 						input.type = 'text'
 						input.className = 'computed-input'
@@ -152,7 +156,9 @@
 
 							// Change input
 							input.value = 'test'
-							input.dispatchEvent(new Event('input'))
+							input.dispatchEvent(
+								new Event('input', { bubbles: true }),
+							)
 							await microtask()
 							assert.equal(currentValue, 'test')
 							assert.equal(currentLength, 4)
@@ -162,7 +168,7 @@
 						} finally {
 							input.remove()
 						}
-						}) */
+					})
 
 					it('should cleanup event listeners when no watchers remain', async () => {
 						const button = document.createElement('button')
@@ -211,7 +217,7 @@
 						}
 					})
 
-					/* it('should create a signal producer from input events', async () => {
+					it('should create a signal producer from input events', async () => {
 						const form = document.createElement('form')
 						form.innerHTML = `
 							<input type="text" name="username" class="username-input" />
@@ -252,13 +258,17 @@
 							})
 
 							usernameInput.value = 'john_doe'
-							usernameInput.dispatchEvent(new Event('input'))
+							usernameInput.dispatchEvent(
+								new Event('input', { bubbles: true }),
+							)
 							await microtask()
 							assert.equal(usernameValue, 'john_doe')
 
 							// Test change event with trimming
 							usernameInput.value = '  john_doe  '
-							usernameInput.dispatchEvent(new Event('change'))
+							usernameInput.dispatchEvent(
+								new Event('change', { bubbles: true }),
+							)
 							await microtask()
 							assert.equal(usernameValue, 'john_doe')
 
@@ -266,7 +276,9 @@
 							const emailInput =
 								form.querySelector('.email-input')
 							emailInput.value = 'John@Example.COM'
-							emailInput.dispatchEvent(new Event('input'))
+							emailInput.dispatchEvent(
+								new Event('input', { bubbles: true }),
+							)
 							await microtask()
 							assert.equal(emailValue, 'john@example.com')
 
@@ -275,7 +287,7 @@
 						} finally {
 							form.remove()
 						}
-						}) */
+					})
 
 					it('should do nothing when element not found', async () => {
 						const nonExistentSignal = fromEvents(
@@ -346,7 +358,7 @@
 						}
 					}) */
 
-					/* it('should handle form events', async () => {
+					it('should handle form events', async () => {
 						const form = document.createElement('form')
 						form.innerHTML = `
 							<input type="text" name="name" required />
@@ -362,6 +374,7 @@
 								{
 									submit: ({ event, target, value }) => {
 										event.preventDefault()
+										event.stopPropagation()
 										const formData = new FormData(target)
 										return {
 											submitted: true,
@@ -413,7 +426,12 @@
 							assert.isTrue(formState.valid)
 
 							// Submit form
-							form.dispatchEvent(new Event('submit'))
+							form.dispatchEvent(
+								new Event('submit', {
+									bubbles: true,
+									cancelable: true,
+								}),
+							)
 							await microtask()
 
 							assert.isTrue(formState.submitted)
@@ -427,7 +445,7 @@
 						} finally {
 							form.remove()
 						}
-					}) */
+					})
 
 					/* it('should reproduce fromEvents component issue', async () => {
 						// This test reproduces a specific component integration issue
@@ -568,7 +586,7 @@
 						}
 					})
 
-					/* it('should handle multiple event listeners (click and keyup)', async () => {
+					it('should handle multiple event listeners (click and keyup)', async () => {
 						const input = document.createElement('input')
 						input.type = 'text'
 						input.className = 'multi-event'
@@ -630,7 +648,10 @@
 							// Type in input
 							input.value = 'test'
 							input.dispatchEvent(
-								new KeyboardEvent('keyup', { key: 't' }),
+								new KeyboardEvent('keyup', {
+									key: 't',
+									bubbles: true,
+								}),
 							)
 							await microtask()
 
@@ -652,7 +673,7 @@
 							input.remove()
 							button.remove()
 						}
-						}) */
+					})
 				})
 			})
 		</script>

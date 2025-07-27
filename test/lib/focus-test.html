@@ -1,0 +1,437 @@
+<!doctype html>
+<html>
+	<head>
+		<title>focus Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<focus-test should-focus="false" target-id="input1">
+			<input id="input1" type="text" placeholder="First input" />
+			<input id="input2" type="text" placeholder="Second input" />
+			<button id="button1">Button 1</button>
+			<textarea id="textarea1" placeholder="Text area"></textarea>
+			<select id="select1">
+				<option value="1">Option 1</option>
+				<option value="2">Option 2</option>
+			</select>
+		</focus-test>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				component,
+				asString,
+				asBoolean,
+				focus,
+				effect,
+				state,
+				RESET,
+			} from '../../index.dev.js'
+
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+
+			component(
+				'focus-test',
+				{
+					shouldFocus: asBoolean(),
+					targetId: asString(),
+					autoFocus: asBoolean(false),
+					count: 0,
+				},
+				(el, { first }) => [
+					// Test focus with boolean predicate
+					first('#input1', focus('shouldFocus')),
+
+					// Test focus with function predicate
+					first('#input2', focus(() => el.targetId === 'input2')),
+
+					// Test focus with always true (auto-focus)
+					first('#button1', focus('autoFocus')),
+
+					// Test focus with complex condition
+					first('#textarea1', focus(() => el.shouldFocus && el.count > 2)),
+
+					// Test focus with string value (should focus when value is truthy)
+					first('#select1', focus(() => el.targetId === 'select1' ? 'focus-me' : '')),
+				],
+			)
+
+			runTests(() => {
+				describe('focus()', () => {
+					it('should focus element when predicate is true', async () => {
+						const el = document.querySelector('focus-test')
+						const input1 = el.querySelector('#input1')
+
+						// Mock focus to track calls
+						let focusCalled = false
+						const originalFocus = input1.focus
+						input1.focus = function() {
+							focusCalled = true
+							return originalFocus.call(this)
+						}
+
+						await animationFrame()
+
+						// Initially shouldFocus is false
+						assert.isFalse(focusCalled, 'Should not focus when predicate is false')
+
+						// Enable focus
+						el.shouldFocus = true
+						await animationFrame()
+
+						assert.isTrue(focusCalled, 'Should focus when predicate becomes true')
+
+						// Restore original method
+						input1.focus = originalFocus
+					})
+
+					it('should not focus repeatedly when predicate remains true', async () => {
+						const el = document.querySelector('focus-test')
+						const input1 = el.querySelector('#input1')
+
+						// Mock focus to count calls
+						let focusCallCount = 0
+						const originalFocus = input1.focus
+						input1.focus = function() {
+							focusCallCount++
+							return originalFocus.call(this)
+						}
+
+						// Set shouldFocus to true
+						el.shouldFocus = true
+						await animationFrame()
+
+						const initialCallCount = focusCallCount
+
+						// Trigger another update without changing shouldFocus
+						el.targetId = 'changed'
+						await animationFrame()
+
+						assert.equal(
+							focusCallCount,
+							initialCallCount,
+							'Should not call focus again when predicate remains true'
+						)
+
+						// Restore original method
+						input1.focus = originalFocus
+					})
+
+					it('should work with function predicates', async () => {
+						const el = document.querySelector('focus-test')
+						const input2 = el.querySelector('#input2')
+
+						// Mock focus to track calls
+						let focusCalled = false
+						const originalFocus = input2.focus
+						input2.focus = function() {
+							focusCalled = true
+							return originalFocus.call(this)
+						}
+
+						await animationFrame()
+
+						// Initially targetId is not input2
+						assert.isFalse(focusCalled, 'Should not focus when function predicate is false')
+
+						// Set targetId to input2
+						el.targetId = 'input2'
+						await animationFrame()
+
+						assert.isTrue(focusCalled, 'Should focus when function predicate becomes true')
+
+						// Restore original method
+						input2.focus = originalFocus
+					})
+
+					it('should work with auto-focus pattern', async () => {
+						const el = document.querySelector('focus-test')
+						const button1 = el.querySelector('#button1')
+
+						// Mock focus to track calls
+						let focusCalled = false
+						const originalFocus = button1.focus
+						button1.focus = function() {
+							focusCalled = true
+							return originalFocus.call(this)
+						}
+
+						await animationFrame()
+
+						// Initially autoFocus is false
+						assert.isFalse(focusCalled, 'Should not auto-focus initially')
+
+						// Enable auto-focus
+						el.autoFocus = true
+						await animationFrame()
+
+						assert.isTrue(focusCalled, 'Should focus when auto-focus is enabled')
+
+						// Restore original method
+						button1.focus = originalFocus
+					})
+
+					it('should work with complex conditions', async () => {
+						const el = document.querySelector('focus-test')
+						const textarea = el.querySelector('#textarea1')
+
+						// Mock focus to track calls
+						let focusCalled = false
+						const originalFocus = textarea.focus
+						textarea.focus = function() {
+							focusCalled = true
+							return originalFocus.call(this)
+						}
+
+						await animationFrame()
+
+						// Initially count is 0 and shouldFocus is false
+						assert.isFalse(focusCalled, 'Should not focus with complex condition initially')
+
+						// Enable shouldFocus but count is still too low
+						el.shouldFocus = true
+						await animationFrame()
+
+						assert.isFalse(focusCalled, 'Should not focus when only part of condition is met')
+
+						// Increase count
+						el.count = 3
+						await animationFrame()
+
+						assert.isTrue(focusCalled, 'Should focus when complex condition is fully met')
+
+						// Restore original method
+						textarea.focus = originalFocus
+					})
+
+					it('should work with truthy string values', async () => {
+						const el = document.querySelector('focus-test')
+						const select = el.querySelector('#select1')
+
+						// Mock focus to track calls
+						let focusCalled = false
+						const originalFocus = select.focus
+						select.focus = function() {
+							focusCalled = true
+							return originalFocus.call(this)
+						}
+
+						await animationFrame()
+
+						// Initially targetId is not select1
+						assert.isFalse(focusCalled, 'Should not focus when string predicate returns empty string')
+
+						// Set targetId to select1 (should return truthy string)
+						el.targetId = 'select1'
+						await animationFrame()
+
+						assert.isTrue(focusCalled, 'Should focus when string predicate returns truthy value')
+
+						// Restore original method
+						select.focus = originalFocus
+					})
+
+					it('should handle RESET value properly', async () => {
+						const el = document.querySelector('focus-test')
+						const input1 = el.querySelector('#input1')
+
+						// Mock focus to count calls
+						let focusCallCount = 0
+						const originalFocus = input1.focus
+						input1.focus = function() {
+							focusCallCount++
+							return originalFocus.call(this)
+						}
+
+						// Change shouldFocus to true, then false, then RESET
+						el.shouldFocus = true
+						await animationFrame()
+
+						el.shouldFocus = false
+						await animationFrame()
+
+						const callCountAfterFalse = focusCallCount
+
+						el.shouldFocus = RESET
+						await animationFrame()
+
+						// RESET should restore to original false value, so no additional focus call
+						assert.equal(
+							focusCallCount,
+							callCountAfterFalse,
+							'Should not focus when RESET to original false value'
+						)
+
+						// Restore original method
+						input1.focus = originalFocus
+					})
+
+					it('should work with signal objects directly', async () => {
+						const focusSignal = state(false)
+						const element = document.createElement('input')
+						element.type = 'text'
+						element.placeholder = 'Signal test'
+						document.body.appendChild(element)
+
+						try {
+							// Mock focus to track calls
+							let focusCalled = false
+							const originalFocus = element.focus
+							element.focus = function() {
+								focusCalled = true
+								return originalFocus.call(this)
+							}
+
+							// Create mock host component
+							const host = {
+								getSignal: () => focusSignal,
+							}
+
+							// Apply focus effect with signal
+							const cleanup = focus(focusSignal)(host, element)
+							await animationFrame()
+
+							assert.isFalse(focusCalled, 'Should not focus when signal is false')
+
+							// Change signal to true
+							focusSignal.set(true)
+							await animationFrame()
+
+							assert.isTrue(focusCalled, 'Should focus when signal becomes true')
+
+							// Change back to false (should not focus again)
+							focusCalled = false
+							focusSignal.set(false)
+							await animationFrame()
+
+							assert.isFalse(focusCalled, 'Should not focus when signal becomes false')
+
+							cleanup()
+							// Restore original method
+							element.focus = originalFocus
+						} finally {
+							element.remove()
+						}
+					})
+
+					it('should handle non-focusable elements gracefully', async () => {
+						const nonFocusableSignal = state(true)
+						const element = document.createElement('div')
+						element.textContent = 'Non-focusable element'
+						document.body.appendChild(element)
+
+						try {
+							// Create mock host component
+							const host = {
+								getSignal: () => nonFocusableSignal,
+							}
+
+							// This should not throw an error even if element doesn't have focus method
+							const cleanup = focus(nonFocusableSignal)(host, element)
+							await animationFrame()
+
+							// Element should still exist and be unchanged
+							assert.equal(element.tagName, 'DIV', 'Element should remain unchanged')
+							assert.equal(element.textContent, 'Non-focusable element', 'Content should be unchanged')
+
+							cleanup()
+						} finally {
+							element.remove()
+						}
+					})
+
+					it('should work with focus management patterns', async () => {
+						// Test focus management like modal dialogs or form validation
+						const showModalSignal = state(false)
+						const hasErrorSignal = state(false)
+
+						const modalInput = document.createElement('input')
+						modalInput.type = 'text'
+						modalInput.className = 'modal-input'
+
+						const errorInput = document.createElement('input')
+						errorInput.type = 'email'
+						errorInput.className = 'error-input'
+
+						document.body.appendChild(modalInput)
+						document.body.appendChild(errorInput)
+
+						try {
+							// Mock focus methods
+							let modalFocusCalled = false
+							let errorFocusCalled = false
+
+							const originalModalFocus = modalInput.focus
+							const originalErrorFocus = errorInput.focus
+
+							modalInput.focus = function() {
+								modalFocusCalled = true
+								return originalModalFocus.call(this)
+							}
+
+							errorInput.focus = function() {
+								errorFocusCalled = true
+								return originalErrorFocus.call(this)
+							}
+
+							// Create mock host component
+							const host = {
+								getSignal: prop => {
+									if (prop === 'showModal') return showModalSignal
+									if (prop === 'hasError') return hasErrorSignal
+									return { get: () => false }
+								},
+							}
+
+							// Apply focus effects
+							const cleanup1 = focus(showModalSignal)(host, modalInput)
+							const cleanup2 = focus(hasErrorSignal)(host, errorInput)
+
+							await animationFrame()
+
+							// Initially nothing should be focused
+							assert.isFalse(modalFocusCalled, 'Modal input should not be focused initially')
+							assert.isFalse(errorFocusCalled, 'Error input should not be focused initially')
+
+							// Show modal
+							showModalSignal.set(true)
+							await animationFrame()
+
+							assert.isTrue(modalFocusCalled, 'Modal input should be focused when modal shows')
+							assert.isFalse(errorFocusCalled, 'Error input should not be focused yet')
+
+							// Show error (might override modal focus in real scenario)
+							modalFocusCalled = false
+							hasErrorSignal.set(true)
+							await animationFrame()
+
+							assert.isFalse(modalFocusCalled, 'Modal input should not be focused again')
+							assert.isTrue(errorFocusCalled, 'Error input should be focused when error shows')
+
+							// Hide modal and error
+							showModalSignal.set(false)
+							hasErrorSignal.set(false)
+							await animationFrame()
+
+							// No additional focus calls should happen
+							modalFocusCalled = false
+							errorFocusCalled = false
+
+							cleanup1()
+							cleanup2()
+
+							// Restore original methods
+							modalInput.focus = originalModalFocus
+							errorInput.focus = originalErrorFocus
+						} finally {
+							modalInput.remove()
+							errorInput.remove()
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Automatic Dependency Collection Test</title>
+		<title>Dependency Collection Tests</title>
 	</head>
 	<body>
 		<script type="module">
@@ -208,7 +208,7 @@
 
 						const instance =
 							document.createElement('test-debug-deps')
-						instance.setAttribute('debug', '')
+						// Remove debug attribute to avoid verbose logs
 						instance.innerHTML = `
 							<test-child-a></test-child-a>
 							<test-child-b></test-child-b>
@@ -303,7 +303,7 @@
 						document.body.removeChild(instance)
 					})
 
-					it('should log complex indirect dependencies in debug mode', async () => {
+					it('should handle complex indirect dependencies', async () => {
 						let setupCalled = false
 
 						component(
@@ -322,7 +322,7 @@
 						const instance = document.createElement(
 							'test-debug-indirect',
 						)
-						instance.setAttribute('debug', '')
+						// Remove debug attribute to avoid verbose logs
 						instance.innerHTML = `
 							<div class="wrapper">
 								<test-child-a></test-child-a>

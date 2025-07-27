@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>asEnum Tests</title>
+	</head>
+	<body>
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import { asEnum } from '../../index.dev.js'
+
+			runTests(() => {
+				const body = document.querySelector('body')
+
+				describe('asEnum()', function () {
+					it('should return first option for undefined', function () {
+						const result = asEnum(['on', 'off'])()
+						assert.equal(
+							result,
+							'on',
+							'Should return first valid option for undefined attribute',
+						)
+					})
+
+					it('should return first option for null', function () {
+						const result = asEnum(['yes', 'no', 'maybe'])(
+							body,
+							null,
+						)
+						assert.equal(
+							result,
+							'yes',
+							'Should return first valid option for null attribute',
+						)
+					})
+
+					it('should return first option for invalid value', function () {
+						const result = asEnum(['small', 'medium', 'large'])(
+							body,
+							'invalid',
+						)
+						assert.equal(
+							result,
+							'small',
+							'Should return first valid option for invalid value',
+						)
+					})
+
+					it('should return matching value case-sensitively', function () {
+						const result = asEnum(['On', 'Off'])(body, 'On')
+						assert.equal(
+							result,
+							'On',
+							'Should return exact matching value',
+						)
+					})
+
+					it('should match case-insensitively but return original', function () {
+						const result = asEnum(['TRUE', 'FALSE'])(body, 'true')
+						assert.equal(
+							result,
+							'true',
+							'Should match case-insensitively but return original input value',
+						)
+					})
+
+					it('should work with single option', function () {
+						const result = asEnum(['only'])(body, 'anything')
+						assert.equal(
+							result,
+							'only',
+							'Should return single option for any input',
+						)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

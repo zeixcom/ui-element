@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+	<head>
+		<title>pass Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<child-component id="orphan">
+			<h1>Hello from server</h1>
+			<p>Text from server</p>
+		</child-component>
+		<parent-component id="parent" heading="Hello from attribute">
+			<child-component id="child">
+				<h1>Hello from server</h1>
+				<p>Text from server</p>
+			</child-component>
+			<invalid-component id="invalid"></invalid-component>
+		</parent-component>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				component,
+				asString,
+				pass,
+				setText,
+				state,
+				RESET,
+			} from '../../index.dev.js'
+
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+			const normalizeText = text => text.replace(/\s+/g, ' ').trim()
+
+			/* Components */
+			component(
+				'child-component',
+				{
+					heading: asString(RESET),
+					text: asString(RESET),
+				},
+				(_, { first }) => [
+					first('h1', setText('heading')),
+					first('p', setText('text')),
+				],
+			)
+
+			component(
+				'parent-component',
+				{
+					heading: asString(RESET),
+				},
+				(el, { first }) => [
+					first(
+						'child-component',
+						pass({
+							heading: 'heading',
+							text: () => el.heading.toUpperCase(),
+						}),
+					),
+				],
+			)
+
+			runTests(() => {
+				describe('pass()', function () {
+					it('Orphan component should do nothing at all', async function () {
+						const orphanComponent =
+							document.getElementById('orphan')
+						await animationFrame()
+						const headingContent = normalizeText(
+							orphanComponent.querySelector('h1').textContent,
+						)
+						const textContent = normalizeText(
+							orphanComponent.querySelector('p').textContent,
+						)
+						assert.equal(
+							headingContent,
+							'Hello from server',
+							'Should not change server-side rendered heading',
+						)
+						assert.equal(
+							textContent,
+							'Text from server',
+							'Should not change server-side rendered text',
+						)
+					})
+
+					it('Descendent component should receive state from attribute of ancestor component', async function () {
+						const childComponent = document.getElementById('child')
+						await customElements.whenDefined(
+							childComponent.localName,
+						)
+						await animationFrame()
+						const headingContent =
+							childComponent.querySelector('h1').textContent
+						assert.equal(
+							headingContent,
+							'Hello from attribute',
+							'Should have initial heading from attribute of ancestor component',
+						)
+					})
+
+					it('Descendent component should receive derived state from attribute of ancestor component', async function () {
+						const childComponent = document.getElementById('child')
+						await customElements.whenDefined(
+							childComponent.localName,
+						)
+						await animationFrame()
+						const textContent = normalizeText(
+							childComponent.querySelector('p').textContent,
+						)
+						assert.equal(
+							textContent,
+							'Hello from attribute'.toUpperCase(),
+							'Should have initial text derived from attribute of ancestor component',
+						)
+					})
+
+					it('should throw TypeError if signals are not an object', async function () {
+						const parentComponent =
+							document.getElementById('parent')
+						const childComponent = document.getElementById('child')
+
+						assert.throws(
+							() => {
+								pass(null)(parentComponent, childComponent)
+							},
+							TypeError,
+							'Reactives must be an object of passed signals',
+						)
+					})
+
+					it('should throw TypeError if target is not a custom element', async function () {
+						const parentComponent =
+							document.getElementById('parent')
+						const regularDiv = document.createElement('div')
+						regularDiv.id = 'regular-div'
+
+						assert.throws(
+							() => {
+								pass({ heading: 'heading' })(
+									parentComponent,
+									regularDiv,
+								)
+							},
+							TypeError,
+							'Target <div#regular-div> is not a custom element',
+						)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>
