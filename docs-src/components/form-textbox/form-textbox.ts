@@ -7,9 +7,8 @@ import {
 	setAttribute,
 	setProperty,
 	setText,
-	show,
 } from '../../..'
-import { createClearMethod } from '../../functions/shared/clear-input'
+import { clearEffects, clearMethod } from '../../functions/shared/clear-input'
 
 export type FormTextboxProps = {
 	value: string
@@ -26,7 +25,7 @@ export default component<FormTextboxProps>(
 		length: 0,
 		error: '',
 		description: '',
-		clear: createClearMethod<HTMLInputElement | HTMLTextAreaElement>(
+		clear: clearMethod<HTMLInputElement | HTMLTextAreaElement>(
 			'input, textarea',
 		),
 	},
@@ -79,12 +78,7 @@ export default component<FormTextboxProps>(
 			]),
 
 			// Effects and event listeners on clear button
-			first('.clear', [
-				show(() => !!el.length),
-				on('click', () => {
-					el.clear()
-				}),
-			]),
+			first('.clear', clearEffects(el)),
 
 			// Effects on error and description
 			first('.error', setText('error')),

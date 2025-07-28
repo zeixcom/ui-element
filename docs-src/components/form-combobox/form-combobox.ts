@@ -12,7 +12,7 @@ import {
 	show,
 	state,
 } from '../../..'
-import { createClearMethod } from '../../functions/shared/clear-input'
+import { clearEffects, clearMethod } from '../../functions/shared/clear-input'
 
 export type FormComboboxProps = {
 	value: string
@@ -31,7 +31,7 @@ export default component<FormComboboxProps>(
 		length: 0,
 		error: '',
 		description: '',
-		clear: createClearMethod(),
+		clear: clearMethod(),
 	},
 	(el, { first, all, useElement }) => {
 		const input = useElement('input', 'Native input element needed.')
@@ -146,12 +146,7 @@ export default component<FormComboboxProps>(
 			]),
 
 			// Effects and event listeners on clear button
-			first('.clear', [
-				show(() => !!el.length),
-				on('click', () => {
-					el.clear()
-				}),
-			]),
+			first('.clear', clearEffects(el)),
 
 			// Effect on listbox
 			first('[role="listbox"]', [

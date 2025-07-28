@@ -1,4 +1,4 @@
-import { component, on, setProperty, show, state } from '../../../'
+import { component, on, pass, show, state } from '../../..'
 
 import '../rating-stars/rating-stars'
 
@@ -49,7 +49,7 @@ export default component(
 			]),
 
 			// Effect on empty state
-			first('basic-button', [setProperty('disabled', empty)]),
+			first('basic-button', [pass({ disabled: empty })]),
 		]
 	},
 )

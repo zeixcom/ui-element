@@ -1,9 +1,8 @@
 import {
 	type Component,
+	RESET,
 	asString,
 	component,
-	fromDOM,
-	getText,
 	on,
 	setText,
 } from '../../..'
@@ -15,12 +14,12 @@ export type HelloWorldProps = {
 export default component(
 	'hello-world',
 	{
-		name: asString(fromDOM('World', { span: getText() })),
+		name: asString(RESET),
 	},
 	(_, { first }) => [
 		first(
 			'input',
-			on('input', ({ target }) => ({ name: target.value })),
+			on('input', ({ target }) => ({ name: target.value || RESET })),
 			'Needed to input the name.',
 		),
 		first('span', setText('name'), 'Needed to display the name.'),

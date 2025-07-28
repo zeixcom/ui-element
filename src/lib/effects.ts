@@ -583,28 +583,28 @@ const pass =
 			throw new TypeError(
 				`Target ${elementName(target)} is not a custom element`,
 			)
-		customElements
+		/* customElements
 			.whenDefined(target.localName)
-			.then(() => {
-				if (!hasMethod(target, 'setSignal'))
-					throw new TypeError(
-						`Target ${elementName(target)} is not a UIElement component`,
-					)
-				for (const [prop, reactive] of Object.entries(reactives)) {
-					target.setSignal(
-						prop,
-						isString(reactive)
-							? host.getSignal(reactive)
-							: toSignal(reactive),
-					)
-				}
-			})
+			.then(() => { */
+		if (!hasMethod(target, 'setSignal'))
+			throw new TypeError(
+				`Target ${elementName(target)} is not a UIElement component`,
+			)
+		for (const [prop, reactive] of Object.entries(reactives)) {
+			target.setSignal(
+				prop,
+				isString(reactive)
+					? host.getSignal(reactive)
+					: toSignal(reactive),
+			)
+		}
+		/* })
 			.catch(error => {
 				throw new Error(
 					`Failed to pass signals to ${elementName(target)}`,
 					{ cause: error },
 				)
-			})
+			}) */
 	}
 
 /* === Exports === */

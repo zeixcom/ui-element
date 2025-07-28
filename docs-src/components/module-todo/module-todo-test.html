@@ -396,16 +396,16 @@
 						)
 
 						// All done message should be visible
-						const allDone = el.querySelector('.all-done')
+						const none = el.querySelector('.none')
 						assert.isFalse(
-							allDone.hidden,
+							none.hidden,
 							'All done message should be visible',
 						)
 
 						// Remaining message should be hidden
-						const remaining = el.querySelector('.remaining')
+						const some = el.querySelector('.some')
 						assert.isTrue(
-							remaining.hidden,
+							some.hidden,
 							'Remaining message should be hidden',
 						)
 					})
@@ -614,13 +614,49 @@
 						)
 					})
 
+					it('should delete individual todos when delete button is clicked', async () => {
+						const el = document.getElementById('test1')
+
+						await addTodo(el, 'First todo')
+						await addTodo(el, 'Second todo')
+
+						let todos = getTodos(el)
+						assert.equal(todos.length, 2, 'Should have 2 todos')
+
+						// Delete first todo
+						await deleteTodo(todos[0])
+
+						todos = getTodos(el)
+						assert.equal(
+							todos.length,
+							1,
+							'Should have 1 todo remaining',
+						)
+
+						const remainingText = todos[0]
+							.querySelector('.label')
+							.textContent.trim()
+						assert.equal(
+							remainingText,
+							'Second todo',
+							'Remaining todo should be the second one',
+						)
+
+						await deleteTodo(todos[0])
+						assert.equal(
+							el.active.length,
+							0,
+							'Should have no more active todos',
+						)
+					})
+
 					it('should update count display correctly', async () => {
 						const el = document.getElementById('test1')
 						const count = el.querySelector('.count')
 						const singular = el.querySelector('.singular')
 						const plural = el.querySelector('.plural')
-						const remaining = el.querySelector('.remaining')
-						const allDone = el.querySelector('.all-done')
+						const some = el.querySelector('.some')
+						const none = el.querySelector('.none')
 
 						// Initially
 						assert.equal(
@@ -629,11 +665,11 @@
 							'Count should be 0 initially',
 						)
 						assert.isTrue(
-							remaining.hidden,
+							some.hidden,
 							'Remaining should be hidden initially',
 						)
 						assert.isFalse(
-							allDone.hidden,
+							none.hidden,
 							'All done should be visible initially',
 						)
 
@@ -647,13 +683,10 @@
 							'Count should be 1',
 						)
 						assert.isFalse(
-							remaining.hidden,
+							some.hidden,
 							'Remaining should be visible',
 						)
-						assert.isTrue(
-							allDone.hidden,
-							'All done should be hidden',
-						)
+						assert.isTrue(none.hidden, 'All done should be hidden')
 						assert.isFalse(
 							singular.hidden,
 							'Singular should be visible for 1 task',
@@ -817,35 +850,6 @@
 							el.completed.length,
 							0,
 							'Should have 0 completed todos',
-						)
-					})
-
-					it('should delete individual todos when delete button is clicked', async () => {
-						const el = document.getElementById('test1')
-
-						await addTodo(el, 'First todo')
-						await addTodo(el, 'Second todo')
-
-						let todos = getTodos(el)
-						assert.equal(todos.length, 2, 'Should have 2 todos')
-
-						// Delete first todo
-						await deleteTodo(todos[0])
-
-						todos = getTodos(el)
-						assert.equal(
-							todos.length,
-							1,
-							'Should have 1 todo remaining',
-						)
-
-						const remainingText = todos[0]
-							.querySelector('.label')
-							.textContent.trim()
-						assert.equal(
-							remainingText,
-							'Second todo',
-							'Remaining todo should be the second one',
 						)
 					})
 
@@ -1053,6 +1057,7 @@
 							2,
 							'Should have 2 completed todos',
 						)
+						// await tick()
 
 						// Check count display
 						const count = el.querySelector('.count')
@@ -1105,8 +1110,8 @@
 
 					it('should handle all todos completed scenario', async () => {
 						const el = document.getElementById('test1')
-						const allDone = el.querySelector('.all-done')
-						const remaining = el.querySelector('.remaining')
+						const none = el.querySelector('.none')
+						const some = el.querySelector('.some')
 
 						// Add and complete all todos
 						await addTodo(el, 'Todo 1')
@@ -1130,11 +1135,11 @@
 
 						// UI should show all done
 						assert.isFalse(
-							allDone.hidden,
+							none.hidden,
 							'All done message should be visible',
 						)
 						assert.isTrue(
-							remaining.hidden,
+							some.hidden,
 							'Remaining message should be hidden',
 						)
 					})

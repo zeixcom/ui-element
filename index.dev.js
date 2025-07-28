@@ -1104,15 +1104,11 @@ var pass = (reactives) => (host, target) => {
     throw new TypeError(`Reactives must be an object of passed signals`);
   if (!isCustomElement(target))
     throw new TypeError(`Target ${elementName(target)} is not a custom element`);
-  customElements.whenDefined(target.localName).then(() => {
-    if (!hasMethod(target, "setSignal"))
-      throw new TypeError(`Target ${elementName(target)} is not a UIElement component`);
-    for (const [prop, reactive] of Object.entries(reactives)) {
-      target.setSignal(prop, isString(reactive) ? host.getSignal(reactive) : toSignal(reactive));
-    }
-  }).catch((error) => {
-    throw new Error(`Failed to pass signals to ${elementName(target)}`, { cause: error });
-  });
+  if (!hasMethod(target, "setSignal"))
+    throw new TypeError(`Target ${elementName(target)} is not a UIElement component`);
+  for (const [prop, reactive] of Object.entries(reactives)) {
+    target.setSignal(prop, isString(reactive) ? host.getSignal(reactive) : toSignal(reactive));
+  }
 };
 // src/lib/extractors.ts
 var getText = () => (element) => element.textContent?.trim();

@@ -305,9 +305,8 @@
 <span class="line"><span style="color:#F8F8F2">	setAttribute,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setText,</span></span>
-<span class="line"><span style="color:#F8F8F2">	show,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { createClearMethod } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/shared/clear-input'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { clearEffects, clearMethod } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/shared/clear-input'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">/* === Type === */</span></span>
 <span class="line"></span>
@@ -360,7 +359,7 @@
 <span class="line"><span style="color:#F8F8F2">		length: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		error: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		description: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">		clear: </span><span style="color:#A6E22E">createClearMethod</span><span style="color:#F8F8F2">(),</span></span>
+<span class="line"><span style="color:#F8F8F2">		clear: </span><span style="color:#A6E22E">clearMethod</span><span style="color:#F8F8F2">(),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">useElement</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> fns</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Effect</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputFieldProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputFieldProps</span><span style="color:#F8F8F2">>>[] </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> []</span></span>
@@ -502,15 +501,7 @@
 <span class="line"><span style="color:#F8F8F2">			}</span></span>
 <span class="line"><span style="color:#F8F8F2">		} </span><span style="color:#F92672">else</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#88846F">			// Setup clear button and method</span></span>
-<span class="line"><span style="color:#F8F8F2">			fns.</span><span style="color:#A6E22E">push</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#A6E22E">				first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'.clear'</span><span style="color:#F8F8F2">, [</span></span>
-<span class="line"><span style="color:#A6E22E">					on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">						el.</span><span style="color:#A6E22E">clear</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#A6E22E">						triggerChange</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">					}),</span></span>
-<span class="line"><span style="color:#A6E22E">					show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !!</span><span style="color:#F8F8F2">el.length),</span></span>
-<span class="line"><span style="color:#F8F8F2">				]),</span></span>
-<span class="line"><span style="color:#F8F8F2">			)</span></span>
+<span class="line"><span style="color:#F8F8F2">			fns.</span><span style="color:#A6E22E">push</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.clear'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">clearEffects</span><span style="color:#F8F8F2">(el)))</span></span>
 <span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Setup error message</span></span>

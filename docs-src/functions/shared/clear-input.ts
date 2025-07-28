@@ -7,7 +7,7 @@ import { type Component, type Effect, on, show } from '../../..'
  *
  * @param {HTMLInputElement | HTMLTextAreaElement} selector - The native input or textarea element
  */
-export const createClearMethod =
+export const clearMethod =
 	<E extends HTMLInputElement | HTMLTextAreaElement = HTMLInputElement>(
 		selector: string = 'input',
 	) =>
@@ -24,7 +24,10 @@ export const createClearMethod =
 			const input = host.querySelector<E>(selector)
 			if (input) {
 				input.value = ''
+				input.setCustomValidity('')
 				input.checkValidity()
+				input.dispatchEvent(new Event('input', { bubbles: true }))
+				input.dispatchEvent(new Event('change', { bubbles: true }))
 				input.focus()
 			}
 		}
@@ -34,13 +37,11 @@ export const createClearMethod =
  * Standard effects for clearing input components on button elements
  *
  * @param {Component<P>} host - The component instance with clear, length properties
- * @returns {Effect<P, HTMLButtonElement>[]} - Effects for clearing the input component
+ * @returns {Effect<P, HTMLElement>[]} - Effects for clearing the input component
  */
-export const standardClearEffects = <
-	P extends { clear: () => void; length: number },
->(
+export const clearEffects = <P extends { clear: () => void; length: number }>(
 	host: Component<P>,
-): Effect<P, HTMLButtonElement>[] => [
+): Effect<P, HTMLElement>[] => [
 	show(() => !!host.length),
 	on('click', () => {
 		host.clear()

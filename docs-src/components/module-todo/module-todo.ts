@@ -3,8 +3,8 @@ import {
 	component,
 	fromSelector,
 	on,
+	pass,
 	setAttribute,
-	setProperty,
 } from '../../..'
 import { BasicButtonProps } from '../basic-button/basic-button'
 import '../basic-pluralize/basic-pluralize'
@@ -38,7 +38,7 @@ export default component(
 		return [
 			// Control todo input form
 			first<Component<BasicButtonProps>>('.submit', [
-				setProperty('disabled', () => !textbox.length),
+				pass({ disabled: () => !textbox.length }),
 			]),
 			first('form', [
 				on('submit', ({ event }) => {
@@ -63,7 +63,7 @@ export default component(
 
 			// Control todo list
 			first('ol', [
-				setAttribute('filter', () => filter?.value ?? 'all'),
+				setAttribute('filter', () => filter?.value || 'all'),
 				on('click', ({ event }) => {
 					const target = event.target
 					if (target && target instanceof HTMLButtonElement)
@@ -72,16 +72,17 @@ export default component(
 			]),
 
 			// Update count elements
-			first('basic-pluralize', [
-				setProperty('count', () => el.active.length),
-			]),
+			first('basic-pluralize', [pass({ count: () => el.active.length })]),
 
 			// Control clear-completed button
 			first<Component<BasicButtonProps>>('.clear-completed', [
-				setProperty('disabled', () => !el.completed.length),
-				setProperty('badge', () =>
-					el.completed.length > 0 ? String(el.completed.length) : '',
-				),
+				pass({
+					disabled: () => !el.completed.length,
+					badge: () =>
+						el.completed.length > 0
+							? String(el.completed.length)
+							: '',
+				}),
 				on('click', () => {
 					const items = Array.from(el.querySelectorAll('ol li'))
 					for (let i = items.length - 1; i >= 0; i--) {

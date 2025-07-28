@@ -1,4 +1,4 @@
-import { component, computed, setProperty } from '../../..'
+import { component, computed, pass } from '../../..'
 
 import '../form-spinbutton/form-spinbutton'
 
@@ -11,10 +11,10 @@ export default component('module-catalog', {}, (_, { first, useElements }) => {
 	)
 	return [
 		first('basic-button', [
-			setProperty('disabled', () => !total.get()),
-			setProperty('badge', () =>
-				total.get() > 0 ? String(total.get()) : '',
-			),
+			pass({
+				disabled: () => !total.get(),
+				badge: () => (total.get() > 0 ? String(total.get()) : ''),
+			}),
 		]),
 	]
 })

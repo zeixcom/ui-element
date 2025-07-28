@@ -10,9 +10,8 @@ import {
 	setAttribute,
 	setProperty,
 	setText,
-	show,
 } from '../../../'
-import { createClearMethod } from '../../functions/shared/clear-input'
+import { clearEffects, clearMethod } from '../../functions/shared/clear-input'
 
 /* === Type === */
 
@@ -65,7 +64,7 @@ export default component<InputFieldProps>(
 		length: 0,
 		error: '',
 		description: '',
-		clear: createClearMethod(),
+		clear: clearMethod(),
 	},
 	(el, { first, useElement }) => {
 		const fns: Effect<InputFieldProps, Component<InputFieldProps>>[] = []
@@ -207,15 +206,7 @@ export default component<InputFieldProps>(
 			}
 		} else {
 			// Setup clear button and method
-			fns.push(
-				first<HTMLButtonElement>('.clear', [
-					on('click', () => {
-						el.clear()
-						triggerChange('')
-					}),
-					show(() => !!el.length),
-				]),
-			)
+			fns.push(first('.clear', clearEffects(el)))
 		}
 
 		// Setup error message
