@@ -20,9 +20,7 @@ export default component(
 	(_, { first }) => [
 		first(
 			'input',
-			on('input', ({ target }) => ({
-				name: target.value,
-			})),
+			on('input', ({ target }) => ({ name: target.value })),
 			'Needed to input the name.',
 		),
 		first('span', setText('name'), 'Needed to display the name.'),

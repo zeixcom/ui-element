@@ -1,6 +1,6 @@
 /**
  * @name UIElement DEV_MODE
- * @version 0.13.4
+ * @version 0.14.0
  * @author Esther Brunner
  */
 export { type Signal, type MaybeSignal, type State, type Computed, type ComputedCallback, type EffectMatcher, type Cleanup, UNSET, state, computed, effect, batch, enqueue, isState, isComputed, isSignal, toSignal, } from '@zeix/cause-effect';

@@ -6,7 +6,7 @@
 
 # Class: InvalidSignalError
 
-Defined in: [src/core/errors.ts:98](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/core/errors.ts#L98)
+Defined in: [src/core/errors.ts:82](https://github.com/zeixcom/ui-element/blob/333374b65ccc17c36a30cb41ca66f6ca0a5c37d0/src/core/errors.ts#L82)
 
 Error thrown when setSignal on component is called with a non-signal value
 
@@ -24,7 +24,7 @@ Error thrown when setSignal on component is called with a non-signal value
 
 > **new InvalidSignalError**(`host`, `prop`): `InvalidSignalError`
 
-Defined in: [src/core/errors.ts:99](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/core/errors.ts#L99)
+Defined in: [src/core/errors.ts:83](https://github.com/zeixcom/ui-element/blob/333374b65ccc17c36a30cb41ca66f6ca0a5c37d0/src/core/errors.ts#L83)
 
 #### Parameters
 

@@ -8,7 +8,7 @@
 
 > **Helpers**\<`P`\> = `object`
 
-Defined in: [src/core/dom.ts:81](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/core/dom.ts#L81)
+Defined in: [src/core/dom.ts:78](https://github.com/zeixcom/ui-element/blob/333374b65ccc17c36a30cb41ca66f6ca0a5c37d0/src/core/dom.ts#L78)
 
 ## Type Parameters
 
@@ -22,7 +22,7 @@ Defined in: [src/core/dom.ts:81](https://github.com/zeixcom/ui-element/blob/2605
 
 > **all**: [`ElementEffects`](ElementEffects.md)\<`P`\>
 
-Defined in: [src/core/dom.ts:85](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/core/dom.ts#L85)
+Defined in: [src/core/dom.ts:82](https://github.com/zeixcom/ui-element/blob/333374b65ccc17c36a30cb41ca66f6ca0a5c37d0/src/core/dom.ts#L82)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [src/core/dom.ts:85](https://github.com/zeixcom/ui-element/blob/2605
 
 > **first**: [`ElementEffects`](ElementEffects.md)\<`P`\>
 
-Defined in: [src/core/dom.ts:84](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/core/dom.ts#L84)
+Defined in: [src/core/dom.ts:81](https://github.com/zeixcom/ui-element/blob/333374b65ccc17c36a30cb41ca66f6ca0a5c37d0/src/core/dom.ts#L81)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: [src/core/dom.ts:84](https://github.com/zeixcom/ui-element/blob/2605
 
 > **useElement**: [`ElementUsage`](ElementUsage.md)
 
-Defined in: [src/core/dom.ts:82](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/core/dom.ts#L82)
+Defined in: [src/core/dom.ts:79](https://github.com/zeixcom/ui-element/blob/333374b65ccc17c36a30cb41ca66f6ca0a5c37d0/src/core/dom.ts#L79)
 
 ***
 
@@ -46,4 +46,4 @@ Defined in: [src/core/dom.ts:82](https://github.com/zeixcom/ui-element/blob/2605
 
 > **useElements**: [`ElementsUsage`](ElementsUsage.md)
 
-Defined in: [src/core/dom.ts:83](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/core/dom.ts#L83)
+Defined in: [src/core/dom.ts:80](https://github.com/zeixcom/ui-element/blob/333374b65ccc17c36a30cb41ca66f6ca0a5c37d0/src/core/dom.ts#L80)

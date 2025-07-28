@@ -9,7 +9,6 @@
 - [CircularMutationError](classes/CircularMutationError.md)
 - [DependencyTimeoutError](classes/DependencyTimeoutError.md)
 - [InvalidComponentNameError](classes/InvalidComponentNameError.md)
-- [InvalidCustomElementError](classes/InvalidCustomElementError.md)
 - [InvalidEffectsError](classes/InvalidEffectsError.md)
 - [InvalidPropertyNameError](classes/InvalidPropertyNameError.md)
 - [InvalidSignalError](classes/InvalidSignalError.md)

@@ -8,9 +8,8 @@ import {
 	setProperty,
 	setText,
 	show,
-	useElement,
 } from '../../..'
-import { createClearFunction } from '../../functions/shared/clear-input'
+import { createClearMethod } from '../../functions/shared/clear-input'
 
 export type FormTextboxProps = {
 	value: string
@@ -27,17 +26,15 @@ export default component<FormTextboxProps>(
 		length: 0,
 		error: '',
 		description: '',
-		clear() {},
+		clear: createClearMethod<HTMLInputElement | HTMLTextAreaElement>(
+			'input, textarea',
+		),
 	},
-	(el, { first }) => {
+	(el, { first, useElement }) => {
 		const input = useElement<HTMLInputElement | HTMLTextAreaElement>(
-			el,
 			'input, textarea',
 			'Native input or textarea element needed.',
 		)
-
-		// Add clear method to component using shared functionality
-		el.clear = createClearFunction(input)
 
 		// Initialize description with existing content or set up computed signal for remaining characters
 		const description = el.querySelector<HTMLElement>('.description')

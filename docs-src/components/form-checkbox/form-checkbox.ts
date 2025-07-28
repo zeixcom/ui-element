@@ -28,11 +28,10 @@ export default component(
 		),
 		label: asString(getLabel('input')),
 	},
-	(_, { first }) => [
-		toggleAttribute('checked'),
-		first('input[type="checkbox"]', [], 'Native checkbox needed.'),
-		first('.label', setText('label')),
-	],
+	(_, { first, useElement }) => {
+		useElement('input[type="checkbox"]', 'Native checkbox needed.')
+		return [toggleAttribute('checked'), first('.label', setText('label'))]
+	},
 )
 
 declare global {

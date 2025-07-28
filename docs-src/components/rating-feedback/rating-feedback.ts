@@ -1,12 +1,15 @@
 import { component, on, setProperty, show, state } from '../../../'
 
+import '../rating-stars/rating-stars'
+
 export default component(
 	'rating-feedback',
 	{},
-	(el, { all, first, useElement }) => {
+	(_, { all, first, useElement }) => {
 		const rating = state(0)
 		const empty = state(true)
 		const submitted = state(false)
+		const feedback = useElement('.feedback')
 		useElement('rating-stars', 'Needed for  stars rating.')
 
 		return [
@@ -23,7 +26,6 @@ export default component(
 			// Event listener for hide button
 			first('.hide', [
 				on('click', () => {
-					const feedback = el.querySelector<HTMLElement>('.feedback')
 					if (feedback) feedback.hidden = true
 				}),
 			]),
@@ -49,5 +51,5 @@ export default component(
 			// Effect on empty state
 			first('basic-button', [setProperty('disabled', empty)]),
 		]
-	}
+	},
 )

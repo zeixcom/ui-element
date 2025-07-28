@@ -8,7 +8,7 @@
 
 > **Reactives**\<`E`, `P`\> = `{ [K in keyof E]?: Reactive<E[K], P, E> }`
 
-Defined in: [src/lib/effects.ts:32](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/lib/effects.ts#L32)
+Defined in: [src/lib/effects.ts:32](https://github.com/zeixcom/ui-element/blob/333374b65ccc17c36a30cb41ca66f6ca0a5c37d0/src/lib/effects.ts#L32)
 
 ## Type Parameters
 

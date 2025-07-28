@@ -12,7 +12,7 @@ import {
 	show,
 	state,
 } from '../../..'
-import { createClearFunction } from '../../functions/shared/clear-input'
+import { createClearMethod } from '../../functions/shared/clear-input'
 
 export type FormComboboxProps = {
 	value: string
@@ -31,7 +31,7 @@ export default component<FormComboboxProps>(
 		length: 0,
 		error: '',
 		description: '',
-		clear() {},
+		clear: createClearMethod(),
 	},
 	(el, { first, all, useElement }) => {
 		const input = useElement('input', 'Native input element needed.')
@@ -65,9 +65,6 @@ export default component<FormComboboxProps>(
 				showPopup.set((input.required && !input.value) || false)
 			})
 		}
-
-		// Add clear method to component
-		el.clear = createClearFunction(input)
 
 		return [
 			// Effects and event listeners on component

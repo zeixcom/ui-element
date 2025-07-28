@@ -29,13 +29,15 @@ type ParserOrFallback<T extends {}, E extends Element = HTMLElement> =
 type ElementUsage = {
 	<S extends string>(selector: S, required: string): ElementFromSelector<S>
 	<S extends string>(selector: S): ElementFromSelector<S> | null
+	<E extends Element>(selector: string, required: string): E
+	<E extends Element>(selector: string): E | null
 }
 type ElementsUsage = {
 	<S extends string>(
 		selector: S,
-		required: string,
+		required?: string,
 	): NodeListOf<ElementFromSelector<S>>
-	<S extends string>(selector: S): NodeListOf<ElementFromSelector<S>>
+	<E extends Element>(selector: string, required?: string): NodeListOf<E>
 }
 type ElementEffects<P extends ComponentProps> = {
 	<S extends string>(

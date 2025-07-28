@@ -233,9 +233,8 @@
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setText,</span></span>
 <span class="line"><span style="color:#F8F8F2">	show,</span></span>
-<span class="line"><span style="color:#F8F8F2">	useElement,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { createClearFunction } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/shared/clear-input'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { createClearMethod } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/shared/clear-input'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">FormTextboxProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">	value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
@@ -252,17 +251,15 @@
 <span class="line"><span style="color:#F8F8F2">		length: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		error: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		description: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">		clear</span><span style="color:#F8F8F2">() {},</span></span>
+<span class="line"><span style="color:#F8F8F2">		clear: </span><span style="color:#A6E22E">createClearMethod</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLInputElement</span><span style="color:#F92672"> |</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLTextAreaElement</span><span style="color:#F8F8F2">>(</span></span>
+<span class="line"><span style="color:#E6DB74">			'input, textarea'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">		),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">useElement</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> input </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> useElement</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLInputElement</span><span style="color:#F92672"> |</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLTextAreaElement</span><span style="color:#F8F8F2">>(</span></span>
-<span class="line"><span style="color:#F8F8F2">			el,</span></span>
 <span class="line"><span style="color:#E6DB74">			'input, textarea'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#E6DB74">			'Native input or textarea element needed.'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">		// Add clear method to component using shared functionality</span></span>
-<span class="line"><span style="color:#F8F8F2">		el.clear </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> createClearFunction</span><span style="color:#F8F8F2">(input)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Initialize description with existing content or set up computed signal for remaining characters</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> description </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'.description'</span><span style="color:#F8F8F2">)</span></span>

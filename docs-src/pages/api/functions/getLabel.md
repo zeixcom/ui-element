@@ -8,7 +8,7 @@
 
 > **getLabel**\<`E`\>(`selector`): [`Extractor`](../type-aliases/Extractor.md)\<`string`, `E`\>
 
-Defined in: [src/lib/extractors.ts:37](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/lib/extractors.ts#L37)
+Defined in: [src/lib/extractors.ts:37](https://github.com/zeixcom/ui-element/blob/333374b65ccc17c36a30cb41ca66f6ca0a5c37d0/src/lib/extractors.ts#L37)
 
 ## Type Parameters
 

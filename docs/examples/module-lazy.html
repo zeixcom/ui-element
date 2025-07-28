@@ -86,9 +86,7 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> { content } </span><span style="color:#F92672">=</span><span style="color:#F92672"> await</span><span style="color:#A6E22E"> fetchWithCache</span><span style="color:#F8F8F2">(url, abort)</span></span>
 <span class="line"><span style="color:#F92672">				return</span><span style="color:#F8F8F2"> content</span></span>
 <span class="line"><span style="color:#F8F8F2">			} </span><span style="color:#F92672">catch</span><span style="color:#F8F8F2"> (err) {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> errorMessage </span><span style="color:#F92672">=</span></span>
-<span class="line"><span style="color:#F8F8F2">					err </span><span style="color:#F92672">instanceof</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Error</span><span style="color:#F92672"> ?</span><span style="color:#F8F8F2"> err.message </span><span style="color:#F92672">:</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(err)</span></span>
-<span class="line"><span style="color:#F8F8F2">				error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(errorMessage)</span></span>
+<span class="line"><span style="color:#F8F8F2">				error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(err </span><span style="color:#F92672">instanceof</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Error</span><span style="color:#F92672"> ?</span><span style="color:#F8F8F2"> err.message </span><span style="color:#F92672">:</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(err))</span></span>
 <span class="line"><span style="color:#F92672">				return</span><span style="color:#E6DB74"> ''</span></span>
 <span class="line"><span style="color:#F8F8F2">			}</span></span>
 <span class="line"><span style="color:#F8F8F2">		})</span></span>

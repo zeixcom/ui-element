@@ -6,9 +6,9 @@
 
 # Type Alias: ElementUsage()
 
-> **ElementUsage** = \{\<`S`\>(`selector`, `required`): [`ElementFromSelector`](ElementFromSelector.md)\<`S`\>; \<`S`\>(`selector`): `null` \| [`ElementFromSelector`](ElementFromSelector.md)\<`S`\>; \}
+> **ElementUsage** = \{\<`S`\>(`selector`, `required`): [`ElementFromSelector`](ElementFromSelector.md)\<`S`\>; \<`S`\>(`selector`): `null` \| [`ElementFromSelector`](ElementFromSelector.md)\<`S`\>; \<`E`\>(`selector`, `required`): `E`; \<`E`\>(`selector`): `null` \| `E`; \}
 
-Defined in: [src/core/dom.ts:55](https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/core/dom.ts#L55)
+Defined in: [src/core/dom.ts:50](https://github.com/zeixcom/ui-element/blob/333374b65ccc17c36a30cb41ca66f6ca0a5c37d0/src/core/dom.ts#L50)
 
 ## Call Signature
 
@@ -53,3 +53,47 @@ Defined in: [src/core/dom.ts:55](https://github.com/zeixcom/ui-element/blob/2605
 ### Returns
 
 `null` \| [`ElementFromSelector`](ElementFromSelector.md)\<`S`\>
+
+## Call Signature
+
+> \<`E`\>(`selector`, `required`): `E`
+
+### Type Parameters
+
+#### E
+
+`E` *extends* `Element`
+
+### Parameters
+
+#### selector
+
+`string`
+
+#### required
+
+`string`
+
+### Returns
+
+`E`
+
+## Call Signature
+
+> \<`E`\>(`selector`): `null` \| `E`
+
+### Type Parameters
+
+#### E
+
+`E` *extends* `Element`
+
+### Parameters
+
+#### selector
+
+`string`
+
+### Returns
+
+`null` \| `E`

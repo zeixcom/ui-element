@@ -12,6 +12,7 @@ import {
 	setText,
 	show,
 } from '../../../'
+import { createClearMethod } from '../../functions/shared/clear-input'
 
 /* === Type === */
 
@@ -64,23 +65,11 @@ export default component<InputFieldProps>(
 		length: 0,
 		error: '',
 		description: '',
-		clear: (host: Component<InputFieldProps>) => {
-			host.clear = () => {
-				host.value = ''
-				host.length = 0
-				const input = host.querySelector('input')
-				if (input) {
-					input.value = ''
-					input.checkValidity()
-					input.focus()
-				}
-			}
-		},
+		clear: createClearMethod(),
 	},
-	(el: Component<InputFieldProps>, { first }) => {
+	(el, { first, useElement }) => {
 		const fns: Effect<InputFieldProps, Component<InputFieldProps>>[] = []
-		const input = el.querySelector('input')
-		if (!input) throw new Error('No input element found')
+		const input = useElement('input', 'Native input field needed')
 		const typeNumber = input.type === 'number'
 		const integer = el.hasAttribute('integer')
 		const validationEndpoint = el.getAttribute('validate')

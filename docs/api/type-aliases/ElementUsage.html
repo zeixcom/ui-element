@@ -12,7 +12,7 @@
 		<context-router>
 			<header class="content-grid">
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -106,9 +106,9 @@
                 Type Alias: ElementUsage()
             </h1>
 <blockquote>
-<p><strong>ElementUsage</strong> = {&lt;<code>S</code>&gt;(<code>selector</code>, <code>required</code>): <a href="ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>&gt;; &lt;<code>S</code>&gt;(<code>selector</code>): <code>null</code> | <a href="ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>&gt;; }</p>
+<p><strong>ElementUsage</strong> = {&lt;<code>S</code>&gt;(<code>selector</code>, <code>required</code>): <a href="ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>&gt;; &lt;<code>S</code>&gt;(<code>selector</code>): <code>null</code> | <a href="ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>&gt;; &lt;<code>E</code>&gt;(<code>selector</code>, <code>required</code>): <code>E</code>; &lt;<code>E</code>&gt;(<code>selector</code>): <code>null</code> | <code>E</code>; }</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/2605753812ae73569ed9fdbb08b86e62a74ff14d/src/core/dom.ts#L55">src/core/dom.ts:55</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/333374b65ccc17c36a30cb41ca66f6ca0a5c37d0/src/core/dom.ts#L50">src/core/dom.ts:50</a></p>
 <h2 id="call-signature">
                 <a name="call-signature" class="anchor" href="#call-signature">
 	                <span class="permalink">🔗</span>
@@ -200,6 +200,97 @@
                 Returns
             </h3>
 <p><code>null</code> | <a href="ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>&gt;</p>
+<h2 id="call-signature">
+                <a name="call-signature" class="anchor" href="#call-signature">
+	                <span class="permalink">🔗</span>
+                </a>
+                Call Signature
+            </h2>
+<blockquote>
+<p>&lt;<code>E</code>&gt;(<code>selector</code>, <code>required</code>): <code>E</code></p>
+</blockquote>
+<h3 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type Parameters
+            </h3>
+<h4 id="e">
+                <a name="e" class="anchor" href="#e">
+	                <span class="permalink">🔗</span>
+                </a>
+                E
+            </h4>
+<p><code>E</code> <em>extends</em> <code>Element</code></p>
+<h3 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Parameters
+            </h3>
+<h4 id="selector">
+                <a name="selector" class="anchor" href="#selector">
+	                <span class="permalink">🔗</span>
+                </a>
+                selector
+            </h4>
+<p><code>string</code></p>
+<h4 id="required">
+                <a name="required" class="anchor" href="#required">
+	                <span class="permalink">🔗</span>
+                </a>
+                required
+            </h4>
+<p><code>string</code></p>
+<h3 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h3>
+<p><code>E</code></p>
+<h2 id="call-signature">
+                <a name="call-signature" class="anchor" href="#call-signature">
+	                <span class="permalink">🔗</span>
+                </a>
+                Call Signature
+            </h2>
+<blockquote>
+<p>&lt;<code>E</code>&gt;(<code>selector</code>): <code>null</code> | <code>E</code></p>
+</blockquote>
+<h3 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Type Parameters
+            </h3>
+<h4 id="e">
+                <a name="e" class="anchor" href="#e">
+	                <span class="permalink">🔗</span>
+                </a>
+                E
+            </h4>
+<p><code>E</code> <em>extends</em> <code>Element</code></p>
+<h3 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
+	                <span class="permalink">🔗</span>
+                </a>
+                Parameters
+            </h3>
+<h4 id="selector">
+                <a name="selector" class="anchor" href="#selector">
+	                <span class="permalink">🔗</span>
+                </a>
+                selector
+            </h4>
+<p><code>string</code></p>
+<h3 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+                </a>
+                Returns
+            </h3>
+<p><code>null</code> | <code>E</code></p>
 
 </section></main>
 			<footer class="content-grid">

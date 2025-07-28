@@ -5,25 +5,29 @@ import { type Component, type Effect, on, show } from '../../..'
  * clearing the native input, custom validity, and dispatching events
  * to trigger sensor-based property updates
  *
- * @param {HTMLInputElement | HTMLTextAreaElement} input - The native input or textarea element
- * @returns {() => void} Clear function that can be assigned to component.clear
+ * @param {HTMLInputElement | HTMLTextAreaElement} selector - The native input or textarea element
  */
-export const createClearFunction =
-	(input: HTMLInputElement | HTMLTextAreaElement): (() => void) =>
-	() => {
-		// Clear native input value
-		input.value = ''
-
-		// Clear any custom validity messages
-		input.setCustomValidity('')
-
-		// Force validation state update
-		input.checkValidity()
-
-		// Dispatch events to trigger sensor-based property updates
-		// Use both 'input' and 'change' events to ensure all sensors are updated
-		input.dispatchEvent(new Event('input', { bubbles: true }))
-		input.dispatchEvent(new Event('change', { bubbles: true }))
+export const createClearMethod =
+	<E extends HTMLInputElement | HTMLTextAreaElement = HTMLInputElement>(
+		selector: string = 'input',
+	) =>
+	(
+		host: HTMLElement & {
+			value: string | number
+			length: number
+			clear: () => void
+		},
+	) => {
+		host.clear = () => {
+			host.value = ''
+			host.length = 0
+			const input = host.querySelector<E>(selector)
+			if (input) {
+				input.value = ''
+				input.checkValidity()
+				input.focus()
+			}
+		}
 	}
 
 /**

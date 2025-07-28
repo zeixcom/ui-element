@@ -7,6 +7,10 @@ import {
 	setProperty,
 } from '../../..'
 import { BasicButtonProps } from '../basic-button/basic-button'
+import '../basic-pluralize/basic-pluralize'
+import '../form-checkbox/form-checkbox'
+import '../form-radiogroup/form-radiogroup'
+import '../form-textbox/form-textbox'
 
 export type ModuleTodoProps = {
 	readonly active: HTMLElement[]
@@ -20,8 +24,14 @@ export default component(
 		completed: fromSelector('form-checkbox[checked]'),
 	},
 	(el, { first, useElement }) => {
-		const textbox = useElement('form-textbox', 'Needed to enter a new todo item.')
-		const template = useElement('template', 'Needed to define the list item template.')
+		const textbox = useElement(
+			'form-textbox',
+			'Needed to enter a new todo item.',
+		)
+		const template = useElement(
+			'template',
+			'Needed to define the list item template.',
+		)
 		const list = useElement('ol', 'Needed to display the list of todos.')
 		const filter = useElement('form-radiogroup')
 
@@ -81,7 +91,7 @@ export default component(
 				}),
 			]),
 		]
-	}
+	},
 )
 
 declare global {

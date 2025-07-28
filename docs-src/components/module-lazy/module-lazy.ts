@@ -36,9 +36,7 @@ export default component(
 				const { content } = await fetchWithCache(url, abort)
 				return content
 			} catch (err) {
-				const errorMessage =
-					err instanceof Error ? err.message : String(err)
-				error.set(errorMessage)
+				error.set(err instanceof Error ? err.message : String(err))
 				return ''
 			}
 		})

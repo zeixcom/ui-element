@@ -244,6 +244,10 @@
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
 <span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { BasicButtonProps } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../basic-button/basic-button'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#E6DB74"> '../basic-pluralize/basic-pluralize'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#E6DB74"> '../form-checkbox/form-checkbox'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#E6DB74"> '../form-radiogroup/form-radiogroup'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#E6DB74"> '../form-textbox/form-textbox'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">ModuleTodoProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	readonly</span><span style="color:#F8F8F2"> active</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[]</span></span>
@@ -257,8 +261,14 @@
 <span class="line"><span style="color:#F8F8F2">		completed: </span><span style="color:#A6E22E">fromSelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-checkbox[checked]'</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">useElement</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> textbox </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> useElement</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-textbox'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'Needed to enter a new todo item.'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> template </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> useElement</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'template'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'Needed to define the list item template.'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> textbox </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> useElement</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'form-textbox'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">			'Needed to enter a new todo item.'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">		)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> template </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> useElement</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'template'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">			'Needed to define the list item template.'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">		)</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> list </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> useElement</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ol'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'Needed to display the list of todos.'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> filter </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> useElement</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-radiogroup'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span>
@@ -318,7 +328,7 @@
 <span class="line"><span style="color:#F8F8F2">				}),</span></span>
 <span class="line"><span style="color:#F8F8F2">			]),</span></span>
 <span class="line"><span style="color:#F8F8F2">		]</span></span>
-<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>

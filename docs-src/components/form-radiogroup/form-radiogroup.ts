@@ -36,24 +36,27 @@ export default component(
 			},
 		),
 	},
-	(el, { all }) => [
-		setAttribute('value'),
-		all('input', [
-			setProperty('tabIndex', target =>
-				target.value === el.value ? 0 : -1,
-			),
-			...manageFocusOnKeydown(
-				Array.from(el.querySelectorAll<HTMLInputElement>('input')),
-				inputs => inputs.findIndex(input => input.checked),
-			),
-		]),
-		all('label', [
-			toggleClass(
-				'selected',
-				target => el.value === target.querySelector('input')?.value,
-			),
-		]),
-	],
+	(el, { all, useElements }) => {
+		const radios = Array.from(useElements('input'))
+
+		return [
+			setAttribute('value'),
+			all('input', [
+				setProperty('tabIndex', target =>
+					target.value === el.value ? 0 : -1,
+				),
+				...manageFocusOnKeydown(radios, inputs =>
+					inputs.findIndex(input => input.checked),
+				),
+			]),
+			all('label', [
+				toggleClass(
+					'selected',
+					target => el.value === target.querySelector('input')?.value,
+				),
+			]),
+		]
+	},
 )
 
 declare global {
