@@ -1,10 +1,10 @@
 import {
-	type Component,
-	type State,
 	asInteger,
+	type Component,
 	component,
 	insertOrRemoveElement,
 	on,
+	type State,
 	setProperty,
 	setText,
 	state,

@@ -1,14 +1,14 @@
 import {
+	batch,
 	type Cleanup,
 	type Computed,
-	TYPE_COMPUTED,
-	UNSET,
-	type Watcher,
-	batch,
 	effect,
 	isState,
 	notify,
 	subscribe,
+	TYPE_COMPUTED,
+	UNSET,
+	type Watcher,
 } from '@zeix/cause-effect'
 import type { Component, ComponentProps } from '../component'
 import {
@@ -18,7 +18,7 @@ import {
 	getFallback,
 } from './dom'
 import { type Effect, RESET, type Reactive, resolveReactive } from './reactive'
-import { LOG_ERROR, elementName, isDefinedObject, log } from './util'
+import { elementName, isDefinedObject, LOG_ERROR, log } from './util'
 
 /* === Types === */
 
@@ -31,12 +31,7 @@ type EventTransformer<
 	E extends Element,
 	C extends HTMLElement,
 	Evt extends Event,
-> = (context: {
-	event: Evt
-	host: C
-	target: E
-	value: T
-}) => T | void
+> = (context: { event: Evt; host: C; target: E; value: T }) => T | void
 
 type EventTransformers<
 	T extends {},
@@ -194,7 +189,7 @@ const emitEvent =
 		reactive: Reactive<T, P, E>,
 	): Effect<P, E> =>
 	(host, target): Cleanup =>
-		effect(() => {
+		effect((): undefined => {
 			const value = resolveReactive(
 				reactive,
 				host,

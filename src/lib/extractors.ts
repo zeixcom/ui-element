@@ -1,4 +1,4 @@
-import { type Extractor, type LooseExtractor, fromDOM } from '../core/dom'
+import { type Extractor, fromDOM, type LooseExtractor } from '../core/dom'
 
 const getText =
 	<E extends Element = Element>(): LooseExtractor<string, E> =>

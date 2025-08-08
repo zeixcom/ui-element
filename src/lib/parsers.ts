@@ -1,4 +1,4 @@
-import { type Fallback, type Parser, getFallback } from '../core/dom'
+import { type Fallback, getFallback, type Parser } from '../core/dom'
 
 /* === Internal Function === */
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { readFileSync, readdirSync, statSync } from 'fs'
 import process from 'node:process'
+import { readdirSync, readFileSync, statSync } from 'fs'
 import { join } from 'path'
 
 /**
@@ -23,12 +23,22 @@ const COMMON_ISSUES = {
 				const nextChar = content[i + 1]
 
 				// Handle comments
-				if (!inString && char === '/' && nextChar === '/') {
+				if (
+					!inString &&
+					!inComment &&
+					char === '/' &&
+					nextChar === '/'
+				) {
 					inComment = 'single'
 					i++ // skip next char
 					continue
 				}
-				if (!inString && char === '/' && nextChar === '*') {
+				if (
+					!inString &&
+					!inComment &&
+					char === '/' &&
+					nextChar === '*'
+				) {
 					inComment = 'multi'
 					i++ // skip next char
 					continue
@@ -44,7 +54,7 @@ const COMMON_ISSUES = {
 				}
 				if (inComment) continue
 
-				// Handle strings
+				// Handle strings with proper escape handling
 				if (
 					!inString &&
 					(char === '"' || char === "'" || char === '`')
@@ -53,13 +63,19 @@ const COMMON_ISSUES = {
 					stringChar = char
 					continue
 				}
-				if (
-					inString &&
-					char === stringChar &&
-					content[i - 1] !== '\\'
-				) {
-					inString = false
-					stringChar = ''
+				if (inString && char === stringChar) {
+					// Count consecutive backslashes before this quote
+					let backslashCount = 0
+					let j = i - 1
+					while (j >= 0 && content[j] === '\\') {
+						backslashCount++
+						j--
+					}
+					// If even number of backslashes (including 0), the quote is not escaped
+					if (backslashCount % 2 === 0) {
+						inString = false
+						stringChar = ''
+					}
 					continue
 				}
 				if (inString) continue

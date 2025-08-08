@@ -1,14 +1,14 @@
 import {
 	type Cleanup,
-	type Signal,
 	isFunction,
 	isSignal,
+	type Signal,
 } from '@zeix/cause-effect'
 
 import type { Component, ComponentProps } from '../component'
 import type { LooseExtractor } from './dom'
 import { InvalidEffectsError } from './errors'
-import { LOG_ERROR, elementName, isString, log, valueString } from './util'
+import { elementName, isString, LOG_ERROR, log, valueString } from './util'
 
 /* === Types === */
 

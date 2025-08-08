@@ -1,6 +1,5 @@
 import {
 	type Component,
-	UNSET,
 	component,
 	computed,
 	dangerouslySetInnerHTML,
@@ -8,6 +7,7 @@ import {
 	show,
 	state,
 	toggleClass,
+	UNSET,
 } from '../../..'
 import { asURL } from '../../functions/attribute-parser/as-url'
 import { fetchWithCache } from '../../functions/shared/fetch-with-cache'

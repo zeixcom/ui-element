@@ -1,6 +1,6 @@
 import {
-	type Component,
 	asBoolean,
+	type Component,
 	component,
 	setProperty,
 	show,

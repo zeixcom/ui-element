@@ -1,12 +1,12 @@
 import {
 	type Cleanup,
 	type Computed,
-	TYPE_COMPUTED,
-	UNSET,
-	type Watcher,
 	isFunction,
 	notify,
 	subscribe,
+	TYPE_COMPUTED,
+	UNSET,
+	type Watcher,
 } from '@zeix/cause-effect'
 
 import type { Component, ComponentProps } from '../component'

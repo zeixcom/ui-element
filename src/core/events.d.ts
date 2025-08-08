@@ -10,12 +10,7 @@ type EventTransformer<
 	E extends Element,
 	C extends HTMLElement,
 	Evt extends Event,
-> = (context: {
-	event: Evt
-	host: C
-	target: E
-	value: T
-}) => T | void
+> = (context: { event: Evt; host: C; target: E; value: T }) => T | void
 type EventTransformers<
 	T extends {},
 	E extends Element,
@@ -27,11 +22,7 @@ type EventHandler<
 	P extends ComponentProps,
 	E extends Element,
 	Evt extends Event,
-> = (context: {
-	event: Evt
-	host: Component<P>
-	target: E
-}) =>
+> = (context: { event: Evt; host: Component<P>; target: E }) =>
 	| {
 			[K in keyof P]?: P[K]
 	  }

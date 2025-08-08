@@ -1,7 +1,7 @@
 import {
+	batch,
 	type Component,
 	type Computed,
-	batch,
 	component,
 	effect,
 	fromSelector,
@@ -70,7 +70,7 @@ export default component<FormComboboxProps>(
 			// Effects and event listeners on component
 			setAttribute('value'),
 			() =>
-				effect(() => {
+				effect((): undefined => {
 					const m = mode.get()
 					const i = focusIndex.get()
 					if (m === 'idle') return

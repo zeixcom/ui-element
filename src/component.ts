@@ -1,21 +1,21 @@
 import {
 	type Cleanup,
-	type MaybeSignal,
-	type Signal,
-	UNSET,
 	isComputed,
 	isFunction,
 	isSignal,
 	isState,
+	type MaybeSignal,
+	type Signal,
 	toSignal,
+	UNSET,
 } from '@zeix/cause-effect'
 
 import {
 	type Extractor,
-	type Helpers,
-	type Parser,
 	getHelpers,
+	type Helpers,
 	isParser,
+	type Parser,
 } from './core/dom'
 import {
 	DependencyTimeoutError,
@@ -26,8 +26,8 @@ import {
 import { type Effects, runEffects } from './core/reactive'
 import {
 	DEV_MODE,
-	LOG_WARN,
 	elementName,
+	LOG_WARN,
 	log,
 	typeString,
 	valueString,

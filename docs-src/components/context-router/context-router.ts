@@ -2,17 +2,17 @@ import {
 	type Component,
 	type Computed,
 	type Context,
-	type State,
-	UNSET,
 	component,
 	computed,
 	dangerouslySetInnerHTML,
 	on,
 	provideContexts,
+	type State,
 	setText,
 	show,
 	state,
 	toggleClass,
+	UNSET,
 } from '../../..'
 import { fetchWithCache } from '../../functions/shared/fetch-with-cache'
 import { isInternalLink } from '../../functions/shared/is-internal-link'

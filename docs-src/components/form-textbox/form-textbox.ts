@@ -1,6 +1,6 @@
 import {
-	type Component,
 	batch,
+	type Component,
 	component,
 	computed,
 	on,

@@ -1,6 +1,6 @@
 import {
-	type Component,
 	asEnum,
+	type Component,
 	component,
 	setText,
 	toggleClass,

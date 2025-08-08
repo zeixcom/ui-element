@@ -1,14 +1,3 @@
-// node_modules/@zeix/cause-effect/src/util.ts
-var isFunction = (value) => typeof value === "function";
-var isObjectOfType = (value, type) => Object.prototype.toString.call(value) === `[object ${type}]`;
-var toError = (reason) => reason instanceof Error ? reason : Error(String(reason));
-
-class CircularDependencyError extends Error {
-  constructor(where) {
-    super(`Circular dependency in ${where} detected`);
-    return this;
-  }
-}
 // node_modules/@zeix/cause-effect/src/scheduler.ts
 var active;
 var pending = new Set;
@@ -98,6 +87,18 @@ var enqueue = (fn, dedupe) => new Promise((resolve, reject) => {
   requestTick();
 });
 
+// node_modules/@zeix/cause-effect/src/util.ts
+var isFunction = (value) => typeof value === "function";
+var isObjectOfType = (value, type) => Object.prototype.toString.call(value) === `[object ${type}]`;
+var toError = (reason) => reason instanceof Error ? reason : Error(String(reason));
+
+class CircularDependencyError extends Error {
+  constructor(where) {
+    super(`Circular dependency in ${where} detected`);
+    this.name = "CircularDependencyError";
+  }
+}
+
 // node_modules/@zeix/cause-effect/src/state.ts
 var TYPE_STATE = "State";
 var state = (initialValue) => {
@@ -124,6 +125,11 @@ var state = (initialValue) => {
   return s;
 };
 var isState = (value) => isObjectOfType(value, TYPE_STATE);
+
+// node_modules/@zeix/cause-effect/src/signal.ts
+var UNSET = Symbol();
+var isSignal = (value) => isState(value) || isComputed(value);
+var toSignal = (value) => isSignal(value) ? value : isComputedCallback(value) ? computed(value) : state(value);
 
 // node_modules/@zeix/cause-effect/src/computed.ts
 var TYPE_COMPUTED = "Computed";
@@ -221,17 +227,14 @@ var computed = (fn) => {
 };
 var isComputed = (value) => isObjectOfType(value, TYPE_COMPUTED);
 var isComputedCallback = (value) => isFunction(value) && value.length < 2;
-
-// node_modules/@zeix/cause-effect/src/signal.ts
-var UNSET = Symbol();
-var isSignal = (value) => isState(value) || isComputed(value);
-var toSignal = (value) => isSignal(value) ? value : isComputedCallback(value) ? computed(value) : state(value);
 // node_modules/@zeix/cause-effect/src/effect.ts
 function effect(matcher) {
   const {
     signals,
     ok,
-    err = console.error,
+    err = (error) => {
+      console.error(error);
+    },
     nil = () => {
     }
   } = isFunction(matcher) ? { signals: [], ok: matcher } : matcher;
@@ -253,7 +256,7 @@ function effect(matcher) {
         return UNSET;
       }
     });
-    let cleanup = undefined;
+    let cleanup;
     try {
       cleanup = pending2 ? nil() : errors.length ? err(...errors) : ok(...values);
     } catch (e) {
@@ -698,6 +701,41 @@ function component(name, init = {}, setup) {
   }
   customElements.define(name, CustomElement);
 }
+// src/core/context.ts
+var CONTEXT_REQUEST = "context-request";
+
+class ContextRequestEvent extends Event {
+  context;
+  callback;
+  subscribe2;
+  constructor(context, callback, subscribe2 = false) {
+    super(CONTEXT_REQUEST, {
+      bubbles: true,
+      composed: true
+    });
+    this.context = context;
+    this.callback = callback;
+    this.subscribe = subscribe2;
+  }
+}
+var provideContexts = (contexts) => (host) => {
+  const listener = (e) => {
+    const { context, callback } = e;
+    if (contexts.includes(context) && isFunction(callback)) {
+      e.stopImmediatePropagation();
+      callback(host.getSignal(String(context)));
+    }
+  };
+  host.addEventListener(CONTEXT_REQUEST, listener);
+  return () => host.removeEventListener(CONTEXT_REQUEST, listener);
+};
+var fromContext = (context, fallback) => (host) => {
+  let consumed = toSignal(getFallback(host, fallback));
+  host.dispatchEvent(new ContextRequestEvent(context, (value) => {
+    consumed = value;
+  }));
+  return consumed;
+};
 // src/core/events.ts
 var fromEvents = (initialize, selector, events) => (host) => {
   const watchers = new Set;
@@ -785,84 +823,6 @@ var emitEvent = (type, reactive) => (host, target) => effect(() => {
     bubbles: true
   }));
 });
-// src/core/context.ts
-var CONTEXT_REQUEST = "context-request";
-
-class ContextRequestEvent extends Event {
-  context;
-  callback;
-  subscribe2;
-  constructor(context, callback, subscribe2 = false) {
-    super(CONTEXT_REQUEST, {
-      bubbles: true,
-      composed: true
-    });
-    this.context = context;
-    this.callback = callback;
-    this.subscribe = subscribe2;
-  }
-}
-var provideContexts = (contexts) => (host) => {
-  const listener = (e) => {
-    const { context, callback } = e;
-    if (contexts.includes(context) && isFunction(callback)) {
-      e.stopImmediatePropagation();
-      callback(host.getSignal(String(context)));
-    }
-  };
-  host.addEventListener(CONTEXT_REQUEST, listener);
-  return () => host.removeEventListener(CONTEXT_REQUEST, listener);
-};
-var fromContext = (context, fallback) => (host) => {
-  let consumed = toSignal(getFallback(host, fallback));
-  host.dispatchEvent(new ContextRequestEvent(context, (value) => {
-    consumed = value;
-  }));
-  return consumed;
-};
-// src/lib/parsers.ts
-var parseNumber = (parseFn, value) => {
-  if (value == null)
-    return;
-  const parsed = parseFn(value);
-  return Number.isFinite(parsed) ? parsed : undefined;
-};
-var asBoolean = () => (_, value) => value != null && value !== "false";
-var asInteger = (fallback = 0) => (element, value) => {
-  if (value == null)
-    return getFallback(element, fallback);
-  const trimmed = value.trim();
-  if (trimmed.toLowerCase().startsWith("0x"))
-    return parseNumber((v) => parseInt(v, 16), trimmed) ?? getFallback(element, fallback);
-  const parsed = parseNumber(parseFloat, value);
-  return parsed != null ? Math.trunc(parsed) : getFallback(element, fallback);
-};
-var asNumber = (fallback = 0) => (element, value) => parseNumber(parseFloat, value) ?? getFallback(element, fallback);
-var asString = (fallback = "") => (element, value) => value ?? getFallback(element, fallback);
-var asEnum = (valid) => (_, value) => {
-  if (value == null)
-    return valid[0];
-  const lowerValue = value.toLowerCase();
-  const matchingValid = valid.find((v) => v.toLowerCase() === lowerValue);
-  return matchingValid ? value : valid[0];
-};
-var asJSON = (fallback) => (element, value) => {
-  if ((value ?? fallback) == null)
-    throw new TypeError("asJSON: Value and fallback are both null or undefined");
-  if (value == null)
-    return getFallback(element, fallback);
-  if (value === "")
-    throw new TypeError("Empty string is not valid JSON");
-  let result;
-  try {
-    result = JSON.parse(value);
-  } catch (error) {
-    throw new SyntaxError(`Failed to parse JSON: ${String(error)}`, {
-      cause: error
-    });
-  }
-  return result ?? getFallback(element, fallback);
-};
 // src/lib/effects.ts
 var getOperationDescription = (op, name = "") => {
   const ops = {
@@ -1122,6 +1082,49 @@ var getDescription = (selector) => fromDOM("", {
   ".description": getText(),
   [selector]: getAttribute("aria-describedby")
 });
+// src/lib/parsers.ts
+var parseNumber = (parseFn, value) => {
+  if (value == null)
+    return;
+  const parsed = parseFn(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+};
+var asBoolean = () => (_, value) => value != null && value !== "false";
+var asInteger = (fallback = 0) => (element, value) => {
+  if (value == null)
+    return getFallback(element, fallback);
+  const trimmed = value.trim();
+  if (trimmed.toLowerCase().startsWith("0x"))
+    return parseNumber((v) => parseInt(v, 16), trimmed) ?? getFallback(element, fallback);
+  const parsed = parseNumber(parseFloat, value);
+  return parsed != null ? Math.trunc(parsed) : getFallback(element, fallback);
+};
+var asNumber = (fallback = 0) => (element, value) => parseNumber(parseFloat, value) ?? getFallback(element, fallback);
+var asString = (fallback = "") => (element, value) => value ?? getFallback(element, fallback);
+var asEnum = (valid) => (_, value) => {
+  if (value == null)
+    return valid[0];
+  const lowerValue = value.toLowerCase();
+  const matchingValid = valid.find((v) => v.toLowerCase() === lowerValue);
+  return matchingValid ? value : valid[0];
+};
+var asJSON = (fallback) => (element, value) => {
+  if ((value ?? fallback) == null)
+    throw new TypeError("asJSON: Value and fallback are both null or undefined");
+  if (value == null)
+    return getFallback(element, fallback);
+  if (value === "")
+    throw new TypeError("Empty string is not valid JSON");
+  let result;
+  try {
+    result = JSON.parse(value);
+  } catch (error) {
+    throw new SyntaxError(`Failed to parse JSON: ${String(error)}`, {
+      cause: error
+    });
+  }
+  return result ?? getFallback(element, fallback);
+};
 export {
   updateElement,
   toggleClass,

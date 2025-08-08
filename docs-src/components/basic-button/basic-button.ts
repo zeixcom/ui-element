@@ -1,7 +1,7 @@
 import {
-	type Component,
 	asBoolean,
 	asString,
+	type Component,
 	component,
 	fromDOM,
 	getLabel,

@@ -1,12 +1,12 @@
 import {
 	type Cleanup,
-	UNSET,
 	effect,
 	enqueue,
 	isFunction,
 	isSignal,
 	isState,
 	toSignal,
+	UNSET,
 } from '@zeix/cause-effect'
 
 import type { Component, ComponentProps } from '../component'
@@ -18,12 +18,12 @@ import {
 } from '../core/reactive'
 import {
 	DEV_MODE,
-	LOG_ERROR,
 	elementName,
 	hasMethod,
 	isCustomElement,
 	isDefinedObject,
 	isString,
+	LOG_ERROR,
 	log,
 } from '../core/util'
 
@@ -168,7 +168,7 @@ const updateElement =
 			updater.reject,
 		)
 
-		return effect(() => {
+		return effect((): undefined => {
 			const updateSymbol = Symbol(name ? `${op}:${name}` : op)
 
 			const value = resolveReactive(reactive, host, target, operationDesc)
@@ -246,7 +246,7 @@ const insertOrRemoveElement =
 			inserter?.reject?.(error)
 		}
 
-		return effect(() => {
+		return effect((): undefined => {
 			const insertSymbol = Symbol('i')
 			const removeSymbol = Symbol('r')
 

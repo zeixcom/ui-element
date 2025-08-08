@@ -1,7 +1,7 @@
 import {
 	type Cleanup,
-	type Signal,
 	isFunction,
+	type Signal,
 	toSignal,
 } from '@zeix/cause-effect'
 

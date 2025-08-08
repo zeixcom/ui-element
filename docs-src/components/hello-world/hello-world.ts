@@ -1,9 +1,9 @@
 import {
-	type Component,
-	RESET,
 	asString,
+	type Component,
 	component,
 	on,
+	RESET,
 	setText,
 } from '../../..'
 

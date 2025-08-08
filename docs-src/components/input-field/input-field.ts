@@ -1,15 +1,15 @@
 import {
 	type Component,
-	type Effect,
-	type Parser,
-	UNSET,
 	component,
 	computed,
+	type Effect,
 	emitEvent,
 	on,
+	type Parser,
 	setAttribute,
 	setProperty,
 	setText,
+	UNSET,
 } from '../../../'
 import { clearEffects, clearMethod } from '../../functions/shared/clear-input'
 

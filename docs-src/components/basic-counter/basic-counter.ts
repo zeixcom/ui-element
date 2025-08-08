@@ -1,6 +1,6 @@
 import {
-	type Component,
 	asInteger,
+	type Component,
 	component,
 	fromDOM,
 	fromEvents,
