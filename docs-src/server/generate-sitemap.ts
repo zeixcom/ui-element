@@ -1,5 +1,5 @@
-import { join } from 'path'
 import { writeFile } from 'fs/promises'
+import { join } from 'path'
 
 import { OUTPUT_DIR } from './config'
 
@@ -32,7 +32,10 @@ export const generateSitemap = async (pages: PageInfo[]) => {
 			} else if (!page.section) {
 				// Root pages get higher priority
 				priority = '0.8'
-			} else if (page.section === 'api' && page.relativePath.includes('README.md')) {
+			} else if (
+				page.section === 'api' &&
+				page.relativePath.includes('README.md')
+			) {
 				// API overview page
 				priority = '0.7'
 			} else if (page.section === 'blog') {

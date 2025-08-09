@@ -5,8 +5,23 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Reactives\<E, P\> – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=6263c57e"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=1dbf6aa1"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=6263c57e"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=1dbf6aa1"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
@@ -102,31 +117,31 @@
 <h1 id="type-alias-reactiveslte-pgt">
                 <a name="type-alias-reactiveslte-pgt" class="anchor" href="#type-alias-reactiveslte-pgt">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Alias: Reactives&lt;E, P&gt;</span>
                 </a>
-                Type Alias: Reactives&lt;E, P&gt;
             </h1>
 <blockquote>
 <p><strong>Reactives</strong>&lt;<code>E</code>, <code>P</code>&gt; = <code>{ [K in keyof E]?: Reactive&lt;E[K], P, E&gt; }</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/6eb916701d8e6ad874e5c8ced8c7ac11007d19ad/src/lib/effects.ts#L32">src/lib/effects.ts:32</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/8864649de9d6985ed1a958dac8b1b4b7b4877403/src/lib/effects.ts#L32">src/lib/effects.ts:32</a></p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
                 </a>
-                Type Parameters
             </h2>
 <h3 id="e">
                 <a name="e" class="anchor" href="#e">
 	                <span class="permalink">🔗</span>
+					<span class="title">E</span>
                 </a>
-                E
             </h3>
 <p><code>E</code> <em>extends</em> <code>Element</code></p>
 <h3 id="p">
                 <a name="p" class="anchor" href="#p">
 	                <span class="permalink">🔗</span>
+					<span class="title">P</span>
                 </a>
-                P
             </h3>
 <p><code>P</code> <em>extends</em> <a href="ComponentProps.html"><code>ComponentProps</code></a></p>
 

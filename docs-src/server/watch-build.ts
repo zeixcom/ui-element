@@ -1,7 +1,7 @@
 import { spawn } from 'child_process'
 import { createHash } from 'crypto'
+import { readdir, readFile, watch, writeFile } from 'fs/promises'
 import { extname, join } from 'path'
-import { readFile, readdir, watch, writeFile } from 'fs/promises'
 
 const WATCH_DIRS = [
 	'./docs-src',
@@ -51,7 +51,7 @@ const getFileHash = async (filePath: string): Promise<string> => {
 }
 
 // Debounce function to avoid unnecessary rebuilds
-const debounce = (fn: Function, delay = 300) => {
+const debounce = (fn: (...args: any[]) => void, delay = 300) => {
 	let timer: NodeJS.Timeout
 	return (...args: any[]) => {
 		clearTimeout(timer)
@@ -136,8 +136,9 @@ console.log('👀 Watching for changes in docs-src/')
 await loadHashes()
 await loadPageList()
 
-WATCH_DIRS.forEach(dir => {
-	watch(dir, { recursive: true }, (_, filename) => {
-		if (filename) handleFileChange(filename)
-	})
+WATCH_DIRS.forEach(async dir => {
+	const watcher = watch(dir, { recursive: true })
+	for await (const event of watcher) {
+		if (event.filename) handleFileChange(event.filename)
+	}
 })

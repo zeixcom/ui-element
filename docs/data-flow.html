@@ -5,8 +5,23 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Data Flow – UIElement Docs</title>
 		<meta name="description" content="Passing state, events, context" />
-		<link rel="stylesheet" href="./assets/main.css" />
-		<script type="module" src="./assets/main.js"></script>
+		<link
+			rel="preload"
+			href="./assets/main.css?v=6263c57e"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="./assets/main.js?v=1dbf6aa1"
+		/>
+		<link
+			rel="stylesheet"
+			href="./assets/main.css?v=6263c57e"
+		/>
+		<script
+			type="module"
+			src="./assets/main.js?v=1dbf6aa1"
+		></script>
 	</head>
 	<body class="">
 		<context-router>
@@ -103,8 +118,8 @@
 <h1 id="data-flow">
                 <a name="data-flow" class="anchor" href="#data-flow">
 	                <span class="permalink">🔗</span>
+					<span class="title">🔄 Data Flow</span>
                 </a>
-                🔄 Data Flow
             </h1>
 <div>
   <p class="lead"><strong>Learn how UIElement components can work together seamlessly.</strong> Start with simple parent-child relationships, then explore advanced patterns like custom events and shared state. Build modular, loosely coupled components that communicate efficiently.</p>
@@ -129,8 +144,8 @@
 <h2 id="component-coordination">
                 <a name="component-coordination" class="anchor" href="#component-coordination">
 	                <span class="permalink">🔗</span>
+					<span class="title">Component Coordination</span>
                 </a>
-                Component Coordination
             </h2>
 <p>Let&#39;s consider a <strong>product catalog</strong> where users can add items to a shopping cart. We have <strong>three independent components</strong> that work together:</p>
 <ul>
@@ -154,8 +169,8 @@
 <h3 id="parent-component-modulecatalog">
                 <a name="parent-component-modulecatalog" class="anchor" href="#parent-component-modulecatalog">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parent Component: ModuleCatalog</span>
                 </a>
-                Parent Component: ModuleCatalog
             </h3>
 <p>The <strong>parent component (<code>ModuleCatalog</code>) knows about its children</strong>, meaning it can <strong>read state from and pass state to</strong> them.</p>
 <p>First, we need to observe the quantities of all <code>FormSpinbutton</code> components. For this, we create a signal of all children matching the <code>form-spinbutton</code> selector:</p>
@@ -225,8 +240,8 @@
 <h3 id="child-component-basicbutton">
                 <a name="child-component-basicbutton" class="anchor" href="#child-component-basicbutton">
 	                <span class="permalink">🔗</span>
+					<span class="title">Child Component: BasicButton</span>
                 </a>
-                Child Component: BasicButton
             </h3>
 <p>The <code>BasicButton</code> component <strong>displays a badge when needed</strong> – it does not know about any other component nor track state itself. It just exposes a reactive properties <code>badge</code> of type <code>string</code> and <code>disabled</code> of type <code>boolean</code> and has effects to react to state changes that updates the DOM subtree.</p>
 <module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -261,8 +276,8 @@
 <h3 id="child-component-formspinbutton">
                 <a name="child-component-formspinbutton" class="anchor" href="#child-component-formspinbutton">
 	                <span class="permalink">🔗</span>
+					<span class="title">Child Component: FormSpinbutton</span>
                 </a>
-                Child Component: FormSpinbutton
             </h3>
 <p>The <code>FormSpinbutton</code> component reacts to user interactions and exposes a reactive property <code>value</code> of type <code>number</code>. It updates its own internal DOM subtree, but doesn&#39;t know about any other component nor where the value is used.</p>
 <module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -331,8 +346,8 @@
 <h3 id="full-example">
                 <a name="full-example" class="anchor" href="#full-example">
 	                <span class="permalink">🔗</span>
+					<span class="title">Full Example</span>
                 </a>
-                Full Example
             </h3>
 <p>Here&#39;s how everything comes together:</p>
 <ul>
@@ -450,16 +465,16 @@
 <h2 id="custom-events">
                 <a name="custom-events" class="anchor" href="#custom-events">
 	                <span class="permalink">🔗</span>
+					<span class="title">Custom Events</span>
                 </a>
-                Custom Events
             </h2>
 <p>Passing state down works well when a <strong>parent component can directly observe child state</strong>, but sometimes a <strong>child needs to notify its parent</strong> about an action <strong>without managing shared state itself</strong>.</p>
 <p>Custom events are perfect for this - they allow components to communicate upward through the DOM tree without tight coupling.</p>
 <h3 id="typescript-support-for-components-and-events">
                 <a name="typescript-support-for-components-and-events" class="anchor" href="#typescript-support-for-components-and-events">
 	                <span class="permalink">🔗</span>
+					<span class="title">TypeScript Support for Components and Events</span>
                 </a>
-                TypeScript Support for Components and Events
             </h3>
 <p>To get full TypeScript support, declare your components and custom events globally:</p>
 <module-codeblock collapsed language="typescript" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -495,8 +510,8 @@
 <h3 id="example-shopping-cart-events">
                 <a name="example-shopping-cart-events" class="anchor" href="#example-shopping-cart-events">
 	                <span class="permalink">🔗</span>
+					<span class="title">Example: Shopping Cart Events</span>
                 </a>
-                Example: Shopping Cart Events
             </h3>
 <p>Consider a <strong>product card</strong> that needs to notify its parent when an item is added:</p>
 <module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -590,8 +605,8 @@
 <h3 id="benefits-of-custom-events">
                 <a name="benefits-of-custom-events" class="anchor" href="#benefits-of-custom-events">
 	                <span class="permalink">🔗</span>
+					<span class="title">Benefits of Custom Events</span>
                 </a>
-                Benefits of Custom Events
             </h3>
 <ul>
 <li><strong>Decoupling</strong>: Child components don&#39;t need to know about parent implementation</li>
@@ -603,8 +618,8 @@
 <h3 id="when-to-use-custom-events">
                 <a name="when-to-use-custom-events" class="anchor" href="#when-to-use-custom-events">
 	                <span class="permalink">🔗</span>
+					<span class="title">When to Use Custom Events</span>
                 </a>
-                When to Use Custom Events
             </h3>
 <ul>
 <li><strong>User Actions</strong>: Button clicks, form submissions, gestures</li>
@@ -615,8 +630,8 @@
 <h3 id="component-type-safety-best-practices">
                 <a name="component-type-safety-best-practices" class="anchor" href="#component-type-safety-best-practices">
 	                <span class="permalink">🔗</span>
+					<span class="title">Component Type Safety Best Practices</span>
                 </a>
-                Component Type Safety Best Practices
             </h3>
 <p>Each UIElement component should declare its own <code>HTMLElementTagNameMap</code> extension:</p>
 <module-codeblock collapsed language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -665,8 +680,8 @@
 <h2 id="providing-context">
                 <a name="providing-context" class="anchor" href="#providing-context">
 	                <span class="permalink">🔗</span>
+					<span class="title">Providing Context</span>
                 </a>
-                Providing Context
             </h2>
 <card-callout class="caution">
 
@@ -680,8 +695,8 @@
 <h2 id="consuming-context">
                 <a name="consuming-context" class="anchor" href="#consuming-context">
 	                <span class="permalink">🔗</span>
+					<span class="title">Consuming Context</span>
                 </a>
-                Consuming Context
             </h2>
 <card-callout class="caution">
 
@@ -695,8 +710,8 @@
 <h2 id="next-steps">
                 <a name="next-steps" class="anchor" href="#next-steps">
 	                <span class="permalink">🔗</span>
+					<span class="title">Next Steps</span>
                 </a>
-                Next Steps
             </h2>
 </section>
 </main>

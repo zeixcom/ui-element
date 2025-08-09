@@ -219,7 +219,7 @@ declare const dangerouslySetInnerHTML: <
  *
  * @since 0.13.3
  * @param {Reactives<Component<Q>, P>} reactives - Reactive values to pass
- * @returns {Effect<P, E>} Effect function that passes reactive values to the descendant component
+ * @returns {Effect<P, Component<Q>>} Effect function that passes reactive values to the descendant component
  * @throws {TypeError} When the provided reactives are not an object or the target is not a UIElement component
  * @throws {Error} When passing signals failed for some other reason
  */

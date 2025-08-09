@@ -5,8 +5,23 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{{ title }} – UIElement Docs</title>
 		<meta name="description" content="{{ description }}" />
-		<link rel="stylesheet" href="{{ base-path }}assets/main.css" />
-		<script type="module" src="{{ base-path }}assets/main.js"></script>
+		<link
+			rel="preload"
+			href="{{ base-path }}assets/main.css?v={{ css-hash }}"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="{{ base-path }}assets/main.js?v={{ js-hash }}"
+		/>
+		<link
+			rel="stylesheet"
+			href="{{ base-path }}assets/main.css?v={{ css-hash }}"
+		/>
+		<script
+			type="module"
+			src="{{ base-path }}assets/main.js?v={{ js-hash }}"
+		></script>
 	</head>
 	<body class="{{ section }}">
 		<context-router>

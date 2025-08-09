@@ -233,7 +233,7 @@ const insertOrRemoveElement =
 					: isString(reactive)
 						? host.getSignal(reactive)
 						: undefined
-				if (isState<number>(signal)) signal.set(0)
+				if (isState(signal)) signal.set(0)
 			}
 		}
 
@@ -568,7 +568,7 @@ const dangerouslySetInnerHTML = <
  *
  * @since 0.13.3
  * @param {Reactives<Component<Q>, P>} reactives - Reactive values to pass
- * @returns {Effect<P, E>} Effect function that passes reactive values to the descendant component
+ * @returns {Effect<P, Component<Q>>} Effect function that passes reactive values to the descendant component
  * @throws {TypeError} When the provided reactives are not an object or the target is not a UIElement component
  * @throws {Error} When passing signals failed for some other reason
  */
@@ -583,9 +583,6 @@ const pass =
 			throw new TypeError(
 				`Target ${elementName(target)} is not a custom element`,
 			)
-		/* customElements
-			.whenDefined(target.localName)
-			.then(() => { */
 		if (!hasMethod(target, 'setSignal'))
 			throw new TypeError(
 				`Target ${elementName(target)} is not a UIElement component`,
@@ -598,13 +595,6 @@ const pass =
 					: toSignal(reactive),
 			)
 		}
-		/* })
-			.catch(error => {
-				throw new Error(
-					`Failed to pass signals to ${elementName(target)}`,
-					{ cause: error },
-				)
-			}) */
 	}
 
 /* === Exports === */

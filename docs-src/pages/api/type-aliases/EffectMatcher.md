@@ -10,17 +10,29 @@
 
 Defined in: node\_modules/@zeix/cause-effect/src/effect.ts:7
 
+## Name
+
+UIElement
+
+## Version
+
+0.14.0
+
+## Author
+
+Esther Brunner
+
 ## Type Parameters
 
 ### S
 
-`S` *extends* [`Signal`](Signal.md)\<\{ \}\>[]
+`S` *extends* [`Signal`](Signal.md)\<`unknown` & `object`\>[]
 
 ## Properties
 
 ### err()?
 
-> `optional` **err**: (...`errors`) => `void` \| [`Cleanup`](Cleanup.md)
+> `optional` **err**: (...`errors`) => [`Cleanup`](Cleanup.md) \| `undefined`
 
 Defined in: node\_modules/@zeix/cause-effect/src/effect.ts:10
 
@@ -32,25 +44,25 @@ Defined in: node\_modules/@zeix/cause-effect/src/effect.ts:10
 
 #### Returns
 
-`void` \| [`Cleanup`](Cleanup.md)
+[`Cleanup`](Cleanup.md) \| `undefined`
 
 ***
 
 ### nil()?
 
-> `optional` **nil**: () => `void` \| [`Cleanup`](Cleanup.md)
+> `optional` **nil**: () => [`Cleanup`](Cleanup.md) \| `undefined`
 
 Defined in: node\_modules/@zeix/cause-effect/src/effect.ts:11
 
 #### Returns
 
-`void` \| [`Cleanup`](Cleanup.md)
+[`Cleanup`](Cleanup.md) \| `undefined`
 
 ***
 
 ### ok()
 
-> **ok**: (...`values`) => `void` \| [`Cleanup`](Cleanup.md)
+> **ok**: (...`values`) => [`Cleanup`](Cleanup.md) \| `undefined`
 
 Defined in: node\_modules/@zeix/cause-effect/src/effect.ts:9
 
@@ -62,7 +74,7 @@ Defined in: node\_modules/@zeix/cause-effect/src/effect.ts:9
 
 #### Returns
 
-`void` \| [`Cleanup`](Cleanup.md)
+[`Cleanup`](Cleanup.md) \| `undefined`
 
 ***
 

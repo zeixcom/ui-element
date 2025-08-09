@@ -6,7 +6,7 @@
 
 # Class: DependencyTimeoutError
 
-Defined in: [src/core/errors.ts:115](https://github.com/zeixcom/ui-element/blob/6eb916701d8e6ad874e5c8ced8c7ac11007d19ad/src/core/errors.ts#L115)
+Defined in: [src/core/errors.ts:115](https://github.com/zeixcom/ui-element/blob/8864649de9d6985ed1a958dac8b1b4b7b4877403/src/core/errors.ts#L115)
 
 Error when a component's dependencies are not met within a specified timeout
 
@@ -24,7 +24,7 @@ Error when a component's dependencies are not met within a specified timeout
 
 > **new DependencyTimeoutError**(`host`, `missing`): `DependencyTimeoutError`
 
-Defined in: [src/core/errors.ts:116](https://github.com/zeixcom/ui-element/blob/6eb916701d8e6ad874e5c8ced8c7ac11007d19ad/src/core/errors.ts#L116)
+Defined in: [src/core/errors.ts:116](https://github.com/zeixcom/ui-element/blob/8864649de9d6985ed1a958dac8b1b4b7b4877403/src/core/errors.ts#L116)
 
 #### Parameters
 
@@ -100,7 +100,7 @@ Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1078
 
 > `static` **stackTraceLimit**: `number`
 
-Defined in: node\_modules/bun-types/globals.d.ts:960
+Defined in: node\_modules/bun-types/globals.d.ts:990
 
 The maximum number of stack frames to capture.
 
@@ -116,7 +116,7 @@ The maximum number of stack frames to capture.
 
 > `static` **captureStackTrace**(`targetObject`, `constructorOpt?`): `void`
 
-Defined in: node\_modules/bun-types/globals.d.ts:955
+Defined in: node\_modules/bun-types/globals.d.ts:985
 
 Create .stack property on a target object
 
@@ -212,7 +212,7 @@ a();
 
 > `static` **isError**(`value`): `value is Error`
 
-Defined in: node\_modules/bun-types/globals.d.ts:950
+Defined in: node\_modules/bun-types/globals.d.ts:980
 
 Check if a value is an instance of Error
 

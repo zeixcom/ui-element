@@ -252,9 +252,9 @@
 			<span class="language">ts</span>
 		</p>
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	batch,</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Computed,</span></span>
-<span class="line"><span style="color:#F8F8F2">	batch,</span></span>
 <span class="line"><span style="color:#F8F8F2">	component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	effect,</span></span>
 <span class="line"><span style="color:#F8F8F2">	fromSelector,</span></span>
@@ -323,7 +323,7 @@
 <span class="line"><span style="color:#88846F">			// Effects and event listeners on component</span></span>
 <span class="line"><span style="color:#A6E22E">			setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#F8F8F2">			() </span><span style="color:#66D9EF;font-style:italic">=></span></span>
-<span class="line"><span style="color:#A6E22E">				effect</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#A6E22E">				effect</span><span style="color:#F8F8F2">(()</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> undefined</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> m </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> mode.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> i </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> focusIndex.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (m </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'idle'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">return</span></span>

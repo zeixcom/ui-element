@@ -5,8 +5,23 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Getting Started – UIElement Docs</title>
 		<meta name="description" content="Installation, setup, and first steps" />
-		<link rel="stylesheet" href="./assets/main.css" />
-		<script type="module" src="./assets/main.js"></script>
+		<link
+			rel="preload"
+			href="./assets/main.css?v=6263c57e"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="./assets/main.js?v=1dbf6aa1"
+		/>
+		<link
+			rel="stylesheet"
+			href="./assets/main.css?v=6263c57e"
+		/>
+		<script
+			type="module"
+			src="./assets/main.js?v=1dbf6aa1"
+		></script>
 	</head>
 	<body class="">
 		<context-router>
@@ -103,8 +118,8 @@
 <h1 id="getting-started">
                 <a name="getting-started" class="anchor" href="#getting-started">
 	                <span class="permalink">🔗</span>
+					<span class="title">🚀 Getting Started</span>
                 </a>
-                🚀 Getting Started
             </h1>
 <div>
   <p class="lead"><strong>Set up UIElement in minutes – no build tools required</strong>. Or use any package manager and bundler to take advantage of TypeScript support and optimize frontend assets.</p>
@@ -129,15 +144,15 @@
 <h2 id="how-to-install-uielement">
                 <a name="how-to-install-uielement" class="anchor" href="#how-to-install-uielement">
 	                <span class="permalink">🔗</span>
+					<span class="title">How to Install UIElement</span>
                 </a>
-                How to Install UIElement
             </h2>
 <p>UIElement works <strong>without build tools</strong> but also supports <strong>package managers and bundlers</strong> for larger projects. Choose the option that best fits your needs.</p>
 <h3 id="using-a-cdn">
                 <a name="using-a-cdn" class="anchor" href="#using-a-cdn">
 	                <span class="permalink">🔗</span>
+					<span class="title">Using a CDN</span>
                 </a>
-                Using a CDN
             </h3>
 <p>For the easiest setup, include UIElement via a CDN. This is ideal for <strong>testing or quick projects</strong> where you want lightweight interactivity without additional tooling.</p>
 <module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -161,8 +176,8 @@
 <h3 id="self-hosting-uielement">
                 <a name="self-hosting-uielement" class="anchor" href="#self-hosting-uielement">
 	                <span class="permalink">🔗</span>
+					<span class="title">Self-Hosting UIElement</span>
                 </a>
-                Self-Hosting UIElement
             </h3>
 <p>For production use, you may want to <strong>self-host UIElement</strong> to avoid relying on a CDN. You can download the latest version from:</p>
 <p><a href="https://github.com/zeixcom/ui-element/blob/main/index.js" target="_blank">Github Repository</a></p>
@@ -194,8 +209,8 @@
 <h3 id="installing-via-package-managers">
                 <a name="installing-via-package-managers" class="anchor" href="#installing-via-package-managers">
 	                <span class="permalink">🔗</span>
+					<span class="title">Installing via Package Managers</span>
                 </a>
-                Installing via Package Managers
             </h3>
 <p>If you&#39;re using a <strong>bundler</strong> like <strong>Vite, Webpack, or Rollup</strong>, install UIElement via NPM or Bun:</p>
 <module-tabgroup>
@@ -261,8 +276,8 @@
 <h2 id="creating-your-first-component">
                 <a name="creating-your-first-component" class="anchor" href="#creating-your-first-component">
 	                <span class="permalink">🔗</span>
+					<span class="title">Creating Your First Component</span>
                 </a>
-                Creating Your First Component
             </h2>
 <p>Now, let&#39;s create an interactive Web Component to verify your setup.</p>
 <p><strong>What This Component Does</strong></p>
@@ -273,8 +288,8 @@
 <h3 id="markup">
                 <a name="markup" class="anchor" href="#markup">
 	                <span class="permalink">🔗</span>
+					<span class="title">Markup</span>
                 </a>
-                Markup
             </h3>
 <p>Include the following in your server-rendered HTML:</p>
 <module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -300,8 +315,8 @@
 <h3 id="component-definition">
                 <a name="component-definition" class="anchor" href="#component-definition">
 	                <span class="permalink">🔗</span>
+					<span class="title">Component Definition</span>
                 </a>
-                Component Definition
             </h3>
 <p>Save the following inside a <code>&lt;script type=&quot;module&quot;&gt;</code> tag or an external JavaScript file.</p>
 <module-codeblock collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -356,15 +371,15 @@
 <h2 id="understanding-your-first-component">
                 <a name="understanding-your-first-component" class="anchor" href="#understanding-your-first-component">
 	                <span class="permalink">🔗</span>
+					<span class="title">Understanding Your First Component</span>
                 </a>
-                Understanding Your First Component
             </h2>
 <p>Let&#39;s break down each part of your <code>&lt;hello-world&gt;</code> component to understand how UIElement works:</p>
 <h3 id="reactive-properties">
                 <a name="reactive-properties" class="anchor" href="#reactive-properties">
 	                <span class="permalink">🔗</span>
+					<span class="title">Reactive Properties</span>
                 </a>
-                Reactive Properties
             </h3>
 <module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
@@ -392,8 +407,8 @@
 <h3 id="setup-function">
                 <a name="setup-function" class="anchor" href="#setup-function">
 	                <span class="permalink">🔗</span>
+					<span class="title">Setup Function</span>
                 </a>
-                Setup Function
             </h3>
 <p>Returns an array of effects:</p>
 <module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -431,8 +446,8 @@
 <h2 id="verifying-your-installation">
                 <a name="verifying-your-installation" class="anchor" href="#verifying-your-installation">
 	                <span class="permalink">🔗</span>
+					<span class="title">Verifying Your Installation</span>
                 </a>
-                Verifying Your Installation
             </h2>
 <p>If everything is set up correctly, you should see:</p>
 <ul>
@@ -464,8 +479,8 @@
 <h2 id="next-steps">
                 <a name="next-steps" class="anchor" href="#next-steps">
 	                <span class="permalink">🔗</span>
+					<span class="title">Next Steps</span>
                 </a>
-                Next Steps
             </h2>
 <p>You&#39;ve successfully created your first reactive component! Now you&#39;re ready to dive deeper into UIElement&#39;s core concepts:</p>
 <p><strong>Next: Building <a href="components.html">Components</a></strong><br>Learn the fundamental building blocks: component anatomy, element selection, basic state management, and event handling patterns.</p>

@@ -378,11 +378,11 @@ h6 {
 	}
 
 	.anchor {
-		width: var(--space-l);
 		display: inline-block;
 		text-decoration: none;
 
 		.permalink {
+			width: var(--space-l);
 			visibility: hidden;
 			font-size: var(--font-size-m);
 		}
@@ -396,14 +396,21 @@ h6 {
 }
 
 a[href] {
-	color: var(--color-primary);
 
-	&:hover {
-		color: var(--color-primary-hover);
+	&:not(.anchor) {
+		color: var(--color-primary);
+
+		&:hover {
+			color: var(--color-primary-hover);
+		}
+
+		&:active {
+			color: var(--color-primary-active);
+		}
 	}
 
-	&:active {
-		color: var(--color-primary-active);
+	&.anchor {
+		color: inherit;
 	}
 }
 

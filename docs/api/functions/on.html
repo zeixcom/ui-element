@@ -5,8 +5,23 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>on – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=6263c57e"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=fb6c013c"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=6263c57e"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=fb6c013c"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
@@ -102,84 +117,84 @@
 <h1 id="function-on">
                 <a name="function-on" class="anchor" href="#function-on">
 	                <span class="permalink">🔗</span>
+					<span class="title">Function: on()</span>
                 </a>
-                Function: on()
             </h1>
 <blockquote>
 <p><strong>on</strong>&lt;<code>K</code>, <code>P</code>, <code>E</code>&gt;(<code>type</code>, <code>handler</code>, <code>options</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/6eb916701d8e6ad874e5c8ced8c7ac11007d19ad/src/core/events.ts#L152">src/core/events.ts:152</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/8864649de9d6985ed1a958dac8b1b4b7b4877403/src/core/events.ts#L147">src/core/events.ts:147</a></p>
 <p>Effect for attaching an event listener to an element.<br>Provides proper cleanup when the effect is disposed.</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
                 </a>
-                Type Parameters
             </h2>
 <h3 id="k">
                 <a name="k" class="anchor" href="#k">
 	                <span class="permalink">🔗</span>
+					<span class="title">K</span>
                 </a>
-                K
             </h3>
 <p><code>K</code> <em>extends</em> <code>string</code></p>
 <h3 id="p">
                 <a name="p" class="anchor" href="#p">
 	                <span class="permalink">🔗</span>
+					<span class="title">P</span>
                 </a>
-                P
             </h3>
 <p><code>P</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
 <h3 id="e">
                 <a name="e" class="anchor" href="#e">
 	                <span class="permalink">🔗</span>
+					<span class="title">E</span>
                 </a>
-                E
             </h3>
 <p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parameters</span>
                 </a>
-                Parameters
             </h2>
 <h3 id="type">
                 <a name="type" class="anchor" href="#type">
 	                <span class="permalink">🔗</span>
+					<span class="title">type</span>
                 </a>
-                type
             </h3>
 <p><code>K</code></p>
 <p>Event type</p>
 <h3 id="handler">
                 <a name="handler" class="anchor" href="#handler">
 	                <span class="permalink">🔗</span>
+					<span class="title">handler</span>
                 </a>
-                handler
             </h3>
 <p><a href="../type-aliases/EventHandler.html"><code>EventHandler</code></a>&lt;<code>P</code>, <code>E</code>, <a href="../type-aliases/EventType.html"><code>EventType</code></a>&lt;<code>K</code>&gt;&gt;</p>
 <p>Event handler function</p>
 <h3 id="options">
                 <a name="options" class="anchor" href="#options">
 	                <span class="permalink">🔗</span>
+					<span class="title">options</span>
                 </a>
-                options
             </h3>
 <p>Event listener options</p>
 <p><code>boolean</code> | <code>AddEventListenerOptions</code></p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
                 </a>
-                Returns
             </h2>
 <p><a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <code>E</code>&gt;</p>
 <p>Effect function that manages the event listener</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
+					<span class="title">Since</span>
                 </a>
-                Since
             </h2>
 <p>0.14.0</p>
 

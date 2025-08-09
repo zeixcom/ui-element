@@ -5,8 +5,23 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>The Case for Components – UIElement Docs</title>
 		<meta name="description" content="Components are a proven way to reduce complexity, encourage reuse, and allow teams to scale their work across independent user interface parts." />
-		<link rel="stylesheet" href="../assets/main.css" />
-		<script type="module" src="../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../assets/main.css?v=6263c57e"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../assets/main.js?v=1dbf6aa1"
+		/>
+		<link
+			rel="stylesheet"
+			href="../assets/main.css?v=6263c57e"
+		/>
+		<script
+			type="module"
+			src="../assets/main.js?v=1dbf6aa1"
+		></script>
 	</head>
 	<body class="blog">
 		<context-router>
@@ -103,8 +118,8 @@
 <h1 id="the-case-for-components">
                 <a name="the-case-for-components" class="anchor" href="#the-case-for-components">
 	                <span class="permalink">🔗</span>
+					<span class="title">The Case for Components</span>
                 </a>
-                The Case for Components
             </h1>
 <div>
   <p class="lead"><strong>Components are a proven way to reduce complexity, encourage reuse, and allow teams to scale their work across independent user interface parts</strong>. But you don't need a framework to get these benefits. Let's explore how components help us build better interfaces – and how native Web Components and UIElement fit into that picture.</p>
@@ -129,8 +144,8 @@
 <h2 id="why-components">
                 <a name="why-components" class="anchor" href="#why-components">
 	                <span class="permalink">🔗</span>
+					<span class="title">Why Components?</span>
                 </a>
-                Why Components?
             </h2>
 <p>The idea of organizing user interfaces into components became mainstream with React over a decade ago, when Pete Hunt explained its core benefit: <strong>reduce coupling, increase cohesion</strong>.</p>
 <p>Instead of writing large, monolithic pages where styling, behavior, and data flow are all tangled together, components encourage you to break your user interface into small, focused pieces that each:</p>
@@ -154,8 +169,8 @@
 <h2 id="you-dont-need-a-framework-for-that">
                 <a name="you-dont-need-a-framework-for-that" class="anchor" href="#you-dont-need-a-framework-for-that">
 	                <span class="permalink">🔗</span>
+					<span class="title">You Don&#39;t Need a Framework for That</span>
                 </a>
-                You Don&#39;t Need a Framework for That
             </h2>
 <p>Frameworks like React, Vue, or Svelte give you component models out of the box – but they aren&#39;t the only way. In fact, the Web Platform itself has a native component model: <strong>Web Components</strong>.</p>
 <p>Web Components allow you to define your own HTML tags with scoped or encapsulated behavior and styles. Let&#39;s look at a simple example:</p>
@@ -245,8 +260,8 @@
 <h2 id="a-solid-foundation">
                 <a name="a-solid-foundation" class="anchor" href="#a-solid-foundation">
 	                <span class="permalink">🔗</span>
+					<span class="title">A Solid Foundation</span>
                 </a>
-                A Solid Foundation
             </h2>
 <p><strong>UIElement</strong> builds on the Web Platform rather than abstracting over it. We embrace semantic HTML as the foundation. Add CSS to your components however you like and make them look great. Use Web Components to add reusable behavior.</p>
 <p>While native Web Components are powerful, they require you to wire things together manually – querying elements, adding event listeners, and managing updates. This works great for simple interactions, but what if we want other components or JavaScript code to control our component&#39;s state? Let&#39;s add a public API.</p>
@@ -376,8 +391,8 @@
 <h2 id="takeaways">
                 <a name="takeaways" class="anchor" href="#takeaways">
 	                <span class="permalink">🔗</span>
+					<span class="title">Takeaways</span>
                 </a>
-                Takeaways
             </h2>
 <p>Here&#39;s what we&#39;ve seen:</p>
 <ul>
@@ -393,8 +408,8 @@
 <h2 id="coming-up-next-rethinking-reactivity">
                 <a name="coming-up-next-rethinking-reactivity" class="anchor" href="#coming-up-next-rethinking-reactivity">
 	                <span class="permalink">🔗</span>
+					<span class="title">Coming Up Next: Rethinking Reactivity</span>
                 </a>
-                Coming Up Next: Rethinking Reactivity
             </h2>
 <p>In the next post, we&#39;ll revisit similar components and explore how reactivity can make more complex relationships easier to manage – like derived values, async state, and multiple sources of truth.</p>
 <p>We&#39;ll look at the pitfalls of imperative state wiring as logic grows, and how UIElement&#39;s signal graph provides a robust and minimal foundation for keeping your user interface in sync.</p>

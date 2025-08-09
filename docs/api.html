@@ -5,8 +5,23 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>API Reference – UIElement Docs</title>
 		<meta name="description" content="Functions, types, and constants" />
-		<link rel="stylesheet" href="./assets/main.css" />
-		<script type="module" src="./assets/main.js"></script>
+		<link
+			rel="preload"
+			href="./assets/main.css?v=6263c57e"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="./assets/main.js?v=1dbf6aa1"
+		/>
+		<link
+			rel="stylesheet"
+			href="./assets/main.css?v=6263c57e"
+		/>
+		<script
+			type="module"
+			src="./assets/main.js?v=1dbf6aa1"
+		></script>
 	</head>
 	<body class="">
 		<context-router>
@@ -103,8 +118,8 @@
 <h1 id="api-reference">
                 <a name="api-reference" class="anchor" href="#api-reference">
 	                <span class="permalink">🔗</span>
+					<span class="title">📚 API Reference</span>
                 </a>
-                📚 API Reference
             </h1>
 <div>
   <p class="lead">Functions, types, and constants</p>
@@ -131,8 +146,8 @@
 <h2 id="component">
                 <a name="component" class="anchor" href="#component">
 	                <span class="permalink">🔗</span>
+					<span class="title">Component</span>
                 </a>
-                Component
             </h2>
 <p>Create a Web Component of type <a href="api/type-aliases/Component.html">Component</a> with reactive properties that extend <a href="api/type-aliases/ComponentProps.html">ComponentProps</a>.</p>
 <ul>
@@ -145,8 +160,8 @@
 <h2 id="signals">
                 <a name="signals" class="anchor" href="#signals">
 	                <span class="permalink">🔗</span>
+					<span class="title">Signals</span>
                 </a>
-                Signals
             </h2>
 <p>Create a signal of type <a href="api/type-aliases/Signal.html">Signal</a>.</p>
 <ul>
@@ -166,8 +181,8 @@
 <h2 id="parsers">
                 <a name="parsers" class="anchor" href="#parsers">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parsers</span>
                 </a>
-                Parsers
             </h2>
 <p>Declare how attributes are parsed. Functions returning <a href="api/type-aliases/AttributeParser.html">Parser</a> that will be used to create <a href="api/type-aliases/State.html">State</a> signals as writable reactive properties on the component.</p>
 <ul>
@@ -185,8 +200,8 @@
 <h2 id="signal-producers">
                 <a name="signal-producers" class="anchor" href="#signal-producers">
 	                <span class="permalink">🔗</span>
+					<span class="title">Signal Producers</span>
                 </a>
-                Signal Producers
             </h2>
 <p>Declare how signals are initialized. Functions returning type <a href="api/type-aliases/SignalProducer.html">SignalProducer</a> that will be used to create <a href="api/type-aliases/Computed.html">Computed</a> signals as read-only reactive properties on the component.</p>
 <ul>
@@ -201,8 +216,8 @@
 <h2 id="effects">
                 <a name="effects" class="anchor" href="#effects">
 	                <span class="permalink">🔗</span>
+					<span class="title">Effects</span>
                 </a>
-                Effects
             </h2>
 <p>Declare effects of type <a href="api/type-aliases/Effect.html">Effect</a> to be applied when signals change:</p>
 <ul>
@@ -228,8 +243,8 @@
 <h2 id="dom-utilities">
                 <a name="dom-utilities" class="anchor" href="#dom-utilities">
 	                <span class="permalink">🔗</span>
+					<span class="title">DOM Utilities</span>
                 </a>
-                DOM Utilities
             </h2>
 <p>Functions to work with descendant elements:</p>
 <ul>

@@ -84,10 +84,10 @@ const resolveReactive = <
 ): T => {
 	try {
 		return isString(reactive)
-			? (host.getSignal(reactive).get() as unknown as T)
+			? host.getSignal(reactive).get()
 			: isSignal(reactive)
 				? reactive.get()
-				: isFunction<T>(reactive)
+				: isFunction(reactive)
 					? reactive(target)
 					: RESET
 	} catch (error) {

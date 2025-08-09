@@ -5,8 +5,23 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>enqueue – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=6263c57e"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=fb6c013c"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=6263c57e"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=fb6c013c"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
@@ -102,11 +117,11 @@
 <h1 id="function-enqueue">
                 <a name="function-enqueue" class="anchor" href="#function-enqueue">
 	                <span class="permalink">🔗</span>
+					<span class="title">Function: enqueue()</span>
                 </a>
-                Function: enqueue()
             </h1>
 <blockquote>
-<p><strong>enqueue</strong>&lt;<code>T</code>&gt;(<code>fn</code>, <code>dedupe?</code>): <code>Promise</code>&lt;<code>boolean</code> | <code>void</code> | <code>T</code>&gt;</p>
+<p><strong>enqueue</strong>&lt;<code>T</code>&gt;(<code>fn</code>, <code>dedupe?</code>): <code>Promise</code>&lt;<code>undefined</code> | <code>boolean</code> | <code>T</code>&gt;</p>
 </blockquote>
 <p>Defined in: node_modules/@zeix/cause-effect/src/scheduler.ts:147</p>
 <p>Enqueue a function to be executed on the next animation frame</p>
@@ -114,45 +129,45 @@
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
                 </a>
-                Type Parameters
             </h2>
 <h3 id="t">
                 <a name="t" class="anchor" href="#t">
 	                <span class="permalink">🔗</span>
+					<span class="title">T</span>
                 </a>
-                T
             </h3>
 <p><code>T</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parameters</span>
                 </a>
-                Parameters
             </h2>
 <h3 id="fn">
                 <a name="fn" class="anchor" href="#fn">
 	                <span class="permalink">🔗</span>
+					<span class="title">fn</span>
                 </a>
-                fn
             </h3>
 <p><code>Updater</code></p>
 <p>function to be executed on the next animation frame; can return updated value <T>, success <boolean> or void</p>
 <h3 id="dedupe">
                 <a name="dedupe" class="anchor" href="#dedupe">
 	                <span class="permalink">🔗</span>
+					<span class="title">dedupe?</span>
                 </a>
-                dedupe?
             </h3>
 <p><code>symbol</code></p>
 <p>Symbol for deduplication; if not provided, a unique Symbol is created ensuring the update is always executed</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
                 </a>
-                Returns
             </h2>
-<p><code>Promise</code>&lt;<code>boolean</code> | <code>void</code> | <code>T</code>&gt;</p>
+<p><code>Promise</code>&lt;<code>undefined</code> | <code>boolean</code> | <code>T</code>&gt;</p>
 
 </section></main>
 			<footer class="content-grid">

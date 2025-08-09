@@ -1,15 +1,23 @@
-import { join } from 'path'
-import { mkdir, readFile, readdir, stat, writeFile } from 'fs/promises'
+import { mkdir, readdir, readFile, stat, writeFile } from 'fs/promises'
 import matter from 'gray-matter'
 import { marked } from 'marked'
+import { join } from 'path'
 
 import {
+	ASSETS_DIR,
+	generateAssetHash,
 	INCLUDES_DIR,
 	LAYOUT_FILE,
 	MENU_FILE,
 	OUTPUT_DIR,
 	PAGES_DIR,
 } from './config'
+import { buildOptimizedAssets } from './build-optimized-assets'
+import {
+	generateAllPerformanceHints,
+	generateLazyLoadingScript,
+	analyzePageForPreloads,
+} from './preload-hints'
 import { generateMenu } from './generate-menu'
 import { generateSitemap } from './generate-sitemap'
 import { generateSlug } from './generate-slug'
@@ -141,8 +149,8 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 			return `<h${level} id="${slug}">
                 <a name="${slug}" class="anchor" href="#${slug}">
 	                <span class="permalink">🔗</span>
+					<span class="title">${text}</span>
                 </a>
-                ${text}
             </h${level}>`
 		},
 	)
@@ -175,6 +183,35 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 	// Calculate base href for assets and navigation
 	const basePath = depth > 0 ? '../'.repeat(depth) : './'
 
+	// Get asset optimization results or fallback to basic hashing
+	let cssHash = 'dev'
+	let jsHash = 'dev'
+
+	if (OPTIMIZATION_RESULTS) {
+		// Use optimization results
+		cssHash = OPTIMIZATION_RESULTS.css.mainCSSHash
+		jsHash = OPTIMIZATION_RESULTS.js.mainJSHash
+	} else {
+		// Fallback to basic asset hashing
+		try {
+			cssHash = generateAssetHash(join(ASSETS_DIR, 'main.css'))
+			jsHash = generateAssetHash(join(ASSETS_DIR, 'main.js'))
+		} catch {
+			console.warn('⚠️ Could not generate asset hashes, using fallback')
+		}
+	}
+
+	// Generate performance hints for this page
+	const performanceHints = generateAllPerformanceHints(url, basePath, jsHash)
+
+	// Analyze page content for additional preloads
+	const additionalPreloads = await analyzePageForPreloads(htmlContent, basePath)
+
+	// Generate lazy loading script
+	const lazyLoadingScript = generateLazyLoadingScript()
+
+
+
 	// Extract title from first heading if no frontmatter title (common for API docs)
 	let title = frontmatter.title
 	if (!title && section === 'api') {
@@ -193,7 +230,16 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 	}
 
 	// Load layout template
-	let layout = await readFile(LAYOUT_FILE, 'utf8')
+	const layoutFile = LAYOUT_FILE
+
+	let layout: string
+	try {
+		layout = await readFile(layoutFile, 'utf8')
+	} catch {
+		// Fallback to regular layout if optimized doesn't exist
+		layout = await readFile(LAYOUT_FILE, 'utf8')
+		console.log(`📄 Using regular layout for ${url}`)
+	}
 	// console.log(`📄 Layout before processing:`, layout);
 
 	// Use regex to match the correct <li> by href and add class="active"
@@ -230,6 +276,11 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 		if (key === 'base-path') return basePath
 		if (key === 'title') return title || ''
 		if (key === 'toc') return tocHtml
+		if (key === 'css-hash') return cssHash
+		if (key === 'js-hash') return jsHash
+		if (key === 'performance-hints') return performanceHints
+		if (key === 'additional-preloads') return additionalPreloads.join('\n\t\t')
+		if (key === 'lazy-loading-script') return lazyLoadingScript
 		return frontmatter[key] || ''
 	})
 
@@ -252,8 +303,24 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 	}
 }
 
+// Global variables to store optimization results
+let OPTIMIZATION_RESULTS: {
+	css: { mainCSSPath: string; mainCSSHash: string }
+	js: { mainJSPath: string; mainJSHash: string }
+} | null = null
+
 // Main function
 const run = async () => {
+	console.log('🔄 Building optimized assets first...')
+
+	// Build optimized assets before processing pages
+	try {
+		OPTIMIZATION_RESULTS = await buildOptimizedAssets()
+		console.log('✅ Asset optimization completed')
+	} catch (error) {
+		console.warn('⚠️ Asset optimization failed, continuing with regular build:', error)
+	}
+
 	console.log('🔄 Discovering markdown files...')
 
 	// Find all .md files recursively

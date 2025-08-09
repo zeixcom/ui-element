@@ -8,7 +8,7 @@
 
 > **Parser**\<`T`, `E`\> = (`element`, `value`, `old?`) => `T`
 
-Defined in: [src/core/dom.ts:36](https://github.com/zeixcom/ui-element/blob/6eb916701d8e6ad874e5c8ced8c7ac11007d19ad/src/core/dom.ts#L36)
+Defined in: [src/core/dom.ts:36](https://github.com/zeixcom/ui-element/blob/8864649de9d6985ed1a958dac8b1b4b7b4877403/src/core/dom.ts#L36)
 
 ## Type Parameters
 

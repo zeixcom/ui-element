@@ -5,8 +5,23 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>pass – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=6263c57e"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=fb6c013c"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=6263c57e"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=fb6c013c"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
@@ -102,75 +117,75 @@
 <h1 id="function-pass">
                 <a name="function-pass" class="anchor" href="#function-pass">
 	                <span class="permalink">🔗</span>
+					<span class="title">Function: pass()</span>
                 </a>
-                Function: pass()
             </h1>
 <blockquote>
 <p><strong>pass</strong>&lt;<code>P</code>, <code>Q</code>&gt;(<code>reactives</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>Q</code>&gt;&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/6eb916701d8e6ad874e5c8ced8c7ac11007d19ad/src/lib/effects.ts#L576">src/lib/effects.ts:576</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/8864649de9d6985ed1a958dac8b1b4b7b4877403/src/lib/effects.ts#L607">src/lib/effects.ts:607</a></p>
 <p>Effect for passing reactive values to a descendant UIElement component.</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
                 </a>
-                Type Parameters
             </h2>
 <h3 id="p">
                 <a name="p" class="anchor" href="#p">
 	                <span class="permalink">🔗</span>
+					<span class="title">P</span>
                 </a>
-                P
             </h3>
 <p><code>P</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
 <h3 id="q">
                 <a name="q" class="anchor" href="#q">
 	                <span class="permalink">🔗</span>
+					<span class="title">Q</span>
                 </a>
-                Q
             </h3>
 <p><code>Q</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parameters</span>
                 </a>
-                Parameters
             </h2>
 <h3 id="reactives">
                 <a name="reactives" class="anchor" href="#reactives">
 	                <span class="permalink">🔗</span>
+					<span class="title">reactives</span>
                 </a>
-                reactives
             </h3>
 <p><a href="../type-aliases/Reactives.html"><code>Reactives</code></a>&lt;<a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>Q</code>&gt;, <code>P</code>&gt;</p>
 <p>Reactive values to pass</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
                 </a>
-                Returns
             </h2>
 <p><a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>Q</code>&gt;&gt;</p>
 <p>Effect function that passes reactive values to the descendant component</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
+					<span class="title">Since</span>
                 </a>
-                Since
             </h2>
 <p>0.13.3</p>
 <h2 id="throws">
                 <a name="throws" class="anchor" href="#throws">
 	                <span class="permalink">🔗</span>
+					<span class="title">Throws</span>
                 </a>
-                Throws
             </h2>
 <p>When the provided reactives are not an object or the target is not a UIElement component</p>
 <h2 id="throws">
                 <a name="throws" class="anchor" href="#throws">
 	                <span class="permalink">🔗</span>
+					<span class="title">Throws</span>
                 </a>
-                Throws
             </h2>
 <p>When passing signals failed for some other reason</p>
 

@@ -5,8 +5,23 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>provideContexts – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=6263c57e"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=fb6c013c"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=6263c57e"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=fb6c013c"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
@@ -102,53 +117,53 @@
 <h1 id="function-providecontexts">
                 <a name="function-providecontexts" class="anchor" href="#function-providecontexts">
 	                <span class="permalink">🔗</span>
+					<span class="title">Function: provideContexts()</span>
                 </a>
-                Function: provideContexts()
             </h1>
 <blockquote>
 <p><strong>provideContexts</strong>&lt;<code>P</code>, <code>K</code>&gt;(<code>contexts</code>): (<code>host</code>) =&gt; <a href="../type-aliases/Cleanup.html"><code>Cleanup</code></a></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/6eb916701d8e6ad874e5c8ced8c7ac11007d19ad/src/core/context.ts#L98">src/core/context.ts:98</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/8864649de9d6985ed1a958dac8b1b4b7b4877403/src/core/context.ts#L98">src/core/context.ts:98</a></p>
 <p>Provide a context for descendant component consumers</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
                 </a>
-                Type Parameters
             </h2>
 <h3 id="p">
                 <a name="p" class="anchor" href="#p">
 	                <span class="permalink">🔗</span>
+					<span class="title">P</span>
                 </a>
-                P
             </h3>
 <p><code>P</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
 <h3 id="k">
                 <a name="k" class="anchor" href="#k">
 	                <span class="permalink">🔗</span>
+					<span class="title">K</span>
                 </a>
-                K
             </h3>
 <p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parameters</span>
                 </a>
-                Parameters
             </h2>
 <h3 id="contexts">
                 <a name="contexts" class="anchor" href="#contexts">
 	                <span class="permalink">🔗</span>
+					<span class="title">contexts</span>
                 </a>
-                contexts
             </h3>
 <p><a href="../type-aliases/Context.html"><code>Context</code></a>&lt;<code>K</code>, <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>P</code>[<code>K</code>]&gt;&gt;[]</p>
 <p>Array of contexts to provide</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
                 </a>
-                Returns
             </h2>
 <p>Function to add an event listener for ContextRequestEvent returning a cleanup function to remove the event listener</p>
 <blockquote>
@@ -157,28 +172,28 @@
 <h3 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parameters</span>
                 </a>
-                Parameters
             </h3>
 <h4 id="host">
                 <a name="host" class="anchor" href="#host">
 	                <span class="permalink">🔗</span>
+					<span class="title">host</span>
                 </a>
-                host
             </h4>
 <p><a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;</p>
 <h3 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
                 </a>
-                Returns
             </h3>
 <p><a href="../type-aliases/Cleanup.html"><code>Cleanup</code></a></p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
+					<span class="title">Since</span>
                 </a>
-                Since
             </h2>
 <p>0.13.3</p>
 
