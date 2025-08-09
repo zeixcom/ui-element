@@ -8,7 +8,7 @@
 
 > **ElementsUsage** = \{\<`S`\>(`selector`, `required?`): `NodeListOf`\<[`ElementFromSelector`](ElementFromSelector.md)\<`S`\>\>; \<`E`\>(`selector`, `required?`): `NodeListOf`\<`E`\>; \}
 
-Defined in: [src/core/dom.ts:57](https://github.com/zeixcom/ui-element/blob/8864649de9d6985ed1a958dac8b1b4b7b4877403/src/core/dom.ts#L57)
+Defined in: [src/core/dom.ts:57](https://github.com/zeixcom/ui-element/blob/9f9c8943091140c68eaabf44011b82d99588c469/src/core/dom.ts#L57)
 
 ## Call Signature
 

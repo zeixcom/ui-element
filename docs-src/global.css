@@ -113,7 +113,8 @@
 	--color-text-inverted: var(--color-purple-10);
 
 	--font-family-sans: "Helvetica Neue", Arial, Roboto, sans-serif;
-	--font-family-mono: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+	--font-family-mono:
+		Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 
 	--font-weight-regular: 400;
 	--font-weight-bold: 700;
@@ -225,7 +226,11 @@ body {
 }
 
 ::selection {
-	background-color: color-mix(in srgb, var(--color-selection) 50%, transparent);
+	background-color: color-mix(
+		in srgb,
+		var(--color-selection) 50%,
+		transparent
+	);
 }
 
 h1 {
@@ -396,7 +401,6 @@ h6 {
 }
 
 a[href] {
-
 	&:not(.anchor) {
 		color: var(--color-primary);
 
@@ -411,6 +415,9 @@ a[href] {
 
 	&.anchor {
 		color: inherit;
+		display: flex;
+		align-items: center;
+		padding-right: var(--space-l);
 	}
 }
 
@@ -427,4 +434,15 @@ a[href] {
 	width: 1px;
 	height: 1px;
 	overflow: hidden;
+}
+
+.skiplink:focus {
+	display: inline-block;
+	left: 50%;
+	top: 0;
+	width: auto;
+	height: auto;
+	transform: translateX(-50%);
+	padding: var(--space-s);
+	text-decoration: none;
 }

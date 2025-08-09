@@ -3,11 +3,11 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title> – UIElement Docs</title>
+		<title>ValidPropertyKey\<T\> – UIElement Docs</title>
 		<meta name="description" content="" />
 		<link
 			rel="preload"
-			href="../../assets/main.css?v=6263c57e"
+			href="../../assets/main.css?v=ee0ebf9b"
 			as="style"
 		/>
 		<link
@@ -16,7 +16,7 @@
 		/>
 		<link
 			rel="stylesheet"
-			href="../../assets/main.css?v=6263c57e"
+			href="../../assets/main.css?v=ee0ebf9b"
 		/>
 		<script
 			type="module"
@@ -26,6 +26,9 @@
 	<body class="api">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
 					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
@@ -113,7 +116,30 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section class="api-content">
+			<main id="main" class="content-grid"><section class="api-content">
+<h1 id="type-alias-validpropertykeylttgt">
+                <a name="type-alias-validpropertykeylttgt" class="anchor" href="#type-alias-validpropertykeylttgt">
+	                <span class="permalink">🔗</span>
+					<span class="title">Type Alias: ValidPropertyKey&lt;T&gt;</span>
+                </a>
+            </h1>
+<blockquote>
+<p><strong>ValidPropertyKey</strong>&lt;<code>T</code>&gt; = <code>T</code> <em>extends</em> keyof <code>HTMLElement</code> | <a href="ReservedWords.html"><code>ReservedWords</code></a> ? <code>never</code> : <code>T</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/9f9c8943091140c68eaabf44011b82d99588c469/src/component.ts#L49">src/component.ts:49</a></p>
+<h2 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
+	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
+                </a>
+            </h2>
+<h3 id="t">
+                <a name="t" class="anchor" href="#t">
+	                <span class="permalink">🔗</span>
+					<span class="title">T</span>
+                </a>
+            </h3>
+<p><code>T</code></p>
 
 </section></main>
 			<footer class="content-grid">

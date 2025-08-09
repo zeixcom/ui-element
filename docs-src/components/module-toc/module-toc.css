@@ -27,6 +27,8 @@ module-toc {
 	}
 
 	& a {
+		display: inline-block;
 		text-decoration: none;
+		line-height: var(--line-height-s);
 	}
 }
