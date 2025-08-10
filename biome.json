@@ -10,8 +10,8 @@
 		"ignoreUnknown": true,
 		"includes": [
 			"**",
-			"!**/index.js",
-			"!**/index.dev.js",
+			"!index.js",
+			"!index.dev.js",
 			"!**/docs/**/*",
 			"!**/test/components/main.js*"
 		]

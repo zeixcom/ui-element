@@ -194,42 +194,6 @@
 <span class="line"><span style="color:#F8F8F2">		],</span></span>
 <span class="line"><span style="color:#F8F8F2">	)</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> handleClick</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> getAriaControls</span><span style="color:#F8F8F2">(target)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> handleKeyup</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> key </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> event.key</span></span>
-<span class="line"><span style="color:#F92672">	if</span><span style="color:#F8F8F2"> (</span></span>
-<span class="line"><span style="color:#F8F8F2">		[</span></span>
-<span class="line"><span style="color:#E6DB74">			'ArrowLeft'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#E6DB74">			'ArrowRight'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#E6DB74">			'ArrowUp'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#E6DB74">			'ArrowDown'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#E6DB74">			'Home'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#E6DB74">			'End'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">		].</span><span style="color:#A6E22E">includes</span><span style="color:#F8F8F2">(key)</span></span>
-<span class="line"><span style="color:#F8F8F2">	) {</span></span>
-<span class="line"><span style="color:#F8F8F2">		event.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">		event.</span><span style="color:#A6E22E">stopPropagation</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> current </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> getSelected</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">			host.tabs,</span></span>
-<span class="line"><span style="color:#FD971F;font-style:italic">			tab</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> tab </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> target,</span></span>
-<span class="line"><span style="color:#F8F8F2">			key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'Home'</span></span>
-<span class="line"><span style="color:#F92672">				?</span><span style="color:#F92672"> -</span><span style="color:#F8F8F2">host.tabs.length</span></span>
-<span class="line"><span style="color:#F92672">				:</span><span style="color:#F8F8F2"> key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'End'</span></span>
-<span class="line"><span style="color:#F92672">					?</span><span style="color:#F8F8F2"> host.tabs.length</span></span>
-<span class="line"><span style="color:#F92672">					:</span><span style="color:#F8F8F2"> key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'ArrowLeft'</span><span style="color:#F92672"> ||</span><span style="color:#F8F8F2"> key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'ArrowUp'</span></span>
-<span class="line"><span style="color:#F92672">						?</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span></span>
-<span class="line"><span style="color:#F92672">						:</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">		)</span></span>
-<span class="line"><span style="color:#F8F8F2">		host.tabs</span></span>
-<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">filter</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">				(</span><span style="color:#FD971F;font-style:italic">tab</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> getAriaControls</span><span style="color:#F8F8F2">(tab) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> current,</span></span>
-<span class="line"><span style="color:#F8F8F2">			)[</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">]</span></span>
-<span class="line"><span style="color:#F8F8F2">			.</span><span style="color:#A6E22E">focus</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> current</span></span>
-<span class="line"><span style="color:#F8F8F2">	}</span></span>
-<span class="line"><span style="color:#F8F8F2">}</span></span>
-<span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">	'module-tabgroup'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
@@ -241,8 +205,41 @@
 <span class="line"><span style="color:#FD971F;font-style:italic">			el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#A6E22E"> getSelected</span><span style="color:#F8F8F2">(el.tabs, </span><span style="color:#FD971F;font-style:italic">tab</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> tab.ariaSelected </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'true'</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#E6DB74">			'[role="tab"]'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">			{</span></span>
-<span class="line"><span style="color:#F8F8F2">				click: handleClick,</span></span>
-<span class="line"><span style="color:#F8F8F2">				keyup: handleKeyup,</span></span>
+<span class="line"><span style="color:#F8F8F2">				click: ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> getAriaControls</span><span style="color:#F8F8F2">(target),</span></span>
+<span class="line"><span style="color:#F8F8F2">				keyup: ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> key </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> event.key</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (</span></span>
+<span class="line"><span style="color:#F8F8F2">						[</span></span>
+<span class="line"><span style="color:#E6DB74">							'ArrowLeft'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">							'ArrowRight'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">							'ArrowUp'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">							'ArrowDown'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">							'Home'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">							'End'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">						].</span><span style="color:#A6E22E">includes</span><span style="color:#F8F8F2">(key)</span></span>
+<span class="line"><span style="color:#F8F8F2">					) {</span></span>
+<span class="line"><span style="color:#F8F8F2">						event.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">						event.</span><span style="color:#A6E22E">stopPropagation</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> current </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> getSelected</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">							host.tabs,</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">							tab</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> tab </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> target,</span></span>
+<span class="line"><span style="color:#F8F8F2">							key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'Home'</span></span>
+<span class="line"><span style="color:#F92672">								?</span><span style="color:#F92672"> -</span><span style="color:#F8F8F2">host.tabs.length</span></span>
+<span class="line"><span style="color:#F92672">								:</span><span style="color:#F8F8F2"> key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'End'</span></span>
+<span class="line"><span style="color:#F92672">									?</span><span style="color:#F8F8F2"> host.tabs.length</span></span>
+<span class="line"><span style="color:#F92672">									:</span><span style="color:#F8F8F2"> key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'ArrowLeft'</span><span style="color:#F92672"> ||</span><span style="color:#F8F8F2"> key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'ArrowUp'</span></span>
+<span class="line"><span style="color:#F92672">										?</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span></span>
+<span class="line"><span style="color:#F92672">										:</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">						)</span></span>
+<span class="line"><span style="color:#F8F8F2">						host.tabs</span></span>
+<span class="line"><span style="color:#F8F8F2">							.</span><span style="color:#A6E22E">filter</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">								(</span><span style="color:#FD971F;font-style:italic">tab</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#A6E22E">									getAriaControls</span><span style="color:#F8F8F2">(tab) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> current,</span></span>
+<span class="line"><span style="color:#F8F8F2">							)[</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">]</span></span>
+<span class="line"><span style="color:#F8F8F2">							.</span><span style="color:#A6E22E">focus</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F92672">						return</span><span style="color:#F8F8F2"> current</span></span>
+<span class="line"><span style="color:#F8F8F2">					}</span></span>
+<span class="line"><span style="color:#F8F8F2">				},</span></span>
 <span class="line"><span style="color:#F8F8F2">			},</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>

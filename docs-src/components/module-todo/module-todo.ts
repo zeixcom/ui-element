@@ -6,7 +6,7 @@ import {
 	pass,
 	setAttribute,
 } from '../../..'
-import { BasicButtonProps } from '../basic-button/basic-button'
+import type { BasicButtonProps } from '../basic-button/basic-button'
 import '../basic-pluralize/basic-pluralize'
 import '../form-checkbox/form-checkbox'
 import '../form-radiogroup/form-radiogroup'

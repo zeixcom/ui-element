@@ -29,42 +29,6 @@ const getSelected = (
 		],
 	)
 
-const handleClick = ({ target }) => getAriaControls(target)
-
-const handleKeyup = ({ event, host, target }) => {
-	const key = event.key
-	if (
-		[
-			'ArrowLeft',
-			'ArrowRight',
-			'ArrowUp',
-			'ArrowDown',
-			'Home',
-			'End',
-		].includes(key)
-	) {
-		event.preventDefault()
-		event.stopPropagation()
-		const current = getSelected(
-			host.tabs,
-			tab => tab === target,
-			key === 'Home'
-				? -host.tabs.length
-				: key === 'End'
-					? host.tabs.length
-					: key === 'ArrowLeft' || key === 'ArrowUp'
-						? -1
-						: 1,
-		)
-		host.tabs
-			.filter(
-				(tab: HTMLButtonElement) => getAriaControls(tab) === current,
-			)[0]
-			.focus()
-		return current
-	}
-}
-
 export default component(
 	'module-tabgroup',
 	{
@@ -76,8 +40,41 @@ export default component(
 			el => getSelected(el.tabs, tab => tab.ariaSelected === 'true'),
 			'[role="tab"]',
 			{
-				click: handleClick,
-				keyup: handleKeyup,
+				click: ({ target }) => getAriaControls(target),
+				keyup: ({ event, host, target }) => {
+					const key = event.key
+					if (
+						[
+							'ArrowLeft',
+							'ArrowRight',
+							'ArrowUp',
+							'ArrowDown',
+							'Home',
+							'End',
+						].includes(key)
+					) {
+						event.preventDefault()
+						event.stopPropagation()
+						const current = getSelected(
+							host.tabs,
+							tab => tab === target,
+							key === 'Home'
+								? -host.tabs.length
+								: key === 'End'
+									? host.tabs.length
+									: key === 'ArrowLeft' || key === 'ArrowUp'
+										? -1
+										: 1,
+						)
+						host.tabs
+							.filter(
+								(tab: HTMLButtonElement) =>
+									getAriaControls(tab) === current,
+							)[0]
+							.focus()
+						return current
+					}
+				},
 			},
 		),
 	},

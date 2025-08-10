@@ -14,12 +14,6 @@ export type FormRadiogroupProps = {
 	readonly value: string
 }
 
-const changeHandler = ({ target }) => target.value
-
-const keyupHandler = ({ event, target }) => {
-	if (event.key === 'Enter') target.click()
-}
-
 export default component(
 	'form-radiogroup',
 	{
@@ -31,8 +25,10 @@ export default component(
 			}),
 			'input',
 			{
-				change: changeHandler,
-				keyup: keyupHandler,
+				change: ({ target }) => target.value,
+				keyup: ({ event, target }) => {
+					if (event.key === 'Enter') target.click()
+				},
 			},
 		),
 	},

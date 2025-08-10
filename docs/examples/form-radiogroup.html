@@ -222,12 +222,6 @@
 <span class="line"><span style="color:#F92672">	readonly</span><span style="color:#F8F8F2"> value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> changeHandler</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> target.value</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> keyupHandler</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F92672">	if</span><span style="color:#F8F8F2"> (event.key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'Enter'</span><span style="color:#F8F8F2">) target.</span><span style="color:#A6E22E">click</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">}</span></span>
-<span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">	'form-radiogroup'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
@@ -239,8 +233,10 @@
 <span class="line"><span style="color:#F8F8F2">			}),</span></span>
 <span class="line"><span style="color:#E6DB74">			'input'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">			{</span></span>
-<span class="line"><span style="color:#F8F8F2">				change: changeHandler,</span></span>
-<span class="line"><span style="color:#F8F8F2">				keyup: keyupHandler,</span></span>
+<span class="line"><span style="color:#A6E22E">				change</span><span style="color:#F8F8F2">: ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> target.value,</span></span>
+<span class="line"><span style="color:#A6E22E">				keyup</span><span style="color:#F8F8F2">: ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (event.key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'Enter'</span><span style="color:#F8F8F2">) target.</span><span style="color:#A6E22E">click</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">				},</span></span>
 <span class="line"><span style="color:#F8F8F2">			},</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>

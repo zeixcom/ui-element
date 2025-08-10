@@ -7,20 +7,20 @@
 		<meta name="description" content="Overview and key benefits of UIElement" />
 		<link
 			rel="preload"
-			href="./assets/main.css?v=ee0ebf9b"
+			href="./assets/main.css?v=5eb54113"
 			as="style"
 		/>
 		<link
 			rel="modulepreload"
-			href="./assets/main.js?v=1dbf6aa1"
+			href="./assets/main.js?v=74dc0a47"
 		/>
 		<link
 			rel="stylesheet"
-			href="./assets/main.css?v=ee0ebf9b"
+			href="./assets/main.css?v=5eb54113"
 		/>
 		<script
 			type="module"
-			src="./assets/main.js?v=1dbf6aa1"
+			src="./assets/main.js?v=74dc0a47"
 		></script>
 	</head>
 	<body class="">
@@ -157,11 +157,12 @@
 </ul>
 <module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
-		
+		<span class="file">hello-world.js</span>
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Transform HTML into reactive components with minimal code</span></span>
-<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">, { name: RESET }, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asString, component, RESET, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">, { name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(RESET) }, (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
 <span class="line"><span style="color:#F8F8F2">])</span></span>
 <span class="line"></span></code></pre>
@@ -192,7 +193,7 @@
 <p>UIElement assumes you start with semantic HTML and want to enhance it with behavior:</p>
 <module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
-		
+		<span class="file">hello-world.html</span>
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>

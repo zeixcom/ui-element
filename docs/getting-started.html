@@ -7,20 +7,20 @@
 		<meta name="description" content="Installation, setup, and first steps" />
 		<link
 			rel="preload"
-			href="./assets/main.css?v=ee0ebf9b"
+			href="./assets/main.css?v=5eb54113"
 			as="style"
 		/>
 		<link
 			rel="modulepreload"
-			href="./assets/main.js?v=1dbf6aa1"
+			href="./assets/main.js?v=74dc0a47"
 		/>
 		<link
 			rel="stylesheet"
-			href="./assets/main.css?v=ee0ebf9b"
+			href="./assets/main.css?v=5eb54113"
 		/>
 		<script
 			type="module"
-			src="./assets/main.js?v=1dbf6aa1"
+			src="./assets/main.js?v=74dc0a47"
 		></script>
 	</head>
 	<body class="">
@@ -133,7 +133,6 @@
 		<ol>
 			<li><a href="#how-to-install-uielement">How to Install UIElement</a></li>
 <li><a href="#creating-your-first-component">Creating Your First Component</a></li>
-<li><a href="#understanding-your-first-component">Understanding Your First Component</a></li>
 <li><a href="#verifying-your-installation">Verifying Your Installation</a></li>
 <li><a href="#next-steps">Next Steps</a></li>
 		</ol>
@@ -160,7 +159,7 @@
 <p>For the easiest setup, include UIElement via a CDN. This is ideal for <strong>testing or quick projects</strong> where you want lightweight interactivity without additional tooling.</p>
 <module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
-		
+		<span class="file">page.html</span>
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> src</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
@@ -187,7 +186,7 @@
 <p>Simply host the file on your server and include it like this:</p>
 <module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
-		
+		<span class="file">page.html</span>
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> src</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"/path/to/your/hosted/ui-element.js"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
@@ -225,7 +224,7 @@
 
 <module-codeblock language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
-		
+		<span class="file">user@computer project %</span>
 		<span class="language">bash</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">npm</span><span style="color:#E6DB74"> install</span><span style="color:#E6DB74"> @zeix/ui-element</span></span>
@@ -242,7 +241,7 @@
 
 <module-codeblock language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
-		
+		<span class="file">user@computer project %</span>
 		<span class="language">bash</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">bun</span><span style="color:#E6DB74"> add</span><span style="color:#E6DB74"> @zeix/ui-element</span></span>
@@ -260,10 +259,10 @@
 <p>Then import the needed functions in your JavaScript:</p>
 <module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
-		
+		<span class="file">main.js</span>
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { component, on, RESET, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asString, component, on, RESET, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
 <span class="line"></span></code></pre>
 	<basic-button class="copy">
 		<button type="button" class="secondary small">
@@ -297,13 +296,13 @@
 <p>Include the following in your server-rendered HTML:</p>
 <module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
-		
+		<span class="file">page.html</span>
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">    Your name&#x3C;</span><span style="color:#F92672">br</span><span style="color:#F8F8F2"> /></span></span>
-<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"name"</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#F8F8F2"> /></span></span>
 <span class="line"><span style="color:#F8F8F2">  &#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>World&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
@@ -324,7 +323,7 @@
 <p>Save the following inside a <code>&lt;script type=&quot;module&quot;&gt;</code> tag or an external JavaScript file.</p>
 <module-codeblock collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
-		
+		<span class="file">page.html</span>
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">script</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"module"</span><span style="color:#F8F8F2">></span></span>
@@ -339,20 +338,14 @@
 <span class="line"><span style="color:#A6E22E">  component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">    'hello-world'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">    {</span></span>
-<span class="line"><span style="color:#88846F">      // Fall back to server-rendered content</span></span>
 <span class="line"><span style="color:#F8F8F2">      name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(RESET),</span></span>
 <span class="line"><span style="color:#F8F8F2">    },</span></span>
-<span class="line"><span style="color:#F8F8F2">    (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#88846F">      // Update content dynamically based on the "name" signal</span></span>
-<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#88846F">      // Handle user input to change the "name"</span></span>
+<span class="line"><span style="color:#F8F8F2">    (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">        'input'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">        on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">          el.name </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e.target.value </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> RESET</span></span>
-<span class="line"><span style="color:#F8F8F2">        }),</span></span>
+<span class="line"><span style="color:#A6E22E">        on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> ({ name: target.value </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> RESET })),</span></span>
 <span class="line"><span style="color:#F8F8F2">      ),</span></span>
+<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
 <span class="line"><span style="color:#F8F8F2">    ],</span></span>
 <span class="line"><span style="color:#F8F8F2">  )</span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">script</span><span style="color:#F8F8F2">></span></span>
@@ -364,33 +357,27 @@
 	</basic-button>
 	<button type="button" class="overlay">Expand</button>
 </module-codeblock>
-<p><strong>What Happens Here?</strong></p>
-<ul>
-<li>The <code>name: RESET</code> property <strong>gets its initial value from the server-rendered content</strong> (the <code>&lt;span&gt;</code> text).</li>
-<li>The <code>setText(&#39;name&#39;)</code> effect <strong>syncs the state</strong> with the <code>&lt;span&gt;</code>.</li>
-<li>The <code>on(&#39;input&#39;)</code> event <strong>updates the state</strong> whenever you type in the first <code>&lt;input&gt;</code> field, falling back to server-rendered value if empty.</li>
-<li>The Web Component <strong>hydrates automatically</strong> when inserted into the page.</li>
-</ul>
-<h2 id="understanding-your-first-component">
+<h3 id="understanding-your-first-component">
                 <a name="understanding-your-first-component" class="anchor" href="#understanding-your-first-component">
 	                <span class="permalink">🔗</span>
 					<span class="title">Understanding Your First Component</span>
                 </a>
-            </h2>
+            </h3>
 <p>Let&#39;s break down each part of your <code>&lt;hello-world&gt;</code> component to understand how UIElement works:</p>
-<h3 id="reactive-properties">
+<h4 id="reactive-properties">
                 <a name="reactive-properties" class="anchor" href="#reactive-properties">
 	                <span class="permalink">🔗</span>
 					<span class="title">Reactive Properties</span>
                 </a>
-            </h3>
+            </h4>
 <module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">{</span></span>
-<span class="line"><span style="color:#F8F8F2">  name: RESET</span></span>
+<span class="line"><span style="color:#88846F">  // Create "name" property from attribute "name" as a string, falling back to server-rendered content</span></span>
+<span class="line"><span style="color:#F8F8F2">  name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(RESET),</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
 	<basic-button class="copy">
@@ -402,26 +389,38 @@
 </module-codeblock>
 <p>This creates a reactive property called <code>name</code>:</p>
 <ul>
-<li><code>RESET</code> means &quot;use whatever text is already in the HTML&quot; as the starting value</li>
+<li><code>asString()</code> observes the attribute <code>name</code> and assigns its value as a string to the <code>name</code> property</li>
+<li><code>RESET</code> is the fallback value and means &quot;use whatever text is already in the HTML&quot; as the starting value</li>
 <li>UIElement automatically reads &quot;World&quot; from the <code>&lt;span&gt;</code> element as the initial value</li>
 <li>When <code>name</code> changes, any effects that depend on it automatically update</li>
 </ul>
 <p>There are other ways to initialize state in UIElement. You&#39;ll learn about those approaches in the section about <a href="components.html">components</a>.</p>
-<h3 id="setup-function">
+<h4 id="setup-function">
                 <a name="setup-function" class="anchor" href="#setup-function">
 	                <span class="permalink">🔗</span>
 					<span class="title">Setup Function</span>
                 </a>
-            </h3>
-<p>Returns an array of effects:</p>
-<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+            </h4>
+<p>The setup function takes two arguments:</p>
+<ol>
+<li>The component element. In this example we don&#39;t use it and hence name it <code>_</code>.</li>
+<li>Helper functions for accessing descendant elements. In this example we use <code>first</code> to find the first descendant matching a selector and apply effects to it.</li>
+</ol>
+<p>The setup function returns an array of effects:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> { </span><span style="color:#F92672">...</span><span style="color:#F8F8F2"> }))</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#88846F">  // Handle user input to change the "name" property</span></span>
+<span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">on</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">    'input'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">    ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> ({ name: target.value </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> RESET })</span></span>
+<span class="line"><span style="color:#F8F8F2">  ))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">  // Update content when the "name" property changes</span></span>
+<span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">))</span></span>
 <span class="line"><span style="color:#F8F8F2">]</span></span>
 <span class="line"></span></code></pre>
 	<basic-button class="copy">
@@ -429,18 +428,18 @@
 			<span class="label">Copy</span>
 		</button>
 	</basic-button>
-	
+	<button type="button" class="overlay">Expand</button>
 </module-codeblock>
 <p>Effects define <strong>component behaviors</strong>:</p>
 <ul>
-<li><code>first(&#39;span&#39;, setText(&#39;name&#39;))</code> finds the first <code>&lt;span&gt;</code> and keeps its text in sync with the <code>name</code> property</li>
 <li><code>first(&#39;input&#39;, on(&#39;input&#39;, ...))</code> finds the first <code>&lt;input&gt;</code> and adds an event listener</li>
+<li><code>first(&#39;span&#39;, setText(&#39;name&#39;))</code> finds the first <code>&lt;span&gt;</code> and keeps its text in sync with the <code>name</code> property</li>
 </ul>
 <p>Characteristics of Effects:</p>
 <ul>
 <li>Effects run when the component is added to the page</li>
 <li>Effects rerun when their dependencies change</li>
-<li>Effects may return a cleanup function to be executed when the component is removed from the page</li>
+<li>Effects may return a cleanup function to be executed when the target element or the component is removed from the page</li>
 </ul>
 </section>
 
@@ -462,7 +461,7 @@
 	<div class="preview">
 		<hello-world>
 			<label>Your name<br>
-				<input type="text">
+				<input name="name" type="text">
 			</label>
 			<p>Hello, <span>World</span>!</p>
 		</hello-world>

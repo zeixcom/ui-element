@@ -8,7 +8,7 @@
 
 > **ElementUpdater**\<`E`, `T`\> = `object`
 
-Defined in: [src/lib/effects.ts:38](https://github.com/zeixcom/ui-element/blob/9f9c8943091140c68eaabf44011b82d99588c469/src/lib/effects.ts#L38)
+Defined in: [src/lib/effects.ts:38](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/lib/effects.ts#L38)
 
 ## Type Parameters
 
@@ -26,7 +26,7 @@ Defined in: [src/lib/effects.ts:38](https://github.com/zeixcom/ui-element/blob/9
 
 > `optional` **delete**: (`element`) => `void`
 
-Defined in: [src/lib/effects.ts:43](https://github.com/zeixcom/ui-element/blob/9f9c8943091140c68eaabf44011b82d99588c469/src/lib/effects.ts#L43)
+Defined in: [src/lib/effects.ts:43](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/lib/effects.ts#L43)
 
 #### Parameters
 
@@ -44,7 +44,7 @@ Defined in: [src/lib/effects.ts:43](https://github.com/zeixcom/ui-element/blob/9
 
 > `optional` **name**: `string`
 
-Defined in: [src/lib/effects.ts:40](https://github.com/zeixcom/ui-element/blob/9f9c8943091140c68eaabf44011b82d99588c469/src/lib/effects.ts#L40)
+Defined in: [src/lib/effects.ts:40](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/lib/effects.ts#L40)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [src/lib/effects.ts:40](https://github.com/zeixcom/ui-element/blob/9
 
 > **op**: [`UpdateOperation`](UpdateOperation.md)
 
-Defined in: [src/lib/effects.ts:39](https://github.com/zeixcom/ui-element/blob/9f9c8943091140c68eaabf44011b82d99588c469/src/lib/effects.ts#L39)
+Defined in: [src/lib/effects.ts:39](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/lib/effects.ts#L39)
 
 ***
 
@@ -60,7 +60,7 @@ Defined in: [src/lib/effects.ts:39](https://github.com/zeixcom/ui-element/blob/9
 
 > **read**: (`element`) => `T` \| `null`
 
-Defined in: [src/lib/effects.ts:41](https://github.com/zeixcom/ui-element/blob/9f9c8943091140c68eaabf44011b82d99588c469/src/lib/effects.ts#L41)
+Defined in: [src/lib/effects.ts:41](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/lib/effects.ts#L41)
 
 #### Parameters
 
@@ -78,7 +78,7 @@ Defined in: [src/lib/effects.ts:41](https://github.com/zeixcom/ui-element/blob/9
 
 > `optional` **reject**: (`error`) => `void`
 
-Defined in: [src/lib/effects.ts:45](https://github.com/zeixcom/ui-element/blob/9f9c8943091140c68eaabf44011b82d99588c469/src/lib/effects.ts#L45)
+Defined in: [src/lib/effects.ts:45](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/lib/effects.ts#L45)
 
 #### Parameters
 
@@ -96,7 +96,7 @@ Defined in: [src/lib/effects.ts:45](https://github.com/zeixcom/ui-element/blob/9
 
 > `optional` **resolve**: (`element`) => `void`
 
-Defined in: [src/lib/effects.ts:44](https://github.com/zeixcom/ui-element/blob/9f9c8943091140c68eaabf44011b82d99588c469/src/lib/effects.ts#L44)
+Defined in: [src/lib/effects.ts:44](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/lib/effects.ts#L44)
 
 #### Parameters
 
@@ -114,7 +114,7 @@ Defined in: [src/lib/effects.ts:44](https://github.com/zeixcom/ui-element/blob/9
 
 > **update**: (`element`, `value`) => `void`
 
-Defined in: [src/lib/effects.ts:42](https://github.com/zeixcom/ui-element/blob/9f9c8943091140c68eaabf44011b82d99588c469/src/lib/effects.ts#L42)
+Defined in: [src/lib/effects.ts:42](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/lib/effects.ts#L42)
 
 #### Parameters
 

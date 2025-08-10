@@ -14,18 +14,6 @@ export type FormSpinbuttonProps = {
 	readonly value: number
 }
 
-const clickHandler = ({ target, value }) =>
-	value + (target.classList.contains('decrement') ? -1 : 1)
-
-const keydownHandler = ({ event, value }) => {
-	const { key } = event as KeyboardEvent
-	if (['ArrowUp', 'ArrowDown', '-', '+'].includes(key)) {
-		event.stopPropagation()
-		event.preventDefault()
-		return value + (key === 'ArrowDown' || key === '-' ? -1 : 1)
-	}
-}
-
 export default component(
 	'form-spinbutton',
 	{
@@ -33,8 +21,19 @@ export default component(
 			fromDOM(asInteger(), { '.value': getText() }),
 			'button',
 			{
-				click: clickHandler,
-				keydown: keydownHandler,
+				click: ({ target, value }) =>
+					value + (target.classList.contains('decrement') ? -1 : 1),
+				keydown: ({ event, value }) => {
+					const { key } = event as KeyboardEvent
+					if (['ArrowUp', 'ArrowDown', '-', '+'].includes(key)) {
+						event.stopPropagation()
+						event.preventDefault()
+						return (
+							value +
+							(key === 'ArrowDown' || key === '-' ? -1 : 1)
+						)
+					}
+				},
 			},
 		),
 	},

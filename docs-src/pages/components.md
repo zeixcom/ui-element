@@ -201,7 +201,7 @@ component(
 
 | Function                                      | Description                                                                                                                                                                  |
 | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [asBoolean()](api/functions/asBoolean.html)   | Converts `"true"` / `"false"` to a **boolean** (`true` / `false`). Also treats empty attributes (`checked`) as `true`.                                                       |
+| [asBoolean()](api/functions/asBoolean.html)   | Converts `"true"` / `"false"` to a **boolean** (`true` / `false`). Also treats empty attributes (`checked`) as `true` and missing attributes as `false`.                     |
 | [asInteger()](api/functions/asInteger.html)   | Converts a numeric string (e.g., `"42"`) to an **integer** (`42`).                                                                                                           |
 | [asNumber()](api/functions/asNumber.html)     | Converts a numeric string (e.g., `"3.14"`) to a **floating-point number** (`3.14`).                                                                                          |
 | [asString()](api/functions/asString.html)     | Returns the attribute value as a **string** (unchanged).                                                                                                                     |

@@ -3,7 +3,7 @@
 	"version": "0.14.0",
 	"description": "UIElement - a HTML-first library for reactive Web Components",
 	"main": "index.js",
-	"types": "index.d.ts",
+	"types": "types/index.d.ts",
 	"scripts": {
 		"build:prod": "bun build index.ts --outdir ./ --minify --define process.env.DEV_MODE=false --sourcemap=external",
 		"build:dev": "BUN_ENV=development bun build index.dev.ts --outdir ./ --define process.env.DEV_MODE=true",

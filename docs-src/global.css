@@ -108,7 +108,7 @@
 	--color-background: var(--color-neutral-10);
 	--color-background-alt: var(--color-neutral-20);
 	--color-border: var(--color-neutral-50);
-	--color-text: #2a1c42;
+	--color-text: var(--color-neutral-90);
 	--color-text-soft: var(--color-neutral-80);
 	--color-text-inverted: var(--color-purple-10);
 
@@ -278,12 +278,12 @@ dl {
 	grid-template-columns: auto 1fr;
 	gap: var(--space-s) var(--space-m);
 
-	dt {
+	& dt {
 		font-weight: var(--font-weight-bold);
 		color: var(--color-text-soft);
 	}
 
-	dd {
+	& dd {
 		margin: 0;
 	}
 }
@@ -295,7 +295,7 @@ details[open] summary {
 header {
 	margin-block: var(--space-xl);
 
-	h1 {
+	& h1 {
 		display: flex;
 		align-items: baseline;
 		justify-content: space-between;
@@ -330,7 +330,7 @@ main {
 section {
 	margin-block: var(--space-xl);
 
-	h3 {
+	& h3 {
 		margin-block-start: var(--space-xl);
 		margin-block-end: var(--space-l);
 	}
@@ -356,7 +356,12 @@ ol,
 ul {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-m);
+	gap: var(--space-s);
+
+	> li > ol,
+	> li > ul {
+		margin-block-start: var(--space-s);
+	}
 }
 
 p code,
@@ -366,9 +371,10 @@ dd code,
 td code {
 	background-color: var(--color-background-alt);
 	border-radius: var(--space-xxs);
-	padding: var(--space-xxs);
+	padding: var(--space-xs) var(--space-xxs) var(--space-xxs);
 	font-family: var(--font-family-mono);
-	font-size: calc(0.95 * var(--font-size-m));
+	font-size: calc(0.9375 * var(--font-size-m));
+	line-height: var(--line-height-xs);
 }
 
 h1,

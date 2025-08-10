@@ -61,7 +61,8 @@ import { asInteger, component, on, setText } from '@zeix/ui-element'
 export default component(
   'basic-counter',
   {
-    count: asInteger(), // Get initial value from count attribute
+    // Get initial value from count attribute
+    count: asInteger(),
   },
   (el, { first }) => [
     // Update count display when state changes

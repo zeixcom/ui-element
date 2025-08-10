@@ -10,7 +10,7 @@ import {
 	state,
 } from '../../../'
 
-import { FormSpinbuttonProps } from '../form-spinbutton/form-spinbutton'
+import type { FormSpinbuttonProps } from '../form-spinbutton/form-spinbutton'
 
 export type CalcTableProps = {
 	columns: number

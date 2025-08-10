@@ -88,10 +88,8 @@ export default component(
 	},
 	(el, { all, first }) => {
 		const outlet = el.getAttribute('outlet') ?? 'main'
-		const error = state('')
-
-		// Convert all relative links to absolute URLs during setup
-		for (const link of el.querySelectorAll('a[href]')) {
+		const error = state('') // Convert all relative links to absolute URLs during setup
+		for (const link of Array.from(el.querySelectorAll('a[href]'))) {
 			const href = link.getAttribute('href')
 			if (
 				href &&
@@ -108,29 +106,34 @@ export default component(
 			}
 		}
 
-		const content = computed(async abort => {
-			const currentPath = String(el[ROUTER_PATHNAME])
-			const url = String(new URL(currentPath, window.location.origin))
-			if (abort?.aborted) return content.get()
+		const content = computed(
+			async (abort: AbortSignal): Promise<string> => {
+				const currentPath = String(el[ROUTER_PATHNAME])
+				const url = String(new URL(currentPath, window.location.origin))
+				if (abort?.aborted) return content.get()
 
-			try {
-				error.set('')
-				const { content: html } = await fetchWithCache(url, abort)
-				const doc = new DOMParser().parseFromString(html, 'text/html')
+				try {
+					error.set('')
+					const { content: html } = await fetchWithCache(url, abort)
+					const doc = new DOMParser().parseFromString(
+						html,
+						'text/html',
+					)
 
-				// Update title and URL
-				const newTitle = doc.querySelector('title')?.textContent
-				if (newTitle) document.title = newTitle
-				if (currentPath !== window.location.pathname)
-					window.history.pushState({}, '', url)
+					// Update title and URL
+					const newTitle = doc.querySelector('title')?.textContent
+					if (newTitle) document.title = newTitle
+					if (currentPath !== window.location.pathname)
+						window.history.pushState({}, '', url)
 
-				return doc.querySelector(outlet)?.innerHTML ?? ''
-			} catch (err) {
-				const errorMessage = `Navigation failed: ${err instanceof Error ? err.message : String(err)}`
-				error.set(errorMessage)
-				return content.get() // Keep current content on error
-			}
-		})
+					return doc.querySelector(outlet)?.innerHTML ?? ''
+				} catch (err) {
+					const errorMessage = `Navigation failed: ${err instanceof Error ? err.message : String(err)}`
+					error.set(errorMessage)
+					return content.get() // Keep current content on error
+				}
+			},
+		)
 
 		return [
 			// Provide contexts

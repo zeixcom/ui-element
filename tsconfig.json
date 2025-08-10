@@ -25,9 +25,17 @@
 
 		// Declarations
 		"declaration": true,
-		"declarationDir": "./",
+		"declarationDir": "./types",
 		"emitDeclarationOnly": true
 	},
-	"include": ["./*.ts", "./src/**/*.ts", "docs-src/docs.ts"],
-	"exclude": ["node_modules", "test", "docs-src"]
+	"include": ["./index.ts", "./index.dev.ts", "./src/**/*.ts"],
+	"exclude": [
+		"node_modules",
+		"test",
+		"docs",
+		"docs-src/**/*",
+		"./docs-src/**/*",
+		"types/**/*",
+		"**/*.d.ts"
+	]
 }

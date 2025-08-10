@@ -1,7 +1,35 @@
-import { mkdir, writeFile } from 'fs/promises'
-import { join } from 'path'
 import { execSync } from 'child_process'
+import { mkdir, readdir, unlink, writeFile } from 'fs/promises'
+import { join } from 'path'
 import { ASSETS_DIR, generateAssetHash } from './config'
+
+// Clean up old versioned assets
+const cleanOldVersionedAssets = async (): Promise<void> => {
+	try {
+		const files = await readdir(ASSETS_DIR)
+		const versionedFiles = files.filter(file =>
+			/^main\.[a-f0-9]+\.(css|js|js\.map)$/.test(file),
+		)
+
+		if (versionedFiles.length > 0) {
+			console.log(
+				`🧹 Cleaning ${versionedFiles.length} old versioned assets...`,
+			)
+			await Promise.all(
+				versionedFiles.map(file =>
+					unlink(join(ASSETS_DIR, file)).catch(() => {
+						// File might not exist, ignore
+					}),
+				),
+			)
+		}
+	} catch (error) {
+		// Directory might not exist yet, that's fine
+		if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+			console.warn('⚠️ Warning: Could not clean old assets:', error)
+		}
+	}
+}
 
 // Ensure assets directory exists
 const ensureAssetsDir = async (): Promise<void> => {
@@ -20,9 +48,12 @@ const buildCSSWithLightning = async (): Promise<void> => {
 
 	try {
 		// Use the existing lightningcss command from package.json
-		execSync('lightningcss --minify --bundle --targets ">= 0.25%" docs-src/main.css -o ./docs/assets/main.css', {
-			stdio: 'inherit'
-		})
+		execSync(
+			'lightningcss --minify --bundle --targets ">= 0.25%" docs-src/main.css -o ./docs/assets/main.css',
+			{
+				stdio: 'inherit',
+			},
+		)
 		console.log('✅ CSS built with lightningcss')
 	} catch (error) {
 		console.error('❌ Failed to build CSS with lightningcss:', error)
@@ -66,9 +97,12 @@ const buildJSWithBun = async (): Promise<void> => {
 
 	try {
 		// Use the existing bun command from package.json
-		execSync('bun build docs-src/main.ts --outdir ./docs/assets/ --minify --define process.env.DEV_MODE=false --sourcemap=external', {
-			stdio: 'inherit'
-		})
+		execSync(
+			'bun build docs-src/main.ts --outdir ./docs/assets/ --minify --define process.env.DEV_MODE=false --sourcemap=external',
+			{
+				stdio: 'inherit',
+			},
+		)
 		console.log('✅ JS built with bun')
 	} catch (error) {
 		console.error('❌ Failed to build JS with bun:', error)
@@ -101,9 +135,14 @@ export const buildOptimizedJS = async (): Promise<{
 	// Also copy sourcemap if it exists
 	try {
 		const sourceMapPath = join(ASSETS_DIR, 'main.js.map')
-		const versionedSourceMapPath = join(ASSETS_DIR, `main.${mainJSHash}.js.map`)
+		const versionedSourceMapPath = join(
+			ASSETS_DIR,
+			`main.${mainJSHash}.js.map`,
+		)
 		execSync(`cp "${sourceMapPath}" "${versionedSourceMapPath}"`)
-		console.log(`✅ Built versioned JS sourcemap: ${versionedSourceMapPath}`)
+		console.log(
+			`✅ Built versioned JS sourcemap: ${versionedSourceMapPath}`,
+		)
 	} catch {
 		// Sourcemap might not exist, that's okay
 	}
@@ -117,7 +156,10 @@ export const buildOptimizedJS = async (): Promise<{
 }
 
 // Generate service worker for advanced caching
-export const generateServiceWorker = async (cssHash: string, jsHash: string): Promise<void> => {
+export const generateServiceWorker = async (
+	cssHash: string,
+	jsHash: string,
+): Promise<void> => {
 	const swContent = `// UIElement Docs Service Worker
 const CACHE_NAME = 'ui-element-docs-v${Date.now()}';
 
@@ -204,6 +246,9 @@ export const buildOptimizedAssets = async (): Promise<{
 	}
 }> => {
 	console.log('🔄 Building optimized assets...')
+
+	// Clean up old versioned assets first
+	await cleanOldVersionedAssets()
 
 	const [cssAssets, jsAssets] = await Promise.all([
 		buildOptimizedCSS(),

@@ -1,6 +1,6 @@
 import { type Component, type ComponentProps, type Effect, on } from '../../..'
 
-import { BasicButtonProps } from './basic-button'
+import type { BasicButtonProps } from './basic-button'
 
 type CopyStatus = 'success' | 'error'
 

@@ -3,7 +3,7 @@ module-toc {
 	background: color-mix(in srgb, var(--color-background) 80%, transparent);
 	color: var(--color-text);
 	padding: var(--space-m);
-	border-radius: var(--space-xs);
+	border-radius: var(--space-s);
 
 	& h2 {
 		margin: 0;

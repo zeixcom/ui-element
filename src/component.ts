@@ -164,9 +164,9 @@ const validatePropertyName = (prop: string): string | null => {
 function component<P extends ComponentProps & ValidateComponentProps<P>>(
 	name: string,
 	init: {
-		[K in keyof P]: Initializer<P[K], Component<P>>
+		[K in keyof P]: Initializer<NonNullable<P[K]>, Component<P>>
 	} = {} as {
-		[K in keyof P]: Initializer<P[K], Component<P>>
+		[K in keyof P]: Initializer<NonNullable<P[K]>, Component<P>>
 	},
 	setup: Setup<P>,
 ): void {
@@ -180,9 +180,9 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 	class CustomElement extends HTMLElement {
 		debug?: boolean
 		#signals: {
-			[K in keyof P & string]: Signal<P[K]>
+			[K in keyof P & string]: Signal<NonNullable<P[K]>>
 		} = {} as {
-			[K in keyof P & string]: Signal<P[K]>
+			[K in keyof P & string]: Signal<NonNullable<P[K]>>
 		}
 		#cleanup: Cleanup | undefined
 
@@ -297,7 +297,9 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 		 * @param {K} key - Key to get signal for
 		 * @returns {P[K]} Current value of signal; undefined if state does not exist
 		 */
-		getSignal<K extends keyof P & string>(key: K): Signal<P[K]> {
+		getSignal<K extends keyof P & string>(
+			key: K,
+		): Signal<NonNullable<P[K]>> {
 			const signal = this.#signals[key]
 			if (DEV_MODE && this.debug)
 				log(
@@ -318,7 +320,7 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 		 */
 		setSignal<K extends keyof P & string>(
 			key: K,
-			signal: Signal<P[K]>,
+			signal: Signal<NonNullable<P[K]>>,
 		): void {
 			const error = validatePropertyName(String(key))
 			if (error)
