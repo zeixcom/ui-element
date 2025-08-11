@@ -6,9 +6,9 @@
 
 # Type Alias: Initializer\<T, C\>
 
-> **Initializer**\<`T`, `C`\> = `T` \| [`Parser`](Parser.md)\<`T`, `C`\> \| [`SignalProducer`](SignalProducer.md)\<`T`, `C`\> \| [`MethodProducer`](MethodProducer.md)\<`C`\>
+> **Initializer**\<`T`, `C`\> = `T` \| [`Parser`](Parser.md)\<`T`, `C`\> \| [`Extractor`](Extractor.md)\<[`MaybeSignal`](MaybeSignal.md)\<`T`\>, `C`\> \| (`host`) => `void`
 
-Defined in: [src/component.ts:86](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/component.ts#L86)
+Defined in: [src/component.ts:79](https://github.com/zeixcom/ui-element/blob/0e9d08172859c87c6105be70cfb907fbb6767271/src/component.ts#L79)
 
 ## Type Parameters
 

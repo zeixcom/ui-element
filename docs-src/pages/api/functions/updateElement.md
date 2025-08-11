@@ -8,7 +8,7 @@
 
 > **updateElement**\<`P`, `T`, `E`\>(`reactive`, `updater`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:145](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/lib/effects.ts#L145)
+Defined in: [src/lib/effects.ts:115](https://github.com/zeixcom/ui-element/blob/0e9d08172859c87c6105be70cfb907fbb6767271/src/lib/effects.ts#L115)
 
 Core effect function for updating element properties based on reactive values.
 This function handles the lifecycle of reading, updating, and deleting element properties

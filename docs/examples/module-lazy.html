@@ -66,49 +66,39 @@
 <span class="line"><span style="color:#F8F8F2">	src</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">	'module-lazy'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">	{</span></span>
-<span class="line"><span style="color:#F8F8F2">		src: asURL,</span></span>
-<span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> error </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> content </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> computed</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">async</span><span style="color:#FD971F;font-style:italic"> abort</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> url </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.src.value</span></span>
-<span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (el.src.error </span><span style="color:#F92672">||</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">url) {</span></span>
-<span class="line"><span style="color:#F8F8F2">				error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(el.src.error </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> 'No URL provided'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">				return</span><span style="color:#E6DB74"> ''</span></span>
-<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'module-lazy'</span><span style="color:#F8F8F2">, { src: asURL }, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> error </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> content </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> computed</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">async</span><span style="color:#FD971F;font-style:italic"> abort</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> url </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.src.value</span></span>
+<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (el.src.error </span><span style="color:#F92672">||</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">url) {</span></span>
+<span class="line"><span style="color:#F8F8F2">			error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(el.src.error </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> 'No URL provided'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">			return</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F92672">			try</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">				error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">				el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.loading'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">remove</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> { content } </span><span style="color:#F92672">=</span><span style="color:#F92672"> await</span><span style="color:#A6E22E"> fetchWithCache</span><span style="color:#F8F8F2">(url, abort)</span></span>
-<span class="line"><span style="color:#F92672">				return</span><span style="color:#F8F8F2"> content</span></span>
-<span class="line"><span style="color:#F8F8F2">			} </span><span style="color:#F92672">catch</span><span style="color:#F8F8F2"> (err) {</span></span>
-<span class="line"><span style="color:#F8F8F2">				error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(err </span><span style="color:#F92672">instanceof</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Error</span><span style="color:#F92672"> ?</span><span style="color:#F8F8F2"> err.message </span><span style="color:#F92672">:</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(err))</span></span>
-<span class="line"><span style="color:#F92672">				return</span><span style="color:#E6DB74"> ''</span></span>
-<span class="line"><span style="color:#F8F8F2">			}</span></span>
-<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#F92672">		try</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">			error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">			el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.loading'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">remove</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> { content } </span><span style="color:#F92672">=</span><span style="color:#F92672"> await</span><span style="color:#A6E22E"> fetchWithCache</span><span style="color:#F8F8F2">(url, abort)</span></span>
+<span class="line"><span style="color:#F92672">			return</span><span style="color:#F8F8F2"> content</span></span>
+<span class="line"><span style="color:#F8F8F2">		} </span><span style="color:#F92672">catch</span><span style="color:#F8F8F2"> (err) {</span></span>
+<span class="line"><span style="color:#F8F8F2">			error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(err </span><span style="color:#F92672">instanceof</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Error</span><span style="color:#F92672"> ?</span><span style="color:#F8F8F2"> err.message </span><span style="color:#F92672">:</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(err))</span></span>
+<span class="line"><span style="color:#F92672">			return</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	})</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">			dangerouslySetInnerHTML</span><span style="color:#F8F8F2">(content),</span></span>
-<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">				'card-callout'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">				[</span></span>
-<span class="line"><span style="color:#A6E22E">					show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !!</span><span style="color:#F8F8F2">error.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> content.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> UNSET),</span></span>
-<span class="line"><span style="color:#A6E22E">					toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'danger'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">error.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()),</span></span>
-<span class="line"><span style="color:#F8F8F2">				],</span></span>
-<span class="line"><span style="color:#E6DB74">				'Needed to display loading state and error messages.'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">			),</span></span>
-<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">				'.error'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">				setText</span><span style="color:#F8F8F2">(error),</span></span>
-<span class="line"><span style="color:#E6DB74">				'Needed to display error messages.'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">			),</span></span>
-<span class="line"><span style="color:#F8F8F2">		]</span></span>
-<span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">		dangerouslySetInnerHTML</span><span style="color:#F8F8F2">(content),</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'card-callout'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">			[</span></span>
+<span class="line"><span style="color:#A6E22E">				show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !!</span><span style="color:#F8F8F2">error.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> content.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> UNSET),</span></span>
+<span class="line"><span style="color:#A6E22E">				toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'danger'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">error.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()),</span></span>
+<span class="line"><span style="color:#F8F8F2">			],</span></span>
+<span class="line"><span style="color:#E6DB74">			'Needed to display loading state and error messages.'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">		),</span></span>
+<span class="line"><span style="color:#A6E22E">		first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.error'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(error), </span><span style="color:#E6DB74">'Needed to display error messages.'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">	]</span></span>
+<span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>

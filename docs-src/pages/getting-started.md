@@ -107,7 +107,7 @@ Include the following in your server-rendered HTML:
 <hello-world>
   <label>
     Your name<br />
-    <input name="name" type="text" />
+    <input name="name" type="text" autocomplete="given-name" />
   </label>
   <p>Hello, <span>World</span>!</p>
 </hello-world>

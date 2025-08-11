@@ -53,7 +53,6 @@
 
 						el.addEventListener('custom-event', handler)
 						el.value = 'new value' // Should update reactive property and emit event
-						await animationFrame()
 
 						assert.equal(called, true)
 
@@ -68,7 +67,6 @@
 						}
 						el.addEventListener('custom-event', handler)
 						el.value = 'updated value' // Should update reactive property and emit event
-						await animationFrame()
 
 						assert.equal(detailReceived, 'updated value')
 
@@ -84,11 +82,9 @@
 						el.addEventListener('test-event', handler)
 
 						el.value = 'something else' // Should update reactive property and emit event
-						await animationFrame()
 						assert.isFalse(eventDetail)
 
 						el.value = 'Content'
-						await animationFrame()
 						assert.isTrue(eventDetail)
 
 						el.removeEventListener('test-event', handler)
@@ -97,7 +93,6 @@
 					/* it('should make events bubble by default', async () => {
 						const el = document.querySelector('emit-test')
 						el.value = 'from other-event on div'
-						await animationFrame()
 
 						assert.equal(
 							el.other,

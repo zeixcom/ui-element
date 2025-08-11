@@ -137,7 +137,6 @@
 					it('should initialize with collapsed state from attribute', async () => {
 						const el = document.getElementById('test1')
 
-						await tick()
 
 						assert.isTrue(el.collapsed)
 						assert.isTrue(el.hasAttribute('collapsed'))
@@ -146,7 +145,6 @@
 					it('should initialize without collapsed state when no attribute', async () => {
 						const el = document.getElementById('test2')
 
-						await tick()
 
 						assert.isFalse(el.collapsed)
 						assert.isFalse(el.hasAttribute('collapsed'))
@@ -158,13 +156,11 @@
 
 						// Reset to collapsed state
 						el.collapsed = true
-						await tick()
 						assert.isTrue(el.collapsed)
 						assert.isTrue(el.hasAttribute('collapsed'))
 
 						// Click overlay to expand
 						overlay.click()
-						await tick()
 
 						assert.isFalse(el.collapsed)
 						assert.isFalse(el.hasAttribute('collapsed'))
@@ -175,14 +171,12 @@
 
 						// Set collapsed programmatically
 						el.collapsed = true
-						await tick()
 
 						assert.isTrue(el.collapsed)
 						assert.isTrue(el.hasAttribute('collapsed'))
 
 						// Unset collapsed programmatically
 						el.collapsed = false
-						await tick()
 
 						assert.isFalse(el.collapsed)
 						assert.isFalse(el.hasAttribute('collapsed'))
@@ -196,7 +190,6 @@
 						const code = el.querySelector('code')
 
 						copyButton.click()
-						await tick()
 						await wait(50) // Wait for async clipboard operation
 
 						assert.equal(
@@ -214,9 +207,7 @@
 							copyButton.label || copyButton.textContent.trim()
 
 						copyButton.click()
-						await tick()
 						await wait(50) // Wait for async clipboard operation
-						await tick()
 
 						// Check button is disabled and shows success message
 						assert.isTrue(copyButton.disabled)
@@ -256,9 +247,7 @@
 						const copyButton = el.querySelector('.copy')
 
 						copyButton.click()
-						await tick()
 						await wait(50) // Wait for async clipboard operation
-						await tick()
 
 						assert.equal(copyButton.label, 'Success!')
 
@@ -267,9 +256,7 @@
 						await wait(1100) // Wait for button to restore
 
 						copyButton.click()
-						await tick()
 						await wait(50)
-						await tick()
 
 						assert.equal(copyButton.label, 'Failed!') */
 					})
@@ -282,9 +269,7 @@
 						const originalLabel = 'Copied!' // Hardcoded fallback in JS source
 
 						copyButton.click()
-						await tick()
 						await wait(50) // Wait for async clipboard operation
-						await tick()
 
 						// Should show original label since no copy-success attribute
 						assert.equal(copyButton.label, originalLabel)
@@ -299,7 +284,6 @@
 						const code = el.querySelector('code')
 
 						copyButton.click()
-						await tick()
 						await wait(50) // Wait for async clipboard operation
 
 						assert.equal(mockClipboard.lastWrittenText, '')
@@ -310,20 +294,16 @@
 
 						// Test that attribute and property stay in sync
 						el.collapsed = true
-						await tick()
 						assert.isTrue(el.hasAttribute('collapsed'))
 
 						el.collapsed = false
-						await tick()
 						assert.isFalse(el.hasAttribute('collapsed'))
 
 						// Test setting attribute
 						el.setAttribute('collapsed', '')
-						await tick()
 						assert.isTrue(el.collapsed)
 
 						el.removeAttribute('collapsed')
-						await tick()
 						assert.isFalse(el.collapsed)
 					})
 
@@ -352,9 +332,7 @@
 						copyButton.click()
 						copyButton.click()
 
-						await tick()
 						await wait(50)
-						await tick()
 
 						// Button should be disabled after first click
 						assert.isTrue(copyButton.disabled)

@@ -106,11 +106,12 @@ export default component(
 			}
 		}
 
+		let previousContent = ''
 		const content = computed(
 			async (abort: AbortSignal): Promise<string> => {
 				const currentPath = String(el[ROUTER_PATHNAME])
 				const url = String(new URL(currentPath, window.location.origin))
-				if (abort?.aborted) return content.get()
+				if (abort?.aborted) return previousContent
 
 				try {
 					error.set('')
@@ -126,11 +127,14 @@ export default component(
 					if (currentPath !== window.location.pathname)
 						window.history.pushState({}, '', url)
 
-					return doc.querySelector(outlet)?.innerHTML ?? ''
+					const newContent =
+						doc.querySelector(outlet)?.innerHTML ?? ''
+					previousContent = newContent
+					return newContent
 				} catch (err) {
 					const errorMessage = `Navigation failed: ${err instanceof Error ? err.message : String(err)}`
 					error.set(errorMessage)
-					return content.get() // Keep current content on error
+					return previousContent // Keep current content on error
 				}
 			},
 		)
@@ -158,30 +162,22 @@ export default component(
 			]),
 
 			// Render content
-			first(outlet, [
-				dangerouslySetInnerHTML(content, { allowScripts: true }),
-			]),
+			first(outlet, [dangerouslySetInnerHTML(content)]),
 
 			// Error display with aria-live
 			first('card-callout', [show(() => !!error.get())]),
 			first('.error', [setText(error)]),
 
 			// Handle browser history navigation
-			() => {
-				const handlePopState = () => {
-					el[ROUTER_PATHNAME] = window.location.pathname
-				}
-				window.addEventListener('popstate', handlePopState)
-				return () => {
-					window.removeEventListener('popstate', handlePopState)
-				}
-			},
+			on('popstate', () => {
+				el[ROUTER_PATHNAME] = window.location.pathname
+			}),
 		]
 	},
 )
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'context-router': Component<{}>
+		'context-router': Component<ContextRouterProps>
 	}
 }

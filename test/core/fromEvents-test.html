@@ -76,7 +76,6 @@
 
 						try {
 							const inputSignal = fromEvents(
-								'',
 								'input.test-input',
 								{
 									input: ({ event, target }) => {
@@ -88,6 +87,7 @@
 										return target.value
 									},
 								},
+								'',
 							)(document.body)
 
 							// Use effect to watch signal for updates
@@ -129,11 +129,11 @@
 
 						try {
 							const inputSignal = fromEvents(
-								'',
 								'input.computed-input',
 								{
 									input: ({ target }) => target.value,
 								},
+								'',
 							)(document.body)
 
 							const lengthSignal = computed(
@@ -177,11 +177,11 @@
 
 						try {
 							const clickSignal = fromEvents(
-								0,
 								'button.cleanup-test',
 								{
 									click: ({ value }) => value + 1,
 								},
+								0,
 							)(document.body)
 
 							let effectRuns = 0
@@ -227,21 +227,21 @@
 
 						try {
 							const usernameSignal = fromEvents(
-								'',
 								'input.username-input',
 								{
 									input: ({ target }) => target.value,
 									change: ({ target }) => target.value.trim(),
 								},
+								'',
 							)(form)
 
 							const emailSignal = fromEvents(
-								'',
 								'input.email-input',
 								{
 									input: ({ target }) =>
 										target.value.toLowerCase(),
 								},
+								'',
 							)(form)
 
 							// Test username input
@@ -291,11 +291,11 @@
 
 					it('should do nothing when element not found', async () => {
 						const nonExistentSignal = fromEvents(
-							'default',
 							'.non-existent-element',
 							{
 								click: () => 'clicked',
 							},
+							'default',
 						)(document.body)
 
 						// Use effect to watch signal
@@ -322,14 +322,14 @@
 
 						try {
 							const clickSignal = fromEvents(
-								() =>
-									parseInt(
-										button.dataset.initialValue || '0',
-									),
 								'button.function-init',
 								{
 									click: ({ value }) => value + 5,
 								},
+								() =>
+									parseInt(
+										button.dataset.initialValue || '0',
+									),
 							)(document.body)
 
 							// Use effect to watch signal
@@ -369,7 +369,6 @@
 
 						try {
 							const formSignal = fromEvents(
-								{ submitted: false, valid: false },
 								'form',
 								{
 									submit: ({ event, target, value }) => {
@@ -389,6 +388,7 @@
 										}
 									},
 								},
+								{ submitted: false, valid: false },
 							)(document.body)
 
 							// Use effect to watch signal
@@ -456,12 +456,12 @@
 								lastEvent: '',
 							},
 							el => {
-								const clickSignal = fromEvents(0, 'button', {
+								const clickSignal = fromEvents('button', {
 									click: ({ value, target }) => {
 										el.lastEvent = `clicked ${target.textContent}`
 										return value + 1
 									},
-								})(el)
+								}, 0)(el)
 
 								return () => {
 									el.clickCount = clickSignal.get()
@@ -482,7 +482,6 @@
 							await customElements.whenDefined(
 								'test-fromevents-component',
 							)
-							await animationFrame()
 
 							// Initial state
 							assert.equal(container.clickCount, 0)
@@ -491,7 +490,6 @@
 							// Click first button
 							const button1 = container.querySelector('button')
 							button1.click()
-							await animationFrame()
 
 							assert.equal(container.clickCount, 1)
 							assert.equal(
@@ -503,7 +501,6 @@
 							const button2 =
 								container.querySelectorAll('button')[1]
 							button2.click()
-							await animationFrame()
 
 							assert.equal(container.clickCount, 2)
 							assert.equal(
@@ -522,7 +519,6 @@
 
 						try {
 							const customSignal = fromEvents(
-								{ count: 0, data: null },
 								'.custom-events',
 								{
 									'custom:increment': ({ value, event }) => ({
@@ -536,6 +532,7 @@
 										data: value.data,
 									}),
 								},
+								{ count: 0, data: null },
 							)(container)
 
 							// Use effect to watch signal
@@ -599,12 +596,6 @@
 
 						try {
 							const multiSignal = fromEvents(
-								{
-									clicks: 0,
-									keyups: 0,
-									lastKey: '',
-									lastValue: '',
-								},
 								'.multi-event',
 								{
 									click: ({ value, target }) => ({
@@ -619,6 +610,12 @@
 										lastKey: event.key,
 										lastValue: target.value,
 									}),
+								},
+								{
+									clicks: 0,
+									keyups: 0,
+									lastKey: '',
+									lastValue: '',
 								},
 							)(document.body)
 

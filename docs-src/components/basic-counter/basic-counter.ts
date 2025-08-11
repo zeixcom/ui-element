@@ -15,9 +15,11 @@ export type BasicCounterProps = {
 export default component(
 	'basic-counter',
 	{
-		count: fromEvents(fromDOM(asInteger(), { span: getText() }), 'button', {
-			click: ({ value }) => ++value,
-		}),
+		count: fromEvents<number>(
+			'button',
+			{ click: ({ value }) => ++value },
+			fromDOM({ span: getText() }, asInteger()),
+		),
 	},
 	(_, { first }) => [first('span', setText('count'))],
 )

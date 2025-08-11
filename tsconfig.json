@@ -29,13 +29,5 @@
 		"emitDeclarationOnly": true
 	},
 	"include": ["./index.ts", "./index.dev.ts", "./src/**/*.ts"],
-	"exclude": [
-		"node_modules",
-		"test",
-		"docs",
-		"docs-src/**/*",
-		"./docs-src/**/*",
-		"types/**/*",
-		"**/*.d.ts"
-	]
+	"exclude": ["node_modules", "test", "docs", "types/**/*"]
 }

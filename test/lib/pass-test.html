@@ -64,10 +64,9 @@
 
 			runTests(() => {
 				describe('pass()', function () {
-					it('Orphan component should do nothing at all', async function () {
+					it('Orphan component should do nothing at all', function () {
 						const orphanComponent =
 							document.getElementById('orphan')
-						await animationFrame()
 						const headingContent = normalizeText(
 							orphanComponent.querySelector('h1').textContent,
 						)
@@ -91,7 +90,6 @@
 						await customElements.whenDefined(
 							childComponent.localName,
 						)
-						await animationFrame()
 						const headingContent =
 							childComponent.querySelector('h1').textContent
 						assert.equal(
@@ -106,7 +104,6 @@
 						await customElements.whenDefined(
 							childComponent.localName,
 						)
-						await animationFrame()
 						const textContent = normalizeText(
 							childComponent.querySelector('p').textContent,
 						)
@@ -117,7 +114,7 @@
 						)
 					})
 
-					it('should throw TypeError if signals are not an object', async function () {
+					it('should throw TypeError if signals are not an object', function () {
 						const parentComponent =
 							document.getElementById('parent')
 						const childComponent = document.getElementById('child')
@@ -131,7 +128,7 @@
 						)
 					})
 
-					it('should throw TypeError if target is not a custom element', async function () {
+					it('should throw TypeError if target is not a custom element', function () {
 						const parentComponent =
 							document.getElementById('parent')
 						const regularDiv = document.createElement('div')

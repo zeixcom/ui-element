@@ -54,7 +54,7 @@ type ValidateComponentProps<P> = {
 	[K in keyof P]: ValidPropertyKey<K> extends never ? never : P[K]
 }
 
-type ComponentProps = { [K in string as ValidPropertyKey<K>]: {} }
+type ComponentProps = { [K in string as ValidPropertyKey<K>]: unknown & {} }
 
 type Component<P extends ComponentProps> = HTMLElement &
 	P & {
@@ -76,18 +76,11 @@ type Component<P extends ComponentProps> = HTMLElement &
 		): void
 	}
 
-type SignalProducer<
-	T extends {},
-	C extends HTMLElement = HTMLElement,
-> = Extractor<MaybeSignal<T>, C>
-
-type MethodProducer<C extends HTMLElement> = (host: C) => void
-
 type Initializer<T extends {}, C extends HTMLElement> =
 	| T
 	| Parser<T, C>
-	| SignalProducer<T, C>
-	| MethodProducer<C>
+	| Extractor<MaybeSignal<T>, C>
+	| ((host: C) => void)
 
 type Setup<P extends ComponentProps> = (
 	host: Component<P>,
@@ -156,7 +149,7 @@ const validatePropertyName = (prop: string): string | null => {
  *
  * @since 0.14.0
  * @param {string} name - Name of the custom element
- * @param {{ [K in keyof P]: Initializer<P[K], Component<P>> }} init - Signals of the component
+ * @param {{ [K in keyof P]: Initializer<NonNullable<P[K]>, Component<P>> }} init - Signals of the component
  * @param {Setup<P>} setup - Setup function to be called after dependencies are resolved
  * @throws {InvalidComponentNameError} If component name is invalid
  * @throws {InvalidPropertyNameError} If property name is invalid
@@ -180,9 +173,9 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 	class CustomElement extends HTMLElement {
 		debug?: boolean
 		#signals: {
-			[K in keyof P & string]: Signal<NonNullable<P[K]>>
+			[K in keyof P & string]: Signal<P[K]>
 		} = {} as {
-			[K in keyof P & string]: Signal<NonNullable<P[K]>>
+			[K in keyof P & string]: Signal<P[K]>
 		}
 		#cleanup: Cleanup | undefined
 
@@ -224,6 +217,7 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 				)
 				if (cleanup) this.#cleanup = cleanup
 			}
+
 			if (deps.length) {
 				Promise.race([
 					Promise.all(
@@ -297,9 +291,7 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 		 * @param {K} key - Key to get signal for
 		 * @returns {P[K]} Current value of signal; undefined if state does not exist
 		 */
-		getSignal<K extends keyof P & string>(
-			key: K,
-		): Signal<NonNullable<P[K]>> {
+		getSignal<K extends keyof P & string>(key: K): Signal<P[K]> {
 			const signal = this.#signals[key]
 			if (DEV_MODE && this.debug)
 				log(
@@ -314,13 +306,13 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 		 *
 		 * @since 0.12.0
 		 * @param {K} key - Key to set signal for
-		 * @param {Signal<P[keyof P]>} signal - Signal to set value to
+		 * @param {Signal<P[K]>} signal - Signal to set value to
 		 * @throws {InvalidPropertyNameError} If key is not a valid property name
 		 * @throws {InvalidSignalError} If signal is not a valid signal
 		 */
 		setSignal<K extends keyof P & string>(
 			key: K,
-			signal: Signal<NonNullable<P[K]>>,
+			signal: Signal<P[K]>,
 		): void {
 			const error = validatePropertyName(String(key))
 			if (error)
@@ -355,8 +347,6 @@ export {
 	type ValidPropertyKey,
 	type ValidateComponentProps,
 	type Initializer,
-	type SignalProducer,
-	type MethodProducer,
 	type Setup,
 	component,
 }

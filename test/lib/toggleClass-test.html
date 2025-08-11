@@ -39,12 +39,11 @@
 
 			runTests(() => {
 				describe('toggleClass', function () {
-					it('should prove toggleClass() working correctly', async function () {
+					it('should prove toggleClass() working correctly', function () {
 						const component = document.querySelector('update-class')
 						const items = Array.from(
 							component.querySelectorAll('li'),
 						)
-						await animationFrame()
 						assert.equal(
 							items[0].classList.contains('selected'),
 							true,
@@ -56,7 +55,6 @@
 							'Third item should not have selected class removed',
 						)
 						component.active = 1
-						await animationFrame()
 						/* assert.equal(
 							items[1].classList.contains('selected'),
 							true,
@@ -68,7 +66,6 @@
 							'First item should not have selected class removed',
 						) */
 						component.active = RESET
-						await animationFrame()
 						assert.equal(
 							items[1].classList.contains('selected'),
 							false,

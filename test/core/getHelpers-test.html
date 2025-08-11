@@ -59,7 +59,6 @@
 								await customElements.whenDefined(
 									'test-useelement-basic',
 								)
-								await animationFrame()
 
 								assert.equal(container.elementType, 'input')
 								assert.equal(container.elementId, 'submit-btn')
@@ -91,7 +90,6 @@
 								await customElements.whenDefined(
 									'test-useelement-missing',
 								)
-								await animationFrame()
 
 								assert.equal(container.found, 'not-found')
 							} finally {
@@ -145,7 +143,6 @@
 								await customElements.whenDefined(
 									'test-useelement-required',
 								)
-								await animationFrame()
 
 								// If we get here without error, the test failed
 								assert.fail(
@@ -214,7 +211,6 @@
 								await customElements.whenDefined(
 									'test-useelement-complex',
 								)
-								await animationFrame()
 
 								assert.equal(container.inputType, 'email')
 								assert.equal(
@@ -260,7 +256,6 @@
 								await customElements.whenDefined(
 									'test-useelements-basic',
 								)
-								await animationFrame()
 
 								assert.equal(container.itemCount, 3)
 								assert.equal(
@@ -295,7 +290,6 @@
 								await customElements.whenDefined(
 									'test-useelements-empty',
 								)
-								await animationFrame()
 
 								assert.equal(container.itemCount, 0)
 							} finally {
@@ -337,7 +331,6 @@
 								await customElements.whenDefined(
 									'test-useelements-complex',
 								)
-								await animationFrame()
 
 								assert.equal(container.requiredCount, 2)
 								assert.equal(container.allCount, 3)
@@ -377,7 +370,6 @@
 								await customElements.whenDefined(
 									'test-first-basic',
 								)
-								await animationFrame()
 
 								const buttons =
 									container.querySelectorAll('button')
@@ -423,7 +415,6 @@
 								await customElements.whenDefined(
 									'test-first-missing',
 								)
-								await animationFrame()
 
 								assert.equal(container.status, 'initialized')
 								assert.equal(
@@ -465,19 +456,16 @@
 								await customElements.whenDefined(
 									'test-first-events',
 								)
-								await animationFrame()
 
 								const buttons =
 									container.querySelectorAll('button')
 
 								// Click first button
 								buttons[0].click()
-								await animationFrame()
 								assert.equal(container.clickCount, 1)
 
 								// Click second button (should not increment)
 								buttons[1].click()
-								await animationFrame()
 								assert.equal(container.clickCount, 1)
 							} finally {
 								container.remove()
@@ -528,7 +516,6 @@
 								await customElements.whenDefined(
 									'test-all-basic',
 								)
-								await animationFrame()
 
 								const items =
 									container.querySelectorAll('.item')
@@ -619,7 +606,6 @@
 								await customElements.whenDefined(
 									'test-all-dynamic',
 								)
-								await animationFrame()
 
 								// Initial state
 								assert.equal(container.attachedCount, 2)
@@ -629,7 +615,6 @@
 								const addBtn =
 									container.querySelector('#add-btn')
 								addBtn.click()
-								await animationFrame()
 
 								assert.equal(container.attachedCount, 3)
 
@@ -637,7 +622,6 @@
 								const removeBtn =
 									container.querySelector('#remove-btn')
 								removeBtn.click()
-								await animationFrame()
 								assert.equal(container.detachedCount, 1)
 							} finally {
 								container.remove()
@@ -674,24 +658,20 @@
 								await customElements.whenDefined(
 									'test-all-events',
 								)
-								await animationFrame()
 
 								const buttons =
 									container.querySelectorAll('button')
 
 								// Click each button
 								buttons[0].click()
-								await animationFrame()
 								assert.equal(container.totalClicks, 1)
 								assert.equal(container.lastClicked, 'Button A')
 
 								buttons[1].click()
-								await animationFrame()
 								assert.equal(container.totalClicks, 2)
 								assert.equal(container.lastClicked, 'Button B')
 
 								buttons[2].click()
-								await animationFrame()
 								assert.equal(container.totalClicks, 3)
 								assert.equal(container.lastClicked, 'Button C')
 							} finally {
@@ -767,7 +747,6 @@
 								await customElements.whenDefined(
 									'test-helpers-integration',
 								)
-								await animationFrame()
 
 								// Check initial state
 								assert.equal(container.requiredFieldCount, 2)
@@ -789,11 +768,9 @@
 
 								nameInput.value = 'John Doe'
 								nameInput.dispatchEvent(new Event('input'))
-								await animationFrame()
 
 								emailInput.value = 'john@example.com'
 								emailInput.dispatchEvent(new Event('input'))
-								await animationFrame()
 
 								assert.isTrue(container.formValid)
 							} finally {
@@ -840,7 +817,6 @@
 								await customElements.whenDefined(
 									'test-helpers-shadow',
 								)
-								await animationFrame()
 
 								// Should find light DOM elements
 								assert.equal(container.lightElements, 3)

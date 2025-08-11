@@ -32,13 +32,9 @@ const getSelected = (
 export default component(
 	'module-tabgroup',
 	{
-		tabs: fromSelector<HTMLButtonElement>('[role="tab"]'),
-		selected: fromEvents<
-			string,
-			HTMLElement & { tabs: HTMLButtonElement[] }
-		>(
-			el => getSelected(el.tabs, tab => tab.ariaSelected === 'true'),
-			'[role="tab"]',
+		tabs: fromSelector('button[role="tab"]'),
+		selected: fromEvents(
+			'button[role="tab"]',
 			{
 				click: ({ target }) => getAriaControls(target),
 				keyup: ({ event, host, target }) => {
@@ -67,15 +63,14 @@ export default component(
 										: 1,
 						)
 						host.tabs
-							.filter(
-								(tab: HTMLButtonElement) =>
-									getAriaControls(tab) === current,
-							)[0]
+							.filter(tab => getAriaControls(tab) === current)[0]
 							.focus()
 						return current
 					}
 				},
 			},
+			(el: HTMLElement & { tabs: HTMLButtonElement[] }) =>
+				getSelected(el.tabs, tab => tab.ariaSelected === 'true'),
 		),
 	},
 	(el, { all }) => {
@@ -83,8 +78,8 @@ export default component(
 			el.selected === getAriaControls(tab)
 
 		return [
-			all<HTMLButtonElement>(
-				'[role="tab"]',
+			all(
+				'button[role="tab"]',
 				[
 					setProperty('ariaSelected', target =>
 						String(isCurrentTab(target)),

@@ -2,7 +2,7 @@ import { ServerWebSocket } from 'bun'
 import { exec } from 'child_process'
 import { watch } from 'fs/promises'
 import { promisify } from 'util'
-import { gzipSync, brotliCompressSync } from 'zlib'
+import { brotliCompressSync, gzipSync } from 'zlib'
 
 const execAsync = promisify(exec)
 const sockets = new Set<ServerWebSocket>()
@@ -206,17 +206,19 @@ const server = Bun.serve({
 				// Apply compression for HTML content
 				const headers: HeadersInit = {
 					'Content-Type': 'text/html; charset=UTF-8',
-					'X-Content-Type-Options': 'nosniff'
+					'X-Content-Type-Options': 'nosniff',
 				}
 
 				if (supportsBrotli) {
-					const compressed = brotliCompressSync(Buffer.from(content, 'utf8'))
+					const compressed = brotliCompressSync(
+						Buffer.from(content, 'utf8'),
+					)
 					return new Response(compressed, {
 						headers: {
 							...headers,
 							'Content-Encoding': 'br',
-							'Vary': 'Accept-Encoding'
-						}
+							Vary: 'Accept-Encoding',
+						},
 					})
 				} else if (supportsGzip) {
 					const compressed = gzipSync(Buffer.from(content, 'utf8'))
@@ -224,8 +226,8 @@ const server = Bun.serve({
 						headers: {
 							...headers,
 							'Content-Encoding': 'gzip',
-							'Vary': 'Accept-Encoding'
-						}
+							Vary: 'Accept-Encoding',
+						},
 					})
 				}
 
@@ -251,19 +253,18 @@ const server = Bun.serve({
 			}
 		}
 
-
-
 		// Generate cache headers based on path
 		const getCacheHeaders = (path: string): Record<string, string> => {
 			// Check if this is a versioned asset (contains hash)
-			const isVersionedAsset = /\.(css|js)\?v=[a-f0-9]+$/.test(path) ||
-									/\/main\.[a-f0-9]+\.(css|js)$/.test(path)
+			const isVersionedAsset =
+				/\.(css|js)\?v=[a-f0-9]+$/.test(path) ||
+				/\/main\.[a-f0-9]+\.(css|js)$/.test(path)
 
 			if (isVersionedAsset) {
 				// Long cache for versioned assets (1 year)
 				return {
 					'Cache-Control': 'public, max-age=31536000, immutable',
-					'X-Content-Type-Options': 'nosniff'
+					'X-Content-Type-Options': 'nosniff',
 				}
 			}
 
@@ -271,13 +272,13 @@ const server = Bun.serve({
 			if (path.startsWith('/assets/')) {
 				return {
 					'Cache-Control': 'public, max-age=31536000, immutable',
-					'X-Content-Type-Options': 'nosniff'
+					'X-Content-Type-Options': 'nosniff',
 				}
 			}
 
 			// Default headers for other files
 			return {
-				'X-Content-Type-Options': 'nosniff'
+				'X-Content-Type-Options': 'nosniff',
 			}
 		}
 
@@ -289,14 +290,15 @@ const server = Bun.serve({
 			const cacheHeaders = getCacheHeaders(path)
 			const headers: HeadersInit = {
 				'Content-Type': type(path),
-				...cacheHeaders
+				...cacheHeaders,
 			}
 
 			// Check if file should be compressed (text files)
-			const shouldCompress = path.match(/\.(html|css|js|json|xml|txt|md)$/) ||
-								   type(path).startsWith('text/') ||
-								   type(path).includes('javascript') ||
-								   type(path).includes('json')
+			const shouldCompress =
+				path.match(/\.(html|css|js|json|xml|txt|md)$/) ||
+				type(path).startsWith('text/') ||
+				type(path).includes('javascript') ||
+				type(path).includes('json')
 
 			if (shouldCompress && (supportsBrotli || supportsGzip)) {
 				const fileContent = await Bun.file(`./docs${path}`).bytes()
@@ -307,8 +309,8 @@ const server = Bun.serve({
 						headers: {
 							...headers,
 							'Content-Encoding': 'br',
-							'Vary': 'Accept-Encoding'
-						}
+							Vary: 'Accept-Encoding',
+						},
 					})
 				} else if (supportsGzip) {
 					const compressed = gzipSync(fileContent)
@@ -316,14 +318,14 @@ const server = Bun.serve({
 						headers: {
 							...headers,
 							'Content-Encoding': 'gzip',
-							'Vary': 'Accept-Encoding'
-						}
+							Vary: 'Accept-Encoding',
+						},
 					})
 				}
 			}
 
 			return new Response(await Bun.file(`./docs${path}`).bytes(), {
-				headers
+				headers,
 			})
 		} catch (error) {
 			console.warn(`⚠️ Not found: ${path}, Error: ${error.message}`)

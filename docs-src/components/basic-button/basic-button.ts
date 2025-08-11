@@ -21,7 +21,7 @@ export default component(
 	{
 		disabled: asBoolean(),
 		label: asString(getLabel('button')),
-		badge: asString(fromDOM('', { '.badge': getText() })),
+		badge: asString(fromDOM({ '.badge': getText() }, '')),
 	},
 	(_, { first }) => [
 		first(

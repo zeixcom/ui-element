@@ -67,7 +67,6 @@
 					it('should set innerHTML from string property', async () => {
 						const el = document.querySelector('dangerous-html-test')
 						const container = el.querySelector('.html-container')
-						await animationFrame()
 
 						assert.equal(
 							container.innerHTML,
@@ -78,7 +77,6 @@
 						// Update content
 						el.content =
 							'<div><strong>Updated</strong> content</div>'
-						await animationFrame()
 
 						assert.equal(
 							container.innerHTML,
@@ -90,7 +88,6 @@
 					/* it('should work with function that returns HTML', async () => {
 						const el = document.querySelector('dangerous-html-test')
 						const container = el.querySelector('.unsafe-container')
-						await animationFrame()
 
 						// Should show count of initial content length
 						assert.equal(
@@ -101,7 +98,6 @@
 
 						// Update content and check if count updates
 						el.content = '<p>Short</p>'
-						await animationFrame()
 
 						assert.equal(
 							container.innerHTML,
@@ -116,7 +112,6 @@
 
 						// Set to empty string
 						el.content = ''
-						await animationFrame()
 
 						assert.equal(
 							container.innerHTML,
@@ -126,7 +121,6 @@
 
 						// Set to null/undefined-like content
 						el.content = null
-						await animationFrame()
 
 						assert.equal(
 							container.innerHTML,
@@ -151,7 +145,6 @@
 								host,
 								element,
 							)
-							await animationFrame()
 
 							assert.equal(
 								element.innerHTML,
@@ -163,7 +156,6 @@
 							htmlSignal.set(
 								'<strong>Updated signal content</strong>',
 							)
-							await animationFrame()
 
 							assert.equal(
 								element.innerHTML,
@@ -211,7 +203,6 @@
 								host,
 								element,
 							)
-							await animationFrame()
 
 							// Container event listener should still work
 							element.click()
@@ -273,7 +264,6 @@
 								host,
 								element,
 							)
-							await animationFrame()
 
 							// Verify complex structure is rendered
 							const complexDiv = element.querySelector('.complex')
@@ -326,7 +316,6 @@
 								host,
 								element,
 							)
-							await animationFrame()
 
 							// Browser should handle malformed HTML
 							assert.isTrue(
@@ -384,7 +373,6 @@
 								return `<ul class="item-list">${listItems}</ul>`
 							})(host, element)
 
-							await animationFrame()
 
 							// Initial state - 3 items without details
 							let list = element.querySelector('.item-list')
@@ -403,7 +391,6 @@
 
 							// Enable details
 							showDetailsSignal.set(true)
-							await animationFrame()
 
 							list = element.querySelector('.item-list')
 							assert.equal(
@@ -417,7 +404,6 @@
 
 							// Remove all items
 							itemsSignal.set([])
-							await animationFrame()
 
 							const emptyMessage = element.querySelector('.empty')
 							assert.isNotNull(
@@ -428,7 +414,6 @@
 
 							// Add items back
 							itemsSignal.set(['orange', 'grape'])
-							await animationFrame()
 
 							list = element.querySelector('.item-list')
 							assert.isNotNull(list, 'Should render list again')

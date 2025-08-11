@@ -20,11 +20,9 @@ export default component(
 	'form-checkbox',
 	{
 		checked: fromEvents(
-			fromDOM(asBoolean(), { input: getProperty('checked') }),
 			'input',
-			{
-				change: ({ target }) => target.checked,
-			},
+			{ change: ({ target }) => target.checked },
+			fromDOM({ input: getProperty('checked') }, asBoolean()),
 		),
 		label: asString(getLabel('input')),
 	},

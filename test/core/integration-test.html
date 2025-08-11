@@ -150,7 +150,6 @@
 							await customElements.whenDefined(
 								'test-complex-integration',
 							)
-							await animationFrame()
 
 							// Initial state
 							assert.equal(container.selectedItems.length, 0)
@@ -163,7 +162,6 @@
 							// Click an item to select it
 							const items = container.querySelectorAll('.item')
 							items[0].click()
-							await animationFrame()
 
 							assert.equal(container.selectedItems.length, 1)
 							assert.include(
@@ -174,7 +172,6 @@
 							// Click button to increment counter
 							const button = container.querySelector('button')
 							button.click()
-							await animationFrame()
 
 							assert.equal(container.clickCount, 1)
 							assert.include(
@@ -229,7 +226,6 @@
 							await customElements.whenDefined(
 								'test-signal-dependencies',
 							)
-							await animationFrame()
 
 							// Initial state
 							assert.equal(container.itemCount, 2)
@@ -247,7 +243,6 @@
 							container
 								.querySelectorAll('.dep-item')
 								.forEach(item => item.remove())
-							await animationFrame()
 
 							assert.equal(container.itemCount, 0)
 							assert.isTrue(container.isEmpty)
@@ -303,7 +298,6 @@
 							await customElements.whenDefined(
 								'test-async-integration',
 							)
-							await animationFrame()
 
 							// Initial loading state
 							assert.equal(container.loadingState, 'loading')
@@ -314,7 +308,6 @@
 
 							// Wait for async data to load
 							await wait(150)
-							await animationFrame()
 
 							assert.equal(container.loadingState, 'loaded')
 							assert.include(

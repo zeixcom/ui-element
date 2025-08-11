@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 	<head>
 		<title>fromSelector Tests</title>
@@ -10,11 +10,7 @@
 		<script type="module">
 			import { runTests } from '@web/test-runner-mocha'
 			import { assert } from '@esm-bundle/chai'
-			import {
-				fromSelector,
-				computed,
-				effect,
-			} from '../../index.dev.js'
+			import { fromSelector, computed, effect } from '../../index.dev.js'
 
 			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 			const animationFrame = async () =>
@@ -300,7 +296,6 @@
 								container.appendChild(element)
 							}
 
-							await animationFrame()
 
 							// Should handle rapid mutations without excessive updates
 							assert.isAtLeast(updateCount, 1)
@@ -334,10 +329,7 @@
 								error: error => {
 									errorThrown = true
 									assert.instanceOf(error, Error)
-									assert.include(
-										error.message,
-										'circular',
-									)
+									assert.include(error.message, 'circular')
 								},
 							})
 
@@ -397,12 +389,10 @@
 							newItem.textContent = 'New'
 							container.appendChild(newItem)
 
-							await animationFrame()
 							assert.equal(signal.get().length, 2)
 
 							// Remove element
 							newItem.remove()
-							await animationFrame()
 							assert.equal(signal.get().length, 1)
 						} finally {
 							container.remove()
@@ -478,16 +468,20 @@
 						document.body.appendChild(container)
 
 						try {
-							const signal = fromSelector('.event-test')(container)
+							const signal =
+								fromSelector('.event-test')(container)
 							let eventCount = 0
 
 							const cleanup = effect({
 								signals: [signal],
 								ok: elements => {
 									elements.forEach(element => {
-										element.addEventListener('click', () => {
-											eventCount++
-										})
+										element.addEventListener(
+											'click',
+											() => {
+												eventCount++
+											},
+										)
 									})
 								},
 							})
@@ -523,7 +517,8 @@
 						document.body.appendChild(container)
 
 						try {
-							const signal = fromSelector('.cleanup-test')(container)
+							const signal =
+								fromSelector('.cleanup-test')(container)
 							let effectRuns = 0
 
 							const cleanup = effect({
@@ -552,7 +547,6 @@
 							const element = document.createElement('div')
 							element.className = 'cleanup-test'
 							container.appendChild(element)
-							await animationFrame()
 
 							assert.equal(effectRuns, initialRuns)
 						} finally {

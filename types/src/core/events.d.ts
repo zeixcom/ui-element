@@ -1,6 +1,6 @@
 import { type Computed } from '@zeix/cause-effect';
 import type { Component, ComponentProps } from '../component';
-import { type ElementFromSelector, type Extractor, type Fallback } from './dom';
+import { type ElementFromSelector, type Extractor, type ParserOrFallback } from './dom';
 import { type Effect, type Reactive } from './reactive';
 type EventType<K extends string> = K extends keyof HTMLElementEventMap ? HTMLElementEventMap[K] : Event;
 type EventTransformer<T extends {}, E extends Element, C extends HTMLElement, Evt extends Event> = (context: {
@@ -22,13 +22,13 @@ type EventHandler<P extends ComponentProps, E extends Element, Evt extends Event
 /**
  * Produce a computed signal from transformed event data
  *
- * @since 0.13.3
- * @param {ValueOrExtractor<T>} initialize - Initial value or extractor function
+ * @since 0.14.0
  * @param {S} selector - CSS selector for the source element
  * @param {EventTransformers<T, ElementFromSelector<S>, C>} events - Transformation functions for events
+ * @param {ParserOrFallback<T>} initialize - Initial value or extractor function
  * @returns {Extractor<Computed<T>, C>} Extractor function for value from event
  */
-declare const fromEvents: <T extends {}, C extends HTMLElement = HTMLElement, S extends string = string>(initialize: Fallback<T, C>, selector: S, events: EventTransformers<T, ElementFromSelector<S>, C>) => Extractor<Computed<T>, C>;
+declare const fromEvents: <T extends {}, C extends HTMLElement = HTMLElement, S extends string = string>(selector: S, events: EventTransformers<T, ElementFromSelector<S>, C>, initialize: ParserOrFallback<T, C>) => Extractor<Computed<T>, C>;
 /**
  * Effect for attaching an event listener to an element.
  * Provides proper cleanup when the effect is disposed.

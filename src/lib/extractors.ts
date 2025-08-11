@@ -5,6 +5,13 @@ const getText =
 	(element: E) =>
 		element.textContent?.trim()
 
+const getIdrefText =
+	<E extends Element = Element>(attr: string): LooseExtractor<string, E> =>
+	(element: E) => {
+		const id = element.getAttribute(attr)
+		return id ? document.getElementById(id)?.textContent?.trim() : undefined
+	}
+
 const getProperty =
 	<E extends Element, K extends keyof E & string>(
 		prop: K,
@@ -37,15 +44,18 @@ const getStyle =
 const getLabel = <E extends HTMLElement>(
 	selector: string,
 ): Extractor<string, E> =>
-	fromDOM('', { '.label': getText(), [selector]: getAttribute('aria-label') })
+	fromDOM({ '.label': getText(), [selector]: getAttribute('aria-label') }, '')
 
 const getDescription = <E extends HTMLElement>(
 	selector: string,
 ): Extractor<string, E> =>
-	fromDOM('', {
-		'.description': getText(),
-		[selector]: getAttribute('aria-describedby'),
-	})
+	fromDOM(
+		{
+			'.description': getText(),
+			[selector]: getIdrefText('aria-describedby'),
+		},
+		'',
+	)
 
 export {
 	getText,

@@ -6,9 +6,9 @@
 
 # Function: fromDOM()
 
-> **fromDOM**\<`T`, `C`, `S`\>(`fallback`, `extractors`): [`Extractor`](../type-aliases/Extractor.md)\<`T`, `C`\>
+> **fromDOM**\<`T`, `C`, `S`\>(`extractors`, `fallback`): [`Extractor`](../type-aliases/Extractor.md)\<`T`, `C`\>
 
-Defined in: [src/core/dom.ts:168](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/core/dom.ts#L168)
+Defined in: [src/core/dom.ts:186](https://github.com/zeixcom/ui-element/blob/0e9d08172859c87c6105be70cfb907fbb6767271/src/core/dom.ts#L186)
 
 Get a value from elements in the DOM
 
@@ -28,17 +28,17 @@ Get a value from elements in the DOM
 
 ## Parameters
 
-### fallback
-
-[`ParserOrFallback`](../type-aliases/ParserOrFallback.md)\<`T`, `C`\>
-
-Fallback value or parser function
-
 ### extractors
 
 `S`
 
 An object of extractor functions for selectors as keys to get a value from
+
+### fallback
+
+[`ParserOrFallback`](../type-aliases/ParserOrFallback.md)\<`T`, `C`\>
+
+Fallback value or parser function
 
 ## Returns
 

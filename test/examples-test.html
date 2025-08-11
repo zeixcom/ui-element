@@ -543,11 +543,9 @@
 
 						// Test checkbox interaction
 						checkbox.click()
-						await animationFrame()
 
 						// Test delete button
 						deleteBtn.click()
-						await animationFrame()
 					})
 				})
 
@@ -571,7 +569,6 @@
 
 						quantityInput.value = '3'
 						quantityInput.dispatchEvent(new Event('change'))
-						await animationFrame()
 					})
 				})
 
@@ -586,7 +583,6 @@
 
 						// Test clicking header
 						headers[0].click()
-						await animationFrame()
 
 						const content = headers[0].nextElementSibling
 						assert.instanceOf(content, HTMLElement)
@@ -606,7 +602,6 @@
 						// Test search functionality
 						searchInput.value = 'laptop'
 						searchInput.dispatchEvent(new Event('input'))
-						await animationFrame()
 
 						const rows = dataTable.querySelectorAll('tbody tr')
 						assert.isTrue(rows.length > 0)
@@ -621,7 +616,6 @@
 
 						select.value = 'electronics'
 						select.dispatchEvent(new Event('change'))
-						await animationFrame()
 					})
 				})
 
@@ -639,12 +633,10 @@
 						})
 
 						openBtn.click()
-						await animationFrame()
 
 						// Close modal
 						const closeBtn = modal.querySelector('.close')
 						closeBtn.click()
-						await animationFrame()
 
 						assert.equal(modal.open, false)
 					})
@@ -658,11 +650,9 @@
 						})
 
 						modal.open = true
-						await animationFrame()
 
 						const confirmBtn = modal.querySelector('.confirm')
 						confirmBtn.click()
-						await animationFrame()
 
 						assert.isTrue(confirmed)
 						assert.equal(modal.open, false)
@@ -685,7 +675,6 @@
 						searchInput.value = 'test'
 						searchInput.dispatchEvent(new Event('input'))
 
-						await animationFrame()
 						assert.isTrue(filterEventFired)
 					})
 

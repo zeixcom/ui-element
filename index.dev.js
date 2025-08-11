@@ -327,7 +327,7 @@ class InvalidPropertyNameError extends Error {
 
 class InvalidEffectsError extends Error {
   constructor(host, cause) {
-    super(`Invalid effects in component <${elementName(host)}>. Effects must be an array of effects, a single effect function, or a Promise that resolves to effects.`);
+    super(`Invalid effects in component ${elementName(host)}. Effects must be an array of effects, a single effect function, or a Promise that resolves to effects.`);
     this.name = "InvalidEffectsError";
     if (cause)
       this.cause = cause;
@@ -419,7 +419,7 @@ var areElementArraysEqual = (arr1, arr2) => {
 };
 var isParser = (value) => isFunction(value) && value.length >= 2;
 var getFallback = (element, fallback) => isFunction(fallback) ? fallback(element) : fallback;
-var fromDOM = (fallback, extractors) => (host) => {
+var fromDOM = (extractors, fallback) => (host) => {
   const root = host.shadowRoot ?? host;
   const fromFirst = (selector, extractor) => {
     const target = root.querySelector(selector);
@@ -458,7 +458,7 @@ var getHelpers = (host) => {
     const target = root.querySelector(selector);
     if (required != null && !target)
       throw new MissingElementError(host, selector, required);
-    if (target && isCustomElement(target))
+    if (target && isCustomElement(target) && target.matches(":not(:defined)"))
       dependencies.add(target.localName);
     return target;
   }
@@ -468,10 +468,10 @@ var getHelpers = (host) => {
       throw new MissingElementError(host, selector, required);
     if (targets.length)
       targets.forEach((target) => {
-        if (isCustomElement(target))
+        if (isCustomElement(target) && target.matches(":not(:defined)"))
           dependencies.add(target.localName);
       });
-    return targets;
+    return Array.from(targets);
   }
   const first = (selector, effects, required) => {
     const target = required != null ? useElement(selector, required) : useElement(selector);
@@ -737,7 +737,7 @@ var fromContext = (context, fallback) => (host) => {
   return consumed;
 };
 // src/core/events.ts
-var fromEvents = (initialize, selector, events) => (host) => {
+var fromEvents = (selector, events, initialize) => (host) => {
   const watchers = new Set;
   let value = getFallback(host, initialize);
   const eventMap = new Map;
@@ -837,19 +837,6 @@ var getOperationDescription = (op, name = "") => {
   };
   return ops[op] + name;
 };
-var createOperationHandlers = (host, target, operationDesc, resolve, reject) => {
-  const ok = (verb) => () => {
-    if (DEV_MODE && host.debug) {
-      log(target, `${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`);
-    }
-    resolve?.(target);
-  };
-  const err = (verb) => (error) => {
-    log(error, `Failed to ${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
-    reject?.(error);
-  };
-  return { ok, err };
-};
 var isSafeURL = (value) => {
   if (/^(mailto|tel):/i.test(value))
     return true;
@@ -875,32 +862,41 @@ var updateElement = (reactive, updater) => (host, target) => {
   const { op, name = "", read, update } = updater;
   const fallback = read(target);
   const operationDesc = getOperationDescription(op, name);
-  if (isString(reactive) && isString(fallback) && host[reactive] === RESET) {
-    host.attributeChangedCallback(reactive, null, fallback);
-  }
-  const { ok, err } = createOperationHandlers(host, target, operationDesc, updater.resolve, updater.reject);
+  const ok = (verb) => () => {
+    if (DEV_MODE && host.debug) {
+      log(target, `${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`);
+    }
+    updater.resolve?.(target);
+  };
+  const err = (verb) => (error) => {
+    log(error, `Failed to ${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
+    updater.reject?.(error);
+  };
   return effect(() => {
-    const updateSymbol = Symbol(name ? `${op}:${name}` : op);
     const value = resolveReactive(reactive, host, target, operationDesc);
     const resolvedValue = value === RESET ? fallback : value === UNSET ? updater.delete ? null : fallback : value;
     if (updater.delete && resolvedValue === null) {
-      enqueue(() => {
+      try {
         updater.delete(target);
-        return true;
-      }, updateSymbol).then(ok("Deleted")).catch(err("delete"));
+        ok("delete")();
+      } catch (error) {
+        err("delete")(error);
+      }
     } else if (resolvedValue != null) {
       const current = read(target);
       if (Object.is(resolvedValue, current))
         return;
-      enqueue(() => {
+      try {
         update(target, resolvedValue);
-        return true;
-      }, updateSymbol).then(ok("Updated")).catch(err("update"));
+        ok("update")();
+      } catch (error) {
+        err("update")(error);
+      }
     }
   });
 };
 var insertOrRemoveElement = (reactive, inserter) => (host, target) => {
-  const insertRemoveOk = (verb) => () => {
+  const ok = (verb) => () => {
     if (DEV_MODE && host.debug) {
       log(target, `${verb} element in ${elementName(target)} in ${elementName(host)}`);
     }
@@ -912,29 +908,29 @@ var insertOrRemoveElement = (reactive, inserter) => (host, target) => {
         signal.set(0);
     }
   };
-  const insertRemoveErr = (verb) => (error) => {
+  const err = (verb) => (error) => {
     log(error, `Failed to ${verb} element in ${elementName(target)} in ${elementName(host)}`, LOG_ERROR);
     inserter?.reject?.(error);
   };
   return effect(() => {
-    const insertSymbol = Symbol("i");
-    const removeSymbol = Symbol("r");
     const diff = resolveReactive(reactive, host, target, "insertion or deletion");
     const resolvedDiff = diff === RESET ? 0 : diff;
     if (resolvedDiff > 0) {
       if (!inserter)
         throw new TypeError(`No inserter provided`);
-      enqueue(() => {
+      try {
         for (let i = 0;i < resolvedDiff; i++) {
           const element = inserter.create(target);
           if (!element)
             continue;
           target.insertAdjacentElement(inserter.position ?? "beforeend", element);
         }
-        return true;
-      }, insertSymbol).then(insertRemoveOk("Inserted")).catch(insertRemoveErr("insert"));
+        ok("insert")();
+      } catch (error) {
+        err("insert")(error);
+      }
     } else if (resolvedDiff < 0) {
-      enqueue(() => {
+      try {
         if (inserter && (inserter.position === "afterbegin" || inserter.position === "beforeend")) {
           for (let i = 0;i > resolvedDiff; i--) {
             if (inserter.position === "afterbegin")
@@ -945,8 +941,10 @@ var insertOrRemoveElement = (reactive, inserter) => (host, target) => {
         } else {
           target.remove();
         }
-        return true;
-      }, removeSymbol).then(insertRemoveOk("Removed")).catch(insertRemoveErr("remove"));
+        ok("remove")();
+      } catch (error) {
+        err("remove")(error);
+      }
     }
   });
 };
@@ -1072,16 +1070,20 @@ var pass = (reactives) => (host, target) => {
 };
 // src/lib/extractors.ts
 var getText = () => (element) => element.textContent?.trim();
+var getIdrefText = (attr) => (element) => {
+  const id = element.getAttribute(attr);
+  return id ? document.getElementById(id)?.textContent?.trim() : undefined;
+};
 var getProperty = (prop) => (element) => element[prop];
 var hasAttribute = (attr) => (element) => element.hasAttribute(attr);
 var getAttribute = (attr) => (element) => element.getAttribute(attr);
 var hasClass = (token) => (element) => element.classList.contains(token);
 var getStyle = (prop) => (element) => window.getComputedStyle(element).getPropertyValue(prop);
-var getLabel = (selector) => fromDOM("", { ".label": getText(), [selector]: getAttribute("aria-label") });
-var getDescription = (selector) => fromDOM("", {
+var getLabel = (selector) => fromDOM({ ".label": getText(), [selector]: getAttribute("aria-label") }, "");
+var getDescription = (selector) => fromDOM({
   ".description": getText(),
-  [selector]: getAttribute("aria-describedby")
-});
+  [selector]: getIdrefText("aria-describedby")
+}, "");
 // src/lib/parsers.ts
 var parseNumber = (parseFn, value) => {
   if (value == null)

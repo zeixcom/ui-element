@@ -1,11 +1,4 @@
-import {
-	asString,
-	type Component,
-	component,
-	on,
-	RESET,
-	setText,
-} from '../../..'
+import { asString, type Component, component, on, setText } from '../../..'
 
 export type HelloWorldProps = {
 	name: string
@@ -14,16 +7,23 @@ export type HelloWorldProps = {
 export default component(
 	'hello-world',
 	{
-		name: asString(RESET),
-	},
-	(_, { first }) => [
-		first(
-			'input',
-			on('input', ({ target }) => ({ name: target.value || RESET })),
-			'Needed to input the name.',
+		name: asString(
+			el => el.querySelector('span')?.textContent?.trim() ?? '',
 		),
-		first('span', setText('name'), 'Needed to display the name.'),
-	],
+	},
+	(el, { first }) => {
+		const fallback = el.name
+		return [
+			first(
+				'input',
+				on('input', ({ target }) => ({
+					name: target.value || fallback,
+				})),
+				'Needed to input the name.',
+			),
+			first('span', setText('name'), 'Needed to display the name.'),
+		]
+	},
 )
 
 declare global {

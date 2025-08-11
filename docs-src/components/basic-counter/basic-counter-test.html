@@ -37,7 +37,6 @@
 						const el = document.getElementById('test1')
 						const countSpan = el.querySelector('span')
 
-						await tick()
 
 						assert.equal(el.count, 42)
 						assert.equal(countSpan.textContent, '42')
@@ -47,7 +46,6 @@
 						const el = document.getElementById('test2')
 						const countSpan = el.querySelector('span')
 
-						await tick()
 
 						assert.equal(el.count, 0)
 						assert.equal(countSpan.textContent, '0')
@@ -57,7 +55,6 @@
 						const el = document.getElementById('test3')
 						const countSpan = el.querySelector('span')
 
-						await tick()
 
 						assert.equal(el.count, -5)
 						assert.equal(countSpan.textContent, '-5')
@@ -70,7 +67,6 @@
 
 						const initialCount = el.count
 						incrementBtn.click()
-						await tick()
 
 						assert.equal(el.count, initialCount + 1)
 						assert.equal(
@@ -88,7 +84,6 @@
 						incrementBtn.click()
 						incrementBtn.click()
 						incrementBtn.click()
-						await tick()
 
 						assert.equal(el.count, 3)
 						assert.equal(countSpan.textContent, '3')
@@ -134,11 +129,9 @@
 
 						const initialCount = el.count
 						incrementBtn.click()
-						await tick()
 						assert.equal(el.count, initialCount + 1)
 
 						incrementBtn.click()
-						await tick()
 						assert.equal(el.count, initialCount + 2)
 					})
 				})

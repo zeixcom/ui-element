@@ -4,14 +4,14 @@
 
 [@zeix/ui-element](../globals.md) / ElementFromSelector
 
-# Type Alias: ElementFromSelector\<K\>
+# Type Alias: ElementFromSelector\<S\>
 
-> **ElementFromSelector**\<`K`\> = `K` *extends* keyof `HTMLElementTagNameMap` ? `HTMLElementTagNameMap`\[`K`\] : `K` *extends* keyof `SVGElementTagNameMap` ? `SVGElementTagNameMap`\[`K`\] : `K` *extends* keyof `MathMLElementTagNameMap` ? `MathMLElementTagNameMap`\[`K`\] : `HTMLElement`
+> **ElementFromSelector**\<`S`\> = `KnownTag`\<`S`\> *extends* `never` ? `HTMLElement` : `KnownTag`\<`S`\> *extends* keyof `HTMLElementTagNameMap` ? `HTMLElementTagNameMap`\[`KnownTag`\<`S`\>\] : `KnownTag`\<`S`\> *extends* keyof `SVGElementTagNameMap` ? `SVGElementTagNameMap`\[`KnownTag`\<`S`\>\] : `KnownTag`\<`S`\> *extends* keyof `MathMLElementTagNameMap` ? `MathMLElementTagNameMap`\[`KnownTag`\<`S`\>\] : `HTMLElement`
 
-Defined in: [src/core/dom.ts:19](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/core/dom.ts#L19)
+Defined in: [src/core/dom.ts:40](https://github.com/zeixcom/ui-element/blob/0e9d08172859c87c6105be70cfb907fbb6767271/src/core/dom.ts#L40)
 
 ## Type Parameters
 
-### K
+### S
 
-`K` *extends* `string`
+`S` *extends* `string`

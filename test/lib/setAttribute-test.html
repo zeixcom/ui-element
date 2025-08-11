@@ -46,11 +46,10 @@
 
 			runTests(() => {
 				describe('setAttribute and toggleAttribute', function () {
-					it('should prove setAttribute() and toggleAttribute() working correctly', async function () {
+					it('should prove setAttribute() and toggleAttribute() working correctly', function () {
 						const component =
 							document.querySelector('update-attribute')
 						const input = component.querySelector('input')
-						await animationFrame()
 						assert.equal(
 							input.required,
 							true,
@@ -63,7 +62,6 @@
 						)
 						input.value = 'New Value'
 						input.dispatchEvent(new Event('change'))
-						await animationFrame()
 						assert.equal(
 							input.hasAttribute('aria-errormessage'),
 							false,
@@ -71,21 +69,18 @@
 						)
 						input.value = ''
 						input.dispatchEvent(new Event('change'))
-						await animationFrame()
 						/* assert.equal(
 							input.hasAttribute('aria-errormessage'),
 							true,
 							'Should have aria-errormessage if field is empty and required',
 						) */
 						component.required = false
-						await animationFrame()
 						assert.equal(
 							input.hasAttribute('aria-errormessage'),
 							false,
 							'Should not have aria-errormessage if field is not required',
 						)
 						component.required = RESET
-						await animationFrame()
 						assert.equal(
 							input.required,
 							true,

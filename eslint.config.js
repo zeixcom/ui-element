@@ -8,6 +8,7 @@ export default [
 		ignores: [
 			'index.js',
 			'index.dev.js',
+			'types/**/*.d.ts',
 			'docs/assets/**/*.js',
 			'**/*.min.js',
 		],

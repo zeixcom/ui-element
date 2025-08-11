@@ -17,8 +17,7 @@ export type FormSpinbuttonProps = {
 export default component(
 	'form-spinbutton',
 	{
-		value: fromEvents(
-			fromDOM(asInteger(), { '.value': getText() }),
+		value: fromEvents<number>(
 			'button',
 			{
 				click: ({ target, value }) =>
@@ -35,6 +34,7 @@ export default component(
 					}
 				},
 			},
+			fromDOM({ '.value': getText() }, asInteger()),
 		),
 	},
 	(el, { first }) => {
@@ -46,7 +46,7 @@ export default component(
 		return [
 			first('.value', [setText('value'), show(nonZero)]),
 			first('.decrement', show(nonZero)),
-			first<HTMLButtonElement>('.increment', [
+			first('button.increment', [
 				setText(() => (nonZero() ? '+' : zeroLabel)),
 				setProperty('ariaLabel', () =>
 					nonZero() ? incrementLabel : zeroLabel,

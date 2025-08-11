@@ -124,13 +124,11 @@
 				inputs.forEach(input => {
 					input.checked = false
 				})
-				await tick()
 			}
 
 			// Helper to simulate radio input change
 			const selectRadio = async input => {
 				input.click()
-				await tick()
 			}
 
 			const selectRadioByValue = async (el, value) => {
@@ -220,7 +218,6 @@
 						const el = document.getElementById('test1')
 						const inputs = el.querySelectorAll('input')
 
-						await tick()
 
 						// Component property defaults to checked radio input value
 						assert.equal(el.value, 'male')
@@ -290,7 +287,6 @@
 
 						// Simulate ArrowDown/ArrowRight
 						simulateKeyEvent(el, 'keydown', 'ArrowDown')
-						await tick()
 
 						// Focus management is handled by manageFocusOnKeydown
 						// We can't easily test focus changes in JSDOM, but we ensure no errors
@@ -306,7 +302,6 @@
 						// Focus and press Enter
 						femaleInput.focus()
 						simulateKeyEvent(femaleInput, 'keyup', 'Enter')
-						await tick()
 
 						// Enter should trigger click, but we need to simulate the full sequence
 						// The actual click behavior depends on browser implementation
@@ -342,7 +337,6 @@
 						const el = document.getElementById('test3')
 						const inputs = el.querySelectorAll('input')
 
-						await tick()
 
 						// Initially empty value
 						assert.equal(el.value, '')
@@ -363,7 +357,6 @@
 						const el = document.getElementById('test4')
 						const input = el.querySelector('input')
 
-						await tick()
 
 						// Initially set in DOM
 						assert.equal(el.value, '')
@@ -397,7 +390,6 @@
 						for (const input of inputs) {
 							input.click()
 						}
-						await tick()
 
 						// Should have final value
 						assert.equal(el.value, 'other')
@@ -511,7 +503,6 @@
 						simulateKeyEvent(el, 'keydown', 'Home')
 						simulateKeyEvent(el, 'keydown', 'End')
 
-						await tick()
 
 						// Should handle events without errors
 						assert.isNotNull(el)

@@ -18,11 +18,6 @@ export default component(
 	'form-radiogroup',
 	{
 		value: fromEvents(
-			fromDOM<string>('', {
-				'input:checked': getProperty<HTMLInputElement, 'value'>(
-					'value',
-				),
-			}),
 			'input',
 			{
 				change: ({ target }) => target.value,
@@ -30,10 +25,11 @@ export default component(
 					if (event.key === 'Enter') target.click()
 				},
 			},
+			fromDOM({ 'input:checked': getProperty('value') }, ''),
 		),
 	},
 	(el, { all, useElements }) => {
-		const radios = Array.from(useElements('input'))
+		const radios = useElements('input')
 
 		return [
 			setAttribute('value'),

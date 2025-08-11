@@ -8,19 +8,14 @@
 		<script type="module">
 			import { runTests } from '@web/test-runner-mocha'
 			import { assert } from '@esm-bundle/chai'
-			import {
-				show,
-				state,
-				RESET,
-				UNSET,
-			} from '../../index.dev.js'
+			import { show, state, RESET, UNSET } from '../../index.dev.js'
 
 			const animationFrame = async () =>
 				new Promise(requestAnimationFrame)
 
 			runTests(() => {
 				describe('show', function () {
-					it('should hide element when predicate is false', async function () {
+					it('should hide element when predicate is false', function () {
 						const element = document.createElement('div')
 						element.textContent = 'Test content'
 						document.body.appendChild(element)
@@ -34,7 +29,6 @@
 
 							// Apply show with false predicate
 							const cleanup = show(() => false)(host, element)
-							await animationFrame()
 
 							assert.equal(
 								element.hidden,
@@ -48,7 +42,7 @@
 						}
 					})
 
-					it('should show element when predicate is true', async function () {
+					it('should show element when predicate is true', function () {
 						const element = document.createElement('div')
 						element.textContent = 'Test content'
 						element.hidden = true // Start hidden
@@ -63,7 +57,6 @@
 
 							// Apply show with true predicate
 							const cleanup = show(() => true)(host, element)
-							await animationFrame()
 
 							assert.equal(
 								element.hidden,
@@ -77,7 +70,7 @@
 						}
 					})
 
-					it('should work with reactive signals like module-todo pattern', async function () {
+					it('should work with reactive signals like module-todo pattern', function () {
 						// Create reactive signals for active tasks
 						const activeSignal = state([])
 
@@ -121,8 +114,6 @@
 								() => !activeSignal.get().length,
 							)(host, allDoneElement)
 
-							await animationFrame()
-
 							// Initially no active tasks
 							assert.equal(
 								singularElement.hidden,
@@ -147,7 +138,6 @@
 
 							// Add one task
 							activeSignal.set(['task1'])
-							await animationFrame()
 
 							assert.equal(
 								singularElement.hidden,
@@ -172,7 +162,6 @@
 
 							// Add more tasks
 							activeSignal.set(['task1', 'task2', 'task3'])
-							await animationFrame()
 
 							assert.equal(
 								singularElement.hidden,
@@ -207,7 +196,7 @@
 						}
 					})
 
-					it('should work with property name strings', async function () {
+					it('should work with property name strings', function () {
 						// Create reactive component with signal
 						const visibilitySignal = state(true)
 						const component = {
@@ -228,7 +217,6 @@
 								component,
 								element,
 							)
-							await animationFrame()
 
 							assert.equal(
 								element.hidden,
@@ -238,7 +226,6 @@
 
 							// Change signal value (not direct property)
 							visibilitySignal.set(false)
-							await animationFrame()
 
 							assert.equal(
 								element.hidden,
@@ -252,7 +239,7 @@
 						}
 					})
 
-					it('should work with signal objects directly', async function () {
+					it('should work with signal objects directly', function () {
 						const signal = state(true)
 						const element = document.createElement('div')
 						document.body.appendChild(element)
@@ -262,7 +249,6 @@
 
 						try {
 							const cleanup = show(signal)(host, element)
-							await animationFrame()
 
 							assert.equal(
 								element.hidden,
@@ -272,7 +258,6 @@
 
 							// Change signal value
 							signal.set(false)
-							await animationFrame()
 
 							assert.equal(
 								element.hidden,
@@ -282,7 +267,6 @@
 
 							// Change back
 							signal.set(true)
-							await animationFrame()
 
 							assert.equal(
 								element.hidden,
@@ -296,7 +280,7 @@
 						}
 					})
 
-					it('should handle clear button pattern from form-textbox', async function () {
+					it('should handle clear button pattern from form-textbox', function () {
 						// Create reactive signal for input length
 						const lengthSignal = state(0)
 
@@ -317,7 +301,6 @@
 								host,
 								clearButton,
 							)
-							await animationFrame()
 
 							// Initially no input, button should be hidden
 							assert.equal(
@@ -328,7 +311,6 @@
 
 							// Type some text
 							lengthSignal.set(5)
-							await animationFrame()
 
 							assert.equal(
 								clearButton.hidden,
@@ -338,7 +320,6 @@
 
 							// Clear input
 							lengthSignal.set(0)
-							await animationFrame()
 
 							assert.equal(
 								clearButton.hidden,
@@ -352,7 +333,7 @@
 						}
 					})
 
-					it('should handle RESET and UNSET values properly', async function () {
+					it('should handle RESET and UNSET values properly', function () {
 						const element = document.createElement('div')
 						element.hidden = true // Start with hidden
 						document.body.appendChild(element)
@@ -365,7 +346,6 @@
 
 							// Test RESET - should revert to original DOM value
 							const cleanup1 = show(() => RESET)(host, element)
-							await animationFrame()
 
 							assert.equal(
 								element.hidden,
@@ -376,7 +356,6 @@
 
 							// Test UNSET - should delete/fallback
 							const cleanup2 = show(() => UNSET)(host, element)
-							await animationFrame()
 
 							assert.equal(
 								element.hidden,

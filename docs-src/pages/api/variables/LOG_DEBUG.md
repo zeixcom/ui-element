@@ -8,4 +8,4 @@
 
 > `const` **LOG\_DEBUG**: [`LogLevel`](../type-aliases/LogLevel.md) = `'debug'`
 
-Defined in: [src/core/util.ts:11](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/core/util.ts#L11)
+Defined in: [src/core/util.ts:11](https://github.com/zeixcom/ui-element/blob/0e9d08172859c87c6105be70cfb907fbb6767271/src/core/util.ts#L11)

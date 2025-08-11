@@ -1,7 +1,6 @@
 import {
 	type Cleanup,
 	effect,
-	enqueue,
 	isFunction,
 	isSignal,
 	isState,
@@ -76,35 +75,6 @@ const getOperationDescription = (
 	return ops[op] + name
 }
 
-const createOperationHandlers = <P extends ComponentProps, E extends Element>(
-	host: Component<P>,
-	target: E,
-	operationDesc: string,
-	resolve?: (target: E) => void,
-	reject?: (error: unknown) => void,
-) => {
-	const ok = (verb: string) => () => {
-		if (DEV_MODE && host.debug) {
-			log(
-				target,
-				`${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`,
-			)
-		}
-		resolve?.(target)
-	}
-
-	const err = (verb: string) => (error: unknown) => {
-		log(
-			error,
-			`Failed to ${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`,
-			LOG_ERROR,
-		)
-		reject?.(error)
-	}
-
-	return { ok, err }
-}
-
 const isSafeURL = (value: string): boolean => {
 	if (/^(mailto|tel):/i.test(value)) return true
 	if (value.includes('://')) {
@@ -151,26 +121,26 @@ const updateElement =
 		const fallback = read(target)
 		const operationDesc = getOperationDescription(op, name)
 
-		// If not yet set, set signal value to value read from DOM
-		if (
-			isString(reactive) &&
-			isString(fallback) &&
-			host[reactive] === RESET
-		) {
-			host.attributeChangedCallback(reactive, null, fallback)
+		const ok = (verb: string) => () => {
+			if (DEV_MODE && host.debug) {
+				log(
+					target,
+					`${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`,
+				)
+			}
+			updater.resolve?.(target)
 		}
 
-		const { ok, err } = createOperationHandlers(
-			host,
-			target,
-			operationDesc,
-			updater.resolve,
-			updater.reject,
-		)
+		const err = (verb: string) => (error: unknown) => {
+			log(
+				error,
+				`Failed to ${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`,
+				LOG_ERROR,
+			)
+			updater.reject?.(error)
+		}
 
 		return effect((): undefined => {
-			const updateSymbol = Symbol(name ? `${op}:${name}` : op)
-
 			const value = resolveReactive(reactive, host, target, operationDesc)
 			const resolvedValue =
 				value === RESET
@@ -182,22 +152,21 @@ const updateElement =
 						: value
 
 			if (updater.delete && resolvedValue === null) {
-				enqueue(() => {
+				try {
 					updater.delete!(target)
-					return true
-				}, updateSymbol)
-					.then(ok('Deleted'))
-					.catch(err('delete'))
+					ok('delete')()
+				} catch (error) {
+					err('delete')(error)
+				}
 			} else if (resolvedValue != null) {
 				const current = read(target)
 				if (Object.is(resolvedValue, current)) return
-
-				enqueue(() => {
+				try {
 					update(target, resolvedValue)
-					return true
-				}, updateSymbol)
-					.then(ok('Updated'))
-					.catch(err('update'))
+					ok('update')()
+				} catch (error) {
+					err('update')(error)
+				}
 			}
 		})
 	}
@@ -217,8 +186,7 @@ const insertOrRemoveElement =
 		inserter?: ElementInserter<E>,
 	): Effect<P, E> =>
 	(host, target) => {
-		// Custom ok handler for insertOrRemoveElement
-		const insertRemoveOk = (verb: string) => () => {
+		const ok = (verb: string) => () => {
 			if (DEV_MODE && host.debug) {
 				log(
 					target,
@@ -237,7 +205,7 @@ const insertOrRemoveElement =
 			}
 		}
 
-		const insertRemoveErr = (verb: string) => (error: unknown) => {
+		const err = (verb: string) => (error: unknown) => {
 			log(
 				error,
 				`Failed to ${verb} element in ${elementName(target)} in ${elementName(host)}`,
@@ -247,9 +215,6 @@ const insertOrRemoveElement =
 		}
 
 		return effect((): undefined => {
-			const insertSymbol = Symbol('i')
-			const removeSymbol = Symbol('r')
-
 			const diff = resolveReactive(
 				reactive,
 				host,
@@ -261,7 +226,7 @@ const insertOrRemoveElement =
 			if (resolvedDiff > 0) {
 				// Positive diff => insert element
 				if (!inserter) throw new TypeError(`No inserter provided`)
-				enqueue(() => {
+				try {
 					for (let i = 0; i < resolvedDiff; i++) {
 						const element = inserter.create(target)
 						if (!element) continue
@@ -270,13 +235,12 @@ const insertOrRemoveElement =
 							element,
 						)
 					}
-					return true
-				}, insertSymbol)
-					.then(insertRemoveOk('Inserted'))
-					.catch(insertRemoveErr('insert'))
+					ok('insert')()
+				} catch (error) {
+					err('insert')(error)
+				}
 			} else if (resolvedDiff < 0) {
-				// Negative diff => remove element
-				enqueue(() => {
+				try {
 					if (
 						inserter &&
 						(inserter.position === 'afterbegin' ||
@@ -290,10 +254,10 @@ const insertOrRemoveElement =
 					} else {
 						target.remove()
 					}
-					return true
-				}, removeSymbol)
-					.then(insertRemoveOk('Removed'))
-					.catch(insertRemoveErr('remove'))
+					ok('remove')()
+				} catch (error) {
+					err('remove')(error)
+				}
 			}
 		})
 	}

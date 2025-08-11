@@ -6,9 +6,9 @@
 
 # Function: fromEvents()
 
-> **fromEvents**\<`T`, `C`, `S`\>(`initialize`, `selector`, `events`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`T`\>, `C`\>
+> **fromEvents**\<`T`, `C`, `S`\>(`selector`, `events`, `initialize`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`T`\>, `C`\>
 
-Defined in: [src/core/events.ts:66](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/core/events.ts#L66)
+Defined in: [src/core/events.ts:66](https://github.com/zeixcom/ui-element/blob/0e9d08172859c87c6105be70cfb907fbb6767271/src/core/events.ts#L66)
 
 Produce a computed signal from transformed event data
 
@@ -28,12 +28,6 @@ Produce a computed signal from transformed event data
 
 ## Parameters
 
-### initialize
-
-[`Fallback`](../type-aliases/Fallback.md)\<`T`, `C`\>
-
-Initial value or extractor function
-
 ### selector
 
 `S`
@@ -46,6 +40,12 @@ CSS selector for the source element
 
 Transformation functions for events
 
+### initialize
+
+[`ParserOrFallback`](../type-aliases/ParserOrFallback.md)\<`T`, `C`\>
+
+Initial value or extractor function
+
 ## Returns
 
 [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`T`\>, `C`\>
@@ -54,4 +54,4 @@ Extractor function for value from event
 
 ## Since
 
-0.13.3
+0.14.0

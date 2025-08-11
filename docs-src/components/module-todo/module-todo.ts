@@ -6,11 +6,6 @@ import {
 	pass,
 	setAttribute,
 } from '../../..'
-import type { BasicButtonProps } from '../basic-button/basic-button'
-import '../basic-pluralize/basic-pluralize'
-import '../form-checkbox/form-checkbox'
-import '../form-radiogroup/form-radiogroup'
-import '../form-textbox/form-textbox'
 
 export type ModuleTodoProps = {
 	readonly active: HTMLElement[]
@@ -37,7 +32,7 @@ export default component(
 
 		return [
 			// Control todo input form
-			first<Component<BasicButtonProps>>('.submit', [
+			first('basic-button.submit', [
 				pass({ disabled: () => !textbox.length }),
 			]),
 			first('form', [
@@ -65,9 +60,8 @@ export default component(
 			first('ol', [
 				setAttribute('filter', () => filter?.value || 'all'),
 				on('click', ({ event }) => {
-					const target = event.target
-					if (target && target instanceof HTMLButtonElement)
-						target.closest('li')!.remove()
+					const target = event.target as HTMLElement
+					if (target.closest('button')) target.closest('li')!.remove()
 				}),
 			]),
 
@@ -75,7 +69,7 @@ export default component(
 			first('basic-pluralize', [pass({ count: () => el.active.length })]),
 
 			// Control clear-completed button
-			first<Component<BasicButtonProps>>('.clear-completed', [
+			first('basic-button.clear-completed', [
 				pass({
 					disabled: () => !el.completed.length,
 					badge: () =>

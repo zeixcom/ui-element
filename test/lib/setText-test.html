@@ -33,10 +33,9 @@
 
 			runTests(() => {
 				describe('setText', function () {
-					it('should prove setText() working correctly', async function () {
+					it('should prove setText() working correctly', function () {
 						const component = document.querySelector('update-text')
 						const paragraph = component.querySelector('p')
-						await animationFrame()
 						let textContent = normalizeText(paragraph.textContent)
 						assert.equal(
 							textContent,
@@ -44,7 +43,6 @@
 							'Should display text content from attribute',
 						)
 						component.text = 'New Text'
-						await animationFrame()
 						textContent = normalizeText(paragraph.textContent)
 						assert.equal(
 							textContent,
@@ -52,7 +50,6 @@
 							'Should update text content from text signal',
 						)
 						component.text = RESET
-						await animationFrame()
 						textContent = normalizeText(paragraph.textContent)
 						assert.equal(
 							textContent,

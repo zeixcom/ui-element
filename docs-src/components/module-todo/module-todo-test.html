@@ -226,7 +226,6 @@
 					}
 				}
 
-				await tick()
 			}
 
 			// Helper to add a todo item
@@ -239,7 +238,6 @@
 				input.value = text
 				input.dispatchEvent(new Event('input', { bubbles: true }))
 				input.dispatchEvent(new Event('change', { bubbles: true }))
-				await tick()
 
 				// Submit the form
 				const submitEvent = new Event('submit', {
@@ -247,11 +245,9 @@
 					cancelable: true,
 				})
 				form.dispatchEvent(submitEvent)
-				await tick()
 
 				// Wait for microtask in module-todo to complete
 				await microtask()
-				await tick()
 			}
 
 			// Helper to get todo items
@@ -283,7 +279,6 @@
 					checkbox.dispatchEvent(
 						new Event('change', { bubbles: true }),
 					)
-					await tick()
 				}
 			}
 
@@ -294,7 +289,6 @@
 				)
 				if (deleteButton) {
 					deleteButton.click()
-					await tick()
 				}
 			}
 
@@ -347,7 +341,6 @@
 
 					it('should initialize with correct default state', async () => {
 						const el = document.getElementById('test1')
-						await tick()
 
 						// Should have empty active and completed arrays
 						assert.isArray(
@@ -429,7 +422,6 @@
 						input.dispatchEvent(
 							new Event('input', { bubbles: true }),
 						)
-						await tick()
 
 						// Should be enabled
 						assert.isFalse(
@@ -442,7 +434,6 @@
 						input.dispatchEvent(
 							new Event('input', { bubbles: true }),
 						)
-						await tick()
 
 						// Should be disabled again
 						assert.isTrue(
@@ -470,7 +461,6 @@
 						input.dispatchEvent(
 							new Event('input', { bubbles: true }),
 						)
-						await tick()
 
 						assert.isFalse(
 							submitButton.disabled,
@@ -479,7 +469,6 @@
 
 						// Clear input by setting component property directly
 						textbox.clear()
-						await tick()
 
 						// Should be disabled when length is 0
 						assert.isTrue(
@@ -492,7 +481,6 @@
 						input.dispatchEvent(
 							new Event('input', { bubbles: true }),
 						)
-						await tick()
 
 						// Should be enabled when length > 0
 						assert.isFalse(
@@ -526,7 +514,6 @@
 						activeRadio.dispatchEvent(
 							new Event('change', { bubbles: true }),
 						)
-						await tick()
 
 						// Should reactively update to 'active'
 						assert.equal(
@@ -541,7 +528,6 @@
 						allRadio.dispatchEvent(
 							new Event('change', { bubbles: true }),
 						)
-						await tick()
 
 						// Should reactively update back to 'all'
 						assert.equal(
@@ -586,7 +572,6 @@
 						const el = document.getElementById('test1')
 
 						await addTodo(el, 'First todo')
-						await tick()
 
 						assert.equal(
 							el.active.length,
@@ -600,7 +585,6 @@
 						)
 
 						await addTodo(el, 'Second todo')
-						await tick()
 
 						assert.equal(
 							el.active.length,
@@ -675,7 +659,6 @@
 
 						// Add one todo
 						await addTodo(el, 'First todo')
-						await tick()
 
 						assert.equal(
 							count.textContent,
@@ -698,7 +681,6 @@
 
 						// Add second todo
 						await addTodo(el, 'Second todo')
-						await tick()
 
 						assert.equal(
 							count.textContent,
@@ -719,7 +701,6 @@
 						const el = document.getElementById('test1')
 
 						await addTodo(el, 'Test todo')
-						await tick()
 
 						const todos = getTodos(el)
 						const firstTodo = todos[0]
@@ -738,7 +719,6 @@
 
 						// Complete the todo
 						await toggleTodo(firstTodo)
-						await tick()
 
 						assert.equal(
 							el.active.length,
@@ -753,7 +733,6 @@
 
 						// Uncomplete the todo
 						await toggleTodo(firstTodo)
-						await tick()
 
 						assert.equal(
 							el.active.length,
@@ -783,7 +762,6 @@
 						await addTodo(el, 'Test todo')
 						const todos = getTodos(el)
 						await toggleTodo(todos[0])
-						await tick()
 
 						// Should be enabled
 						assert.isFalse(
@@ -792,7 +770,6 @@
 						)
 
 						// Should show badge with count
-						await tick()
 						const badge = clearButton.querySelector('.badge')
 						assert.equal(
 							badge.textContent,
@@ -815,7 +792,7 @@
 						// Complete first and third todos
 						await toggleTodo(todos[0])
 						await toggleTodo(todos[2])
-						await tick()
+						await microtask()
 
 						assert.equal(
 							el.active.length,
@@ -833,7 +810,7 @@
 							'basic-button.clear-completed button',
 						)
 						clearButton.click()
-						await tick()
+						await microtask()
 
 						todos = getTodos(el)
 						assert.equal(
@@ -873,7 +850,6 @@
 						activeRadio.dispatchEvent(
 							new Event('change', { bubbles: true }),
 						)
-						await tick()
 
 						assert.equal(
 							list.getAttribute('filter'),
@@ -889,7 +865,6 @@
 						completedRadio.dispatchEvent(
 							new Event('change', { bubbles: true }),
 						)
-						await tick()
 
 						assert.equal(
 							list.getAttribute('filter'),
@@ -925,7 +900,6 @@
 						activeRadio.dispatchEvent(
 							new Event('change', { bubbles: true }),
 						)
-						await tick()
 
 						// This should work but will likely fail due to reactive dependency issue
 						assert.equal(
@@ -943,7 +917,6 @@
 						completedRadio.dispatchEvent(
 							new Event('change', { bubbles: true }),
 						)
-						await tick()
 
 						assert.equal(
 							list.getAttribute('filter'),
@@ -977,7 +950,6 @@
 							'input[value="active"]',
 						)
 						activeRadio.checked = true
-						await tick()
 
 						// Test 2: Simulate real browser behavior
 						const allRadio =
@@ -986,7 +958,6 @@
 						// Reset state
 						allRadio.checked = true
 						activeRadio.checked = false
-						await tick()
 
 						// Now change via proper radio button interaction
 						allRadio.checked = false
@@ -994,7 +965,6 @@
 						activeRadio.dispatchEvent(
 							new Event('change', { bubbles: true }),
 						)
-						await tick()
 
 						// Restore original setAttribute
 						list.setAttribute = originalSetAttribute
@@ -1020,7 +990,6 @@
 								cancelable: true,
 							}),
 						)
-						await tick()
 
 						const todos = getTodos(el)
 						assert.equal(
@@ -1045,7 +1014,6 @@
 						// Complete some todos
 						await toggleTodo(todos[1]) // Complete Todo 2
 						await toggleTodo(todos[3]) // Complete Todo 4
-						await tick()
 
 						assert.equal(
 							el.active.length,
@@ -1057,7 +1025,6 @@
 							2,
 							'Should have 2 completed todos',
 						)
-						// await tick()
 
 						// Check count display
 						const count = el.querySelector('.count')
@@ -1077,7 +1044,6 @@
 						)
 
 						// Wait for badge to update
-						await tick()
 						const badge = clearButton.querySelector('.badge')
 						assert.equal(
 							badge.textContent,
@@ -1120,7 +1086,6 @@
 						const todos = getTodos(el)
 						await toggleTodo(todos[0])
 						await toggleTodo(todos[1])
-						await tick()
 
 						assert.equal(
 							el.active.length,
@@ -1156,11 +1121,9 @@
 
 						// Complete first task
 						await toggleTodo(todos[0])
-						await tick()
 
 						// Delete second task
 						await deleteTodo(todos[1])
-						await tick()
 
 						// Add another task
 						await addTodo(el, 'Task 4')
@@ -1223,7 +1186,6 @@
 						inputEl.dispatchEvent(
 							new Event('change', { bubbles: true }),
 						)
-						await tick()
 
 						// Verify input has content
 						assert.equal(input.value, 'Test todo item')
@@ -1232,8 +1194,6 @@
 
 						// Call clear method
 						input.clear()
-						await tick()
-						await tick() // Extra wait for reactive updates
 
 						// Verify everything is cleared
 						assert.equal(input.value, '')
@@ -1242,7 +1202,6 @@
 
 						// Verify submit button is disabled again
 						const submitBtn = app.querySelector('.submit button')
-						await tick() // Extra wait for submit button reactivity
 						assert.isTrue(
 							submitBtn.disabled,
 							'Submit button should be disabled when input is empty',

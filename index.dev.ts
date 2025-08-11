@@ -31,10 +31,8 @@ export {
 	type ComponentProps,
 	component,
 	type Initializer,
-	type MethodProducer,
 	type ReservedWords,
 	type Setup,
-	type SignalProducer,
 	type ValidateComponentProps,
 	type ValidPropertyKey,
 } from './src/component'

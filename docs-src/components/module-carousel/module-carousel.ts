@@ -18,13 +18,6 @@ export default component(
 	{
 		slides: fromSelector('[role="tabpanel"]'),
 		index: fromEvents(
-			(host: HTMLElement & { slides: HTMLElement[] }) =>
-				Math.max(
-					host.slides.findIndex(
-						slide => slide.ariaCurrent === 'true',
-					),
-					0,
-				),
 			'nav button',
 			{
 				click: ({ host, target, value }) => {
@@ -61,6 +54,13 @@ export default component(
 					}
 				},
 			},
+			(host: HTMLElement & { slides: HTMLElement[] }) =>
+				Math.max(
+					host.slides.findIndex(
+						slide => slide.ariaCurrent === 'true',
+					),
+					0,
+				),
 		),
 	},
 	(el, { all }) => {

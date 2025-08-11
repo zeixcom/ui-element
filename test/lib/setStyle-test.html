@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<update-style color="red">
-			<p style="color: blue;">Styled content</p>
+			<p style="color: blue">Styled content</p>
 		</update-style>
 
 		<script type="module">
@@ -32,24 +32,21 @@
 
 			runTests(() => {
 				describe('setStyle', function () {
-					it('should prove setStyle() working correctly', async function () {
+					it('should prove setStyle() working correctly', function () {
 						const component = document.querySelector('update-style')
 						const paragraph = component.querySelector('p')
-						await animationFrame()
 						assert.equal(
 							paragraph.style.color,
 							'red',
 							'Should set color from attribute',
 						)
 						component.color = 'green'
-						await animationFrame()
 						assert.equal(
 							paragraph.style.color,
 							'green',
 							'Should update color from color signal',
 						)
 						component.color = RESET
-						await animationFrame()
 						assert.equal(
 							paragraph.style.color,
 							'blue',

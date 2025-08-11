@@ -345,10 +345,13 @@ export default component(
       dangerouslySetInnerHTML(content),
       first(
         'card-callout',
-        show(() => !!error.get() || content.get() === UNSET),
-        toggleClass('danger', () => !error.get()),
+        [
+          show(() => !!error.get() || content.get() === UNSET),
+          toggleClass('danger', () => !error.get()),
+        ],
+        'Needed to display loading state and error messages.',
       ),
-      first('.error', setText(error)),
+      first('.error', setText(error), 'Needed to display error messages.'),
     ]
   },
 )

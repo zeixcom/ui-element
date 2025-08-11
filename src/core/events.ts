@@ -14,8 +14,8 @@ import type { Component, ComponentProps } from '../component'
 import {
 	type ElementFromSelector,
 	type Extractor,
-	type Fallback,
 	getFallback,
+	type ParserOrFallback,
 } from './dom'
 import { type Effect, RESET, type Reactive, resolveReactive } from './reactive'
 import { elementName, isDefinedObject, LOG_ERROR, log } from './util'
@@ -56,10 +56,10 @@ type EventHandler<
 /**
  * Produce a computed signal from transformed event data
  *
- * @since 0.13.3
- * @param {ValueOrExtractor<T>} initialize - Initial value or extractor function
+ * @since 0.14.0
  * @param {S} selector - CSS selector for the source element
  * @param {EventTransformers<T, ElementFromSelector<S>, C>} events - Transformation functions for events
+ * @param {ParserOrFallback<T>} initialize - Initial value or extractor function
  * @returns {Extractor<Computed<T>, C>} Extractor function for value from event
  */
 const fromEvents =
@@ -68,9 +68,9 @@ const fromEvents =
 		C extends HTMLElement = HTMLElement,
 		S extends string = string,
 	>(
-		initialize: Fallback<T, C>,
 		selector: S,
 		events: EventTransformers<T, ElementFromSelector<S>, C>,
+		initialize: ParserOrFallback<T, C>,
 	): Extractor<Computed<T>, C> =>
 	(host: C) => {
 		const watchers: Set<Watcher> = new Set()

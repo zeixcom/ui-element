@@ -12,6 +12,7 @@
 			"**",
 			"!index.js",
 			"!index.dev.js",
+			"!**/types/**/*",
 			"!**/docs/**/*",
 			"!**/test/components/main.js*"
 		]

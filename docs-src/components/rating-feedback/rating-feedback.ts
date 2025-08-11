@@ -1,7 +1,5 @@
 import { component, on, pass, show, state } from '../../..'
 
-import '../rating-stars/rating-stars'
-
 export default component(
 	'rating-feedback',
 	{},

@@ -2,7 +2,7 @@ import { mkdir, readdir, readFile, stat, writeFile } from 'fs/promises'
 import matter from 'gray-matter'
 import { marked } from 'marked'
 import { join } from 'path'
-
+import { buildOptimizedAssets } from './build-optimized-assets'
 import {
 	ASSETS_DIR,
 	generateAssetHash,
@@ -12,16 +12,14 @@ import {
 	OUTPUT_DIR,
 	PAGES_DIR,
 } from './config'
-import { buildOptimizedAssets } from './build-optimized-assets'
-import {
-	generateAllPerformanceHints,
-	generateLazyLoadingScript,
-	analyzePageForPreloads,
-} from './preload-hints'
 import { generateMenu } from './generate-menu'
 import { generateSitemap } from './generate-sitemap'
 import { generateSlug } from './generate-slug'
 import { generateTOC } from './generate-toc'
+import {
+	analyzePageForPreloads,
+	generateAllPerformanceHints,
+} from './preload-hints'
 import { replaceAsync } from './replace-async'
 import { transformCodeBlocks } from './transform-codeblocks'
 
@@ -205,12 +203,10 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 	const performanceHints = generateAllPerformanceHints(url, basePath, jsHash)
 
 	// Analyze page content for additional preloads
-	const additionalPreloads = await analyzePageForPreloads(htmlContent, basePath)
-
-	// Generate lazy loading script
-	const lazyLoadingScript = generateLazyLoadingScript()
-
-
+	const additionalPreloads = await analyzePageForPreloads(
+		htmlContent,
+		basePath,
+	)
 
 	// Extract title from first heading if no frontmatter title (common for API docs)
 	let title = frontmatter.title
@@ -279,8 +275,9 @@ const processMarkdownFile = async (relativePath: string): Promise<PageInfo> => {
 		if (key === 'css-hash') return cssHash
 		if (key === 'js-hash') return jsHash
 		if (key === 'performance-hints') return performanceHints
-		if (key === 'additional-preloads') return additionalPreloads.join('\n\t\t')
-		if (key === 'lazy-loading-script') return lazyLoadingScript
+		if (key === 'additional-preloads')
+			return additionalPreloads.join('\n\t\t')
+
 		return frontmatter[key] || ''
 	})
 
@@ -318,7 +315,10 @@ const run = async () => {
 		OPTIMIZATION_RESULTS = await buildOptimizedAssets()
 		console.log('✅ Asset optimization completed')
 	} catch (error) {
-		console.warn('⚠️ Asset optimization failed, continuing with regular build:', error)
+		console.warn(
+			'⚠️ Asset optimization failed, continuing with regular build:',
+			error,
+		)
 	}
 
 	console.log('🔄 Discovering markdown files...')

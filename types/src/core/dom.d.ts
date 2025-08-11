@@ -1,7 +1,9 @@
 import { type Cleanup, type Computed } from '@zeix/cause-effect';
 import type { Component, ComponentProps } from '../component';
 import { type Effects } from './reactive';
-type ElementFromSelector<K extends string> = K extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[K] : K extends keyof SVGElementTagNameMap ? SVGElementTagNameMap[K] : K extends keyof MathMLElementTagNameMap ? MathMLElementTagNameMap[K] : HTMLElement;
+type ExtractTag<S extends string> = S extends `${infer T}.${string}` ? T : S extends `${infer T}#${string}` ? T : S extends `${infer T}:${string}` ? T : S extends `${infer T}[${string}` ? T : S;
+type KnownTag<S extends string> = Lowercase<ExtractTag<S>> extends keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap | keyof MathMLElementTagNameMap ? Lowercase<ExtractTag<S>> : never;
+type ElementFromSelector<S extends string> = KnownTag<S> extends never ? HTMLElement : KnownTag<S> extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[KnownTag<S>] : KnownTag<S> extends keyof SVGElementTagNameMap ? SVGElementTagNameMap[KnownTag<S>] : KnownTag<S> extends keyof MathMLElementTagNameMap ? MathMLElementTagNameMap[KnownTag<S>] : HTMLElement;
 type Extractor<T extends {}, E extends Element = HTMLElement> = (element: E) => T;
 type LooseExtractor<T, E extends Element = HTMLElement> = (element: E) => T | null | undefined;
 type Parser<T extends {}, E extends Element = HTMLElement> = (element: E, value: string | null | undefined, old?: string | null) => T;
@@ -14,8 +16,8 @@ type ElementUsage = {
     <E extends Element>(selector: string): E | null;
 };
 type ElementsUsage = {
-    <S extends string>(selector: S, required?: string): NodeListOf<ElementFromSelector<S>>;
-    <E extends Element>(selector: string, required?: string): NodeListOf<E>;
+    <S extends string>(selector: S, required?: string): ElementFromSelector<S>[];
+    <E extends Element>(selector: string, required?: string): E[];
 };
 type ElementEffects<P extends ComponentProps> = {
     <S extends string>(selector: S, effects: Effects<P, ElementFromSelector<S>>, required?: string): () => Cleanup | void;
@@ -48,12 +50,11 @@ declare const getFallback: <T extends {}, E extends Element = HTMLElement>(eleme
  * Get a value from elements in the DOM
  *
  * @since 0.14.0
- * @param {ParserOrFallback<T, E>} fallback - Fallback value or parser function
  * @param {S} extractors - An object of extractor functions for selectors as keys to get a value from
- * @param {LooseExtractor<T | string | null | undefined, ElementFromSelector<S>>[]} extractors - Extractor functions to apply to the element
+ * @param {ParserOrFallback<T, E>} fallback - Fallback value or parser function
  * @returns {LooseExtractor<T | string | null | undefined, C>} Loose extractor function to apply to the host element
  */
-declare const fromDOM: <T extends {}, C extends HTMLElement = HTMLElement, S extends { [K in keyof S & string]: LooseExtractor<T | string, ElementFromSelector<K>>; } = {}>(fallback: ParserOrFallback<T, C>, extractors: S) => Extractor<T, C>;
+declare const fromDOM: <T extends {}, C extends HTMLElement = HTMLElement, S extends { [K in keyof S & string]: LooseExtractor<T | string, ElementFromSelector<K>>; } = {}>(extractors: S, fallback: ParserOrFallback<T, C>) => Extractor<T, C>;
 /**
  * Observe a DOM subtree with a mutation observer
  *
@@ -76,7 +77,7 @@ declare const getHelpers: <P extends ComponentProps>(host: Component<P>) => [Hel
  * Produce a computed signal of an array of elements matching a selector
  *
  * @since 0.13.1
- * @param {K} selector - CSS selector for descendant elements
+ * @param {S} selector - CSS selector for descendant elements
  * @returns {Extractor<Computed<ElementFromSelector<S>[]>, C>} Signal producer for descendant element collection from a selector
  * @throws {CircularMutationError} If observed mutations would trigger infinite mutation cycles
  */

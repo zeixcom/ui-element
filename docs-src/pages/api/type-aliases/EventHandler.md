@@ -8,7 +8,7 @@
 
 > **EventHandler**\<`P`, `E`, `Evt`\> = (`context`) => `{ [K in keyof P]?: P[K] }` \| `void`
 
-Defined in: [src/core/events.ts:44](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/core/events.ts#L44)
+Defined in: [src/core/events.ts:44](https://github.com/zeixcom/ui-element/blob/0e9d08172859c87c6105be70cfb907fbb6767271/src/core/events.ts#L44)
 
 ## Type Parameters
 

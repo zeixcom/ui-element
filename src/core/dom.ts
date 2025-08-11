@@ -16,13 +16,35 @@ import { isCustomElement, isElement, isString } from './util'
 
 /* === Types === */
 
-type ElementFromSelector<K extends string> =
-	K extends keyof HTMLElementTagNameMap
-		? HTMLElementTagNameMap[K]
-		: K extends keyof SVGElementTagNameMap
-			? SVGElementTagNameMap[K]
-			: K extends keyof MathMLElementTagNameMap
-				? MathMLElementTagNameMap[K]
+// Pull the part before the first ".", "#", ":", or "[".
+type ExtractTag<S extends string> = S extends `${infer T}.${string}`
+	? T
+	: S extends `${infer T}#${string}`
+		? T
+		: S extends `${infer T}:${string}`
+			? T
+			: S extends `${infer T}[${string}`
+				? T
+				: S
+
+// Normalize to lowercase and ensure it's a known HTML tag.
+type KnownTag<S extends string> = Lowercase<ExtractTag<S>> extends
+	| keyof HTMLElementTagNameMap
+	| keyof SVGElementTagNameMap
+	| keyof MathMLElementTagNameMap
+	? Lowercase<ExtractTag<S>>
+	: never
+
+// Map the selector string to the concrete element type.
+// If we can't statically prove the tag is known, fall back to HTMLElement.
+type ElementFromSelector<S extends string> = KnownTag<S> extends never
+	? HTMLElement
+	: KnownTag<S> extends keyof HTMLElementTagNameMap
+		? HTMLElementTagNameMap[KnownTag<S>]
+		: KnownTag<S> extends keyof SVGElementTagNameMap
+			? SVGElementTagNameMap[KnownTag<S>]
+			: KnownTag<S> extends keyof MathMLElementTagNameMap
+				? MathMLElementTagNameMap[KnownTag<S>]
 				: HTMLElement
 
 type Extractor<T extends {}, E extends Element = HTMLElement> = (
@@ -55,11 +77,8 @@ type ElementUsage = {
 }
 
 type ElementsUsage = {
-	<S extends string>(
-		selector: S,
-		required?: string,
-	): NodeListOf<ElementFromSelector<S>>
-	<E extends Element>(selector: string, required?: string): NodeListOf<E>
+	<S extends string>(selector: S, required?: string): ElementFromSelector<S>[]
+	<E extends Element>(selector: string, required?: string): E[]
 }
 
 type ElementEffects<P extends ComponentProps> = {
@@ -159,9 +178,8 @@ const getFallback = <T extends {}, E extends Element = HTMLElement>(
  * Get a value from elements in the DOM
  *
  * @since 0.14.0
- * @param {ParserOrFallback<T, E>} fallback - Fallback value or parser function
  * @param {S} extractors - An object of extractor functions for selectors as keys to get a value from
- * @param {LooseExtractor<T | string | null | undefined, ElementFromSelector<S>>[]} extractors - Extractor functions to apply to the element
+ * @param {ParserOrFallback<T, E>} fallback - Fallback value or parser function
  * @returns {LooseExtractor<T | string | null | undefined, C>} Loose extractor function to apply to the host element
  */
 const fromDOM =
@@ -175,8 +193,8 @@ const fromDOM =
 			>
 		} = {},
 	>(
-		fallback: ParserOrFallback<T, C>,
 		extractors: S,
+		fallback: ParserOrFallback<T, C>,
 	): Extractor<T, C> =>
 	(host: C): T => {
 		const root = host.shadowRoot ?? host
@@ -187,10 +205,8 @@ const fromDOM =
 		) => {
 			const target = root.querySelector<ElementFromSelector<K>>(selector)
 			if (!target) return
-			// for (const extractor of extractors) {
 			const value = extractor(target)
 			if (value != null) return value
-			// }
 		}
 
 		let value: T | string | null | undefined = undefined
@@ -279,7 +295,12 @@ const getHelpers = <P extends ComponentProps>(
 		const target = root.querySelector<ElementFromSelector<S>>(selector)
 		if (required != null && !target)
 			throw new MissingElementError(host, selector, required)
-		if (target && isCustomElement(target))
+		// Only add to dependencies if element is a custom element that's not yet defined
+		if (
+			target &&
+			isCustomElement(target) &&
+			target.matches(':not(:defined)')
+		)
 			dependencies.add(target.localName)
 		return target
 	}
@@ -297,23 +318,25 @@ const getHelpers = <P extends ComponentProps>(
 	function useElements<S extends string>(
 		selector: S,
 		required?: string,
-	): NodeListOf<ElementFromSelector<S>>
+	): ElementFromSelector<S>[]
 	function useElements<E extends Element>(
 		selector: string,
 		required?: string,
-	): NodeListOf<E>
+	): E[]
 	function useElements<S extends string>(
 		selector: S,
 		required?: string,
-	): NodeListOf<ElementFromSelector<S>> {
+	): ElementFromSelector<S>[] {
 		const targets = root.querySelectorAll<ElementFromSelector<S>>(selector)
 		if (required != null && !targets.length)
 			throw new MissingElementError(host, selector, required)
 		if (targets.length)
 			targets.forEach(target => {
-				if (isCustomElement(target)) dependencies.add(target.localName)
+				// Only add to dependencies if element is a custom element that's not yet defined
+				if (isCustomElement(target) && target.matches(':not(:defined)'))
+					dependencies.add(target.localName)
 			})
-		return targets
+		return Array.from(targets)
 	}
 
 	/**
@@ -414,7 +437,7 @@ const getHelpers = <P extends ComponentProps>(
  * Produce a computed signal of an array of elements matching a selector
  *
  * @since 0.13.1
- * @param {K} selector - CSS selector for descendant elements
+ * @param {S} selector - CSS selector for descendant elements
  * @returns {Extractor<Computed<ElementFromSelector<S>[]>, C>} Signal producer for descendant element collection from a selector
  * @throws {CircularMutationError} If observed mutations would trigger infinite mutation cycles
  */

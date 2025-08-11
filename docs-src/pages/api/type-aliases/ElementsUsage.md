@@ -6,13 +6,13 @@
 
 # Type Alias: ElementsUsage()
 
-> **ElementsUsage** = \{\<`S`\>(`selector`, `required?`): `NodeListOf`\<[`ElementFromSelector`](ElementFromSelector.md)\<`S`\>\>; \<`E`\>(`selector`, `required?`): `NodeListOf`\<`E`\>; \}
+> **ElementsUsage** = \{\<`S`\>(`selector`, `required?`): [`ElementFromSelector`](ElementFromSelector.md)\<`S`\>[]; \<`E`\>(`selector`, `required?`): `E`[]; \}
 
-Defined in: [src/core/dom.ts:57](https://github.com/zeixcom/ui-element/blob/116b3ce1e8d574ad7f9a1b5bbb952ce797a0b15a/src/core/dom.ts#L57)
+Defined in: [src/core/dom.ts:79](https://github.com/zeixcom/ui-element/blob/0e9d08172859c87c6105be70cfb907fbb6767271/src/core/dom.ts#L79)
 
 ## Call Signature
 
-> \<`S`\>(`selector`, `required?`): `NodeListOf`\<[`ElementFromSelector`](ElementFromSelector.md)\<`S`\>\>
+> \<`S`\>(`selector`, `required?`): [`ElementFromSelector`](ElementFromSelector.md)\<`S`\>[]
 
 ### Type Parameters
 
@@ -32,11 +32,11 @@ Defined in: [src/core/dom.ts:57](https://github.com/zeixcom/ui-element/blob/116b
 
 ### Returns
 
-`NodeListOf`\<[`ElementFromSelector`](ElementFromSelector.md)\<`S`\>\>
+[`ElementFromSelector`](ElementFromSelector.md)\<`S`\>[]
 
 ## Call Signature
 
-> \<`E`\>(`selector`, `required?`): `NodeListOf`\<`E`\>
+> \<`E`\>(`selector`, `required?`): `E`[]
 
 ### Type Parameters
 
@@ -56,4 +56,4 @@ Defined in: [src/core/dom.ts:57](https://github.com/zeixcom/ui-element/blob/116b
 
 ### Returns
 
-`NodeListOf`\<`E`\>
+`E`[]

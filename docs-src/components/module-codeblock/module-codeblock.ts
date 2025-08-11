@@ -13,9 +13,7 @@ export type ModuleCodeblockProps = {
 
 export default component(
 	'module-codeblock',
-	{
-		collapsed: asBoolean(),
-	},
+	{ collapsed: asBoolean() },
 	(el, { first, useElement }) => {
 		const code = useElement(
 			'code',

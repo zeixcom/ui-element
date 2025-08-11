@@ -344,7 +344,6 @@
 				describe('Reactive Properties', () => {
 					it('should initialize properties from internal state', async () => {
 						const causal = document.getElementById('causal')
-						await animationFrame()
 						const heading = causal.querySelector('h1')
 						assert.equal(
 							normalizeText(heading.textContent),
@@ -356,7 +355,6 @@
 						const updating = document.getElementById(
 							'updating-with-attributes',
 						)
-						await animationFrame()
 
 						// Check string attribute
 						assert.equal(updating.heading, 'Hello from Attribute')
@@ -374,7 +372,6 @@
 						const updating = document.getElementById(
 							'updating-with-attributes',
 						)
-						await animationFrame()
 
 						const h1 = updating.querySelector('h1')
 						const span = updating.querySelector('span')
@@ -394,14 +391,12 @@
 						const updating = document.getElementById(
 							'updating-with-attributes',
 						)
-						await animationFrame()
 
 						// Update properties
 						updating.heading = 'Updated Heading'
 						updating.count = 100
 						updating.selected = false
 
-						await animationFrame()
 
 						const h1 = updating.querySelector('h1')
 						const span = updating.querySelector('span')
@@ -418,7 +413,6 @@
 				describe('Event Handling', () => {
 					it('should handle click events and update state', async () => {
 						const counter = document.querySelector('basic-counter')
-						await animationFrame()
 
 						const incrementBtn = counter.querySelector('.increment')
 						const decrementBtn = counter.querySelector('.decrement')
@@ -429,13 +423,11 @@
 
 						// Test increment
 						incrementBtn.click()
-						await animationFrame()
 						assert.equal(counter.value, 43)
 						assert.equal(valueSpan.textContent, '43')
 
 						// Test decrement
 						decrementBtn.click()
-						await animationFrame()
 						assert.equal(counter.value, 42)
 						assert.equal(valueSpan.textContent, '42')
 					})
@@ -447,13 +439,11 @@
 						const textbox = configurator.querySelector('.first')
 						const input = textbox.querySelector('input')
 
-						await animationFrame()
 
 						// Change input value
 						input.value = 'John'
 						input.dispatchEvent(new Event('change'))
 
-						await animationFrame()
 						assert.equal(textbox.value, 'John')
 					})
 				})
@@ -461,7 +451,6 @@
 				describe('Computed Properties', () => {
 					it('should update computed values when dependencies change', async () => {
 						const counter = document.querySelector('basic-counter')
-						await animationFrame()
 
 						const paritySpan = counter.querySelector('.parity')
 						const doubleSpan = counter.querySelector('.double')
@@ -473,7 +462,6 @@
 						// Increment to make odd
 						const incrementBtn = counter.querySelector('.increment')
 						incrementBtn.click()
-						await animationFrame()
 
 						assert.equal(paritySpan.textContent, 'odd')
 						assert.equal(doubleSpan.textContent, '86')
@@ -489,7 +477,6 @@
 						const greeting =
 							configurator.querySelector('hello-world')
 
-						await animationFrame()
 
 						// Just test that components exist and can communicate
 						assert.instanceOf(configurator, HTMLElement)
@@ -501,7 +488,6 @@
 					it('should initialize with correct active tab', async () => {
 						const tabgroup =
 							document.querySelector('module-tabgroup')
-						await animationFrame()
 
 						const firstTab = tabgroup.querySelector('#trigger1')
 						const firstPanel = tabgroup.querySelector('#panel1')
@@ -517,7 +503,6 @@
 					it('should switch tabs when clicked', async () => {
 						const tabgroup =
 							document.querySelector('module-tabgroup')
-						await animationFrame()
 
 						const firstTab = tabgroup.querySelector('#trigger1')
 						const secondTab = tabgroup.querySelector('#trigger2')
@@ -526,7 +511,6 @@
 
 						// Click second tab
 						secondTab.click()
-						await animationFrame()
 
 						assert.equal(
 							firstTab.getAttribute('aria-selected'),
@@ -548,7 +532,6 @@
 						const testComponent =
 							document.createElement('void-component')
 						document.body.appendChild(testComponent)
-						await animationFrame()
 
 						assert.isTrue(testComponent.isConnected)
 
@@ -566,14 +549,12 @@
 						document.body.appendChild(counter1)
 						document.body.appendChild(counter2)
 
-						await animationFrame()
 
 						assert.equal(counter1.value, 10)
 						assert.equal(counter2.value, 20)
 
 						// Update one counter
 						counter1.value = 15
-						await animationFrame()
 
 						assert.equal(counter1.value, 15)
 						assert.equal(counter2.value, 20) // Should remain unchanged
@@ -590,7 +571,6 @@
 						component.setAttribute('value', '5')
 						document.body.appendChild(component)
 
-						await animationFrame()
 
 						// Get signal
 						const valueSignal = component.getSignal('value')
@@ -600,7 +580,6 @@
 						const newSignal = state(10)
 						component.setSignal('value', newSignal)
 
-						await animationFrame()
 						assert.equal(component.value, 10)
 
 						document.body.removeChild(component)
@@ -611,13 +590,11 @@
 							document.createElement('basic-counter')
 						document.body.appendChild(component)
 
-						await animationFrame()
 
 						const doubleSignal = computed(() => component.value * 2)
 						component.setSignal('double', doubleSignal)
 
 						component.value = 5
-						await animationFrame()
 						assert.equal(component.double, 10)
 
 						document.body.removeChild(component)

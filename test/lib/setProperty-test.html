@@ -32,25 +32,22 @@
 
 			runTests(() => {
 				describe('setProperty', function () {
-					it('should prove setProperty() working correctly', async function () {
+					it('should prove setProperty() working correctly', function () {
 						const component =
 							document.querySelector('update-property')
 						const input = component.querySelector('input')
-						await animationFrame()
 						assert.equal(
 							input.value,
 							'Value from Attribute',
 							'Should display value from attribute',
 						)
 						component.value = 'New Value'
-						await animationFrame()
 						assert.equal(
 							input.value,
 							'New Value',
 							'Should update value from text signal',
 						)
 						component.value = RESET
-						await animationFrame()
 						assert.equal(
 							input.value,
 							'Value from Server',

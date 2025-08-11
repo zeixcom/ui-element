@@ -44,7 +44,7 @@
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					Your name&#x3C;</span><span style="color:#F92672">br</span><span style="color:#F8F8F2"> /></span></span>
-<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"name"</span><span style="color:#A6E22E"> autocomplete</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"given-name"</span><span style="color:#F8F8F2"> /></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>World&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
@@ -423,13 +423,6 @@
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
 <span class="line"><span style="color:#F8F8F2">		slides: </span><span style="color:#A6E22E">fromSelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'[role="tabpanel"]'</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#F8F8F2">		index: </span><span style="color:#A6E22E">fromEvents</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">			(</span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F92672"> &#x26;</span><span style="color:#F8F8F2"> { slides</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[] }) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
-<span class="line"><span style="color:#F8F8F2">				Math.</span><span style="color:#A6E22E">max</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">					host.slides.</span><span style="color:#A6E22E">findIndex</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#FD971F;font-style:italic">						slide</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> slide.ariaCurrent </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'true'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">					),</span></span>
-<span class="line"><span style="color:#AE81FF">					0</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">				),</span></span>
 <span class="line"><span style="color:#E6DB74">			'nav button'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">			{</span></span>
 <span class="line"><span style="color:#A6E22E">				click</span><span style="color:#F8F8F2">: ({ </span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">value</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
@@ -466,6 +459,13 @@
 <span class="line"><span style="color:#F8F8F2">					}</span></span>
 <span class="line"><span style="color:#F8F8F2">				},</span></span>
 <span class="line"><span style="color:#F8F8F2">			},</span></span>
+<span class="line"><span style="color:#F8F8F2">			(</span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F92672"> &#x26;</span><span style="color:#F8F8F2"> { slides</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[] }) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#F8F8F2">				Math.</span><span style="color:#A6E22E">max</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">					host.slides.</span><span style="color:#A6E22E">findIndex</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">						slide</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> slide.ariaCurrent </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'true'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">					),</span></span>
+<span class="line"><span style="color:#AE81FF">					0</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">				),</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>

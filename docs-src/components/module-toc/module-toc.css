@@ -1,6 +1,6 @@
 module-toc {
 	display: block;
-	background: color-mix(in srgb, var(--color-background) 80%, transparent);
+	background: var(--color-background);
 	color: var(--color-text);
 	padding: var(--space-m);
 	border-radius: var(--space-s);

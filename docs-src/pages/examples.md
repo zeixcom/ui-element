@@ -50,7 +50,7 @@ description: 'Common use cases and demos'
 					<h3>Slide 1</h3>
 					<hello-world>
 						<label>Your name<br>
-							<input type="text">
+							<input type="text" name="name" autocomplete="given-name">
 						</label>
 						<p>Hello, <span>World</span>!</p>
 					</hello-world>

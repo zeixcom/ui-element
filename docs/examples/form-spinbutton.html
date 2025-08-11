@@ -168,8 +168,7 @@
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">	'form-spinbutton'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
-<span class="line"><span style="color:#F8F8F2">		value: </span><span style="color:#A6E22E">fromEvents</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#A6E22E">			fromDOM</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(), { </span><span style="color:#E6DB74">'.value'</span><span style="color:#F8F8F2">: </span><span style="color:#A6E22E">getText</span><span style="color:#F8F8F2">() }),</span></span>
+<span class="line"><span style="color:#F8F8F2">		value: </span><span style="color:#A6E22E">fromEvents</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">number</span><span style="color:#F8F8F2">>(</span></span>
 <span class="line"><span style="color:#E6DB74">			'button'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">			{</span></span>
 <span class="line"><span style="color:#A6E22E">				click</span><span style="color:#F8F8F2">: ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">value</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
@@ -186,6 +185,7 @@
 <span class="line"><span style="color:#F8F8F2">					}</span></span>
 <span class="line"><span style="color:#F8F8F2">				},</span></span>
 <span class="line"><span style="color:#F8F8F2">			},</span></span>
+<span class="line"><span style="color:#A6E22E">			fromDOM</span><span style="color:#F8F8F2">({ </span><span style="color:#E6DB74">'.value'</span><span style="color:#F8F8F2">: </span><span style="color:#A6E22E">getText</span><span style="color:#F8F8F2">() }, </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">()),</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
@@ -197,7 +197,7 @@
 <span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.value'</span><span style="color:#F8F8F2">, [</span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">), </span><span style="color:#A6E22E">show</span><span style="color:#F8F8F2">(nonZero)]),</span></span>
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.decrement'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">show</span><span style="color:#F8F8F2">(nonZero)),</span></span>
-<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'.increment'</span><span style="color:#F8F8F2">, [</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'button.increment'</span><span style="color:#F8F8F2">, [</span></span>
 <span class="line"><span style="color:#A6E22E">				setText</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (</span><span style="color:#A6E22E">nonZero</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> '+'</span><span style="color:#F92672"> :</span><span style="color:#F8F8F2"> zeroLabel)),</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaLabel'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span></span>
 <span class="line"><span style="color:#A6E22E">					nonZero</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> incrementLabel </span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> zeroLabel,</span></span>

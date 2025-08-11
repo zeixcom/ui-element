@@ -215,7 +215,7 @@
 
 			runTests(() => {
 				describe('Context provider', function () {
-					it('should have motion-context signal from media query list', async function () {
+					it('should have motion-context signal from media query list', function () {
 						assert.equal(
 							'reduced-motion'
 								in document.querySelector('motion-context'),
@@ -223,7 +223,7 @@
 						)
 					})
 
-					it('should have display-name signal from attribute', async function () {
+					it('should have display-name signal from attribute', function () {
 						assert.equal(
 							document.querySelector('user-context')[
 								'display-name'
@@ -234,7 +234,7 @@
 				})
 
 				describe('Context consumer', function () {
-					it('should have consumed context in properties', async function () {
+					it('should have consumed context in properties', function () {
 						assert.equal(
 							'reducedMotion'
 								in document.querySelector('my-animation'),
@@ -242,10 +242,9 @@
 						)
 					})
 
-					it('should update according to consumed context', async function () {
+					it('should update according to consumed context', function () {
 						const contextConsumer =
 							document.querySelector('my-animation')
-						await animationFrame()
 						const textContent = normalizeText(
 							contextConsumer.querySelector('h1').textContent,
 						)
@@ -256,12 +255,11 @@
 						)
 					})
 
-					it('should update when context is set', async function () {
+					it('should update when context is set', function () {
 						const contextProvider =
 							document.querySelector('user-context')
 						const contextConsumer =
 							document.querySelector('hello-world')
-						await animationFrame()
 						let textContent = normalizeText(
 							contextConsumer.querySelector('span').textContent,
 						)
@@ -271,7 +269,6 @@
 							'Should update heading from initial display-name context',
 						)
 						contextProvider['display-name'] = 'Esther Brunner'
-						await animationFrame()
 						textContent = normalizeText(
 							contextConsumer.querySelector('span').textContent,
 						)
@@ -282,13 +279,12 @@
 						)
 					})
 
-					it('should revert when context is removed', async function () {
+					it('should revert when context is removed', function () {
 						const contextProvider =
 							document.querySelector('user-context')
 						const contextConsumer =
 							document.querySelector('hello-world')
 						contextProvider.removeAttribute('display-name')
-						await animationFrame()
 						const textContent = normalizeText(
 							contextConsumer.querySelector('span').textContent,
 						)
@@ -349,10 +345,9 @@
 				})
 
 				describe('Nested Context Providers', function () {
-					it('should resolve context from nearest provider', async function () {
+					it('should resolve context from nearest provider', function () {
 						const consumer =
 							document.querySelector('inner-consumer')
-						await animationFrame()
 						const textContent = normalizeText(
 							consumer.querySelector('span').textContent,
 						)
@@ -364,7 +359,7 @@
 						)
 					})
 
-					it('should stop event propagation when context is found', async function () {
+					it('should stop event propagation when context is found', function () {
 						// This test verifies that the provide function properly stops propagation
 						// by checking the actual behavior rather than simulating events
 						const innerConsumer =
@@ -376,7 +371,6 @@
 
 						// Change outer provider value
 						outerProvider.value = 'changed-outer'
-						await animationFrame()
 
 						// Consumer should still show middle value, proving middle provider intercepted
 						const textContent = normalizeText(
@@ -391,13 +385,12 @@
 				})
 
 				describe('Subscription and Reactivity', function () {
-					it('should update consumer when provider context changes', async function () {
+					it('should update consumer when provider context changes', function () {
 						const provider =
 							document.querySelector('reactive-provider')
 						const consumer =
 							document.querySelector('reactive-consumer')
 
-						await animationFrame()
 						let textContent = normalizeText(
 							consumer.querySelector('span').textContent,
 						)
@@ -408,7 +401,6 @@
 						)
 
 						provider.count = 5
-						await animationFrame()
 						textContent = normalizeText(
 							consumer.querySelector('span').textContent,
 						)
@@ -419,7 +411,6 @@
 						)
 
 						provider.count = 10
-						await animationFrame()
 						textContent = normalizeText(
 							consumer.querySelector('span').textContent,
 						)
@@ -430,7 +421,7 @@
 						)
 					})
 
-					it('should handle rapid context changes', async function () {
+					it('should handle rapid context changes', function () {
 						const provider =
 							document.querySelector('reactive-provider')
 						const consumer =
@@ -443,7 +434,6 @@
 						provider.count = 4
 						provider.count = 5
 
-						await animationFrame()
 						const textContent = normalizeText(
 							consumer.querySelector('span').textContent,
 						)
@@ -456,7 +446,7 @@
 				})
 
 				describe('Error Handling', function () {
-					it('should handle missing context gracefully', async function () {
+					it('should handle missing context gracefully', function () {
 						const consumer =
 							document.querySelector('orphan-consumer')
 
@@ -495,13 +485,12 @@
 						document.body.removeChild(element)
 					})
 
-					it('should handle context provider cleanup', async function () {
+					it('should handle context provider cleanup', function () {
 						const container = document.querySelector('cleanup-test')
 						const provider =
 							document.querySelector('removable-provider')
 						const consumer = document.querySelector('data-consumer')
 
-						await animationFrame()
 						let textContent = normalizeText(
 							consumer.querySelector('span').textContent,
 						)
@@ -513,7 +502,6 @@
 
 						// Remove provider from DOM
 						container.removeChild(provider)
-						await animationFrame()
 
 						// Consumer should still exist but may show undefined or fallback
 						assert.isNotNull(
@@ -524,10 +512,9 @@
 				})
 
 				describe('Multiple Providers', function () {
-					it('should use nearest provider when multiple exist', async function () {
+					it('should use nearest provider when multiple exist', function () {
 						const consumer =
 							document.querySelector('theme-consumer')
-						await animationFrame()
 						const textContent = normalizeText(
 							consumer.querySelector('span').textContent,
 						)
@@ -539,7 +526,7 @@
 						)
 					})
 
-					it('should fallback to outer provider when inner is removed', async function () {
+					it('should fallback to outer provider when inner is removed', function () {
 						const firstProvider =
 							document.querySelector('first-provider')
 						const secondProvider =
@@ -547,7 +534,6 @@
 						const consumer =
 							document.querySelector('theme-consumer')
 
-						await animationFrame()
 						let textContent = normalizeText(
 							consumer.querySelector('span').textContent,
 						)
@@ -562,7 +548,6 @@
 
 						// Trigger a new context request by changing the outer provider
 						firstProvider.theme = 'dark-updated'
-						await animationFrame()
 
 						textContent = normalizeText(
 							consumer.querySelector('span').textContent,
