@@ -8,7 +8,7 @@
 
 > **fromDOM**\<`T`, `C`, `S`\>(`extractors`, `fallback`): [`Extractor`](../type-aliases/Extractor.md)\<`T`, `C`\>
 
-Defined in: [src/core/dom.ts:186](https://github.com/zeixcom/ui-element/blob/0e9d08172859c87c6105be70cfb907fbb6767271/src/core/dom.ts#L186)
+Defined in: [src/core/dom.ts:186](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/core/dom.ts#L186)
 
 Get a value from elements in the DOM
 

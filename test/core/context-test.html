@@ -63,7 +63,6 @@
 			import { runTests } from '@web/test-runner-mocha'
 			import { assert } from '@esm-bundle/chai'
 			import {
-				RESET,
 				UNSET,
 				asString,
 				asInteger,
@@ -102,7 +101,7 @@
 			component(
 				'user-context',
 				{
-					'display-name': asString(RESET),
+					'display-name': asString(),
 				},
 				() => [provideContexts(['display-name'])],
 			)
@@ -290,8 +289,8 @@
 						)
 						assert.equal(
 							textContent,
-							'World',
-							'Should revert heading from context',
+							'',
+							'Should show empty string when provider attribute is removed',
 						)
 					})
 				})

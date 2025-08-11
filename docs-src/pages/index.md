@@ -25,9 +25,9 @@ UIElement is a lightweight TypeScript library (approximately 4kB gzipped) that b
 - Progressively enhance server-rendered content with client-side interactivity
 
 ```js (hello-world.js)
-import { asString, component, RESET, setText } from '@zeix/ui-element'
+import { asString, component, setText } from '@zeix/ui-element'
 
-component('hello-world', { name: asString(RESET) }, (_, { first }) => [
+component('hello-world', { name: asString() }, (_, { first }) => [
   first('span', setText('name')),
 ])
 ```

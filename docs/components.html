@@ -12,7 +12,7 @@
 		/>
 		<link
 			rel="modulepreload"
-			href="./assets/main.js?v=64fe6979"
+			href="./assets/main.js?v=e47808e2"
 		/>
 		<link
 			rel="stylesheet"
@@ -20,7 +20,7 @@
 		/>
 		<script
 			type="module"
-			src="./assets/main.js?v=64fe6979"
+			src="./assets/main.js?v=e47808e2"
 		></script>
 	</head>
 	<body class="">
@@ -192,6 +192,123 @@
 	</basic-button>
 	
 </module-codeblock>
+<h3 id="anatomy-of-a-component">
+                <a name="anatomy-of-a-component" class="anchor" href="#anatomy-of-a-component">
+	                <span class="permalink">🔗</span>
+					<span class="title">Anatomy of a Component</span>
+                </a>
+            </h3>
+<p>Let&#39;s examine a complete component example to understand how UIElement works:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">  'hello-world'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  {</span></span>
+<span class="line"><span style="color:#F8F8F2">    name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">)?.textContent?.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
+<span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> fallback </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.name</span></span>
+<span class="line"><span style="color:#F92672">    return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">        'input'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">        on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> ({ name: target.value </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> fallback })),</span></span>
+<span class="line"><span style="color:#F8F8F2">      ),</span></span>
+<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#F8F8F2">    ]</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<h4 id="reactive-properties">
+                <a name="reactive-properties" class="anchor" href="#reactive-properties">
+	                <span class="permalink">🔗</span>
+					<span class="title">Reactive Properties</span>
+                </a>
+            </h4>
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">{</span></span>
+<span class="line"><span style="color:#88846F">  // Create "name" property from attribute "name" as a string, falling back to server-rendered content</span></span>
+<span class="line"><span style="color:#F8F8F2">  name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">)?.textContent?.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<p>This creates a reactive property called <code>name</code>:</p>
+<ul>
+<li><code>asString()</code> observes the attribute <code>name</code> and assigns its value as a string to the <code>name</code> property</li>
+<li><code>el =&gt; ...</code> is an instruction how to get the fallback value in the DOM if there is no name attribute</li>
+<li>UIElement automatically reads &quot;World&quot; from the <code>&lt;span&gt;</code> element as the initial value</li>
+<li>When <code>name</code> changes, any effects that depend on it automatically update</li>
+</ul>
+<h4 id="setup-function">
+                <a name="setup-function" class="anchor" href="#setup-function">
+	                <span class="permalink">🔗</span>
+					<span class="title">Setup Function</span>
+                </a>
+            </h4>
+<p>The setup function takes two arguments:</p>
+<ol>
+<li>The component element. In this example we name it <code>el</code>.</li>
+<li>Helper functions for accessing descendant elements. In this example we use <code>first</code> to find the first descendant matching a selector and apply effects to it.</li>
+</ol>
+<p>The setup function returns an array of effects:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">  // set the fallback value we want to use instead of an empty string</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> fallback </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.name</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">  return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#88846F">    // Handle user input to change the "name" property</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">      'input'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">      on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> ({ name: target.value </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> fallback })),</span></span>
+<span class="line"><span style="color:#F8F8F2">    ),</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">    // Update content when the "name" property changes</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#F8F8F2">  ]</span></span>
+<span class="line"><span style="color:#F8F8F2">},</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>Effects define <strong>component behaviors</strong>:</p>
+<ul>
+<li><code>first(&#39;input&#39;, on(&#39;input&#39;, ...))</code> finds the first <code>&lt;input&gt;</code> and adds an event listener</li>
+<li><code>first(&#39;span&#39;, setText(&#39;name&#39;))</code> finds the first <code>&lt;span&gt;</code> and keeps its text in sync with the <code>name</code> property</li>
+</ul>
+<p>Characteristics of Effects:</p>
+<ul>
+<li>Effects run when the component is added to the page</li>
+<li>Effects rerun when their dependencies change</li>
+<li>Effects may return a cleanup function to be executed when the target element or the component is removed from the page</li>
+</ul>
 </section>
 
 <section>
@@ -429,41 +546,7 @@
 					<span class="title">Bundled Attribute Parsers</span>
                 </a>
             </h3>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a href="api/functions/asBoolean.html">asBoolean()</a></td>
-<td>Converts <code>&quot;true&quot;</code> / <code>&quot;false&quot;</code> to a <strong>boolean</strong> (<code>true</code> / <code>false</code>). Also treats empty attributes (<code>checked</code>) as <code>true</code> and missing attributes as <code>false</code>.</td>
-</tr>
-<tr>
-<td><a href="api/functions/asInteger.html">asInteger()</a></td>
-<td>Converts a numeric string (e.g., <code>&quot;42&quot;</code>) to an <strong>integer</strong> (<code>42</code>).</td>
-</tr>
-<tr>
-<td><a href="api/functions/asNumber.html">asNumber()</a></td>
-<td>Converts a numeric string (e.g., <code>&quot;3.14&quot;</code>) to a <strong>floating-point number</strong> (<code>3.14</code>).</td>
-</tr>
-<tr>
-<td><a href="api/functions/asString.html">asString()</a></td>
-<td>Returns the attribute value as a <strong>string</strong> (unchanged).</td>
-</tr>
-<tr>
-<td><a href="api/functions/asEnum.html">asEnum(values)</a></td>
-<td>Ensures the string matches <strong>one of the allowed values</strong>. Example: <code>asEnum([&quot;small&quot;, &quot;medium&quot;, &quot;large&quot;])</code>. If the value is not in the list, it defaults to the first option.</td>
-</tr>
-<tr>
-<td><a href="api/functions/asJSON.html">asJSON(fallback)</a></td>
-<td>Parses a JSON string (e.g., <code>&#39;[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]&#39;</code>) into an <strong>array</strong> or <strong>object</strong>. If invalid, returns the fallback object.</td>
-</tr>
-</tbody></table>
-<p>The pre-defined parsers <code>asInteger()</code>, <code>asNumber()</code> and <code>asString()</code> allow to set a custom fallback value as parameter.</p>
-<p>The <code>asEnum()</code> parser requires an array of valid values, while the first will be the fallback value for invalid results.</p>
-<p>The <code>asJSON()</code> parser requires a fallback object as parameter as <code>{}</code> probably won&#39;t match the type you&#39;re expecting.</p>
+<p>UIElement provides several built-in parsers for common attribute types. See the <a href="api.html#parsers">Parsers section</a> in the API reference for detailed descriptions and usage examples.</p>
 </section>
 
 <section>
@@ -656,55 +739,7 @@
 					<span class="title">Bundled Effects</span>
                 </a>
             </h3>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a href="api/functions/setText.html">setText()</a></td>
-<td>Updates <strong>text content</strong> with a <code>string</code> signal value (while preserving comment nodes).</td>
-</tr>
-<tr>
-<td><a href="api/functions/setProperty.html">setProperty()</a></td>
-<td>Updates a given <strong>property</strong> with any signal value.</td>
-</tr>
-<tr>
-<td><a href="api/functions/show.html">show()</a></td>
-<td>Updates the <strong>visibility</strong> of an element with a <code>boolean</code> signal value.</td>
-</tr>
-<tr>
-<td><a href="api/functions/setAttribute.html">setAttribute()</a></td>
-<td>Updates a given <strong>attribute</strong> with a <code>string</code> signal value.</td>
-</tr>
-<tr>
-<td><a href="api/functions/toggleAttribute.html">toggleAttribute()</a></td>
-<td>Toggles a given <strong>boolean attribute</strong> with a <code>boolean</code> signal value.</td>
-</tr>
-<tr>
-<td><a href="api/functions/toggleClass.html">toggleClass()</a></td>
-<td>Toggles a given <strong>CSS class</strong> with a <code>boolean</code> signal value.</td>
-</tr>
-<tr>
-<td><a href="api/functions/setStyle.html">setStyle()</a></td>
-<td>Updates a given <strong>CSS property</strong> with a <code>string</code> signal value.</td>
-</tr>
-<tr>
-<td><a href="api/functions/dangerouslySetInnerHTML.html">dangerouslySetInnerHTML()</a></td>
-<td>Sets <strong>HTML content</strong> with a <code>string</code> signal value.</td>
-</tr>
-<tr>
-<td><a href="api/functions/insertOrRemoveElement.html">insertOrRemoveElement()</a></td>
-<td>Inserts (positive integer) or removes (negative integer) elements with a <code>number</code> signal value.</td>
-</tr>
-</tbody></table>
-<card-callout class="tip">
-
-<p><strong>Tip</strong>: TypeScript will check whether a value of a given type is assignable to a certain element type. You might have to pass a type hint for the queried element type. Prefer <code>setProperty()</code> over <code>setAttribute()</code> for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.</p>
-</card-callout>
-
+<p>UIElement provides many built-in effects for common DOM operations. See the <a href="api.html#effects">Effects section</a> in the API reference for detailed descriptions and usage examples.</p>
 <h3 id="simplifying-effect-notation">
                 <a name="simplifying-effect-notation" class="anchor" href="#simplifying-effect-notation">
 	                <span class="permalink">🔗</span>

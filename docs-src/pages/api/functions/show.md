@@ -8,7 +8,7 @@
 
 > **show**\<`P`, `E`\>(`reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:321](https://github.com/zeixcom/ui-element/blob/0e9d08172859c87c6105be70cfb907fbb6767271/src/lib/effects.ts#L321)
+Defined in: [src/lib/effects.ts:321](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/lib/effects.ts#L321)
 
 Effect for controlling element visibility by setting the 'hidden' property.
 When the reactive value is true, the element is shown; when false, it's hidden.

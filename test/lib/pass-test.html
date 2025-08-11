@@ -26,7 +26,7 @@
 				pass,
 				setText,
 				state,
-				RESET,
+				getText,
 			} from '../../index.dev.js'
 
 			const animationFrame = async () =>
@@ -37,8 +37,12 @@
 			component(
 				'child-component',
 				{
-					heading: asString(RESET),
-					text: asString(RESET),
+					heading: asString(
+						el => el.querySelector('h1')?.textContent?.trim() ?? '',
+					),
+					text: asString(
+						el => el.querySelector('p')?.textContent?.trim() ?? '',
+					),
 				},
 				(_, { first }) => [
 					first('h1', setText('heading')),
@@ -49,7 +53,9 @@
 			component(
 				'parent-component',
 				{
-					heading: asString(RESET),
+					heading: asString(
+						el => el.querySelector('h1')?.textContent?.trim() ?? '',
+					),
 				},
 				(el, { first }) => [
 					first(

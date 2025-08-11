@@ -83,4 +83,4 @@ declare const getHelpers: <P extends ComponentProps>(host: Component<P>) => [Hel
  */
 declare function fromSelector<S extends string, C extends HTMLElement = HTMLElement>(selector: S): Extractor<Computed<ElementFromSelector<S>[]>, C>;
 declare function fromSelector<E extends Element, C extends HTMLElement = HTMLElement>(selector: string): Extractor<Computed<E[]>, C>;
-export { type ElementFromSelector, type Extractor, type Fallback, type LooseExtractor, type Parser, type ParserOrFallback, type ElementUsage, type ElementsUsage, type ElementEffects, type Helpers, fromDOM, fromSelector, getFallback, getHelpers, isParser, observeSubtree, };
+export { type ElementFromSelector, type Extractor, type Fallback, type LooseExtractor, type Parser, type ParserOrFallback, type ElementUsage, type ElementsUsage, type ElementEffects, type ExtractTag, type Helpers, type KnownTag, fromDOM, fromSelector, getFallback, getHelpers, isParser, observeSubtree, };

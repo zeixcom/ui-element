@@ -55,9 +55,6 @@
 						const el = document.getElementById('test2')
 						const span = el.querySelector('span')
 
-
-						// Component uses RESET, so it shows the initial DOM content "World"
-						// The attribute doesn't automatically become the property value
 						assert.equal(span.textContent, 'World')
 						assert.equal(el.getAttribute('name'), null)
 

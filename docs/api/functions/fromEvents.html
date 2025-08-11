@@ -12,7 +12,7 @@
 		/>
 		<link
 			rel="modulepreload"
-			href="../../assets/main.js?v=64fe6979"
+			href="../../assets/main.js?v=e47808e2"
 		/>
 		<link
 			rel="stylesheet"
@@ -20,7 +20,7 @@
 		/>
 		<script
 			type="module"
-			src="../../assets/main.js?v=64fe6979"
+			src="../../assets/main.js?v=e47808e2"
 		></script>
 	</head>
 	<body class="api">
@@ -124,9 +124,9 @@
                 </a>
             </h1>
 <blockquote>
-<p><strong>fromEvents</strong>&lt;<code>T</code>, <code>C</code>, <code>S</code>&gt;(<code>initialize</code>, <code>selector</code>, <code>events</code>): <a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;, <code>C</code>&gt;</p>
+<p><strong>fromEvents</strong>&lt;<code>T</code>, <code>C</code>, <code>S</code>&gt;(<code>selector</code>, <code>events</code>, <code>initialize</code>): <a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;, <code>C</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/0e9d08172859c87c6105be70cfb907fbb6767271/src/core/events.ts#L66">src/core/events.ts:66</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/core/events.ts#L66">src/core/events.ts:66</a></p>
 <p>Produce a computed signal from transformed event data</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
@@ -161,14 +161,6 @@
 					<span class="title">Parameters</span>
                 </a>
             </h2>
-<h3 id="initialize">
-                <a name="initialize" class="anchor" href="#initialize">
-	                <span class="permalink">🔗</span>
-					<span class="title">initialize</span>
-                </a>
-            </h3>
-<p><a href="../type-aliases/Fallback.html"><code>Fallback</code></a>&lt;<code>T</code>, <code>C</code>&gt;</p>
-<p>Initial value or extractor function</p>
 <h3 id="selector">
                 <a name="selector" class="anchor" href="#selector">
 	                <span class="permalink">🔗</span>
@@ -185,6 +177,14 @@
             </h3>
 <p><a href="../type-aliases/EventTransformers.html"><code>EventTransformers</code></a>&lt;<code>T</code>, <a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>&gt;, <code>C</code>&gt;</p>
 <p>Transformation functions for events</p>
+<h3 id="initialize">
+                <a name="initialize" class="anchor" href="#initialize">
+	                <span class="permalink">🔗</span>
+					<span class="title">initialize</span>
+                </a>
+            </h3>
+<p><a href="../type-aliases/ParserOrFallback.html"><code>ParserOrFallback</code></a>&lt;<code>T</code>, <code>C</code>&gt;</p>
+<p>Initial value or extractor function</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
@@ -199,7 +199,7 @@
 					<span class="title">Since</span>
                 </a>
             </h2>
-<p>0.13.3</p>
+<p>0.14.0</p>
 
 </section></main>
 			<footer class="content-grid">

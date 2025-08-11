@@ -6,9 +6,9 @@
 
 # Type Alias: ElementFromSelector\<S\>
 
-> **ElementFromSelector**\<`S`\> = `KnownTag`\<`S`\> *extends* `never` ? `HTMLElement` : `KnownTag`\<`S`\> *extends* keyof `HTMLElementTagNameMap` ? `HTMLElementTagNameMap`\[`KnownTag`\<`S`\>\] : `KnownTag`\<`S`\> *extends* keyof `SVGElementTagNameMap` ? `SVGElementTagNameMap`\[`KnownTag`\<`S`\>\] : `KnownTag`\<`S`\> *extends* keyof `MathMLElementTagNameMap` ? `MathMLElementTagNameMap`\[`KnownTag`\<`S`\>\] : `HTMLElement`
+> **ElementFromSelector**\<`S`\> = [`KnownTag`](KnownTag.md)\<`S`\> *extends* `never` ? `HTMLElement` : [`KnownTag`](KnownTag.md)\<`S`\> *extends* keyof `HTMLElementTagNameMap` ? `HTMLElementTagNameMap`\[[`KnownTag`](KnownTag.md)\<`S`\>\] : [`KnownTag`](KnownTag.md)\<`S`\> *extends* keyof `SVGElementTagNameMap` ? `SVGElementTagNameMap`\[[`KnownTag`](KnownTag.md)\<`S`\>\] : [`KnownTag`](KnownTag.md)\<`S`\> *extends* keyof `MathMLElementTagNameMap` ? `MathMLElementTagNameMap`\[[`KnownTag`](KnownTag.md)\<`S`\>\] : `HTMLElement`
 
-Defined in: [src/core/dom.ts:40](https://github.com/zeixcom/ui-element/blob/0e9d08172859c87c6105be70cfb907fbb6767271/src/core/dom.ts#L40)
+Defined in: [src/core/dom.ts:40](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/core/dom.ts#L40)
 
 ## Type Parameters
 

@@ -6,7 +6,7 @@
 
 # Class: CircularMutationError
 
-Defined in: [src/core/errors.ts:10](https://github.com/zeixcom/ui-element/blob/0e9d08172859c87c6105be70cfb907fbb6767271/src/core/errors.ts#L10)
+Defined in: [src/core/errors.ts:10](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/core/errors.ts#L10)
 
 Error thrown when a circular dependency is detected in a selection signal
 
@@ -24,7 +24,7 @@ Error thrown when a circular dependency is detected in a selection signal
 
 > **new CircularMutationError**(`host`, `selector`): `CircularMutationError`
 
-Defined in: [src/core/errors.ts:15](https://github.com/zeixcom/ui-element/blob/0e9d08172859c87c6105be70cfb907fbb6767271/src/core/errors.ts#L15)
+Defined in: [src/core/errors.ts:15](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/core/errors.ts#L15)
 
 #### Parameters
 

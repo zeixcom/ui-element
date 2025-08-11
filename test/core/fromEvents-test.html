@@ -9,11 +9,11 @@
 			import { runTests } from '@web/test-runner-mocha'
 			import { assert } from '@esm-bundle/chai'
 			import {
-				fromEvents,
+				asString,
+				component,
 				computed,
 				effect,
-				component,
-				asString,
+				fromEvents,
 			} from '../../index.dev.js'
 
 			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -31,7 +31,6 @@
 
 						try {
 							const clickSignal = fromEvents(
-								0,
 								'button.click-me',
 								{
 									click: ({ event, host, target, value }) => {
@@ -41,6 +40,7 @@
 										return value + 1
 									},
 								},
+								0,
 							)(document.body)
 
 							// Use effect to watch signal for updates

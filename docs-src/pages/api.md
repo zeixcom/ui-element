@@ -48,12 +48,20 @@ Helper functions:
 
 Declare how attributes are parsed. Functions returning [Parser](api/type-aliases/AttributeParser.html) that will be used to create [State](api/type-aliases/State.html) signals as writable reactive properties on the component.
 
-- [asBoolean](api/functions/asBoolean.html) parses boolean strings (presence indicates true)
-- [asEnum](api/functions/asEnum.html) parses string attributes constrained to specific values
-- [asInteger](api/functions/asInteger.html) parses integer attributes with validation
-- [asJSON](api/functions/asJSON.html) parses JSON attributes into JavaScript objects
-- [asNumber](api/functions/asNumber.html) parses numeric attributes as floating-point numbers
-- [asString](api/functions/asString.html) identity function for strings defaulting to empty string
+| Function                                      | Description                                                                                                                                                                  |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [asBoolean()](api/functions/asBoolean.html)   | Converts `"true"` / `"false"` to a **boolean** (`true` / `false`). Also treats empty attributes (`checked`) as `true` and missing attributes as `false`.                     |
+| [asInteger()](api/functions/asInteger.html)   | Converts a numeric string (e.g., `"42"`) to an **integer** (`42`).                                                                                                           |
+| [asNumber()](api/functions/asNumber.html)     | Converts a numeric string (e.g., `"3.14"`) to a **floating-point number** (`3.14`).                                                                                          |
+| [asString()](api/functions/asString.html)     | Returns the attribute value as a **string** (unchanged).                                                                                                                     |
+| [asEnum(values)](api/functions/asEnum.html)   | Ensures the string matches **one of the allowed values**. Example: `asEnum(["small", "medium", "large"])`. If the value is not in the list, it defaults to the first option. |
+| [asJSON(fallback)](api/functions/asJSON.html) | Parses a JSON string (e.g., `'["a", "b", "c"]'`) into an **array** or **object**. If invalid, returns the fallback object.                                                   |
+
+The pre-defined parsers `asInteger()`, `asNumber()` and `asString()` allow to set a custom fallback value as parameter.
+
+The `asEnum()` parser requires an array of valid values, while the first will be the fallback value for invalid results.
+
+The `asJSON()` parser requires a fallback object as parameter as `{}` probably won't match the type you're expecting.
 
 </section>
 
@@ -75,20 +83,24 @@ Declare how signals are initialized. Functions returning type [SignalProducer](a
 
 Declare effects of type [Effect](api/type-aliases/Effect.html) to be applied when signals change:
 
-- [dangerouslySetInnerHTML](api/functions/dangerouslySetInnerHTML.html) sets inner HTML content from a signal
-- [emitEvent](api/functions/emitEvent.html) dispatches custom events when signals change
-- [insertOrRemoveElement](api/functions/insertOrRemoveElement.html) conditionally inserts or removes elements
-- [on](api/functions/on.html) attaches event listeners to elements
-- [pass](api/functions/pass.html) passes signal values to descendant component properties
-- [provideContexts](api/functions/provideContexts.html) provides context values to descendant components
-- [setAttribute](api/functions/setAttribute.html) sets element attributes from signals
-- [setProperty](api/functions/setProperty.html) sets element properties from signals
-- [setStyle](api/functions/setStyle.html) sets CSS styles from signals
-- [setText](api/functions/setText.html) sets text content from signals
-- [show](api/functions/show.html) conditionally shows or hides elements
-- [toggleAttribute](api/functions/toggleAttribute.html) toggles attributes based on signal values
-- [toggleClass](api/functions/toggleClass.html) toggles CSS classes based on signal values
-- [updateElement](api/functions/updateElement.html) base function for updating elements, used for [setText](api/functions/setText.html), [show](api/functions/show.html), [toggleClass](api/functions/toggleClass.html), [toggleAttribute](api/functions/toggleAttribute.html), [setAttribute](api/functions/setAttribute.html), [setProperty](api/functions/setProperty.html), [setStyle](api/functions/setStyle.html)
+| Function                                                                | Description                                                                                     |
+| ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| [setText()](api/functions/setText.html)                                 | Updates **text content** with a `string` signal value (while preserving comment nodes).         |
+| [setProperty()](api/functions/setProperty.html)                         | Updates a given **property** with any signal value.                                             |
+| [show()](api/functions/show.html)                                       | Updates the **visibility** of an element with a `boolean` signal value.                         |
+| [setAttribute()](api/functions/setAttribute.html)                       | Updates a given **attribute** with a `string` signal value.                                     |
+| [toggleAttribute()](api/functions/toggleAttribute.html)                 | Toggles a given **boolean attribute** with a `boolean` signal value.                            |
+| [toggleClass()](api/functions/toggleClass.html)                         | Toggles a given **CSS class** with a `boolean` signal value.                                    |
+| [setStyle()](api/functions/setStyle.html)                               | Updates a given **CSS property** with a `string` signal value.                                  |
+| [dangerouslySetInnerHTML()](api/functions/dangerouslySetInnerHTML.html) | Sets **HTML content** with a `string` signal value.                                             |
+| [insertOrRemoveElement()](api/functions/insertOrRemoveElement.html)     | Inserts (positive integer) or removes (negative integer) elements with a `number` signal value. |
+| [emitEvent()](api/functions/emitEvent.html)                             | Dispatches custom events when signals change.                                                   |
+| [on()](api/functions/on.html)                                           | Attaches event listeners to elements.                                                           |
+| [pass()](api/functions/pass.html)                                       | Passes signal values to descendant component properties.                                        |
+| [provideContexts()](api/functions/provideContexts.html)                 | Provides context values to descendant components.                                               |
+| [updateElement()](api/functions/updateElement.html)                     | Base function for updating elements, used by other effects.                                     |
+
+**Tip**: TypeScript will check whether a typed value is assignable to a certain element property. Prefer `setProperty()` over `setAttribute()` for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.
 
 </section>
 

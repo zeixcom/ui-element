@@ -83,7 +83,7 @@ bun add @zeix/ui-element
 Then import the needed functions in your JavaScript:
 
 ```js (main.js)
-import { asString, component, on, RESET, setText } from '@zeix/ui-element'
+import { asString, component, on, setText } from '@zeix/ui-element'
 ```
 
 </section>
@@ -123,80 +123,37 @@ Save the following inside a `<script type="module">` tag or an external JavaScri
     asString,
     component,
     on,
-    RESET,
     setText,
   } from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
 
   component(
     'hello-world',
     {
-      name: asString(RESET),
+      name: asString(el => el.querySelector('span')?.textContent?.trim() ?? ''),
     },
-    (_, { first }) => [
-      first(
-        'input',
-        on('input', ({ target }) => ({ name: target.value || RESET })),
-      ),
-      first('span', setText('name')),
-    ],
+    (el, { first }) => {
+      const fallback = el.name
+      return [
+        first(
+          'input',
+          on('input', ({ target }) => ({ name: target.value || fallback })),
+        ),
+        first('span', setText('name')),
+      ]
+    },
   )
 </script>
 ```
 
 ### Understanding Your First Component
 
-Let's break down each part of your `<hello-world>` component to understand how UIElement works:
+This component demonstrates UIElement's core concepts:
 
-#### Reactive Properties
+- **Reactive Properties**: `name: asString(...)` creates a reactive property that syncs with the `name` attribute and falls back to the `<span>` content
+- **Effects**: The setup function returns effects that handle user input and update the display text
+- **Element Selection**: `first()` selects descendant elements to apply effects to
 
-```js
-{
-  // Create "name" property from attribute "name" as a string, falling back to server-rendered content
-  name: asString(RESET),
-}
-```
-
-This creates a reactive property called `name`:
-
-- `asString()` observes the attribute `name` and assigns its value as a string to the `name` property
-- `RESET` is the fallback value and means "use whatever text is already in the HTML" as the starting value
-- UIElement automatically reads "World" from the `<span>` element as the initial value
-- When `name` changes, any effects that depend on it automatically update
-
-There are other ways to initialize state in UIElement. You'll learn about those approaches in the section about [components](components.html).
-
-#### Setup Function
-
-The setup function takes two arguments:
-
-1. The component element. In this example we don't use it and hence name it `_`.
-2. Helper functions for accessing descendant elements. In this example we use `first` to find the first descendant matching a selector and apply effects to it.
-
-The setup function returns an array of effects:
-
-```js
-(_, { first }) => [
-  // Handle user input to change the "name" property
-  first('input', on(
-    'input',
-    ({ target }) => ({ name: target.value || RESET })
-  ))
-
-  // Update content when the "name" property changes
-  first('span', setText('name'))
-]
-```
-
-Effects define **component behaviors**:
-
-- `first('input', on('input', ...))` finds the first `<input>` and adds an event listener
-- `first('span', setText('name'))` finds the first `<span>` and keeps its text in sync with the `name` property
-
-Characteristics of Effects:
-
-- Effects run when the component is added to the page
-- Effects rerun when their dependencies change
-- Effects may return a cleanup function to be executed when the target element or the component is removed from the page
+Learn more about these concepts in the [Components](components.html) guide.
 
 </section>
 
