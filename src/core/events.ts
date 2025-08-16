@@ -3,7 +3,7 @@ import {
 	type Cleanup,
 	type Computed,
 	effect,
-	isState,
+	// isState,
 	notify,
 	subscribe,
 	TYPE_COMPUTED,
@@ -159,14 +159,23 @@ const on =
 			if (!isDefinedObject(result)) return
 			batch(() => {
 				for (const [key, value] of Object.entries(result)) {
-					const signal = host.getSignal(key)
+					try {
+						host[key as keyof P] = value
+					} catch (error) {
+						log(
+							error,
+							`Reactive property "${key}" on ${elementName(host)} from event ${type} on ${elementName(target)} could not be set, because it is read-only.`,
+							LOG_ERROR,
+						)
+					}
+					/* const signal = host.getSignal(key)
 					if (isState(signal)) signal.set(value)
 					else
 						log(
 							value,
 							`Reactive property "${key}" on ${elementName(host)} from event ${type} on ${elementName(target)} could not be set, because it is read-only.`,
 							LOG_ERROR,
-						)
+						) */
 				}
 			})
 		}

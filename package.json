@@ -16,6 +16,7 @@
 		"build:docs": "bun run build:docs-js && bun run build:docs-css && bun run build:docs-optimized && bun run build:docs-html && bun run build:docs-api",
 		"build:docs:fast": "OPTIMIZE_LAYOUT=false bun run build:docs-js && bun run build:docs-css && bun run build:docs-html && bun run build:docs-api",
 		"serve:docs": "bun run --hot ./docs-src/server/serve-docs.ts",
+		"verify:devtools": "bun ./docs-src/server/verify-devtools-config.ts",
 		"lint": "bunx biome check --write ./src",
 		"test": "bun run test:validate && bun run test:setup && bun run test:ci",
 		"test:validate": "cd test && node validate-tests.js",

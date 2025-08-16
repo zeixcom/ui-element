@@ -249,6 +249,8 @@
 <span class="line"><span style="color:#F92672">	readonly</span><span style="color:#F8F8F2"> completed</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[]</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#E6DB74"> '../form-textbox/form-textbox'</span></span>
+<span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">	'module-todo'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
@@ -275,21 +277,19 @@
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form'</span><span style="color:#F8F8F2">, [</span></span>
 <span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'submit'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">					event.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#A6E22E">					queueMicrotask</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> textbox.value.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F92672">						if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">value) </span><span style="color:#F92672">return</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> li </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">importNode</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">							template.content,</span></span>
-<span class="line"><span style="color:#AE81FF">							true</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">						).firstElementChild</span></span>
-<span class="line"><span style="color:#F92672">						if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">(li </span><span style="color:#F92672">instanceof</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLLIElement</span><span style="color:#F8F8F2">))</span></span>
-<span class="line"><span style="color:#F92672">							throw</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Error</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">								'Invalid template for list item; expected &#x3C;li>'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">							)</span></span>
-<span class="line"><span style="color:#F8F8F2">						li.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(value)</span></span>
-<span class="line"><span style="color:#F8F8F2">						list.</span><span style="color:#A6E22E">append</span><span style="color:#F8F8F2">(li)</span></span>
-<span class="line"><span style="color:#F8F8F2">						textbox.</span><span style="color:#A6E22E">clear</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">					})</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> textbox.value.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">value) </span><span style="color:#F92672">return</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> li </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.</span><span style="color:#A6E22E">importNode</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">						template.content,</span></span>
+<span class="line"><span style="color:#AE81FF">						true</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">					).firstElementChild</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">(li </span><span style="color:#F92672">instanceof</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLLIElement</span><span style="color:#F8F8F2">))</span></span>
+<span class="line"><span style="color:#F92672">						throw</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Error</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">							'Invalid template for list item; expected &#x3C;li>'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">						)</span></span>
+<span class="line"><span style="color:#F8F8F2">					li.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'slot'</span><span style="color:#F8F8F2">)?.</span><span style="color:#A6E22E">replaceWith</span><span style="color:#F8F8F2">(value)</span></span>
+<span class="line"><span style="color:#F8F8F2">					list.</span><span style="color:#A6E22E">append</span><span style="color:#F8F8F2">(li)</span></span>
+<span class="line"><span style="color:#F8F8F2">					textbox.</span><span style="color:#A6E22E">clear</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">				}),</span></span>
 <span class="line"><span style="color:#F8F8F2">			]),</span></span>
 <span class="line"></span>

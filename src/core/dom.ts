@@ -303,16 +303,14 @@ const getHelpers = <P extends ComponentProps>(
 		)
 			dependencies.add(target.localName)
 		return target
-	}
-
-	/**
+	} /**
 	 * Get all descendant elements matching a selector
 	 * If any element is a custom element it will be added to dependencies
 	 *
 	 * @since 0.14.0
 	 * @param {S} selector - Selector for elements to check for
 	 * @param {string} [required] - Optional reason for the assertion; if provided, throws on missing elements
-	 * @returns {NodeListOf<ElementFromSelector<S>>} All matching descendant elements
+	 * @returns {ElementFromSelector<S>[]} All matching descendant elements
 	 * @throws {MissingElementError} - Thrown when elements are required but not found
 	 */
 	function useElements<S extends string>(

@@ -91,17 +91,35 @@ bun run build
 bun run serve:docs
 ```
 
+**Chrome DevTools Workspace Integration:**
+
+For enhanced development experience with live editing in Chrome DevTools:
+
+```sh
+# Verify DevTools workspace configuration
+bun run verify:devtools
+
+# Then follow the setup instructions:
+# 1. Open Chrome and navigate to http://localhost:3000
+# 2. Open DevTools (F12)
+# 3. Go to Sources tab → Workspace (left sidebar)
+# 4. Click "Connect"
+# 5. Allow access when Chrome prompts for permissions
+```
+
+Once configured, you can edit CSS, JavaScript, and other files directly in DevTools, and changes will be automatically saved to your source files and hot-reloaded.
+
 ---
 
 ## Coding Guidelines
 
 To maintain a high-quality codebase, please follow these guidelines:
 
-* Follow the project's existing coding style.
-* Avoid unnecessary dependencies.
-* Use functional programming principles where applicable.
-* Prefer composition over inheritance.
-* Make sure to lint your code (`bun run lint`) and all tests pass (`bun run test:watch`).
+- Follow the project's existing coding style.
+- Avoid unnecessary dependencies.
+- Use functional programming principles where applicable.
+- Prefer composition over inheritance.
+- Make sure to lint your code (`bun run lint`) and all tests pass (`bun run test:watch`).
 
 ## Commit Message Guidelines
 
@@ -117,19 +135,19 @@ type(scope): short description
 
 **Examples:**
 
-* `feat(ui): add new LazyLoad component`
-* `*fix(scheduler): resolve timing issue on initial load`
-* `docs: update documentation for Context API`
+- `feat(ui): add new LazyLoad component`
+- `*fix(scheduler): resolve timing issue on initial load`
+- `docs: update documentation for Context API`
 
 **Types:**
 
-* `feat`: New feature
-* `fix`: Bug fix
-* `docs`: Documentation update
-* `style`: Code style changes (no logic changes)
-* `refactor`: Code restructuring (no new features or bug fixes)
-* `test`: Adding or improving tests
-* `chore`: Maintenance tasks (e.g., build system updates)
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation update
+- `style`: Code style changes (no logic changes)
+- `refactor`: Code restructuring (no new features or bug fixes)
+- `test`: Adding or improving tests
+- `chore`: Maintenance tasks (e.g., build system updates)
 
 ---
 

@@ -1,4 +1,4 @@
-import './components/context-router/context-router.ts'
+// import './components/context-router/context-router.ts'
 import './components/context-media/context-media.ts'
 import './components/hello-world/hello-world.ts'
 import './components/basic-button/basic-button.ts'

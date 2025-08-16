@@ -106,36 +106,22 @@ export default component(
 			}
 		}
 
-		let previousContent = ''
 		const content = computed(
 			async (abort: AbortSignal): Promise<string> => {
 				const currentPath = String(el[ROUTER_PATHNAME])
 				const url = String(new URL(currentPath, window.location.origin))
-				if (abort?.aborted) return previousContent
+				if (abort?.aborted) return ''
 
-				try {
-					error.set('')
-					const { content: html } = await fetchWithCache(url, abort)
-					const doc = new DOMParser().parseFromString(
-						html,
-						'text/html',
-					)
+				const { content: html } = await fetchWithCache(url, abort)
+				const doc = new DOMParser().parseFromString(html, 'text/html')
 
-					// Update title and URL
-					const newTitle = doc.querySelector('title')?.textContent
-					if (newTitle) document.title = newTitle
-					if (currentPath !== window.location.pathname)
-						window.history.pushState({}, '', url)
+				// Update title and URL
+				const newTitle = doc.querySelector('title')?.textContent
+				if (newTitle) document.title = newTitle
+				if (currentPath !== window.location.pathname)
+					window.history.pushState({}, '', url)
 
-					const newContent =
-						doc.querySelector(outlet)?.innerHTML ?? ''
-					previousContent = newContent
-					return newContent
-				} catch (err) {
-					const errorMessage = `Navigation failed: ${err instanceof Error ? err.message : String(err)}`
-					error.set(errorMessage)
-					return previousContent // Keep current content on error
-				}
+				return doc.querySelector(outlet)?.innerHTML ?? ''
 			},
 		)
 

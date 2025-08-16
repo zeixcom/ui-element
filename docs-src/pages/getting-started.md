@@ -66,14 +66,14 @@ If you're using a **bundler** like **Vite, Webpack, or Rollup**, install UIEleme
 </div>
 <div role="tabpanel" id="panel_installation-npm" aria-labelledby="trigger_installation-npm">
 
-```bash (user@computer project %)
+```sh ($)
 npm install @zeix/ui-element
 ```
 
 </div>
 <div role="tabpanel" id="panel_installation-bun" aria-labelledby="trigger_installation-bun">
 
-```bash (user@computer project %)
+```sh ($)
 bun add @zeix/ui-element
 ```
 
@@ -171,7 +171,7 @@ If everything is set up correctly, you should see:
 	<div class="preview">
 		<hello-world>
 			<label>Your name<br>
-				<input name="name" type="text">
+				<input name="name" type="text"  autocomplete="given-name">
 			</label>
 			<p>Hello, <span>World</span>!</p>
 		</hello-world>

@@ -12,6 +12,8 @@ export type ModuleTodoProps = {
 	readonly completed: HTMLElement[]
 }
 
+import '../form-textbox/form-textbox'
+
 export default component(
 	'module-todo',
 	{
@@ -38,21 +40,19 @@ export default component(
 			first('form', [
 				on('submit', ({ event }) => {
 					event.preventDefault()
-					queueMicrotask(() => {
-						const value = textbox.value.trim()
-						if (!value) return
-						const li = document.importNode(
-							template.content,
-							true,
-						).firstElementChild
-						if (!(li instanceof HTMLLIElement))
-							throw new Error(
-								'Invalid template for list item; expected <li>',
-							)
-						li.querySelector('slot')?.replaceWith(value)
-						list.append(li)
-						textbox.clear()
-					})
+					const value = textbox.value.trim()
+					if (!value) return
+					const li = document.importNode(
+						template.content,
+						true,
+					).firstElementChild
+					if (!(li instanceof HTMLLIElement))
+						throw new Error(
+							'Invalid template for list item; expected <li>',
+						)
+					li.querySelector('slot')?.replaceWith(value)
+					list.append(li)
+					textbox.clear()
 				}),
 			]),
 

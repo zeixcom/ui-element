@@ -76,7 +76,7 @@ description: 'Common use cases and demos'
 						role="tab"
 						aria-selected="true"
 						aria-controls="slide1"
-						aria-label="Slide1"
+						aria-label="Slide 1"
 						data-index="0"
 						tabindex="0"
 					>

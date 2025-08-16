@@ -803,11 +803,11 @@ var on = (type, handler, options = false) => (host, target) => {
       return;
     batch(() => {
       for (const [key, value] of Object.entries(result)) {
-        const signal = host.getSignal(key);
-        if (isState(signal))
-          signal.set(value);
-        else
-          log(value, `Reactive property "${key}" on ${elementName(host)} from event ${type} on ${elementName(target)} could not be set, because it is read-only.`, LOG_ERROR);
+        try {
+          host[key] = value;
+        } catch (error) {
+          log(error, `Reactive property "${key}" on ${elementName(host)} from event ${type} on ${elementName(target)} could not be set, because it is read-only.`, LOG_ERROR);
+        }
       }
     });
   };

@@ -23,6 +23,11 @@ module-carousel {
 		& h3 {
 			display: block;
 		}
+
+		& a[href].anchor {
+			justify-content: center;
+			padding: 0;
+		}
 	}
 
 	> nav {

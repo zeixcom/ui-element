@@ -1,6 +1,7 @@
 import { ServerWebSocket } from 'bun'
 import { exec } from 'child_process'
 import { watch } from 'fs/promises'
+import { resolve } from 'path'
 import { promisify } from 'util'
 import { brotliCompressSync, gzipSync } from 'zlib'
 
@@ -179,6 +180,26 @@ const server = Bun.serve({
 			return new Response()
 		}
 
+		// Handle Chrome DevTools workspace configuration
+		if (path === '/.well-known/appspecific/com.chrome.devtools.json') {
+			const projectRoot = resolve('.')
+			const config = {
+				version: 1,
+				workspace: {
+					root: projectRoot,
+					uuid: 'ui-element-docs-workspace',
+				},
+			}
+
+			return new Response(JSON.stringify(config, null, 2), {
+				headers: {
+					'Content-Type': 'application/json; charset=UTF-8',
+					'X-Content-Type-Options': 'nosniff',
+					'Cache-Control': 'no-cache, no-store, must-revalidate',
+				},
+			})
+		}
+
 		// Check if client accepts compression (moved up before HTML handling)
 		const acceptEncoding = req.headers.get('accept-encoding') || ''
 		const supportsGzip = acceptEncoding.includes('gzip')
@@ -235,6 +256,46 @@ const server = Bun.serve({
 			} catch (error) {
 				console.warn(`⚠️ Not found: ${path}, Error: ${error.message}`)
 				return new Response('Fallback response')
+			}
+		}
+
+		// Handle source file serving for DevTools workspace sync
+		if (path.startsWith('/src/') || path.startsWith('/docs-src/')) {
+			try {
+				const filePath = `.${path}`
+				const file = Bun.file(filePath)
+
+				// Determine content type for source files
+				const getSourceType = (path: string) => {
+					const ext = path.split('.').pop()
+					switch (ext) {
+						case 'ts':
+							return 'application/typescript; charset=UTF-8'
+						case 'js':
+							return 'application/javascript; charset=UTF-8'
+						case 'css':
+							return 'text/css; charset=UTF-8'
+						case 'html':
+							return 'text/html; charset=UTF-8'
+						case 'md':
+							return 'text/markdown; charset=UTF-8'
+						case 'json':
+							return 'application/json; charset=UTF-8'
+						default:
+							return 'text/plain; charset=UTF-8'
+					}
+				}
+
+				const headers: HeadersInit = {
+					'Content-Type': getSourceType(path),
+					'X-Content-Type-Options': 'nosniff',
+					'Cache-Control': 'no-cache, no-store, must-revalidate',
+				}
+
+				return new Response(await file.bytes(), { headers })
+			} catch {
+				console.warn(`⚠️ Source file not found: ${path}`)
+				return new Response('Source file not found', { status: 404 })
 			}
 		}
 
