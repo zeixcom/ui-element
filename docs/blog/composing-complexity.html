@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Composing Complexity – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../assets/main.css" />
-		<script type="module" src="../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="../assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="../assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="blog">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,13 +116,13 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section class="hero">
+			<main id="main" class="content-grid"><section class="hero">
 
 <h1 id="composing-complexity">
                 <a name="composing-complexity" class="anchor" href="#composing-complexity">
 	                <span class="permalink">🔗</span>
+					<span class="title">Composing Complexity</span>
                 </a>
-                Composing Complexity
             </h1>
 </section>
 </main>

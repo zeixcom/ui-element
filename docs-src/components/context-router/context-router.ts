@@ -2,17 +2,17 @@ import {
 	type Component,
 	type Computed,
 	type Context,
-	type State,
-	UNSET,
 	component,
 	computed,
 	dangerouslySetInnerHTML,
 	on,
 	provideContexts,
+	type State,
 	setText,
 	show,
 	state,
 	toggleClass,
+	UNSET,
 } from '../../..'
 import { fetchWithCache } from '../../functions/shared/fetch-with-cache'
 import { isInternalLink } from '../../functions/shared/is-internal-link'
@@ -88,10 +88,8 @@ export default component(
 	},
 	(el, { all, first }) => {
 		const outlet = el.getAttribute('outlet') ?? 'main'
-		const error = state('')
-
-		// Convert all relative links to absolute URLs during setup
-		for (const link of el.querySelectorAll('a[href]')) {
+		const error = state('') // Convert all relative links to absolute URLs during setup
+		for (const link of Array.from(el.querySelectorAll('a[href]'))) {
 			const href = link.getAttribute('href')
 			if (
 				href &&
@@ -108,82 +106,78 @@ export default component(
 			}
 		}
 
-		const content = computed(async abort => {
-			const currentPath = String(el[ROUTER_PATHNAME])
-			const url = String(new URL(currentPath, window.location.origin))
-			if (abort?.aborted) return content.get()
+		let previousContent = ''
+		const content = computed(
+			async (abort: AbortSignal): Promise<string> => {
+				const currentPath = String(el[ROUTER_PATHNAME])
+				const url = String(new URL(currentPath, window.location.origin))
+				if (abort?.aborted) return previousContent
 
-			try {
-				error.set('')
-				const { content: html } = await fetchWithCache(url, abort)
-				const doc = new DOMParser().parseFromString(html, 'text/html')
+				try {
+					error.set('')
+					const { content: html } = await fetchWithCache(url, abort)
+					const doc = new DOMParser().parseFromString(
+						html,
+						'text/html',
+					)
 
-				// Update title and URL
-				const newTitle = doc.querySelector('title')?.textContent
-				if (newTitle) document.title = newTitle
-				if (currentPath !== window.location.pathname)
-					window.history.pushState({}, '', url)
+					// Update title and URL
+					const newTitle = doc.querySelector('title')?.textContent
+					if (newTitle) document.title = newTitle
+					if (currentPath !== window.location.pathname)
+						window.history.pushState({}, '', url)
 
-				return doc.querySelector(outlet)?.innerHTML ?? ''
-			} catch (err) {
-				const errorMessage = `Navigation failed: ${err instanceof Error ? err.message : String(err)}`
-				error.set(errorMessage)
-				return content.get() // Keep current content on error
-			}
-		})
+					const newContent =
+						doc.querySelector(outlet)?.innerHTML ?? ''
+					previousContent = newContent
+					return newContent
+				} catch (err) {
+					const errorMessage = `Navigation failed: ${err instanceof Error ? err.message : String(err)}`
+					error.set(errorMessage)
+					return previousContent // Keep current content on error
+				}
+			},
+		)
 
 		return [
 			// Provide contexts
 			provideContexts([ROUTER_PATHNAME, ROUTER_QUERY]),
 
 			// Navigate and update 'active' class
-			all(
-				'a[href]:not([href^="#"])',
+			all('a[href]:not([href^="#"])', [
 				toggleClass(
 					'active',
 					target =>
 						isInternalLink(target) &&
 						el[ROUTER_PATHNAME] === target.pathname,
 				),
-				on('click', e => {
-					if (!isInternalLink(e.target)) return
-					const url = new URL(e.target.href)
+				on('click', ({ event, target }) => {
+					if (!isInternalLink(target)) return
+					const url = new URL(target.href)
 					if (url.origin === window.location.origin) {
-						e.preventDefault()
+						event.preventDefault()
 						el[ROUTER_PATHNAME] = url.pathname
 					}
 				}),
-			),
+			]),
 
 			// Render content
-			first(
-				outlet,
-				dangerouslySetInnerHTML(content, { allowScripts: true }),
-			),
+			first(outlet, [dangerouslySetInnerHTML(content)]),
 
 			// Error display with aria-live
-			first(
-				'card-callout',
-				show(() => !!error.get()),
-			),
-			first('.error', setText(error)),
+			first('card-callout', [show(() => !!error.get())]),
+			first('.error', [setText(error)]),
 
 			// Handle browser history navigation
-			() => {
-				const handlePopState = () => {
-					el[ROUTER_PATHNAME] = window.location.pathname
-				}
-				window.addEventListener('popstate', handlePopState)
-				return () => {
-					window.removeEventListener('popstate', handlePopState)
-				}
-			},
+			on('popstate', () => {
+				el[ROUTER_PATHNAME] = window.location.pathname
+			}),
 		]
 	},
 )
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'context-router': Component<{}>
+		'context-router': Component<ContextRouterProps>
 	}
 }

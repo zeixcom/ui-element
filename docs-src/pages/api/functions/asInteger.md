@@ -6,27 +6,33 @@
 
 # Function: asInteger()
 
-> **asInteger**(`fallback?`): [`AttributeParser`](../type-aliases/AttributeParser.md)\<`number`\>
+> **asInteger**\<`E`\>(`fallback?`): [`Parser`](../type-aliases/Parser.md)\<`number`, `E`\>
 
-Defined in: [src/lib/parsers.ts:37](https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/lib/parsers.ts#L37)
+Defined in: [src/lib/parsers.ts:36](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/lib/parsers.ts#L36)
 
-Parse an attribute as as number forced to integer with a fallback
+Parse a string as a number forced to integer with a fallback
 
 Supports hexadecimal and scientific notation
+
+## Type Parameters
+
+### E
+
+`E` *extends* `Element` = `HTMLElement`
 
 ## Parameters
 
 ### fallback?
 
-`number` = `0`
+[`Fallback`](../type-aliases/Fallback.md)\<`number`, `E`\> = `0`
 
-fallback value
+Fallback value or extractor function
 
 ## Returns
 
-[`AttributeParser`](../type-aliases/AttributeParser.md)\<`number`\>
+[`Parser`](../type-aliases/Parser.md)\<`number`, `E`\>
 
-parser function
+Parser function
 
 ## Since
 

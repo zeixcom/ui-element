@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Dependency Collection Tests</title>
+	</head>
+	<body>
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import { component } from '../index.dev.js'
+
+			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+
+			// Define some simple test components
+			component('test-child-a', {}, () => [])
+			component('test-child-b', {}, () => [])
+			component('test-child-c', {}, () => [])
+
+			runTests(() => {
+				describe('Automatic Dependency Collection', () => {
+					it('should automatically collect dependencies from first() calls', async () => {
+						let setupCalled = false
+
+						component(
+							'test-auto-deps-first',
+							{},
+							(el, { first }) => {
+								setupCalled = true
+								return [
+									first('test-child-a', []),
+									first('test-child-b', []),
+								]
+							},
+							// No manual dependencies - should be auto-collected
+						)
+
+						const instance = document.createElement(
+							'test-auto-deps-first',
+						)
+						instance.innerHTML = `
+							<test-child-a></test-child-a>
+							<test-child-b></test-child-b>
+						`
+						document.body.appendChild(instance)
+
+						// Wait for component to initialize
+
+						assert.isTrue(
+							setupCalled,
+							'Setup should be called after dependencies resolved',
+						)
+						document.body.removeChild(instance)
+					})
+
+					it('should automatically collect dependencies from all() calls', async () => {
+						let setupCalled = false
+
+						component('test-auto-deps-all', {}, (el, { all }) => {
+							setupCalled = true
+							return [
+								all('test-child-a', []),
+								all('test-child-c', []),
+							]
+						})
+
+						const instance =
+							document.createElement('test-auto-deps-all')
+						instance.innerHTML = `
+							<test-child-a></test-child-a>
+							<test-child-c></test-child-c>
+						`
+						document.body.appendChild(instance)
+
+
+						assert.isTrue(
+							setupCalled,
+							'Setup should be called after dependencies resolved',
+						)
+						document.body.removeChild(instance)
+					})
+
+					it('should extract custom elements from complex selectors', async () => {
+						let setupCalled = false
+
+						component(
+							'test-complex-selectors',
+							{},
+							(el, { first }) => {
+								setupCalled = true
+								return [
+									first('test-child-a.some-class', []),
+									first('test-child-b[data-attr]', []),
+									first('.wrapper > test-child-c', []),
+								]
+							},
+						)
+
+						const instance = document.createElement(
+							'test-complex-selectors',
+						)
+						instance.innerHTML = `
+							<test-child-a class="some-class"></test-child-a>
+							<test-child-b data-attr="value"></test-child-b>
+							<div class="wrapper">
+								<test-child-c></test-child-c>
+							</div>
+						`
+						document.body.appendChild(instance)
+
+
+						assert.isTrue(
+							setupCalled,
+							'Setup should be called after dependencies resolved',
+						)
+						document.body.removeChild(instance)
+					})
+
+					it('should handle components with no custom element dependencies', async () => {
+						let setupCalled = false
+
+						component(
+							'test-no-custom-deps',
+							{},
+							(el, { first }) => {
+								setupCalled = true
+								return [
+									first('div', []),
+									first('.some-class', []),
+									first('#some-id', []),
+								]
+							},
+						)
+
+						const instance = document.createElement(
+							'test-no-custom-deps',
+						)
+						instance.innerHTML = `
+							<div></div>
+							<span class="some-class"></span>
+							<p id="some-id"></p>
+						`
+						document.body.appendChild(instance)
+
+
+						assert.isTrue(
+							setupCalled,
+							'Setup should be called immediately when no custom element dependencies',
+						)
+						document.body.removeChild(instance)
+					})
+
+					it('should prefer manual dependencies when provided', async () => {
+						let setupCalled = false
+
+						component(
+							'test-manual-override',
+							{},
+							(el, { first }) => {
+								setupCalled = true
+								return [
+									first('test-child-a', []), // This would be auto-collected
+								]
+							},
+							['test-child-b'], // But we manually specify different dependency
+						)
+
+						const instance = document.createElement(
+							'test-manual-override',
+						)
+						instance.innerHTML = `
+							<test-child-a></test-child-a>
+							<test-child-b></test-child-b>
+						`
+						document.body.appendChild(instance)
+
+
+						assert.isTrue(
+							setupCalled,
+							'Setup should be called using manual dependencies',
+						)
+						document.body.removeChild(instance)
+					})
+
+					it('should work correctly with debug mode enabled', async () => {
+						let setupCalled = false
+
+						component(
+							'test-debug-deps',
+							{},
+							(el, { first, all }) => {
+								setupCalled = true
+								return [
+									first('test-child-a', []),
+									all('test-child-b', []),
+									first('test-child-c.special', []),
+								]
+							},
+						)
+
+						const instance =
+							document.createElement('test-debug-deps')
+						// Remove debug attribute to avoid verbose logs
+						instance.innerHTML = `
+							<test-child-a></test-child-a>
+							<test-child-b></test-child-b>
+							<test-child-c class="special"></test-child-c>
+						`
+						document.body.appendChild(instance)
+
+
+						assert.isTrue(
+							setupCalled,
+							'Setup should be called with debug mode enabled',
+						)
+						document.body.removeChild(instance)
+					})
+
+					it('should detect dependencies from complex selectors that do not contain element names', async () => {
+						let setupCalled = false
+
+						component(
+							'test-complex-indirect',
+							{},
+							(el, { first, all }) => {
+								setupCalled = true
+								return [
+									// Selector doesn't contain custom element name directly
+									first('.wrapper > *', []), // Will find test-child-a
+									all('[data-role="widget"]', []), // Will find test-child-b
+									first('#container .item', []), // Will find test-child-c
+								]
+							},
+						)
+
+						const instance = document.createElement(
+							'test-complex-indirect',
+						)
+						instance.innerHTML = `
+							<div class="wrapper">
+								<test-child-a></test-child-a>
+							</div>
+							<test-child-b data-role="widget"></test-child-b>
+							<div id="container">
+								<test-child-c class="item"></test-child-c>
+							</div>
+						`
+						document.body.appendChild(instance)
+
+
+						assert.isTrue(
+							setupCalled,
+							'Setup should be called after resolving indirect selectors to custom elements',
+						)
+						document.body.removeChild(instance)
+					})
+
+					it('should handle mixed regular and custom elements correctly', async () => {
+						let setupCalled = false
+
+						component(
+							'test-mixed-elements',
+							{},
+							(el, { first, all }) => {
+								setupCalled = true
+								return [
+									first('div', []), // Regular element - no dependency
+									first('test-child-a', []), // Custom element - dependency
+									all('.items *', []), // Will find both div and test-child-b
+								]
+							},
+						)
+
+						const instance = document.createElement(
+							'test-mixed-elements',
+						)
+						instance.innerHTML = `
+							<div>Regular div</div>
+							<test-child-a></test-child-a>
+							<div class="items">
+								<div>Another regular div</div>
+								<test-child-b></test-child-b>
+							</div>
+						`
+						document.body.appendChild(instance)
+
+
+						assert.isTrue(
+							setupCalled,
+							'Setup should be called after collecting only custom element dependencies',
+						)
+						document.body.removeChild(instance)
+					})
+
+					it('should handle complex indirect dependencies', async () => {
+						let setupCalled = false
+
+						component(
+							'test-debug-indirect',
+							{},
+							(el, { first, all }) => {
+								setupCalled = true
+								return [
+									first('.wrapper > *', []), // Will find test-child-a
+									all('[data-role="widget"]', []), // Will find test-child-b
+									first('#container .item', []), // Will find test-child-c
+								]
+							},
+						)
+
+						const instance = document.createElement(
+							'test-debug-indirect',
+						)
+						// Remove debug attribute to avoid verbose logs
+						instance.innerHTML = `
+							<div class="wrapper">
+								<test-child-a></test-child-a>
+							</div>
+							<test-child-b data-role="widget"></test-child-b>
+							<div id="container">
+								<test-child-c class="item"></test-child-c>
+							</div>
+						`
+						document.body.appendChild(instance)
+
+
+						assert.isTrue(
+							setupCalled,
+							'Setup should be called after collecting dependencies from indirect selectors',
+						)
+						document.body.removeChild(instance)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

@@ -1,8 +1,10 @@
 import {
-	type Component,
 	asInteger,
+	type Component,
 	component,
+	fromDOM,
 	fromEvents,
+	getText,
 	setText,
 } from '../../..'
 
@@ -13,12 +15,10 @@ export type BasicCounterProps = {
 export default component(
 	'basic-counter',
 	{
-		count: fromEvents(
-			el => asInteger()(el, el.querySelector('span')?.textContent),
+		count: fromEvents<number>(
 			'button',
-			{
-				click: ({ value }) => ++value,
-			},
+			{ click: ({ value }) => ++value },
+			fromDOM({ span: getText() }, asInteger()),
 		),
 	},
 	(_, { first }) => [first('span', setText('count'))],

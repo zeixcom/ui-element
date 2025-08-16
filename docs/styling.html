@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Styling – UIElement Docs</title>
 		<meta name="description" content="Scoped styles, CSS custom properties" />
-		<link rel="stylesheet" href="./assets/main.css" />
-		<script type="module" src="./assets/main.js"></script>
+		<link
+			rel="preload"
+			href="./assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="./assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="./assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="./assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,28 +116,28 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section-hero>
+			<main id="main" class="content-grid"><section-hero>
 
 <h1 id="styling">
                 <a name="styling" class="anchor" href="#styling">
 	                <span class="permalink">🔗</span>
+					<span class="title">🎨 Styling</span>
                 </a>
-                🎨 Styling
             </h1>
 <div>
   <p class="lead"><strong>Keep your components’ styles self-contained while supporting shared design tokens.</strong> UIElement offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
   
 <module-toc>
 	<nav>
-		<h2>In this Page</h2>
+		<h2>In This Page</h2>
 		<ol>
 			<li><a href="#design-principles">Design Principles</a></li>
-			<li><a href="#scope-styles-to-custom-element">Scope Styles to Custom Element</a></li>
-			<li><a href="#encapsulate-styles-with-shadow-dom">Encapsulate Styles with Shadow DOM</a></li>
-			<li><a href="#shared-design-tokens-with-css-custom-properties">Shared Design Tokens with CSS Custom Properties</a></li>
-			<li><a href="#defined-variants-with-classes">Defined Variants with Classes</a></li>
-			<li><a href="#css-only-components">CSS-only Components</a></li>
-			<li><a href="#next-steps">Next Steps</a></li>
+<li><a href="#scope-styles-to-custom-element">Scope Styles to Custom Element</a></li>
+<li><a href="#encapsulate-styles-with-shadow-dom">Encapsulate Styles with Shadow DOM</a></li>
+<li><a href="#shared-design-tokens-with-css-custom-properties">Shared Design Tokens with CSS Custom Properties</a></li>
+<li><a href="#defined-variants-with-classes">Defined Variants with Classes</a></li>
+<li><a href="#css-only-components">CSS-only Components</a></li>
+<li><a href="#next-steps">Next Steps</a></li>
 		</ol>
 	</nav>
 </module-toc>
@@ -131,8 +149,8 @@
 <h2 id="design-principles">
                 <a name="design-principles" class="anchor" href="#design-principles">
 	                <span class="permalink">🔗</span>
+					<span class="title">Design Principles</span>
                 </a>
-                Design Principles
             </h2>
 <p>UIElement is focused on <strong>state management and reactivity</strong>, not styling. However, to <strong>ensure consistent, maintainable, and reusable styles</strong>, we recommend techniques that <strong>scope component styles properly while allowing shared design tokens</strong> (e.g., spacing, font sizes, colors, layout grids).</p>
 <ul>
@@ -148,8 +166,8 @@
 <h2 id="scope-styles-to-custom-element">
                 <a name="scope-styles-to-custom-element" class="anchor" href="#scope-styles-to-custom-element">
 	                <span class="permalink">🔗</span>
+					<span class="title">Scope Styles to Custom Element</span>
                 </a>
-                Scope Styles to Custom Element
             </h2>
 <p>Use the <strong>custom element name</strong> to scope component styles if <strong>you control the page and the components within</strong>. This protects against component styles leaking out, while still allowing to use the CSS cascade. No need for Shadow DOM, no duplicate style rules.</p>
 <module-codeblock language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -175,8 +193,8 @@
 <h3 id="advantages-of-custom-element-names">
                 <a name="advantages-of-custom-element-names" class="anchor" href="#advantages-of-custom-element-names">
 	                <span class="permalink">🔗</span>
+					<span class="title">Advantages of Custom Element Names</span>
                 </a>
-                Advantages of Custom Element Names
             </h3>
 <ul>
 <li>By definition <strong>unique within the document</strong> with a descriptive name.</li>
@@ -195,8 +213,8 @@
 <h2 id="encapsulate-styles-with-shadow-dom">
                 <a name="encapsulate-styles-with-shadow-dom" class="anchor" href="#encapsulate-styles-with-shadow-dom">
 	                <span class="permalink">🔗</span>
+					<span class="title">Encapsulate Styles with Shadow DOM</span>
                 </a>
-                Encapsulate Styles with Shadow DOM
             </h2>
 <p>Use <strong>Shadow DOM</strong> to encapsulate styles if your component is going to be used in a pages <strong>where you don&#39;t control the styles</strong>. This way you make sure page styles don&#39;t leak in and component styles don&#39;t leak out.</p>
 <module-codeblock collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -237,15 +255,15 @@
 <h2 id="shared-design-tokens-with-css-custom-properties">
                 <a name="shared-design-tokens-with-css-custom-properties" class="anchor" href="#shared-design-tokens-with-css-custom-properties">
 	                <span class="permalink">🔗</span>
+					<span class="title">Shared Design Tokens with CSS Custom Properties</span>
                 </a>
-                Shared Design Tokens with CSS Custom Properties
             </h2>
 <p>Web Components can&#39;t inherit global styles inside <strong>Shadow DOM</strong>, but CSS custom properties allow components to remain <strong>flexible and themeable</strong>.</p>
 <h3 id="defining-design-tokens">
                 <a name="defining-design-tokens" class="anchor" href="#defining-design-tokens">
 	                <span class="permalink">🔗</span>
+					<span class="title">Defining Design Tokens</span>
                 </a>
-                Defining Design Tokens
             </h3>
 <p>Set global tokens in a stylesheet:</p>
 <module-codeblock language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -269,8 +287,8 @@
 <h3 id="using-tokens-in-a-component">
                 <a name="using-tokens-in-a-component" class="anchor" href="#using-tokens-in-a-component">
 	                <span class="permalink">🔗</span>
+					<span class="title">Using Tokens in a Component</span>
                 </a>
-                Using Tokens in a Component
             </h3>
 <module-codeblock language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
@@ -296,8 +314,8 @@
 <h3 id="advantages-of-css-custom-properties">
                 <a name="advantages-of-css-custom-properties" class="anchor" href="#advantages-of-css-custom-properties">
 	                <span class="permalink">🔗</span>
+					<span class="title">Advantages of CSS Custom Properties</span>
                 </a>
-                Advantages of CSS Custom Properties
             </h3>
 <ul>
 <li><strong>Supports theming</strong> – users can override styles globally.</li>
@@ -310,8 +328,8 @@
 <h2 id="defined-variants-with-classes">
                 <a name="defined-variants-with-classes" class="anchor" href="#defined-variants-with-classes">
 	                <span class="permalink">🔗</span>
+					<span class="title">Defined Variants with Classes</span>
                 </a>
-                Defined Variants with Classes
             </h2>
 <p>Use <strong>classes</strong> if your components can appear in a <strong>limited set of specific manifestations</strong>. For example, buttons could come in certain sizes and have primary, secondary and tertiary variants.</p>
 <module-codeblock collapsed language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -353,8 +371,8 @@
 <h2 id="css-only-components">
                 <a name="css-only-components" class="anchor" href="#css-only-components">
 	                <span class="permalink">🔗</span>
+					<span class="title">CSS-only Components</span>
                 </a>
-                CSS-only Components
             </h2>
 <p>Just because UIElement is a JavaScript library doesn&#39;t mean you have to use JavaScript in every component. It&#39;s perfectly fine to use custom elements just for styling purposes.</p>
 <p>Here&#39;s the example of the <code>&lt;card-callout&gt;</code> we&#39;re using in this documentation:</p>
@@ -384,8 +402,8 @@
 <h2 id="next-steps">
                 <a name="next-steps" class="anchor" href="#next-steps">
 	                <span class="permalink">🔗</span>
+					<span class="title">Next Steps</span>
                 </a>
-                Next Steps
             </h2>
 <p>Now that you know how to style components, explore:</p>
 <ul>

@@ -4,7 +4,7 @@
 
 # UIElement
 
-Version 0.13.4
+Version 0.14.0
 
 **UIElement** - a HTML-first library for reactive Web Components
 
@@ -65,7 +65,8 @@ import { asInteger, component, on, setText } from '@zeix/ui-element'
 export default component(
   'basic-counter',
   {
-    count: asInteger(), // Get initial value from count attribute
+    // Get initial value from count attribute
+    count: asInteger(),
   },
   (el, { first }) => [
     // Update count display when state changes
@@ -348,10 +349,13 @@ export default component(
       dangerouslySetInnerHTML(content),
       first(
         'card-callout',
-        show(() => !!error.get() || content.get() === UNSET),
-        toggleClass('danger', () => !error.get()),
+        [
+          show(() => !!error.get() || content.get() === UNSET),
+          toggleClass('danger', () => !error.get()),
+        ],
+        'Needed to display loading state and error messages.',
       ),
-      first('.error', setText(error)),
+      first('.error', setText(error), 'Needed to display error messages.'),
     ]
   },
 )

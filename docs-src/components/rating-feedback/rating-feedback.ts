@@ -1,68 +1,53 @@
-import {
-	type Component,
-	component,
-	on,
-	setProperty,
-	show,
-	state,
-} from '../../../'
-import type { BasicButtonProps } from '../basic-button/basic-button'
-import type { RatingStarsProps } from '../rating-stars/rating-stars'
+import { component, on, pass, show, state } from '../../..'
 
-export default component('rating-feedback', {}, (el, { all, first }) => {
-	const rating = state(0)
-	const empty = state(true)
-	const submitted = state(false)
-	const stars = el.querySelector<Component<RatingStarsProps>>('rating-stars')
-	if (!stars) throw new Error('No rating-stars component found')
+export default component(
+	'rating-feedback',
+	{},
+	(_, { all, first, useElement }) => {
+		const rating = state(0)
+		const empty = state(true)
+		const submitted = state(false)
+		const feedback = useElement('.feedback')
+		useElement('rating-stars', 'Needed for  stars rating.')
 
-	return [
-		// Event listeners for rating changes and form submission
-		on('change-rating', e => {
-			rating.set(e.detail)
-		}),
-		on('submit', e => {
-			e.preventDefault()
-			submitted.set(true)
-			console.log('Feedback submitted')
-		}),
-
-		// Event listener for hide button
-		first(
-			'.hide',
-			on('click', () => {
-				const feedback = el.querySelector<HTMLElement>('.feedback')
-				if (feedback) feedback.hidden = true
+		return [
+			// Event listeners for rating changes and form submission
+			on('change-rating', ({ event }) => {
+				rating.set(event.detail)
 			}),
-		),
-
-		// Event listener for textarea
-		first(
-			'textarea',
-			on('input', e => {
-				empty.set(
-					(e.target as HTMLTextAreaElement)?.value.trim() === '',
-				)
+			on('submit', ({ event }) => {
+				event.preventDefault()
+				submitted.set(true)
+				console.log('Feedback submitted')
 			}),
-		),
 
-		// Effects on rating changes
-		first(
-			'.feedback',
-			show(() => !submitted.get() && !!rating.get()),
-		),
-		all(
-			'.feedback p',
-			show(
-				target =>
-					rating.get() === parseInt(target.dataset['key'] || '0'),
-			),
-		),
+			// Event listener for hide button
+			first('.hide', [
+				on('click', () => {
+					if (feedback) feedback.hidden = true
+				}),
+			]),
 
-		// Effect on empty state
-		first<Component<BasicButtonProps>>(
-			'basic-button',
-			setProperty('disabled', empty),
-		),
-	]
-})
+			// Event listener for textarea
+			first('textarea', [
+				on('input', ({ target }) => {
+					empty.set(target.value.trim() === '')
+				}),
+			]),
+
+			// Effects on rating changes
+			first('.feedback', [
+				show(() => !submitted.get() && !!rating.get()),
+			]),
+			all('.feedback p', [
+				show(
+					target =>
+						rating.get() === parseInt(target.dataset['key'] || '0'),
+				),
+			]),
+
+			// Effect on empty state
+			first('basic-button', [pass({ disabled: empty })]),
+		]
+	},
+)

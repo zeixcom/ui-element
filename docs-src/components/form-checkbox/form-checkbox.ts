@@ -1,10 +1,12 @@
 import {
-	type Component,
-	RESET,
+	asBoolean,
 	asString,
+	type Component,
 	component,
+	fromDOM,
 	fromEvents,
-	requireDescendant,
+	getLabel,
+	getProperty,
 	setText,
 	toggleAttribute,
 } from '../../..'
@@ -17,15 +19,15 @@ export type FormCheckboxProps = {
 export default component(
 	'form-checkbox',
 	{
-		checked: fromEvents(el => el.querySelector('input')?.checked, 'input', {
-			change: ({ target }) => target.checked,
-		}),
-		label: asString(RESET),
+		checked: fromEvents(
+			'input',
+			{ change: ({ target }) => target.checked },
+			fromDOM({ input: getProperty('checked') }, asBoolean()),
+		),
+		label: asString(getLabel('input')),
 	},
-	(el, { first }) => {
-		requireDescendant(el, 'input[type="checkbox"]')
-		requireDescendant(el, '.label')
-
+	(_, { first, useElement }) => {
+		useElement('input[type="checkbox"]', 'Native checkbox needed.')
 		return [toggleAttribute('checked'), first('.label', setText('label'))]
 	},
 )

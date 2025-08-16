@@ -1,11 +1,11 @@
-import type { AttributeParser } from '../component'
+import { type Fallback, getFallback, type Parser } from '../core/dom'
 
 /* === Internal Function === */
 
 const parseNumber = (
 	parseFn: (v: string) => number,
 	value: string | null | undefined,
-): number | undefined => {
+) => {
 	if (value == null) return
 	const parsed = parseFn(value)
 	return Number.isFinite(parsed) ? parsed : undefined
@@ -17,71 +17,81 @@ const parseNumber = (
  * Parse a boolean attribute as an actual boolean value
  *
  * @since 0.13.1
- * @returns {AttributeParser<boolean>}
+ * @returns {Parser<boolean>}
  */
 const asBoolean =
-	(): AttributeParser<boolean> =>
-	(_: HTMLElement, value: string | null | undefined): boolean =>
+	(): Parser<boolean> => (_: HTMLElement, value: string | null | undefined) =>
 		value != null && value !== 'false'
 
 /**
- * Parse an attribute as as number forced to integer with a fallback
+ * Parse a string as a number forced to integer with a fallback
  *
  * Supports hexadecimal and scientific notation
  *
  * @since 0.11.0
- * @param {number} [fallback=0] - fallback value
- * @returns {AttributeParser<number>} parser function
+ * @param {Fallback<number, E>} [fallback=0] - Fallback value or extractor function
+ * @returns {Parser<number, E>} Parser function
  */
 const asInteger =
-	(fallback: number = 0): AttributeParser<number> =>
-	(_: HTMLElement, value: string | null | undefined): number => {
-		if (value == null) return fallback
+	<E extends Element = HTMLElement>(
+		fallback: Fallback<number, E> = 0,
+	): Parser<number, E> =>
+	(element: E, value: string | null | undefined) => {
+		if (value == null) return getFallback(element, fallback)
 
 		// Handle hexadecimal notation
 		const trimmed = value.trim()
 		if (trimmed.toLowerCase().startsWith('0x'))
-			return parseNumber(v => parseInt(v, 16), trimmed) ?? fallback
+			return (
+				parseNumber(v => parseInt(v, 16), trimmed) ??
+				getFallback(element, fallback)
+			)
 
 		// Handle other formats (including scientific notation)
 		const parsed = parseNumber(parseFloat, value)
-		return parsed != null ? Math.trunc(parsed) : fallback
+		return parsed != null
+			? Math.trunc(parsed)
+			: getFallback(element, fallback)
 	}
 
 /**
- * Parse an attribute as as number with a fallback
+ * Parse a string as a number with a fallback
  *
  * @since 0.11.0
- * @param {number} [fallback=0] - fallback value
- * @returns {AttributeParser<number>} parser function
+ * @param {Fallback<number, E>} [fallback=0] - Fallback value or extractor function
+ * @returns {Parser<number, E>} Parser function
  */
 const asNumber =
-	(fallback: number = 0): AttributeParser<number> =>
-	(_: HTMLElement, value: string | null | undefined): number =>
-		parseNumber(parseFloat, value) ?? fallback
+	<E extends Element = HTMLElement>(
+		fallback: Fallback<number, E> = 0,
+	): Parser<number, E> =>
+	(element: E, value: string | null | undefined) =>
+		parseNumber(parseFloat, value) ?? getFallback(element, fallback)
 
 /**
- * Parse an attribute as a string with a fallback
+ * Parse a string as a string with a fallback
  *
  * @since 0.11.0
- * @param {string} [fallback=''] - fallback value
- * @returns {AttributeParser<string>} parser function
+ * @param {Fallback<string, E>} [fallback=''] - Fallback value or extractor function
+ * @returns {Parser<string, E>} Parser function
  */
 const asString =
-	(fallback: string = ''): AttributeParser<string> =>
-	(_: HTMLElement, value: string | null | undefined): string =>
-		value ?? fallback
+	<E extends Element = HTMLElement>(
+		fallback: Fallback<string, E> = '',
+	): Parser<string, E> =>
+	(element: E, value: string | null | undefined) =>
+		value ?? getFallback(element, fallback)
 
 /**
- * Parse an attribute as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option
+ * Parse a string as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option
  *
  * @since 0.9.0
- * @param {string[]} valid - array of valid values
- * @returns {AttributeParser<string>} parser function
+ * @param {[string, ...string[]]} valid - Array of valid values
+ * @returns {Parser<string>} Parser function
  */
 const asEnum =
-	(valid: [string, ...string[]]): AttributeParser<string> =>
-	(_: HTMLElement, value: string | null | undefined): string => {
+	(valid: [string, ...string[]]): Parser<string> =>
+	(_: Element, value: string | null | undefined) => {
 		if (value == null) return valid[0]
 		const lowerValue = value.toLowerCase()
 		const matchingValid = valid.find(v => v.toLowerCase() === lowerValue)
@@ -89,24 +99,25 @@ const asEnum =
 	}
 
 /**
- * Parse an attribute as a JSON serialized object with a fallback
+ * Parse a string as a JSON serialized object with a fallback
  *
  * @since 0.11.0
- * @param {T} fallback - fallback value
- * @returns {AttributeParser<T>} parser function
- * @throws {ReferenceError} if the value and fallback are both null or undefined
- * @throws {SyntaxError} if the value is not a valid JSON object
+ * @param {Fallback<T, E>} fallback - Fallback value or extractor function
+ * @returns {Parser<T, E>} Parser function
+ * @throws {TypeError} If the value and fallback are both null or undefined
+ * @throws {SyntaxError} If value is not a valid JSON string
  */
 const asJSON =
-	<T extends {}>(fallback: T): AttributeParser<T> =>
-	(_: HTMLElement, value: string | null | undefined): T => {
+	<T extends {}, E extends Element = HTMLElement>(
+		fallback: Fallback<T, E>,
+	): Parser<T, E> =>
+	(element: E, value: string | null | undefined) => {
 		if ((value ?? fallback) == null)
-			throw new ReferenceError(
-				'Value and fallback are both null or undefined',
+			throw new TypeError(
+				'asJSON: Value and fallback are both null or undefined',
 			)
-		if (value == null) return fallback
-		if (value === '')
-			throw new SyntaxError('Empty string is not valid JSON')
+		if (value == null) return getFallback(element, fallback)
+		if (value === '') throw new TypeError('Empty string is not valid JSON')
 		let result: T | undefined
 		try {
 			result = JSON.parse(value)
@@ -115,7 +126,7 @@ const asJSON =
 				cause: error,
 			})
 		}
-		return result ?? fallback
+		return result ?? getFallback(element, fallback)
 	}
 
 export { asBoolean, asInteger, asNumber, asString, asEnum, asJSON }

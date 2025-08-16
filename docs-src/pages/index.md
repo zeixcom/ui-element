@@ -24,9 +24,10 @@ UIElement is a lightweight TypeScript library (approximately 4kB gzipped) that b
 - Create reusable component patterns without complex abstractions
 - Progressively enhance server-rendered content with client-side interactivity
 
-```js
-// Transform HTML into reactive components with minimal code
-component('hello-world', { name: RESET }, (el, { first }) => [
+```js (hello-world.js)
+import { asString, component, setText } from '@zeix/ui-element'
+
+component('hello-world', { name: asString() }, (_, { first }) => [
   first('span', setText('name')),
 ])
 ```
@@ -43,7 +44,7 @@ UIElement augments what the platform already provides. It leverages the Web Comp
 
 UIElement assumes you start with semantic HTML and want to enhance it with behavior:
 
-```html
+```html (hello-world.html)
 <hello-world>
   <p>Hello, <span>Alice</span>!</p>
 </hello-world>

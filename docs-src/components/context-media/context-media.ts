@@ -1,9 +1,9 @@
 import {
 	type Component,
 	type Context,
-	type State,
 	component,
 	provideContexts,
+	type State,
 	state,
 } from '../../../'
 

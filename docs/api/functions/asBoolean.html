@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>asBoolean – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,30 +116,30 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section class="api-content">
+			<main id="main" class="content-grid"><section class="api-content">
 <h1 id="function-asboolean">
                 <a name="function-asboolean" class="anchor" href="#function-asboolean">
 	                <span class="permalink">🔗</span>
+					<span class="title">Function: asBoolean()</span>
                 </a>
-                Function: asBoolean()
             </h1>
 <blockquote>
-<p><strong>asBoolean</strong>(): <a href="../type-aliases/AttributeParser.html"><code>AttributeParser</code></a>&lt;<code>boolean</code>&gt;</p>
+<p><strong>asBoolean</strong>(): <a href="../type-aliases/Parser.html"><code>Parser</code></a>&lt;<code>boolean</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/lib/parsers.ts#L23">src/lib/parsers.ts:23</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/lib/parsers.ts#L23">src/lib/parsers.ts:23</a></p>
 <p>Parse a boolean attribute as an actual boolean value</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
                 </a>
-                Returns
             </h2>
-<p><a href="../type-aliases/AttributeParser.html"><code>AttributeParser</code></a>&lt;<code>boolean</code>&gt;</p>
+<p><a href="../type-aliases/Parser.html"><code>Parser</code></a>&lt;<code>boolean</code>&gt;</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
+					<span class="title">Since</span>
                 </a>
-                Since
             </h2>
 <p>0.13.1</p>
 

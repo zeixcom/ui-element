@@ -1,0 +1,10 @@
+import { type Extractor, type LooseExtractor } from '../core/dom';
+declare const getText: <E extends Element = Element>() => LooseExtractor<string, E>;
+declare const getProperty: <E extends Element, K extends keyof E & string>(prop: K) => LooseExtractor<E[K], E>;
+declare const hasAttribute: (attr: string) => Extractor<boolean, Element>;
+declare const getAttribute: <E extends Element = Element>(attr: string) => LooseExtractor<string, E>;
+declare const hasClass: (token: string) => Extractor<boolean, Element>;
+declare const getStyle: <E extends HTMLElement | SVGElement | MathMLElement = HTMLElement>(prop: string) => Extractor<string, E>;
+declare const getLabel: <E extends HTMLElement>(selector: string) => Extractor<string, E>;
+declare const getDescription: <E extends HTMLElement>(selector: string) => Extractor<string, E>;
+export { getText, getProperty, hasAttribute, getAttribute, hasClass, getStyle, getLabel, getDescription, };

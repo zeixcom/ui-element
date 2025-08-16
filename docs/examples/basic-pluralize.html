@@ -1,0 +1,81 @@
+
+<module-tabgroup>
+	<div role="tablist">
+		
+			<button
+				type="button"
+				role="tab"
+				id="trigger_basic-pluralize.html"
+				aria-controls="panel_basic-pluralize.html"
+				aria-selected="false"
+				tabindex="-1"
+			>HTML</button>
+		
+			<button
+				type="button"
+				role="tab"
+				id="trigger_basic-pluralize.ts"
+				aria-controls="panel_basic-pluralize.ts"
+				aria-selected="true"
+				tabindex="0"
+			>TypeScript</button>
+	</div>
+	
+<div role="tabpanel" id="panel_basic-pluralize.html" aria-labelledby="trigger_basic-pluralize.html" hidden>
+	<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">basic-pluralize.html</span>
+			<span class="language">html</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">basic-pluralize</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"none"</span><span style="color:#F8F8F2">>Well done, all done!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"some"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"count"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"singular"</span><span style="color:#F8F8F2">>task&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">span</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"plural"</span><span style="color:#F8F8F2">>tasks&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		remaining</span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">basic-pluralize</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+		<basic-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</basic-button>
+	</module-codeblock>
+</div>
+
+<div role="tabpanel" id="panel_basic-pluralize.ts" aria-labelledby="trigger_basic-pluralize.ts">
+	<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">basic-pluralize.ts</span>
+			<span class="language">ts</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { </span><span style="color:#F92672">type</span><span style="color:#F8F8F2"> Component, component, setText, show } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">BasicPluralizeProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	count</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E;text-decoration:underline">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'basic-pluralize'</span><span style="color:#F8F8F2">, { count</span><span style="color:#F92672">:</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2"> }, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span>	</span><span style="color:#A6E22E;text-decoration:underline">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, [</span><span style="color:#A6E22E;text-decoration:underline">setText</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span> </span><span style="color:#A6E22E;text-decoration:underline">String</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E;text-decoration:underline">el</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E;text-decoration:underline">count</span><span style="color:#F8F8F2">))]),</span></span>
+<span class="line"><span>	</span><span style="color:#A6E22E;text-decoration:underline">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.none'</span><span style="color:#F8F8F2">, [</span><span style="color:#A6E22E;text-decoration:underline">show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span> </span><span style="color:#A6E22E;text-decoration:underline">el</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E;text-decoration:underline">count</span><span style="color:#F8F8F2"> === </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)]),</span></span>
+<span class="line"><span>	</span><span style="color:#A6E22E;text-decoration:underline">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.some'</span><span style="color:#F8F8F2">, [</span><span style="color:#A6E22E;text-decoration:underline">show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span> </span><span style="color:#A6E22E;text-decoration:underline">el</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E;text-decoration:underline">count</span><span style="color:#F8F8F2"> > </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)]),</span></span>
+<span class="line"><span>	</span><span style="color:#A6E22E;text-decoration:underline">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.singular'</span><span style="color:#F8F8F2">, [</span><span style="color:#A6E22E;text-decoration:underline">show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span> </span><span style="color:#A6E22E;text-decoration:underline">el</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E;text-decoration:underline">count</span><span style="color:#F8F8F2"> === </span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">)]),</span></span>
+<span class="line"><span>	</span><span style="color:#A6E22E;text-decoration:underline">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.plural'</span><span style="color:#F8F8F2">, [</span><span style="color:#A6E22E;text-decoration:underline">show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span> </span><span style="color:#A6E22E;text-decoration:underline">el</span><span style="color:#F8F8F2">.</span><span style="color:#A6E22E;text-decoration:underline">count</span><span style="color:#F8F8F2"> > </span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">)]),</span></span>
+<span class="line"><span style="color:#F8F8F2">])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#E6DB74">		'basic-pluralize'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">BasicPluralizeProps</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+		<basic-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</basic-button>
+	</module-codeblock>
+</div>
+</module-tabgroup>

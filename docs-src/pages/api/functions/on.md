@@ -6,9 +6,9 @@
 
 # Function: on()
 
-> **on**\<`K`, `E`\>(`type`, `listener`, `options`): [`Effect`](../type-aliases/Effect.md)\<[`ComponentProps`](../type-aliases/ComponentProps.md), `E`\>
+> **on**\<`K`, `P`, `E`\>(`type`, `handler`, `options`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:646](https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/lib/effects.ts#L646)
+Defined in: [src/core/events.ts:147](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/core/events.ts#L147)
 
 Effect for attaching an event listener to an element.
 Provides proper cleanup when the effect is disposed.
@@ -19,9 +19,13 @@ Provides proper cleanup when the effect is disposed.
 
 `K` *extends* `string`
 
+### P
+
+`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
+
 ### E
 
-`E` *extends* `HTMLElement`
+`E` *extends* `Element` = `HTMLElement`
 
 ## Parameters
 
@@ -31,11 +35,11 @@ Provides proper cleanup when the effect is disposed.
 
 Event type
 
-### listener
+### handler
 
-(`event`) => `void`
+[`EventHandler`](../type-aliases/EventHandler.md)\<`P`, `E`, [`EventType`](../type-aliases/EventType.md)\<`K`\>\>
 
-Event listener function
+Event handler function
 
 ### options
 
@@ -45,10 +49,10 @@ Event listener options
 
 ## Returns
 
-[`Effect`](../type-aliases/Effect.md)\<[`ComponentProps`](../type-aliases/ComponentProps.md), `E`\>
+[`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
 Effect function that manages the event listener
 
 ## Since
 
-0.12.0
+0.14.0

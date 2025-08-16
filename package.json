@@ -1,9 +1,9 @@
 {
 	"name": "@zeix/ui-element",
-	"version": "0.13.4",
+	"version": "0.14.0",
 	"description": "UIElement - a HTML-first library for reactive Web Components",
 	"main": "index.js",
-	"types": "index.d.ts",
+	"types": "types/index.d.ts",
 	"scripts": {
 		"build:prod": "bun build index.ts --outdir ./ --minify --define process.env.DEV_MODE=false --sourcemap=external",
 		"build:dev": "BUN_ENV=development bun build index.dev.ts --outdir ./ --define process.env.DEV_MODE=true",
@@ -12,7 +12,9 @@
 		"build:docs-css": "lightningcss --minify --bundle --targets \">= 0.25%\" docs-src/main.css -o ./docs/assets/main.css",
 		"build:docs-html": "bun ./docs-src/server/generate-pages.ts & bun ./docs-src/server/generate-fragments.ts",
 		"build:docs-api": "typedoc --plugin typedoc-plugin-markdown --out ./docs-src/pages/api/ index.ts",
-		"build:docs": "bun run build:docs-js & bun run build:docs-css & bun run build:docs-html & bun run build:docs-api",
+		"build:docs-optimized": "bun ./docs-src/server/build-optimized-assets.ts",
+		"build:docs": "bun run build:docs-js && bun run build:docs-css && bun run build:docs-optimized && bun run build:docs-html && bun run build:docs-api",
+		"build:docs:fast": "OPTIMIZE_LAYOUT=false bun run build:docs-js && bun run build:docs-css && bun run build:docs-html && bun run build:docs-api",
 		"serve:docs": "bun run --hot ./docs-src/server/serve-docs.ts",
 		"lint": "bunx biome check --write ./src",
 		"test": "bun run test:validate && bun run test:setup && bun run test:ci",
@@ -39,27 +41,29 @@
 	"license": "MIT",
 	"type": "module",
 	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
+		"@biomejs/biome": "2.1.4",
 		"@esm-bundle/chai": "^4.3.4-fix.0",
-		"@types/bun": "^1.2.14",
-		"@types/node": "^22.15.21",
+		"@types/bun": "^1.2.19",
+		"@types/node": "^22.17.0",
 		"@web/test-runner": "^0.19.0",
-		"@web/test-runner-playwright": "^0.11.0",
-		"dotenv": "^16.5.0",
+		"@web/test-runner-playwright": "^0.11.1",
+		"dotenv": "^16.6.1",
 		"globals": "^15.15.0",
 		"gray-matter": "^4.0.3",
 		"lightningcss-cli": "^1.30.1",
 		"marked": "^15.0.12",
-		"playwright": "^1.52.0",
+		"playwright": "^1.54.2",
 		"shiki": "^2.5.0",
-		"typedoc": "^0.28.5",
-		"typedoc-plugin-markdown": "^4.7.0"
+		"typedoc": "^0.28.9",
+		"typedoc-plugin-markdown": "^4.8.0"
 	},
 	"peerDependencies": {
 		"typescript": "^5.7.3"
 	},
 	"dependencies": {
-		"@zeix/cause-effect": "^0.14.1"
+		"@zeix/cause-effect": "^0.14.2"
 	},
-	"trustedDependencies": ["@biomejs/biome"]
+	"trustedDependencies": [
+		"@biomejs/biome"
+	]
 }

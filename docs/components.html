@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Components – UIElement Docs</title>
 		<meta name="description" content="Anatomy, lifecycle, signals, effects" />
-		<link rel="stylesheet" href="./assets/main.css" />
-		<script type="module" src="./assets/main.js"></script>
+		<link
+			rel="preload"
+			href="./assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="./assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="./assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="./assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,28 +116,28 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section-hero>
+			<main id="main" class="content-grid"><section-hero>
 
 <h1 id="components">
                 <a name="components" class="anchor" href="#components">
 	                <span class="permalink">🔗</span>
+					<span class="title">🏗️ Components</span>
                 </a>
-                🏗️ Components
             </h1>
 <div>
   <p class="lead"><strong>Create lightweight, self-contained Web Components with built-in reactivity</strong>. UIElement lets you define custom elements that manage state efficiently, update the DOM automatically, and enhance server-rendered pages without an SPA framework.</p>
   
 <module-toc>
 	<nav>
-		<h2>In this Page</h2>
+		<h2>In This Page</h2>
 		<ol>
 			<li><a href="#defining-a-component">Defining a Component</a></li>
-			<li><a href="#component-lifecycle">Component Lifecycle</a></li>
-			<li><a href="#managing-state-with-signals">Managing State with Signals</a></li>
-			<li><a href="#selecting-elements">Selecting Elements</a></li>
-			<li><a href="#adding-event-listeners">Adding Event Listeners</a></li>
-			<li><a href="#synchronizing-state-with-effects">Synchronizing State with Effects</a></li>
-			<li><a href="#next-steps">Next Steps</a></li>
+<li><a href="#component-lifecycle">Component Lifecycle</a></li>
+<li><a href="#managing-state-with-signals">Managing State with Signals</a></li>
+<li><a href="#selecting-elements">Selecting Elements</a></li>
+<li><a href="#adding-event-listeners">Adding Event Listeners</a></li>
+<li><a href="#synchronizing-state-with-effects">Synchronizing State with Effects</a></li>
+<li><a href="#next-steps">Next Steps</a></li>
 		</ol>
 	</nav>
 </module-toc>
@@ -131,8 +149,8 @@
 <h2 id="defining-a-component">
                 <a name="defining-a-component" class="anchor" href="#defining-a-component">
 	                <span class="permalink">🔗</span>
+					<span class="title">Defining a Component</span>
                 </a>
-                Defining a Component
             </h2>
 <p>UIElement builds on <strong>Web Components</strong>, extending <code>HTMLElement</code> to provide <strong>built-in state management and reactive updates</strong>.</p>
 <p>UIElement creates components using the <code>component()</code> function:</p>
@@ -156,8 +174,8 @@
 <h3 id="using-the-custom-element-in-html">
                 <a name="using-the-custom-element-in-html" class="anchor" href="#using-the-custom-element-in-html">
 	                <span class="permalink">🔗</span>
+					<span class="title">Using the Custom Element in HTML</span>
                 </a>
-                Using the Custom Element in HTML
             </h3>
 <p>Once registered, the component can be used like any native HTML element:</p>
 <module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -174,6 +192,123 @@
 	</basic-button>
 	
 </module-codeblock>
+<h3 id="anatomy-of-a-component">
+                <a name="anatomy-of-a-component" class="anchor" href="#anatomy-of-a-component">
+	                <span class="permalink">🔗</span>
+					<span class="title">Anatomy of a Component</span>
+                </a>
+            </h3>
+<p>Let&#39;s examine a complete component example to understand how UIElement works:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">  'hello-world'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  {</span></span>
+<span class="line"><span style="color:#F8F8F2">    name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">)?.textContent?.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
+<span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> fallback </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.name</span></span>
+<span class="line"><span style="color:#F92672">    return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">        'input'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">        on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> ({ name: target.value </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> fallback })),</span></span>
+<span class="line"><span style="color:#F8F8F2">      ),</span></span>
+<span class="line"><span style="color:#A6E22E">      first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#F8F8F2">    ]</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<h4 id="reactive-properties">
+                <a name="reactive-properties" class="anchor" href="#reactive-properties">
+	                <span class="permalink">🔗</span>
+					<span class="title">Reactive Properties</span>
+                </a>
+            </h4>
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">{</span></span>
+<span class="line"><span style="color:#88846F">  // Create "name" property from attribute "name" as a string, falling back to server-rendered content</span></span>
+<span class="line"><span style="color:#F8F8F2">  name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">)?.textContent?.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<p>This creates a reactive property called <code>name</code>:</p>
+<ul>
+<li><code>asString()</code> observes the attribute <code>name</code> and assigns its value as a string to the <code>name</code> property</li>
+<li><code>el =&gt; ...</code> is an instruction how to get the fallback value in the DOM if there is no name attribute</li>
+<li>UIElement automatically reads &quot;World&quot; from the <code>&lt;span&gt;</code> element as the initial value</li>
+<li>When <code>name</code> changes, any effects that depend on it automatically update</li>
+</ul>
+<h4 id="setup-function">
+                <a name="setup-function" class="anchor" href="#setup-function">
+	                <span class="permalink">🔗</span>
+					<span class="title">Setup Function</span>
+                </a>
+            </h4>
+<p>The setup function takes two arguments:</p>
+<ol>
+<li>The component element. In this example we name it <code>el</code>.</li>
+<li>Helper functions for accessing descendant elements. In this example we use <code>first</code> to find the first descendant matching a selector and apply effects to it.</li>
+</ol>
+<p>The setup function returns an array of effects:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#88846F">  // set the fallback value we want to use instead of an empty string</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> fallback </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.name</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">  return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#88846F">    // Handle user input to change the "name" property</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">      'input'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">      on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> ({ name: target.value </span><span style="color:#F92672">||</span><span style="color:#F8F8F2"> fallback })),</span></span>
+<span class="line"><span style="color:#F8F8F2">    ),</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">    // Update content when the "name" property changes</span></span>
+<span class="line"><span style="color:#A6E22E">    first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#F8F8F2">  ]</span></span>
+<span class="line"><span style="color:#F8F8F2">},</span></span>
+<span class="line"></span></code></pre>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>Effects define <strong>component behaviors</strong>:</p>
+<ul>
+<li><code>first(&#39;input&#39;, on(&#39;input&#39;, ...))</code> finds the first <code>&lt;input&gt;</code> and adds an event listener</li>
+<li><code>first(&#39;span&#39;, setText(&#39;name&#39;))</code> finds the first <code>&lt;span&gt;</code> and keeps its text in sync with the <code>name</code> property</li>
+</ul>
+<p>Characteristics of Effects:</p>
+<ul>
+<li>Effects run when the component is added to the page</li>
+<li>Effects rerun when their dependencies change</li>
+<li>Effects may return a cleanup function to be executed when the target element or the component is removed from the page</li>
+</ul>
 </section>
 
 <section>
@@ -181,15 +316,15 @@
 <h2 id="component-lifecycle">
                 <a name="component-lifecycle" class="anchor" href="#component-lifecycle">
 	                <span class="permalink">🔗</span>
+					<span class="title">Component Lifecycle</span>
                 </a>
-                Component Lifecycle
             </h2>
 <p>UIElement manages the <strong>Web Component lifecycle</strong> from creation to removal. Here&#39;s what happens.</p>
 <h3 id="component-creation">
                 <a name="component-creation" class="anchor" href="#component-creation">
 	                <span class="permalink">🔗</span>
+					<span class="title">Component Creation</span>
                 </a>
-                Component Creation
             </h3>
 <p>In the <code>constructor()</code> reactive properties are initialized. You pass a second argument to the <code>component()</code> function to defines initial values for <strong>component states</strong>.</p>
 <module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -225,14 +360,14 @@
 </ul>
 <card-callout class="caution">
 
-<p><strong>Note</strong>: Property initialization runs <strong>before the element is attached to the DOM</strong>. You can&#39;t access not yet defined properties or child elements here.</p>
+<p><strong>Caution</strong>: Property initialization runs <strong>before the element is attached to the DOM</strong>. You can&#39;t access not yet defined properties or descendant elements here.</p>
 </card-callout>
 
 <h3 id="mounted-in-the-dom">
                 <a name="mounted-in-the-dom" class="anchor" href="#mounted-in-the-dom">
 	                <span class="permalink">🔗</span>
+					<span class="title">Mounted in the DOM</span>
                 </a>
-                Mounted in the DOM
             </h3>
 <p>Runs when the component is added to the page (<code>connectedCallback()</code>). This is where you:</p>
 <ul>
@@ -285,8 +420,8 @@
 <h3 id="removed-from-the-dom">
                 <a name="removed-from-the-dom" class="anchor" href="#removed-from-the-dom">
 	                <span class="permalink">🔗</span>
+					<span class="title">Removed from the DOM</span>
                 </a>
-                Removed from the DOM
             </h3>
 <p>Runs when the component is removed (<code>disconnectedCallback()</code>). UIElement will run all cleanup functions returned by event listeners and effects during the setup phase (<code>connectedCallback()</code>). This will unsubscribe all signals the component is subscribed to, so you don&#39;t need to worry about memory leaks.</p>
 <p>If you added <strong>event listeners</strong> outside the scope of your component or <strong>subscribed manually to external APIs</strong>, you need to return a cleanup function:</p>
@@ -318,8 +453,8 @@
 <h3 id="observed-attributes">
                 <a name="observed-attributes" class="anchor" href="#observed-attributes">
 	                <span class="permalink">🔗</span>
+					<span class="title">Observed Attributes</span>
                 </a>
-                Observed Attributes
             </h3>
 <p>UIElement automatically observes and converts attributes with an associated <strong>parser function</strong> in the init block and updates them whenever the attribute changes (<code>attributeChangedCallback()</code>).</p>
 </section>
@@ -329,8 +464,8 @@
 <h2 id="managing-state-with-signals">
                 <a name="managing-state-with-signals" class="anchor" href="#managing-state-with-signals">
 	                <span class="permalink">🔗</span>
+					<span class="title">Managing State with Signals</span>
                 </a>
-                Managing State with Signals
             </h2>
 <p>UIElement manages state using <strong>signals</strong>, which are atomic reactive states that trigger updates when they change. We use regular properties to access or update them:</p>
 <module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -352,8 +487,8 @@
 <h3 id="characteristics-and-special-values">
                 <a name="characteristics-and-special-values" class="anchor" href="#characteristics-and-special-values">
 	                <span class="permalink">🔗</span>
+					<span class="title">Characteristics and Special Values</span>
                 </a>
-                Characteristics and Special Values
             </h3>
 <p>Signals in UIElement are of a <strong>static type</strong> and <strong>non-nullable</strong>. This allows to <strong>simplify the logic</strong> as you will never have to check the type or perform null-checks.</p>
 <ul>
@@ -368,8 +503,8 @@
 <h3 id="initializing-state-from-attributes">
                 <a name="initializing-state-from-attributes" class="anchor" href="#initializing-state-from-attributes">
 	                <span class="permalink">🔗</span>
+					<span class="title">Initializing State from Attributes</span>
                 </a>
-                Initializing State from Attributes
             </h3>
 <p>The standard way to set initial state in UIElement is via <strong>server-rendered attributes</strong> on the component that needs it. No props drilling as in other frameworks. UIElements provides some bundled attribute parsers to convert attribute values to the desired type. And you can also define your own custom parsers.</p>
 <module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -408,44 +543,10 @@
 <h3 id="bundled-attribute-parsers">
                 <a name="bundled-attribute-parsers" class="anchor" href="#bundled-attribute-parsers">
 	                <span class="permalink">🔗</span>
+					<span class="title">Bundled Attribute Parsers</span>
                 </a>
-                Bundled Attribute Parsers
             </h3>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a href="api/functions/asBoolean.html">asBoolean()</a></td>
-<td>Converts <code>&quot;true&quot;</code> / <code>&quot;false&quot;</code> to a <strong>boolean</strong> (<code>true</code> / <code>false</code>). Also treats empty attributes (<code>checked</code>) as <code>true</code>.</td>
-</tr>
-<tr>
-<td><a href="api/functions/asInteger.html">asInteger()</a></td>
-<td>Converts a numeric string (e.g., <code>&quot;42&quot;</code>) to an <strong>integer</strong> (<code>42</code>).</td>
-</tr>
-<tr>
-<td><a href="api/functions/asNumber.html">asNumber()</a></td>
-<td>Converts a numeric string (e.g., <code>&quot;3.14&quot;</code>) to a <strong>floating-point number</strong> (<code>3.14</code>).</td>
-</tr>
-<tr>
-<td><a href="api/functions/asString.html">asString()</a></td>
-<td>Returns the attribute value as a <strong>string</strong> (unchanged).</td>
-</tr>
-<tr>
-<td><a href="api/functions/asEnum.html">asEnum(values)</a></td>
-<td>Ensures the string matches <strong>one of the allowed values</strong>. Example: <code>asEnum([&quot;small&quot;, &quot;medium&quot;, &quot;large&quot;])</code>. If the value is not in the list, it defaults to the first option.</td>
-</tr>
-<tr>
-<td><a href="api/functions/asJSON.html">asJSON(fallback)</a></td>
-<td>Parses a JSON string (e.g., <code>&#39;[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]&#39;</code>) into an <strong>array</strong> or <strong>object</strong>. If invalid, returns the fallback object.</td>
-</tr>
-</tbody></table>
-<p>The pre-defined parsers <code>asInteger()</code>, <code>asNumber()</code> and <code>asString()</code> allow to set a custom fallback value as parameter.</p>
-<p>The <code>asEnum()</code> parser requires an array of valid values, while the first will be the fallback value for invalid results.</p>
-<p>The <code>asJSON()</code> parser requires a fallback object as parameter as <code>{}</code> probably won&#39;t match the type you&#39;re expecting.</p>
+<p>UIElement provides several built-in parsers for common attribute types. See the <a href="api.html#parsers">Parsers section</a> in the API reference for detailed descriptions and usage examples.</p>
 </section>
 
 <section>
@@ -453,15 +554,15 @@
 <h2 id="selecting-elements">
                 <a name="selecting-elements" class="anchor" href="#selecting-elements">
 	                <span class="permalink">🔗</span>
+					<span class="title">Selecting Elements</span>
                 </a>
-                Selecting Elements
             </h2>
 <p>Use the provided selector utilities to find elements within your component:</p>
 <h3 id="first">
                 <a name="first" class="anchor" href="#first">
 	                <span class="permalink">🔗</span>
+					<span class="title">first()</span>
                 </a>
-                first()
             </h3>
 <p>Selects the first matching element and applies effects:</p>
 <module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -495,8 +596,8 @@
 <h3 id="all">
                 <a name="all" class="anchor" href="#all">
 	                <span class="permalink">🔗</span>
+					<span class="title">all()</span>
                 </a>
-                all()
             </h3>
 <p>Selects all matching elements and applies effects to each:</p>
 <module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -554,8 +655,8 @@
 <h2 id="adding-event-listeners">
                 <a name="adding-event-listeners" class="anchor" href="#adding-event-listeners">
 	                <span class="permalink">🔗</span>
+					<span class="title">Adding Event Listeners</span>
                 </a>
-                Adding Event Listeners
             </h2>
 <p>Event listeners allow to respond to user interactions. They are the cause of changes in the component&#39;s state.</p>
 <module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -596,15 +697,15 @@
 <h2 id="synchronizing-state-with-effects">
                 <a name="synchronizing-state-with-effects" class="anchor" href="#synchronizing-state-with-effects">
 	                <span class="permalink">🔗</span>
+					<span class="title">Synchronizing State with Effects</span>
                 </a>
-                Synchronizing State with Effects
             </h2>
 <p>Effects <strong>automatically update the DOM</strong> when signals change, avoiding manual DOM manipulation.</p>
 <h3 id="applying-effects">
                 <a name="applying-effects" class="anchor" href="#applying-effects">
 	                <span class="permalink">🔗</span>
+					<span class="title">Applying Effects</span>
                 </a>
-                Applying Effects
             </h3>
 <p>Apply one or multiple effects in the setup function (for component itself) or in element selector functions:</p>
 <module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -635,63 +736,15 @@
 <h3 id="bundled-effects">
                 <a name="bundled-effects" class="anchor" href="#bundled-effects">
 	                <span class="permalink">🔗</span>
+					<span class="title">Bundled Effects</span>
                 </a>
-                Bundled Effects
             </h3>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a href="api/functions/setText.html">setText()</a></td>
-<td>Updates <strong>text content</strong> with a <code>string</code> signal value (while preserving comment nodes).</td>
-</tr>
-<tr>
-<td><a href="api/functions/setProperty.html">setProperty()</a></td>
-<td>Updates a given <strong>property</strong> with any signal value.</td>
-</tr>
-<tr>
-<td><a href="api/functions/show.html">show()</a></td>
-<td>Updates the <strong>visibility</strong> of an element with a <code>boolean</code> signal value.</td>
-</tr>
-<tr>
-<td><a href="api/functions/setAttribute.html">setAttribute()</a></td>
-<td>Updates a given <strong>attribute</strong> with a <code>string</code> signal value.</td>
-</tr>
-<tr>
-<td><a href="api/functions/toggleAttribute.html">toggleAttribute()</a></td>
-<td>Toggles a given <strong>boolean attribute</strong> with a <code>boolean</code> signal value.</td>
-</tr>
-<tr>
-<td><a href="api/functions/toggleClass.html">toggleClass()</a></td>
-<td>Toggles a given <strong>CSS class</strong> with a <code>boolean</code> signal value.</td>
-</tr>
-<tr>
-<td><a href="api/functions/setStyle.html">setStyle()</a></td>
-<td>Updates a given <strong>CSS property</strong> with a <code>string</code> signal value.</td>
-</tr>
-<tr>
-<td><a href="api/functions/dangerouslySetInnerHTML.html">dangerouslySetInnerHTML()</a></td>
-<td>Sets <strong>HTML content</strong> with a <code>string</code> signal value.</td>
-</tr>
-<tr>
-<td><a href="api/functions/insertOrRemoveElement.html">insertOrRemoveElement()</a></td>
-<td>Inserts (positive integer) or removes (negative integer) elements with a <code>number</code> signal value.</td>
-</tr>
-</tbody></table>
-<card-callout class="tip">
-
-<p><strong>Tip</strong>: TypeScript will check whether a value of a given type is assignable to a certain element type. You might have to pass a type hint for the queried element type. Prefer <code>setProperty()</code> over <code>setAttribute()</code> for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.</p>
-</card-callout>
-
+<p>UIElement provides many built-in effects for common DOM operations. See the <a href="api.html#effects">Effects section</a> in the API reference for detailed descriptions and usage examples.</p>
 <h3 id="simplifying-effect-notation">
                 <a name="simplifying-effect-notation" class="anchor" href="#simplifying-effect-notation">
 	                <span class="permalink">🔗</span>
+					<span class="title">Simplifying Effect Notation</span>
                 </a>
-                Simplifying Effect Notation
             </h3>
 <p>For effects that take two arguments, <strong>the second argument can be omitted</strong> if the signal key matches the targeted property name, attribute, class, or style property.</p>
 <p>When signal key matches property name:</p>
@@ -713,8 +766,8 @@
 <h3 id="using-local-signals-for-protected-state">
                 <a name="using-local-signals-for-protected-state" class="anchor" href="#using-local-signals-for-protected-state">
 	                <span class="permalink">🔗</span>
+					<span class="title">Using Local Signals for Protected State</span>
                 </a>
-                Using Local Signals for Protected State
             </h3>
 <p>Local signals are useful for storing state that should not be exposed to the outside world. They can be used to manage internal state within a component:</p>
 <module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -748,8 +801,8 @@
 <h3 id="using-functions-for-ad-hoc-derived-state">
                 <a name="using-functions-for-ad-hoc-derived-state" class="anchor" href="#using-functions-for-ad-hoc-derived-state">
 	                <span class="permalink">🔗</span>
+					<span class="title">Using Functions for Ad-hoc Derived State</span>
                 </a>
-                Using Functions for Ad-hoc Derived State
             </h3>
 <p>Instead of a signal key or a local signal, you can <strong>pass a function</strong> that derives a value dynamically:</p>
 <module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -787,8 +840,8 @@
 <h3 id="efficient-fine-grained-updates">
                 <a name="efficient-fine-grained-updates" class="anchor" href="#efficient-fine-grained-updates">
 	                <span class="permalink">🔗</span>
+					<span class="title">Efficient &amp; Fine-Grained Updates</span>
                 </a>
-                Efficient &amp; Fine-Grained Updates
             </h3>
 <p>Unlike some frameworks that <strong>re-render entire components</strong>, UIElement updates only what changes:</p>
 <ul>
@@ -803,8 +856,8 @@
 <h2 id="next-steps">
                 <a name="next-steps" class="anchor" href="#next-steps">
 	                <span class="permalink">🔗</span>
+					<span class="title">Next Steps</span>
                 </a>
-                Next Steps
             </h2>
 <p>Now that you understand the basics, explore:</p>
 <ul>

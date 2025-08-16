@@ -6,11 +6,11 @@
 
 # Function: asEnum()
 
-> **asEnum**(`valid`): [`AttributeParser`](../type-aliases/AttributeParser.md)\<`string`\>
+> **asEnum**(`valid`): [`Parser`](../type-aliases/Parser.md)\<`string`\>
 
-Defined in: [src/lib/parsers.ts:83](https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/lib/parsers.ts#L83)
+Defined in: [src/lib/parsers.ts:93](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/lib/parsers.ts#L93)
 
-Parse an attribute as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option
+Parse a string as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option
 
 ## Parameters
 
@@ -18,13 +18,13 @@ Parse an attribute as a multi-state value (for examnple: true, false, mixed), de
 
 \[`string`, `...string[]`\]
 
-array of valid values
+Array of valid values
 
 ## Returns
 
-[`AttributeParser`](../type-aliases/AttributeParser.md)\<`string`\>
+[`Parser`](../type-aliases/Parser.md)\<`string`\>
 
-parser function
+Parser function
 
 ## Since
 

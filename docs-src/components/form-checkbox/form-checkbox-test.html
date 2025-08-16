@@ -50,7 +50,6 @@
 			// Helper to simulate checkbox click
 			const clickCheckbox = async checkbox => {
 				checkbox.click()
-				await tick()
 			}
 
 			// Helper to reset checkbox component state
@@ -60,7 +59,6 @@
 				if (el.checked && input) {
 					input.click()
 				}
-				await tick()
 			}
 
 			runTests(() => {
@@ -97,7 +95,6 @@
 						const el = document.getElementById('test1')
 						const input = el.querySelector('input')
 
-						await tick()
 
 						assert.equal(el.checked, false)
 						assert.equal(el.label, '')
@@ -109,7 +106,6 @@
 						const el = document.getElementById('test1')
 						const input = el.querySelector('input')
 
-						await tick()
 
 						// Initially should not be checked
 						assert.equal(el.checked, false)
@@ -137,13 +133,11 @@
 
 						// Set label programmatically
 						el.label = 'New Label Text'
-						await tick()
 
 						assert.equal(labelEl.textContent, 'New Label Text')
 
 						// Clear label
 						el.label = ''
-						await tick()
 
 						assert.equal(labelEl.textContent, '')
 					})
@@ -176,15 +170,12 @@
 
 						// Test various string values
 						el.label = 'Simple task'
-						await tick()
 						assert.equal(labelEl.textContent, 'Simple task')
 
 						el.label = '123 items'
-						await tick()
 						assert.equal(labelEl.textContent, '123 items')
 
 						el.label = 'Special chars: !@#$%'
-						await tick()
 						assert.equal(
 							labelEl.textContent,
 							'Special chars: !@#$%',
@@ -192,7 +183,6 @@
 
 						// Test number conversion
 						el.label = 42
-						await tick()
 						assert.equal(labelEl.textContent, '42')
 					})
 
@@ -208,7 +198,6 @@
 						// Should work normally despite being visually hidden
 						if (!el.checked) clickCheckbox(input)
 						el.label = 'Hidden Checkbox'
-						await tick()
 
 						assert.equal(input.checked, true)
 						assert.equal(labelEl.textContent, 'Hidden Checkbox')
@@ -225,7 +214,6 @@
 							input.click()
 							el.label = `Task ${i}`
 						}
-						await tick()
 
 						// Should have final values (i=4, 4%2===0 is true)
 						assert.equal(input.checked, true)
@@ -259,7 +247,6 @@
 
 						// The actual change depends on browser behavior
 						// We just ensure no errors occur
-						await tick()
 					})
 
 					it('should handle RESET values correctly', async () => {
@@ -268,13 +255,11 @@
 
 						// Set initial value
 						el.label = 'Initial Label'
-						await tick()
 
 						assert.equal(labelEl.textContent, 'Initial Label')
 
 						// Reset to original DOM content (RESET behavior)
 						el.label = ''
-						await tick()
 
 						// Should be empty (since our test fixture starts empty)
 						assert.equal(labelEl.textContent, '')
@@ -341,7 +326,6 @@
 
 						// Scenario: Start unchecked with label
 						el.label = 'Todo Item'
-						await tick()
 
 						assert.equal(el.checked, false)
 						assert.equal(labelEl.textContent, 'Todo Item')
@@ -354,7 +338,6 @@
 
 						// Change label while checked
 						el.label = 'Completed Item'
-						await tick()
 
 						assert.equal(el.checked, true)
 						assert.equal(labelEl.textContent, 'Completed Item')

@@ -21,13 +21,6 @@
 				"source.organizeImports.biome": true
 			}
 		},
-		"JSX": {
-			"formatter": { "language_server": { "name": "biome" } },
-			"code_actions_on_format": {
-				"source.fixAll.biome": true,
-				"source.organizeImports.biome": true
-			}
-		},
 		"TSX": {
 			"formatter": { "language_server": { "name": "biome" } },
 			"code_actions_on_format": {
@@ -37,8 +30,7 @@
 		},
 		"JSON": { "formatter": { "language_server": { "name": "biome" } } },
 		"JSONC": { "formatter": { "language_server": { "name": "biome" } } },
-		"CSS": { "formatter": { "language_server": { "name": "biome" } } },
-		"GraphQL": { "formatter": { "language_server": { "name": "biome" } } }
+		"CSS": { "formatter": { "language_server": { "name": "biome" } } }
 	},
 	"format_on_save": "on"
 }

@@ -108,12 +108,13 @@
 	--color-background: var(--color-neutral-10);
 	--color-background-alt: var(--color-neutral-20);
 	--color-border: var(--color-neutral-50);
-	--color-text: #2a1c42;
+	--color-text: var(--color-neutral-90);
 	--color-text-soft: var(--color-neutral-80);
 	--color-text-inverted: var(--color-purple-10);
 
 	--font-family-sans: "Helvetica Neue", Arial, Roboto, sans-serif;
-	--font-family-mono: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+	--font-family-mono:
+		Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 
 	--font-weight-regular: 400;
 	--font-weight-bold: 700;
@@ -225,7 +226,11 @@ body {
 }
 
 ::selection {
-	background-color: color-mix(in srgb, var(--color-selection) 50%, transparent);
+	background-color: color-mix(
+		in srgb,
+		var(--color-selection) 50%,
+		transparent
+	);
 }
 
 h1 {
@@ -273,12 +278,12 @@ dl {
 	grid-template-columns: auto 1fr;
 	gap: var(--space-s) var(--space-m);
 
-	dt {
+	& dt {
 		font-weight: var(--font-weight-bold);
 		color: var(--color-text-soft);
 	}
 
-	dd {
+	& dd {
 		margin: 0;
 	}
 }
@@ -290,7 +295,7 @@ details[open] summary {
 header {
 	margin-block: var(--space-xl);
 
-	h1 {
+	& h1 {
 		display: flex;
 		align-items: baseline;
 		justify-content: space-between;
@@ -325,7 +330,7 @@ main {
 section {
 	margin-block: var(--space-xl);
 
-	h3 {
+	& h3 {
 		margin-block-start: var(--space-xl);
 		margin-block-end: var(--space-l);
 	}
@@ -351,7 +356,12 @@ ol,
 ul {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-m);
+	gap: var(--space-s);
+
+	> li > ol,
+	> li > ul {
+		margin-block-start: var(--space-s);
+	}
 }
 
 p code,
@@ -361,9 +371,10 @@ dd code,
 td code {
 	background-color: var(--color-background-alt);
 	border-radius: var(--space-xxs);
-	padding: var(--space-xxs);
+	padding: var(--space-xs) var(--space-xxs) var(--space-xxs);
 	font-family: var(--font-family-mono);
-	font-size: calc(0.95 * var(--font-size-m));
+	font-size: calc(0.9375 * var(--font-size-m));
+	line-height: var(--line-height-xs);
 }
 
 h1,
@@ -378,11 +389,11 @@ h6 {
 	}
 
 	.anchor {
-		width: var(--space-l);
 		display: inline-block;
 		text-decoration: none;
 
 		.permalink {
+			width: var(--space-l);
 			visibility: hidden;
 			font-size: var(--font-size-m);
 		}
@@ -396,14 +407,23 @@ h6 {
 }
 
 a[href] {
-	color: var(--color-primary);
+	&:not(.anchor) {
+		color: var(--color-primary);
 
-	&:hover {
-		color: var(--color-primary-hover);
+		&:hover {
+			color: var(--color-primary-hover);
+		}
+
+		&:active {
+			color: var(--color-primary-active);
+		}
 	}
 
-	&:active {
-		color: var(--color-primary-active);
+	&.anchor {
+		color: inherit;
+		display: flex;
+		align-items: center;
+		padding-right: var(--space-l);
 	}
 }
 
@@ -420,4 +440,15 @@ a[href] {
 	width: 1px;
 	height: 1px;
 	overflow: hidden;
+}
+
+.skiplink:focus {
+	display: inline-block;
+	left: 50%;
+	top: 0;
+	width: auto;
+	height: auto;
+	transform: translateX(-50%);
+	padding: var(--space-s);
+	text-decoration: none;
 }

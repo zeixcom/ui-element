@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>toSignal – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,50 +116,50 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section class="api-content">
+			<main id="main" class="content-grid"><section class="api-content">
 <h1 id="function-tosignal">
                 <a name="function-tosignal" class="anchor" href="#function-tosignal">
 	                <span class="permalink">🔗</span>
+					<span class="title">Function: toSignal()</span>
                 </a>
-                Function: toSignal()
             </h1>
 <blockquote>
 <p><strong>toSignal</strong>&lt;<code>T</code>&gt;(<code>value</code>): <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;</p>
 </blockquote>
-<p>Defined in: node_modules/@zeix/cause-effect/src/signal.ts:44</p>
+<p>Defined in: node_modules/@zeix/cause-effect/src/signal.ts:45</p>
 <p>Convert a value to a Signal if it&#39;s not already a Signal</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
                 </a>
-                Type Parameters
             </h2>
 <h3 id="t">
                 <a name="t" class="anchor" href="#t">
 	                <span class="permalink">🔗</span>
+					<span class="title">T</span>
                 </a>
-                T
             </h3>
 <p><code>T</code> <em>extends</em> <code>object</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parameters</span>
                 </a>
-                Parameters
             </h2>
 <h3 id="value">
                 <a name="value" class="anchor" href="#value">
 	                <span class="permalink">🔗</span>
+					<span class="title">value</span>
                 </a>
-                value
             </h3>
 <p><a href="../type-aliases/MaybeSignal.html"><code>MaybeSignal</code></a>&lt;<code>T</code>&gt;</p>
 <p>value to convert to a Signal</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
                 </a>
-                Returns
             </h2>
 <p><a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>T</code>&gt;</p>
 <ul>
@@ -150,8 +168,8 @@
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
+					<span class="title">Since</span>
                 </a>
-                Since
             </h2>
 <p>0.9.6</p>
 

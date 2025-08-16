@@ -294,19 +294,19 @@
 			<span class="language">ts</span>
 		</p>
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> AttributeParser,</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
-<span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Effect,</span></span>
-<span class="line"><span style="color:#F8F8F2">	UNSET,</span></span>
 <span class="line"><span style="color:#F8F8F2">	component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	computed,</span></span>
+<span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Effect,</span></span>
 <span class="line"><span style="color:#F8F8F2">	emitEvent,</span></span>
 <span class="line"><span style="color:#F8F8F2">	on,</span></span>
+<span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Parser,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setAttribute,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setText,</span></span>
-<span class="line"><span style="color:#F8F8F2">	show,</span></span>
+<span class="line"><span style="color:#F8F8F2">	UNSET,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../../'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { clearEffects, clearMethod } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/shared/clear-input'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">/* === Type === */</span></span>
 <span class="line"></span>
@@ -343,7 +343,7 @@
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">/* === Attribute Parsers === */</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> asNumberOrString</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">AttributeParser</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F92672"> |</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">> </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> asNumberOrString</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Parser</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F92672"> |</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">> </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> input </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> input </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> input.type </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'number'</span></span>
 <span class="line"><span style="color:#F92672">		?</span><span style="color:#A6E22E"> parseNumber</span><span style="color:#F8F8F2">(v, el.</span><span style="color:#A6E22E">hasAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'integer'</span><span style="color:#F8F8F2">), </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
@@ -352,30 +352,18 @@
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">/* === Component === */</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputFieldProps</span><span style="color:#F8F8F2">>(</span></span>
 <span class="line"><span style="color:#E6DB74">	'input-field'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
 <span class="line"><span style="color:#F8F8F2">		value: asNumberOrString,</span></span>
 <span class="line"><span style="color:#F8F8F2">		length: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		error: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		description: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">		clear</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputFieldProps</span><span style="color:#F8F8F2">>) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">			host.</span><span style="color:#A6E22E">clear</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">				host.value </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> ''</span></span>
-<span class="line"><span style="color:#F8F8F2">				host.length </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 0</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> input </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> host.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> (input) {</span></span>
-<span class="line"><span style="color:#F8F8F2">					input.value </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> ''</span></span>
-<span class="line"><span style="color:#F8F8F2">					input.</span><span style="color:#A6E22E">checkValidity</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">					input.</span><span style="color:#A6E22E">focus</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">				}</span></span>
-<span class="line"><span style="color:#F8F8F2">			}</span></span>
-<span class="line"><span style="color:#F8F8F2">		},</span></span>
+<span class="line"><span style="color:#F8F8F2">		clear: </span><span style="color:#A6E22E">clearMethod</span><span style="color:#F8F8F2">(),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputFieldProps</span><span style="color:#F8F8F2">>, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">useElement</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> fns</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Effect</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputFieldProps</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">InputFieldProps</span><span style="color:#F8F8F2">>>[] </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> []</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> input </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">input) </span><span style="color:#F92672">throw</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Error</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'No input element found'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> input </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> useElement</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'Native input field needed'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> typeNumber </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> input.type </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'number'</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> integer </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">hasAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'integer'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> validationEndpoint </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'validate'</span><span style="color:#F8F8F2">)</span></span>
@@ -414,8 +402,7 @@
 <span class="line"><span style="color:#88846F">		// Handle input changes</span></span>
 <span class="line"><span style="color:#F8F8F2">		fns.</span><span style="color:#A6E22E">push</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#A6E22E">			emitEvent</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value-change'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">				'input'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, [</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(el.value)),</span></span>
 <span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#A6E22E">					triggerChange</span><span style="color:#F8F8F2">(</span></span>
@@ -427,7 +414,7 @@
 <span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">					el.length </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> input.value.length </span><span style="color:#F92672">??</span><span style="color:#AE81FF"> 0</span></span>
 <span class="line"><span style="color:#F8F8F2">				}),</span></span>
-<span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"><span style="color:#F8F8F2">			]),</span></span>
 <span class="line"><span style="color:#F8F8F2">		)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">		if</span><span style="color:#F8F8F2"> (typeNumber) {</span></span>
@@ -456,11 +443,11 @@
 <span class="line"><span style="color:#F8F8F2">			fns.</span><span style="color:#A6E22E">push</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#A6E22E">				first</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">					'input'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">					on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'keydown'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> { key, shiftKey } </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> e </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">KeyboardEvent</span></span>
+<span class="line"><span style="color:#A6E22E">					on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'keydown'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> { key, shiftKey } </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> event</span></span>
 <span class="line"><span style="color:#F92672">						if</span><span style="color:#F8F8F2"> ([</span><span style="color:#E6DB74">'ArrowUp'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'ArrowDown'</span><span style="color:#F8F8F2">].</span><span style="color:#A6E22E">includes</span><span style="color:#F8F8F2">(key)) {</span></span>
-<span class="line"><span style="color:#F8F8F2">							e.</span><span style="color:#A6E22E">stopPropagation</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">							e.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">							event.</span><span style="color:#A6E22E">stopPropagation</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">							event.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> n </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> shiftKey </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> step </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 10</span><span style="color:#F92672"> :</span><span style="color:#F8F8F2"> step</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> newValue </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> nearestStep</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#F8F8F2">								input.valueAsNumber </span><span style="color:#F92672">+</span></span>
@@ -476,12 +463,9 @@
 <span class="line"><span style="color:#88846F">			// Handle spin button clicks and update their disabled state</span></span>
 <span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (spinButton) {</span></span>
 <span class="line"><span style="color:#F8F8F2">				fns.</span><span style="color:#A6E22E">push</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#A6E22E">					first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">>(</span></span>
-<span class="line"><span style="color:#E6DB74">						'.decrement'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">						on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> n </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (e </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">MouseEvent</span><span style="color:#F8F8F2">).shiftKey</span></span>
-<span class="line"><span style="color:#F92672">								?</span><span style="color:#F8F8F2"> step </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 10</span></span>
-<span class="line"><span style="color:#F92672">								:</span><span style="color:#F8F8F2"> step</span></span>
+<span class="line"><span style="color:#A6E22E">					first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'.decrement'</span><span style="color:#F8F8F2">, [</span></span>
+<span class="line"><span style="color:#A6E22E">						on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> n </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> event.shiftKey </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> step </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 10</span><span style="color:#F92672"> :</span><span style="color:#F8F8F2"> step</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> newValue </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> nearestStep</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#F8F8F2">								input.valueAsNumber </span><span style="color:#F92672">-</span><span style="color:#F8F8F2"> n,</span></span>
 <span class="line"><span style="color:#F8F8F2">							)</span></span>
@@ -495,13 +479,10 @@
 <span class="line"><span style="color:#F8F8F2">									step </span><span style="color:#F92672">&#x3C;</span></span>
 <span class="line"><span style="color:#F8F8F2">								min,</span></span>
 <span class="line"><span style="color:#F8F8F2">						),</span></span>
-<span class="line"><span style="color:#F8F8F2">					),</span></span>
-<span class="line"><span style="color:#A6E22E">					first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">>(</span></span>
-<span class="line"><span style="color:#E6DB74">						'.increment'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">						on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, (</span><span style="color:#FD971F;font-style:italic">e</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Event</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> n </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (e </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">MouseEvent</span><span style="color:#F8F8F2">).shiftKey</span></span>
-<span class="line"><span style="color:#F92672">								?</span><span style="color:#F8F8F2"> step </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 10</span></span>
-<span class="line"><span style="color:#F92672">								:</span><span style="color:#F8F8F2"> step</span></span>
+<span class="line"><span style="color:#F8F8F2">					]),</span></span>
+<span class="line"><span style="color:#A6E22E">					first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'.increment'</span><span style="color:#F8F8F2">, [</span></span>
+<span class="line"><span style="color:#A6E22E">						on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> n </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> event.shiftKey </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> step </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 10</span><span style="color:#F92672"> :</span><span style="color:#F8F8F2"> step</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> newValue </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> nearestStep</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#F8F8F2">								input.valueAsNumber </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> n,</span></span>
 <span class="line"><span style="color:#F8F8F2">							)</span></span>
@@ -515,34 +496,24 @@
 <span class="line"><span style="color:#F8F8F2">									step </span><span style="color:#F92672">></span></span>
 <span class="line"><span style="color:#F8F8F2">								max,</span></span>
 <span class="line"><span style="color:#F8F8F2">						),</span></span>
-<span class="line"><span style="color:#F8F8F2">					),</span></span>
+<span class="line"><span style="color:#F8F8F2">					]),</span></span>
 <span class="line"><span style="color:#F8F8F2">				)</span></span>
 <span class="line"><span style="color:#F8F8F2">			}</span></span>
 <span class="line"><span style="color:#F8F8F2">		} </span><span style="color:#F92672">else</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#88846F">			// Setup clear button and method</span></span>
-<span class="line"><span style="color:#F8F8F2">			fns.</span><span style="color:#A6E22E">push</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#A6E22E">				first</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLButtonElement</span><span style="color:#F8F8F2">>(</span></span>
-<span class="line"><span style="color:#E6DB74">					'.clear'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">					on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">						el.</span><span style="color:#A6E22E">clear</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#A6E22E">						triggerChange</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F8F8F2">					}),</span></span>
-<span class="line"><span style="color:#A6E22E">					show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !!</span><span style="color:#F8F8F2">el.length),</span></span>
-<span class="line"><span style="color:#F8F8F2">				),</span></span>
-<span class="line"><span style="color:#F8F8F2">			)</span></span>
+<span class="line"><span style="color:#F8F8F2">			fns.</span><span style="color:#A6E22E">push</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.clear'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">clearEffects</span><span style="color:#F8F8F2">(el)))</span></span>
 <span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Setup error message</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> errorId </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.error'</span><span style="color:#F8F8F2">)?.id</span></span>
 <span class="line"><span style="color:#F8F8F2">		fns.</span><span style="color:#A6E22E">push</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.error'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'error'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">				'input'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, [</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaInvalid'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (el.error </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'true'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'false'</span><span style="color:#F8F8F2">)),</span></span>
 <span class="line"><span style="color:#A6E22E">				setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'aria-errormessage'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span></span>
 <span class="line"><span style="color:#F8F8F2">					el.error </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> errorId </span><span style="color:#F92672">?</span><span style="color:#F8F8F2"> errorId </span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> UNSET,</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
-<span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"><span style="color:#F8F8F2">			]),</span></span>
 <span class="line"><span style="color:#F8F8F2">		)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F">		// Setup description</span></span>

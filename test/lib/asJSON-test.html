@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>asJSON Tests</title>
+	</head>
+	<body>
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import { asJSON } from '../../index.dev.js'
+
+			runTests(() => {
+				const body = document.querySelector('body')
+
+				describe('asJSON()', function () {
+					it('should throw for undefined', function () {
+						assert.throws(() => asJSON()(), TypeError)
+					})
+
+					it('should throw for boolean attribute', function () {
+						assert.throws(() => asJSON({})(body, ''), TypeError)
+					})
+
+					it('should be {} for "null"', function () {
+						const result = asJSON({})(body, 'null')
+						assert.deepEqual(
+							result,
+							{},
+							'Should return {} for attribute with "null" value',
+						)
+					})
+
+					it('should be {} for "{}"', function () {
+						const result = asJSON({})(body, '{}')
+						assert.deepEqual(
+							result,
+							{},
+							'Should return empty object for attribute with "{}" value',
+						)
+					})
+
+					it('should be [] for "[]"', function () {
+						const result = asJSON({})(body, '[]')
+						assert.deepEqual(
+							result,
+							[],
+							'Should return empty array for attribute with "[]" value',
+						)
+					})
+
+					it('should be { foo: \'bar\' } for "{ "foo": "bar" }"', function () {
+						const result = asJSON({})(body, '{ "foo": "bar" }')
+						assert.deepEqual(
+							result,
+							{ foo: 'bar' },
+							'Should return JSON for attribute with JSON value with string',
+						)
+					})
+
+					it('should be { 42: true } for "{ "42": true }"', function () {
+						const result = asJSON({})(body, '{ "42": true }')
+						assert.deepEqual(
+							result,
+							{ 42: true },
+							'Should return JSON for attribute with JSON value with numeric key',
+						)
+					})
+
+					it('should return array fallback for null', function () {
+						const result = asJSON(['default'])(body, null)
+						assert.deepEqual(
+							result,
+							['default'],
+							'Should return array fallback for null attribute',
+						)
+					})
+
+					it('should parse nested objects', function () {
+						const result = asJSON({})(
+							body,
+							'{"user": {"name": "John", "age": 30}}',
+						)
+						assert.deepEqual(
+							result,
+							{ user: { name: 'John', age: 30 } },
+							'Should parse nested JSON objects',
+						)
+					})
+
+					it('should parse arrays with mixed types', function () {
+						const result = asJSON([])(
+							body,
+							'[1, "two", true, null]',
+						)
+						assert.deepEqual(
+							result,
+							[1, 'two', true, null],
+							'Should parse arrays with mixed types',
+						)
+					})
+
+					it('should throw for malformed JSON', function () {
+						assert.throws(
+							() => asJSON({})(body, '{"invalid": json}'),
+							SyntaxError,
+							'Failed to parse JSON:',
+						)
+					})
+
+					it('should throw for JSON with trailing comma', function () {
+						assert.throws(
+							() => asJSON({})(body, '{"valid": true,}'),
+							SyntaxError,
+							'Failed to parse JSON:',
+						)
+					})
+
+					it('should handle JSON with escaped characters', function () {
+						const result = asJSON({})(
+							body,
+							'{"message": "Hello\\nWorld\\t!"}',
+						)
+						assert.deepEqual(
+							result,
+							{ message: 'Hello\nWorld\t!' },
+							'Should handle JSON with escaped characters',
+						)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

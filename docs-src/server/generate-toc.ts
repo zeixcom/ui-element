@@ -36,14 +36,14 @@ export const generateTOC = async (markdownContent: string): Promise<string> => {
 	return `
 <module-toc>
 	<nav>
-		<h2>In this Page</h2>
+		<h2>In This Page</h2>
 		<ol>
 			${Object.keys(h2Headings)
 				.map(
 					slug =>
 						`<li><a href="#${slug}">${h2Headings[slug]}</a></li>`,
 				)
-				.join('\n\t\t\t')}
+				.join('\n')}
 		</ol>
 	</nav>
 </module-toc>`

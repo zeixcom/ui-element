@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>ComponentProps – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,17 +116,17 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section class="api-content">
+			<main id="main" class="content-grid"><section class="api-content">
 <h1 id="type-alias-componentprops">
                 <a name="type-alias-componentprops" class="anchor" href="#type-alias-componentprops">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Alias: ComponentProps</span>
                 </a>
-                Type Alias: ComponentProps
             </h1>
 <blockquote>
-<p><strong>ComponentProps</strong> = <code>{ [K in string as ValidPropertyKey&lt;K&gt;]: {} }</code></p>
+<p><strong>ComponentProps</strong> = <code>{ [K in string as ValidPropertyKey&lt;K&gt;]: unknown &amp; {} }</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/component.ts#L40">src/component.ts:40</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/component.ts#L57">src/component.ts:57</a></p>
 
 </section></main>
 			<footer class="content-grid">

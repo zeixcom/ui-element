@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>asInteger Tests</title>
+	</head>
+	<body>
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import { asInteger } from '../../index.dev.js'
+
+			runTests(() => {
+				const body = document.querySelector('body')
+
+				describe('asInteger()', function () {
+					it('should be 0 for empty string', function () {
+						const result = asInteger()(body, '')
+						assert.equal(
+							result,
+							0,
+							'Should return 0 for boolean attribute',
+						)
+					})
+
+					it('should be 0 for non-parsable string', function () {
+						const result = asInteger()(body, 'any')
+						assert.equal(
+							result,
+							0,
+							'Should return 0 for non-parsable attribute',
+						)
+					})
+
+					it('should be 0 for undefined', function () {
+						const result = asInteger()()
+						assert.equal(
+							result,
+							0,
+							'Should return 0 for undefined attribute',
+						)
+					})
+
+					it('should be 42 for "42"', function () {
+						const result = asInteger()(body, '42')
+						assert.equal(
+							result,
+							42,
+							'Should return number for parsable attribute with integer value',
+						)
+					})
+
+					it('should be 3 for "3.14"', function () {
+						const result = asInteger()(body, '3.14')
+						assert.equal(
+							result,
+							3,
+							'Should return number for parsable attribute with floating point value',
+						)
+					})
+
+					it('should be 9007199254740992 for String(Number.MAX_SAFE_INTEGER + 1)', function () {
+						const result = asInteger()(
+							body,
+							String(Number.MAX_SAFE_INTEGER + 1),
+						)
+						assert.equal(
+							result,
+							9007199254740992,
+							'Should return number for parsable attribute with integer outside safe range',
+						)
+					})
+
+					it('should be -4 for " -4  "', function () {
+						const result = asInteger()(body, ' -4  ')
+						assert.equal(
+							result,
+							-4,
+							'Should return number for parsable attribute with integer and ignored whitespace',
+						)
+					})
+
+					it('should use custom fallback for undefined', function () {
+						const result = asInteger(42)()
+						assert.equal(
+							result,
+							42,
+							'Should return custom fallback for undefined attribute',
+						)
+					})
+
+					it('should use custom fallback for null', function () {
+						const result = asInteger(99)(body, null)
+						assert.equal(
+							result,
+							99,
+							'Should return custom fallback for null attribute',
+						)
+					})
+
+					it('should be 100000 for "1e5"', function () {
+						const result = asInteger()(body, '1e5')
+						assert.equal(
+							result,
+							100000,
+							'Should parse scientific notation',
+						)
+					})
+
+					it('should be 255 for "0xFF"', function () {
+						const result = asInteger()(body, '0xFF')
+						assert.equal(
+							result,
+							255,
+							'Should parse hexadecimal notation',
+						)
+					})
+
+					it('should be 0 for "Infinity"', function () {
+						const result = asInteger()(body, 'Infinity')
+						assert.equal(
+							result,
+							0,
+							'Should return fallback for Infinity (not finite)',
+						)
+					})
+
+					it('should be 0 for "NaN"', function () {
+						const result = asInteger()(body, 'NaN')
+						assert.equal(
+							result,
+							0,
+							'Should return fallback for NaN',
+						)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

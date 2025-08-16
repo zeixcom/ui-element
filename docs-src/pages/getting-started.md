@@ -24,7 +24,7 @@ UIElement works **without build tools** but also supports **package managers and
 
 For the easiest setup, include UIElement via a CDN. This is ideal for **testing or quick projects** where you want lightweight interactivity without additional tooling.
 
-```html
+```html (page.html)
 <script src="https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"></script>
 ```
 
@@ -40,7 +40,7 @@ For production use, you may want to **self-host UIElement** to avoid relying on 
 
 Simply host the file on your server and include it like this:
 
-```html
+```html (page.html)
 <script src="/path/to/your/hosted/ui-element.js"></script>
 ```
 
@@ -66,14 +66,14 @@ If you're using a **bundler** like **Vite, Webpack, or Rollup**, install UIEleme
 </div>
 <div role="tabpanel" id="panel_installation-npm" aria-labelledby="trigger_installation-npm">
 
-```bash
+```bash (user@computer project %)
 npm install @zeix/ui-element
 ```
 
 </div>
 <div role="tabpanel" id="panel_installation-bun" aria-labelledby="trigger_installation-bun">
 
-```bash
+```bash (user@computer project %)
 bun add @zeix/ui-element
 ```
 
@@ -82,8 +82,8 @@ bun add @zeix/ui-element
 
 Then import the needed functions in your JavaScript:
 
-```js
-import { component, on, RESET, setText } from '@zeix/ui-element'
+```js (main.js)
+import { asString, component, on, setText } from '@zeix/ui-element'
 ```
 
 </section>
@@ -103,11 +103,11 @@ Now, let's create an interactive Web Component to verify your setup.
 
 Include the following in your server-rendered HTML:
 
-```html
+```html (page.html)
 <hello-world>
   <label>
     Your name<br />
-    <input type="text" />
+    <input name="name" type="text" autocomplete="given-name" />
   </label>
   <p>Hello, <span>World</span>!</p>
 </hello-world>
@@ -117,86 +117,43 @@ Include the following in your server-rendered HTML:
 
 Save the following inside a `<script type="module">` tag or an external JavaScript file.
 
-```html
+```html (page.html)
 <script type="module">
   import {
     asString,
     component,
     on,
-    RESET,
     setText,
   } from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
 
   component(
     'hello-world',
     {
-      // Fall back to server-rendered content
-      name: asString(RESET),
+      name: asString(el => el.querySelector('span')?.textContent?.trim() ?? ''),
     },
-    (el, { first }) => [
-      // Update content dynamically based on the "name" signal
-      first('span', setText('name')),
-
-      // Handle user input to change the "name"
-      first(
-        'input',
-        on('input', e => {
-          el.name = e.target.value || RESET
-        }),
-      ),
-    ],
+    (el, { first }) => {
+      const fallback = el.name
+      return [
+        first(
+          'input',
+          on('input', ({ target }) => ({ name: target.value || fallback })),
+        ),
+        first('span', setText('name')),
+      ]
+    },
   )
 </script>
 ```
 
-**What Happens Here?**
+### Understanding Your First Component
 
-- The `name: RESET` property **gets its initial value from the server-rendered content** (the `<span>` text).
-- The `setText('name')` effect **syncs the state** with the `<span>`.
-- The `on('input')` event **updates the state** whenever you type in the first `<input>` field, falling back to server-rendered value if empty.
-- The Web Component **hydrates automatically** when inserted into the page.
+This component demonstrates UIElement's core concepts:
 
-## Understanding Your First Component
+- **Reactive Properties**: `name: asString(...)` creates a reactive property that syncs with the `name` attribute and falls back to the `<span>` content
+- **Effects**: The setup function returns effects that handle user input and update the display text
+- **Element Selection**: `first()` selects descendant elements to apply effects to
 
-Let's break down each part of your `<hello-world>` component to understand how UIElement works:
-
-### Reactive Properties
-
-```js
-{
-  name: RESET
-}
-```
-
-This creates a reactive property called `name`:
-
-- `RESET` means "use whatever text is already in the HTML" as the starting value
-- UIElement automatically reads "World" from the `<span>` element as the initial value
-- When `name` changes, any effects that depend on it automatically update
-
-There are other ways to initialize state in UIElement. You'll learn about those approaches in the section about [components](components.html).
-
-### Setup Function
-
-Returns an array of effects:
-
-```js
-(el, { first }) => [
-  first('span', setText('name')),
-  first('input', on('input', e => { ... }))
-]
-```
-
-Effects define **component behaviors**:
-
-- `first('span', setText('name'))` finds the first `<span>` and keeps its text in sync with the `name` property
-- `first('input', on('input', ...))` finds the first `<input>` and adds an event listener
-
-Characteristics of Effects:
-
-- Effects run when the component is added to the page
-- Effects rerun when their dependencies change
-- Effects may return a cleanup function to be executed when the component is removed from the page
+Learn more about these concepts in the [Components](components.html) guide.
 
 </section>
 
@@ -214,7 +171,7 @@ If everything is set up correctly, you should see:
 	<div class="preview">
 		<hello-world>
 			<label>Your name<br>
-				<input type="text">
+				<input name="name" type="text">
 			</label>
 			<p>Hello, <span>World</span>!</p>
 		</hello-world>

@@ -8,7 +8,7 @@
 
 > **provideContexts**\<`P`, `K`\>(`contexts`): (`host`) => [`Cleanup`](../type-aliases/Cleanup.md)
 
-Defined in: [src/core/context.ts:98](https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/core/context.ts#L98)
+Defined in: [src/core/context.ts:98](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/core/context.ts#L98)
 
 Provide a context for descendant component consumers
 
@@ -28,11 +28,11 @@ Provide a context for descendant component consumers
 
 [`Context`](../type-aliases/Context.md)\<`K`, [`Signal`](../type-aliases/Signal.md)\<`P`\[`K`\]\>\>[]
 
-array of contexts to provide
+Array of contexts to provide
 
 ## Returns
 
-- function to add an event listener for ContextRequestEvent returning a cleanup function to remove the event listener
+Function to add an event listener for ContextRequestEvent returning a cleanup function to remove the event listener
 
 > (`host`): [`Cleanup`](../type-aliases/Cleanup.md)
 

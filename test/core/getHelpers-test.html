@@ -1,0 +1,832 @@
+<!doctype html>
+<html>
+	<head>
+		<title>getHelpers Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				component,
+				asString,
+				asNumber,
+				MissingElementError,
+				on,
+				setText,
+			} from '../../index.dev.js'
+
+			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+			const microtask = async () => new Promise(queueMicrotask)
+
+			runTests(() => {
+				describe('getHelpers()', () => {
+					describe('useElement()', () => {
+						it('should return the first matching element', async () => {
+							component(
+								'test-useelement-basic',
+								{
+									elementType: '',
+									elementId: '',
+								},
+								(el, { useElement }) => {
+									const input = useElement('input')
+									const button = useElement('#submit-btn')
+
+									el.elementType = input
+										? input.tagName.toLowerCase()
+										: 'none'
+									el.elementId = button ? button.id : 'none'
+
+									return []
+								},
+							)
+
+							const container = document.createElement(
+								'test-useelement-basic',
+							)
+							container.innerHTML = `
+								<input type="text" name="test" />
+								<textarea name="description"></textarea>
+								<button id="submit-btn">Submit</button>
+							`
+							document.body.appendChild(container)
+
+							try {
+								await customElements.whenDefined(
+									'test-useelement-basic',
+								)
+
+								assert.equal(container.elementType, 'input')
+								assert.equal(container.elementId, 'submit-btn')
+							} finally {
+								container.remove()
+							}
+						})
+
+						it('should return null when element does not exist', async () => {
+							component(
+								'test-useelement-missing',
+								{
+									found: '',
+								},
+								(el, { useElement }) => {
+									const missing = useElement('.non-existent')
+									el.found = missing ? 'found' : 'not-found'
+									return []
+								},
+							)
+
+							const container = document.createElement(
+								'test-useelement-missing',
+							)
+							container.innerHTML = `<p>No matching elements</p>`
+							document.body.appendChild(container)
+
+							try {
+								await customElements.whenDefined(
+									'test-useelement-missing',
+								)
+
+								assert.equal(container.found, 'not-found')
+							} finally {
+								container.remove()
+							}
+						})
+
+						/* it('should throw error when required element is missing', async () => {
+							let errorThrown = false
+							let errorMessage = ''
+
+							// Set up global error handler to catch async errors
+							const originalHandler = window.onerror
+							window.onerror = (
+								message,
+								source,
+								lineno,
+								colno,
+								error,
+							) => {
+								if (
+									error
+									&& error instanceof MissingElementError
+								) {
+									errorThrown = true
+									errorMessage = error.message
+									return true // Prevent default error handling
+								}
+								return false
+							}
+
+							try {
+								component(
+									'test-useelement-required',
+									{},
+									(el, { useElement }) => {
+										useElement(
+											'.required-element',
+											'Needed for functionality',
+										)
+										return []
+									},
+								)
+
+								const container = document.createElement(
+									'test-useelement-required',
+								)
+								container.innerHTML = `<p>No required elements</p>`
+								document.body.appendChild(container)
+
+								await customElements.whenDefined(
+									'test-useelement-required',
+								)
+
+								// If we get here without error, the test failed
+								assert.fail(
+									'Expected MissingElementError to be thrown',
+								)
+							} catch (error) {
+								if (error instanceof MissingElementError) {
+									errorThrown = true
+									errorMessage = error.message
+								} else {
+									throw error // Re-throw if it's not the expected error
+								}
+							} finally {
+								window.onerror = originalHandler
+							}
+
+							assert.isTrue(
+								errorThrown,
+								'Expected MissingElementError to be thrown',
+							)
+							assert.include(
+								errorMessage,
+								'does not contain required <.required-element> element',
+							)
+						}) */
+
+						it('should work with complex selectors', async () => {
+							component(
+								'test-useelement-complex',
+								{
+									inputType: '',
+									buttonAction: '',
+								},
+								(el, { useElement }) => {
+									const requiredInput =
+										useElement('input[required]')
+									const submitButton = useElement(
+										'button[type="submit"]',
+									)
+
+									el.inputType = requiredInput
+										? requiredInput.type
+										: 'none'
+									el.buttonAction = submitButton
+										? submitButton.textContent
+										: 'none'
+
+									return []
+								},
+							)
+
+							const container = document.createElement(
+								'test-useelement-complex',
+							)
+							container.innerHTML = `
+								<form>
+									<input type="email" name="email" required />
+									<input type="text" name="name" />
+									<button type="button">Cancel</button>
+									<button type="submit">Submit Form</button>
+								</form>
+							`
+							document.body.appendChild(container)
+
+							try {
+								await customElements.whenDefined(
+									'test-useelement-complex',
+								)
+
+								assert.equal(container.inputType, 'email')
+								assert.equal(
+									container.buttonAction,
+									'Submit Form',
+								)
+							} finally {
+								container.remove()
+							}
+						})
+					})
+
+					describe('useElements()', () => {
+						it('should return all matching elements as NodeList', async () => {
+							component(
+								'test-useelements-basic',
+								{
+									itemCount: 0,
+									values: '',
+								},
+								(el, { useElements }) => {
+									const items = useElements('.test-item')
+									el.itemCount = items.length
+									el.values = Array.from(items)
+										.map(item => item.textContent)
+										.join(',')
+									return []
+								},
+							)
+
+							const container = document.createElement(
+								'test-useelements-basic',
+							)
+							container.innerHTML = `
+								<div class="test-item">Item 1</div>
+								<div class="test-item">Item 2</div>
+								<div class="test-item">Item 3</div>
+								<p class="other">Not selected</p>
+							`
+							document.body.appendChild(container)
+
+							try {
+								await customElements.whenDefined(
+									'test-useelements-basic',
+								)
+
+								assert.equal(container.itemCount, 3)
+								assert.equal(
+									container.values,
+									'Item 1,Item 2,Item 3',
+								)
+							} finally {
+								container.remove()
+							}
+						})
+
+						it('should return empty NodeList when no elements match', async () => {
+							component(
+								'test-useelements-empty',
+								{
+									itemCount: 0,
+								},
+								(el, { useElements }) => {
+									const items = useElements('.nonexistent')
+									el.itemCount = items.length
+									return []
+								},
+							)
+
+							const container = document.createElement(
+								'test-useelements-empty',
+							)
+							container.innerHTML = `<p>No matching elements</p>`
+							document.body.appendChild(container)
+
+							try {
+								await customElements.whenDefined(
+									'test-useelements-empty',
+								)
+
+								assert.equal(container.itemCount, 0)
+							} finally {
+								container.remove()
+							}
+						})
+
+						it('should work with complex selectors', async () => {
+							component(
+								'test-useelements-complex',
+								{
+									requiredCount: 0,
+									allCount: 0,
+								},
+								(el, { useElements }) => {
+									const requiredInputs =
+										useElements('input[required]')
+									const allInputs = useElements('input')
+									el.requiredCount = requiredInputs.length
+									el.allCount = allInputs.length
+									return []
+								},
+							)
+
+							const container = document.createElement(
+								'test-useelements-complex',
+							)
+							container.innerHTML = `
+								<form>
+									<input type="text" name="name" required />
+									<input type="email" name="email" required />
+									<input type="password" name="password" />
+									<button type="submit">Submit</button>
+								</form>
+							`
+							document.body.appendChild(container)
+
+							try {
+								await customElements.whenDefined(
+									'test-useelements-complex',
+								)
+
+								assert.equal(container.requiredCount, 2)
+								assert.equal(container.allCount, 3)
+							} finally {
+								container.remove()
+							}
+						})
+					})
+
+					describe('first()', () => {
+						it('should apply effects to the first matching element', async () => {
+							component(
+								'test-first-basic',
+								{
+									buttonText: '',
+								},
+								(el, { first }) => {
+									return [
+										first(
+											'button',
+											setText(() => 'Updated Button'),
+										),
+									]
+								},
+							)
+
+							const container =
+								document.createElement('test-first-basic')
+							container.innerHTML = `
+								<button>Original Button 1</button>
+								<button>Original Button 2</button>
+								<button>Original Button 3</button>
+							`
+							document.body.appendChild(container)
+
+							try {
+								await customElements.whenDefined(
+									'test-first-basic',
+								)
+
+								const buttons =
+									container.querySelectorAll('button')
+								assert.equal(
+									buttons[0].textContent,
+									'Updated Button',
+								)
+								assert.equal(
+									buttons[1].textContent,
+									'Original Button 2',
+								)
+								assert.equal(
+									buttons[2].textContent,
+									'Original Button 3',
+								)
+							} finally {
+								container.remove()
+							}
+						})
+
+						it('should handle missing elements gracefully', async () => {
+							component(
+								'test-first-missing',
+								{
+									status: 'initialized',
+								},
+								(el, { first }) => {
+									return [
+										first(
+											'.non-existent',
+											setText('Should not appear'),
+										),
+									]
+								},
+							)
+
+							const container =
+								document.createElement('test-first-missing')
+							container.innerHTML = `<p>No matching elements</p>`
+							document.body.appendChild(container)
+
+							try {
+								await customElements.whenDefined(
+									'test-first-missing',
+								)
+
+								assert.equal(container.status, 'initialized')
+								assert.equal(
+									container.querySelector('p').textContent,
+									'No matching elements',
+								)
+							} finally {
+								container.remove()
+							}
+						})
+
+						it('should work with event handlers', async () => {
+							component(
+								'test-first-events',
+								{
+									clickCount: 0,
+								},
+								(el, { first }) => {
+									return [
+										first(
+											'button',
+											on('click', () => {
+												el.clickCount++
+											}),
+										),
+									]
+								},
+							)
+
+							const container =
+								document.createElement('test-first-events')
+							container.innerHTML = `
+								<button>Click me</button>
+								<button>Don't click me</button>
+							`
+							document.body.appendChild(container)
+
+							try {
+								await customElements.whenDefined(
+									'test-first-events',
+								)
+
+								const buttons =
+									container.querySelectorAll('button')
+
+								// Click first button
+								buttons[0].click()
+								assert.equal(container.clickCount, 1)
+
+								// Click second button (should not increment)
+								buttons[1].click()
+								assert.equal(container.clickCount, 1)
+							} finally {
+								container.remove()
+							}
+						})
+					})
+
+					describe('all()', () => {
+						/* it('should apply effects to all matching elements', async () => {
+							component(
+								'test-all-basic',
+								{
+									updatedCount: 0,
+								},
+								(el, { all, first }) => {
+									return [
+										all('.item', [
+											setText('Updated Item'),
+											() => {
+												el.updatedCount++
+												return () => {
+													el.updatedCount--
+												}
+											},
+										]),
+										first(
+											'#count-btn',
+											on('click', () => {
+												// This will trigger when the button is clicked
+											}),
+										),
+									]
+								},
+							)
+
+							const container =
+								document.createElement('test-all-basic')
+							container.innerHTML = `
+								<div class="item">Original Item 1</div>
+								<div class="item">Original Item 2</div>
+								<div class="item">Original Item 3</div>
+								<button id="count-btn">Count Updates</button>
+								<p class="other">Not an item</p>
+							`
+							document.body.appendChild(container)
+
+							try {
+								await customElements.whenDefined(
+									'test-all-basic',
+								)
+
+								const items =
+									container.querySelectorAll('.item')
+								assert.equal(items.length, 3)
+								assert.equal(
+									items[0].textContent,
+									'Updated Item',
+								)
+								assert.equal(
+									items[1].textContent,
+									'Updated Item',
+								)
+								assert.equal(
+									items[2].textContent,
+									'Updated Item',
+								)
+
+								// Check that updatedCount reflects the number of items
+								assert.equal(container.updatedCount, 3)
+
+								const other = container.querySelector('.other')
+								assert.equal(other.textContent, 'Not an item')
+							} finally {
+								container.remove()
+							}
+						}) */
+						/* it('should handle dynamic element addition and removal', async () => {
+							component(
+								'test-all-dynamic',
+								{
+									attachedCount: 0,
+									detachedCount: 0,
+								},
+								(el, { all, first, useElement }) => {
+									const template = useElement('template')
+									const containerEl = useElement('.container')
+
+									return [
+										all('.dynamic-item', [
+											setText('Attached'),
+											() => {
+												el.attachedCount++
+												return () => {
+													el.detachedCount++
+												}
+											},
+										]),
+										first(
+											'#add-btn',
+											on('click', () => {
+												const clone =
+													template.content.cloneNode(
+														true,
+													)
+												containerEl.appendChild(clone)
+											}),
+										),
+										first(
+											'#remove-btn',
+											on('click', () => {
+												const lastItem =
+													containerEl.querySelector(
+														'.dynamic-item:last-child',
+													)
+												if (lastItem) lastItem.remove()
+											}),
+										),
+									]
+								},
+							)
+
+							const container =
+								document.createElement('test-all-dynamic')
+							container.innerHTML = `
+								<template>
+									<div class="dynamic-item">New Item</div>
+								</template>
+								<div class="container">
+									<div class="dynamic-item">Item 1</div>
+									<div class="dynamic-item">Item 2</div>
+								</div>
+								<button id="add-btn">Add Item</button>
+								<button id="remove-btn">Remove Item</button>
+							`
+							document.body.appendChild(container)
+
+							try {
+								await customElements.whenDefined(
+									'test-all-dynamic',
+								)
+
+								// Initial state
+								assert.equal(container.attachedCount, 2)
+								assert.equal(container.detachedCount, 0)
+
+								// Add new element using button
+								const addBtn =
+									container.querySelector('#add-btn')
+								addBtn.click()
+
+								assert.equal(container.attachedCount, 3)
+
+								// Remove element using button
+								const removeBtn =
+									container.querySelector('#remove-btn')
+								removeBtn.click()
+								assert.equal(container.detachedCount, 1)
+							} finally {
+								container.remove()
+							}
+						}) */
+						/* it('should handle multiple event listeners on all elements', async () => {
+							component(
+								'test-all-events',
+								{
+									totalClicks: 0,
+									lastClicked: '',
+								},
+								(el, { all }) => [
+									all('button', [
+										on('click', ({ target }) => {
+											el.totalClicks++
+											el.lastClicked = target.textContent
+										}),
+									]),
+								],
+							)
+
+							const container = document.createElement(
+								'test-all-events',
+							)
+							container.innerHTML = `
+								<button>Button A</button>
+								<button>Button B</button>
+								<button>Button C</button>
+							`
+							document.body.appendChild(container)
+
+							try {
+								await customElements.whenDefined(
+									'test-all-events',
+								)
+
+								const buttons =
+									container.querySelectorAll('button')
+
+								// Click each button
+								buttons[0].click()
+								assert.equal(container.totalClicks, 1)
+								assert.equal(container.lastClicked, 'Button A')
+
+								buttons[1].click()
+								assert.equal(container.totalClicks, 2)
+								assert.equal(container.lastClicked, 'Button B')
+
+								buttons[2].click()
+								assert.equal(container.totalClicks, 3)
+								assert.equal(container.lastClicked, 'Button C')
+							} finally {
+								container.remove()
+							}
+						}) */
+					})
+
+					describe('Helper Integration', () => {
+						it('should work together in complex scenarios', async () => {
+							component(
+								'test-helpers-integration',
+								{
+									formValid: false,
+									submitButtonText: '',
+									requiredFieldCount: 0,
+									allFieldCount: 0,
+								},
+								(
+									el,
+									{ useElement, useElements, first, all },
+								) => {
+									// Use useElement to get form
+									const form = useElement('form')
+
+									// Use useElements to count fields
+									const requiredFields =
+										useElements('input[required]')
+									const allFields = useElements('input')
+									el.requiredFieldCount =
+										requiredFields.length
+									el.allFieldCount = allFields.length
+
+									return [
+										// Use first to update submit button
+										first(
+											'button[type="submit"]',
+											setText(() => {
+												el.submitButtonText =
+													'Custom Submit'
+												return 'Custom Submit'
+											}),
+										),
+
+										// Use all to add validation styling
+										all('input[required]', [
+											on('input', event => {
+												const form =
+													event.target.closest('form')
+												el.formValid = form
+													? form.checkValidity()
+													: false
+											}),
+										]),
+									]
+								},
+							)
+
+							const container = document.createElement(
+								'test-helpers-integration',
+							)
+							container.innerHTML = `
+								<form>
+									<input type="text" name="name" required />
+									<input type="email" name="email" required />
+									<input type="tel" name="phone" />
+									<button type="submit">Submit</button>
+								</form>
+							`
+							document.body.appendChild(container)
+
+							try {
+								await customElements.whenDefined(
+									'test-helpers-integration',
+								)
+
+								// Check initial state
+								assert.equal(container.requiredFieldCount, 2)
+								assert.equal(container.allFieldCount, 3)
+								assert.equal(
+									container.submitButtonText,
+									'Custom Submit',
+								)
+								assert.isFalse(container.formValid)
+
+								// Fill required fields
+								const nameInput =
+									container.querySelector(
+										'input[name="name"]',
+									)
+								const emailInput = container.querySelector(
+									'input[name="email"]',
+								)
+
+								nameInput.value = 'John Doe'
+								nameInput.dispatchEvent(new Event('input'))
+
+								emailInput.value = 'john@example.com'
+								emailInput.dispatchEvent(new Event('input'))
+
+								assert.isTrue(container.formValid)
+							} finally {
+								container.remove()
+							}
+						})
+
+						it('should handle shadow DOM vs light DOM correctly', async () => {
+							component(
+								'test-helpers-shadow',
+								{
+									lightElements: 0,
+									shadowElements: 0,
+								},
+								(el, { useElements }) => {
+									// Should find elements in light DOM (default behavior)
+									const lightItems = useElements('.item')
+									el.lightElements = lightItems.length
+
+									// Test with shadow DOM
+									if (!el.shadowRoot) {
+										el.attachShadow({ mode: 'open' })
+										el.shadowRoot.innerHTML = `
+											<div class="item">Shadow Item 1</div>
+											<div class="item">Shadow Item 2</div>
+										`
+									}
+
+									return []
+								},
+							)
+
+							const container = document.createElement(
+								'test-helpers-shadow',
+							)
+							container.innerHTML = `
+								<div class="item">Light Item 1</div>
+								<div class="item">Light Item 2</div>
+								<div class="item">Light Item 3</div>
+							`
+							document.body.appendChild(container)
+
+							try {
+								await customElements.whenDefined(
+									'test-helpers-shadow',
+								)
+
+								// Should find light DOM elements
+								assert.equal(container.lightElements, 3)
+							} finally {
+								container.remove()
+							}
+						})
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

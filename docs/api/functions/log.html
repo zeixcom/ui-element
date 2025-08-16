@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>log – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,66 +116,66 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section class="api-content">
+			<main id="main" class="content-grid"><section class="api-content">
 <h1 id="function-log">
                 <a name="function-log" class="anchor" href="#function-log">
 	                <span class="permalink">🔗</span>
+					<span class="title">Function: log()</span>
                 </a>
-                Function: log()
             </h1>
 <blockquote>
 <p><strong>log</strong>&lt;<code>T</code>&gt;(<code>value</code>, <code>msg</code>, <code>level</code>): <code>T</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/core/util.ts#L141">src/core/util.ts:141</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/core/util.ts#L141">src/core/util.ts:141</a></p>
 <p>Log a message to the console with the specified level</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
                 </a>
-                Type Parameters
             </h2>
 <h3 id="t">
                 <a name="t" class="anchor" href="#t">
 	                <span class="permalink">🔗</span>
+					<span class="title">T</span>
                 </a>
-                T
             </h3>
 <p><code>T</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parameters</span>
                 </a>
-                Parameters
             </h2>
 <h3 id="value">
                 <a name="value" class="anchor" href="#value">
 	                <span class="permalink">🔗</span>
+					<span class="title">value</span>
                 </a>
-                value
             </h3>
 <p><code>T</code></p>
 <p>value to inspect</p>
 <h3 id="msg">
                 <a name="msg" class="anchor" href="#msg">
 	                <span class="permalink">🔗</span>
+					<span class="title">msg</span>
                 </a>
-                msg
             </h3>
 <p><code>string</code></p>
 <p>message to log</p>
 <h3 id="level">
                 <a name="level" class="anchor" href="#level">
 	                <span class="permalink">🔗</span>
+					<span class="title">level</span>
                 </a>
-                level
             </h3>
 <p><a href="../type-aliases/LogLevel.html"><code>LogLevel</code></a> = <code>LOG_DEBUG</code></p>
 <p>log level</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
                 </a>
-                Returns
             </h2>
 <p><code>T</code></p>
 <ul>
@@ -166,8 +184,8 @@
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
+					<span class="title">Since</span>
                 </a>
-                Since
             </h2>
 <p>0.7.0</p>
 

@@ -147,7 +147,6 @@
 					it('should initialize with pre-selected tab', async () => {
 						const el = document.getElementById('test2')
 
-						await tick()
 
 						assert.equal(el.selected, 'panel5')
 					})
@@ -155,7 +154,6 @@
 					it('should handle no initially selected tab', async () => {
 						const el = document.getElementById('test3')
 
-						await tick()
 
 						// If no tab is has aria-selected="true" first tab is auto-selected
 						assert.equal(el.selected, 'panel6')
@@ -168,10 +166,8 @@
 
 						// Reset component state to ensure clean test
 						tab1.click()
-						await tick()
 
 						tab2.click()
-						await tick()
 
 						assert.equal(el.selected, 'panel2')
 					})
@@ -184,7 +180,6 @@
 
 						// Reset component state to ensure clean test
 						tab1.click()
-						await tick()
 						assert.equal(tab1.getAttribute('aria-selected'), 'true')
 						assert.equal(
 							tab2.getAttribute('aria-selected'),
@@ -197,7 +192,6 @@
 
 						// Click tab2
 						tab2.click()
-						await tick()
 
 						assert.equal(el.selected, 'panel2')
 						assert.equal(
@@ -219,14 +213,12 @@
 
 						// Reset component state to ensure clean test
 						tab1.click()
-						await tick()
 						assert.equal(tab1.tabIndex, 0)
 						assert.equal(tab2.tabIndex, -1)
 						assert.equal(tab3.tabIndex, -1)
 
 						// Click tab3
 						tab3.click()
-						await tick()
 
 						assert.equal(el.selected, 'panel3')
 						assert.equal(tab1.tabIndex, -1)
@@ -244,14 +236,12 @@
 
 						// Reset component state to ensure clean test
 						tab1.click()
-						await tick()
 						assert.isFalse(panel1.hidden)
 						assert.isTrue(panel2.hidden)
 						assert.isTrue(panel3.hidden)
 
 						// Click tab2
 						tab2.click()
-						await tick()
 
 						assert.isTrue(panel1.hidden)
 						assert.isFalse(panel2.hidden)
@@ -266,15 +256,11 @@
 
 						// Reset component state to ensure clean test
 						tab1.click()
-						await tick()
 
 						// Click multiple tabs rapidly
 						tab2.click()
-						await tick()
 						tab3.click()
-						await tick()
 						tab1.click()
-						await tick()
 
 						assert.equal(el.selected, 'panel1')
 						assert.equal(tab1.getAttribute('aria-selected'), 'true')
@@ -295,12 +281,10 @@
 
 						// Reset component state to ensure clean test
 						tab1.click()
-						await tick()
 
 						// Focus first tab and simulate arrow key
 						tab1.focus()
 						simulateKeydown(tablist, 'ArrowRight')
-						await tick()
 
 						// Note: The actual focus change depends on manageArrowKeyFocus implementation
 						// We're testing that the keydown event is properly bound to the tablist
@@ -341,7 +325,6 @@
 
 						// Click the single tab
 						tab.click()
-						await tick()
 
 						assert.equal(el.selected, 'panel6')
 						assert.equal(tab.getAttribute('aria-selected'), 'true')

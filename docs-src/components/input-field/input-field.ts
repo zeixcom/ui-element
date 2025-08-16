@@ -1,17 +1,17 @@
 import {
-	type AttributeParser,
 	type Component,
-	type Effect,
-	UNSET,
 	component,
 	computed,
+	type Effect,
 	emitEvent,
 	on,
+	type Parser,
 	setAttribute,
 	setProperty,
 	setText,
-	show,
+	UNSET,
 } from '../../../'
+import { clearEffects, clearMethod } from '../../functions/shared/clear-input'
 
 /* === Type === */
 
@@ -48,7 +48,7 @@ const countDecimals = (value: number): number => {
 
 /* === Attribute Parsers === */
 
-const asNumberOrString: AttributeParser<string | number> = (el, v) => {
+const asNumberOrString: Parser<string | number> = (el, v) => {
 	const input = el.querySelector('input')
 	return input && input.type === 'number'
 		? parseNumber(v, el.hasAttribute('integer'), 0)
@@ -57,30 +57,18 @@ const asNumberOrString: AttributeParser<string | number> = (el, v) => {
 
 /* === Component === */
 
-export default component(
+export default component<InputFieldProps>(
 	'input-field',
 	{
 		value: asNumberOrString,
 		length: 0,
 		error: '',
 		description: '',
-		clear: (host: Component<InputFieldProps>) => {
-			host.clear = () => {
-				host.value = ''
-				host.length = 0
-				const input = host.querySelector('input')
-				if (input) {
-					input.value = ''
-					input.checkValidity()
-					input.focus()
-				}
-			}
-		},
+		clear: clearMethod(),
 	},
-	(el: Component<InputFieldProps>, { first }) => {
+	(el, { first, useElement }) => {
 		const fns: Effect<InputFieldProps, Component<InputFieldProps>>[] = []
-		const input = el.querySelector('input')
-		if (!input) throw new Error('No input element found')
+		const input = useElement('input', 'Native input field needed')
 		const typeNumber = input.type === 'number'
 		const integer = el.hasAttribute('integer')
 		const validationEndpoint = el.getAttribute('validate')
@@ -119,8 +107,7 @@ export default component(
 		// Handle input changes
 		fns.push(
 			emitEvent('value-change', 'value'),
-			first(
-				'input',
+			first('input', [
 				setProperty('value', () => String(el.value)),
 				on('change', () => {
 					triggerChange(
@@ -132,7 +119,7 @@ export default component(
 				on('input', () => {
 					el.length = input.value.length ?? 0
 				}),
-			),
+			]),
 		)
 
 		if (typeNumber) {
@@ -161,11 +148,11 @@ export default component(
 			fns.push(
 				first(
 					'input',
-					on('keydown', (e: Event) => {
-						const { key, shiftKey } = e as KeyboardEvent
+					on('keydown', ({ event }) => {
+						const { key, shiftKey } = event
 						if (['ArrowUp', 'ArrowDown'].includes(key)) {
-							e.stopPropagation()
-							e.preventDefault()
+							event.stopPropagation()
+							event.preventDefault()
 							const n = shiftKey ? step * 10 : step
 							const newValue = nearestStep(
 								input.valueAsNumber +
@@ -181,12 +168,9 @@ export default component(
 			// Handle spin button clicks and update their disabled state
 			if (spinButton) {
 				fns.push(
-					first<HTMLButtonElement>(
-						'.decrement',
-						on('click', (e: Event) => {
-							const n = (e as MouseEvent).shiftKey
-								? step * 10
-								: step
+					first<HTMLButtonElement>('.decrement', [
+						on('click', ({ event }) => {
+							const n = event.shiftKey ? step * 10 : step
 							const newValue = nearestStep(
 								input.valueAsNumber - n,
 							)
@@ -200,13 +184,10 @@ export default component(
 									step <
 								min,
 						),
-					),
-					first<HTMLButtonElement>(
-						'.increment',
-						on('click', (e: Event) => {
-							const n = (e as MouseEvent).shiftKey
-								? step * 10
-								: step
+					]),
+					first<HTMLButtonElement>('.increment', [
+						on('click', ({ event }) => {
+							const n = event.shiftKey ? step * 10 : step
 							const newValue = nearestStep(
 								input.valueAsNumber + n,
 							)
@@ -220,34 +201,24 @@ export default component(
 									step >
 								max,
 						),
-					),
+					]),
 				)
 			}
 		} else {
 			// Setup clear button and method
-			fns.push(
-				first<HTMLButtonElement>(
-					'.clear',
-					on('click', () => {
-						el.clear()
-						triggerChange('')
-					}),
-					show(() => !!el.length),
-				),
-			)
+			fns.push(first('.clear', clearEffects(el)))
 		}
 
 		// Setup error message
 		const errorId = el.querySelector('.error')?.id
 		fns.push(
 			first('.error', setText('error')),
-			first(
-				'input',
+			first('input', [
 				setProperty('ariaInvalid', () => (el.error ? 'true' : 'false')),
 				setAttribute('aria-errormessage', () =>
 					el.error && errorId ? errorId : UNSET,
 				),
-			),
+			]),
 		)
 
 		// Setup description

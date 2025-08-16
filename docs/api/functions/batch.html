@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>batch – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,12 +116,12 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section class="api-content">
+			<main id="main" class="content-grid"><section class="api-content">
 <h1 id="function-batch">
                 <a name="function-batch" class="anchor" href="#function-batch">
 	                <span class="permalink">🔗</span>
+					<span class="title">Function: batch()</span>
                 </a>
-                Function: batch()
             </h1>
 <blockquote>
 <p><strong>batch</strong>(<code>fn</code>): <code>void</code></p>
@@ -113,22 +131,22 @@
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parameters</span>
                 </a>
-                Parameters
             </h2>
 <h3 id="fn">
                 <a name="fn" class="anchor" href="#fn">
 	                <span class="permalink">🔗</span>
+					<span class="title">fn</span>
                 </a>
-                fn
             </h3>
 <p>() =&gt; <code>void</code></p>
 <p>function with multiple signal writes to be batched</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
                 </a>
-                Returns
             </h2>
 <p><code>void</code></p>
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { readFileSync, readdirSync } from 'fs'
 import process from 'node:process'
+import { readdirSync, readFileSync, statSync } from 'fs'
 import { join } from 'path'
 
 /**
@@ -23,12 +23,22 @@ const COMMON_ISSUES = {
 				const nextChar = content[i + 1]
 
 				// Handle comments
-				if (!inString && char === '/' && nextChar === '/') {
+				if (
+					!inString &&
+					!inComment &&
+					char === '/' &&
+					nextChar === '/'
+				) {
 					inComment = 'single'
 					i++ // skip next char
 					continue
 				}
-				if (!inString && char === '/' && nextChar === '*') {
+				if (
+					!inString &&
+					!inComment &&
+					char === '/' &&
+					nextChar === '*'
+				) {
 					inComment = 'multi'
 					i++ // skip next char
 					continue
@@ -44,7 +54,7 @@ const COMMON_ISSUES = {
 				}
 				if (inComment) continue
 
-				// Handle strings
+				// Handle strings with proper escape handling
 				if (
 					!inString &&
 					(char === '"' || char === "'" || char === '`')
@@ -53,13 +63,19 @@ const COMMON_ISSUES = {
 					stringChar = char
 					continue
 				}
-				if (
-					inString &&
-					char === stringChar &&
-					content[i - 1] !== '\\'
-				) {
-					inString = false
-					stringChar = ''
+				if (inString && char === stringChar) {
+					// Count consecutive backslashes before this quote
+					let backslashCount = 0
+					let j = i - 1
+					while (j >= 0 && content[j] === '\\') {
+						backslashCount++
+						j--
+					}
+					// If even number of backslashes (including 0), the quote is not escaped
+					if (backslashCount % 2 === 0) {
+						inString = false
+						stringChar = ''
+					}
 					continue
 				}
 				if (inString) continue
@@ -119,35 +135,73 @@ const COMMON_ISSUES = {
 				imports.forEach(imp => importedFunctions.add(imp))
 			}
 
-			// Find used functions that should be imported (not test framework functions)
+			// Find used functions that should be imported (based on actual exports from index.ts)
 			const libraryFunctions = [
+				// From Cause & Effect
+				'UNSET',
+				'state',
+				'computed',
+				'effect',
+				'batch',
+				'enqueue',
+				'isState',
+				'isComputed',
+				'isSignal',
+				'toSignal',
+				// Core
+				'component',
+				'log',
+				'LOG_DEBUG',
+				'LOG_INFO',
+				'LOG_WARN',
+				'LOG_ERROR',
+				'fromDOM',
+				'fromSelector',
+				'getFallback',
+				'isParser',
+				'RESET',
+				'resolveReactive',
+				'emitEvent',
+				'fromEvents',
+				'on',
+				'fromContext',
+				'provideContexts',
+				// Errors
+				'CircularMutationError',
+				'InvalidComponentNameError',
+				'InvalidPropertyNameError',
+				'InvalidEffectsError',
+				'InvalidSignalError',
+				'MissingElementError',
+				'DependencyTimeoutError',
+				// Lib - Parsers
+				'asBoolean',
+				'asInteger',
+				'asNumber',
+				'asString',
+				'asEnum',
+				'asJSON',
+				// Lib - Effects
+				'updateElement',
+				'insertOrRemoveElement',
 				'setText',
 				'setProperty',
+				'show',
 				'setAttribute',
 				'toggleAttribute',
 				'toggleClass',
 				'setStyle',
-				'show',
-				'on',
-				'emit',
-				'pass',
-				'state',
-				'computed',
-				'effect',
-				'component',
-				'updateElement',
-				'insertOrRemoveElement',
 				'dangerouslySetInnerHTML',
-				'RESET',
-				'UNSET',
-				'asString',
-				'asNumber',
-				'asInteger',
-				'asBoolean',
-				'fromDescendants',
-				'fromDescendant',
-				'fromEvent',
-				'fromSelector',
+				'pass',
+				// Lib - Extractors
+				'getText',
+				'getProperty',
+				'hasAttribute',
+				'getAttribute',
+				'hasClass',
+				'getStyle',
+				'getLabel',
+				'getDescription',
 			]
 
 			libraryFunctions.forEach(fn => {
@@ -289,6 +343,31 @@ function validateFile(filePath) {
 	}
 }
 
+function findTestFiles(dir, files = []) {
+	try {
+		const items = readdirSync(dir)
+
+		for (const item of items) {
+			const fullPath = join(dir, item)
+			const stat = statSync(fullPath)
+
+			if (stat.isDirectory()) {
+				// Recursively search subdirectories
+				findTestFiles(fullPath, files)
+			} else if (
+				item.endsWith('-test.html') ||
+				item.endsWith('-test.js')
+			) {
+				files.push(fullPath)
+			}
+		}
+	} catch (error) {
+		console.error(`❌ Error reading directory ${dir}: ${error.message}`)
+	}
+
+	return files
+}
+
 function main() {
 	console.log('🔍 Validating test files...')
 
@@ -296,10 +375,7 @@ function main() {
 	let allValid = true
 
 	try {
-		const files = readdirSync(testDir)
-		const testFiles = files.filter(
-			file => file.endsWith('-test.html') || file.endsWith('-test.js'),
-		)
+		const testFiles = findTestFiles(testDir)
 
 		if (testFiles.length === 0) {
 			console.log('⚠️  No test files found in test directory')
@@ -308,8 +384,7 @@ function main() {
 
 		console.log(`Found ${testFiles.length} test file(s)`)
 
-		for (const file of testFiles) {
-			const filePath = join(testDir, file)
+		for (const filePath of testFiles) {
 			const isValid = validateFile(filePath)
 			if (!isValid) {
 				allValid = false

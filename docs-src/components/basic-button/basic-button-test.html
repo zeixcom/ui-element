@@ -43,7 +43,6 @@
 				el.disabled = false
 				el.label = ''
 				el.badge = ''
-				await tick()
 			}
 
 			runTests(() => {
@@ -82,8 +81,6 @@
 						const el = document.getElementById('test1')
 						const button = el.querySelector('button')
 
-						await tick()
-
 						assert.equal(el.disabled, false)
 						assert.equal(el.label, '')
 						assert.equal(el.badge, '')
@@ -94,15 +91,12 @@
 						const el = document.getElementById('test1')
 						const button = el.querySelector('button')
 
-						await tick()
-
 						// Initially should not be disabled
 						assert.equal(el.disabled, false)
 						assert.equal(button.disabled, false)
 
 						// Setting the property should sync to button
 						el.disabled = true
-						await tick()
 
 						assert.equal(button.disabled, true)
 						assert.equal(el.disabled, true)
@@ -114,13 +108,11 @@
 
 						// Set disabled programmatically
 						el.disabled = true
-						await tick()
 
 						assert.equal(button.disabled, true)
 
 						// Unset disabled
 						el.disabled = false
-						await tick()
 
 						assert.equal(button.disabled, false)
 					})
@@ -131,13 +123,11 @@
 
 						// Set label programmatically
 						el.label = 'New Label'
-						await tick()
 
 						assert.equal(labelEl.textContent, 'New Label')
 
 						// Clear label
 						el.label = ''
-						await tick()
 
 						assert.equal(labelEl.textContent, '')
 					})
@@ -148,13 +138,11 @@
 
 						// Set badge programmatically
 						el.badge = '10'
-						await tick()
 
 						assert.equal(badgeEl.textContent, '10')
 
 						// Clear badge
 						el.badge = ''
-						await tick()
 
 						assert.equal(badgeEl.textContent, '')
 					})
@@ -169,8 +157,6 @@
 						el.disabled = true
 						el.label = 'Submit Form'
 						el.badge = '3'
-
-						await tick()
 
 						assert.equal(button.disabled, true)
 						assert.equal(labelEl.textContent, 'Submit Form')
@@ -187,7 +173,6 @@
 
 						// Should work normally with just label
 						el.label = 'Add to Cart'
-						await tick()
 
 						assert.equal(labelEl.textContent, 'Add to Cart')
 					})
@@ -198,28 +183,22 @@
 
 						// Test truthy values
 						el.disabled = true
-						await tick()
 						assert.equal(button.disabled, true)
 
 						el.disabled = 'true'
-						await tick()
 						assert.equal(button.disabled, true)
 
 						el.disabled = 1
-						await tick()
 						assert.equal(button.disabled, true)
 
 						// Test falsy values
 						el.disabled = false
-						await tick()
 						assert.equal(button.disabled, false)
 
 						el.disabled = ''
-						await tick()
 						assert.equal(button.disabled, false)
 
 						el.disabled = 0
-						await tick()
 						assert.equal(button.disabled, false)
 					})
 
@@ -229,15 +208,12 @@
 
 						// Test various string values
 						el.label = 'Simple text'
-						await tick()
 						assert.equal(labelEl.textContent, 'Simple text')
 
 						el.label = '123'
-						await tick()
 						assert.equal(labelEl.textContent, '123')
 
 						el.label = 'Special chars: !@#$%'
-						await tick()
 						assert.equal(
 							labelEl.textContent,
 							'Special chars: !@#$%',
@@ -245,7 +221,6 @@
 
 						// Test number conversion
 						el.label = 42
-						await tick()
 						assert.equal(labelEl.textContent, '42')
 					})
 
@@ -255,16 +230,13 @@
 
 						// Test various string values
 						el.badge = 'NEW'
-						await tick()
 						assert.equal(badgeEl.textContent, 'NEW')
 
 						el.badge = '999+'
-						await tick()
 						assert.equal(badgeEl.textContent, '999+')
 
 						// Test number conversion
 						el.badge = 0
-						await tick()
 						assert.equal(badgeEl.textContent, '0')
 					})
 
@@ -280,8 +252,6 @@
 							el.label = `Label ${i}`
 							el.badge = `${i}`
 						}
-
-						await tick()
 
 						// Should have final values (i=4, 4%2===0 is true)
 						assert.equal(button.disabled, true)
@@ -302,7 +272,6 @@
 
 						// Button should not be clickable when disabled
 						el.disabled = true
-						await tick()
 
 						button.click()
 						// Click count should remain the same for disabled button
@@ -320,7 +289,6 @@
 						// Property changes should not affect these
 						el.disabled = false
 						el.label = 'Changed'
-						await tick()
 
 						assert.equal(button.type, 'submit')
 						assert.isTrue(button.classList.contains('primary'))
@@ -334,7 +302,6 @@
 						// Set initial values
 						el.label = 'Initial Label'
 						el.badge = 'Initial Badge'
-						await tick()
 
 						assert.equal(labelEl.textContent, 'Initial Label')
 						assert.equal(badgeEl.textContent, 'Initial Badge')
@@ -342,7 +309,6 @@
 						// Reset to original DOM content (RESET behavior)
 						el.label = ''
 						el.badge = ''
-						await tick()
 
 						// Should be empty (since our test fixture starts empty)
 						assert.equal(labelEl.textContent, '')
@@ -355,13 +321,11 @@
 
 						// Set via property
 						el.disabled = true
-						await tick()
 
 						assert.equal(button.disabled, true)
 
 						// Unset via property
 						el.disabled = false
-						await tick()
 
 						assert.equal(button.disabled, false)
 					})

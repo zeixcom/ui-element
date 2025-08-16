@@ -15,3 +15,15 @@ Defined in: node\_modules/@zeix/cause-effect/src/computed.ts:23
 ### T
 
 `T` *extends* `object` & `object`
+
+## Name
+
+UIElement
+
+## Version
+
+0.14.0
+
+## Author
+
+Esther Brunner

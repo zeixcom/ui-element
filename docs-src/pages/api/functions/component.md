@@ -8,15 +8,15 @@
 
 > **component**\<`P`\>(`name`, `init`, `setup`): `void`
 
-Defined in: [src/component.ts:285](https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/component.ts#L285)
+Defined in: [src/component.ts:157](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/component.ts#L157)
 
-Define a component with its states and setup function (connectedCallback)
+Define a component with dependency resolution and setup function (connectedCallback)
 
 ## Type Parameters
 
 ### P
 
-`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
+`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md) & [`ValidateComponentProps`](../type-aliases/ValidateComponentProps.md)\<`P`\>
 
 ## Parameters
 
@@ -34,10 +34,9 @@ Signals of the component
 
 ### setup
 
-(`host`, `select`) => [`Effect`](../type-aliases/Effect.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`P`\>\>[]
+[`Setup`](../type-aliases/Setup.md)\<`P`\>
 
-Setup function to be called in connectedCallback(), may return cleanup function to be called in disconnectedCallback()
-@returns: void
+Setup function to be called after dependencies are resolved
 
 ## Returns
 
@@ -45,4 +44,12 @@ Setup function to be called in connectedCallback(), may return cleanup function 
 
 ## Since
 
-0.12.0
+0.14.0
+
+## Throws
+
+If component name is invalid
+
+## Throws
+
+If property name is invalid

@@ -185,7 +185,6 @@
 				const firstTab = carousel.querySelector('[data-index="0"]')
 				if (firstTab) {
 					firstTab.click()
-					await animationFrame()
 				}
 			}
 
@@ -228,7 +227,6 @@
 					it('should initialize with correct default state', async () => {
 						const el = document.getElementById('test1')
 
-						await animationFrame()
 
 						// First slide should be current
 						assert.equal(getCurrentSlideIndex(el), 0)
@@ -269,12 +267,10 @@
 						const nextBtn = el.querySelector('.next')
 
 						// Ensure we start at first slide
-						await animationFrame()
 						assert.equal(getCurrentSlideIndex(el), 0)
 
 						// Click next button
 						nextBtn.click()
-						await animationFrame()
 
 						// Should be on second slide
 						assert.equal(getCurrentSlideIndex(el), 1)
@@ -306,12 +302,10 @@
 
 						// Go to second slide first
 						nextBtn.click()
-						await animationFrame()
 						assert.equal(getCurrentSlideIndex(el), 1)
 
 						// Click prev button
 						prevBtn.click()
-						await animationFrame()
 
 						// Should be back to first slide
 						assert.equal(getCurrentSlideIndex(el), 0)
@@ -342,14 +336,11 @@
 
 						// Go to last slide (index 2)
 						nextBtn.click()
-						await animationFrame()
 						nextBtn.click()
-						await animationFrame()
 						assert.equal(getCurrentSlideIndex(el), 2)
 
 						// Click next again - should wrap to first
 						nextBtn.click()
-						await animationFrame()
 
 						assert.equal(getCurrentSlideIndex(el), 0)
 						assert.equal(getSelectedTabIndex(el), 0)
@@ -365,7 +356,6 @@
 
 						// Go prev - should wrap to last
 						prevBtn.click()
-						await animationFrame()
 
 						assert.equal(getCurrentSlideIndex(el), 2)
 						assert.equal(getSelectedTabIndex(el), 2)
@@ -381,7 +371,6 @@
 
 						// Click third tab
 						thirdTab.click()
-						await animationFrame()
 
 						// Should be on third slide
 						assert.equal(getCurrentSlideIndex(el), 2)
@@ -410,14 +399,12 @@
 
 						// Simulate ArrowRight
 						simulateKeyup(nav, 'ArrowRight')
-						await animationFrame()
 
 						assert.equal(getCurrentSlideIndex(el), 1)
 						assert.equal(getSelectedTabIndex(el), 1)
 
 						// Simulate ArrowLeft
 						simulateKeyup(nav, 'ArrowLeft')
-						await animationFrame()
 
 						assert.equal(getCurrentSlideIndex(el), 0)
 						assert.equal(getSelectedTabIndex(el), 0)
@@ -431,12 +418,10 @@
 						// Ensure we start at first slide, then go to middle slide
 						await resetCarousel(el)
 						nextBtn.click()
-						await animationFrame()
 						assert.equal(getCurrentSlideIndex(el), 1)
 
 						// Press Home key
 						simulateKeyup(nav, 'Home')
-						await animationFrame()
 
 						assert.equal(getCurrentSlideIndex(el), 0)
 						assert.equal(getSelectedTabIndex(el), 0)
@@ -452,7 +437,6 @@
 
 						// Press End key
 						simulateKeyup(nav, 'End')
-						await animationFrame()
 
 						assert.equal(getCurrentSlideIndex(el), 2)
 						assert.equal(getSelectedTabIndex(el), 2)
@@ -476,7 +460,6 @@
 
 						// Simulate ArrowRight - should focus second tab
 						simulateKeyup(nav, 'ArrowRight')
-						await animationFrame()
 
 						// Component should have called focus on the second tab
 						assert.equal(getCurrentSlideIndex(el), 1)
@@ -495,7 +478,6 @@
 						simulateKeyup(nav, 'Space')
 						simulateKeyup(nav, 'Tab')
 						simulateKeyup(nav, 'Escape')
-						await animationFrame()
 
 						// Should remain at same slide
 						assert.equal(getCurrentSlideIndex(el), initialIndex)
@@ -514,7 +496,6 @@
 						nextBtn.click()
 						nextBtn.click()
 						nextBtn.click()
-						await animationFrame()
 
 						// Should wrap around correctly (4 clicks = back to slide 1, index 1)
 						assert.equal(getCurrentSlideIndex(el), 1)
@@ -531,17 +512,14 @@
 
 						// Next should go to slide 2
 						nextBtn.click()
-						await animationFrame()
 						assert.equal(getCurrentSlideIndex(el), 1)
 
 						// Next again should wrap to slide 1
 						nextBtn.click()
-						await animationFrame()
 						assert.equal(getCurrentSlideIndex(el), 0)
 
 						// Prev should go to slide 2
 						prevBtn.click()
-						await animationFrame()
 						assert.equal(getCurrentSlideIndex(el), 1)
 					})
 
@@ -556,11 +534,9 @@
 
 						// Next and prev should stay on same slide
 						nextBtn.click()
-						await animationFrame()
 						assert.equal(getCurrentSlideIndex(el), 0)
 
 						prevBtn.click()
-						await animationFrame()
 						assert.equal(getCurrentSlideIndex(el), 0)
 					})
 
@@ -576,12 +552,10 @@
 						await resetCarousel(el)
 						const nextBtn = el.querySelector('.next')
 						nextBtn.click()
-						await animationFrame()
 						assert.equal(getCurrentSlideIndex(el), 1)
 
 						// Click tab with missing data-index - should default to 0
 						firstTab.click()
-						await animationFrame()
 						assert.equal(getCurrentSlideIndex(el), 0)
 
 						// Restore data-index
@@ -603,7 +577,6 @@
 
 						// Simulate navigation key
 						simulateKeyup(nav, 'ArrowRight')
-						await animationFrame()
 
 						// Should have called preventDefault
 						assert.isTrue(preventDefaultCalled)
@@ -631,7 +604,6 @@
 						// Navigate and check relationships are maintained
 						const nextBtn = el.querySelector('.next')
 						nextBtn.click()
-						await animationFrame()
 
 						tabs.forEach((tab, index) => {
 							const controls = tab.getAttribute('aria-controls')
@@ -664,7 +636,6 @@
 
 						// Navigate to second slide
 						nextBtn.click()
-						await animationFrame()
 						assert.equal(
 							slides[0].getAttribute('aria-current'),
 							'false',
@@ -680,7 +651,6 @@
 
 						// Navigate to third slide
 						nextBtn.click()
-						await animationFrame()
 						assert.equal(
 							slides[0].getAttribute('aria-current'),
 							'false',

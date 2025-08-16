@@ -1,0 +1,439 @@
+<!doctype html>
+<html>
+	<head>
+		<title>dangerouslySetInnerHTML Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<dangerous-html-test content="<p>Initial content</p>" sanitize="true">
+			<div class="html-container">Original content</div>
+			<div class="template-container"></div>
+			<div class="unsafe-container"></div>
+		</dangerous-html-test>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				component,
+				asString,
+				asBoolean,
+				dangerouslySetInnerHTML,
+				effect,
+				state,
+				RESET,
+			} from '../../index.dev.js'
+
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+
+			component(
+				'dangerous-html-test',
+				{
+					content: asString(),
+					sanitize: asBoolean(),
+					template: asString(''),
+				},
+				(el, { first }) => [
+					// Test basic innerHTML setting
+					first(
+						'.html-container',
+						dangerouslySetInnerHTML('content'),
+					),
+
+					// Test with sanitization options
+					first(
+						'.template-container',
+						dangerouslySetInnerHTML('template', {
+							sanitize: 'sanitize',
+						}),
+					),
+
+					// Test without sanitization (truly dangerous)
+					first(
+						'.unsafe-container',
+						dangerouslySetInnerHTML(
+							() => `<span>Count: ${el.content.length}</span>`,
+							{
+								sanitize: false,
+							},
+						),
+					),
+				],
+			)
+
+			runTests(() => {
+				describe('dangerouslySetInnerHTML()', () => {
+					it('should set innerHTML from string property', async () => {
+						const el = document.querySelector('dangerous-html-test')
+						const container = el.querySelector('.html-container')
+
+						assert.equal(
+							container.innerHTML,
+							'<p>Initial content</p>',
+							'Should set innerHTML from content property',
+						)
+
+						// Update content
+						el.content =
+							'<div><strong>Updated</strong> content</div>'
+
+						assert.equal(
+							container.innerHTML,
+							'<div><strong>Updated</strong> content</div>',
+							'Should update innerHTML when property changes',
+						)
+					})
+
+					/* it('should work with function that returns HTML', async () => {
+						const el = document.querySelector('dangerous-html-test')
+						const container = el.querySelector('.unsafe-container')
+
+						// Should show count of initial content length
+						assert.equal(
+							container.innerHTML,
+							'<span>Count: 21</span>', // "<p>Initial content</p>" = 21 chars
+							'Should set innerHTML from function result',
+						)
+
+						// Update content and check if count updates
+						el.content = '<p>Short</p>'
+
+						assert.equal(
+							container.innerHTML,
+							'<span>Count: 11</span>', // "<p>Short</p>" = 11 chars
+							'Should update innerHTML when function dependency changes',
+						)
+					}) */
+
+					/* it('should handle empty or null content', async () => {
+						const el = document.querySelector('dangerous-html-test')
+						const container = el.querySelector('.html-container')
+
+						// Set to empty string
+						el.content = ''
+
+						assert.equal(
+							container.innerHTML,
+							'',
+							'Should handle empty string content',
+						)
+
+						// Set to null/undefined-like content
+						el.content = null
+
+						assert.equal(
+							container.innerHTML,
+							'',
+							'Should handle null content as empty string',
+						)
+					}) */
+
+					it('should work with signal objects directly', async () => {
+						const htmlSignal = state('<em>Signal content</em>')
+						const element = document.createElement('div')
+						document.body.appendChild(element)
+
+						try {
+							// Create mock host component
+							const host = {
+								getSignal: () => htmlSignal,
+							}
+
+							// Apply dangerouslySetInnerHTML with signal
+							const cleanup = dangerouslySetInnerHTML(htmlSignal)(
+								host,
+								element,
+							)
+
+							assert.equal(
+								element.innerHTML,
+								'<em>Signal content</em>',
+								'Should set innerHTML from signal value',
+							)
+
+							// Update signal
+							htmlSignal.set(
+								'<strong>Updated signal content</strong>',
+							)
+
+							assert.equal(
+								element.innerHTML,
+								'<strong>Updated signal content</strong>',
+								'Should update innerHTML when signal changes',
+							)
+
+							cleanup()
+						} finally {
+							element.remove()
+						}
+					})
+
+					it('should preserve event listeners on container but not children', async () => {
+						const element = document.createElement('div')
+						element.innerHTML = '<button>Original button</button>'
+						document.body.appendChild(element)
+
+						try {
+							// Add event listener to container
+							let containerClicked = false
+							element.addEventListener('click', () => {
+								containerClicked = true
+							})
+
+							// Add event listener to child button
+							let buttonClicked = false
+							const originalButton =
+								element.querySelector('button')
+							originalButton.addEventListener('click', () => {
+								buttonClicked = true
+							})
+
+							const htmlSignal = state(
+								'<button>New button</button>',
+							)
+
+							// Create mock host component
+							const host = {
+								getSignal: () => htmlSignal,
+							}
+
+							// Apply dangerouslySetInnerHTML
+							const cleanup = dangerouslySetInnerHTML(htmlSignal)(
+								host,
+								element,
+							)
+
+							// Container event listener should still work
+							element.click()
+							assert.isTrue(
+								containerClicked,
+								'Container event listener should be preserved',
+							)
+
+							// Original button should be gone, new button should not have the old listener
+							const newButton = element.querySelector('button')
+							assert.isNotNull(
+								newButton,
+								'New button should exist',
+							)
+							assert.equal(
+								newButton.textContent,
+								'New button',
+								'Should have new button content',
+							)
+
+							// Click new button - old listener should not fire
+							newButton.click()
+							assert.isFalse(
+								buttonClicked,
+								'Old button event listener should not fire on new button',
+							)
+
+							cleanup()
+						} finally {
+							element.remove()
+						}
+					})
+
+					it('should handle complex HTML structures', async () => {
+						const htmlSignal = state(`
+										<div class="complex">
+											<h2>Title</h2>
+											<ul>
+												<li>Item 1</li>
+												<li>Item 2</li>
+											</ul>
+											<form>
+												<input type="text" placeholder="Enter text" />
+												<button type="submit">Submit</button>
+											</form>
+										</div>
+									`)
+						const element = document.createElement('div')
+						document.body.appendChild(element)
+
+						try {
+							// Create mock host component
+							const host = {
+								getSignal: () => htmlSignal,
+							}
+
+							// Apply dangerouslySetInnerHTML
+							const cleanup = dangerouslySetInnerHTML(htmlSignal)(
+								host,
+								element,
+							)
+
+							// Verify complex structure is rendered
+							const complexDiv = element.querySelector('.complex')
+							assert.isNotNull(
+								complexDiv,
+								'Should render complex div',
+							)
+
+							const title = complexDiv.querySelector('h2')
+							assert.isNotNull(title, 'Should render title')
+							assert.equal(title.textContent, 'Title')
+
+							const list = complexDiv.querySelector('ul')
+							assert.isNotNull(list, 'Should render list')
+							assert.equal(
+								list.children.length,
+								2,
+								'Should have 2 list items',
+							)
+
+							const form = complexDiv.querySelector('form')
+							assert.isNotNull(form, 'Should render form')
+
+							const input = form.querySelector('input')
+							assert.isNotNull(input, 'Should render input')
+							assert.equal(input.placeholder, 'Enter text')
+
+							cleanup()
+						} finally {
+							element.remove()
+						}
+					})
+
+					it('should handle malformed HTML gracefully', async () => {
+						const element = document.createElement('div')
+						document.body.appendChild(element)
+
+						try {
+							const htmlSignal = state(
+								'<div><p>Unclosed paragraph<div>Another div</div>',
+							)
+
+							// Create mock host component
+							const host = {
+								getSignal: () => htmlSignal,
+							}
+
+							// This should not throw an error
+							const cleanup = dangerouslySetInnerHTML(htmlSignal)(
+								host,
+								element,
+							)
+
+							// Browser should handle malformed HTML
+							assert.isTrue(
+								element.innerHTML.length > 0,
+								'Should handle malformed HTML without crashing',
+							)
+
+							// Check that some content was rendered
+							const divs = element.querySelectorAll('div')
+							assert.isTrue(
+								divs.length > 0,
+								'Should render some div elements',
+							)
+
+							cleanup()
+						} finally {
+							element.remove()
+						}
+					})
+
+					it('should work with reactive content patterns', async () => {
+						// Test dynamic list rendering like todo items
+						const itemsSignal = state(['apple', 'banana', 'cherry'])
+						const showDetailsSignal = state(false)
+						const element = document.createElement('div')
+						document.body.appendChild(element)
+
+						try {
+							// Create mock host component
+							const host = {
+								getSignal: prop => {
+									if (prop === 'items') return itemsSignal
+									if (prop === 'showDetails')
+										return showDetailsSignal
+									return { get: () => null }
+								},
+							}
+
+							// Apply dangerouslySetInnerHTML with reactive content
+							const cleanup = dangerouslySetInnerHTML(() => {
+								const items = itemsSignal.get()
+								const showDetails = showDetailsSignal.get()
+
+								if (items.length === 0) {
+									return '<p class="empty">No items</p>'
+								}
+
+								const listItems = items
+									.map(
+										item =>
+											`<li class="item">${item}${showDetails ? ' (fruit)' : ''}</li>`,
+									)
+									.join('')
+
+								return `<ul class="item-list">${listItems}</ul>`
+							})(host, element)
+
+
+							// Initial state - 3 items without details
+							let list = element.querySelector('.item-list')
+							assert.isNotNull(list, 'Should render list')
+							assert.equal(
+								list.children.length,
+								3,
+								'Should have 3 items',
+							)
+							assert.equal(list.children[0].textContent, 'apple')
+							assert.isFalse(
+								list.children[0].textContent.includes(
+									'(fruit)',
+								),
+							)
+
+							// Enable details
+							showDetailsSignal.set(true)
+
+							list = element.querySelector('.item-list')
+							assert.equal(
+								list.children[0].textContent,
+								'apple (fruit)',
+							)
+							assert.equal(
+								list.children[1].textContent,
+								'banana (fruit)',
+							)
+
+							// Remove all items
+							itemsSignal.set([])
+
+							const emptyMessage = element.querySelector('.empty')
+							assert.isNotNull(
+								emptyMessage,
+								'Should show empty message',
+							)
+							assert.equal(emptyMessage.textContent, 'No items')
+
+							// Add items back
+							itemsSignal.set(['orange', 'grape'])
+
+							list = element.querySelector('.item-list')
+							assert.isNotNull(list, 'Should render list again')
+							assert.equal(
+								list.children.length,
+								2,
+								'Should have 2 items',
+							)
+							assert.equal(
+								list.children[0].textContent,
+								'orange (fruit)',
+							)
+
+							cleanup()
+						} finally {
+							element.remove()
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

@@ -1,16 +1,14 @@
 import {
-	type Component,
-	UNSET,
 	batch,
+	type Component,
 	component,
 	computed,
 	on,
 	setAttribute,
 	setProperty,
 	setText,
-	show,
 } from '../../..'
-import { createClearFunction } from '../../functions/shared/clear-input'
+import { clearEffects, clearMethod } from '../../functions/shared/clear-input'
 
 export type FormTextboxProps = {
 	value: string
@@ -27,16 +25,15 @@ export default component<FormTextboxProps>(
 		length: 0,
 		error: '',
 		description: '',
-		clear() {},
-	},
-	(el, { first }) => {
-		const input = el.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+		clear: clearMethod<HTMLInputElement | HTMLTextAreaElement>(
 			'input, textarea',
+		),
+	},
+	(el, { first, useElement }) => {
+		const input = useElement<HTMLInputElement | HTMLTextAreaElement>(
+			'input, textarea',
+			'Native input or textarea element needed.',
 		)
-		if (!input) throw new Error('No Input or textarea element found')
-
-		// Add clear method to component using shared functionality
-		el.clear = createClearFunction(input)
 
 		// Initialize description with existing content or set up computed signal for remaining characters
 		const description = el.querySelector<HTMLElement>('.description')
@@ -60,14 +57,13 @@ export default component<FormTextboxProps>(
 			setAttribute('value'),
 
 			// Effects on input / textarea
-			first(
-				'input, textarea',
+			first('input, textarea', [
 				setProperty('ariaInvalid', () => String(!!el.error)),
 				setAttribute('aria-errormessage', () =>
-					el.error && errorId ? errorId : UNSET,
+					el.error && errorId ? errorId : null,
 				),
 				setAttribute('aria-describedby', () =>
-					el.description && descriptionId ? descriptionId : UNSET,
+					el.description && descriptionId ? descriptionId : null,
 				),
 				on('change', () => {
 					input.checkValidity()
@@ -79,16 +75,10 @@ export default component<FormTextboxProps>(
 				on('input', () => {
 					el.length = input.value.length
 				}),
-			),
+			]),
 
 			// Effects and event listeners on clear button
-			first(
-				'.clear',
-				show(() => !!el.length),
-				on('click', () => {
-					el.clear()
-				}),
-			),
+			first('.clear', clearEffects(el)),
 
 			// Effects on error and description
 			first('.error', setText('error')),

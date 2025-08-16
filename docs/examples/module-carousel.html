@@ -44,7 +44,7 @@
 <span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">					Your name&#x3C;</span><span style="color:#F92672">br</span><span style="color:#F8F8F2"> /></span></span>
-<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">input</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"text"</span><span style="color:#A6E22E"> name</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"name"</span><span style="color:#A6E22E"> autocomplete</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"given-name"</span><span style="color:#F8F8F2"> /></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">label</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>World&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
@@ -418,54 +418,54 @@
 <span class="line"></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> wrapAround</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">total</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (index </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> total) </span><span style="color:#F92672">%</span><span style="color:#F8F8F2"> total</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> clickHandler</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> ({ </span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">value</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> host.slides.length</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> nextIndex </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> target.classList.</span><span style="color:#A6E22E">contains</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'prev'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">		?</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">-</span><span style="color:#AE81FF"> 1</span></span>
-<span class="line"><span style="color:#F92672">		:</span><span style="color:#F8F8F2"> target.classList.</span><span style="color:#A6E22E">contains</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'next'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">			?</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">+</span><span style="color:#AE81FF"> 1</span></span>
-<span class="line"><span style="color:#F92672">			:</span><span style="color:#A6E22E"> parseInt</span><span style="color:#F8F8F2">(target.dataset.index </span><span style="color:#F92672">||</span><span style="color:#E6DB74"> '0'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">	return</span><span style="color:#F8F8F2"> Number.</span><span style="color:#A6E22E">isInteger</span><span style="color:#F8F8F2">(nextIndex) </span><span style="color:#F92672">?</span><span style="color:#A6E22E"> wrapAround</span><span style="color:#F8F8F2">(nextIndex, total) </span><span style="color:#F92672">:</span><span style="color:#AE81FF"> 0</span></span>
-<span class="line"><span style="color:#F8F8F2">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> keyupHandler</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">value</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> key </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> event.key</span></span>
-<span class="line"><span style="color:#F92672">	if</span><span style="color:#F8F8F2"> ([</span><span style="color:#E6DB74">'ArrowLeft'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'ArrowRight'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'Home'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'End'</span><span style="color:#F8F8F2">].</span><span style="color:#A6E22E">includes</span><span style="color:#F8F8F2">(key)) {</span></span>
-<span class="line"><span style="color:#F8F8F2">		event.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">		event.</span><span style="color:#A6E22E">stopPropagation</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> host.slides.length</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> nextIndex </span><span style="color:#F92672">=</span></span>
-<span class="line"><span style="color:#F8F8F2">			key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'Home'</span></span>
-<span class="line"><span style="color:#F92672">				?</span><span style="color:#AE81FF"> 0</span></span>
-<span class="line"><span style="color:#F92672">				:</span><span style="color:#F8F8F2"> key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'End'</span></span>
-<span class="line"><span style="color:#F92672">					?</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">-</span><span style="color:#AE81FF"> 1</span></span>
-<span class="line"><span style="color:#F92672">					:</span><span style="color:#A6E22E"> wrapAround</span><span style="color:#F8F8F2">(value </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> (key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'ArrowLeft'</span><span style="color:#F92672"> ?</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span><span style="color:#F92672"> :</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">), total)</span></span>
-<span class="line"><span style="color:#F8F8F2">		host.slides[nextIndex].</span><span style="color:#A6E22E">focus</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> nextIndex</span></span>
-<span class="line"><span style="color:#F8F8F2">	}</span></span>
-<span class="line"><span style="color:#F8F8F2">}</span></span>
-<span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">	'module-carousel'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
-<span class="line"><span style="color:#F8F8F2">		slides: </span><span style="color:#A6E22E">fromSelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'[role="tabpanel"]'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#F8F8F2">		index: fromEvents</span><span style="color:#F92672">&#x3C;</span></span>
-<span class="line"><span style="color:#F8F8F2">			number,</span></span>
-<span class="line"><span style="color:#F8F8F2">			HTMLButtonElement,</span></span>
-<span class="line"><span style="color:#F8F8F2">			HTMLElement &#x26; { slides: HTMLElement[] }</span></span>
-<span class="line"><span style="color:#F8F8F2">		>(</span></span>
-<span class="line"><span style="color:#F8F8F2">			(host: HTMLElement </span><span style="color:#F92672">&#x26;</span><span style="color:#F8F8F2"> { slides: HTMLElement[] }) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#F8F8F2">		slides: </span><span style="color:#A6E22E">fromSelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'[role="tabpanel"]'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">		index: </span><span style="color:#A6E22E">fromEvents</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'nav button'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">			{</span></span>
+<span class="line"><span style="color:#A6E22E">				click</span><span style="color:#F8F8F2">: ({ </span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">value</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> host.slides.length</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> nextIndex </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> target.classList.</span><span style="color:#A6E22E">contains</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'prev'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">						?</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">-</span><span style="color:#AE81FF"> 1</span></span>
+<span class="line"><span style="color:#F92672">						:</span><span style="color:#F8F8F2"> target.classList.</span><span style="color:#A6E22E">contains</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'next'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">							?</span><span style="color:#F8F8F2"> value </span><span style="color:#F92672">+</span><span style="color:#AE81FF"> 1</span></span>
+<span class="line"><span style="color:#F92672">							:</span><span style="color:#A6E22E"> parseInt</span><span style="color:#F8F8F2">(target.dataset.index </span><span style="color:#F92672">||</span><span style="color:#E6DB74"> '0'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">					return</span><span style="color:#F8F8F2"> Number.</span><span style="color:#A6E22E">isInteger</span><span style="color:#F8F8F2">(nextIndex)</span></span>
+<span class="line"><span style="color:#F92672">						?</span><span style="color:#A6E22E"> wrapAround</span><span style="color:#F8F8F2">(nextIndex, total)</span></span>
+<span class="line"><span style="color:#F92672">						:</span><span style="color:#AE81FF"> 0</span></span>
+<span class="line"><span style="color:#F8F8F2">				},</span></span>
+<span class="line"><span style="color:#A6E22E">				keyup</span><span style="color:#F8F8F2">: ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">value</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> key </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> event.key</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (</span></span>
+<span class="line"><span style="color:#F8F8F2">						[</span><span style="color:#E6DB74">'ArrowLeft'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'ArrowRight'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'Home'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'End'</span><span style="color:#F8F8F2">].</span><span style="color:#A6E22E">includes</span><span style="color:#F8F8F2">(key)</span></span>
+<span class="line"><span style="color:#F8F8F2">					) {</span></span>
+<span class="line"><span style="color:#F8F8F2">						event.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">						event.</span><span style="color:#A6E22E">stopPropagation</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> host.slides.length</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">						const</span><span style="color:#F8F8F2"> nextIndex </span><span style="color:#F92672">=</span></span>
+<span class="line"><span style="color:#F8F8F2">							key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'Home'</span></span>
+<span class="line"><span style="color:#F92672">								?</span><span style="color:#AE81FF"> 0</span></span>
+<span class="line"><span style="color:#F92672">								:</span><span style="color:#F8F8F2"> key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'End'</span></span>
+<span class="line"><span style="color:#F92672">									?</span><span style="color:#F8F8F2"> total </span><span style="color:#F92672">-</span><span style="color:#AE81FF"> 1</span></span>
+<span class="line"><span style="color:#F92672">									:</span><span style="color:#A6E22E"> wrapAround</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">											value </span><span style="color:#F92672">+</span></span>
+<span class="line"><span style="color:#F8F8F2">												(key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'ArrowLeft'</span><span style="color:#F92672"> ?</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span><span style="color:#F92672"> :</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">											total,</span></span>
+<span class="line"><span style="color:#F8F8F2">										)</span></span>
+<span class="line"><span style="color:#F8F8F2">						host.slides[nextIndex].</span><span style="color:#A6E22E">focus</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F92672">						return</span><span style="color:#F8F8F2"> nextIndex</span></span>
+<span class="line"><span style="color:#F8F8F2">					}</span></span>
+<span class="line"><span style="color:#F8F8F2">				},</span></span>
+<span class="line"><span style="color:#F8F8F2">			},</span></span>
+<span class="line"><span style="color:#F8F8F2">			(</span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F92672"> &#x26;</span><span style="color:#F8F8F2"> { slides</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[] }) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
 <span class="line"><span style="color:#F8F8F2">				Math.</span><span style="color:#A6E22E">max</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#F8F8F2">					host.slides.</span><span style="color:#A6E22E">findIndex</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#FD971F;font-style:italic">						slide</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> slide.ariaCurrent </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'true'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">					),</span></span>
 <span class="line"><span style="color:#AE81FF">					0</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
-<span class="line"><span style="color:#E6DB74">			'nav button'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">			{</span></span>
-<span class="line"><span style="color:#F8F8F2">				click: clickHandler,</span></span>
-<span class="line"><span style="color:#F8F8F2">				keyup: keyupHandler,</span></span>
-<span class="line"><span style="color:#F8F8F2">			},</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
@@ -473,15 +473,14 @@
 <span class="line"><span style="color:#F8F8F2">			target.dataset.index </span><span style="color:#F92672">===</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(el.index)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">			all</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">				'[role="tab"]'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'[role="tab"]'</span><span style="color:#F8F8F2">, [</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaSelected'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
 <span class="line"><span style="color:#A6E22E">					String</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">isCurrentDot</span><span style="color:#F8F8F2">(target)),</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tabIndex'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
 <span class="line"><span style="color:#A6E22E">					isCurrentDot</span><span style="color:#F8F8F2">(target) </span><span style="color:#F92672">?</span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> :</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
-<span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"><span style="color:#F8F8F2">			]),</span></span>
 <span class="line"><span style="color:#A6E22E">			all</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">				'[role="tabpanel"]'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaCurrent'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>

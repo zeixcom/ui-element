@@ -1,69 +1,107 @@
 import {
 	type Cleanup,
 	type Computed,
-	TYPE_COMPUTED,
-	UNSET,
-	type Watcher,
-	computed,
 	isFunction,
 	notify,
 	subscribe,
+	TYPE_COMPUTED,
+	UNSET,
+	type Watcher,
 } from '@zeix/cause-effect'
 
-import type {
-	Component,
-	ComponentProps,
-	ElementFromSelector,
-	SignalProducer,
-} from '../component'
-import { elementName, isCustomElement } from './util'
+import type { Component, ComponentProps } from '../component'
+import { CircularMutationError, MissingElementError } from './errors'
+import { type Effects, runEffects } from './reactive'
+import { isCustomElement, isElement, isString } from './util'
 
 /* === Types === */
 
-type EventType<K extends string> = K extends keyof HTMLElementEventMap
-	? HTMLElementEventMap[K]
-	: Event
+// Pull the part before the first ".", "#", ":", or "[".
+type ExtractTag<S extends string> = S extends `${infer T}.${string}`
+	? T
+	: S extends `${infer T}#${string}`
+		? T
+		: S extends `${infer T}:${string}`
+			? T
+			: S extends `${infer T}[${string}`
+				? T
+				: S
 
-type EventTransformerContext<
-	T extends {},
-	E extends Element,
-	C extends HTMLElement,
-	Evt extends Event,
-> = {
-	event: Evt
-	host: C
-	target: E
-	value: T
+// Normalize to lowercase and ensure it's a known HTML tag.
+type KnownTag<S extends string> = Lowercase<ExtractTag<S>> extends
+	| keyof HTMLElementTagNameMap
+	| keyof SVGElementTagNameMap
+	| keyof MathMLElementTagNameMap
+	? Lowercase<ExtractTag<S>>
+	: never
+
+// Map the selector string to the concrete element type.
+// If we can't statically prove the tag is known, fall back to HTMLElement.
+type ElementFromSelector<S extends string> = KnownTag<S> extends never
+	? HTMLElement
+	: KnownTag<S> extends keyof HTMLElementTagNameMap
+		? HTMLElementTagNameMap[KnownTag<S>]
+		: KnownTag<S> extends keyof SVGElementTagNameMap
+			? SVGElementTagNameMap[KnownTag<S>]
+			: KnownTag<S> extends keyof MathMLElementTagNameMap
+				? MathMLElementTagNameMap[KnownTag<S>]
+				: HTMLElement
+
+type Extractor<T extends {}, E extends Element = HTMLElement> = (
+	element: E,
+) => T
+
+type LooseExtractor<T, E extends Element = HTMLElement> = (
+	element: E,
+) => T | null | undefined
+
+type Parser<T extends {}, E extends Element = HTMLElement> = (
+	element: E,
+	value: string | null | undefined,
+	old?: string | null,
+) => T
+
+type Fallback<T extends {}, E extends Element = HTMLElement> =
+	| T
+	| Extractor<T, E>
+
+type ParserOrFallback<T extends {}, E extends Element = HTMLElement> =
+	| Parser<T, E>
+	| Fallback<T, E>
+
+type ElementUsage = {
+	<S extends string>(selector: S, required: string): ElementFromSelector<S>
+	<S extends string>(selector: S): ElementFromSelector<S> | null
+	<E extends Element>(selector: string, required: string): E
+	<E extends Element>(selector: string): E | null
 }
 
-type EventTransformer<
-	T extends {},
-	E extends Element,
-	C extends HTMLElement,
-	Evt extends Event,
-> = (context: EventTransformerContext<T, E, C, Evt>) => T | void
-
-type EventTransformers<
-	T extends {},
-	E extends Element,
-	C extends HTMLElement,
-> = {
-	[K in keyof HTMLElementEventMap]?: EventTransformer<T, E, C, EventType<K>>
+type ElementsUsage = {
+	<S extends string>(selector: S, required?: string): ElementFromSelector<S>[]
+	<E extends Element>(selector: string, required?: string): E[]
 }
 
-/* === Error Class === */
-
-/**
- * Error thrown when a circular dependency is detected in a selection signal
- */
-class CircularMutationError extends Error {
-	constructor(message: string) {
-		super(message)
-		this.name = 'CircularMutationError'
-	}
+type ElementEffects<P extends ComponentProps> = {
+	<S extends string>(
+		selector: S,
+		effects: Effects<P, ElementFromSelector<S>>,
+		required?: string,
+	): () => Cleanup | void
+	<E extends Element>(
+		selector: string,
+		effects: Effects<P, E>,
+		required?: string,
+	): () => Cleanup | void
 }
 
-/* === Internal === */
+type Helpers<P extends ComponentProps> = {
+	useElement: ElementUsage
+	useElements: ElementsUsage
+	first: ElementEffects<P>
+	all: ElementEffects<P>
+}
+
+/* === Internal Functions === */
 
 /**
  * Extract attribute names from a CSS selector
@@ -113,86 +151,78 @@ const areElementArraysEqual = <E extends Element>(
 /* === Exported Functions === */
 
 /**
- * Produce a computed signal from transformed event data
+ * Check if a value is a string parser
  *
- * @since 0.13.3
- * @param {T | ((host: C) => T)} initialize - Initial value or initialize function
- * @param {S} selector - CSS selector for the source element
- * @param {EventTransformers<T, ElementFromSelector<S, E>, C>} events - Transformation functions for events
- * @returns {(host: C) => Computed<T>} Signal producer for value from event
+ * @since 0.14.0
+ * @param {unknown} value - Value to check if it is a string parser
+ * @returns {boolean} True if the value is a string parser, false otherwise
  */
-const fromEvents =
+const isParser = <T extends {}, E extends Element = HTMLElement>(
+	value: unknown,
+): value is Parser<T, E> => isFunction(value) && value.length >= 2
+
+/**
+ * Get a fallback value for an element
+ *
+ * @since 0.14.0
+ * @param {E} element - Element to get fallback value for
+ * @param {ParserOrFallback<T, E>} fallback - Fallback value or parser function
+ * @returns {T} Fallback value or parsed value
+ */
+const getFallback = <T extends {}, E extends Element = HTMLElement>(
+	element: E,
+	fallback: ParserOrFallback<T, E>,
+): T => (isFunction(fallback) ? fallback(element) : fallback) as T
+
+/**
+ * Get a value from elements in the DOM
+ *
+ * @since 0.14.0
+ * @param {S} extractors - An object of extractor functions for selectors as keys to get a value from
+ * @param {ParserOrFallback<T, E>} fallback - Fallback value or parser function
+ * @returns {LooseExtractor<T | string | null | undefined, C>} Loose extractor function to apply to the host element
+ */
+const fromDOM =
 	<
 		T extends {},
-		E extends Element = HTMLElement,
 		C extends HTMLElement = HTMLElement,
-		S extends string = string,
+		S extends {
+			[K in keyof S & string]: LooseExtractor<
+				T | string,
+				ElementFromSelector<K>
+			>
+		} = {},
 	>(
-		initialize: T | ((host: C) => T),
-		selector: S,
-		events: EventTransformers<T, ElementFromSelector<S, E>, C>,
-	): SignalProducer<T, C> =>
-	(host: C) => {
-		const watchers: Set<Watcher> = new Set()
-		let value: T = isFunction<T>(initialize)
-			? initialize(host)
-			: (initialize as T)
-		const eventMap = new Map<string, EventListener>()
-		let cleanup: Cleanup | undefined
+		extractors: S,
+		fallback: ParserOrFallback<T, C>,
+	): Extractor<T, C> =>
+	(host: C): T => {
+		const root = host.shadowRoot ?? host
 
-		const listen = () => {
-			for (const [type, transform] of Object.entries(events)) {
-				const listener = ((e: Event) => {
-					const target = e.target as Element
-					if (!target) return
-
-					const source = target.closest(
-						selector,
-					) as ElementFromSelector<S, E> | null
-					if (!source || !host.contains(source)) return
-					e.stopPropagation()
-
-					try {
-						const newValue = transform({
-							event: e as any,
-							host,
-							target: source,
-							value,
-						})
-						if (newValue == null) return
-						if (!Object.is(newValue, value)) {
-							value = newValue
-							if (watchers.size > 0) notify(watchers)
-							else if (cleanup) cleanup()
-						}
-					} catch (error) {
-						e.stopImmediatePropagation()
-						throw error
-					}
-				}) as EventListener
-				eventMap.set(type, listener)
-				host.addEventListener(type, listener)
-			}
-			cleanup = () => {
-				if (eventMap.size) {
-					for (const [type, listener] of eventMap) {
-						host.removeEventListener(type, listener)
-					}
-					eventMap.clear()
-				}
-				cleanup = undefined
-			}
+		const fromFirst = <K extends keyof S & string>(
+			selector: K,
+			extractor: LooseExtractor<T | string, ElementFromSelector<K>>,
+		) => {
+			const target = root.querySelector<ElementFromSelector<K>>(selector)
+			if (!target) return
+			const value = extractor(target)
+			if (value != null) return value
 		}
 
-		return {
-			[Symbol.toStringTag]: TYPE_COMPUTED,
-
-			get(): T {
-				subscribe(watchers)
-				if (watchers.size && !eventMap.size) listen()
-				return value
-			},
+		let value: T | string | null | undefined = undefined
+		for (const [selector, extractor] of Object.entries(extractors)) {
+			value = fromFirst(
+				selector as keyof S & string,
+				extractor as LooseExtractor<
+					T,
+					ElementFromSelector<keyof S & string>
+				>,
+			)
+			if (value != null) break
 		}
+		return isString(value) && isParser<T, C>(fallback)
+			? fallback(host, value)
+			: ((value as T) ?? getFallback(host, fallback))
 	}
 
 /**
@@ -224,32 +254,210 @@ const observeSubtree = (
 }
 
 /**
+ * Create partially applied helper functions to get descendants and run effects on them
+ *
+ * @since 0.14.0
+ * @param {Component<P>} host - Host component
+ * @returns {ElementSelectors<P>} - Helper functions for selecting descendants
+ */
+const getHelpers = <P extends ComponentProps>(
+	host: Component<P>,
+): [Helpers<P>, () => string[]] => {
+	const root = host.shadowRoot ?? host
+	const dependencies: Set<string> = new Set()
+
+	/**
+	 * Get the first descendant element matching a selector
+	 * If the element is a custom elements it will be added to dependencies
+	 *
+	 * @since 0.14.0
+	 * @param {S} selector - Selector for element to check for
+	 * @param {string} [required] - Optional reason for the assertion; if provided, throws on missing element
+	 * @returns {ElementFromSelector<S> | null} First matching descendant element, or null if not found and not required
+	 * @throws {MissingElementError} - Thrown when the element is required but not found
+	 */
+	function useElement<S extends string>(
+		selector: S,
+		required: string,
+	): ElementFromSelector<S>
+	function useElement<S extends string>(
+		selector: S,
+	): ElementFromSelector<S> | null
+	function useElement<E extends Element>(
+		selector: string,
+		required: string,
+	): E
+	function useElement<E extends Element>(selector: string): E | null
+	function useElement<S extends string>(
+		selector: S,
+		required?: string,
+	): ElementFromSelector<S> | null {
+		const target = root.querySelector<ElementFromSelector<S>>(selector)
+		if (required != null && !target)
+			throw new MissingElementError(host, selector, required)
+		// Only add to dependencies if element is a custom element that's not yet defined
+		if (
+			target &&
+			isCustomElement(target) &&
+			target.matches(':not(:defined)')
+		)
+			dependencies.add(target.localName)
+		return target
+	}
+
+	/**
+	 * Get all descendant elements matching a selector
+	 * If any element is a custom element it will be added to dependencies
+	 *
+	 * @since 0.14.0
+	 * @param {S} selector - Selector for elements to check for
+	 * @param {string} [required] - Optional reason for the assertion; if provided, throws on missing elements
+	 * @returns {NodeListOf<ElementFromSelector<S>>} All matching descendant elements
+	 * @throws {MissingElementError} - Thrown when elements are required but not found
+	 */
+	function useElements<S extends string>(
+		selector: S,
+		required?: string,
+	): ElementFromSelector<S>[]
+	function useElements<E extends Element>(
+		selector: string,
+		required?: string,
+	): E[]
+	function useElements<S extends string>(
+		selector: S,
+		required?: string,
+	): ElementFromSelector<S>[] {
+		const targets = root.querySelectorAll<ElementFromSelector<S>>(selector)
+		if (required != null && !targets.length)
+			throw new MissingElementError(host, selector, required)
+		if (targets.length)
+			targets.forEach(target => {
+				// Only add to dependencies if element is a custom element that's not yet defined
+				if (isCustomElement(target) && target.matches(':not(:defined)'))
+					dependencies.add(target.localName)
+			})
+		return Array.from(targets)
+	}
+
+	/**
+	 * Apply effect functions to a first matching descendant within the custom element
+	 * If the target element is a custom element, waits for it to be defined before running effects
+	 *
+	 * @since 0.14.0
+	 * @param {S} selector - Selector to match descendant
+	 * @param {Effects<P, E>} effects - Effect functions to apply
+	 * @param {string} [required] - Optional reason for the assertion; if provided, throws on missing element
+	 * @throws {MissingElementError} - Thrown when the element is required but not found
+	 */
+	const first = <
+		S extends string,
+		E extends Element = ElementFromSelector<S>,
+	>(
+		selector: S,
+		effects: Effects<P, E>,
+		required?: string,
+	) => {
+		const target =
+			required != null
+				? useElement(selector, required)
+				: useElement(selector)
+		return () => {
+			if (target) return runEffects(effects, host, target as unknown as E)
+		}
+	}
+
+	/**
+	 * Apply effect functions to all matching descendant elements within the custom element
+	 * If any target element is a custom element, waits for it to be defined before running effects
+	 *
+	 * @since 0.14.0
+	 * @param {S} selector - Selector to match descendants
+	 * @param {Effects<P, ElementFromSelector<S>>} effects - Effect functions to apply
+	 * @param {string} [required] - Optional reason for the assertion; if provided, throws on missing element
+	 * @throws {MissingElementError} - Thrown when the element is required but not found
+	 */
+	const all = <S extends string, E extends Element = ElementFromSelector<S>>(
+		selector: S,
+		effects: Effects<P, E>,
+		required?: string,
+	) => {
+		const targets =
+			required != null
+				? useElements(selector, required)
+				: useElements(selector)
+
+		return () => {
+			const cleanups = new Map<E, Cleanup>()
+
+			const attach = (target: E) => {
+				const cleanup = runEffects(effects, host, target)
+				if (cleanup && !cleanups.has(target))
+					cleanups.set(target, cleanup)
+			}
+
+			const detach = (target: E) => {
+				const cleanup = cleanups.get(target)
+				if (cleanup) cleanup()
+				cleanups.delete(target)
+			}
+
+			const applyToMatching =
+				(fn: (target: E) => void) => (node: Node) => {
+					if (isElement(node)) {
+						if (node.matches(selector)) fn(node as E)
+						node.querySelectorAll<E>(selector).forEach(fn)
+					}
+				}
+
+			const observer = observeSubtree(root, selector, mutations => {
+				for (const mutation of mutations) {
+					mutation.addedNodes.forEach(applyToMatching(attach))
+					mutation.removedNodes.forEach(applyToMatching(detach))
+				}
+			})
+
+			if (targets.length)
+				(targets as unknown as NodeListOf<E>).forEach(attach)
+
+			return () => {
+				observer.disconnect()
+				cleanups.forEach(cleanup => cleanup())
+				cleanups.clear()
+			}
+		}
+	}
+
+	return [
+		{ useElement, useElements, first, all },
+		() => Array.from(dependencies),
+	]
+}
+
+/**
  * Produce a computed signal of an array of elements matching a selector
  *
  * @since 0.13.1
- * @param {K} selector - CSS selector for descendant elements
- * @returns {(host: C) => Computed<ElementFromSelector<S, E>[]>} Signal producer for descendant element collection from a selector
+ * @param {S} selector - CSS selector for descendant elements
+ * @returns {Extractor<Computed<ElementFromSelector<S>[]>, C>} Signal producer for descendant element collection from a selector
+ * @throws {CircularMutationError} If observed mutations would trigger infinite mutation cycles
  */
-const fromSelector =
-	<
-		E extends Element = HTMLElement,
-		C extends HTMLElement = HTMLElement,
-		S extends string = string,
-	>(
-		selector: S,
-	): SignalProducer<ElementFromSelector<S, E>[], C> =>
-	(host: C) => {
+function fromSelector<S extends string, C extends HTMLElement = HTMLElement>(
+	selector: S,
+): Extractor<Computed<ElementFromSelector<S>[]>, C>
+function fromSelector<E extends Element, C extends HTMLElement = HTMLElement>(
+	selector: string,
+): Extractor<Computed<E[]>, C>
+function fromSelector<C extends HTMLElement = HTMLElement>(
+	selector: string,
+): Extractor<Computed<any[]>, C> {
+	return (host: C): Computed<any[]> => {
 		const watchers: Set<Watcher> = new Set()
 		const select = () =>
-			Array.from(
-				(host.shadowRoot ?? host).querySelectorAll<
-					ElementFromSelector<S, E>
-				>(selector),
-			)
-		let value: ElementFromSelector<S, E>[] = UNSET
+			Array.from((host.shadowRoot ?? host).querySelectorAll(selector))
+		let value: any[] = UNSET
 		let observer: MutationObserver | undefined
 		let mutationDepth = 0
-		const MAX_MUTATION_DEPTH = 2 // Consider a depth > 1 as circular
+		const MAX_MUTATION_DEPTH = 2 // Consider a depth > 2 as circular
 
 		const observe = () => {
 			value = select()
@@ -266,9 +474,7 @@ const fromSelector =
 					observer?.disconnect()
 					observer = undefined
 					mutationDepth = 0
-					throw new CircularMutationError(
-						'Circular mutation in element selection detected',
-					)
+					throw new CircularMutationError(host, selector)
 				}
 
 				try {
@@ -286,7 +492,7 @@ const fromSelector =
 		return {
 			[Symbol.toStringTag]: TYPE_COMPUTED,
 
-			get(): ElementFromSelector<S, E>[] {
+			get(): any[] {
 				subscribe(watchers)
 				if (!watchers.size) value = select()
 				else if (!observer) observe()
@@ -294,106 +500,25 @@ const fromSelector =
 			},
 		}
 	}
-
-/**
- * Reduced properties of descendant elements
- *
- * @since 0.13.3
- * @param {C} host - Host element for computed property
- * @param {S} selector - CSS selector for descendant elements
- * @param {(accumulator: T, currentElement: ElementFromSelector<S, E>, currentIndex: number, array: ElementFromSelector<S, E>[]) => T} reducer - Function to reduce values
- * @param {T} initialValue - Initial value function for reduction
- * @returns {Computed<T>} Computed signal of reduced values of descendant elements
- */
-const reduced = <
-	T extends {},
-	E extends Element = HTMLElement,
-	C extends HTMLElement = HTMLElement,
-	S extends string = string,
->(
-	host: C,
-	selector: S,
-	reducer: (
-		accumulator: T,
-		currentElement: ElementFromSelector<S, E>,
-		currentIndex: number,
-		array: ElementFromSelector<S, E>[],
-	) => T,
-	initialValue: T,
-): Computed<T> =>
-	computed(() =>
-		(
-			fromSelector<ElementFromSelector<S, E>>(selector)(host) as Computed<
-				ElementFromSelector<S, E>[]
-			>
-		)
-			.get()
-			.reduce(reducer, initialValue),
-	)
-
-/**
- * Read a signal property from a custom element safely after it's defined
- *
- * @since 0.13.1
- * @param {Component<Q> | null} target - Taget descendant element
- * @param {K} prop - Property name to get signal for
- * @param {Q[K]} fallback - Fallback value to use until component is ready
- * @returns {() => Q[K]} Function that returns signal value or fallback
- */
-const read = <Q extends ComponentProps, K extends keyof Q & string>(
-	target: Component<Q> | null,
-	prop: K,
-	fallback: Q[K],
-): (() => Q[K]) => {
-	if (!target) return () => fallback
-	if (!isCustomElement(target))
-		throw new TypeError(`Target element must be a custom element`)
-
-	const awaited = computed(async () => {
-		await customElements.whenDefined(target.localName)
-		return target.getSignal(prop)
-	})
-
-	return () => {
-		const value = awaited.get()
-		return value === UNSET ? fallback : (value.get() as Q[K])
-	}
-}
-
-/**
- * Assert that an element contains an expected descendant element
- *
- * @since 0.13.3
- * @param {HTMLElement} host - Host element
- * @param {S} selector - Descendant element to check for
- * @returns {ElementFromSelector<S, E>} First found descendant element
- * @throws {Error} If the element does not contain the required descendant element
- */
-const requireDescendant = <
-	S extends string = string,
-	E extends Element = HTMLElement,
->(
-	host: HTMLElement,
-	selector: S,
-): ElementFromSelector<S, E> => {
-	const target = host.querySelector<ElementFromSelector<S, E>>(selector)
-	if (!target) {
-		throw new Error(
-			`Component ${elementName(host)} does not contain required <${selector}> element`,
-		)
-	}
-	return target
 }
 
 export {
-	type EventType,
-	type EventTransformer,
-	type EventTransformers,
-	type EventTransformerContext,
-	fromEvents,
+	type ElementFromSelector,
+	type Extractor,
+	type Fallback,
+	type LooseExtractor,
+	type Parser,
+	type ParserOrFallback,
+	type ElementUsage,
+	type ElementsUsage,
+	type ElementEffects,
+	type ExtractTag,
+	type Helpers,
+	type KnownTag,
+	fromDOM,
 	fromSelector,
-	reduced,
-	read,
+	getFallback,
+	getHelpers,
+	isParser,
 	observeSubtree,
-	requireDescendant,
 }

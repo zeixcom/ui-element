@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Component Examples Tests</title>
+	</head>
+	<body>
+		<style>
+			.visually-hidden {
+				position: absolute;
+				left: -10000px;
+				top: auto;
+				width: 1px;
+				height: 1px;
+				overflow: hidden;
+			}
+
+			todo-app {
+				display: block;
+				max-width: 400px;
+				margin: 2rem auto;
+				padding: 1rem;
+				border: 1px solid #ddd;
+			}
+
+			todo-app .completed {
+				text-decoration: line-through;
+				opacity: 0.6;
+			}
+
+			shopping-cart .item {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 0.5rem;
+				border-bottom: 1px solid #eee;
+			}
+
+			accordion-group .panel {
+				border: 1px solid #ddd;
+				margin-bottom: 0.5rem;
+			}
+
+			accordion-group .panel-header {
+				background: #f5f5f5;
+				padding: 1rem;
+				cursor: pointer;
+			}
+
+			accordion-group .panel-content {
+				padding: 1rem;
+			}
+
+			data-table {
+				display: block;
+				overflow-x: auto;
+			}
+
+			data-table table {
+				width: 100%;
+				border-collapse: collapse;
+			}
+
+			data-table th,
+			data-table td {
+				padding: 0.5rem;
+				border: 1px solid #ddd;
+				text-align: left;
+			}
+
+			search-filter {
+				display: block;
+				margin-bottom: 1rem;
+			}
+		</style>
+
+		<!-- Todo App Example -->
+		<todo-app>
+			<h2>Todo List</h2>
+			<form class="add-form">
+				<input type="text" placeholder="Add new task..." required />
+				<button type="submit">Add</button>
+			</form>
+			<ul class="todo-list">
+				<li class="todo-item" data-id="1">
+					<input type="checkbox" />
+					<span>Learn Web Components</span>
+					<button class="delete">×</button>
+				</li>
+				<li class="todo-item" data-id="2">
+					<input type="checkbox" checked />
+					<span class="completed">Read documentation</span>
+					<button class="delete">×</button>
+				</li>
+			</ul>
+			<div class="stats">
+				<span class="count">0 items left</span>
+				<button class="clear-completed">Clear completed</button>
+			</div>
+		</todo-app>
+
+		<!-- Shopping Cart Example -->
+		<shopping-cart>
+			<h2>Shopping Cart</h2>
+			<div class="items">
+				<div class="item" data-id="1">
+					<span>Product A</span>
+					<div>
+						<input type="number" value="2" min="1" />
+						<span class="price">$10.00</span>
+						<button class="remove">Remove</button>
+					</div>
+				</div>
+				<div class="item" data-id="2">
+					<span>Product B</span>
+					<div>
+						<input type="number" value="1" min="1" />
+						<span class="price">$25.00</span>
+						<button class="remove">Remove</button>
+					</div>
+				</div>
+			</div>
+			<div class="total">
+				Total: $<span class="total-amount">45.00</span>
+			</div>
+			<button class="checkout">Checkout</button>
+		</shopping-cart>
+
+		<!-- Accordion Example -->
+		<accordion-group>
+			<div class="panel">
+				<div class="panel-header" role="button" aria-expanded="false">
+					<h3>Section 1</h3>
+				</div>
+				<div class="panel-content" hidden>
+					<p>Content for section 1</p>
+				</div>
+			</div>
+			<div class="panel">
+				<div class="panel-header" role="button" aria-expanded="true">
+					<h3>Section 2</h3>
+				</div>
+				<div class="panel-content">
+					<p>Content for section 2</p>
+				</div>
+			</div>
+		</accordion-group>
+
+		<!-- Data Table with Search Example -->
+		<search-filter>
+			<input type="text" placeholder="Search..." />
+			<select>
+				<option value="">All Categories</option>
+				<option value="electronics">Electronics</option>
+				<option value="books">Books</option>
+			</select>
+		</search-filter>
+
+		<data-table>
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Category</th>
+						<th>Price</th>
+						<th>Stock</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-category="electronics">
+						<td>Laptop</td>
+						<td>Electronics</td>
+						<td>$999</td>
+						<td>5</td>
+					</tr>
+					<tr data-category="books">
+						<td>JavaScript Guide</td>
+						<td>Books</td>
+						<td>$39</td>
+						<td>12</td>
+					</tr>
+					<tr data-category="electronics">
+						<td>Headphones</td>
+						<td>Electronics</td>
+						<td>$199</td>
+						<td>8</td>
+					</tr>
+				</tbody>
+			</table>
+		</data-table>
+
+		<!-- Modal Dialog Example -->
+		<modal-dialog>
+			<div class="backdrop" hidden></div>
+			<div class="dialog" role="dialog" aria-modal="true" hidden>
+				<div class="header">
+					<h2>Confirm Action</h2>
+					<button class="close" aria-label="Close">&times;</button>
+				</div>
+				<div class="content">
+					<p>Are you sure you want to proceed?</p>
+				</div>
+				<div class="actions">
+					<button class="cancel">Cancel</button>
+					<button class="confirm">Confirm</button>
+				</div>
+			</div>
+		</modal-dialog>
+
+		<button id="open-modal">Open Modal</button>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				component,
+				state,
+				computed,
+				on,
+				setText,
+				setProperty,
+				setAttribute,
+				show,
+				toggleClass,
+				asString,
+				asInteger,
+				asNumber,
+				fromEvents,
+			} from '../index.dev.js'
+
+			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+
+			// Todo App Component
+			component('todo-app', {}, (el, { first, all }) => {
+				const todos = state([
+					{ id: 1, text: 'Learn Web Components', completed: false },
+					{ id: 2, text: 'Read documentation', completed: true },
+				])
+
+				const addTodo = text => {
+					const newTodo = {
+						id: Date.now(),
+						text: text.trim(),
+						completed: false,
+					}
+					todos.set([...todos.get(), newTodo])
+				}
+
+				const toggleTodo = id => {
+					todos.set(
+						todos
+							.get()
+							.map(todo =>
+								todo.id === id
+									? { ...todo, completed: !todo.completed }
+									: todo,
+							),
+					)
+				}
+
+				const deleteTodo = id => {
+					todos.set(todos.get().filter(todo => todo.id !== id))
+				}
+
+				const remaining = computed(
+					() => todos.get().filter(todo => !todo.completed).length,
+				)
+
+				return [
+					first(
+						'.add-form',
+						on('submit', ({ event }) => {
+							event.preventDefault()
+							const input = event.target.querySelector('input')
+							if (input.value.trim()) {
+								addTodo(input.value)
+								input.value = ''
+							}
+						}),
+					),
+					all(
+						'.todo-item input[type="checkbox"]',
+						on('change', ({ event, target }) => {
+							const id = parseInt(
+								target.closest('.todo-item').dataset.id,
+							)
+							toggleTodo(id)
+						}),
+					),
+					all(
+						'.todo-item .delete',
+						on('click', ({ target }) => {
+							const id = parseInt(
+								target.closest('.todo-item').dataset.id,
+							)
+							deleteTodo(id)
+						}),
+					),
+					first(
+						'.count',
+						setText(() => `${remaining.get()} items left`),
+					),
+					first(
+						'.clear-completed',
+						on('click', () => {
+							todos.set(
+								todos.get().filter(todo => !todo.completed),
+							)
+						}),
+					),
+				]
+			})
+
+			// Shopping Cart Component
+			component('shopping-cart', {}, (el, { first, all }) => {
+				const items = state([
+					{ id: 1, name: 'Product A', price: 10, quantity: 2 },
+					{ id: 2, name: 'Product B', price: 25, quantity: 1 },
+				])
+
+				const updateQuantity = (id, quantity) => {
+					items.set(
+						items.get().map(item =>
+							item.id === id
+								? {
+										...item,
+										quantity: Math.max(1, quantity),
+									}
+								: item,
+						),
+					)
+				}
+
+				const removeItem = id => {
+					items.set(items.get().filter(item => item.id !== id))
+				}
+
+				const total = computed(() =>
+					items
+						.get()
+						.reduce(
+							(sum, item) => sum + item.price * item.quantity,
+							0,
+						),
+				)
+
+				return [
+					all('.item input[type="number"]', [
+						on('change', ({ event, target }) => {
+							const id = parseInt(
+								target.closest('.item').dataset.id,
+							)
+							updateQuantity(id, parseInt(target.value))
+						}),
+					]),
+					all(
+						'.item .remove',
+						on('click', ({ target }) => {
+							const id = parseInt(
+								target.closest('.item').dataset.id,
+							)
+							removeItem(id)
+						}),
+					),
+					first(
+						'.total-amount',
+						setText(() => total.get().toFixed(2)),
+					),
+					first(
+						'.checkout',
+						on('click', () => {
+							alert(`Checkout total: $${total.get().toFixed(2)}`)
+						}),
+					),
+				]
+			})
+
+			// Accordion Component
+			component('accordion-group', {}, (el, { all }) => [
+				all('.panel-header', [
+					on('click', ({ target }) => {
+						const panel = target.closest('.panel')
+						const content = panel.querySelector('.panel-content')
+						const isExpanded =
+							target.getAttribute('aria-expanded') === 'true'
+
+						target.setAttribute(
+							'aria-expanded',
+							String(!isExpanded),
+						)
+						content.hidden = isExpanded
+					}),
+				]),
+			])
+
+			// Search Filter Component
+			component(
+				'search-filter',
+				{
+					searchTerm: '',
+					category: '',
+				},
+				(el, { first }) => [
+					first('input[type="text"]', [
+						on('input', ({ event }) => {
+							el.searchTerm = event.target.value
+							el.dispatchEvent(
+								new CustomEvent('filter-change', {
+									detail: {
+										searchTerm: el.searchTerm,
+										category: el.category,
+									},
+								}),
+							)
+						}),
+					]),
+					first('select', [
+						on('change', ({ event }) => {
+							el.category = event.target.value
+							el.dispatchEvent(
+								new CustomEvent('filter-change', {
+									detail: {
+										searchTerm: el.searchTerm,
+										category: el.category,
+									},
+								}),
+							)
+						}),
+					]),
+				],
+			)
+
+			// Data Table Component
+			component('data-table', {}, (el, { all, useElement }) => {
+				const searchFilter = useElement('search-filter')
+
+				const filterRows = (searchTerm, category) => {
+					const rows = el.querySelectorAll('tbody tr')
+					rows.forEach(row => {
+						const text = row.textContent.toLowerCase()
+						const rowCategory = row.dataset.category || ''
+
+						const matchesSearch =
+							!searchTerm
+							|| text.includes(searchTerm.toLowerCase())
+						const matchesCategory =
+							!category || rowCategory === category
+
+						row.style.display =
+							matchesSearch && matchesCategory ? '' : 'none'
+					})
+				}
+
+				return [
+					on('filter-change', ({ event }) => {
+						const { searchTerm, category } = event.detail
+						filterRows(searchTerm, category)
+					}),
+					all('th', [
+						on('click', ({ target }) => {
+							const columnIndex = Array.from(
+								target.parentNode.children,
+							).indexOf(target)
+							const tbody = el.querySelector('tbody')
+							const rows = Array.from(
+								tbody.querySelectorAll('tr'),
+							)
+
+							rows.sort((a, b) => {
+								const aText =
+									a.children[columnIndex].textContent
+								const bText =
+									b.children[columnIndex].textContent
+								return aText.localeCompare(bText)
+							})
+
+							rows.forEach(row => tbody.appendChild(row))
+						}),
+					]),
+				]
+			})
+
+			// Modal Dialog Component
+			component(
+				'modal-dialog',
+				{
+					open: false,
+				},
+				(el, { first }) => [
+					first('.backdrop', [
+						show('open'),
+						on('click', () => {
+							el.open = false
+						}),
+					]),
+					first('.dialog', [
+						show('open'),
+						setAttribute('aria-hidden', () => String(!el.open)),
+					]),
+					first(
+						'.close',
+						on('click', () => {
+							el.open = false
+						}),
+					),
+					first(
+						'.cancel',
+						on('click', () => {
+							el.open = false
+						}),
+					),
+					first(
+						'.confirm',
+						on('click', () => {
+							el.dispatchEvent(new CustomEvent('confirmed'))
+							el.open = false
+						}),
+					),
+				],
+			)
+
+			runTests(() => {
+				describe('Todo App', () => {
+					it('should display initial todos', () => {
+						const todoApp = document.querySelector('todo-app')
+						const items = todoApp.querySelectorAll('.todo-item')
+						assert.equal(items.length, 2)
+					})
+
+					it('should handle todo interactions', async () => {
+						const todoApp = document.querySelector('todo-app')
+						const checkbox = todoApp.querySelector(
+							'.todo-item input[type="checkbox"]',
+						)
+						const deleteBtn =
+							todoApp.querySelector('.todo-item .delete')
+
+						assert.instanceOf(checkbox, HTMLInputElement)
+						assert.instanceOf(deleteBtn, HTMLButtonElement)
+
+						// Test checkbox interaction
+						checkbox.click()
+
+						// Test delete button
+						deleteBtn.click()
+					})
+				})
+
+				describe('Shopping Cart', () => {
+					it('should display cart items and total', () => {
+						const cart = document.querySelector('shopping-cart')
+						const items = cart.querySelectorAll('.item')
+						const totalElement = cart.querySelector('.total-amount')
+
+						assert.equal(items.length, 2)
+						assert.instanceOf(totalElement, HTMLElement)
+					})
+
+					it('should handle quantity changes', async () => {
+						const cart = document.querySelector('shopping-cart')
+						const quantityInput = cart.querySelector(
+							'.item input[type="number"]',
+						)
+
+						assert.instanceOf(quantityInput, HTMLInputElement)
+
+						quantityInput.value = '3'
+						quantityInput.dispatchEvent(new Event('change'))
+					})
+				})
+
+				describe('Accordion Group', () => {
+					it('should toggle panel visibility', async () => {
+						const accordion =
+							document.querySelector('accordion-group')
+						const headers =
+							accordion.querySelectorAll('.panel-header')
+
+						assert.equal(headers.length, 2)
+
+						// Test clicking header
+						headers[0].click()
+
+						const content = headers[0].nextElementSibling
+						assert.instanceOf(content, HTMLElement)
+					})
+				})
+
+				describe('Search Filter and Data Table', () => {
+					it('should filter table rows based on search', async () => {
+						const searchFilter =
+							document.querySelector('search-filter')
+						const dataTable = document.querySelector('data-table')
+						const searchInput =
+							searchFilter.querySelector('input[type="text"]')
+
+						assert.instanceOf(searchInput, HTMLInputElement)
+
+						// Test search functionality
+						searchInput.value = 'laptop'
+						searchInput.dispatchEvent(new Event('input'))
+
+						const rows = dataTable.querySelectorAll('tbody tr')
+						assert.isTrue(rows.length > 0)
+					})
+
+					it('should filter by category', async () => {
+						const searchFilter =
+							document.querySelector('search-filter')
+						const select = searchFilter.querySelector('select')
+
+						assert.instanceOf(select, HTMLSelectElement)
+
+						select.value = 'electronics'
+						select.dispatchEvent(new Event('change'))
+					})
+				})
+
+				describe('Modal Dialog', () => {
+					it('should open and close modal', async () => {
+						const modal = document.querySelector('modal-dialog')
+						const openBtn = document.getElementById('open-modal')
+
+						assert.instanceOf(modal, HTMLElement)
+						assert.instanceOf(openBtn, HTMLButtonElement)
+
+						// Open modal
+						openBtn.addEventListener('click', () => {
+							modal.open = true
+						})
+
+						openBtn.click()
+
+						// Close modal
+						const closeBtn = modal.querySelector('.close')
+						closeBtn.click()
+
+						assert.equal(modal.open, false)
+					})
+
+					it('should emit confirmed event', async () => {
+						const modal = document.querySelector('modal-dialog')
+						let confirmed = false
+
+						modal.addEventListener('confirmed', () => {
+							confirmed = true
+						})
+
+						modal.open = true
+
+						const confirmBtn = modal.querySelector('.confirm')
+						confirmBtn.click()
+
+						assert.isTrue(confirmed)
+						assert.equal(modal.open, false)
+					})
+				})
+
+				describe('Component Integration', () => {
+					it('should handle multiple components working together', async () => {
+						const searchFilter =
+							document.querySelector('search-filter')
+						const dataTable = document.querySelector('data-table')
+
+						// Test that search filter communicates with data table
+						let filterEventFired = false
+						searchFilter.addEventListener('filter-change', () => {
+							filterEventFired = true
+						})
+
+						const searchInput = searchFilter.querySelector('input')
+						searchInput.value = 'test'
+						searchInput.dispatchEvent(new Event('input'))
+
+						assert.isTrue(filterEventFired)
+					})
+
+					it('should maintain component state correctly', async () => {
+						const todoApp = document.querySelector('todo-app')
+						const cart = document.querySelector('shopping-cart')
+
+						// Test that components maintain independent state
+						const todoCount =
+							todoApp.querySelectorAll('.todo-item').length
+						const cartCount = cart.querySelectorAll('.item').length
+
+						assert.isNumber(todoCount)
+						assert.isNumber(cartCount)
+						// Both have 2 items initially, so just verify they're independent
+						assert.isAtLeast(todoCount, 1)
+						assert.isAtLeast(cartCount, 1)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

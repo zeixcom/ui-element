@@ -1,22 +1,20 @@
-import { component, pass, reduced } from '../../..'
+import { component, computed, pass } from '../../..'
 
-import '../form-spinbutton/form-spinbutton'
+// import '../form-spinbutton/form-spinbutton'
 
-export default component('module-catalog', {}, (el, { first }) => {
-	const total = reduced(
-		el,
-		'form-spinbutton',
-		(sum, item) => sum + item.value,
-		0,
-	)
-
-	return [
-		first(
-			'basic-button',
-			pass({
-				badge: () => (total.get() > 0 ? String(total.get()) : ''),
-				disabled: () => !total.get(),
-			}),
+export default component('module-catalog', {}, (_, { first, useElements }) => {
+	const total = computed(() =>
+		useElements('form-spinbutton').reduce(
+			(sum, item) => sum + item.value,
+			0,
 		),
+	)
+	return [
+		first('basic-button', [
+			pass({
+				disabled: () => !total.get(),
+				badge: () => (total.get() > 0 ? String(total.get()) : ''),
+			}),
+		]),
 	]
 })

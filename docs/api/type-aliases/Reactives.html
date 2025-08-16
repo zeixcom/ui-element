@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Reactives\<E, P\> – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,35 +116,35 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section class="api-content">
+			<main id="main" class="content-grid"><section class="api-content">
 <h1 id="type-alias-reactiveslte-pgt">
                 <a name="type-alias-reactiveslte-pgt" class="anchor" href="#type-alias-reactiveslte-pgt">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Alias: Reactives&lt;E, P&gt;</span>
                 </a>
-                Type Alias: Reactives&lt;E, P&gt;
             </h1>
 <blockquote>
 <p><strong>Reactives</strong>&lt;<code>E</code>, <code>P</code>&gt; = <code>{ [K in keyof E]?: Reactive&lt;E[K], P, E&gt; }</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/lib/effects.ts#L39">src/lib/effects.ts:39</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/lib/effects.ts#L31">src/lib/effects.ts:31</a></p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
                 </a>
-                Type Parameters
             </h2>
 <h3 id="e">
                 <a name="e" class="anchor" href="#e">
 	                <span class="permalink">🔗</span>
+					<span class="title">E</span>
                 </a>
-                E
             </h3>
 <p><code>E</code> <em>extends</em> <code>Element</code></p>
 <h3 id="p">
                 <a name="p" class="anchor" href="#p">
 	                <span class="permalink">🔗</span>
+					<span class="title">P</span>
                 </a>
-                P
             </h3>
 <p><code>P</code> <em>extends</em> <a href="ComponentProps.html"><code>ComponentProps</code></a></p>
 

@@ -55,16 +55,11 @@
 						const el = document.getElementById('test2')
 						const span = el.querySelector('span')
 
-						await tick()
-
-						// Component uses RESET, so it shows the initial DOM content "World"
-						// The attribute doesn't automatically become the property value
 						assert.equal(span.textContent, 'World')
 						assert.equal(el.getAttribute('name'), null)
 
 						// When we set the property programmatically, it should work
 						el.name = 'Alice'
-						await tick()
 						assert.equal(span.textContent, 'Alice')
 					})
 
@@ -73,7 +68,6 @@
 						const span = el.querySelector('span')
 
 						el.name = 'Bob'
-						await tick()
 
 						assert.equal(span.textContent, 'Bob')
 						assert.equal(el.name, 'Bob')
@@ -88,7 +82,6 @@
 						input.dispatchEvent(
 							new Event('input', { bubbles: true }),
 						)
-						await tick()
 
 						assert.equal(span.textContent, 'Charlie')
 						assert.equal(el.name, 'Charlie')
@@ -103,7 +96,6 @@
 						input.dispatchEvent(
 							new Event('input', { bubbles: true }),
 						)
-						await tick()
 
 						assert.equal(span.textContent, 'World')
 					})
@@ -113,11 +105,9 @@
 						const span = el.querySelector('span')
 
 						el.name = 'David'
-						await tick()
 						assert.equal(span.textContent, 'David')
 
 						el.name = 'Eve'
-						await tick()
 						assert.equal(span.textContent, 'Eve')
 					})
 
@@ -128,7 +118,6 @@
 
 						// Set property programmatically
 						el.name = 'Frank'
-						await tick()
 						assert.equal(el.name, 'Frank')
 						assert.equal(span.textContent, 'Frank')
 
@@ -138,7 +127,6 @@
 						input.dispatchEvent(
 							new Event('input', { bubbles: true }),
 						)
-						await tick()
 						assert.equal(el.name, 'Grace')
 						assert.equal(span.textContent, 'Grace')
 					})

@@ -6,11 +6,11 @@
 
 # Function: asJSON()
 
-> **asJSON**\<`T`\>(`fallback`): [`AttributeParser`](../type-aliases/AttributeParser.md)\<`T`\>
+> **asJSON**\<`T`, `E`\>(`fallback`): [`Parser`](../type-aliases/Parser.md)\<`T`, `E`\>
 
-Defined in: [src/lib/parsers.ts:101](https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/lib/parsers.ts#L101)
+Defined in: [src/lib/parsers.ts:111](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/lib/parsers.ts#L111)
 
-Parse an attribute as a JSON serialized object with a fallback
+Parse a string as a JSON serialized object with a fallback
 
 ## Type Parameters
 
@@ -18,19 +18,23 @@ Parse an attribute as a JSON serialized object with a fallback
 
 `T` *extends* `object`
 
+### E
+
+`E` *extends* `Element` = `HTMLElement`
+
 ## Parameters
 
 ### fallback
 
-`T`
+[`Fallback`](../type-aliases/Fallback.md)\<`T`, `E`\>
 
-fallback value
+Fallback value or extractor function
 
 ## Returns
 
-[`AttributeParser`](../type-aliases/AttributeParser.md)\<`T`\>
+[`Parser`](../type-aliases/Parser.md)\<`T`, `E`\>
 
-parser function
+Parser function
 
 ## Since
 
@@ -38,8 +42,8 @@ parser function
 
 ## Throws
 
-if the value and fallback are both null or undefined
+If the value and fallback are both null or undefined
 
 ## Throws
 
-if the value is not a valid JSON object
+If value is not a valid JSON string

@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+	<head>
+		<title>emitEvent Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<emit-test value="initial">
+			<div id="parent"></div>
+		</emit-test>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				component,
+				asString,
+				emitEvent,
+				fromEvents,
+			} from '../../index.dev.js'
+
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+
+			component(
+				'emit-test',
+				{
+					value: asString(),
+					other: fromEvents('', 'div', {
+						'other-event': ({ event }) => event.detail,
+					}),
+				},
+				(el, { first }) => [
+					// Emit custom-event when value changes
+					emitEvent('custom-event', 'value'),
+
+					// Emit test-event with function detail
+					emitEvent('test-event', () => el.value === 'Content'),
+
+					// Emit other-event on the div that bubbles
+					first('div', emitEvent('other-event', 'value')),
+				],
+			)
+
+			runTests(() => {
+				describe('emitEvent()', () => {
+					it('should emit an event', async () => {
+						const el = document.querySelector('emit-test')
+						let called = false
+						const handler = () => {
+							called = true
+						}
+
+						el.addEventListener('custom-event', handler)
+						el.value = 'new value' // Should update reactive property and emit event
+
+						assert.equal(called, true)
+
+						el.removeEventListener('custom-event', handler)
+					})
+
+					it('should emit an event with detail', async () => {
+						const el = document.querySelector('emit-test')
+						let detailReceived = null
+						const handler = event => {
+							detailReceived = event.detail
+						}
+						el.addEventListener('custom-event', handler)
+						el.value = 'updated value' // Should update reactive property and emit event
+
+						assert.equal(detailReceived, 'updated value')
+
+						el.removeEventListener('custom-event', handler)
+					})
+
+					it('should emit event with function detail', async () => {
+						const el = document.querySelector('emit-test')
+						let eventDetail = null
+						const handler = e => {
+							eventDetail = e.detail
+						}
+						el.addEventListener('test-event', handler)
+
+						el.value = 'something else' // Should update reactive property and emit event
+						assert.isFalse(eventDetail)
+
+						el.value = 'Content'
+						assert.isTrue(eventDetail)
+
+						el.removeEventListener('test-event', handler)
+					})
+
+					/* it('should make events bubble by default', async () => {
+						const el = document.querySelector('emit-test')
+						el.value = 'from other-event on div'
+
+						assert.equal(
+							el.other,
+							'from other-event on div',
+							'Event should bubble to parent',
+						)
+					}) */
+				})
+			})
+		</script>
+	</body>
+</html>

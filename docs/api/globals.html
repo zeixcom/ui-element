@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>@zeix/ui-element – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../assets/main.css" />
-		<script type="module" src="../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="../assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="../assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,21 +116,35 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section class="api-content">
+			<main id="main" class="content-grid"><section class="api-content">
 <h1 id="zeixui-element">
                 <a name="zeixui-element" class="anchor" href="#zeixui-element">
 	                <span class="permalink">🔗</span>
+					<span class="title">@zeix/ui-element</span>
                 </a>
-                @zeix/ui-element
             </h1>
+<h2 id="classes">
+                <a name="classes" class="anchor" href="#classes">
+	                <span class="permalink">🔗</span>
+					<span class="title">Classes</span>
+                </a>
+            </h2>
+<ul>
+<li><a href="classes/CircularMutationError.html">CircularMutationError</a></li>
+<li><a href="classes/DependencyTimeoutError.html">DependencyTimeoutError</a></li>
+<li><a href="classes/InvalidComponentNameError.html">InvalidComponentNameError</a></li>
+<li><a href="classes/InvalidEffectsError.html">InvalidEffectsError</a></li>
+<li><a href="classes/InvalidPropertyNameError.html">InvalidPropertyNameError</a></li>
+<li><a href="classes/InvalidSignalError.html">InvalidSignalError</a></li>
+<li><a href="classes/MissingElementError.html">MissingElementError</a></li>
+</ul>
 <h2 id="type-aliases">
                 <a name="type-aliases" class="anchor" href="#type-aliases">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Aliases</span>
                 </a>
-                Type Aliases
             </h2>
 <ul>
-<li><a href="type-aliases/AttributeParser.html">AttributeParser</a></li>
 <li><a href="type-aliases/Cleanup.html">Cleanup</a></li>
 <li><a href="type-aliases/Component.html">Component</a></li>
 <li><a href="type-aliases/ComponentProps.html">ComponentProps</a></li>
@@ -123,33 +155,44 @@
 <li><a href="type-aliases/DangerouslySetInnerHTMLOptions.html">DangerouslySetInnerHTMLOptions</a></li>
 <li><a href="type-aliases/Effect.html">Effect</a></li>
 <li><a href="type-aliases/EffectMatcher.html">EffectMatcher</a></li>
+<li><a href="type-aliases/Effects.html">Effects</a></li>
+<li><a href="type-aliases/ElementEffects.html">ElementEffects</a></li>
 <li><a href="type-aliases/ElementFromSelector.html">ElementFromSelector</a></li>
 <li><a href="type-aliases/ElementInserter.html">ElementInserter</a></li>
+<li><a href="type-aliases/ElementsUsage.html">ElementsUsage</a></li>
 <li><a href="type-aliases/ElementUpdater.html">ElementUpdater</a></li>
+<li><a href="type-aliases/ElementUsage.html">ElementUsage</a></li>
+<li><a href="type-aliases/EventHandler.html">EventHandler</a></li>
 <li><a href="type-aliases/EventTransformer.html">EventTransformer</a></li>
-<li><a href="type-aliases/EventTransformerContext.html">EventTransformerContext</a></li>
 <li><a href="type-aliases/EventTransformers.html">EventTransformers</a></li>
 <li><a href="type-aliases/EventType.html">EventType</a></li>
+<li><a href="type-aliases/Extractor.html">Extractor</a></li>
+<li><a href="type-aliases/ExtractTag.html">ExtractTag</a></li>
+<li><a href="type-aliases/Fallback.html">Fallback</a></li>
+<li><a href="type-aliases/Helpers.html">Helpers</a></li>
 <li><a href="type-aliases/Initializer.html">Initializer</a></li>
+<li><a href="type-aliases/KnownTag.html">KnownTag</a></li>
 <li><a href="type-aliases/LogLevel.html">LogLevel</a></li>
+<li><a href="type-aliases/LooseExtractor.html">LooseExtractor</a></li>
 <li><a href="type-aliases/MaybeSignal.html">MaybeSignal</a></li>
-<li><a href="type-aliases/MethodProducer.html">MethodProducer</a></li>
+<li><a href="type-aliases/Parser.html">Parser</a></li>
+<li><a href="type-aliases/ParserOrFallback.html">ParserOrFallback</a></li>
 <li><a href="type-aliases/Reactive.html">Reactive</a></li>
 <li><a href="type-aliases/Reactives.html">Reactives</a></li>
 <li><a href="type-aliases/ReservedWords.html">ReservedWords</a></li>
-<li><a href="type-aliases/SelectorFunctions.html">SelectorFunctions</a></li>
+<li><a href="type-aliases/Setup.html">Setup</a></li>
 <li><a href="type-aliases/Signal.html">Signal</a></li>
-<li><a href="type-aliases/SignalProducer.html">SignalProducer</a></li>
 <li><a href="type-aliases/State.html">State</a></li>
 <li><a href="type-aliases/UnknownContext.html">UnknownContext</a></li>
 <li><a href="type-aliases/UpdateOperation.html">UpdateOperation</a></li>
+<li><a href="type-aliases/ValidateComponentProps.html">ValidateComponentProps</a></li>
 <li><a href="type-aliases/ValidPropertyKey.html">ValidPropertyKey</a></li>
 </ul>
 <h2 id="variables">
                 <a name="variables" class="anchor" href="#variables">
 	                <span class="permalink">🔗</span>
+					<span class="title">Variables</span>
                 </a>
-                Variables
             </h2>
 <ul>
 <li><a href="variables/LOG_DEBUG.html">LOG_DEBUG</a></li>
@@ -162,8 +205,8 @@
 <h2 id="functions">
                 <a name="functions" class="anchor" href="#functions">
 	                <span class="permalink">🔗</span>
+					<span class="title">Functions</span>
                 </a>
-                Functions
             </h2>
 <ul>
 <li><a href="functions/asBoolean.html">asBoolean</a></li>
@@ -179,21 +222,29 @@
 <li><a href="functions/effect.html">effect</a></li>
 <li><a href="functions/emitEvent.html">emitEvent</a></li>
 <li><a href="functions/enqueue.html">enqueue</a></li>
-<li><a href="functions/focus.html">focus</a></li>
 <li><a href="functions/fromContext.html">fromContext</a></li>
+<li><a href="functions/fromDOM.html">fromDOM</a></li>
 <li><a href="functions/fromEvents.html">fromEvents</a></li>
 <li><a href="functions/fromSelector.html">fromSelector</a></li>
+<li><a href="functions/getAttribute.html">getAttribute</a></li>
+<li><a href="functions/getDescription.html">getDescription</a></li>
+<li><a href="functions/getFallback.html">getFallback</a></li>
+<li><a href="functions/getLabel.html">getLabel</a></li>
+<li><a href="functions/getProperty.html">getProperty</a></li>
+<li><a href="functions/getStyle.html">getStyle</a></li>
+<li><a href="functions/getText.html">getText</a></li>
+<li><a href="functions/hasAttribute.html">hasAttribute</a></li>
+<li><a href="functions/hasClass.html">hasClass</a></li>
 <li><a href="functions/insertOrRemoveElement.html">insertOrRemoveElement</a></li>
 <li><a href="functions/isComputed.html">isComputed</a></li>
+<li><a href="functions/isParser.html">isParser</a></li>
 <li><a href="functions/isSignal.html">isSignal</a></li>
 <li><a href="functions/isState.html">isState</a></li>
 <li><a href="functions/log.html">log</a></li>
 <li><a href="functions/on.html">on</a></li>
 <li><a href="functions/pass.html">pass</a></li>
 <li><a href="functions/provideContexts.html">provideContexts</a></li>
-<li><a href="functions/read.html">read</a></li>
-<li><a href="functions/reduced.html">reduced</a></li>
-<li><a href="functions/requireDescendant.html">requireDescendant</a></li>
+<li><a href="functions/resolveReactive.html">resolveReactive</a></li>
 <li><a href="functions/setAttribute.html">setAttribute</a></li>
 <li><a href="functions/setProperty.html">setProperty</a></li>
 <li><a href="functions/setStyle.html">setStyle</a></li>

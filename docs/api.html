@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>API Reference – UIElement Docs</title>
 		<meta name="description" content="Functions, types, and constants" />
-		<link rel="stylesheet" href="./assets/main.css" />
-		<script type="module" src="./assets/main.js"></script>
+		<link
+			rel="preload"
+			href="./assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="./assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="./assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="./assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,27 +116,27 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section-hero>
+			<main id="main" class="content-grid"><section-hero>
 
 <h1 id="api-reference">
                 <a name="api-reference" class="anchor" href="#api-reference">
 	                <span class="permalink">🔗</span>
+					<span class="title">📚 API Reference</span>
                 </a>
-                📚 API Reference
             </h1>
 <div>
   <p class="lead">Functions, types, and constants</p>
   
 <module-toc>
 	<nav>
-		<h2>In this Page</h2>
+		<h2>In This Page</h2>
 		<ol>
 			<li><a href="#component">Component</a></li>
-			<li><a href="#signals">Signals</a></li>
-			<li><a href="#attribute-parsers">Attribute Parsers</a></li>
-			<li><a href="#signal-producers">Signal Producers</a></li>
-			<li><a href="#effects">Effects</a></li>
-			<li><a href="#dom-utilities">DOM Utilities</a></li>
+<li><a href="#signals">Signals</a></li>
+<li><a href="#parsers">Parsers</a></li>
+<li><a href="#signal-producers">Signal Producers</a></li>
+<li><a href="#effects">Effects</a></li>
+<li><a href="#dom-utilities">DOM Utilities</a></li>
 		</ol>
 	</nav>
 </module-toc>
@@ -131,8 +149,8 @@
 <h2 id="component">
                 <a name="component" class="anchor" href="#component">
 	                <span class="permalink">🔗</span>
+					<span class="title">Component</span>
                 </a>
-                Component
             </h2>
 <p>Create a Web Component of type <a href="api/type-aliases/Component.html">Component</a> with reactive properties that extend <a href="api/type-aliases/ComponentProps.html">ComponentProps</a>.</p>
 <ul>
@@ -145,8 +163,8 @@
 <h2 id="signals">
                 <a name="signals" class="anchor" href="#signals">
 	                <span class="permalink">🔗</span>
+					<span class="title">Signals</span>
                 </a>
-                Signals
             </h2>
 <p>Create a signal of type <a href="api/type-aliases/Signal.html">Signal</a>.</p>
 <ul>
@@ -163,21 +181,48 @@
 
 <section>
 
-<h2 id="attribute-parsers">
-                <a name="attribute-parsers" class="anchor" href="#attribute-parsers">
+<h2 id="parsers">
+                <a name="parsers" class="anchor" href="#parsers">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parsers</span>
                 </a>
-                Attribute Parsers
             </h2>
-<p>Declare how attributes are parsed. Functions returning <a href="api/type-aliases/AttributeParser.html">AttributeParser</a> that will be used to create <a href="api/type-aliases/State.html">State</a> signals as writable reactive properties on the component.</p>
-<ul>
-<li><a href="api/functions/asBoolean.html">asBoolean</a> parses boolean attributes (presence indicates true)</li>
-<li><a href="api/functions/asEnum.html">asEnum</a> parses string attributes constrained to specific values</li>
-<li><a href="api/functions/asInteger.html">asInteger</a> parses integer attributes with validation</li>
-<li><a href="api/functions/asJSON.html">asJSON</a> parses JSON attributes into JavaScript objects</li>
-<li><a href="api/functions/asNumber.html">asNumber</a> parses numeric attributes as floating-point numbers</li>
-<li><a href="api/functions/asString.html">asString</a> parses string attributes</li>
-</ul>
+<p>Declare how attributes are parsed. Functions returning <a href="api/type-aliases/AttributeParser.html">Parser</a> that will be used to create <a href="api/type-aliases/State.html">State</a> signals as writable reactive properties on the component.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="api/functions/asBoolean.html">asBoolean()</a></td>
+<td>Converts <code>&quot;true&quot;</code> / <code>&quot;false&quot;</code> to a <strong>boolean</strong> (<code>true</code> / <code>false</code>). Also treats empty attributes (<code>checked</code>) as <code>true</code> and missing attributes as <code>false</code>.</td>
+</tr>
+<tr>
+<td><a href="api/functions/asInteger.html">asInteger()</a></td>
+<td>Converts a numeric string (e.g., <code>&quot;42&quot;</code>) to an <strong>integer</strong> (<code>42</code>).</td>
+</tr>
+<tr>
+<td><a href="api/functions/asNumber.html">asNumber()</a></td>
+<td>Converts a numeric string (e.g., <code>&quot;3.14&quot;</code>) to a <strong>floating-point number</strong> (<code>3.14</code>).</td>
+</tr>
+<tr>
+<td><a href="api/functions/asString.html">asString()</a></td>
+<td>Returns the attribute value as a <strong>string</strong> (unchanged).</td>
+</tr>
+<tr>
+<td><a href="api/functions/asEnum.html">asEnum(values)</a></td>
+<td>Ensures the string matches <strong>one of the allowed values</strong>. Example: <code>asEnum([&quot;small&quot;, &quot;medium&quot;, &quot;large&quot;])</code>. If the value is not in the list, it defaults to the first option.</td>
+</tr>
+<tr>
+<td><a href="api/functions/asJSON.html">asJSON(fallback)</a></td>
+<td>Parses a JSON string (e.g., <code>&#39;[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]&#39;</code>) into an <strong>array</strong> or <strong>object</strong>. If invalid, returns the fallback object.</td>
+</tr>
+</tbody></table>
+<p>The pre-defined parsers <code>asInteger()</code>, <code>asNumber()</code> and <code>asString()</code> allow to set a custom fallback value as parameter.</p>
+<p>The <code>asEnum()</code> parser requires an array of valid values, while the first will be the fallback value for invalid results.</p>
+<p>The <code>asJSON()</code> parser requires a fallback object as parameter as <code>{}</code> probably won&#39;t match the type you&#39;re expecting.</p>
 </section>
 
 <section>
@@ -185,8 +230,8 @@
 <h2 id="signal-producers">
                 <a name="signal-producers" class="anchor" href="#signal-producers">
 	                <span class="permalink">🔗</span>
+					<span class="title">Signal Producers</span>
                 </a>
-                Signal Producers
             </h2>
 <p>Declare how signals are initialized. Functions returning type <a href="api/type-aliases/SignalProducer.html">SignalProducer</a> that will be used to create <a href="api/type-aliases/Computed.html">Computed</a> signals as read-only reactive properties on the component.</p>
 <ul>
@@ -201,26 +246,75 @@
 <h2 id="effects">
                 <a name="effects" class="anchor" href="#effects">
 	                <span class="permalink">🔗</span>
+					<span class="title">Effects</span>
                 </a>
-                Effects
             </h2>
 <p>Declare effects of type <a href="api/type-aliases/Effect.html">Effect</a> to be applied when signals change:</p>
-<ul>
-<li><a href="api/functions/dangerouslySetInnerHTML.html">dangerouslySetInnerHTML</a> sets inner HTML content from a signal</li>
-<li><a href="api/functions/emitEvent.html">emitEvent</a> dispatches custom events when signals change</li>
-<li><a href="api/functions/insertOrRemoveElement.html">insertOrRemoveElement</a> conditionally inserts or removes elements</li>
-<li><a href="api/functions/on.html">on</a> attaches event listeners to elements</li>
-<li><a href="api/functions/pass.html">pass</a> passes signal values to descendant component properties</li>
-<li><a href="api/functions/provideContexts.html">provideContexts</a> provides context values to descendant components</li>
-<li><a href="api/functions/setAttribute.html">setAttribute</a> sets element attributes from signals</li>
-<li><a href="api/functions/setProperty.html">setProperty</a> sets element properties from signals</li>
-<li><a href="api/functions/setStyle.html">setStyle</a> sets CSS styles from signals</li>
-<li><a href="api/functions/setText.html">setText</a> sets text content from signals</li>
-<li><a href="api/functions/show.html">show</a> conditionally shows or hides elements</li>
-<li><a href="api/functions/toggleAttribute.html">toggleAttribute</a> toggles attributes based on signal values</li>
-<li><a href="api/functions/toggleClass.html">toggleClass</a> toggles CSS classes based on signal values</li>
-<li><a href="api/functions/updateElement.html">updateElement</a> base function for updating elements, used for <a href="api/functions/setText.html">setText</a>, <a href="api/functions/show.html">show</a>, <a href="api/functions/toggleClass.html">toggleClass</a>, <a href="api/functions/toggleAttribute.html">toggleAttribute</a>, <a href="api/functions/setAttribute.html">setAttribute</a>, <a href="api/functions/setProperty.html">setProperty</a>, <a href="api/functions/setStyle.html">setStyle</a></li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="api/functions/setText.html">setText()</a></td>
+<td>Updates <strong>text content</strong> with a <code>string</code> signal value (while preserving comment nodes).</td>
+</tr>
+<tr>
+<td><a href="api/functions/setProperty.html">setProperty()</a></td>
+<td>Updates a given <strong>property</strong> with any signal value.</td>
+</tr>
+<tr>
+<td><a href="api/functions/show.html">show()</a></td>
+<td>Updates the <strong>visibility</strong> of an element with a <code>boolean</code> signal value.</td>
+</tr>
+<tr>
+<td><a href="api/functions/setAttribute.html">setAttribute()</a></td>
+<td>Updates a given <strong>attribute</strong> with a <code>string</code> signal value.</td>
+</tr>
+<tr>
+<td><a href="api/functions/toggleAttribute.html">toggleAttribute()</a></td>
+<td>Toggles a given <strong>boolean attribute</strong> with a <code>boolean</code> signal value.</td>
+</tr>
+<tr>
+<td><a href="api/functions/toggleClass.html">toggleClass()</a></td>
+<td>Toggles a given <strong>CSS class</strong> with a <code>boolean</code> signal value.</td>
+</tr>
+<tr>
+<td><a href="api/functions/setStyle.html">setStyle()</a></td>
+<td>Updates a given <strong>CSS property</strong> with a <code>string</code> signal value.</td>
+</tr>
+<tr>
+<td><a href="api/functions/dangerouslySetInnerHTML.html">dangerouslySetInnerHTML()</a></td>
+<td>Sets <strong>HTML content</strong> with a <code>string</code> signal value.</td>
+</tr>
+<tr>
+<td><a href="api/functions/insertOrRemoveElement.html">insertOrRemoveElement()</a></td>
+<td>Inserts (positive integer) or removes (negative integer) elements with a <code>number</code> signal value.</td>
+</tr>
+<tr>
+<td><a href="api/functions/emitEvent.html">emitEvent()</a></td>
+<td>Dispatches custom events when signals change.</td>
+</tr>
+<tr>
+<td><a href="api/functions/on.html">on()</a></td>
+<td>Attaches event listeners to elements.</td>
+</tr>
+<tr>
+<td><a href="api/functions/pass.html">pass()</a></td>
+<td>Passes signal values to descendant component properties.</td>
+</tr>
+<tr>
+<td><a href="api/functions/provideContexts.html">provideContexts()</a></td>
+<td>Provides context values to descendant components.</td>
+</tr>
+<tr>
+<td><a href="api/functions/updateElement.html">updateElement()</a></td>
+<td>Base function for updating elements, used by other effects.</td>
+</tr>
+</tbody></table>
+<p><strong>Tip</strong>: TypeScript will check whether a typed value is assignable to a certain element property. Prefer <code>setProperty()</code> over <code>setAttribute()</code> for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.</p>
 </section>
 
 <section>
@@ -228,8 +322,8 @@
 <h2 id="dom-utilities">
                 <a name="dom-utilities" class="anchor" href="#dom-utilities">
 	                <span class="permalink">🔗</span>
+					<span class="title">DOM Utilities</span>
                 </a>
-                DOM Utilities
             </h2>
 <p>Functions to work with descendant elements:</p>
 <ul>

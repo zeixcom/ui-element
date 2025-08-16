@@ -1,13 +1,14 @@
-import { requireDescendant } from '../../..'
 import {
-	type Component,
-	RESET,
 	asBoolean,
 	asString,
+	type Component,
 	component,
+	fromDOM,
+	getLabel,
+	getText,
 	setProperty,
 	setText,
-} from '../../../'
+} from '../../..'
 
 export type BasicButtonProps = {
 	disabled: boolean
@@ -19,19 +20,18 @@ export default component(
 	'basic-button',
 	{
 		disabled: asBoolean(),
-		label: asString(RESET),
-		badge: asString(),
+		label: asString(getLabel('button')),
+		badge: asString(fromDOM({ '.badge': getText() }, '')),
 	},
-	(el, { first }) => {
-		requireDescendant(el, 'button')
-		requireDescendant(el, '.label')
-
-		return [
-			first('button', setProperty('disabled')),
-			first('.label', setText('label')),
-			first('.badge', setText('badge')),
-		]
-	},
+	(_, { first }) => [
+		first(
+			'button',
+			setProperty('disabled'),
+			'Add native <button> as descendant.',
+		),
+		first('.label', setText('label')),
+		first('.badge', setText('badge')),
+	],
 )
 
 declare global {

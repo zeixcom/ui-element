@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.1.4/schema.json",
 	"vcs": {
 		"enabled": true,
 		"clientKind": "git",
@@ -8,11 +8,13 @@
 	},
 	"files": {
 		"ignoreUnknown": true,
-		"ignore": [
-			"index.js",
-			"index.dev.js",
-			"docs/**/*",
-			"test/components/main.js*"
+		"includes": [
+			"**",
+			"!index.js",
+			"!index.dev.js",
+			"!**/types/**/*",
+			"!**/docs/**/*",
+			"!**/test/components/main.js*"
 		]
 	},
 	"formatter": {
@@ -25,19 +27,24 @@
 		"lineWidth": 80,
 		"attributePosition": "auto",
 		"bracketSpacing": true,
-		"ignore": []
+		"includes": ["**"]
 	},
-	"organizeImports": { "enabled": true },
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	},
 	"linter": {
 		"enabled": true,
 		"rules": {
 			"recommended": false,
 			"complexity": {
 				"noExtraBooleanCast": "error",
-				"noMultipleSpacesInRegularExpressionLiterals": "error",
 				"noUselessCatch": "error",
-				"noUselessTypeConstraint": "error",
-				"noWith": "error"
+				"noUselessTypeConstraint": "error"
 			},
 			"correctness": {
 				"noConstAssign": "error",
@@ -60,12 +67,15 @@
 				"noUnusedLabels": "error",
 				"noUnusedPrivateClassMembers": "error",
 				"noUnusedVariables": "error",
-				"useArrayLiterals": "off",
 				"useIsNan": "error",
 				"useValidForDirection": "error",
-				"useYield": "error"
+				"useYield": "error",
+				"useValidTypeof": "error"
 			},
-			"style": { "noNamespace": "error", "useAsConstAssertion": "error" },
+			"style": {
+				"noNamespace": "error",
+				"useAsConstAssertion": "error"
+			},
 			"suspicious": {
 				"noAsyncPromiseExecutor": "error",
 				"noCatchAssign": "error",
@@ -93,11 +103,15 @@
 				"noUnsafeDeclarationMerging": "error",
 				"noUnsafeNegation": "error",
 				"useGetterReturn": "error",
-				"useNamespaceKeyword": "error",
-				"useValidTypeof": "error"
+				"useNamespaceKeyword": "error"
 			}
 		},
-		"ignore": ["index.js", "docs/assets/main.js", "**/*.min.js"]
+		"includes": [
+			"**",
+			"!**/index.js",
+			"!**/docs/assets/main.js",
+			"!**/*.min.js"
+		]
 	},
 	"javascript": {
 		"formatter": {
@@ -240,26 +254,22 @@
 	},
 	"json": { "formatter": { "trailingCommas": "none" } },
 	"overrides": [
-		{ "include": ["**/*.{js,mjs,cjs,ts}"] },
+		{ "includes": ["**/*.{js,mjs,cjs,ts}"] },
 		{
-			"include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
+			"includes": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
 			"linter": {
 				"rules": {
-					"complexity": { "noWith": "off" },
 					"correctness": {
 						"noConstAssign": "off",
 						"noGlobalObjectCalls": "off",
 						"noInvalidBuiltinInstantiation": "off",
 						"noInvalidConstructorSuper": "off",
-						"noNewSymbol": "off",
 						"noSetterReturn": "off",
 						"noUndeclaredVariables": "off",
 						"noUnreachable": "off",
 						"noUnreachableSuper": "off"
 					},
 					"style": {
-						"noArguments": "error",
-						"noVar": "error",
 						"useConst": "error"
 					},
 					"suspicious": {
@@ -271,13 +281,14 @@
 						"noImportAssign": "off",
 						"noRedeclare": "off",
 						"noUnsafeNegation": "off",
-						"useGetterReturn": "off"
+						"useGetterReturn": "off",
+						"noVar": "error"
 					}
 				}
 			}
 		},
 		{
-			"include": ["*.md"],
+			"includes": ["**/*.md"],
 			"formatter": { "indentStyle": "space", "indentWidth": 2 }
 		}
 	]

@@ -8,7 +8,7 @@
 
 > **Component**\<`P`\> = `HTMLElement` & `P` & `object`
 
-Defined in: [src/component.ts:42](https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/component.ts#L42)
+Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/component.ts#L59)
 
 ## Type declaration
 
@@ -16,27 +16,21 @@ Defined in: [src/component.ts:42](https://github.com/zeixcom/ui-element/blob/297
 
 > `optional` **debug**: `boolean`
 
-### shadowRoot
-
-> **shadowRoot**: `ShadowRoot` \| `null`
-
-### adoptedCallback()?
-
-> `optional` **adoptedCallback**(): `void`
-
-#### Returns
-
-`void`
-
 ### attributeChangedCallback()
 
-> **attributeChangedCallback**(`name`, `oldValue`, `newValue`): `void`
+> **attributeChangedCallback**\<`K`\>(`name`, `oldValue`, `newValue`): `void`
+
+#### Type Parameters
+
+##### K
+
+`K` *extends* `string`
 
 #### Parameters
 
 ##### name
 
-`string`
+`K`
 
 ##### oldValue
 
@@ -50,22 +44,6 @@ Defined in: [src/component.ts:42](https://github.com/zeixcom/ui-element/blob/297
 
 `void`
 
-### connectedCallback()
-
-> **connectedCallback**(): `void`
-
-#### Returns
-
-`void`
-
-### disconnectedCallback()
-
-> **disconnectedCallback**(): `void`
-
-#### Returns
-
-`void`
-
 ### getSignal()
 
 > **getSignal**\<`K`\>(`prop`): [`Signal`](Signal.md)\<`P`\[`K`\]\>
@@ -74,7 +52,7 @@ Defined in: [src/component.ts:42](https://github.com/zeixcom/ui-element/blob/297
 
 ##### K
 
-`K` *extends* `string` \| `number` \| `symbol`
+`K` *extends* `string`
 
 #### Parameters
 
@@ -94,7 +72,7 @@ Defined in: [src/component.ts:42](https://github.com/zeixcom/ui-element/blob/297
 
 ##### K
 
-`K` *extends* `string` \| `number` \| `symbol`
+`K` *extends* `string`
 
 #### Parameters
 

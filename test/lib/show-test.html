@@ -1,0 +1,374 @@
+<!doctype html>
+<html>
+	<head>
+		<title>show Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import { show, state, RESET, UNSET } from '../../index.dev.js'
+
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+
+			runTests(() => {
+				describe('show', function () {
+					it('should hide element when predicate is false', function () {
+						const element = document.createElement('div')
+						element.textContent = 'Test content'
+						document.body.appendChild(element)
+
+						// Create a mock component as host
+						const host = { getSignal: () => ({ get: () => false }) }
+
+						try {
+							// Initially visible
+							assert.equal(element.hidden, false)
+
+							// Apply show with false predicate
+							const cleanup = show(() => false)(host, element)
+
+							assert.equal(
+								element.hidden,
+								true,
+								'Element should be hidden when predicate is false',
+							)
+
+							cleanup()
+						} finally {
+							element.remove()
+						}
+					})
+
+					it('should show element when predicate is true', function () {
+						const element = document.createElement('div')
+						element.textContent = 'Test content'
+						element.hidden = true // Start hidden
+						document.body.appendChild(element)
+
+						// Create a mock component as host
+						const host = { getSignal: () => ({ get: () => true }) }
+
+						try {
+							// Initially hidden
+							assert.equal(element.hidden, true)
+
+							// Apply show with true predicate
+							const cleanup = show(() => true)(host, element)
+
+							assert.equal(
+								element.hidden,
+								false,
+								'Element should be visible when predicate is true',
+							)
+
+							cleanup()
+						} finally {
+							element.remove()
+						}
+					})
+
+					it('should work with reactive signals like module-todo pattern', function () {
+						// Create reactive signals for active tasks
+						const activeSignal = state([])
+
+						const singularElement = document.createElement('span')
+						singularElement.className = 'singular'
+						singularElement.textContent = 'task'
+
+						const pluralElement = document.createElement('span')
+						pluralElement.className = 'plural'
+						pluralElement.textContent = 'tasks'
+
+						const remainingElement = document.createElement('div')
+						remainingElement.className = 'remaining'
+
+						const allDoneElement = document.createElement('div')
+						allDoneElement.className = 'all-done'
+						allDoneElement.textContent = 'All done!'
+
+						document.body.appendChild(singularElement)
+						document.body.appendChild(pluralElement)
+						document.body.appendChild(remainingElement)
+						document.body.appendChild(allDoneElement)
+
+						try {
+							// Create a mock host component
+							const host = {
+								getSignal: () => ({ get: () => true }),
+							}
+
+							// Apply show effects like in module-todo using reactive signals
+							const cleanup1 = show(
+								() => activeSignal.get().length === 1,
+							)(host, singularElement)
+							const cleanup2 = show(
+								() => activeSignal.get().length > 1,
+							)(host, pluralElement)
+							const cleanup3 = show(
+								() => !!activeSignal.get().length,
+							)(host, remainingElement)
+							const cleanup4 = show(
+								() => !activeSignal.get().length,
+							)(host, allDoneElement)
+
+							// Initially no active tasks
+							assert.equal(
+								singularElement.hidden,
+								true,
+								'Singular should be hidden with 0 tasks',
+							)
+							assert.equal(
+								pluralElement.hidden,
+								true,
+								'Plural should be hidden with 0 tasks',
+							)
+							assert.equal(
+								remainingElement.hidden,
+								true,
+								'Remaining should be hidden with 0 tasks',
+							)
+							assert.equal(
+								allDoneElement.hidden,
+								false,
+								'All done should be visible with 0 tasks',
+							)
+
+							// Add one task
+							activeSignal.set(['task1'])
+
+							assert.equal(
+								singularElement.hidden,
+								false,
+								'Singular should be visible with 1 task',
+							)
+							assert.equal(
+								pluralElement.hidden,
+								true,
+								'Plural should be hidden with 1 task',
+							)
+							assert.equal(
+								remainingElement.hidden,
+								false,
+								'Remaining should be visible with 1 task',
+							)
+							assert.equal(
+								allDoneElement.hidden,
+								true,
+								'All done should be hidden with 1 task',
+							)
+
+							// Add more tasks
+							activeSignal.set(['task1', 'task2', 'task3'])
+
+							assert.equal(
+								singularElement.hidden,
+								true,
+								'Singular should be hidden with 3 tasks',
+							)
+							assert.equal(
+								pluralElement.hidden,
+								false,
+								'Plural should be visible with 3 tasks',
+							)
+							assert.equal(
+								remainingElement.hidden,
+								false,
+								'Remaining should be visible with 3 tasks',
+							)
+							assert.equal(
+								allDoneElement.hidden,
+								true,
+								'All done should be hidden with 3 tasks',
+							)
+
+							cleanup1()
+							cleanup2()
+							cleanup3()
+							cleanup4()
+						} finally {
+							singularElement.remove()
+							pluralElement.remove()
+							remainingElement.remove()
+							allDoneElement.remove()
+						}
+					})
+
+					it('should work with property name strings', function () {
+						// Create reactive component with signal
+						const visibilitySignal = state(true)
+						const component = {
+							isVisible: true,
+							getSignal: function (prop) {
+								if (prop === 'isVisible')
+									return visibilitySignal
+								return { get: () => this[prop] }
+							},
+						}
+
+						const element = document.createElement('div')
+						document.body.appendChild(element)
+
+						try {
+							// Use property name string
+							const cleanup = show('isVisible')(
+								component,
+								element,
+							)
+
+							assert.equal(
+								element.hidden,
+								false,
+								'Element should be visible when isVisible is true',
+							)
+
+							// Change signal value (not direct property)
+							visibilitySignal.set(false)
+
+							assert.equal(
+								element.hidden,
+								true,
+								'Element should be hidden when isVisible is false',
+							)
+
+							cleanup()
+						} finally {
+							element.remove()
+						}
+					})
+
+					it('should work with signal objects directly', function () {
+						const signal = state(true)
+						const element = document.createElement('div')
+						document.body.appendChild(element)
+
+						// Create a mock host component
+						const host = { getSignal: () => ({ get: () => true }) }
+
+						try {
+							const cleanup = show(signal)(host, element)
+
+							assert.equal(
+								element.hidden,
+								false,
+								'Element should be visible when signal is true',
+							)
+
+							// Change signal value
+							signal.set(false)
+
+							assert.equal(
+								element.hidden,
+								true,
+								'Element should be hidden when signal is false',
+							)
+
+							// Change back
+							signal.set(true)
+
+							assert.equal(
+								element.hidden,
+								false,
+								'Element should be visible again when signal is true',
+							)
+
+							cleanup()
+						} finally {
+							element.remove()
+						}
+					})
+
+					it('should handle clear button pattern from form-textbox', function () {
+						// Create reactive signal for input length
+						const lengthSignal = state(0)
+
+						const clearButton = document.createElement('button')
+						clearButton.className = 'clear'
+						clearButton.textContent = '✕'
+						clearButton.hidden = true // Initially hidden
+						document.body.appendChild(clearButton)
+
+						try {
+							// Create a mock host component
+							const host = {
+								getSignal: () => ({ get: () => true }),
+							}
+
+							// Apply show effect like in form-textbox using reactive signal
+							const cleanup = show(() => !!lengthSignal.get())(
+								host,
+								clearButton,
+							)
+
+							// Initially no input, button should be hidden
+							assert.equal(
+								clearButton.hidden,
+								true,
+								'Clear button should be hidden when input is empty',
+							)
+
+							// Type some text
+							lengthSignal.set(5)
+
+							assert.equal(
+								clearButton.hidden,
+								false,
+								'Clear button should be visible when input has text',
+							)
+
+							// Clear input
+							lengthSignal.set(0)
+
+							assert.equal(
+								clearButton.hidden,
+								true,
+								'Clear button should be hidden when input is cleared',
+							)
+
+							cleanup()
+						} finally {
+							clearButton.remove()
+						}
+					})
+
+					it('should handle RESET and UNSET values properly', function () {
+						const element = document.createElement('div')
+						element.hidden = true // Start with hidden
+						document.body.appendChild(element)
+
+						try {
+							// Create a mock host component
+							const host = {
+								getSignal: () => ({ get: () => true }),
+							}
+
+							// Test RESET - should revert to original DOM value
+							const cleanup1 = show(() => RESET)(host, element)
+
+							assert.equal(
+								element.hidden,
+								true,
+								'RESET should maintain original hidden state',
+							)
+							cleanup1()
+
+							// Test UNSET - should delete/fallback
+							const cleanup2 = show(() => UNSET)(host, element)
+
+							assert.equal(
+								element.hidden,
+								true,
+								'UNSET should fallback to original hidden state',
+							)
+							cleanup2()
+						} finally {
+							element.remove()
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

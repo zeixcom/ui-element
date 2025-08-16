@@ -1,40 +1,32 @@
 import {
 	type Cleanup,
-	type Signal,
-	UNSET,
 	effect,
-	enqueue,
 	isFunction,
 	isSignal,
 	isState,
 	toSignal,
+	UNSET,
 } from '@zeix/cause-effect'
 
+import type { Component, ComponentProps } from '../component'
 import {
-	type Component,
-	type ComponentProps,
 	type Effect,
 	RESET,
-} from '../component'
-import type { EventType } from '../core/dom'
+	type Reactive,
+	resolveReactive,
+} from '../core/reactive'
 import {
 	DEV_MODE,
-	LOG_ERROR,
 	elementName,
 	hasMethod,
 	isCustomElement,
 	isDefinedObject,
 	isString,
+	LOG_ERROR,
 	log,
-	valueString,
 } from '../core/util'
 
 /* === Types === */
-
-type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
-	| keyof P
-	| Signal<NonNullable<T>>
-	| ((element: E) => T | null | undefined)
 
 type Reactives<E extends Element, P extends ComponentProps> = {
 	[K in keyof E]?: Reactive<E[K], P, E>
@@ -64,47 +56,7 @@ type DangerouslySetInnerHTMLOptions = {
 	allowScripts?: boolean
 }
 
-/* === Internal Constants === */
-
-const RESOLVE_ERROR = Symbol('RESOLVE_ERROR')
-
 /* === Internal Functions === */
-
-const resolveReactive = <
-	T extends {},
-	P extends ComponentProps,
-	E extends Element = Component<P>,
->(
-	reactive: Reactive<T, P, E>,
-	host: Component<P>,
-	target: E,
-	context?: string,
-): T | typeof RESOLVE_ERROR => {
-	try {
-		return isString(reactive)
-			? (host.getSignal(reactive).get() as unknown as T)
-			: isSignal(reactive)
-				? reactive.get()
-				: isFunction<T>(reactive)
-					? reactive(target)
-					: RESET
-	} catch (error) {
-		if (context) {
-			log(
-				error,
-				`Failed to resolve value of ${valueString(reactive)}${
-					context ? ` for ${context}` : ''
-				} in ${elementName(target)}${
-					(host as unknown as E) !== target
-						? ` in ${elementName(host)}`
-						: ''
-				}`,
-				LOG_ERROR,
-			)
-		}
-		return RESOLVE_ERROR
-	}
-}
 
 const getOperationDescription = (
 	op: UpdateOperation,
@@ -121,53 +73,6 @@ const getOperationDescription = (
 		t: 'text content',
 	}
 	return ops[op] + name
-}
-
-const createOperationHandlers = <P extends ComponentProps, E extends Element>(
-	host: Component<P>,
-	target: E,
-	operationDesc: string,
-	resolve?: (target: E) => void,
-	reject?: (error: unknown) => void,
-) => {
-	const ok = (verb: string) => () => {
-		if (DEV_MODE && host.debug) {
-			log(
-				target,
-				`${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`,
-			)
-		}
-		resolve?.(target)
-	}
-
-	const err = (verb: string) => (error: unknown) => {
-		log(
-			error,
-			`Failed to ${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`,
-			LOG_ERROR,
-		)
-		reject?.(error)
-	}
-
-	return { ok, err }
-}
-
-const createDedupeSymbol = (operation: string, identifier?: string): symbol => {
-	return Symbol(identifier ? `${operation}:${identifier}` : operation)
-}
-
-const withReactiveValue = <T, P extends ComponentProps, E extends Element>(
-	reactive: Reactive<T, P, E>,
-	host: Component<P>,
-	target: E,
-	context: string,
-	handler: (value: T) => void,
-): Cleanup => {
-	return effect(() => {
-		const value = resolveReactive(reactive, host, target, context)
-		if (value === RESOLVE_ERROR) return
-		handler(value as T)
-	})
 }
 
 const isSafeURL = (value: string): boolean => {
@@ -216,29 +121,27 @@ const updateElement =
 		const fallback = read(target)
 		const operationDesc = getOperationDescription(op, name)
 
-		// If not yet set, set signal value to value read from DOM
-		if (
-			isString(reactive) &&
-			isString(fallback) &&
-			host[reactive] === RESET
-		) {
-			host.attributeChangedCallback(reactive, null, fallback)
+		const ok = (verb: string) => () => {
+			if (DEV_MODE && host.debug) {
+				log(
+					target,
+					`${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`,
+				)
+			}
+			updater.resolve?.(target)
 		}
 
-		const { ok, err } = createOperationHandlers(
-			host,
-			target,
-			operationDesc,
-			updater.resolve,
-			updater.reject,
-		)
+		const err = (verb: string) => (error: unknown) => {
+			log(
+				error,
+				`Failed to ${verb} ${operationDesc} of ${elementName(target)} in ${elementName(host)}`,
+				LOG_ERROR,
+			)
+			updater.reject?.(error)
+		}
 
-		return effect(() => {
-			const updateSymbol = createDedupeSymbol(op, name)
-
+		return effect((): undefined => {
 			const value = resolveReactive(reactive, host, target, operationDesc)
-			if (value === RESOLVE_ERROR) return
-
 			const resolvedValue =
 				value === RESET
 					? fallback
@@ -249,22 +152,21 @@ const updateElement =
 						: value
 
 			if (updater.delete && resolvedValue === null) {
-				enqueue(() => {
+				try {
 					updater.delete!(target)
-					return true
-				}, updateSymbol)
-					.then(ok('Deleted'))
-					.catch(err('delete'))
+					ok('delete')()
+				} catch (error) {
+					err('delete')(error)
+				}
 			} else if (resolvedValue != null) {
 				const current = read(target)
 				if (Object.is(resolvedValue, current)) return
-
-				enqueue(() => {
+				try {
 					update(target, resolvedValue)
-					return true
-				}, updateSymbol)
-					.then(ok('Updated'))
-					.catch(err('update'))
+					ok('update')()
+				} catch (error) {
+					err('update')(error)
+				}
 			}
 		})
 	}
@@ -284,8 +186,7 @@ const insertOrRemoveElement =
 		inserter?: ElementInserter<E>,
 	): Effect<P, E> =>
 	(host, target) => {
-		// Custom ok handler for insertOrRemoveElement
-		const insertRemoveOk = (verb: string) => () => {
+		const ok = (verb: string) => () => {
 			if (DEV_MODE && host.debug) {
 				log(
 					target,
@@ -300,11 +201,11 @@ const insertOrRemoveElement =
 					: isString(reactive)
 						? host.getSignal(reactive)
 						: undefined
-				if (isState<number>(signal)) signal.set(0)
+				if (isState(signal)) signal.set(0)
 			}
 		}
 
-		const insertRemoveErr = (verb: string) => (error: unknown) => {
+		const err = (verb: string) => (error: unknown) => {
 			log(
 				error,
 				`Failed to ${verb} element in ${elementName(target)} in ${elementName(host)}`,
@@ -313,24 +214,19 @@ const insertOrRemoveElement =
 			inserter?.reject?.(error)
 		}
 
-		return effect(() => {
-			const insertSymbol = createDedupeSymbol('i')
-			const removeSymbol = createDedupeSymbol('r')
-
+		return effect((): undefined => {
 			const diff = resolveReactive(
 				reactive,
 				host,
 				target,
 				'insertion or deletion',
 			)
-			if (diff === RESOLVE_ERROR) return
-
 			const resolvedDiff = diff === RESET ? 0 : diff
 
 			if (resolvedDiff > 0) {
 				// Positive diff => insert element
 				if (!inserter) throw new TypeError(`No inserter provided`)
-				enqueue(() => {
+				try {
 					for (let i = 0; i < resolvedDiff; i++) {
 						const element = inserter.create(target)
 						if (!element) continue
@@ -339,13 +235,12 @@ const insertOrRemoveElement =
 							element,
 						)
 					}
-					return true
-				}, insertSymbol)
-					.then(insertRemoveOk('Inserted'))
-					.catch(insertRemoveErr('insert'))
+					ok('insert')()
+				} catch (error) {
+					err('insert')(error)
+				}
 			} else if (resolvedDiff < 0) {
-				// Negative diff => remove element
-				enqueue(() => {
+				try {
 					if (
 						inserter &&
 						(inserter.position === 'afterbegin' ||
@@ -359,10 +254,10 @@ const insertOrRemoveElement =
 					} else {
 						target.remove()
 					}
-					return true
-				}, removeSymbol)
-					.then(insertRemoveOk('Removed'))
-					.catch(insertRemoveErr('remove'))
+					ok('remove')()
+				} catch (error) {
+					err('remove')(error)
+				}
 			}
 		})
 	}
@@ -400,7 +295,7 @@ const setText = <P extends ComponentProps, E extends Element = HTMLElement>(
  */
 const setProperty = <
 	P extends ComponentProps,
-	K extends keyof E,
+	K extends keyof E & string,
 	E extends Element = HTMLElement,
 >(
 	key: K,
@@ -408,7 +303,7 @@ const setProperty = <
 ): Effect<P, E> =>
 	updateElement(reactive, {
 		op: 'p',
-		name: String(key),
+		name: key,
 		read: el => (key in el ? el[key] : UNSET),
 		update: (el, value) => {
 			el[key] = value
@@ -571,7 +466,7 @@ const toggleClass = <P extends ComponentProps, E extends Element = HTMLElement>(
  */
 const setStyle = <
 	P extends ComponentProps,
-	E extends HTMLElement | SVGElement | MathMLElement,
+	E extends HTMLElement | SVGElement | MathMLElement = HTMLElement,
 >(
 	prop: string,
 	reactive: Reactive<string, P, E> = prop,
@@ -633,67 +528,11 @@ const dangerouslySetInnerHTML = <
 	})
 
 /**
- * Effect for attaching an event listener to an element.
- * Provides proper cleanup when the effect is disposed.
- *
- * @since 0.12.0
- * @param {string} type - Event type
- * @param {(event: EventType<K>) => void} listener - Event listener function
- * @param {AddEventListenerOptions | boolean} options - Event listener options
- * @returns {Effect<ComponentProps, E>} Effect function that manages the event listener
- */
-const on =
-	<K extends keyof HTMLElementEventMap | string, E extends HTMLElement>(
-		type: K,
-		listener: (event: EventType<K>) => void,
-		options: AddEventListenerOptions | boolean = false,
-	): Effect<ComponentProps, E> =>
-	(_, target): Cleanup => {
-		if (!isFunction(listener))
-			throw new TypeError(
-				`Invalid event listener provided for "${type} event on element ${elementName(target)}`,
-			)
-		target.addEventListener(type, listener, options)
-		return () => target.removeEventListener(type, listener)
-	}
-
-/**
- * Effect for emitting custom events with reactive detail values.
- * Creates and dispatches CustomEvent instances with bubbling enabled by default.
- *
- * @since 0.13.3
- * @param {string} type - Event type to emit
- * @param {Reactive<T, P, E>} reactive - Reactive value bound to the event detail
- * @returns {Effect<P, E>} Effect function that emits custom events
- */
-const emitEvent =
-	<T, P extends ComponentProps, E extends Element = HTMLElement>(
-		type: string,
-		reactive: Reactive<T, P, E>,
-	): Effect<P, E> =>
-	(host, target): Cleanup =>
-		withReactiveValue(
-			reactive,
-			host,
-			target,
-			`custom event "${type}" detail`,
-			detail => {
-				if (detail === RESET || detail === UNSET) return
-				target.dispatchEvent(
-					new CustomEvent(type, {
-						detail,
-						bubbles: true,
-					}),
-				)
-			},
-		)
-
-/**
  * Effect for passing reactive values to a descendant UIElement component.
  *
  * @since 0.13.3
  * @param {Reactives<Component<Q>, P>} reactives - Reactive values to pass
- * @returns {Effect<P, E>} Effect function that passes reactive values to the descendant component
+ * @returns {Effect<P, Component<Q>>} Effect function that passes reactive values to the descendant component
  * @throws {TypeError} When the provided reactives are not an object or the target is not a UIElement component
  * @throws {Error} When passing signals failed for some other reason
  */
@@ -708,34 +547,23 @@ const pass =
 			throw new TypeError(
 				`Target ${elementName(target)} is not a custom element`,
 			)
-		customElements
-			.whenDefined(target.localName)
-			.then(() => {
-				if (!hasMethod(target, 'setSignal'))
-					throw new TypeError(
-						`Target ${elementName(target)} is not a UIElement component`,
-					)
-				for (const [prop, reactive] of Object.entries(reactives)) {
-					target.setSignal(
-						prop,
-						isString(reactive)
-							? host.getSignal(reactive)
-							: toSignal(reactive),
-					)
-				}
-			})
-			.catch(error => {
-				throw new Error(
-					`Failed to pass signals to ${elementName(target)}`,
-					{ cause: error },
-				)
-			})
+		if (!hasMethod(target, 'setSignal'))
+			throw new TypeError(
+				`Target ${elementName(target)} is not a UIElement component`,
+			)
+		for (const [prop, reactive] of Object.entries(reactives)) {
+			target.setSignal(
+				prop,
+				isString(reactive)
+					? host.getSignal(reactive)
+					: toSignal(reactive),
+			)
+		}
 	}
 
 /* === Exports === */
 
 export {
-	type Reactive,
 	type Reactives,
 	type UpdateOperation,
 	type ElementUpdater,
@@ -753,7 +581,5 @@ export {
 	toggleClass,
 	setStyle,
 	dangerouslySetInnerHTML,
-	on,
-	emitEvent,
 	pass,
 }

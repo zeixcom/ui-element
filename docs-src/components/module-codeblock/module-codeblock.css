@@ -1,17 +1,18 @@
 module-codeblock {
+	--color-shiki-monokai-bg: #272822;
+
 	position: relative;
 	display: block;
 	margin: 0 0 var(--space-l);
+	background: var(--color-shiki-monokai-bg);
+	border-radius: var(--space-s);
 
 	.meta {
 		display: flex;
-		margin-bottom: var(--space-xs);
+		margin-bottom: 0;
+		padding: var(--space-xs) var(--space-s) 0;
 		font-size: var(--font-size-s);
-		color: var(--color-text-soft);
-
-		&:not(:has(.file)) .language {
-			margin-block-start: calc(-1 * var(--space-m));
-		}
+		color: var(--color-neutral-20);
 	}
 
 	.language {
@@ -21,12 +22,9 @@ module-codeblock {
 
 	& pre {
 		font-size: var(--font-size-s);
-		color: var(--color-neutral-10);
-		background: var(--color-neutral-90);
 		padding: var(--space-s);
-		margin: var(--space-xs) 0;
+		border-radius: var(--space-s);
 		overflow: auto;
-		border-radius: var(--space-xs);
 	}
 
 	.copy {
@@ -42,6 +40,7 @@ module-codeblock {
 	&[collapsed] {
 		max-height: 12rem;
 		overflow: hidden;
+		border-radius: var(--space-s) var(--space-s) 0 0;
 
 		&::after {
 			content: "";
@@ -51,8 +50,12 @@ module-codeblock {
 			width: 100%;
 			height: var(--space-m);
 			background:
-				linear-gradient(-135deg, var(--color-secondary) 0.5rem, transparent 0) 0
-				0.5rem,
+				linear-gradient(
+					-135deg,
+					var(--color-secondary) 0.5rem,
+					transparent 0
+				)
+				0 0.5rem,
 				linear-gradient(
 					135deg,
 					var(--color-secondary) 0.5rem,
@@ -84,12 +87,14 @@ module-codeblock {
 			padding: var(--space-xs) var(--space-s);
 			margin-bottom: var(--space-m);
 			font-size: var(--font-size-s);
-			transition: background-color var(--transition-short) var(--easing-inout);
+			transition: background-color var(--transition-short)
+				var(--easing-inout);
 			text-shadow: var(--color-background) 1px 0 var(--space-xs);
 
 			&:hover,
 			&:active {
-				text-shadow: var(--color-text-inverted) var(--space-xs) 0 var(--space-s);
+				text-shadow: var(--color-text-inverted) var(--space-xs) 0
+					var(--space-s);
 			}
 		}
 	}

@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Component\<P\> – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,137 +116,93 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section class="api-content">
+			<main id="main" class="content-grid"><section class="api-content">
 <h1 id="type-alias-componentltpgt">
                 <a name="type-alias-componentltpgt" class="anchor" href="#type-alias-componentltpgt">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Alias: Component&lt;P&gt;</span>
                 </a>
-                Type Alias: Component&lt;P&gt;
             </h1>
 <blockquote>
 <p><strong>Component</strong>&lt;<code>P</code>&gt; = <code>HTMLElement</code> &amp; <code>P</code> &amp; <code>object</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/component.ts#L42">src/component.ts:42</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/component.ts#L59">src/component.ts:59</a></p>
 <h2 id="type-declaration">
                 <a name="type-declaration" class="anchor" href="#type-declaration">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type declaration</span>
                 </a>
-                Type declaration
             </h2>
 <h3 id="debug">
                 <a name="debug" class="anchor" href="#debug">
 	                <span class="permalink">🔗</span>
+					<span class="title">debug?</span>
                 </a>
-                debug?
             </h3>
 <blockquote>
 <p><code>optional</code> <strong>debug</strong>: <code>boolean</code></p>
 </blockquote>
-<h3 id="shadowroot">
-                <a name="shadowroot" class="anchor" href="#shadowroot">
-	                <span class="permalink">🔗</span>
-                </a>
-                shadowRoot
-            </h3>
-<blockquote>
-<p><strong>shadowRoot</strong>: <code>ShadowRoot</code> | <code>null</code></p>
-</blockquote>
-<h3 id="adoptedcallback">
-                <a name="adoptedcallback" class="anchor" href="#adoptedcallback">
-	                <span class="permalink">🔗</span>
-                </a>
-                adoptedCallback()?
-            </h3>
-<blockquote>
-<p><code>optional</code> <strong>adoptedCallback</strong>(): <code>void</code></p>
-</blockquote>
-<h4 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h4>
-<p><code>void</code></p>
 <h3 id="attributechangedcallback">
                 <a name="attributechangedcallback" class="anchor" href="#attributechangedcallback">
 	                <span class="permalink">🔗</span>
+					<span class="title">attributeChangedCallback()</span>
                 </a>
-                attributeChangedCallback()
             </h3>
 <blockquote>
-<p><strong>attributeChangedCallback</strong>(<code>name</code>, <code>oldValue</code>, <code>newValue</code>): <code>void</code></p>
+<p><strong>attributeChangedCallback</strong>&lt;<code>K</code>&gt;(<code>name</code>, <code>oldValue</code>, <code>newValue</code>): <code>void</code></p>
 </blockquote>
+<h4 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
+	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
+                </a>
+            </h4>
+<h5 id="k">
+                <a name="k" class="anchor" href="#k">
+	                <span class="permalink">🔗</span>
+					<span class="title">K</span>
+                </a>
+            </h5>
+<p><code>K</code> <em>extends</em> <code>string</code></p>
 <h4 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parameters</span>
                 </a>
-                Parameters
             </h4>
 <h5 id="name">
                 <a name="name" class="anchor" href="#name">
 	                <span class="permalink">🔗</span>
+					<span class="title">name</span>
                 </a>
-                name
             </h5>
-<p><code>string</code></p>
+<p><code>K</code></p>
 <h5 id="oldvalue">
                 <a name="oldvalue" class="anchor" href="#oldvalue">
 	                <span class="permalink">🔗</span>
+					<span class="title">oldValue</span>
                 </a>
-                oldValue
             </h5>
 <p><code>null</code> | <code>string</code></p>
 <h5 id="newvalue">
                 <a name="newvalue" class="anchor" href="#newvalue">
 	                <span class="permalink">🔗</span>
+					<span class="title">newValue</span>
                 </a>
-                newValue
             </h5>
 <p><code>null</code> | <code>string</code></p>
 <h4 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
                 </a>
-                Returns
-            </h4>
-<p><code>void</code></p>
-<h3 id="connectedcallback">
-                <a name="connectedcallback" class="anchor" href="#connectedcallback">
-	                <span class="permalink">🔗</span>
-                </a>
-                connectedCallback()
-            </h3>
-<blockquote>
-<p><strong>connectedCallback</strong>(): <code>void</code></p>
-</blockquote>
-<h4 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
-            </h4>
-<p><code>void</code></p>
-<h3 id="disconnectedcallback">
-                <a name="disconnectedcallback" class="anchor" href="#disconnectedcallback">
-	                <span class="permalink">🔗</span>
-                </a>
-                disconnectedCallback()
-            </h3>
-<blockquote>
-<p><strong>disconnectedCallback</strong>(): <code>void</code></p>
-</blockquote>
-<h4 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-                </a>
-                Returns
             </h4>
 <p><code>void</code></p>
 <h3 id="getsignal">
                 <a name="getsignal" class="anchor" href="#getsignal">
 	                <span class="permalink">🔗</span>
+					<span class="title">getSignal()</span>
                 </a>
-                getSignal()
             </h3>
 <blockquote>
 <p><strong>getSignal</strong>&lt;<code>K</code>&gt;(<code>prop</code>): <a href="Signal.html"><code>Signal</code></a>&lt;<code>P</code>[<code>K</code>]&gt;</p>
@@ -236,41 +210,41 @@
 <h4 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
                 </a>
-                Type Parameters
             </h4>
 <h5 id="k">
                 <a name="k" class="anchor" href="#k">
 	                <span class="permalink">🔗</span>
+					<span class="title">K</span>
                 </a>
-                K
             </h5>
-<p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code></p>
+<p><code>K</code> <em>extends</em> <code>string</code></p>
 <h4 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parameters</span>
                 </a>
-                Parameters
             </h4>
 <h5 id="prop">
                 <a name="prop" class="anchor" href="#prop">
 	                <span class="permalink">🔗</span>
+					<span class="title">prop</span>
                 </a>
-                prop
             </h5>
 <p><code>K</code></p>
 <h4 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
                 </a>
-                Returns
             </h4>
 <p><a href="Signal.html"><code>Signal</code></a>&lt;<code>P</code>[<code>K</code>]&gt;</p>
 <h3 id="setsignal">
                 <a name="setsignal" class="anchor" href="#setsignal">
 	                <span class="permalink">🔗</span>
+					<span class="title">setSignal()</span>
                 </a>
-                setSignal()
             </h3>
 <blockquote>
 <p><strong>setSignal</strong>&lt;<code>K</code>&gt;(<code>prop</code>, <code>signal</code>): <code>void</code></p>
@@ -278,54 +252,54 @@
 <h4 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
                 </a>
-                Type Parameters
             </h4>
 <h5 id="k">
                 <a name="k" class="anchor" href="#k">
 	                <span class="permalink">🔗</span>
+					<span class="title">K</span>
                 </a>
-                K
             </h5>
-<p><code>K</code> <em>extends</em> <code>string</code> | <code>number</code> | <code>symbol</code></p>
+<p><code>K</code> <em>extends</em> <code>string</code></p>
 <h4 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parameters</span>
                 </a>
-                Parameters
             </h4>
 <h5 id="prop">
                 <a name="prop" class="anchor" href="#prop">
 	                <span class="permalink">🔗</span>
+					<span class="title">prop</span>
                 </a>
-                prop
             </h5>
 <p><code>K</code></p>
 <h5 id="signal">
                 <a name="signal" class="anchor" href="#signal">
 	                <span class="permalink">🔗</span>
+					<span class="title">signal</span>
                 </a>
-                signal
             </h5>
 <p><a href="Signal.html"><code>Signal</code></a>&lt;<code>P</code>[<code>K</code>]&gt;</p>
 <h4 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
                 </a>
-                Returns
             </h4>
 <p><code>void</code></p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
                 </a>
-                Type Parameters
             </h2>
 <h3 id="p">
                 <a name="p" class="anchor" href="#p">
 	                <span class="permalink">🔗</span>
+					<span class="title">P</span>
                 </a>
-                P
             </h3>
 <p><code>P</code> <em>extends</em> <a href="ComponentProps.html"><code>ComponentProps</code></a></p>
 

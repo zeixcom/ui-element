@@ -100,7 +100,6 @@
 							break
 						}
 					}
-					await tick()
 				}
 			}
 
@@ -150,7 +149,6 @@
 						const decrementBtn = el.querySelector('.decrement')
 						const valueDisplay = el.querySelector('.value')
 
-						await tick()
 
 						// Should start at 0
 						assert.equal(el.value, 0)
@@ -167,7 +165,6 @@
 						const decrementBtn = el.querySelector('.decrement')
 						const valueDisplay = el.querySelector('.value')
 
-						await tick()
 
 						// Should start at 5
 						assert.equal(el.value, 5)
@@ -188,7 +185,6 @@
 						assert.equal(el.value, 0)
 
 						incrementBtn.click()
-						await tick()
 
 						assert.equal(el.value, 1)
 						assert.equal(valueDisplay.textContent, '1')
@@ -204,7 +200,6 @@
 						assert.equal(el.value, 5)
 
 						decrementBtn.click()
-						await tick()
 
 						assert.equal(el.value, 4)
 						assert.equal(valueDisplay.textContent, '4')
@@ -217,7 +212,6 @@
 						const valueDisplay = el.querySelector('.value')
 
 						// At zero
-						await tick()
 						assert.equal(el.value, 0)
 						assert.isTrue(decrementBtn.hidden)
 						assert.isTrue(valueDisplay.hidden)
@@ -225,7 +219,6 @@
 
 						// Increment to 1
 						incrementBtn.click()
-						await tick()
 						assert.equal(el.value, 1)
 						assert.isFalse(decrementBtn.hidden)
 						assert.isFalse(valueDisplay.hidden)
@@ -233,7 +226,6 @@
 
 						// Decrement back to 0
 						decrementBtn.click()
-						await tick()
 						assert.equal(el.value, 0)
 						assert.isTrue(decrementBtn.hidden)
 						assert.isTrue(valueDisplay.hidden)
@@ -249,25 +241,21 @@
 						// ArrowUp should increment
 						incrementBtn.focus()
 						simulateKeyEvent(incrementBtn, 'keydown', 'ArrowUp')
-						await tick()
 
 						assert.equal(el.value, initialValue + 1)
 
 						// ArrowDown should decrement
 						simulateKeyEvent(incrementBtn, 'keydown', 'ArrowDown')
-						await tick()
 
 						assert.equal(el.value, initialValue)
 
 						// + key should increment
 						simulateKeyEvent(incrementBtn, 'keydown', '+')
-						await tick()
 
 						assert.equal(el.value, initialValue + 1)
 
 						// - key should decrement
 						simulateKeyEvent(incrementBtn, 'keydown', '-')
-						await tick()
 
 						assert.equal(el.value, initialValue)
 					})
@@ -282,18 +270,14 @@
 
 						// Increment to max
 						incrementBtn.click()
-						await tick()
 						incrementBtn.click()
-						await tick()
 						incrementBtn.click()
-						await tick()
 
 						assert.equal(el.value, 3)
 						assert.isTrue(incrementBtn.disabled)
 
 						// Try to increment beyond max
 						incrementBtn.click()
-						await tick()
 
 						assert.equal(el.value, 3) // Should remain at max
 					})
@@ -306,7 +290,6 @@
 						incrementBtn.click()
 						incrementBtn.click()
 						incrementBtn.click()
-						await tick()
 
 						assert.equal(el.value, 3)
 					})
@@ -315,7 +298,6 @@
 						const el = document.getElementById('test1')
 						const incrementBtn = el.querySelector('.increment')
 
-						await tick()
 
 						// At zero, should show zero-label
 						assert.equal(
@@ -325,7 +307,6 @@
 
 						// After increment, should show increment-label (or default)
 						incrementBtn.click()
-						await tick()
 
 						assert.equal(
 							incrementBtn.getAttribute('aria-label'),
@@ -337,7 +318,6 @@
 						const el = document.getElementById('test2')
 						const incrementBtn = el.querySelector('.increment')
 
-						await tick()
 
 						// Should use default labels when attributes not provided
 						assert.isNotNull(
@@ -390,14 +370,12 @@
 
 						// Decrement should enable increment
 						decrementBtn.click()
-						await tick()
 
 						assert.equal(el.value, 8)
 						assert.isFalse(incrementBtn.disabled)
 
 						// Increment back to max
 						incrementBtn.click()
-						await tick()
 
 						assert.equal(el.value, 9)
 						assert.isTrue(incrementBtn.disabled)
@@ -412,7 +390,6 @@
 						simulateKeyEvent(incrementBtn, 'keydown', 'Enter')
 						simulateKeyEvent(incrementBtn, 'keydown', 'Space')
 						simulateKeyEvent(incrementBtn, 'keydown', 'a')
-						await tick()
 
 						assert.equal(el.value, initialValue)
 					})

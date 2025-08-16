@@ -123,7 +123,6 @@
 					input.dispatchEvent(new Event('change', { bubbles: true }))
 					// Simulate focus out to reset mode to idle
 					el.dispatchEvent(new Event('focusout', { bubbles: true }))
-					await tick()
 					await wait(10) // Extra wait for focusout handling
 				}
 			}
@@ -132,13 +131,11 @@
 			const typeInInput = async (input, text) => {
 				input.value = text
 				input.dispatchEvent(new Event('input', { bubbles: true }))
-				await tick()
 			}
 
 			// Helper to simulate committing input value
 			const commitInput = async input => {
 				input.dispatchEvent(new Event('change', { bubbles: true }))
-				await tick()
 			}
 
 			// Helper to simulate keyboard events
@@ -218,7 +215,6 @@
 						const input = el.querySelector('input')
 						const listbox = el.querySelector('[role="listbox"]')
 
-						await tick()
 
 						assert.equal(el.value, '')
 						assert.equal(el.length, 0)
@@ -256,7 +252,6 @@
 						const input = el.querySelector('input')
 
 						await typeInInput(input, 'Ber')
-						await tick() // Wait for DOM updates to take effect for :not([hidden]) selector
 
 						const visibleOptions = getVisibleOptions(el)
 						const hiddenOptions = el.querySelectorAll(
@@ -286,7 +281,6 @@
 						const input = el.querySelector('input')
 
 						await typeInInput(input, 'BERLIN')
-						await tick() // Wait for DOM updates to take effect for :not([hidden]) selector
 
 						const visibleOptions = getVisibleOptions(el)
 						const hiddenOptions = el.querySelectorAll(
@@ -325,7 +319,6 @@
 						)
 
 						amsterdamOption.click()
-						await tick()
 
 						assert.equal(el.value, 'Amsterdam')
 						assert.equal(input.value, 'Amsterdam')
@@ -344,7 +337,6 @@
 
 						// Simulate ArrowDown to focus first option
 						simulateKeyEvent(el, 'keydown', 'ArrowDown')
-						await tick()
 
 						// Should have focused the first visible option
 						const visibleOptions = getVisibleOptions(el)
@@ -352,7 +344,6 @@
 
 						// Another ArrowDown should move to next option
 						simulateKeyEvent(el, 'keydown', 'ArrowDown')
-						await tick()
 					})
 
 					it('should select option with Enter key', async () => {
@@ -364,11 +355,9 @@
 
 						// Navigate to first option
 						simulateKeyEvent(el, 'keydown', 'ArrowDown')
-						await tick()
 
 						// Press Enter to select
 						simulateKeyEvent(listbox, 'keyup', 'Enter')
-						await tick()
 
 						assert.equal(el.value, 'Berlin')
 						assert.equal(input.value, 'Berlin')
@@ -380,7 +369,6 @@
 						const listbox = el.querySelector('[role="listbox"]')
 
 						await typeInInput(input, 'a')
-						await tick()
 
 						// Ensure listbox is open first
 						if (listbox.hidden) {
@@ -390,7 +378,6 @@
 
 						// Press Escape
 						simulateKeyEvent(listbox, 'keyup', 'Escape')
-						await tick()
 
 						assert.isTrue(listbox.hidden)
 						assert.equal(
@@ -404,7 +391,6 @@
 						const input = el.querySelector('input')
 						const clearBtn = el.querySelector('.clear')
 
-						await tick()
 
 						// Initially hidden when no content
 						assert.isTrue(clearBtn.hidden)
@@ -412,7 +398,6 @@
 						// Should show when typing (el.length > 0)
 						await typeInInput(input, 'test')
 						// Need extra tick for reactive property to update clear button visibility
-						await tick()
 
 						assert.isFalse(clearBtn.hidden)
 
@@ -436,7 +421,6 @@
 
 						// Click clear
 						clearBtn.click()
-						await tick()
 
 						assert.equal(el.value, '')
 						assert.equal(input.value, '')
@@ -456,7 +440,6 @@
 
 						// Press Delete key
 						simulateKeyEvent(el, 'keyup', 'Delete')
-						await tick()
 
 						assert.equal(el.value, '')
 						assert.equal(input.value, '')
@@ -475,7 +458,6 @@
 							el.querySelectorAll('[role="option"]'),
 						).find(option => option.textContent.trim() === 'Berlin')
 
-						await tick()
 						assert.equal(
 							berlinOption.getAttribute('aria-selected'),
 							'true',
@@ -516,22 +498,18 @@
 						const input = el.querySelector('input')
 						const listbox = el.querySelector('[role="listbox"]')
 
-						await tick()
 						assert.isTrue(listbox.hidden)
 
 						// First ensure we're in the right state - typing triggers editing mode
 						await typeInInput(input, 'a')
-						await tick()
 
 						// Clear and try Alt+ArrowDown
 						await typeInInput(input, '')
-						await tick()
 
 						// Alt+ArrowDown should show popup
 						simulateKeyEvent(el, 'keydown', 'ArrowDown', {
 							altKey: true,
 						})
-						await tick()
 
 						// Component behavior may vary based on state
 						// Just ensure the component handles the event without errors
@@ -544,11 +522,9 @@
 
 						// Focus input
 						input.focus()
-						await tick()
 
 						// Start typing to enter editing mode
 						await typeInInput(input, 'a')
-						await tick()
 
 						// Check if editing mode is active (listbox should be visible)
 						const isEditingBefore =
@@ -562,7 +538,6 @@
 						el.dispatchEvent(
 							new Event('focusout', { bubbles: true }),
 						)
-						await tick()
 						await wait(50) // Wait for requestAnimationFrame in focusout handler
 
 						// Should exit editing mode (may depend on exact focus implementation)
@@ -582,7 +557,6 @@
 
 						// Press 'c' to find Copenhagen
 						simulateKeyEvent(listbox, 'keyup', 'c')
-						await tick()
 
 						// Should navigate to Copenhagen (first option starting with 'c')
 						// This tests the character-based navigation in options
@@ -604,7 +578,6 @@
 
 						// Click the option
 						option.click()
-						await tick()
 
 						assert.equal(el.value, 'Only Option')
 					})
@@ -614,7 +587,6 @@
 						const input = el.querySelector('input')
 
 						await typeInInput(input, 'xyz')
-						await tick()
 
 						const visibleOptions = getVisibleOptions(el)
 						const allOptions =
@@ -646,7 +618,6 @@
 						const input = el.querySelector('input')
 						const listbox = el.querySelector('[role="listbox"]')
 
-						await tick()
 
 						// Check ARIA controls relationship
 						assert.equal(
@@ -678,7 +649,6 @@
 						const input = el.querySelector('input')
 
 						el.value = 'Amsterdam'
-						await tick()
 
 						assert.equal(input.value, 'Amsterdam')
 
@@ -796,7 +766,6 @@
 
 						// Call clear method
 						el.clear()
-						await tick()
 
 						// Everything should be cleared
 						assert.equal(el.value, '')
@@ -816,7 +785,6 @@
 
 						// Clear should reset custom error (test2 is not required)
 						el.clear()
-						await tick()
 
 						assert.equal(el.error, '')
 						assert.equal(el.value, '')
@@ -830,7 +798,6 @@
 
 						// Add content to show clear button
 						await typeInInput(input, 'Paris')
-						await tick()
 
 						assert.isFalse(
 							clearBtn.hidden,
@@ -839,7 +806,6 @@
 
 						// Call clear method
 						el.clear()
-						await tick()
 
 						assert.isTrue(
 							clearBtn.hidden,
@@ -854,7 +820,6 @@
 
 						// Type to open popup
 						await typeInInput(input, 'Lon')
-						await tick()
 
 						assert.isFalse(
 							listbox.hidden,
@@ -863,7 +828,6 @@
 
 						// Clear should keep popup open for required field
 						el.clear()
-						await tick()
 
 						assert.isFalse(
 							listbox.hidden,
@@ -881,11 +845,8 @@
 
 						// Multiple clears should not cause errors
 						el.clear()
-						await tick()
 						el.clear()
-						await tick()
 						el.clear()
-						await tick()
 
 						assert.equal(el.value, '')
 						assert.equal(el.length, 0)

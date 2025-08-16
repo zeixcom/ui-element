@@ -4,15 +4,8 @@ import {
 	fromSelector,
 	on,
 	pass,
-	read,
-	requireDescendant,
 	setAttribute,
-	setText,
-	show,
 } from '../../..'
-import type { BasicButtonProps } from '../basic-button/basic-button'
-import type { FormCheckboxProps } from '../form-checkbox/form-checkbox'
-import '../form-textbox/form-textbox'
 
 export type ModuleTodoProps = {
 	readonly active: HTMLElement[]
@@ -25,24 +18,26 @@ export default component(
 		active: fromSelector('form-checkbox:not([checked])'),
 		completed: fromSelector('form-checkbox[checked]'),
 	},
-	(el, { first }) => {
-		const textbox = requireDescendant(el, 'form-textbox')
-		const template = requireDescendant(el, 'template')
-		const list = requireDescendant(el, 'ol')
-		const filter = el.querySelector('form-radiogroup')
+	(el, { first, useElement }) => {
+		const textbox = useElement(
+			'form-textbox',
+			'Needed to enter a new todo item.',
+		)
+		const template = useElement(
+			'template',
+			'Needed to define the list item template.',
+		)
+		const list = useElement('ol', 'Needed to display the list of todos.')
+		const filter = useElement('form-radiogroup')
 
 		return [
 			// Control todo input form
-			first<Component<BasicButtonProps>>(
-				'.submit',
-				pass({
-					disabled: () => !textbox.length,
-				}),
-			),
-			first(
-				'form',
-				on('submit', (e: Event) => {
-					e.preventDefault()
+			first('basic-button.submit', [
+				pass({ disabled: () => !textbox.length }),
+			]),
+			first('form', [
+				on('submit', ({ event }) => {
+					event.preventDefault()
 					queueMicrotask(() => {
 						const value = textbox.value.trim()
 						if (!value) return
@@ -59,43 +54,22 @@ export default component(
 						textbox.clear()
 					})
 				}),
-			),
+			]),
 
 			// Control todo list
-			first(
-				'ol',
-				setAttribute('filter', read(filter, 'value', 'all')),
-				on('click', (e: Event) => {
-					const target = e.target as HTMLElement
+			first('ol', [
+				setAttribute('filter', () => filter?.value || 'all'),
+				on('click', ({ event }) => {
+					const target = event.target as HTMLElement
 					if (target.closest('button')) target.closest('li')!.remove()
 				}),
-			),
+			]),
 
 			// Update count elements
-			first(
-				'.count',
-				setText(() => String(el.active.length)),
-			),
-			first(
-				'.singular',
-				show(() => el.active.length === 1),
-			),
-			first(
-				'.plural',
-				show(() => el.active.length > 1),
-			),
-			first(
-				'.remaining',
-				show(() => !!el.active.length),
-			),
-			first(
-				'.all-done',
-				show(() => !el.active.length),
-			),
+			first('basic-pluralize', [pass({ count: () => el.active.length })]),
 
 			// Control clear-completed button
-			first<Component<BasicButtonProps>>(
-				'.clear-completed',
+			first('basic-button.clear-completed', [
 				pass({
 					disabled: () => !el.completed.length,
 					badge: () =>
@@ -106,13 +80,11 @@ export default component(
 				on('click', () => {
 					const items = Array.from(el.querySelectorAll('ol li'))
 					for (let i = items.length - 1; i >= 0; i--) {
-						const task = items[i].querySelector<
-							HTMLElement & FormCheckboxProps
-						>('form-checkbox')
+						const task = items[i].querySelector('form-checkbox')
 						if (task?.checked) items[i].remove()
 					}
 				}),
-			),
+			]),
 		]
 	},
 )

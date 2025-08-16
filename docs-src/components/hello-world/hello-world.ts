@@ -1,12 +1,4 @@
-import {
-	type Component,
-	RESET,
-	asString,
-	component,
-	on,
-	requireDescendant,
-	setText,
-} from '../../..'
+import { asString, type Component, component, on, setText } from '../../..'
 
 export type HelloWorldProps = {
 	name: string
@@ -15,19 +7,21 @@ export type HelloWorldProps = {
 export default component(
 	'hello-world',
 	{
-		name: asString(RESET),
+		name: asString(
+			el => el.querySelector('span')?.textContent?.trim() ?? '',
+		),
 	},
 	(el, { first }) => {
-		requireDescendant(el, 'span')
-
+		const fallback = el.name
 		return [
 			first(
 				'input',
-				on('input', e => {
-					el.name = (e.target as HTMLInputElement).value || RESET
-				}),
+				on('input', ({ target }) => ({
+					name: target.value || fallback,
+				})),
+				'Needed to input the name.',
 			),
-			first('span', setText('name')),
+			first('span', setText('name'), 'Needed to display the name.'),
 		]
 	},
 )

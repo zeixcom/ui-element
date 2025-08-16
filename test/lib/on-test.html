@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+	<head>
+		<title>on Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<div id="test-on-function">Click me</div>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import { on } from '../../index.dev.js'
+
+			runTests(() => {
+				describe('on()', () => {
+					it('should attach and remove an event listener', async () => {
+						const div = document.getElementById('test-on-function')
+						let called = false
+
+						const off = on('click', () => {
+							called = true
+						})({}, div)
+
+						div.click()
+						const wasCalled = called
+
+						off() // Remove the event listener
+						called = false
+						div.click()
+
+						assert.equal(wasCalled, true)
+						assert.equal(called, false)
+					})
+
+					it('should handle multiple event types', () => {
+						const element = document.createElement('input')
+						document.body.appendChild(element) // Add to DOM for focus/blur to work
+						let focusCount = 0
+						let blurCount = 0
+
+						const cleanup1 = on('focus', () => focusCount++)(
+							null,
+							element,
+						)
+						const cleanup2 = on('blur', () => blurCount++)(
+							null,
+							element,
+						)
+
+						element.focus()
+						element.blur()
+
+						assert.equal(focusCount, 1)
+						assert.equal(blurCount, 1)
+
+						cleanup1()
+						cleanup2()
+						document.body.removeChild(element) // Clean up
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

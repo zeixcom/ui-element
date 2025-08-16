@@ -1,8 +1,10 @@
 import {
-	type Component,
 	asInteger,
+	type Component,
 	component,
+	fromDOM,
 	fromEvents,
+	getText,
 	setProperty,
 	setText,
 	show,
@@ -12,28 +14,27 @@ export type FormSpinbuttonProps = {
 	readonly value: number
 }
 
-const clickHandler = ({ target, value }) =>
-	value + (target.classList.contains('decrement') ? -1 : 1)
-
-const keydownHandler = ({ event, value }) => {
-	const { key } = event as KeyboardEvent
-	if (['ArrowUp', 'ArrowDown', '-', '+'].includes(key)) {
-		event.stopPropagation()
-		event.preventDefault()
-		return value + (key === 'ArrowDown' || key === '-' ? -1 : 1)
-	}
-}
-
 export default component(
 	'form-spinbutton',
 	{
-		value: fromEvents(
-			el => asInteger()(el, el.querySelector('.value')?.textContent),
+		value: fromEvents<number>(
 			'button',
 			{
-				click: clickHandler,
-				keydown: keydownHandler,
+				click: ({ target, value }) =>
+					value + (target.classList.contains('decrement') ? -1 : 1),
+				keydown: ({ event, value }) => {
+					const { key } = event as KeyboardEvent
+					if (['ArrowUp', 'ArrowDown', '-', '+'].includes(key)) {
+						event.stopPropagation()
+						event.preventDefault()
+						return (
+							value +
+							(key === 'ArrowDown' || key === '-' ? -1 : 1)
+						)
+					}
+				},
 			},
+			fromDOM({ '.value': getText() }, asInteger()),
 		),
 	},
 	(el, { first }) => {
@@ -43,16 +44,15 @@ export default component(
 		const nonZero = () => el.value !== 0
 
 		return [
-			first('.value', setText('value'), show(nonZero)),
+			first('.value', [setText('value'), show(nonZero)]),
 			first('.decrement', show(nonZero)),
-			first<HTMLButtonElement>(
-				'.increment',
+			first('button.increment', [
 				setText(() => (nonZero() ? '+' : zeroLabel)),
 				setProperty('ariaLabel', () =>
 					nonZero() ? incrementLabel : zeroLabel,
 				),
 				setProperty('disabled', () => el.value >= max),
-			),
+			]),
 		]
 	},
 )

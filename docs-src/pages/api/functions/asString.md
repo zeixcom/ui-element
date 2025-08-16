@@ -6,25 +6,31 @@
 
 # Function: asString()
 
-> **asString**(`fallback?`): [`AttributeParser`](../type-aliases/AttributeParser.md)\<`string`\>
+> **asString**\<`E`\>(`fallback?`): [`Parser`](../type-aliases/Parser.md)\<`string`, `E`\>
 
-Defined in: [src/lib/parsers.ts:71](https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/lib/parsers.ts#L71)
+Defined in: [src/lib/parsers.ts:79](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/lib/parsers.ts#L79)
 
-Parse an attribute as a string with a fallback
+Parse a string as a string with a fallback
+
+## Type Parameters
+
+### E
+
+`E` *extends* `Element` = `HTMLElement`
 
 ## Parameters
 
 ### fallback?
 
-`string` = `''`
+[`Fallback`](../type-aliases/Fallback.md)\<`string`, `E`\> = `''`
 
-fallback value
+Fallback value or extractor function
 
 ## Returns
 
-[`AttributeParser`](../type-aliases/AttributeParser.md)\<`string`\>
+[`Parser`](../type-aliases/Parser.md)\<`string`, `E`\>
 
-parser function
+Parser function
 
 ## Since
 

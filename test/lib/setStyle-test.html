@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+	<head>
+		<title>setStyle Tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<update-style color="red">
+			<p style="color: blue">Styled content</p>
+		</update-style>
+
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import {
+				component,
+				asString,
+				setStyle,
+				RESET,
+			} from '../../index.dev.js'
+
+			const animationFrame = async () =>
+				new Promise(requestAnimationFrame)
+
+			component(
+				'update-style',
+				{
+					color: asString(),
+				},
+				(_, { first }) => first('p', setStyle('color', 'color')),
+			)
+
+			runTests(() => {
+				describe('setStyle', function () {
+					it('should prove setStyle() working correctly', function () {
+						const component = document.querySelector('update-style')
+						const paragraph = component.querySelector('p')
+						assert.equal(
+							paragraph.style.color,
+							'red',
+							'Should set color from attribute',
+						)
+						component.color = 'green'
+						assert.equal(
+							paragraph.style.color,
+							'green',
+							'Should update color from color signal',
+						)
+						component.color = RESET
+						assert.equal(
+							paragraph.style.color,
+							'blue',
+							'Should revert color to server-rendered version',
+						)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

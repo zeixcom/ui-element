@@ -24,7 +24,7 @@ Define what happens when a reactive state changes
 
 effect matcher or callback
 
-[`EffectMatcher`](../type-aliases/EffectMatcher.md)\<`S`\> | () => `void` \| [`Cleanup`](../type-aliases/Cleanup.md)
+[`EffectMatcher`](../type-aliases/EffectMatcher.md)\<`S`\> | () => `undefined` \| [`Cleanup`](../type-aliases/Cleanup.md)
 
 ## Returns
 

@@ -1,0 +1,97 @@
+# UIElement Docs - HTTP Headers Configuration
+# This file configures optimal caching and security headers for static site deployment
+
+# Cache static assets for 1 year
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+  Content-Encoding: br, gzip
+  Vary: Accept-Encoding
+
+# Cache HTML pages for 1 hour with revalidation
+/*.html
+  Cache-Control: public, max-age=3600, must-revalidate
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Content-Encoding: br, gzip
+  Vary: Accept-Encoding
+
+# Cache CSS files for 1 year
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+  Content-Encoding: br, gzip
+  Vary: Accept-Encoding
+
+# Cache JavaScript files for 1 year
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+  Content-Encoding: br, gzip
+  Vary: Accept-Encoding
+
+# Cache images for 30 days
+/*.png
+  Cache-Control: public, max-age=2592000
+  X-Content-Type-Options: nosniff
+
+/*.jpg
+  Cache-Control: public, max-age=2592000
+  X-Content-Type-Options: nosniff
+
+/*.jpeg
+  Cache-Control: public, max-age=2592000
+  X-Content-Type-Options: nosniff
+
+/*.gif
+  Cache-Control: public, max-age=2592000
+  X-Content-Type-Options: nosniff
+
+/*.webp
+  Cache-Control: public, max-age=2592000
+  X-Content-Type-Options: nosniff
+
+/*.svg
+  Cache-Control: public, max-age=2592000
+  X-Content-Type-Options: nosniff
+
+# Cache fonts for 1 year
+/*.woff
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+
+/*.ttf
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+
+/*.otf
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+
+# Service Worker with shorter cache for updates
+/sw.js
+  Cache-Control: public, max-age=86400, must-revalidate
+  X-Content-Type-Options: nosniff
+  Content-Encoding: br, gzip
+  Vary: Accept-Encoding
+
+# Manifest files
+/*.json
+  Cache-Control: public, max-age=86400, must-revalidate
+  X-Content-Type-Options: nosniff
+  Content-Encoding: br, gzip
+  Vary: Accept-Encoding
+
+# Root directory with security headers
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

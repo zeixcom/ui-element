@@ -6,9 +6,9 @@
 
 # Function: fromEvents()
 
-> **fromEvents**\<`T`, `E`, `C`, `S`\>(`initialize`, `selector`, `events`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<`T`, `C`\>
+> **fromEvents**\<`T`, `C`, `S`\>(`selector`, `events`, `initialize`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`T`\>, `C`\>
 
-Defined in: [src/core/dom.ts:125](https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/core/dom.ts#L125)
+Defined in: [src/core/events.ts:66](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/core/events.ts#L66)
 
 Produce a computed signal from transformed event data
 
@@ -17,10 +17,6 @@ Produce a computed signal from transformed event data
 ### T
 
 `T` *extends* `object`
-
-### E
-
-`E` *extends* `Element` = `HTMLElement`
 
 ### C
 
@@ -32,12 +28,6 @@ Produce a computed signal from transformed event data
 
 ## Parameters
 
-### initialize
-
-Initial value or initialize function
-
-`T` | (`host`) => `T`
-
 ### selector
 
 `S`
@@ -46,16 +36,22 @@ CSS selector for the source element
 
 ### events
 
-[`EventTransformers`](../type-aliases/EventTransformers.md)\<`T`, [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>, `C`\>
+[`EventTransformers`](../type-aliases/EventTransformers.md)\<`T`, [`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`\>, `C`\>
 
 Transformation functions for events
 
+### initialize
+
+[`ParserOrFallback`](../type-aliases/ParserOrFallback.md)\<`T`, `C`\>
+
+Initial value or extractor function
+
 ## Returns
 
-[`SignalProducer`](../type-aliases/SignalProducer.md)\<`T`, `C`\>
+[`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`T`\>, `C`\>
 
-Signal producer for value from event
+Extractor function for value from event
 
 ## Since
 
-0.13.3
+0.14.0

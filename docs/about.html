@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>About – UIElement Docs</title>
 		<meta name="description" content="License, versioning, getting involved" />
-		<link rel="stylesheet" href="./assets/main.css" />
-		<script type="module" src="./assets/main.js"></script>
+		<link
+			rel="preload"
+			href="./assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="./assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="./assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="./assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,25 +116,25 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section-hero>
+			<main id="main" class="content-grid"><section-hero>
 
 <h1 id="about">
                 <a name="about" class="anchor" href="#about">
 	                <span class="permalink">🔗</span>
+					<span class="title">🤝 About</span>
                 </a>
-                🤝 About
             </h1>
 <div>
   <p class="lead"><strong>Join the UIElement community!</strong> This page covers the people behind UIElement, how you can contribute, versioning details, and licensing. Whether you’re a developer, designer, or sponsor, there are many ways to get involved.</p>
   
 <module-toc>
 	<nav>
-		<h2>In this Page</h2>
+		<h2>In This Page</h2>
 		<ol>
 			<li><a href="#whos-behind-uielement">Who's Behind UIElement?</a></li>
-			<li><a href="#license">License</a></li>
-			<li><a href="#version-history">Version History</a></li>
-			<li><a href="#getting-involved">Getting Involved</a></li>
+<li><a href="#license">License</a></li>
+<li><a href="#version-history">Version History</a></li>
+<li><a href="#getting-involved">Getting Involved</a></li>
 		</ol>
 	</nav>
 </module-toc>
@@ -128,15 +146,15 @@
 <h2 id="whos-behind-uielement">
                 <a name="whos-behind-uielement" class="anchor" href="#whos-behind-uielement">
 	                <span class="permalink">🔗</span>
+					<span class="title">Who&#39;s Behind UIElement?</span>
                 </a>
-                Who&#39;s Behind UIElement?
             </h2>
 <p>UIElement is an <strong>open-source project</strong>, actively developed by <a href="https://zeix.com">Zeix AG</a>, a Switzerland-based agency for User-Centered Design, committed to enhancing accessibility and usability in web technologies.</p>
 <h3 id="core-team-contributors">
                 <a name="core-team-contributors" class="anchor" href="#core-team-contributors">
 	                <span class="permalink">🔗</span>
+					<span class="title">Core Team &amp; Contributors</span>
                 </a>
-                Core Team &amp; Contributors
             </h3>
 <ul>
 <li><strong>Zeix AG</strong>: <a href="https://github.com/zeixcom">@zeixcom</a> – Maintainers and primary developers</li>
@@ -146,8 +164,8 @@
 <h3 id="sponsors">
                 <a name="sponsors" class="anchor" href="#sponsors">
 	                <span class="permalink">🔗</span>
+					<span class="title">Sponsors</span>
                 </a>
-                Sponsors
             </h3>
 <card-callout class="note">
 
@@ -162,8 +180,8 @@
 <h2 id="license">
                 <a name="license" class="anchor" href="#license">
 	                <span class="permalink">🔗</span>
+					<span class="title">License</span>
                 </a>
-                License
             </h2>
 <p>This project is licensed under the <a href="https://opensource.org/licenses/MIT">MIT License</a>, which means you can <strong>use, modify, and distribute</strong> it freely – even in commercial projects.</p>
 <p>A copy of the license can be found in the <a href="https://github.com/zeixcom/ui-element/blob/main/LICENSE">LICENSE</a> file of the repository.</p>
@@ -174,14 +192,14 @@
 <h2 id="version-history">
                 <a name="version-history" class="anchor" href="#version-history">
 	                <span class="permalink">🔗</span>
+					<span class="title">Version History</span>
                 </a>
-                Version History
             </h2>
-<h3 id="current-version-0134">
-                <a name="current-version-0134" class="anchor" href="#current-version-0134">
+<h3 id="current-version-0140">
+                <a name="current-version-0140" class="anchor" href="#current-version-0140">
 	                <span class="permalink">🔗</span>
+					<span class="title">Current Version: 0.14.0</span>
                 </a>
-                Current Version: 0.13.4
             </h3>
 <card-callout class="caution">
 
@@ -192,8 +210,8 @@
 <h3 id="versioning-scheme">
                 <a name="versioning-scheme" class="anchor" href="#versioning-scheme">
 	                <span class="permalink">🔗</span>
+					<span class="title">Versioning Scheme</span>
                 </a>
-                Versioning Scheme
             </h3>
 <p>UIElement follows <a href="https://semver.org/">Semantic Versioning</a> (SemVer), which is structured as <code>MAJOR.MINOR.PATCH</code>.</p>
 <ul>
@@ -204,8 +222,8 @@
 <h3 id="previous-pre-releases">
                 <a name="previous-pre-releases" class="anchor" href="#previous-pre-releases">
 	                <span class="permalink">🔗</span>
+					<span class="title">Previous Pre-Releases</span>
                 </a>
-                Previous Pre-Releases
             </h3>
 <p>View all releases and associated notes on <a href="https://github.com/zeixcom/ui-element/releases">Github Releases</a>.</p>
 </section>
@@ -215,20 +233,20 @@
 <h2 id="getting-involved">
                 <a name="getting-involved" class="anchor" href="#getting-involved">
 	                <span class="permalink">🔗</span>
+					<span class="title">Getting Involved</span>
                 </a>
-                Getting Involved
             </h2>
 <p>UIElement is <strong>an open-source project</strong>, and contributions are always welcome! Whether you’re <strong>reporting bugs, improving documentation, or suggesting features</strong>, here&#39;s how you can help:</p>
 <ul>
-<li>✅ <a href="https://github.com/zeixcom/ui-element/issues">Open an Issue</a> – Report bugs or suggest features.</li>
-<li>✅ <a href="https://github.com/zeixcom/ui-element/blob/main/CONTRIBUTING.html">Submit a Pull Request</a> – Help improve UIElement by fixing issues or adding new features.</li>
-<li>✅ Join the Discussion – Share ideas and get feedback from the community.</li>
+<li><a href="https://github.com/zeixcom/ui-element/issues">Open an Issue</a> – Report bugs or suggest features.</li>
+<li><a href="https://github.com/zeixcom/ui-element/blob/main/CONTRIBUTING.html">Submit a Pull Request</a> – Help improve UIElement by fixing issues or adding new features.</li>
+<li>Join the Discussion – Share ideas and get feedback from the community.</li>
 </ul>
 <h3 id="contributing-code">
                 <a name="contributing-code" class="anchor" href="#contributing-code">
 	                <span class="permalink">🔗</span>
+					<span class="title">Contributing Code</span>
                 </a>
-                Contributing Code
             </h3>
 <ul>
 <li>Fork the repository, create a new branch, and submit a pull request.</li>
@@ -237,8 +255,8 @@
 <h3 id="community-guidelines">
                 <a name="community-guidelines" class="anchor" href="#community-guidelines">
 	                <span class="permalink">🔗</span>
+					<span class="title">Community Guidelines</span>
                 </a>
-                Community Guidelines
             </h3>
 <p>We strive for a welcoming and inclusive environment. Please follow our <a href="https://github.com/zeixcom/ui-element/blob/main/CODE_OF_CONDUCT.html">Code of Conduct</a> when contributing.</p>
 </section>

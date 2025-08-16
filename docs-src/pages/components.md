@@ -38,6 +38,83 @@ Once registered, the component can be used like any native HTML element:
 <my-component>Content goes here</my-component>
 ```
 
+### Anatomy of a Component
+
+Let's examine a complete component example to understand how UIElement works:
+
+```js
+component(
+  'hello-world',
+  {
+    name: asString(el => el.querySelector('span')?.textContent?.trim() ?? ''),
+  },
+  (el, { first }) => {
+    const fallback = el.name
+    return [
+      first(
+        'input',
+        on('input', ({ target }) => ({ name: target.value || fallback })),
+      ),
+      first('span', setText('name')),
+    ]
+  },
+)
+```
+
+#### Reactive Properties
+
+```js
+{
+  // Create "name" property from attribute "name" as a string, falling back to server-rendered content
+  name: asString(el => el.querySelector('span')?.textContent?.trim() ?? ''),
+}
+```
+
+This creates a reactive property called `name`:
+
+- `asString()` observes the attribute `name` and assigns its value as a string to the `name` property
+- `el => ...` is an instruction how to get the fallback value in the DOM if there is no name attribute
+- UIElement automatically reads "World" from the `<span>` element as the initial value
+- When `name` changes, any effects that depend on it automatically update
+
+#### Setup Function
+
+The setup function takes two arguments:
+
+1. The component element. In this example we name it `el`.
+2. Helper functions for accessing descendant elements. In this example we use `first` to find the first descendant matching a selector and apply effects to it.
+
+The setup function returns an array of effects:
+
+```js
+(el, { first }) => {
+  // set the fallback value we want to use instead of an empty string
+  const fallback = el.name
+
+  return [
+    // Handle user input to change the "name" property
+    first(
+      'input',
+      on('input', ({ target }) => ({ name: target.value || fallback })),
+    ),
+
+    // Update content when the "name" property changes
+    first('span', setText('name')),
+  ]
+},
+```
+
+Effects define **component behaviors**:
+
+- `first('input', on('input', ...))` finds the first `<input>` and adds an event listener
+- `first('span', setText('name'))` finds the first `<span>` and keeps its text in sync with the `name` property
+
+Characteristics of Effects:
+
+- Effects run when the component is added to the page
+- Effects rerun when their dependencies change
+- Effects may return a cleanup function to be executed when the target element or the component is removed from the page
+
 </section>
 
 <section>
@@ -73,7 +150,7 @@ In this example you see all three ways to define a reactive property:
 
 <card-callout class="caution">
 
-**Note**: Property initialization runs **before the element is attached to the DOM**. You can't access not yet defined properties or child elements here.
+**Caution**: Property initialization runs **before the element is attached to the DOM**. You can't access not yet defined properties or descendant elements here.
 
 </card-callout>
 
@@ -199,20 +276,7 @@ component(
 
 ### Bundled Attribute Parsers
 
-| Function                                      | Description                                                                                                                                                                  |
-| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [asBoolean()](api/functions/asBoolean.html)   | Converts `"true"` / `"false"` to a **boolean** (`true` / `false`). Also treats empty attributes (`checked`) as `true`.                                                       |
-| [asInteger()](api/functions/asInteger.html)   | Converts a numeric string (e.g., `"42"`) to an **integer** (`42`).                                                                                                           |
-| [asNumber()](api/functions/asNumber.html)     | Converts a numeric string (e.g., `"3.14"`) to a **floating-point number** (`3.14`).                                                                                          |
-| [asString()](api/functions/asString.html)     | Returns the attribute value as a **string** (unchanged).                                                                                                                     |
-| [asEnum(values)](api/functions/asEnum.html)   | Ensures the string matches **one of the allowed values**. Example: `asEnum(["small", "medium", "large"])`. If the value is not in the list, it defaults to the first option. |
-| [asJSON(fallback)](api/functions/asJSON.html) | Parses a JSON string (e.g., `'["a", "b", "c"]'`) into an **array** or **object**. If invalid, returns the fallback object.                                                   |
-
-The pre-defined parsers `asInteger()`, `asNumber()` and `asString()` allow to set a custom fallback value as parameter.
-
-The `asEnum()` parser requires an array of valid values, while the first will be the fallback value for invalid results.
-
-The `asJSON()` parser requires a fallback object as parameter as `{}` probably won't match the type you're expecting.
+UIElement provides several built-in parsers for common attribute types. See the [Parsers section](api.html#parsers) in the API reference for detailed descriptions and usage examples.
 
 </section>
 
@@ -348,23 +412,7 @@ Again, the order of effects is not important. Feel free to apply them in any ord
 
 ### Bundled Effects
 
-| Function                                                                | Description                                                                                     |
-| ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| [setText()](api/functions/setText.html)                                 | Updates **text content** with a `string` signal value (while preserving comment nodes).         |
-| [setProperty()](api/functions/setProperty.html)                         | Updates a given **property** with any signal value.                                             |
-| [show()](api/functions/show.html)                                       | Updates the **visibility** of an element with a `boolean` signal value.                         |
-| [setAttribute()](api/functions/setAttribute.html)                       | Updates a given **attribute** with a `string` signal value.                                     |
-| [toggleAttribute()](api/functions/toggleAttribute.html)                 | Toggles a given **boolean attribute** with a `boolean` signal value.                            |
-| [toggleClass()](api/functions/toggleClass.html)                         | Toggles a given **CSS class** with a `boolean` signal value.                                    |
-| [setStyle()](api/functions/setStyle.html)                               | Updates a given **CSS property** with a `string` signal value.                                  |
-| [dangerouslySetInnerHTML()](api/functions/dangerouslySetInnerHTML.html) | Sets **HTML content** with a `string` signal value.                                             |
-| [insertOrRemoveElement()](api/functions/insertOrRemoveElement.html)     | Inserts (positive integer) or removes (negative integer) elements with a `number` signal value. |
-
-<card-callout class="tip">
-
-**Tip**: TypeScript will check whether a value of a given type is assignable to a certain element type. You might have to pass a type hint for the queried element type. Prefer `setProperty()` over `setAttribute()` for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.
-
-</card-callout>
+UIElement provides many built-in effects for common DOM operations. See the [Effects section](api.html#effects) in the API reference for detailed descriptions and usage examples.
 
 ### Simplifying Effect Notation
 

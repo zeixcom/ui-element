@@ -6,7 +6,7 @@
 
 # Function: enqueue()
 
-> **enqueue**\<`T`\>(`fn`, `dedupe?`): `Promise`\<`boolean` \| `void` \| `T`\>
+> **enqueue**\<`T`\>(`fn`, `dedupe?`): `Promise`\<`undefined` \| `boolean` \| `T`\>
 
 Defined in: node\_modules/@zeix/cause-effect/src/scheduler.ts:147
 
@@ -37,4 +37,4 @@ Symbol for deduplication; if not provided, a unique Symbol is created ensuring t
 
 ## Returns
 
-`Promise`\<`boolean` \| `void` \| `T`\>
+`Promise`\<`undefined` \| `boolean` \| `T`\>

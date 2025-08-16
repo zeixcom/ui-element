@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>UIElement – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../assets/main.css" />
-		<script type="module" src="../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="../assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="../assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,22 +116,22 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section class="api-content">
+			<main id="main" class="content-grid"><section class="api-content">
 <h1 id="uielement">
                 <a name="uielement" class="anchor" href="#uielement">
 	                <span class="permalink">🔗</span>
+					<span class="title">UIElement</span>
                 </a>
-                UIElement
             </h1>
-<p>Version 0.13.4</p>
+<p>Version 0.14.0</p>
 <p><strong>UIElement</strong> - a HTML-first library for reactive Web Components</p>
 <p>UIElement is a set of functions to build reusable, loosely coupled Web Components with reactive properties. It provides structure through components and simplifies state management and DOM synchronization using declarative signals and effects, leading to more organized and maintainable code without a steep learning curve.</p>
 <p>Unlike SPA frameworks (React, Vue, Svelte, etc.) UIElement takes a HTML-first approach, progressively enhancing sever-rendered HTML rather than recreating (rendering) it using JavaScript. UIElement achieves the same result as SPA frameworks with SSR, but with a simpler, more efficient approach. It works with a backend written in any language or with any static site generator.</p>
 <h2 id="key-features">
                 <a name="key-features" class="anchor" href="#key-features">
 	                <span class="permalink">🔗</span>
+					<span class="title">Key Features</span>
                 </a>
-                Key Features
             </h2>
 <ul>
 <li>🧱 <strong>HTML Web Components</strong>: Build on standard HTML and enhance it with encapsulated, reusable Web Components. No virtual DOM – UIElement works directly with the real DOM.</li>
@@ -128,8 +146,8 @@
 <h2 id="installation">
                 <a name="installation" class="anchor" href="#installation">
 	                <span class="permalink">🔗</span>
+					<span class="title">Installation</span>
                 </a>
-                Installation
             </h2>
 <module-codeblock language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
@@ -152,8 +170,8 @@
 <h2 id="documentation">
                 <a name="documentation" class="anchor" href="#documentation">
 	                <span class="permalink">🔗</span>
+					<span class="title">Documentation</span>
                 </a>
-                Documentation
             </h2>
 <p>The full documentation is still work in progress. The following chapters are already reasonably complete:</p>
 <ul>
@@ -167,14 +185,14 @@
 <h2 id="basic-usage">
                 <a name="basic-usage" class="anchor" href="#basic-usage">
 	                <span class="permalink">🔗</span>
+					<span class="title">Basic Usage</span>
                 </a>
-                Basic Usage
             </h2>
 <h3 id="counter">
                 <a name="counter" class="anchor" href="#counter">
 	                <span class="permalink">🔗</span>
+					<span class="title">Counter</span>
                 </a>
-                Counter
             </h3>
 <p>Server-rendered markup:</p>
 <module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
@@ -204,7 +222,8 @@
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">  'basic-counter'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  {</span></span>
-<span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(), </span><span style="color:#88846F">// Get initial value from count attribute</span></span>
+<span class="line"><span style="color:#88846F">    // Get initial value from count attribute</span></span>
+<span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(),</span></span>
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">  (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">    // Update count display when state changes</span></span>
@@ -265,8 +284,8 @@
 <h3 id="tab-group">
                 <a name="tab-group" class="anchor" href="#tab-group">
 	                <span class="permalink">🔗</span>
+					<span class="title">Tab Group</span>
                 </a>
-                Tab Group
             </h3>
 <p>An example demonstrating how to create a fully accessible tab navigation.</p>
 <p>Server-rendered markup:</p>

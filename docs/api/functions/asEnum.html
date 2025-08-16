@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>asEnum – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,45 +116,45 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section class="api-content">
+			<main id="main" class="content-grid"><section class="api-content">
 <h1 id="function-asenum">
                 <a name="function-asenum" class="anchor" href="#function-asenum">
 	                <span class="permalink">🔗</span>
+					<span class="title">Function: asEnum()</span>
                 </a>
-                Function: asEnum()
             </h1>
 <blockquote>
-<p><strong>asEnum</strong>(<code>valid</code>): <a href="../type-aliases/AttributeParser.html"><code>AttributeParser</code></a>&lt;<code>string</code>&gt;</p>
+<p><strong>asEnum</strong>(<code>valid</code>): <a href="../type-aliases/Parser.html"><code>Parser</code></a>&lt;<code>string</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/lib/parsers.ts#L83">src/lib/parsers.ts:83</a></p>
-<p>Parse an attribute as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option</p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/lib/parsers.ts#L93">src/lib/parsers.ts:93</a></p>
+<p>Parse a string as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option</p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parameters</span>
                 </a>
-                Parameters
             </h2>
 <h3 id="valid">
                 <a name="valid" class="anchor" href="#valid">
 	                <span class="permalink">🔗</span>
+					<span class="title">valid</span>
                 </a>
-                valid
             </h3>
 <p>[<code>string</code>, <code>...string[]</code>]</p>
-<p>array of valid values</p>
+<p>Array of valid values</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
                 </a>
-                Returns
             </h2>
-<p><a href="../type-aliases/AttributeParser.html"><code>AttributeParser</code></a>&lt;<code>string</code>&gt;</p>
-<p>parser function</p>
+<p><a href="../type-aliases/Parser.html"><code>Parser</code></a>&lt;<code>string</code>&gt;</p>
+<p>Parser function</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
+					<span class="title">Since</span>
                 </a>
-                Since
             </h2>
 <p>0.9.0</p>
 

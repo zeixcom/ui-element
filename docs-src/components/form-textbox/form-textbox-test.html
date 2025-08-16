@@ -107,7 +107,6 @@
 					input.value = ''
 					el.error = ''
 					el.length = 0
-					await tick()
 				}
 			}
 
@@ -115,13 +114,11 @@
 			const typeInInput = async (input, text) => {
 				input.value = text
 				input.dispatchEvent(new Event('input', { bubbles: true }))
-				await tick()
 			}
 
 			// Helper to simulate committing input value
 			const commitInput = async input => {
 				input.dispatchEvent(new Event('change', { bubbles: true }))
-				await tick()
 			}
 
 			runTests(() => {
@@ -170,7 +167,6 @@
 						const el = document.getElementById('test1')
 						const input = el.querySelector('input')
 
-						await tick()
 
 						assert.equal(el.value, '')
 						assert.equal(el.length, 0)
@@ -296,7 +292,6 @@
 						const textarea = el.querySelector('textarea')
 						const descriptionEl = el.querySelector('.description')
 
-						await tick()
 
 						// Should show initial remaining count
 						assert.include(
@@ -306,7 +301,6 @@
 
 						// Type some text and check remaining count updates
 						await typeInInput(textarea, 'Hello')
-						await tick()
 
 						assert.include(
 							descriptionEl.textContent,
@@ -319,20 +313,17 @@
 						const input = el.querySelector('input')
 						const clearBtn = el.querySelector('.clear')
 
-						await tick()
 
 						// Initially hidden when no content
 						assert.isTrue(clearBtn.hidden)
 
 						// Should show when content is added
 						await typeInInput(input, 'test')
-						await tick() // Wait for DOM update to reflect el.length change
 
 						assert.isFalse(clearBtn.hidden)
 
 						// Should hide when content is cleared
 						await typeInInput(input, '')
-						await tick() // Wait for DOM update to reflect el.length change
 
 						assert.isTrue(clearBtn.hidden)
 					})
@@ -352,7 +343,6 @@
 
 						// Click clear button (functionality should work regardless of visibility)
 						clearBtn.click()
-						await tick()
 
 						assert.equal(el.value, '')
 						assert.equal(el.length, 0)
@@ -366,7 +356,6 @@
 
 						// Add only whitespace
 						await typeInInput(input, '   ')
-						await tick() // Wait for DOM update to reflect el.length change
 
 						// Component should handle whitespace correctly in logic
 						assert.equal(el.length, 3)
@@ -375,7 +364,6 @@
 
 						// Add actual content
 						await typeInInput(input, '  test  ')
-						await tick() // Wait for DOM update to reflect el.length change
 
 						assert.equal(el.length, 8)
 						// Clear button should still show
@@ -383,7 +371,6 @@
 
 						// Clear content completely
 						await typeInInput(input, '')
-						await tick() // Wait for DOM update to reflect el.length change
 
 						// Clear button should hide when empty
 						assert.isTrue(clearBtn.hidden)
@@ -431,7 +418,6 @@
 						textarea.dispatchEvent(
 							new Event('input', { bubbles: true }),
 						)
-						await tick()
 
 						assert.equal(el.length, 500)
 					})
@@ -485,7 +471,6 @@
 						const errorEl = el.querySelector('.error')
 
 						el.error = 'Custom error message'
-						await tick()
 
 						assert.equal(
 							errorEl.textContent,
@@ -498,7 +483,6 @@
 						const descriptionEl = el.querySelector('.description')
 
 						el.description = 'New description'
-						await tick()
 
 						assert.equal(
 							descriptionEl.textContent,
@@ -527,7 +511,6 @@
 
 						// Clear using component method
 						el.clear()
-						await tick()
 
 						assert.equal(el.value, '')
 						assert.equal(el.length, 0)
@@ -546,7 +529,6 @@
 
 						// Clear should reset custom error (test5 is not required)
 						el.clear()
-						await tick()
 
 						assert.equal(el.error, '')
 						assert.equal(el.value, '')
@@ -569,7 +551,6 @@
 
 						// Clear should work
 						el.clear()
-						await tick()
 
 						assert.equal(el.value, '')
 						assert.equal(el.length, 0)
@@ -583,7 +564,6 @@
 
 						// Add content to show clear button
 						await typeInInput(input, 'test content')
-						await tick()
 
 						assert.isFalse(
 							clearBtn.hidden,
@@ -592,7 +572,6 @@
 
 						// Call clear method
 						el.clear()
-						await tick()
 
 						assert.isTrue(
 							clearBtn.hidden,
@@ -607,7 +586,6 @@
 
 						// Add some content
 						await typeInInput(textarea, 'Test content')
-						await tick()
 
 						assert.include(
 							descriptionEl.textContent,
@@ -616,7 +594,6 @@
 
 						// Clear and check count is reset
 						el.clear()
-						await tick()
 
 						assert.include(
 							descriptionEl.textContent,
@@ -634,11 +611,8 @@
 
 						// Multiple clears should not cause errors
 						el.clear()
-						await tick()
 						el.clear()
-						await tick()
 						el.clear()
-						await tick()
 
 						assert.equal(el.value, '')
 						assert.equal(el.length, 0)
@@ -654,7 +628,6 @@
 
 						// Clear on empty should not cause errors
 						el.clear()
-						await tick()
 
 						assert.equal(el.value, '')
 						assert.equal(el.length, 0)
@@ -674,7 +647,6 @@
 
 						// Clear should trigger required field validation
 						el.clear()
-						await tick()
 
 						// Should show required field error since input is required and now empty
 						if (input.required) {

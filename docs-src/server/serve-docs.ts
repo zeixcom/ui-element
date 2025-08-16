@@ -1,7 +1,8 @@
-import { exec } from 'child_process'
-import { promisify } from 'util'
 import { ServerWebSocket } from 'bun'
+import { exec } from 'child_process'
 import { watch } from 'fs/promises'
+import { promisify } from 'util'
+import { brotliCompressSync, gzipSync } from 'zlib'
 
 const execAsync = promisify(exec)
 const sockets = new Set<ServerWebSocket>()
@@ -12,7 +13,7 @@ let pendingRebuild = false
 
 // Function to rebuild docs and notify clients (now takes buildCommands)
 async function rebuildDocs(
-	buildCommands: string[] = ['build:docs-js', 'build:docs-html']
+	buildCommands: string[] = ['build:docs-js', 'build:docs-html'],
 ) {
 	if (isRebuilding) {
 		pendingRebuild = true
@@ -53,10 +54,10 @@ const FILE_DEBOUNCE_DELAY = 300 // ms
 // Watch for changes in markdown files and components
 async function watchDocs() {
 	console.log(
-		'👀 Watching for changes in docs-src/pages, docs-src/components, and src...'
+		'👀 Watching for changes in docs-src/pages, docs-src/components, and src...',
 	)
 
-	// Define watch configurations 
+	// Define watch configurations
 	const watchConfigs = [
 		{
 			path: 'docs-src/pages',
@@ -98,7 +99,7 @@ async function watchDocs() {
 	// Generic file change handler
 	const handleFileChange = async (
 		event: any,
-		config: (typeof watchConfigs)[0]
+		config: (typeof watchConfigs)[0],
 	) => {
 		const filename = event.filename
 		const eventType = event.eventType || event.type || 'unknown'
@@ -121,14 +122,16 @@ async function watchDocs() {
 			setTimeout(async () => {
 				fileDebounceTimers.delete(debounceKey)
 				const buildCommands = getBuildCommands(absFilePath)
-				console.log(`\n${config.label} Debounced change [${eventType}]: ${absFilePath}`)
+				console.log(
+					`\n${config.label} Debounced change [${eventType}]: ${absFilePath}`,
+				)
 				if (buildCommands.length === 0) {
 					console.log('⚠️ No build command mapped for this change.')
 					return
 				}
 				console.log(`🔨 Will run: ${buildCommands.join(', ')}`)
 				await rebuildDocs(buildCommands)
-			}, FILE_DEBOUNCE_DELAY)
+			}, FILE_DEBOUNCE_DELAY),
 		)
 	}
 
@@ -139,7 +142,7 @@ async function watchDocs() {
 			for await (const event of watcher) {
 				await handleFileChange(event, config)
 			}
-		})()
+		})(),
 	)
 
 	Promise.all(watchers).catch(console.error)
@@ -176,11 +179,16 @@ const server = Bun.serve({
 			return new Response()
 		}
 
+		// Check if client accepts compression (moved up before HTML handling)
+		const acceptEncoding = req.headers.get('accept-encoding') || ''
+		const supportsGzip = acceptEncoding.includes('gzip')
+		const supportsBrotli = acceptEncoding.includes('br')
+
 		// Inject the reload script into HTML responses
 		if (path.endsWith('.html') || path === '/') {
 			try {
 				let content = await Bun.file(
-					`./docs${path === '/' ? '/index.html' : path}`
+					`./docs${path === '/' ? '/index.html' : path}`,
 				).text()
 				const reloadScript = `
 					<script>
@@ -194,9 +202,36 @@ const server = Bun.serve({
 					</script>
 				`
 				content = content.replace('</body>', `${reloadScript}</body>`)
-				return new Response(content, {
-					headers: { 'Content-Type': 'text/html; charset=UTF-8' },
-				})
+
+				// Apply compression for HTML content
+				const headers: HeadersInit = {
+					'Content-Type': 'text/html; charset=UTF-8',
+					'X-Content-Type-Options': 'nosniff',
+				}
+
+				if (supportsBrotli) {
+					const compressed = brotliCompressSync(
+						Buffer.from(content, 'utf8'),
+					)
+					return new Response(compressed, {
+						headers: {
+							...headers,
+							'Content-Encoding': 'br',
+							Vary: 'Accept-Encoding',
+						},
+					})
+				} else if (supportsGzip) {
+					const compressed = gzipSync(Buffer.from(content, 'utf8'))
+					return new Response(compressed, {
+						headers: {
+							...headers,
+							'Content-Encoding': 'gzip',
+							Vary: 'Accept-Encoding',
+						},
+					})
+				}
+
+				return new Response(content, { headers })
 			} catch (error) {
 				console.warn(`⚠️ Not found: ${path}, Error: ${error.message}`)
 				return new Response('Fallback response')
@@ -218,12 +253,79 @@ const server = Bun.serve({
 			}
 		}
 
+		// Generate cache headers based on path
+		const getCacheHeaders = (path: string): Record<string, string> => {
+			// Check if this is a versioned asset (contains hash)
+			const isVersionedAsset =
+				/\.(css|js)\?v=[a-f0-9]+$/.test(path) ||
+				/\/main\.[a-f0-9]+\.(css|js)$/.test(path)
+
+			if (isVersionedAsset) {
+				// Long cache for versioned assets (1 year)
+				return {
+					'Cache-Control': 'public, max-age=31536000, immutable',
+					'X-Content-Type-Options': 'nosniff',
+				}
+			}
+
+			// Check if this is an asset in /assets/ directory
+			if (path.startsWith('/assets/')) {
+				return {
+					'Cache-Control': 'public, max-age=31536000, immutable',
+					'X-Content-Type-Options': 'nosniff',
+				}
+			}
+
+			// Default headers for other files
+			return {
+				'X-Content-Type-Options': 'nosniff',
+			}
+		}
+
 		try {
 			if (!path.match(/\.(js|css|png|ico)$/)) {
 				console.log(`🌐 Serving: ${path}`)
 			}
+
+			const cacheHeaders = getCacheHeaders(path)
+			const headers: HeadersInit = {
+				'Content-Type': type(path),
+				...cacheHeaders,
+			}
+
+			// Check if file should be compressed (text files)
+			const shouldCompress =
+				path.match(/\.(html|css|js|json|xml|txt|md)$/) ||
+				type(path).startsWith('text/') ||
+				type(path).includes('javascript') ||
+				type(path).includes('json')
+
+			if (shouldCompress && (supportsBrotli || supportsGzip)) {
+				const fileContent = await Bun.file(`./docs${path}`).bytes()
+
+				if (supportsBrotli) {
+					const compressed = brotliCompressSync(fileContent)
+					return new Response(compressed, {
+						headers: {
+							...headers,
+							'Content-Encoding': 'br',
+							Vary: 'Accept-Encoding',
+						},
+					})
+				} else if (supportsGzip) {
+					const compressed = gzipSync(fileContent)
+					return new Response(compressed, {
+						headers: {
+							...headers,
+							'Content-Encoding': 'gzip',
+							Vary: 'Accept-Encoding',
+						},
+					})
+				}
+			}
+
 			return new Response(await Bun.file(`./docs${path}`).bytes(), {
-				headers: { 'Content-Type': type(path) },
+				headers,
 			})
 		} catch (error) {
 			console.warn(`⚠️ Not found: ${path}, Error: ${error.message}`)

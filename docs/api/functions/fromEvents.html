@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>fromEvents – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,97 +116,90 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section class="api-content">
+			<main id="main" class="content-grid"><section class="api-content">
 <h1 id="function-fromevents">
                 <a name="function-fromevents" class="anchor" href="#function-fromevents">
 	                <span class="permalink">🔗</span>
+					<span class="title">Function: fromEvents()</span>
                 </a>
-                Function: fromEvents()
             </h1>
 <blockquote>
-<p><strong>fromEvents</strong>&lt;<code>T</code>, <code>E</code>, <code>C</code>, <code>S</code>&gt;(<code>initialize</code>, <code>selector</code>, <code>events</code>): <a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>T</code>, <code>C</code>&gt;</p>
+<p><strong>fromEvents</strong>&lt;<code>T</code>, <code>C</code>, <code>S</code>&gt;(<code>selector</code>, <code>events</code>, <code>initialize</code>): <a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;, <code>C</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/core/dom.ts#L125">src/core/dom.ts:125</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/core/events.ts#L66">src/core/events.ts:66</a></p>
 <p>Produce a computed signal from transformed event data</p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
                 </a>
-                Type Parameters
             </h2>
 <h3 id="t">
                 <a name="t" class="anchor" href="#t">
 	                <span class="permalink">🔗</span>
+					<span class="title">T</span>
                 </a>
-                T
             </h3>
 <p><code>T</code> <em>extends</em> <code>object</code></p>
-<h3 id="e">
-                <a name="e" class="anchor" href="#e">
-	                <span class="permalink">🔗</span>
-                </a>
-                E
-            </h3>
-<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
 <h3 id="c">
                 <a name="c" class="anchor" href="#c">
 	                <span class="permalink">🔗</span>
+					<span class="title">C</span>
                 </a>
-                C
             </h3>
 <p><code>C</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
 <h3 id="s">
                 <a name="s" class="anchor" href="#s">
 	                <span class="permalink">🔗</span>
+					<span class="title">S</span>
                 </a>
-                S
             </h3>
 <p><code>S</code> <em>extends</em> <code>string</code> = <code>string</code></p>
 <h2 id="parameters">
                 <a name="parameters" class="anchor" href="#parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Parameters</span>
                 </a>
-                Parameters
             </h2>
-<h3 id="initialize">
-                <a name="initialize" class="anchor" href="#initialize">
-	                <span class="permalink">🔗</span>
-                </a>
-                initialize
-            </h3>
-<p>Initial value or initialize function</p>
-<p><code>T</code> | (<code>host</code>) =&gt; <code>T</code></p>
 <h3 id="selector">
                 <a name="selector" class="anchor" href="#selector">
 	                <span class="permalink">🔗</span>
+					<span class="title">selector</span>
                 </a>
-                selector
             </h3>
 <p><code>S</code></p>
 <p>CSS selector for the source element</p>
 <h3 id="events">
                 <a name="events" class="anchor" href="#events">
 	                <span class="permalink">🔗</span>
+					<span class="title">events</span>
                 </a>
-                events
             </h3>
-<p><a href="../type-aliases/EventTransformers.html"><code>EventTransformers</code></a>&lt;<code>T</code>, <a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>, <code>E</code>&gt;, <code>C</code>&gt;</p>
+<p><a href="../type-aliases/EventTransformers.html"><code>EventTransformers</code></a>&lt;<code>T</code>, <a href="../type-aliases/ElementFromSelector.html"><code>ElementFromSelector</code></a>&lt;<code>S</code>&gt;, <code>C</code>&gt;</p>
 <p>Transformation functions for events</p>
+<h3 id="initialize">
+                <a name="initialize" class="anchor" href="#initialize">
+	                <span class="permalink">🔗</span>
+					<span class="title">initialize</span>
+                </a>
+            </h3>
+<p><a href="../type-aliases/ParserOrFallback.html"><code>ParserOrFallback</code></a>&lt;<code>T</code>, <code>C</code>&gt;</p>
+<p>Initial value or extractor function</p>
 <h2 id="returns">
                 <a name="returns" class="anchor" href="#returns">
 	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
                 </a>
-                Returns
             </h2>
-<p><a href="../type-aliases/SignalProducer.html"><code>SignalProducer</code></a>&lt;<code>T</code>, <code>C</code>&gt;</p>
-<p>Signal producer for value from event</p>
+<p><a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;, <code>C</code>&gt;</p>
+<p>Extractor function for value from event</p>
 <h2 id="since">
                 <a name="since" class="anchor" href="#since">
 	                <span class="permalink">🔗</span>
+					<span class="title">Since</span>
                 </a>
-                Since
             </h2>
-<p>0.13.3</p>
+<p>0.14.0</p>
 
 </section></main>
 			<footer class="content-grid">

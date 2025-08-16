@@ -209,7 +209,9 @@
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	component,</span></span>
+<span class="line"><span style="color:#F8F8F2">	fromDOM,</span></span>
 <span class="line"><span style="color:#F8F8F2">	fromEvents,</span></span>
+<span class="line"><span style="color:#F8F8F2">	getProperty,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setAttribute,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
 <span class="line"><span style="color:#F8F8F2">	toggleClass,</span></span>
@@ -220,46 +222,41 @@
 <span class="line"><span style="color:#F92672">	readonly</span><span style="color:#F8F8F2"> value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> changeHandler</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> target.value</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> keyupHandler</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F92672">	if</span><span style="color:#F8F8F2"> (event.key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'Enter'</span><span style="color:#F8F8F2">) target.</span><span style="color:#A6E22E">click</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">}</span></span>
-<span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">	'form-radiogroup'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
 <span class="line"><span style="color:#F8F8F2">		value: </span><span style="color:#A6E22E">fromEvents</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">			(</span><span style="color:#FD971F;font-style:italic">host</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
-<span class="line"><span style="color:#F8F8F2">				host.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLInputElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'input:checked'</span><span style="color:#F8F8F2">)?.value </span><span style="color:#F92672">??</span></span>
-<span class="line"><span style="color:#E6DB74">				''</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#E6DB74">			'input'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">			{</span></span>
-<span class="line"><span style="color:#F8F8F2">				change: changeHandler,</span></span>
-<span class="line"><span style="color:#F8F8F2">				keyup: keyupHandler,</span></span>
+<span class="line"><span style="color:#A6E22E">				change</span><span style="color:#F8F8F2">: ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> target.value,</span></span>
+<span class="line"><span style="color:#A6E22E">				keyup</span><span style="color:#F8F8F2">: ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (event.key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'Enter'</span><span style="color:#F8F8F2">) target.</span><span style="color:#A6E22E">click</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">				},</span></span>
 <span class="line"><span style="color:#F8F8F2">			},</span></span>
+<span class="line"><span style="color:#A6E22E">			fromDOM</span><span style="color:#F8F8F2">({ </span><span style="color:#E6DB74">'input:checked'</span><span style="color:#F8F8F2">: </span><span style="color:#A6E22E">getProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">) }, </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#F8F8F2">		),</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
-<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
-<span class="line"><span style="color:#A6E22E">		setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#A6E22E">		all</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">			'input'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">			setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tabIndex'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
-<span class="line"><span style="color:#F8F8F2">				target.value </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">?</span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> :</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">			),</span></span>
-<span class="line"><span style="color:#F92672">			...</span><span style="color:#A6E22E">manageFocusOnKeydown</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">				Array.</span><span style="color:#A6E22E">from</span><span style="color:#F8F8F2">(el.</span><span style="color:#A6E22E">querySelectorAll</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLInputElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">)),</span></span>
-<span class="line"><span style="color:#FD971F;font-style:italic">				inputs</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> inputs.</span><span style="color:#A6E22E">findIndex</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">input</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> input.checked),</span></span>
-<span class="line"><span style="color:#F8F8F2">			),</span></span>
-<span class="line"><span style="color:#F8F8F2">		),</span></span>
-<span class="line"><span style="color:#A6E22E">		all</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">			'label'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">			toggleClass</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">				'selected'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#FD971F;font-style:italic">				target</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> target.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">)?.value,</span></span>
-<span class="line"><span style="color:#F8F8F2">			),</span></span>
-<span class="line"><span style="color:#F8F8F2">		),</span></span>
-<span class="line"><span style="color:#F8F8F2">	],</span></span>
+<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">useElements</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> radios </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> useElements</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">			setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">			all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">, [</span></span>
+<span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tabIndex'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
+<span class="line"><span style="color:#F8F8F2">					target.value </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">?</span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> :</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">				),</span></span>
+<span class="line"><span style="color:#F92672">				...</span><span style="color:#A6E22E">manageFocusOnKeydown</span><span style="color:#F8F8F2">(radios, </span><span style="color:#FD971F;font-style:italic">inputs</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
+<span class="line"><span style="color:#F8F8F2">					inputs.</span><span style="color:#A6E22E">findIndex</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">input</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> input.checked),</span></span>
+<span class="line"><span style="color:#F8F8F2">				),</span></span>
+<span class="line"><span style="color:#F8F8F2">			]),</span></span>
+<span class="line"><span style="color:#A6E22E">			all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'label'</span><span style="color:#F8F8F2">, [</span></span>
+<span class="line"><span style="color:#A6E22E">				toggleClass</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">					'selected'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#FD971F;font-style:italic">					target</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> target.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'input'</span><span style="color:#F8F8F2">)?.value,</span></span>
+<span class="line"><span style="color:#F8F8F2">				),</span></span>
+<span class="line"><span style="color:#F8F8F2">			]),</span></span>
+<span class="line"><span style="color:#F8F8F2">		]</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>

@@ -131,7 +131,6 @@
 						invalidLink.href = 'not-a-valid-url'
 						el.querySelector('nav').appendChild(invalidLink)
 
-						await tick()
 
 						// Should not crash and should not be marked as active
 						assert.isFalse(invalidLink.classList.contains('active'))

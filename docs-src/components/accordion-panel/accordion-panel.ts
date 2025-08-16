@@ -1,6 +1,6 @@
 import {
-	type Component,
 	asBoolean,
+	type Component,
 	component,
 	setProperty,
 	show,
@@ -22,11 +22,10 @@ export default component(
 		toggleAttribute('open'),
 		toggleAttribute('collapsible'),
 		show(() => el.open || el.collapsible),
-		first(
-			'details',
+		first('details', [
 			setProperty('open'),
 			setProperty('ariaDisabled', () => String(!el.collapsible)),
-		),
+		]),
 	],
 )
 

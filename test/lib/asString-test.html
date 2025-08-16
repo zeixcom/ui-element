@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>asString Tests</title>
+	</head>
+	<body>
+		<script type="module">
+			import { runTests } from '@web/test-runner-mocha'
+			import { assert } from '@esm-bundle/chai'
+			import { asString } from '../../index.dev.js'
+
+			runTests(() => {
+				const body = document.querySelector('body')
+
+				describe('asString()', function () {
+					it('should be "" for undefined', function () {
+						const result = asString()()
+						assert.equal(
+							result,
+							'',
+							'Should return "" for undefined attribute',
+						)
+					})
+
+					it('should be "" for boolean attribute', function () {
+						const result = asString()(body, '')
+						assert.equal(
+							result,
+							'',
+							'Should return "" for boolean attribute',
+						)
+					})
+
+					it('should be "true" for boolean attribute', function () {
+						const result = asString()(body, 'true')
+						assert.equal(
+							result,
+							'true',
+							'Should return "true" string for attribute with boolean value',
+						)
+					})
+
+					it('should be "42" for 42', function () {
+						const result = asString()(body, '42')
+						assert.equal(
+							result,
+							'42',
+							'Should return string for attribute with integer value',
+						)
+					})
+
+					it('should be "3.14" for 3.14', function () {
+						const result = asString()(body, '3.14')
+						assert.equal(
+							result,
+							'3.14',
+							'Should return string for attribute with floating point value',
+						)
+					})
+
+					it('should be "foo" for "foo"', function () {
+						const result = asString()(body, 'foo')
+						assert.equal(
+							result,
+							'foo',
+							'Should return string for attribute with string value',
+						)
+					})
+
+					it('should be "{ "foo": "bar" }" for "{ "foo": "bar" }"', function () {
+						const result = asString()(body, '{ "foo": "bar" }')
+						assert.equal(
+							result,
+							'{ "foo": "bar" }',
+							'Should return string for attribute with JSON value',
+						)
+					})
+
+					it('should use custom fallback for undefined', function () {
+						const result = asString('default')()
+						assert.equal(
+							result,
+							'default',
+							'Should return custom fallback for undefined attribute',
+						)
+					})
+
+					it('should use custom fallback for null', function () {
+						const result = asString('fallback')(body, null)
+						assert.equal(
+							result,
+							'fallback',
+							'Should return custom fallback for null attribute',
+						)
+					})
+
+					it('should preserve whitespace-only strings', function () {
+						const result = asString()(body, '   ')
+						assert.equal(
+							result,
+							'   ',
+							'Should preserve whitespace-only strings',
+						)
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

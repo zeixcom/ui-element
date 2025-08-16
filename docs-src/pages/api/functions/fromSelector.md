@@ -6,40 +6,82 @@
 
 # Function: fromSelector()
 
-> **fromSelector**\<`E`, `C`, `S`\>(`selector`): [`SignalProducer`](../type-aliases/SignalProducer.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>[], `C`\>
+## Call Signature
 
-Defined in: [src/core/dom.ts:234](https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/core/dom.ts#L234)
+> **fromSelector**\<`S`, `C`\>(`selector`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`\>[]\>, `C`\>
+
+Defined in: [src/core/dom.ts:444](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/core/dom.ts#L444)
 
 Produce a computed signal of an array of elements matching a selector
 
-## Type Parameters
+### Type Parameters
 
-### E
+#### S
 
-`E` *extends* `Element` = `HTMLElement`
+`S` *extends* `string`
 
-### C
+#### C
 
 `C` *extends* `HTMLElement` = `HTMLElement`
 
-### S
+### Parameters
 
-`S` *extends* `string` = `string`
-
-## Parameters
-
-### selector
+#### selector
 
 `S`
 
 CSS selector for descendant elements
 
-## Returns
+### Returns
 
-[`SignalProducer`](../type-aliases/SignalProducer.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`, `E`\>[], `C`\>
+[`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`\>[]\>, `C`\>
 
 Signal producer for descendant element collection from a selector
 
-## Since
+### Since
 
 0.13.1
+
+### Throws
+
+If observed mutations would trigger infinite mutation cycles
+
+## Call Signature
+
+> **fromSelector**\<`E`, `C`\>(`selector`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`E`[]\>, `C`\>
+
+Defined in: [src/core/dom.ts:447](https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/core/dom.ts#L447)
+
+Produce a computed signal of an array of elements matching a selector
+
+### Type Parameters
+
+#### E
+
+`E` *extends* `Element`
+
+#### C
+
+`C` *extends* `HTMLElement` = `HTMLElement`
+
+### Parameters
+
+#### selector
+
+`string`
+
+CSS selector for descendant elements
+
+### Returns
+
+[`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`E`[]\>, `C`\>
+
+Signal producer for descendant element collection from a selector
+
+### Since
+
+0.13.1
+
+### Throws
+
+If observed mutations would trigger infinite mutation cycles

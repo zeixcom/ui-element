@@ -3,16 +3,34 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>ElementFromSelector\<K, E\> – UIElement Docs</title>
+		<title>ElementFromSelector\<S\> – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,37 +116,30 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section class="api-content">
-<h1 id="type-alias-elementfromselectorltk-egt">
-                <a name="type-alias-elementfromselectorltk-egt" class="anchor" href="#type-alias-elementfromselectorltk-egt">
+			<main id="main" class="content-grid"><section class="api-content">
+<h1 id="type-alias-elementfromselectorltsgt">
+                <a name="type-alias-elementfromselectorltsgt" class="anchor" href="#type-alias-elementfromselectorltsgt">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Alias: ElementFromSelector&lt;S&gt;</span>
                 </a>
-                Type Alias: ElementFromSelector&lt;K, E&gt;
             </h1>
 <blockquote>
-<p><strong>ElementFromSelector</strong>&lt;<code>K</code>, <code>E</code>&gt; = <code>K</code> <em>extends</em> keyof <code>HTMLElementTagNameMap</code> ? <code>HTMLElementTagNameMap</code>[<code>K</code>] : <code>K</code> <em>extends</em> keyof <code>SVGElementTagNameMap</code> ? <code>SVGElementTagNameMap</code>[<code>K</code>] : <code>K</code> <em>extends</em> keyof <code>MathMLElementTagNameMap</code> ? <code>MathMLElementTagNameMap</code>[<code>K</code>] : <code>E</code></p>
+<p><strong>ElementFromSelector</strong>&lt;<code>S</code>&gt; = <a href="KnownTag.html"><code>KnownTag</code></a>&lt;<code>S</code>&gt; <em>extends</em> <code>never</code> ? <code>HTMLElement</code> : <a href="KnownTag.html"><code>KnownTag</code></a>&lt;<code>S</code>&gt; <em>extends</em> keyof <code>HTMLElementTagNameMap</code> ? <code>HTMLElementTagNameMap</code>[<a href="KnownTag.html"><code>KnownTag</code></a>&lt;<code>S</code>&gt;] : <a href="KnownTag.html"><code>KnownTag</code></a>&lt;<code>S</code>&gt; <em>extends</em> keyof <code>SVGElementTagNameMap</code> ? <code>SVGElementTagNameMap</code>[<a href="KnownTag.html"><code>KnownTag</code></a>&lt;<code>S</code>&gt;] : <a href="KnownTag.html"><code>KnownTag</code></a>&lt;<code>S</code>&gt; <em>extends</em> keyof <code>MathMLElementTagNameMap</code> ? <code>MathMLElementTagNameMap</code>[<a href="KnownTag.html"><code>KnownTag</code></a>&lt;<code>S</code>&gt;] : <code>HTMLElement</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/component.ts#L86">src/component.ts:86</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/core/dom.ts#L40">src/core/dom.ts:40</a></p>
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
                 </a>
-                Type Parameters
             </h2>
-<h3 id="k">
-                <a name="k" class="anchor" href="#k">
+<h3 id="s">
+                <a name="s" class="anchor" href="#s">
 	                <span class="permalink">🔗</span>
+					<span class="title">S</span>
                 </a>
-                K
             </h3>
-<p><code>K</code> <em>extends</em> <code>string</code></p>
-<h3 id="e">
-                <a name="e" class="anchor" href="#e">
-	                <span class="permalink">🔗</span>
-                </a>
-                E
-            </h3>
-<p><code>E</code> <em>extends</em> <code>Element</code> = <code>HTMLElement</code></p>
+<p><code>S</code> <em>extends</em> <code>string</code></p>
 
 </section></main>
 			<footer class="content-grid">

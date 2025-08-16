@@ -1,5 +1,5 @@
+import { readdir, readFile, stat, writeFile } from 'fs/promises'
 import { join } from 'path'
-import { readFile, readdir, stat, writeFile } from 'fs/promises'
 import { COMPONENTS_DIR, FRAGMENTS_DIR } from './config'
 import { highlightedCode } from './transform-codeblocks'
 

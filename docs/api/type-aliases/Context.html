@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Context\<K, V\> – UIElement Docs</title>
 		<meta name="description" content="" />
-		<link rel="stylesheet" href="../../assets/main.css" />
-		<script type="module" src="../../assets/main.js"></script>
+		<link
+			rel="preload"
+			href="../../assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,30 +116,30 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section class="api-content">
+			<main id="main" class="content-grid"><section class="api-content">
 <h1 id="type-alias-contextltk-vgt">
                 <a name="type-alias-contextltk-vgt" class="anchor" href="#type-alias-contextltk-vgt">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Alias: Context&lt;K, V&gt;</span>
                 </a>
-                Type Alias: Context&lt;K, V&gt;
             </h1>
 <blockquote>
 <p><strong>Context</strong>&lt;<code>K</code>, <code>V</code>&gt; = <code>K</code> &amp; <code>object</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/297c0e8e040b3880ad85a2bc873523a8086f09a3/src/core/context.ts#L22">src/core/context.ts:22</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/bee447e049cdd5cefc5eb0bcaa9adbe956d6b5a4/src/core/context.ts#L22">src/core/context.ts:22</a></p>
 <p>A context key.</p>
 <p>A context key can be any type of object, including strings and symbols. The<br> Context type brands the key type with the <code>__context__</code> property that<br>carries the type of the value the context references.</p>
 <h2 id="type-declaration">
                 <a name="type-declaration" class="anchor" href="#type-declaration">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type declaration</span>
                 </a>
-                Type declaration
             </h2>
 <h3 id="__context__">
                 <a name="__context__" class="anchor" href="#__context__">
 	                <span class="permalink">🔗</span>
+					<span class="title">__context__</span>
                 </a>
-                __context__
             </h3>
 <blockquote>
 <p><strong>__context__</strong>: <code>V</code></p>
@@ -129,21 +147,21 @@
 <h2 id="type-parameters">
                 <a name="type-parameters" class="anchor" href="#type-parameters">
 	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
                 </a>
-                Type Parameters
             </h2>
 <h3 id="k">
                 <a name="k" class="anchor" href="#k">
 	                <span class="permalink">🔗</span>
+					<span class="title">K</span>
                 </a>
-                K
             </h3>
 <p><code>K</code></p>
 <h3 id="v">
                 <a name="v" class="anchor" href="#v">
 	                <span class="permalink">🔗</span>
+					<span class="title">V</span>
                 </a>
-                V
             </h3>
 <p><code>V</code></p>
 

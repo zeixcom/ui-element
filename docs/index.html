@@ -5,14 +5,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Introduction – UIElement Docs</title>
 		<meta name="description" content="Overview and key benefits of UIElement" />
-		<link rel="stylesheet" href="./assets/main.css" />
-		<script type="module" src="./assets/main.js"></script>
+		<link
+			rel="preload"
+			href="./assets/main.css?v=63b51a00"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="./assets/main.js?v=e47808e2"
+		/>
+		<link
+			rel="stylesheet"
+			href="./assets/main.css?v=63b51a00"
+		/>
+		<script
+			type="module"
+			src="./assets/main.js?v=e47808e2"
+		></script>
 	</head>
 	<body class="">
 		<context-router>
 			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.13.3</small>
+					UIElement Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -98,25 +116,25 @@
 					<p class="error" role="alert" aria-live="polite"></p>
 				</card-callout>
 			</header>
-			<main class="content-grid"><section-hero>
+			<main id="main" class="content-grid"><section-hero>
 
 <h1 id="introduction">
                 <a name="introduction" class="anchor" href="#introduction">
 	                <span class="permalink">🔗</span>
+					<span class="title">📖 Introduction</span>
                 </a>
-                📖 Introduction
             </h1>
 <div>
   <p class="lead"><strong>Web development doesn't need to be complicated</strong>. UIElement lets you create reactive Web Components that enhance your existing HTML.</p>
   
 <module-toc>
 	<nav>
-		<h2>In this Page</h2>
+		<h2>In This Page</h2>
 		<ol>
 			<li><a href="#what-is-uielement">What is UIElement?</a></li>
-			<li><a href="#philosophy-design-goals">Philosophy & Design Goals</a></li>
-			<li><a href="#why-choose-uielement">Why Choose UIElement?</a></li>
-			<li><a href="#next-steps">Next Steps</a></li>
+<li><a href="#philosophy-design-goals">Philosophy & Design Goals</a></li>
+<li><a href="#why-choose-uielement">Why Choose UIElement?</a></li>
+<li><a href="#next-steps">Next Steps</a></li>
 		</ol>
 	</nav>
 </module-toc></div>
@@ -127,8 +145,8 @@
 <h2 id="what-is-uielement">
                 <a name="what-is-uielement" class="anchor" href="#what-is-uielement">
 	                <span class="permalink">🔗</span>
+					<span class="title">What is UIElement?</span>
                 </a>
-                What is UIElement?
             </h2>
 <p>UIElement is a lightweight TypeScript library (approximately 4kB gzipped) that brings signal-based reactivity to Web Components. It serves as a thin layer between standard web technologies and modern reactivity patterns, empowering you to:</p>
 <ul>
@@ -139,11 +157,12 @@
 </ul>
 <module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
-		
+		<span class="file">hello-world.js</span>
 		<span class="language">js</span>
 	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F">// Transform HTML into reactive components with minimal code</span></span>
-<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">, { name: RESET }, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asString, component, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">, { name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">() }, (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
 <span class="line"><span style="color:#F8F8F2">])</span></span>
 <span class="line"></span></code></pre>
@@ -162,19 +181,19 @@
 <h2 id="philosophy-design-goals">
                 <a name="philosophy-design-goals" class="anchor" href="#philosophy-design-goals">
 	                <span class="permalink">🔗</span>
+					<span class="title">Philosophy &amp; Design Goals</span>
                 </a>
-                Philosophy &amp; Design Goals
             </h2>
 <h3 id="html-first-approach">
                 <a name="html-first-approach" class="anchor" href="#html-first-approach">
 	                <span class="permalink">🔗</span>
+					<span class="title">HTML-First Approach</span>
                 </a>
-                HTML-First Approach
             </h3>
 <p>UIElement assumes you start with semantic HTML and want to enhance it with behavior:</p>
 <module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
-		
+		<span class="file">hello-world.html</span>
 		<span class="language">html</span>
 	</p>
 	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
@@ -192,8 +211,8 @@
 <h3 id="reactive-by-design">
                 <a name="reactive-by-design" class="anchor" href="#reactive-by-design">
 	                <span class="permalink">🔗</span>
+					<span class="title">Reactive by Design</span>
                 </a>
-                Reactive by Design
             </h3>
 <p>UIElement uses signals for efficient, targeted DOM updates. Only the parts that actually changed get updated – no virtual DOM overhead, no unnecessary re-renders.</p>
 </section>
@@ -203,8 +222,8 @@
 <h2 id="why-choose-uielement">
                 <a name="why-choose-uielement" class="anchor" href="#why-choose-uielement">
 	                <span class="permalink">🔗</span>
+					<span class="title">Why Choose UIElement?</span>
                 </a>
-                Why Choose UIElement?
             </h2>
 <p>UIElement shines when you want:</p>
 <ul>
@@ -228,8 +247,8 @@
 <h2 id="next-steps">
                 <a name="next-steps" class="anchor" href="#next-steps">
 	                <span class="permalink">🔗</span>
+					<span class="title">Next Steps</span>
                 </a>
-                Next Steps
             </h2>
 <p>Now that you understand what UIElement is and its core philosophy, you&#39;re ready to:</p>
 <ul>
