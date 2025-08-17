@@ -8,7 +8,7 @@
 
 > **asInteger**\<`E`\>(`fallback?`): [`Parser`](../type-aliases/Parser.md)\<`number`, `E`\>
 
-Defined in: [src/lib/parsers.ts:36](https://github.com/zeixcom/ui-element/blob/a3d8c74b49b5869fe7d19ae9f979ed1d37f1f695/src/lib/parsers.ts#L36)
+Defined in: [src/lib/parsers.ts:36](https://github.com/zeixcom/ui-element/blob/bc5efd047a1ae7f13c4c9861e40f8a1b07b7e003/src/lib/parsers.ts#L36)
 
 Parse a string as a number forced to integer with a fallback
 

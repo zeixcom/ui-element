@@ -1,24 +1,26 @@
 module-carousel {
 	display: flex;
-	overflow: hidden;
-	aspect-ratio: 16 / 9;
 	position: relative;
+	overflow: hidden;
+	margin-block-end: var(--space-l);
+	border-radius: var(--space-s);
 
 	.slides {
 		display: flex;
 		align-items: center;
-		justify-content: center;
 		width: 100%;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scroll-behavior: smooth;
+		overscroll-behavior-x: none;
 	}
 
 	[role="tabpanel"] {
 		width: 100%;
 		height: 100%;
 		text-align: center;
-
-		&[aria-current="false"] {
-			display: none;
-		}
+		scroll-snap-align: start;
+		flex: 0 0 100%;
 
 		& h3 {
 			display: block;
@@ -27,6 +29,13 @@ module-carousel {
 		& a[href].anchor {
 			justify-content: center;
 			padding: 0;
+		}
+
+		.slide-content {
+			width: 80%;
+			margin: 0 auto 0;
+			padding-bottom: var(--space-xl);
+			text-align: left;
 		}
 	}
 

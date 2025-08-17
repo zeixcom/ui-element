@@ -8,7 +8,7 @@
 
 > **Setup**\<`P`\> = (`host`, `helpers`) => [`Effects`](Effects.md)\<`P`, [`Component`](Component.md)\<`P`\>\>
 
-Defined in: [src/component.ts:85](https://github.com/zeixcom/ui-element/blob/a3d8c74b49b5869fe7d19ae9f979ed1d37f1f695/src/component.ts#L85)
+Defined in: [src/component.ts:85](https://github.com/zeixcom/ui-element/blob/bc5efd047a1ae7f13c4c9861e40f8a1b07b7e003/src/component.ts#L85)
 
 ## Type Parameters
 

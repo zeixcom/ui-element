@@ -1,8 +1,9 @@
 import {
+	asInteger,
 	type Component,
 	component,
-	fromEvents,
 	fromSelector,
+	on,
 	setProperty,
 } from '../../..'
 
@@ -17,21 +18,66 @@ export default component(
 	'module-carousel',
 	{
 		slides: fromSelector('[role="tabpanel"]'),
-		index: fromEvents(
-			'nav button',
-			{
-				click: ({ host, target, value }) => {
+		index: asInteger((host: HTMLElement & { slides: HTMLElement[] }) =>
+			Math.max(
+				host.slides.findIndex(slide => slide.ariaCurrent === 'true'),
+				0,
+			),
+		),
+	},
+	(el, { all }) => {
+		const isCurrentDot = (target: HTMLElement) =>
+			target.dataset.index === String(el.index)
+		const scrollToCurrentSlide = () => {
+			el.slides[el.index].scrollIntoView({
+				behavior: 'smooth',
+				block: 'nearest',
+			})
+		}
+
+		return [
+			// Register IntersectionObserver to update index based on scroll position
+			() => {
+				const observer = new IntersectionObserver(
+					entries => {
+						for (const entry of entries) {
+							if (entry.isIntersecting) {
+								el.index = el.slides.findIndex(
+									slide => slide === entry.target,
+								)
+								break
+							}
+						}
+					},
+					{
+						root: el.querySelector('.slides'),
+						rootMargin: '0px',
+						threshold: 0.99, // Ignore rounding errors
+					},
+				)
+				el.slides.forEach(slide => {
+					observer.observe(slide)
+				})
+				return () => {
+					observer.disconnect()
+				}
+			},
+
+			// Handle navigation button click and keyup events
+			all('nav button', [
+				on('click', ({ host, target }) => {
 					const total = host.slides.length
 					const nextIndex = target.classList.contains('prev')
-						? value - 1
+						? el.index - 1
 						: target.classList.contains('next')
-							? value + 1
+							? el.index + 1
 							: parseInt(target.dataset.index || '0')
-					return Number.isInteger(nextIndex)
+					el.index = Number.isInteger(nextIndex)
 						? wrapAround(nextIndex, total)
 						: 0
-				},
-				keyup: ({ event, host, value }) => {
+					scrollToCurrentSlide()
+				}),
+				on('keyup', ({ event, host }) => {
 					const key = event.key
 					if (
 						['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(key)
@@ -45,29 +91,18 @@ export default component(
 								: key === 'End'
 									? total - 1
 									: wrapAround(
-											value +
+											el.index +
 												(key === 'ArrowLeft' ? -1 : 1),
 											total,
 										)
 						host.slides[nextIndex].focus()
-						return nextIndex
+						el.index = nextIndex
+						scrollToCurrentSlide()
 					}
-				},
-			},
-			(host: HTMLElement & { slides: HTMLElement[] }) =>
-				Math.max(
-					host.slides.findIndex(
-						slide => slide.ariaCurrent === 'true',
-					),
-					0,
-				),
-		),
-	},
-	(el, { all }) => {
-		const isCurrentDot = (target: HTMLElement) =>
-			target.dataset.index === String(el.index)
+				}),
+			]),
 
-		return [
+			// Set the active slide in the navigation
 			all('[role="tab"]', [
 				setProperty('ariaSelected', target =>
 					String(isCurrentDot(target)),
@@ -76,12 +111,13 @@ export default component(
 					isCurrentDot(target) ? 0 : -1,
 				),
 			]),
-			all(
-				'[role="tabpanel"]',
+
+			// Set the active slide in the slides
+			all('[role="tabpanel"]', [
 				setProperty('ariaCurrent', target =>
 					String(target.id === el.slides[el.index].id),
 				),
-			),
+			]),
 		]
 	},
 )

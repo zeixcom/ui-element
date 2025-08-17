@@ -1,12 +1,12 @@
 // UIElement Docs Service Worker
-const CACHE_NAME = 'ui-element-docs-v1755419752268';
+const CACHE_NAME = 'ui-element-docs-v1755442767393';
 
 // Assets to cache on install
 const STATIC_ASSETS = [
 	'/',
 	'/index.html',
-	'/assets/main.a1108b4b.css',
-	'/assets/main.2083908d.js',
+	'/assets/main.452f3291.css',
+	'/assets/main.c66a7059.js',
 ];
 
 self.addEventListener('install', (event) => {

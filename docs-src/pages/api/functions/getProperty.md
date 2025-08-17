@@ -8,7 +8,7 @@
 
 > **getProperty**\<`E`, `K`\>(`prop`): [`LooseExtractor`](../type-aliases/LooseExtractor.md)\<`E`\[`K`\], `E`\>
 
-Defined in: [src/lib/extractors.ts:16](https://github.com/zeixcom/ui-element/blob/a3d8c74b49b5869fe7d19ae9f979ed1d37f1f695/src/lib/extractors.ts#L16)
+Defined in: [src/lib/extractors.ts:16](https://github.com/zeixcom/ui-element/blob/bc5efd047a1ae7f13c4c9861e40f8a1b07b7e003/src/lib/extractors.ts#L16)
 
 ## Type Parameters
 

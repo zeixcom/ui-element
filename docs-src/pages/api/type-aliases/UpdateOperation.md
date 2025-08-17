@@ -8,4 +8,4 @@
 
 > **UpdateOperation** = `"a"` \| `"c"` \| `"d"` \| `"h"` \| `"m"` \| `"p"` \| `"s"` \| `"t"`
 
-Defined in: [src/lib/effects.ts:35](https://github.com/zeixcom/ui-element/blob/a3d8c74b49b5869fe7d19ae9f979ed1d37f1f695/src/lib/effects.ts#L35)
+Defined in: [src/lib/effects.ts:35](https://github.com/zeixcom/ui-element/blob/bc5efd047a1ae7f13c4c9861e40f8a1b07b7e003/src/lib/effects.ts#L35)

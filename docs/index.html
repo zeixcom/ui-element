@@ -7,20 +7,20 @@
 		<meta name="description" content="Overview and key benefits of UIElement" />
 		<link
 			rel="preload"
-			href="./assets/main.css?v=a1108b4b"
+			href="./assets/main.css?v=452f3291"
 			as="style"
 		/>
 		<link
 			rel="modulepreload"
-			href="./assets/main.js?v=2083908d"
+			href="./assets/main.js?v=c66a7059"
 		/>
 		<link
 			rel="stylesheet"
-			href="./assets/main.css?v=a1108b4b"
+			href="./assets/main.css?v=452f3291"
 		/>
 		<script
 			type="module"
-			src="./assets/main.js?v=2083908d"
+			src="./assets/main.js?v=c66a7059"
 		></script>
 	</head>
 	<body class="">
@@ -132,15 +132,15 @@
 		<h2>In This Page</h2>
 		<ol>
 			<li><a href="#what-is-uielement">What is UIElement?</a></li>
-<li><a href="#philosophy-design-goals">Philosophy & Design Goals</a></li>
 <li><a href="#why-choose-uielement">Why Choose UIElement?</a></li>
 <li><a href="#next-steps">Next Steps</a></li>
 		</ol>
 	</nav>
-</module-toc></div>
+</module-toc>
+</div>
 </section-hero>
 
-<section>
+<section class="breakout">
 
 <h2 id="what-is-uielement">
                 <a name="what-is-uielement" class="anchor" href="#what-is-uielement">
@@ -148,73 +148,165 @@
 					<span class="title">What is UIElement?</span>
                 </a>
             </h2>
-<p>UIElement is a lightweight TypeScript library (approximately 4kB gzipped) that brings signal-based reactivity to Web Components. It serves as a thin layer between standard web technologies and modern reactivity patterns, empowering you to:</p>
-<ul>
-<li>Transform ordinary HTML elements into reactive components</li>
-<li>Bind UI updates directly to state changes with minimal boilerplate</li>
-<li>Create reusable component patterns without complex abstractions</li>
-<li>Progressively enhance server-rendered content with client-side interactivity</li>
-</ul>
-<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		<span class="file">hello-world.js</span>
-		<span class="language">js</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asString, component, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
+<module-carousel>
+  <div class="slides">
+    <div id="slide1" role="tabpanel" aria-current="true" style="background: var(--color-purple-20);">
+      <h3 id="we-can-have-nice-things">
+                <a name="we-can-have-nice-things" class="anchor" href="#we-can-have-nice-things">
+	                <span class="permalink">🔗</span>
+					<span class="title">We Can Have Nice Things!</span>
+                </a>
+            </h3>
+      <div class="slide-content">
+        <ul>
+          <li>Embrace the Web Platform</li>
+          <li>Use any server-side technology to render HTML</li>
+          <li>Have components</li>
+          <li>Have reactivity</li>
+          <li>Have type safety</li>
+          <li>Have optimal performance</li>
+          <li>Have fun!</li>
+        </ul>
+      </div>
+    </div>
+    <div id="slide2" role="tabpanel" aria-current="false" style="background: var(--color-pink-20);">
+      <h3 id="html-first">
+                <a name="html-first" class="anchor" href="#html-first">
+	                <span class="permalink">🔗</span>
+					<span class="title">HTML First.</span>
+                </a>
+            </h3>
+      <div class="slide-content">
+        <p>UIElement assumes you start with semantic HTML and want to enhance it with behavior:</p>
+        <module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+         	<p class="meta"><span class="file">hello-world.html</span><span class="language">html</span></p>
+<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>Alice&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span></code></pre>
+         	<basic-button class="copy">
+        		<button type="button" class="secondary small">
+         			<span class="label">Copy</span>
+        		</button>
+         	</basic-button>
+        </module-codeblock>
+        <p>This means better SEO, faster initial page loads, and progressive enhancement that works even when JavaScript fails.</p>
+      </div>
+    </div>
+    <div id="slide3" role="tabpanel" aria-current="false" style="background: var(--color-orange-20);">
+      <h3 id="add-javascript">
+                <a name="add-javascript" class="anchor" href="#add-javascript">
+	                <span class="permalink">🔗</span>
+					<span class="title">Add JavaScript.</span>
+                </a>
+            </h3>
+      <div class="slide-content">
+        <p>Progressively enhance the user experience by adding interactivity:</p>
+        <module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+          <p class="meta"><span class="file">hello-world.js</span><span class="language">js</span></p>
+<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asString, component, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/ui-element'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">, { name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">() }, (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
 <span class="line"><span style="color:#F8F8F2">])</span></span>
 <span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	
-</module-codeblock>
-<p>UIElement augments what the platform already provides. It leverages the Web Components standard while adding just enough convenience functions to make reactive UI behaviors easy to implement.</p>
-</section>
-
-<section>
-
-<h2 id="philosophy-design-goals">
-                <a name="philosophy-design-goals" class="anchor" href="#philosophy-design-goals">
+         	<basic-button class="copy">
+            <button type="button" class="secondary small">
+              <span class="label">Copy</span>
+            </button>
+         	</basic-button>
+        </module-codeblock>
+        <p>UIElement augments what the platform already provides. It leverages the Web Components standard while adding just enough convenience functions to make reactive UI behaviors easy to implement.</p>
+      </div>
+    </div>
+    <div id="slide4" role="tabpanel" aria-current="false" style="background: var(--color-green-20);">
+      <h3 id="faster-because-we-do-less">
+                <a name="faster-because-we-do-less" class="anchor" href="#faster-because-we-do-less">
 	                <span class="permalink">🔗</span>
-					<span class="title">Philosophy &amp; Design Goals</span>
-                </a>
-            </h2>
-<h3 id="html-first-approach">
-                <a name="html-first-approach" class="anchor" href="#html-first-approach">
-	                <span class="permalink">🔗</span>
-					<span class="title">HTML-First Approach</span>
+					<span class="title">Faster. Because We Do Less.</span>
                 </a>
             </h3>
-<p>UIElement assumes you start with semantic HTML and want to enhance it with behavior:</p>
-<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-	<p class="meta">
-		<span class="file">hello-world.html</span>
-		<span class="language">html</span>
-	</p>
-	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">>Hello, &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>Alice&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>!&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
-<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
-<span class="line"></span></code></pre>
-	<basic-button class="copy">
-		<button type="button" class="secondary small">
-			<span class="label">Copy</span>
-		</button>
-	</basic-button>
-	
-</module-codeblock>
-<p>This means better SEO, faster initial page loads, and progressive enhancement that works even when JavaScript fails.</p>
-<h3 id="reactive-by-design">
-                <a name="reactive-by-design" class="anchor" href="#reactive-by-design">
+      <div class="slide-content">
+        <ul>
+          <li>Unlike SPA frameworks (React, Vue, Angular, Svelte, Lit, etc.) we <strong>never render</strong> on the client. Instead, the server and browser do this work. Like it's 1995.</li>
+          <li>Because we never render on the client, we need no JSON data and no JS templates either. This means less data over the wire and no plumbing DB → JSON → JS → HTML.</li>
+          <li>We just add event listeners and set up a signal graph. Invisible work that doesn't cause layout shifts.</li>
+          <li>When the user interacts with the UI, we know exactly what to do. We just do fine-grained updates to the DOM. No VDOM, no diffing. Wait for signal 🚦 and go! 🏁</li>
+        </ul>
+      </div>
+    </div>
+    <div id="slide5" role="tabpanel" aria-current="false" style="background: var(--color-blue-20);">
+      <h3 id="minimal-size">
+                <a name="minimal-size" class="anchor" href="#minimal-size">
 	                <span class="permalink">🔗</span>
-					<span class="title">Reactive by Design</span>
+					<span class="title">Minimal Size.</span>
                 </a>
             </h3>
-<p>UIElement uses signals for efficient, targeted DOM updates. Only the parts that actually changed get updated – no virtual DOM overhead, no unnecessary re-renders.</p>
+      <div class="slide-content">
+        <p>Because we add less abstractions, we can keep the library small (approximately 5kB gzipped).</p>
+        <p>UIElement is a lightweight library that provides a simple and efficient way to build reactive user interfaces. It is designed to be easy to use and understand, while still providing powerful features for building complex applications.</p>
+        <p>HTML ain't broken. CSS ain't broken. JavaScript ain't broken. We just want to split it in chunks (components), detect bugs early (type safety), and have predictable updates (reactivity). That's what we stand for.</p>
+      </div>
+    </div>
+
+  </div>
+  <nav aria-label="Carousel Navigation">
+    <button type="button" class="prev" aria-label="Previous">❮</button>
+    <button type="button" class="next" aria-label="Next">❯</button>
+    <div role="tablist">
+      <button
+        role="tab"
+        aria-selected="true"
+        aria-controls="slide1"
+        aria-label="Slide 1"
+        data-index="0"
+        tabindex="0"
+      >
+        ●
+      </button>
+      <button
+        role="tab"
+        aria-current="false"
+        aria-controls="slide2"
+        aria-label="Slide 2"
+        data-index="1"
+        tabindex="-1"
+      >
+        ●
+      </button>
+      <button
+        role="tab"
+        aria-current="false"
+        aria-controls="slide3"
+        aria-label="Slide 3"
+        data-index="2"
+        tabindex="-1"
+      >
+        ●
+      </button>
+      <button
+        role="tab"
+        aria-current="false"
+        aria-controls="slide4"
+        aria-label="Slide 4"
+        data-index="3"
+        tabindex="-1"
+      >
+        ●
+      </button>
+      <button
+        role="tab"
+        aria-current="false"
+        aria-controls="slide5"
+        aria-label="Slide 5"
+        data-index="4"
+        tabindex="-1"
+      >
+        ●
+      </button>
+    </div>
+  </nav>
+</module-carousel>
+
 </section>
 
 <section>
@@ -235,7 +327,7 @@
 </ul>
 <p><strong>Key Benefits:</strong></p>
 <ul>
-<li>~4kB gzipped with no dependencies</li>
+<li>~5kB gzipped with no dependencies</li>
 <li>TypeScript support with full type safety</li>
 <li>Works with any backend or build setup</li>
 <li>Progressive enhancement friendly</li>
