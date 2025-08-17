@@ -87,6 +87,7 @@ export {
 	resolveReactive,
 } from './src/core/reactive'
 export {
+	DEV_MODE,
 	LOG_DEBUG,
 	LOG_ERROR,
 	LOG_INFO,

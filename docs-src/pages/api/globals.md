@@ -61,6 +61,7 @@
 
 ## Variables
 
+- [DEV\_MODE](variables/DEV_MODE.md)
 - [LOG\_DEBUG](variables/LOG_DEBUG.md)
 - [LOG\_ERROR](variables/LOG_ERROR.md)
 - [LOG\_INFO](variables/LOG_INFO.md)

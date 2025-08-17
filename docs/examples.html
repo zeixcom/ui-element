@@ -12,7 +12,7 @@
 		/>
 		<link
 			rel="modulepreload"
-			href="./assets/main.js?v=d50f6e6a"
+			href="./assets/main.js?v=2083908d"
 		/>
 		<link
 			rel="stylesheet"
@@ -20,7 +20,7 @@
 		/>
 		<script
 			type="module"
-			src="./assets/main.js?v=d50f6e6a"
+			src="./assets/main.js?v=2083908d"
 		></script>
 	</head>
 	<body class="">
@@ -132,6 +132,7 @@
 		<h2>In This Page</h2>
 		<ol>
 			<li><a href="#counter">Counter</a></li>
+<li><a href="#number-formatter">Number Formatter</a></li>
 <li><a href="#carousel">Carousel</a></li>
 <li><a href="#combobox">Combobox</a></li>
 <li><a href="#todo-app">Todo App</a></li>
@@ -153,18 +154,83 @@
 <module-demo>
   <div class="preview">
     <basic-counter>
-     	<button type="button">💐 <span>5</span></button>
+       <button type="button">💐 <span>5</span></button>
     </basic-counter>
   </div>
   <details>
-		<summary>Source Code</summary>
-		<module-lazy src="./examples/basic-counter.html">
-			<card-callout>
-				<p class="loading" role="status">Loading...</p>
-				<p class="error" role="alert" aria-live="polite"></p>
-			</card-callout>
-		</module-lazy>
-	</details>
+    <summary>Source Code</summary>
+    <module-lazy src="./examples/basic-counter.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
+
+</section>
+
+<section>
+
+<h2 id="number-formatter">
+                <a name="number-formatter" class="anchor" href="#number-formatter">
+	                <span class="permalink">🔗</span>
+					<span class="title">Number Formatter</span>
+                </a>
+            </h2>
+<module-demo>
+  <div class="preview">
+    <ul>
+      <li>
+        inherited (en):
+        <basic-number
+          value="25678.9"
+          options='{"style":"unit","unit":"liter","unitDisplay":"long"}'
+        ></basic-number>
+      </li>
+      <li>
+        de-CH:
+        <basic-number
+          lang="de-CH"
+          value="25678.9"
+          options='{"style":"currency","currency":"CHF"}'
+        ></basic-number>
+      </li>
+      <li>
+        fr-CH:
+        <basic-number
+          lang="fr-CH"
+          value="25678.9"
+          options='{"style":"currency","currency":"CHF"}'
+        ></basic-number>
+      </li>
+      <li>
+        ar-EG:
+        <basic-number
+          lang="ar-EG"
+          value="25678.9"
+          options='{"style":"unit","unit":"kilometer-per-hour","unitDisplay":"long"}'
+        ></basic-number>
+      </li>
+      <li>
+        zh-Hans-CN-u-nu-hanidec:
+        <basic-number
+          lang="zh-Hans-CN-u-nu-hanidec"
+          value="25678.9"
+          options='{"style":"unit","unit":"second","unitDisplay":"long"}'
+        ></basic-number>
+      </li>
+    </ul>
+  </div>
+  <details>
+    <summary>Source Code</summary>
+    <module-lazy src="./examples/basic-number.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
 </module-demo>
 
 </section>
@@ -178,124 +244,124 @@
                 </a>
             </h2>
 <module-demo>
-	<div class="preview">
-		<module-carousel>
-			<h2 class="visually-hidden">Slides</h2>
-			<div class="slides">
-				<div id="slide1" role="tabpanel" aria-current="true" style="background: var(--color-blue-20);">
-					<h3 id="slide-1">
+  <div class="preview">
+    <module-carousel>
+      <h2 class="visually-hidden">Slides</h2>
+      <div class="slides">
+        <div id="slide1" role="tabpanel" aria-current="true" style="background: var(--color-blue-20);">
+          <h3 id="slide-1">
                 <a name="slide-1" class="anchor" href="#slide-1">
 	                <span class="permalink">🔗</span>
 					<span class="title">Slide 1</span>
                 </a>
             </h3>
-					<hello-world>
-						<label>Your name<br>
-							<input type="text" name="name" autocomplete="given-name">
-						</label>
-						<p>Hello, <span>World</span>!</p>
-					</hello-world>
-				</div>
-				<div id="slide2" role="tabpanel" aria-current="false" style="background: var(--color-purple-20);">
-					<h3 id="slide-2">
+          <hello-world>
+            <label>Your name<br>
+              <input type="text" name="name" autocomplete="given-name">
+            </label>
+            <p>Hello, <span>World</span>!</p>
+          </hello-world>
+        </div>
+        <div id="slide2" role="tabpanel" aria-current="false" style="background: var(--color-purple-20);">
+          <h3 id="slide-2">
                 <a name="slide-2" class="anchor" href="#slide-2">
 	                <span class="permalink">🔗</span>
 					<span class="title">Slide 2</span>
                 </a>
             </h3>
-				</div>
-				<div id="slide3" role="tabpanel" aria-current="false" style="background: var(--color-pink-20);">
-					<h3 id="slide-3">
+        </div>
+        <div id="slide3" role="tabpanel" aria-current="false" style="background: var(--color-pink-20);">
+          <h3 id="slide-3">
                 <a name="slide-3" class="anchor" href="#slide-3">
 	                <span class="permalink">🔗</span>
 					<span class="title">Slide 3</span>
                 </a>
             </h3>
-				</div>
-				<div id="slide4" role="tabpanel" aria-current="false" style="background: var(--color-orange-20);">
-					<h3 id="slide-4">
+        </div>
+        <div id="slide4" role="tabpanel" aria-current="false" style="background: var(--color-orange-20);">
+          <h3 id="slide-4">
                 <a name="slide-4" class="anchor" href="#slide-4">
 	                <span class="permalink">🔗</span>
 					<span class="title">Slide 4</span>
                 </a>
             </h3>
-				</div>
-				<div id="slide5" role="tabpanel" aria-current="false" style="background: var(--color-green-20);">
-					<h3 id="slide-5">
+        </div>
+        <div id="slide5" role="tabpanel" aria-current="false" style="background: var(--color-green-20);">
+          <h3 id="slide-5">
                 <a name="slide-5" class="anchor" href="#slide-5">
 	                <span class="permalink">🔗</span>
 					<span class="title">Slide 5</span>
                 </a>
             </h3>
-				</div>
-			</div>
-			<nav aria-label="Carousel Navigation">
-				<button type="button" class="prev" aria-label="Previous">❮</button>
-				<button type="button" class="next" aria-label="Next">❯</button>
-				<div role="tablist">
-					<button
-						role="tab"
-						aria-selected="true"
-						aria-controls="slide1"
-						aria-label="Slide 1"
-						data-index="0"
-						tabindex="0"
-					>
-						●
-					</button>
-					<button
-						role="tab"
-						aria-current="false"
-						aria-controls="slide2"
-						aria-label="Slide 2"
-						data-index="1"
-						tabindex="-1"
-					>
-						●
-					</button>
-					<button
-						role="tab"
-						aria-current="false"
-						aria-controls="slide3"
-						aria-label="Slide 3"
-						data-index="2"
-						tabindex="-1"
-					>
-						●
-					</button>
-					<button
-						role="tab"
-						aria-current="false"
-						aria-controls="slide4"
-						aria-label="Slide 4"
-						data-index="3"
-						tabindex="-1"
-					>
-						●
-					</button>
-					<button
-						role="tab"
-						aria-current="false"
-						aria-controls="slide5"
-						aria-label="Slide 5"
-						data-index="4"
-						tabindex="-1"
-					>
-						●
-					</button>
-				</div>
-			</nav>
-		</module-carousel>
-	</div>
-	<details>
-		<summary>Source Code</summary>
-		<module-lazy src="./examples/module-carousel.html">
-			<card-callout>
-				<p class="loading" role="status">Loading...</p>
-				<p class="error" role="alert" aria-live="polite"></p>
-			</card-callout>
-		</module-lazy>
-	</details>
+        </div>
+      </div>
+      <nav aria-label="Carousel Navigation">
+        <button type="button" class="prev" aria-label="Previous">❮</button>
+        <button type="button" class="next" aria-label="Next">❯</button>
+        <div role="tablist">
+          <button
+            role="tab"
+            aria-selected="true"
+            aria-controls="slide1"
+            aria-label="Slide 1"
+            data-index="0"
+            tabindex="0"
+          >
+            ●
+          </button>
+          <button
+            role="tab"
+            aria-current="false"
+            aria-controls="slide2"
+            aria-label="Slide 2"
+            data-index="1"
+            tabindex="-1"
+          >
+            ●
+          </button>
+          <button
+            role="tab"
+            aria-current="false"
+            aria-controls="slide3"
+            aria-label="Slide 3"
+            data-index="2"
+            tabindex="-1"
+          >
+            ●
+          </button>
+          <button
+            role="tab"
+            aria-current="false"
+            aria-controls="slide4"
+            aria-label="Slide 4"
+            data-index="3"
+            tabindex="-1"
+          >
+            ●
+          </button>
+          <button
+            role="tab"
+            aria-current="false"
+            aria-controls="slide5"
+            aria-label="Slide 5"
+            data-index="4"
+            tabindex="-1"
+          >
+            ●
+          </button>
+        </div>
+      </nav>
+    </module-carousel>
+  </div>
+  <details>
+    <summary>Source Code</summary>
+    <module-lazy src="./examples/module-carousel.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
 </module-demo>
 
 </section>
@@ -309,65 +375,65 @@
                 </a>
             </h2>
 <module-demo>
-	<div class="preview">
-		<form-combobox value="">
-			<label for="city-input">Choose a city</label>
-			<div class="input">
-				<input
-					id="city-input"
-					type="text"
-					role="combobox"
-					aria-expanded="false"
-					aria-controls="city-popup"
-					aria-autocomplete="list"
-					autocomplete="off"
-					required
-				/>
-				<ol id="city-popup" role="listbox" hidden>
-					<li role="option" tabindex="-1">Amsterdam</li>
-					<li role="option" tabindex="-1">Berlin</li>
-					<li role="option" tabindex="-1">Copenhagen</li>
-					<li role="option" tabindex="-1">Dublin</li>
-					<li role="option" tabindex="-1">Edinburgh</li>
-					<li role="option" tabindex="-1">Frankfurt</li>
-					<li role="option" tabindex="-1">Geneva</li>
-					<li role="option" tabindex="-1">Helsinki</li>
-					<li role="option" tabindex="-1">Istanbul</li>
-					<li role="option" tabindex="-1">Jakarta</li>
-					<li role="option" tabindex="-1">Kairo</li>
-					<li role="option" tabindex="-1">London</li>
-					<li role="option" tabindex="-1">Madrid</li>
-					<li role="option" tabindex="-1">New York</li>
-					<li role="option" tabindex="-1">Oslo</li>
-					<li role="option" tabindex="-1">Paris</li>
-					<li role="option" tabindex="-1">Qingdao</li>
-					<li role="option" tabindex="-1">Rome</li>
-					<li role="option" tabindex="-1">Stockholm</li>
-					<li role="option" tabindex="-1">Tokyo</li>
-					<li role="option" tabindex="-1">Ulan Bator</li>
-					<li role="option" tabindex="-1">Vienna</li>
-					<li role="option" tabindex="-1">Warsaw</li>
-					<li role="option" tabindex="-1">Xi'an</li>
-					<li role="option" tabindex="-1">Yokohama</li>
-					<li role="option" tabindex="-1">Zurich</li>
-				</ol>
-				<button type="button" class="clear" aria-label="Clear input" hidden>
-					✕
-				</button>
-			</div>
-			<p class="error" aria-live="assertive" id="city-error"></p>
-			<p class="description" aria-live="polite" id="city-description">Tell us where you live so we can set your timezone for our calendar and notification features.</p>
-		</form-combobox>
-	</div>
-	<details>
-		<summary>Source Code</summary>
-		<module-lazy src="./examples/form-combobox.html">
-			<card-callout>
-				<p class="loading" role="status">Loading...</p>
-				<p class="error" role="alert" aria-live="polite"></p>
-			</card-callout>
-		</module-lazy>
-	</details>
+  <div class="preview">
+    <form-combobox value="">
+      <label for="city-input">Choose a city</label>
+      <div class="input">
+        <input
+          id="city-input"
+          type="text"
+          role="combobox"
+          aria-expanded="false"
+          aria-controls="city-popup"
+          aria-autocomplete="list"
+          autocomplete="off"
+          required
+        />
+        <ol id="city-popup" role="listbox" hidden>
+          <li role="option" tabindex="-1">Amsterdam</li>
+          <li role="option" tabindex="-1">Berlin</li>
+          <li role="option" tabindex="-1">Copenhagen</li>
+          <li role="option" tabindex="-1">Dublin</li>
+          <li role="option" tabindex="-1">Edinburgh</li>
+          <li role="option" tabindex="-1">Frankfurt</li>
+          <li role="option" tabindex="-1">Geneva</li>
+          <li role="option" tabindex="-1">Helsinki</li>
+          <li role="option" tabindex="-1">Istanbul</li>
+          <li role="option" tabindex="-1">Jakarta</li>
+          <li role="option" tabindex="-1">Kairo</li>
+          <li role="option" tabindex="-1">London</li>
+          <li role="option" tabindex="-1">Madrid</li>
+          <li role="option" tabindex="-1">New York</li>
+          <li role="option" tabindex="-1">Oslo</li>
+          <li role="option" tabindex="-1">Paris</li>
+          <li role="option" tabindex="-1">Qingdao</li>
+          <li role="option" tabindex="-1">Rome</li>
+          <li role="option" tabindex="-1">Stockholm</li>
+          <li role="option" tabindex="-1">Tokyo</li>
+          <li role="option" tabindex="-1">Ulan Bator</li>
+          <li role="option" tabindex="-1">Vienna</li>
+          <li role="option" tabindex="-1">Warsaw</li>
+          <li role="option" tabindex="-1">Xi'an</li>
+          <li role="option" tabindex="-1">Yokohama</li>
+          <li role="option" tabindex="-1">Zurich</li>
+        </ol>
+        <button type="button" class="clear" aria-label="Clear input" hidden>
+          ✕
+        </button>
+      </div>
+      <p class="error" aria-live="assertive" id="city-error"></p>
+      <p class="description" aria-live="polite" id="city-description">Tell us where you live so we can set your timezone for our calendar and notification features.</p>
+    </form-combobox>
+  </div>
+  <details>
+    <summary>Source Code</summary>
+    <module-lazy src="./examples/form-combobox.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
 </module-demo>
 
 </section>
@@ -381,134 +447,134 @@
                 </a>
             </h2>
 <module-demo>
-	<div class="preview">
-		<module-todo>
-			<form action="#">
-				<form-textbox>
-					<label for="add-todo">What needs to be done?</label>
-					<div class="input">
-						<input id="add-todo" type="text" value="" />
-					</div>
-				</form-textbox>
-				<basic-button class="submit">
-					<button type="submit" class="constructive" disabled>
-						<span class="label">Add Todo</span>
-					</button>
-				</basic-button>
-			</form>
-			<ol filter="all"></ol>
-			<template>
-				<li>
-					<form-checkbox class="todo">
-						<label>
-							<input type="checkbox" class="visually-hidden" />
-							<span class="label"><slot></slot></span>
-						</label>
-					</form-checkbox>
-					<basic-button class="delete">
-						<button type="button" class="tertiary destructive small" aria-label="Delete">
+  <div class="preview">
+    <module-todo>
+      <form action="#">
+        <form-textbox>
+          <label for="add-todo">What needs to be done?</label>
+          <div class="input">
+            <input id="add-todo" type="text" value="" />
+          </div>
+        </form-textbox>
+        <basic-button class="submit">
+          <button type="submit" class="constructive" disabled>
+            <span class="label">Add Todo</span>
+          </button>
+        </basic-button>
+      </form>
+      <ol filter="all"></ol>
+      <template>
+        <li>
+          <form-checkbox class="todo">
+            <label>
+              <input type="checkbox" class="visually-hidden" />
+              <span class="label"><slot></slot></span>
+            </label>
+          </form-checkbox>
+          <basic-button class="delete">
+            <button type="button" class="tertiary destructive small" aria-label="Delete">
               <span class="label">✕</span>
             </button>
-					</basic-button>
-				</li>
-			</template>
-			<footer>
-  			<basic-pluralize>
-  				<p class="none">Well done, all done!</p>
-  				<p class="some">
-  					<span class="count"></span>
-  					<span class="singular">task</span>
-  					<span class="plural">tasks</span>
-  					remaining
-  				</p>
-  			</basic-pluralize>
-				<form-radiogroup value="all" class="split-button">
-					<fieldset>
-						<legend class="visually-hidden">Filter</legend>
-						<label class="selected">
-							<input
-								type="radio"
-								class="visually-hidden"
-								name="filter"
-								value="all"
-								checked
-							/>
-							<span>All</span>
-						</label>
-						<label>
-							<input
-								type="radio"
-								class="visually-hidden"
-								name="filter"
-								value="active"
-							/>
-							<span>Active</span>
-						</label>
-						<label>
-							<input
-								type="radio"
-								class="visually-hidden"
-								name="filter"
-								value="completed"
-							/>
-							<span>Completed</span>
-						</label>
-					</fieldset>
-				</form-radiogroup>
-				<basic-button class="clear-completed">
-					<button type="button" class="tertiary destructive">
-						<span class="label">Clear Completed</span>
-						<span class="badge"></span>
-					</button>
-				</basic-button>
-			</footer>
-		</module-todo>
-	</div>
-	<details>
-		<summary>ModuleTodo Source Code</summary>
-		<module-lazy src="./examples/module-todo.html">
-			<card-callout>
-				<p class="loading" role="status">Loading...</p>
-				<p class="error" role="alert" aria-live="polite"></p>
-			</card-callout>
-		</module-lazy>
-	</details>
-	<details>
-		<summary>InputTextbox Source Code</summary>
-		<module-lazy src="./examples/form-textbox.html">
-			<card-callout>
-				<p class="loading" role="status">Loading...</p>
-				<p class="error" role="alert" aria-live="polite"></p>
-			</card-callout>
-		</module-lazy>
-	</details>
-	<details>
-		<summary>InputButton Source Code</summary>
-		<module-lazy src="./examples/basic-button.html">
-			<card-callout>
-				<p class="loading" role="status">Loading...</p>
-				<p class="error" role="alert" aria-live="polite"></p>
-			</card-callout>
-		</module-lazy>
-	</details>
-	<details>
-		<summary>InputCheckbox Source Code</summary>
-		<module-lazy src="./examples/form-checkbox.html">
-			<card-callout>
-				<p class="loading" role="status">Loading...</p>
-				<p class="error" role="alert" aria-live="polite"></p>
-			</card-callout>
-		</module-lazy>
-	</details>
-	<details>
-		<summary>InputRadiogroup Source Code</summary>
-		<module-lazy src="./examples/form-radiogroup.html">
-			<card-callout>
-				<p class="loading" role="status">Loading...</p>
-				<p class="error" role="alert" aria-live="polite"></p>
-			</card-callout>
-		</module-lazy>
-	</details>
+          </basic-button>
+        </li>
+      </template>
+      <footer>
+        <basic-pluralize>
+          <p class="none">Well done, all done!</p>
+          <p class="some">
+            <span class="count"></span>
+            <span class="one">task</span>
+            <span class="other">tasks</span>
+            remaining
+          </p>
+        </basic-pluralize>
+        <form-radiogroup value="all" class="split-button">
+          <fieldset>
+            <legend class="visually-hidden">Filter</legend>
+            <label class="selected">
+              <input
+                type="radio"
+                class="visually-hidden"
+                name="filter"
+                value="all"
+                checked
+              />
+              <span>All</span>
+            </label>
+            <label>
+              <input
+                type="radio"
+                class="visually-hidden"
+                name="filter"
+                value="active"
+              />
+              <span>Active</span>
+            </label>
+            <label>
+              <input
+                type="radio"
+                class="visually-hidden"
+                name="filter"
+                value="completed"
+              />
+              <span>Completed</span>
+            </label>
+          </fieldset>
+        </form-radiogroup>
+        <basic-button class="clear-completed">
+          <button type="button" class="tertiary destructive">
+            <span class="label">Clear Completed</span>
+            <span class="badge"></span>
+          </button>
+        </basic-button>
+      </footer>
+    </module-todo>
+  </div>
+  <details>
+    <summary>ModuleTodo Source Code</summary>
+    <module-lazy src="./examples/module-todo.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>InputTextbox Source Code</summary>
+    <module-lazy src="./examples/form-textbox.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>InputButton Source Code</summary>
+    <module-lazy src="./examples/basic-button.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>InputCheckbox Source Code</summary>
+    <module-lazy src="./examples/form-checkbox.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>InputRadiogroup Source Code</summary>
+    <module-lazy src="./examples/form-radiogroup.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
 </module-demo>
 
 </section>

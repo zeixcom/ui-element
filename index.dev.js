@@ -1188,5 +1188,6 @@ export {
   InvalidEffectsError,
   InvalidComponentNameError,
   DependencyTimeoutError,
+  DEV_MODE,
   CircularMutationError
 };
