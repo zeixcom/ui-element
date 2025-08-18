@@ -229,6 +229,7 @@
         <ul>
           <li>Unlike SPA frameworks (React, Vue, Angular, Svelte, Lit, etc.) we <strong>never render</strong> on the client. Instead, the server and browser do this work. Like it's 1995.</li>
           <li>Because we never render on the client, we need no JSON data and no JS templates either. This means less data over the wire and no plumbing DB → JSON → JS → HTML.</li>
+          <li>Unlike Hypermedia frameworks (HTMX, Datastar) we don't compensate for the lack of client-side rendering  by a network request if not needed. If possible, we calculate the new state on the client.</li>
           <li>We just add event listeners and set up a signal graph. Invisible work that doesn't cause layout shifts.</li>
           <li>When the user interacts with the UI, we know exactly what to do. We just do fine-grained updates to the DOM. No VDOM, no diffing. Wait for signal 🚦 and go! 🏁</li>
         </ul>

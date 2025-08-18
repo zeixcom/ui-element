@@ -79,6 +79,7 @@ description: 'Overview and key benefits of UIElement'
         <ul>
           <li>Unlike SPA frameworks (React, Vue, Angular, Svelte, Lit, etc.) we <strong>never render</strong> on the client. Instead, the server and browser do this work. Like it's 1995.</li>
           <li>Because we never render on the client, we need no JSON data and no JS templates either. This means less data over the wire and no plumbing DB → JSON → JS → HTML.</li>
+          <li>Unlike Hypermedia frameworks (HTMX, Datastar) we don't compensate for the lack of client-side rendering  by a network request if not needed. If possible, we calculate the new state on the client.</li>
           <li>We just add event listeners and set up a signal graph. Invisible work that doesn't cause layout shifts.</li>
           <li>When the user interacts with the UI, we know exactly what to do. We just do fine-grained updates to the DOM. No VDOM, no diffing. Wait for signal 🚦 and go! 🏁</li>
         </ul>
@@ -89,7 +90,7 @@ description: 'Overview and key benefits of UIElement'
       <div class="slide-content">
         <p>Because we add less abstractions, we can keep the library small (approximately 5kB gzipped).</p>
         <p>UIElement is a lightweight library that provides a simple and efficient way to build reactive user interfaces. It is designed to be easy to use and understand, while still providing powerful features for building complex applications.</p>
-        <p>HTML ain't broken. CSS ain't broken. JavaScript ain't broken. We just want to split it in chunks (components), detect bugs early (type safety), and have predictable updates (reactivity). That's what we stand for.</p>
+        <p>HTML ain't broken. CSS ain't broken. JavaScript ain't broken. We just want to split it in chunks (components), detect bugs early (type safety), and have predictable updates without tight coupling (reactivity). That's what we stand for.</p>
       </div>
     </div>
 

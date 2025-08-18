@@ -46,7 +46,7 @@ Helper functions:
 
 ## Parsers
 
-Declare how attributes are parsed. Functions returning [Parser](api/type-aliases/AttributeParser.html) that will be used to create [State](api/type-aliases/State.html) signals as writable reactive properties on the component.
+Declare how attributes are parsed. Functions returning [Parser](api/type-aliases/AttributeParser.html) that will be used to create [State](api/type-aliases/State.html) writable reactive properties on the component.
 
 | Function                                      | Description                                                                                                                                                                  |
 | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -67,13 +67,14 @@ The `asJSON()` parser requires a fallback object as parameter as `{}` probably w
 
 <section>
 
-## Signal Producers
+## Extractors
 
-Declare how signals are initialized. Functions returning type [SignalProducer](api/type-aliases/SignalProducer.html) that will be used to create [Computed](api/type-aliases/Computed.html) signals as read-only reactive properties on the component.
+Declare derived reactive properties. Functions returning type [Extractor](api/type-aliases/Extractor.html) that will be used to create [Computed](api/type-aliases/Computed.html) read-only reactive properties on the component.
 
 - [fromContext](api/functions/fromContext.html) consumes a context value from nearest ancestor context provider component
+- [fromDOM](api/functions/fromDOM.html) creates a computed signal reflecting a property of a descendant element
 - [fromEvents](api/functions/fromEvents.html) creates a computed signal from event transformers on descendant elements
-- [fromSelector](api/functions/fromSelector.html) creates a computed signal of descentant elements matching a CSS selector
+- [fromSelector](api/functions/fromSelector.html) creates a computed signal of descendant elements matching a CSS selector
 
 </section>
 
@@ -101,17 +102,5 @@ Declare effects of type [Effect](api/type-aliases/Effect.html) to be applied whe
 | [updateElement()](api/functions/updateElement.html)                     | Base function for updating elements, used by other effects.                                     |
 
 **Tip**: TypeScript will check whether a typed value is assignable to a certain element property. Prefer `setProperty()` over `setAttribute()` for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.
-
-</section>
-
-<section>
-
-## DOM Utilities
-
-Functions to work with descendant elements:
-
-- [read](api/functions/read.html) reads properties from a descendant element, waiting for components to be upgraded
-- [reduced](api/functions/reduced.html) creates a computed signal from a reducer function
-- [requireDescendant](api/functions/requireDescendant.html) requires a descendant element to exist and returns it, otherwise throws an error
 
 </section>

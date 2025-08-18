@@ -134,9 +134,8 @@
 			<li><a href="#component">Component</a></li>
 <li><a href="#signals">Signals</a></li>
 <li><a href="#parsers">Parsers</a></li>
-<li><a href="#signal-producers">Signal Producers</a></li>
+<li><a href="#extractors">Extractors</a></li>
 <li><a href="#effects">Effects</a></li>
-<li><a href="#dom-utilities">DOM Utilities</a></li>
 		</ol>
 	</nav>
 </module-toc>
@@ -187,7 +186,7 @@
 					<span class="title">Parsers</span>
                 </a>
             </h2>
-<p>Declare how attributes are parsed. Functions returning <a href="api/type-aliases/AttributeParser.html">Parser</a> that will be used to create <a href="api/type-aliases/State.html">State</a> signals as writable reactive properties on the component.</p>
+<p>Declare how attributes are parsed. Functions returning <a href="api/type-aliases/AttributeParser.html">Parser</a> that will be used to create <a href="api/type-aliases/State.html">State</a> writable reactive properties on the component.</p>
 <table>
 <thead>
 <tr>
@@ -227,17 +226,18 @@
 
 <section>
 
-<h2 id="signal-producers">
-                <a name="signal-producers" class="anchor" href="#signal-producers">
+<h2 id="extractors">
+                <a name="extractors" class="anchor" href="#extractors">
 	                <span class="permalink">🔗</span>
-					<span class="title">Signal Producers</span>
+					<span class="title">Extractors</span>
                 </a>
             </h2>
-<p>Declare how signals are initialized. Functions returning type <a href="api/type-aliases/SignalProducer.html">SignalProducer</a> that will be used to create <a href="api/type-aliases/Computed.html">Computed</a> signals as read-only reactive properties on the component.</p>
+<p>Declare derived reactive properties. Functions returning type <a href="api/type-aliases/Extractor.html">Extractor</a> that will be used to create <a href="api/type-aliases/Computed.html">Computed</a> read-only reactive properties on the component.</p>
 <ul>
 <li><a href="api/functions/fromContext.html">fromContext</a> consumes a context value from nearest ancestor context provider component</li>
+<li><a href="api/functions/fromDOM.html">fromDOM</a> creates a computed signal reflecting a property of a descendant element</li>
 <li><a href="api/functions/fromEvents.html">fromEvents</a> creates a computed signal from event transformers on descendant elements</li>
-<li><a href="api/functions/fromSelector.html">fromSelector</a> creates a computed signal of descentant elements matching a CSS selector</li>
+<li><a href="api/functions/fromSelector.html">fromSelector</a> creates a computed signal of descendant elements matching a CSS selector</li>
 </ul>
 </section>
 
@@ -315,22 +315,6 @@
 </tr>
 </tbody></table>
 <p><strong>Tip</strong>: TypeScript will check whether a typed value is assignable to a certain element property. Prefer <code>setProperty()</code> over <code>setAttribute()</code> for increased type safety. Setting string attributes is possible for all elements, but will have an effect only on some.</p>
-</section>
-
-<section>
-
-<h2 id="dom-utilities">
-                <a name="dom-utilities" class="anchor" href="#dom-utilities">
-	                <span class="permalink">🔗</span>
-					<span class="title">DOM Utilities</span>
-                </a>
-            </h2>
-<p>Functions to work with descendant elements:</p>
-<ul>
-<li><a href="api/functions/read.html">read</a> reads properties from a descendant element, waiting for components to be upgraded</li>
-<li><a href="api/functions/reduced.html">reduced</a> creates a computed signal from a reducer function</li>
-<li><a href="api/functions/requireDescendant.html">requireDescendant</a> requires a descendant element to exist and returns it, otherwise throws an error</li>
-</ul>
 </section>
 </main>
 			<footer class="content-grid">
