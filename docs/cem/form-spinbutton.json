@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: form-spinbutton",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/form-spinbutton/form-spinbutton.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "{ key }",
+          "default": "event"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "zeroLabel"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "incrementLabel"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "max"
+        },
+        {
+          "kind": "function",
+          "name": "nonZero"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "FormSpinbutton",
+          "tagName": "form-spinbutton",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "Property extracted using fromEvents(). . This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "default": "\"<complex-expression>\"",
+              "_uielement": {
+                "extractor": "fromEvents",
+                "config": "button",
+                "fallback": "<complex-expression>"
+              }
+            }
+          ],
+          "attributes": [],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/form-spinbutton/form-spinbutton.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

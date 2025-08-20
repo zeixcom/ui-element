@@ -1,0 +1,206 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: form-combobox",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/form-combobox/form-combobox.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "input"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "mode"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "focusIndex"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "filterText"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "showPopup"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "options",
+          "default": "fromSelector<HTMLLIElement>( '[role=\"option\"]:not([hidden])', )(el)"
+        },
+        {
+          "kind": "function",
+          "name": "isExpanded"
+        },
+        {
+          "kind": "function",
+          "name": "commit",
+          "parameters": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "m"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "i"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "{ key, altKey }",
+          "default": "event"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "{ key }",
+          "default": "event"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "lowKey"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "nextIndex"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "FormCombobox",
+          "tagName": "form-combobox",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "Property with literal value",
+              "privacy": "public",
+              "default": "\"\""
+            },
+            {
+              "kind": "field",
+              "name": "length",
+              "type": {
+                "text": "number"
+              },
+              "description": "Property with literal value",
+              "privacy": "public",
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Property with literal value",
+              "privacy": "public",
+              "default": "\"\""
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Property with literal value",
+              "privacy": "public",
+              "default": "\"\""
+            },
+            {
+              "kind": "field",
+              "name": "clear",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "Property computed by function",
+              "privacy": "public",
+              "_uielement": {
+                "type": "function"
+              }
+            }
+          ],
+          "attributes": [],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/form-combobox/form-combobox.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

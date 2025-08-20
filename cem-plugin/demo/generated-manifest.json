@@ -1,0 +1,288 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "./index.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A simple greeting component that displays \"Hello, {name}!\"\n\n**Since:** 1.0.0\n\n**Examples:**\n\n```typescript\n<hello-world name=\"World\">\n  <input type=\"text\" />\n  <span>World</span>\n</hello-world>\n```\n",
+          "name": "HelloWorld",
+          "tagName": "hello-world",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "The name to display in the greeting. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "default": "\"\"",
+              "_uielement": {
+                "parser": "asString",
+                "arguments": [
+                  "el => el.querySelector(\"span\")?.textContent?.trim() ?? \"\""
+                ],
+                "pattern": "Parses attribute as string with optional fallback",
+                "defaultValue": ""
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "HTML attribute for the name property. Parses attribute as string with optional fallback",
+              "fieldName": "name",
+              "default": ""
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        },
+        {
+          "kind": "class",
+          "description": "A customizable button component with support for labels, badges, and disabled state\n\n**Since:** 1.0.0",
+          "name": "BasicButton",
+          "tagName": "basic-button",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the button is disabled. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "default": "false",
+              "_uielement": {
+                "parser": "asBoolean",
+                "arguments": [],
+                "pattern": "Parses presence of attribute as boolean",
+                "defaultValue": false
+              }
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The button label text. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "default": "\"\"",
+              "_uielement": {
+                "parser": "asString",
+                "arguments": [
+                  "getLabel(\"button\")"
+                ],
+                "pattern": "Parses attribute as string with optional fallback",
+                "defaultValue": ""
+              }
+            },
+            {
+              "kind": "field",
+              "name": "badge",
+              "type": {
+                "text": "string"
+              },
+              "description": "Optional badge text displayed on the button. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "default": "\"\"",
+              "_uielement": {
+                "parser": "asString",
+                "arguments": [
+                  "fromDOM({ \".badge\": getText() }, \"\")"
+                ],
+                "pattern": "Parses attribute as string with optional fallback",
+                "defaultValue": ""
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "HTML attribute for the disabled property. Parses presence of attribute as boolean",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "HTML attribute for the label property. Parses attribute as string with optional fallback",
+              "fieldName": "label",
+              "default": ""
+            },
+            {
+              "name": "badge",
+              "type": {
+                "text": "string"
+              },
+              "description": "HTML attribute for the badge property. Parses attribute as string with optional fallback",
+              "fieldName": "badge",
+              "default": ""
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        },
+        {
+          "kind": "class",
+          "description": "A counter component that increments when clicked\n\n**Since:** 1.0.0",
+          "name": "BasicCounter",
+          "tagName": "basic-counter",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "description": "The current count value. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "default": "\"fromDOM({ span: getText() }, asInteger())\"",
+              "_uielement": {
+                "extractor": "fromEvents",
+                "config": {
+                  "selector": "button",
+                  "events": {
+                    "click": "({ value }) => ++value"
+                  }
+                },
+                "fallback": "fromDOM({ span: getText() }, asInteger())"
+              }
+            }
+          ],
+          "attributes": [],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        },
+        {
+          "kind": "class",
+          "description": "A form input component with validation, error display, and clear functionality\n\n**Since:** 1.0.0",
+          "name": "FormTextbox",
+          "tagName": "form-textbox",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The current value of the input",
+              "privacy": "public",
+              "default": "\"\""
+            },
+            {
+              "kind": "field",
+              "name": "length",
+              "type": {
+                "text": "number"
+              },
+              "description": "The current length of the input value",
+              "privacy": "public",
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Validation error message",
+              "privacy": "public",
+              "default": "\"\""
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text or character count description",
+              "privacy": "public",
+              "default": "\"\""
+            },
+            {
+              "kind": "field",
+              "name": "clear",
+              "type": {
+                "text": "() => void"
+              },
+              "description": "Function to clear the input value",
+              "privacy": "public",
+              "_uielement": {
+                "type": "function"
+              }
+            }
+          ],
+          "attributes": [],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "hello-world",
+          "declaration": {
+            "name": "HelloWorld",
+            "module": "./index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "basic-button",
+          "declaration": {
+            "name": "BasicButton",
+            "module": "./index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "basic-counter",
+          "declaration": {
+            "name": "BasicCounter",
+            "module": "./index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "form-textbox",
+          "declaration": {
+            "name": "FormTextbox",
+            "module": "./index.js"
+          }
+        }
+      ]
+    }
+  ],
+  "plugins": [
+    {
+      "name": "uielement-cem-plugin",
+      "version": "0.1.0",
+      "components": 0
+    }
+  ]
+}

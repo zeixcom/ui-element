@@ -1,0 +1,207 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: calc-table",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/calc-table/calc-table.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "colHeads",
+          "type": {
+            "text": "string"
+          },
+          "default": "'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "rowTemplate"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "colheadTemplate"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "cellTemplate"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "colSums",
+          "default": "new Map<string, State<number>>()"
+        },
+        {
+          "kind": "function",
+          "name": "calcColumnSum",
+          "return": {
+            "type": {
+              "text": "number"
+            }
+          },
+          "parameters": [
+            {
+              "name": "rowKey",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "row"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "rowKey"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "cell"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "colKey",
+          "default": "colHeads[ parent.querySelectorAll('th').length - 1 ]"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "input"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "CalcTable",
+          "tagName": "calc-table",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "columns",
+              "type": {
+                "text": "number"
+              },
+              "description": "Reactive property parsed with asInteger(). Parses attribute as integer with optional fallback. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "_uielement": {
+                "parser": "asInteger",
+                "arguments": [],
+                "pattern": "Parses attribute as integer with optional fallback"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "Reactive property parsed with asInteger(). Parses attribute as integer with optional fallback. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "_uielement": {
+                "parser": "asInteger",
+                "arguments": [],
+                "pattern": "Parses attribute as integer with optional fallback"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "columns",
+              "type": {
+                "text": "number"
+              },
+              "description": "HTML attribute for the columns property. Parses attribute as integer with optional fallback",
+              "fieldName": "columns"
+            },
+            {
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "HTML attribute for the rows property. Parses attribute as integer with optional fallback",
+              "fieldName": "rows"
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/calc-table/calc-table.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

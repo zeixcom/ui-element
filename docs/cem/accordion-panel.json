@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: accordion-panel",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/accordion-panel/accordion-panel.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "AccordionPanel",
+          "tagName": "accordion-panel",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Reactive property parsed with asBoolean(). Parses presence of attribute as boolean. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "default": "false",
+              "_uielement": {
+                "parser": "asBoolean",
+                "arguments": [],
+                "pattern": "Parses presence of attribute as boolean",
+                "defaultValue": false
+              }
+            },
+            {
+              "kind": "field",
+              "name": "collapsible",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Reactive property parsed with asBoolean(). Parses presence of attribute as boolean. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "default": "false",
+              "_uielement": {
+                "parser": "asBoolean",
+                "arguments": [],
+                "pattern": "Parses presence of attribute as boolean",
+                "defaultValue": false
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "HTML attribute for the open property. Parses presence of attribute as boolean",
+              "fieldName": "open"
+            },
+            {
+              "name": "collapsible",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "HTML attribute for the collapsible property. Parses presence of attribute as boolean",
+              "fieldName": "collapsible"
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/accordion-panel/accordion-panel.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

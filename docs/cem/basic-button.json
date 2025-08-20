@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: basic-button",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/basic-button/copy-to-clipboard.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "COPY_SUCCESS",
+          "type": {
+            "text": "string"
+          },
+          "default": "'success'"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "COPY_ERROR",
+          "type": {
+            "text": "string"
+          },
+          "default": "'error'"
+        },
+        {
+          "kind": "function",
+          "name": "copyToClipboard",
+          "return": {
+            "type": {
+              "text": "Effect<ComponentProps, Component<BasicButtonProps>>"
+            }
+          },
+          "parameters": [
+            {
+              "name": "container",
+              "type": {
+                "text": "HTMLElement"
+              }
+            },
+            {
+              "name": "messages",
+              "type": {
+                "text": "{ [COPY_ERROR]?: string; [COPY_SUCCESS]?: string }"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "label"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "status",
+          "type": {
+            "text": "CopyStatus"
+          },
+          "default": "COPY_SUCCESS"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "copyToClipboard",
+          "declaration": {
+            "name": "copyToClipboard",
+            "module": "docs-src/components/basic-button/copy-to-clipboard.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

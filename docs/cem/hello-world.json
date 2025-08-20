@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: hello-world",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/hello-world/hello-world.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "fallback"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HelloWorld",
+          "tagName": "hello-world",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Reactive property parsed with asString(). Parses attribute as string with optional fallback. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "default": "\"<complex-expression>\"",
+              "_uielement": {
+                "parser": "asString",
+                "arguments": [
+                  "<complex-expression>"
+                ],
+                "pattern": "Parses attribute as string with optional fallback",
+                "defaultValue": "<complex-expression>"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "HTML attribute for the name property. Parses attribute as string with optional fallback",
+              "fieldName": "name",
+              "default": "<complex-expression>"
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/hello-world/hello-world.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

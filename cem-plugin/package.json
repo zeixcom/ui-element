@@ -1,0 +1,48 @@
+{
+	"name": "cem-plugin-uielement",
+	"version": "0.1.0",
+	"description": "Custom Elements Manifest analyzer plugin for UIElement components",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"build:watch": "tsc --watch",
+		"test": "bun test",
+		"test:watch": "bun test --watch",
+		"test:coverage": "bun test --coverage",
+		"lint": "bunx biome check --write ./src",
+		"clean": "rm -rf dist"
+	},
+	"keywords": [
+		"custom-elements-manifest",
+		"cem",
+		"uielement",
+		"web-components",
+		"analyzer",
+		"plugin"
+	],
+	"author": "UIElement Contributors",
+	"license": "MIT",
+	"type": "module",
+	"files": [
+		"dist/**/*",
+		"README.md"
+	],
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"peerDependencies": {
+		"@custom-elements-manifest/analyzer": "^0.10.5"
+	},
+	"devDependencies": {
+		"@types/bun": "^1.2.19",
+		"@types/node": "^22.17.0",
+		"typescript": "^5.7.3"
+	},
+	"engines": {
+		"node": ">=18.0.0"
+	}
+}

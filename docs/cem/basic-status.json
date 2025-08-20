@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: basic-status",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/basic-status/basic-status.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "STATUS_OPTIONS",
+          "type": {
+            "text": "[string, ...string[]]"
+          },
+          "default": "['success', 'warning', 'error']"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "BasicStatus",
+          "tagName": "basic-status",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "status",
+              "type": {
+                "text": "string"
+              },
+              "description": "Reactive property parsed with asEnum(). Parses attribute as one of valid enum values. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "default": "\"<complex-expression>\"",
+              "_uielement": {
+                "parser": "asEnum",
+                "arguments": [
+                  "<complex-expression>"
+                ],
+                "pattern": "Parses attribute as one of valid enum values",
+                "defaultValue": "<complex-expression>"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "status",
+              "type": {
+                "text": "string"
+              },
+              "description": "HTML attribute for the status property. Parses attribute as one of valid enum values",
+              "fieldName": "status",
+              "default": "<complex-expression>"
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/basic-status/basic-status.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

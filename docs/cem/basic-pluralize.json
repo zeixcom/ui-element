@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: basic-pluralize",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/basic-pluralize/basic-pluralize.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "FALLBACK_LOCALE",
+          "type": {
+            "text": "string"
+          },
+          "default": "'en'"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "pluralizer",
+          "default": "new Intl.PluralRules( el.closest('[lang]')?.getAttribute('lang') || FALLBACK_LOCALE, el.hasAttribute('ordinal') ? { type: 'ordinal' } : undefined, )"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "categories"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "effects",
+          "type": {
+            "text": "array"
+          },
+          "default": "[ first('.count', [setText(() => String(el.count))]), first('.none', [show(() => el.count === 0)]), first('.some', [show(() => el.count > 0)]), ]"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "BasicPluralize",
+          "tagName": "basic-pluralize",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "description": "Reactive property parsed with asInteger(). Parses attribute as integer with optional fallback. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "_uielement": {
+                "parser": "asInteger",
+                "arguments": [],
+                "pattern": "Parses attribute as integer with optional fallback"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "description": "HTML attribute for the count property. Parses attribute as integer with optional fallback",
+              "fieldName": "count"
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/basic-pluralize/basic-pluralize.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

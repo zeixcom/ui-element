@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: form-checkbox",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/form-checkbox/form-checkbox.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "FormCheckbox",
+          "tagName": "form-checkbox",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "Property extracted using fromEvents(). . This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "default": "\"<complex-expression>\"",
+              "_uielement": {
+                "extractor": "fromEvents",
+                "config": "input",
+                "fallback": "<complex-expression>"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Reactive property parsed with asString(). Parses attribute as string with optional fallback. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "default": "\"<complex-expression>\"",
+              "_uielement": {
+                "parser": "asString",
+                "arguments": [
+                  "<complex-expression>"
+                ],
+                "pattern": "Parses attribute as string with optional fallback",
+                "defaultValue": "<complex-expression>"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "HTML attribute for the label property. Parses attribute as string with optional fallback",
+              "fieldName": "label",
+              "default": "<complex-expression>"
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/form-checkbox/form-checkbox.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

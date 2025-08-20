@@ -1,0 +1,468 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/accordion-panel/accordion-panel.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/accordion-panel/accordion-panel.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/basic-button/basic-button.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/basic-button/basic-button.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/basic-button/copy-to-clipboard.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "copyToClipboard",
+          "return": {
+            "type": {
+              "text": "Effect<ComponentProps, Component<BasicButtonProps>>"
+            }
+          },
+          "parameters": [
+            {
+              "name": "container",
+              "type": {
+                "text": "HTMLElement"
+              }
+            },
+            {
+              "name": "messages",
+              "type": {
+                "text": "{ [COPY_ERROR]?: string; [COPY_SUCCESS]?: string }"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "copyToClipboard",
+          "declaration": {
+            "name": "copyToClipboard",
+            "module": "docs-src/components/basic-button/copy-to-clipboard.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/basic-counter/basic-counter.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/basic-counter/basic-counter.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/basic-number/basic-number.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/basic-number/basic-number.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/basic-pluralize/basic-pluralize.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/basic-pluralize/basic-pluralize.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/basic-status/basic-status.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/basic-status/basic-status.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/calc-table/calc-table.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/calc-table/calc-table.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/context-media/context-media.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "MEDIA_MOTION",
+          "default": "'media-motion'"
+        },
+        {
+          "kind": "variable",
+          "name": "MEDIA_THEME",
+          "default": "'media-theme'"
+        },
+        {
+          "kind": "variable",
+          "name": "MEDIA_VIEWPORT",
+          "default": "'media-viewport'"
+        },
+        {
+          "kind": "variable",
+          "name": "MEDIA_ORIENTATION",
+          "default": "'media-orientation'"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MEDIA_MOTION",
+          "declaration": {
+            "name": "MEDIA_MOTION",
+            "module": "docs-src/components/context-media/context-media.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "MEDIA_THEME",
+          "declaration": {
+            "name": "MEDIA_THEME",
+            "module": "docs-src/components/context-media/context-media.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "MEDIA_VIEWPORT",
+          "declaration": {
+            "name": "MEDIA_VIEWPORT",
+            "module": "docs-src/components/context-media/context-media.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "MEDIA_ORIENTATION",
+          "declaration": {
+            "name": "MEDIA_ORIENTATION",
+            "module": "docs-src/components/context-media/context-media.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/context-media/context-media.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/context-router/context-router.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "ROUTER_PATHNAME",
+          "default": "'router-pathname'"
+        },
+        {
+          "kind": "variable",
+          "name": "ROUTER_QUERY",
+          "default": "'router-query'"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ROUTER_PATHNAME",
+          "declaration": {
+            "name": "ROUTER_PATHNAME",
+            "module": "docs-src/components/context-router/context-router.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ROUTER_QUERY",
+          "declaration": {
+            "name": "ROUTER_QUERY",
+            "module": "docs-src/components/context-router/context-router.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/context-router/context-router.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/form-checkbox/form-checkbox.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/form-checkbox/form-checkbox.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/form-combobox/form-combobox.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/form-combobox/form-combobox.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/form-radiogroup/form-radiogroup.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/form-radiogroup/form-radiogroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/form-spinbutton/form-spinbutton.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/form-spinbutton/form-spinbutton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/form-textbox/form-textbox.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/form-textbox/form-textbox.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/hello-world/hello-world.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/hello-world/hello-world.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/input-field/input-field.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/input-field/input-field.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/module-carousel/module-carousel.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/module-carousel/module-carousel.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/module-catalog/module-catalog.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/module-catalog/module-catalog.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/module-codeblock/module-codeblock.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/module-codeblock/module-codeblock.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/module-lazy/module-lazy.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/module-lazy/module-lazy.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/module-tabgroup/module-tabgroup.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/module-tabgroup/module-tabgroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/module-todo/module-todo.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/module-todo/module-todo.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/rating-feedback/rating-feedback.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/rating-feedback/rating-feedback.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/rating-stars/rating-stars.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/rating-stars/rating-stars.ts"
+          }
+        }
+      ]
+    }
+  ],
+  "plugins": [
+    {
+      "name": "uielement-cem-plugin",
+      "version": "0.1.0",
+      "components": 24
+    }
+  ]
+}

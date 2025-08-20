@@ -1,0 +1,359 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: input-field",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/input-field/input-field.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "isNumber",
+          "parameters": [
+            {
+              "name": "num",
+              "type": {
+                "text": "unknown"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "parseNumber",
+          "return": {
+            "type": {
+              "text": "number"
+            }
+          },
+          "parameters": [
+            {
+              "name": "v",
+              "type": {
+                "text": "string | null | undefined"
+              }
+            },
+            {
+              "name": "int",
+              "default": "false"
+            },
+            {
+              "name": "fallback",
+              "default": "0"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "temp"
+        },
+        {
+          "kind": "function",
+          "name": "countDecimals",
+          "return": {
+            "type": {
+              "text": "number"
+            }
+          },
+          "parameters": [
+            {
+              "name": "value",
+              "type": {
+                "text": "number"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "asNumberOrString",
+          "parameters": [
+            {
+              "name": "el"
+            },
+            {
+              "name": "v"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "input"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "fns",
+          "type": {
+            "text": "Effect<InputFieldProps, Component<InputFieldProps>>[]"
+          },
+          "default": "[]"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "typeNumber"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "integer"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "validationEndpoint"
+        },
+        {
+          "kind": "function",
+          "name": "triggerChange",
+          "parameters": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string | number | ((v: any) => string | number)"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "newValue"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "text",
+          "default": "await response.text()"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "spinButton",
+          "default": "el.querySelector( '.spinbutton', )"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "step"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "min"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "max"
+        },
+        {
+          "kind": "function",
+          "name": "nearestStep",
+          "parameters": [
+            {
+              "name": "v",
+              "type": {
+                "text": "number"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "value"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "{ key, shiftKey }",
+          "default": "event"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "n"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "errorId"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "description"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "maxLength"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "remainingMessage"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "InputField",
+          "tagName": "input-field",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "Property of type unknown",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "length",
+              "type": {
+                "text": "number"
+              },
+              "description": "Property with literal value",
+              "privacy": "public",
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Property with literal value",
+              "privacy": "public",
+              "default": "\"\""
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Property with literal value",
+              "privacy": "public",
+              "default": "\"\""
+            },
+            {
+              "kind": "field",
+              "name": "clear",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "Property computed by function",
+              "privacy": "public",
+              "_uielement": {
+                "type": "function"
+              }
+            }
+          ],
+          "attributes": [],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/input-field/input-field.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: rating-feedback",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/rating-feedback/rating-feedback.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "rating"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "empty"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "submitted"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "feedback"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "RatingFeedback",
+          "tagName": "rating-feedback",
+          "customElement": true,
+          "members": [],
+          "attributes": [],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/rating-feedback/rating-feedback.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

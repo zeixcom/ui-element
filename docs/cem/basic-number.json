@@ -1,0 +1,183 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: basic-number",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/basic-number/basic-number.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "FALLBACK_LOCALE",
+          "type": {
+            "text": "string"
+          },
+          "default": "'en'"
+        },
+        {
+          "kind": "function",
+          "name": "getNumberFormatter",
+          "parameters": [
+            {
+              "name": "locale",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "rawOptions",
+              "type": {
+                "text": "string | null"
+              }
+            },
+            {
+              "name": "logger",
+              "default": "{\n\t\tonWarn: console.warn,\n\t\tonError: console.error,\n\t}",
+              "type": {
+                "text": "Logger"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "useFallback"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "{ onWarn, onError }",
+          "default": "logger"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "o",
+          "type": {
+            "text": "Intl.NumberFormatOptions"
+          },
+          "default": "{}"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "style"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "drops",
+          "type": {
+            "text": "string[]"
+          },
+          "default": "[]"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "sanitized",
+          "type": {
+            "text": "Intl.NumberFormatOptions"
+          },
+          "default": "{}"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "{ minimumFractionDigits: minFD, maximumFractionDigits: maxFD }",
+          "default": "sanitized"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "{ minimumSignificantDigits: minSD, maximumSignificantDigits: maxSD }",
+          "default": "sanitized"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "formatter",
+          "default": "new Intl.NumberFormat(locale, sanitized)"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "BasicNumber",
+          "tagName": "basic-number",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "description": "Reactive property parsed with asNumber(). Parses attribute as number with optional fallback. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "_uielement": {
+                "parser": "asNumber",
+                "arguments": [],
+                "pattern": "Parses attribute as number with optional fallback"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "description": "HTML attribute for the value property. Parses attribute as number with optional fallback",
+              "fieldName": "value"
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/basic-number/basic-number.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

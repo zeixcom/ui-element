@@ -1,0 +1,236 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: context-media",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/context-media/context-media.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "MEDIA_MOTION",
+          "default": "'media-motion'"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "MEDIA_THEME",
+          "default": "'media-theme'"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "MEDIA_VIEWPORT",
+          "default": "'media-viewport'"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "MEDIA_ORIENTATION",
+          "default": "'media-orientation'"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "mql"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "reducedMotion"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "colorScheme"
+        },
+        {
+          "kind": "function",
+          "name": "getBreakpoint",
+          "parameters": [
+            {
+              "name": "attr",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "fallback",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "value"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "trimmed"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "unit"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "v"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "mqlSM"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "mqlMD"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "mqlLG"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "mqlXL"
+        },
+        {
+          "kind": "function",
+          "name": "getViewport"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "viewport"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "orientation"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ContextMedia",
+          "tagName": "context-media",
+          "customElement": true,
+          "members": [],
+          "attributes": [],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MEDIA_MOTION",
+          "declaration": {
+            "name": "MEDIA_MOTION",
+            "module": "docs-src/components/context-media/context-media.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "MEDIA_THEME",
+          "declaration": {
+            "name": "MEDIA_THEME",
+            "module": "docs-src/components/context-media/context-media.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "MEDIA_VIEWPORT",
+          "declaration": {
+            "name": "MEDIA_VIEWPORT",
+            "module": "docs-src/components/context-media/context-media.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "MEDIA_ORIENTATION",
+          "declaration": {
+            "name": "MEDIA_ORIENTATION",
+            "module": "docs-src/components/context-media/context-media.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/context-media/context-media.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

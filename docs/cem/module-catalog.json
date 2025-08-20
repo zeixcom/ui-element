@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: module-catalog",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/module-catalog/module-catalog.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "total"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ModuleCatalog",
+          "tagName": "module-catalog",
+          "customElement": true,
+          "members": [],
+          "attributes": [],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/module-catalog/module-catalog.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: module-lazy",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/module-lazy/module-lazy.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "error"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "content"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "url"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "{ content }",
+          "default": "await fetchWithCache(url, abort)"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ModuleLazy",
+          "tagName": "module-lazy",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "src",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "Property of type unknown",
+              "privacy": "public"
+            }
+          ],
+          "attributes": [],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/module-lazy/module-lazy.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

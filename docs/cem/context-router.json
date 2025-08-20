@@ -1,0 +1,208 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: context-router",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/context-router/context-router.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "ROUTER_PATHNAME",
+          "default": "'router-pathname'"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "ROUTER_QUERY",
+          "default": "'router-query'"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "queryMap",
+          "default": "new Map()"
+        },
+        {
+          "kind": "function",
+          "name": "getSetParam",
+          "return": {
+            "type": {
+              "text": "string"
+            }
+          },
+          "parameters": [
+            {
+              "name": "key",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "value",
+              "optional": true,
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "syncToURL"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "params",
+          "default": "new URLSearchParams()"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "value"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "outlet"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "error"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "href"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "absoluteUrl",
+          "default": "new URL(href, window.location.href)"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "content"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "currentPath"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "url"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "{ content: html }",
+          "default": "await fetchWithCache(url, abort)"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "doc"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "newTitle"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ContextRouter",
+          "tagName": "context-router",
+          "customElement": true,
+          "members": [],
+          "attributes": [],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ROUTER_PATHNAME",
+          "declaration": {
+            "name": "ROUTER_PATHNAME",
+            "module": "docs-src/components/context-router/context-router.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ROUTER_QUERY",
+          "declaration": {
+            "name": "ROUTER_QUERY",
+            "module": "docs-src/components/context-router/context-router.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/context-router/context-router.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

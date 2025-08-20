@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: module-codeblock",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/module-codeblock/module-codeblock.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "code"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ModuleCodeblock",
+          "tagName": "module-codeblock",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "collapsed",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Reactive property parsed with asBoolean(). Parses presence of attribute as boolean. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "default": "false",
+              "_uielement": {
+                "parser": "asBoolean",
+                "arguments": [],
+                "pattern": "Parses presence of attribute as boolean",
+                "defaultValue": false
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "collapsed",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "HTML attribute for the collapsed property. Parses presence of attribute as boolean",
+              "fieldName": "collapsed"
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/module-codeblock/module-codeblock.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

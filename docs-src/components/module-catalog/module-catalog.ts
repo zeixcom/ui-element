@@ -1,7 +1,5 @@
 import { component, computed, pass } from '../../..'
 
-// import '../form-spinbutton/form-spinbutton'
-
 export default component('module-catalog', {}, (_, { first, useElements }) => {
 	const total = computed(() =>
 		useElements('form-spinbutton').reduce(

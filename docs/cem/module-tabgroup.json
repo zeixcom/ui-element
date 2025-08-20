@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: module-tabgroup",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/module-tabgroup/module-tabgroup.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "getAriaControls",
+          "parameters": [
+            {
+              "name": "element",
+              "type": {
+                "text": "HTMLElement"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "getSelected",
+          "parameters": [
+            {
+              "name": "elements",
+              "type": {
+                "text": "HTMLElement[]"
+              }
+            },
+            {
+              "name": "isCurrent",
+              "type": {
+                "text": "(element: HTMLElement) => boolean"
+              }
+            },
+            {
+              "name": "offset",
+              "default": "0"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "key"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "current"
+        },
+        {
+          "kind": "function",
+          "name": "isCurrentTab",
+          "parameters": [
+            {
+              "name": "tab",
+              "type": {
+                "text": "HTMLButtonElement"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ModuleTabgroup",
+          "tagName": "module-tabgroup",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "tabs",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "Property extracted using fromSelector(). . This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "_uielement": {
+                "extractor": "fromSelector",
+                "config": "button[role=\"tab\"]"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "Property extracted using fromEvents(). . This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "default": "\"<complex-expression>\"",
+              "_uielement": {
+                "extractor": "fromEvents",
+                "config": "button[role=\"tab\"]",
+                "fallback": "<complex-expression>"
+              }
+            }
+          ],
+          "attributes": [],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/module-tabgroup/module-tabgroup.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

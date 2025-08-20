@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: module-carousel",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/module-carousel/module-carousel.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "wrapAround",
+          "parameters": [
+            {
+              "name": "index",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "total",
+              "type": {
+                "text": "number"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "isCurrentDot",
+          "parameters": [
+            {
+              "name": "target",
+              "type": {
+                "text": "HTMLElement"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "scrollToCurrentSlide"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "observer",
+          "default": "new IntersectionObserver( entries => { for (const entry of entries) { if (entry.isIntersecting) { el.index = el.slides.findIndex( slide => slide === entry.target, ) break } } }, { root: el.querySelector('.slides'), rootMargin: '0px', threshold: 0.99, // Ignore rounding errors }, )"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "total"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "nextIndex"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "key"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ModuleCarousel",
+          "tagName": "module-carousel",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "slides",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "Property extracted using fromSelector(). . This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "_uielement": {
+                "extractor": "fromSelector",
+                "config": "[role=\"tabpanel\"]"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "index",
+              "type": {
+                "text": "number"
+              },
+              "description": "Reactive property parsed with asInteger(). Parses attribute as integer with optional fallback. This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "default": "\"<complex-expression>\"",
+              "_uielement": {
+                "parser": "asInteger",
+                "arguments": [
+                  "<complex-expression>"
+                ],
+                "pattern": "Parses attribute as integer with optional fallback",
+                "defaultValue": "<complex-expression>"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "index",
+              "type": {
+                "text": "number"
+              },
+              "description": "HTML attribute for the index property. Parses attribute as integer with optional fallback",
+              "fieldName": "index",
+              "default": "<complex-expression>"
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/module-carousel/module-carousel.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

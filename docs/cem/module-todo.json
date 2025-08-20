@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Component: module-todo",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/components/module-todo/module-todo.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "textbox"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "template"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "list"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "filter"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "value"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "li"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "target",
+          "default": "event.target"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "items"
+        },
+        {
+          "kind": "function",
+          "name": ""
+        },
+        {
+          "kind": "variable",
+          "name": "task"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ModuleTodo",
+          "tagName": "module-todo",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "Property extracted using fromSelector(). . This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "_uielement": {
+                "extractor": "fromSelector",
+                "config": "form-checkbox:not([checked])"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "completed",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "Property extracted using fromSelector(). . This is a reactive property that triggers updates when changed.",
+              "privacy": "public",
+              "_uielement": {
+                "extractor": "fromSelector",
+                "config": "form-checkbox[checked]"
+              }
+            }
+          ],
+          "attributes": [],
+          "events": [],
+          "slots": [],
+          "cssProperties": [],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "docs-src/components/module-todo/module-todo.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
