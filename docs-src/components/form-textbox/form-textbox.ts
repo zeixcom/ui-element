@@ -32,7 +32,7 @@ export default component<FormTextboxProps>(
 	(el, { first, useElement }) => {
 		const input = useElement<HTMLInputElement | HTMLTextAreaElement>(
 			'input, textarea',
-			'Native input or textarea element needed.',
+			'Native input or textarea needed.',
 		)
 
 		// Initialize description with existing content or set up computed signal for remaining characters

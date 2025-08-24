@@ -12,6 +12,7 @@ module-tabgroup {
 			border: 0;
 			border-top: 2px solid transparent;
 			border-bottom-width: 0;
+			border-radius: var(--space-xs) var(--space-xs) 0 0;
 			font-family: var(--font-family-sans);
 			font-size: var(--font-size-s);
 			font-weight: var(--font-weight-bold);

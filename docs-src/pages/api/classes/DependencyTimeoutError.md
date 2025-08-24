@@ -6,7 +6,7 @@
 
 # Class: DependencyTimeoutError
 
-Defined in: [src/core/errors.ts:115](https://github.com/zeixcom/ui-element/blob/1e5ebee179adfc4619d3d0e9d2b864d1e97ba797/src/core/errors.ts#L115)
+Defined in: [src/core/errors.ts:115](https://github.com/zeixcom/ui-element/blob/be16cef9b9f750168be795bfcb3a37afa34e2af7/src/core/errors.ts#L115)
 
 Error when a component's dependencies are not met within a specified timeout
 
@@ -24,7 +24,7 @@ Error when a component's dependencies are not met within a specified timeout
 
 > **new DependencyTimeoutError**(`host`, `missing`): `DependencyTimeoutError`
 
-Defined in: [src/core/errors.ts:116](https://github.com/zeixcom/ui-element/blob/1e5ebee179adfc4619d3d0e9d2b864d1e97ba797/src/core/errors.ts#L116)
+Defined in: [src/core/errors.ts:116](https://github.com/zeixcom/ui-element/blob/be16cef9b9f750168be795bfcb3a37afa34e2af7/src/core/errors.ts#L116)
 
 #### Parameters
 

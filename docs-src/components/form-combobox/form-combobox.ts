@@ -1,7 +1,6 @@
 import {
 	batch,
 	type Component,
-	type Computed,
 	component,
 	effect,
 	fromSelector,
@@ -34,7 +33,7 @@ export default component<FormComboboxProps>(
 		clear: clearMethod(),
 	},
 	(el, { first, all, useElement }) => {
-		const input = useElement('input', 'Native input element needed.')
+		const input = useElement('input', 'Native input needed.')
 
 		// Internal signals
 		const mode = state<FormComboboxMode>('idle')
@@ -43,7 +42,7 @@ export default component<FormComboboxProps>(
 		const showPopup = state(false)
 		const options = fromSelector<HTMLLIElement>(
 			'[role="option"]:not([hidden])',
-		)(el) as Computed<HTMLLIElement[]>
+		)(el)
 		const isExpanded = () => mode.get() === 'editing' && showPopup.get()
 
 		// Internal function
@@ -129,10 +128,10 @@ export default component<FormComboboxProps>(
 				setProperty('ariaExpanded', () => String(isExpanded())),
 				on('change', () => {
 					input.checkValidity()
-					batch(() => {
-						el.value = input.value
-						el.error = input.validationMessage ?? ''
-					})
+					return {
+						value: input.value,
+						error: input.validationMessage ?? '',
+					}
 				}),
 				on('input', () => {
 					batch(() => {

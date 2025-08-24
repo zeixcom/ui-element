@@ -8,7 +8,7 @@
 
 > **ContextType**\<`T`\> = `T` *extends* [`Context`](Context.md)\<infer \_, infer V\> ? `V` : `never`
 
-Defined in: [src/core/context.ts:32](https://github.com/zeixcom/ui-element/blob/1e5ebee179adfc4619d3d0e9d2b864d1e97ba797/src/core/context.ts#L32)
+Defined in: [src/core/context.ts:32](https://github.com/zeixcom/ui-element/blob/be16cef9b9f750168be795bfcb3a37afa34e2af7/src/core/context.ts#L32)
 
 A helper type which can extract a Context value type from a Context type
 

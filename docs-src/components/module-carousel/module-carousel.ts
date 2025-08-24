@@ -9,7 +9,7 @@ import {
 
 export type ModuleCarouselProps = {
 	readonly slides: HTMLElement[]
-	readonly index: number
+	index: number
 }
 
 const wrapAround = (index: number, total: number) => (index + total) % total
@@ -50,9 +50,8 @@ export default component(
 						}
 					},
 					{
-						root: el.querySelector('.slides'),
-						rootMargin: '0px',
-						threshold: 0.99, // Ignore rounding errors
+						root: el,
+						threshold: 0.5,
 					},
 				)
 				el.slides.forEach(slide => {

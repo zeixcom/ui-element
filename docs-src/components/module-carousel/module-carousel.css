@@ -81,7 +81,7 @@ module-carousel {
 			width: 100%;
 			display: flex;
 			justify-content: center;
-			padding-block: var(--space-s);
+			margin-block: var(--space-m);
 
 			[role="tab"] {
 				width: var(--space-l);

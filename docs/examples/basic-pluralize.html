@@ -75,13 +75,12 @@
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.none'</span><span style="color:#F8F8F2">, [</span><span style="color:#A6E22E">show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.count </span><span style="color:#F92672">===</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">)]),</span></span>
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.some'</span><span style="color:#F8F8F2">, [</span><span style="color:#A6E22E">show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.count </span><span style="color:#F92672">></span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">)]),</span></span>
 <span class="line"><span style="color:#F8F8F2">		]</span></span>
-<span class="line"><span style="color:#F92672">		for</span><span style="color:#F8F8F2"> (</span><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> category </span><span style="color:#F92672">of</span><span style="color:#F8F8F2"> categories) {</span></span>
+<span class="line"><span style="color:#F92672">		for</span><span style="color:#F8F8F2"> (</span><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> category </span><span style="color:#F92672">of</span><span style="color:#F8F8F2"> categories)</span></span>
 <span class="line"><span style="color:#F8F8F2">			effects.</span><span style="color:#A6E22E">push</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#A6E22E">				first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">`.</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">category</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">, [</span></span>
 <span class="line"><span style="color:#A6E22E">					show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> pluralizer.</span><span style="color:#A6E22E">select</span><span style="color:#F8F8F2">(el.count) </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> category),</span></span>
 <span class="line"><span style="color:#F8F8F2">				]),</span></span>
 <span class="line"><span style="color:#F8F8F2">			)</span></span>
-<span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> effects</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>

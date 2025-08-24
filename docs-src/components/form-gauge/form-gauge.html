@@ -1,0 +1,12 @@
+<form-gauge
+	thresholds='[{"min":80,"label":"Excellent","color":"var(--color-green-50)"},{"min":50,"label":"Good","color":"var(--color-orange-50)"},{"min":0,"label":"Poor","color":"var(--color-pink-50)"}]'
+>
+	<label>
+		<span class="label">Progress</span>
+		<progress class="visually-hidden" value="79" max="100"></progress>
+		<span class="value"><span></span>%</span>
+		<small></small>
+	</label>
+	<button type="button" class="decrement" aria-label="Decrement">−</button>
+	<button type="button" class="increment" aria-label="Increment">+</button>
+</form-gauge>

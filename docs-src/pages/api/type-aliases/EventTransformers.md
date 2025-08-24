@@ -8,7 +8,7 @@
 
 > **EventTransformers**\<`T`, `E`, `C`\> = `{ [K in keyof HTMLElementEventMap]?: EventTransformer<T, E, C, EventType<K>> }`
 
-Defined in: [src/core/events.ts:36](https://github.com/zeixcom/ui-element/blob/1e5ebee179adfc4619d3d0e9d2b864d1e97ba797/src/core/events.ts#L36)
+Defined in: [src/core/events.ts:36](https://github.com/zeixcom/ui-element/blob/be16cef9b9f750168be795bfcb3a37afa34e2af7/src/core/events.ts#L36)
 
 ## Type Parameters
 

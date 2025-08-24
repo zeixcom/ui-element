@@ -68,7 +68,7 @@ export default component<InputFieldProps>(
 	},
 	(el, { first, useElement }) => {
 		const fns: Effect<InputFieldProps, Component<InputFieldProps>>[] = []
-		const input = useElement('input', 'Native input field needed')
+		const input = useElement('input', 'Native input needed.')
 		const typeNumber = input.type === 'number'
 		const integer = el.hasAttribute('integer')
 		const validationEndpoint = el.getAttribute('validate')

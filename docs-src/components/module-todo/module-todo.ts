@@ -23,7 +23,7 @@ export default component(
 	(el, { first, useElement }) => {
 		const textbox = useElement(
 			'form-textbox',
-			'Needed to enter a new todo item.',
+			'Add <form-textbox> component to enter a new todo item.',
 		)
 		const template = useElement(
 			'template',

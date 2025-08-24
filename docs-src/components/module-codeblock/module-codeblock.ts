@@ -22,19 +22,21 @@ export default component(
 
 		return [
 			toggleAttribute('collapsed'),
-			first('.overlay', [
+			first(
+				'.overlay',
 				on('click', () => {
 					el.collapsed = false
 				}),
-			]),
-			first('.copy', [
+			),
+			first(
+				'.copy',
 				copyToClipboard(code, {
 					success: el.getAttribute('copy-success') || 'Copied!',
 					error:
 						el.getAttribute('copy-success') ||
 						'Error trying to copy to clipboard!',
 				}),
-			]),
+			),
 		]
 	},
 )

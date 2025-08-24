@@ -22,13 +22,12 @@ export default component(
 			first('.none', [show(() => el.count === 0)]),
 			first('.some', [show(() => el.count > 0)]),
 		]
-		for (const category of categories) {
+		for (const category of categories)
 			effects.push(
 				first(`.${category}`, [
 					show(() => pluralizer.select(el.count) === category),
 				]),
 			)
-		}
 		return effects
 	},
 )

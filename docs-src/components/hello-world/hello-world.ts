@@ -16,9 +16,9 @@ export default component(
 		return [
 			first(
 				'input',
-				on('input', ({ target }) => ({
-					name: target.value || fallback,
-				})),
+				on('input', ({ target }) => {
+					el.name = target.value || fallback
+				}),
 				'Needed to input the name.',
 			),
 			first('span', setText('name'), 'Needed to display the name.'),

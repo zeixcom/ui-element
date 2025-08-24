@@ -104,6 +104,74 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
 
 <section>
 
+## Color Scale
+
+<module-demo>
+  <div class="preview">
+    <card-colorscale color="#36a2de" class="medium">
+      <ol role="presentation">
+        <li class="lighten80"></li>
+        <li class="lighten60"></li>
+        <li class="lighten40"></li>
+        <li class="lighten20"></li>
+        <li class="base">
+          <span class="label">
+            <strong>Blue</strong>
+            <small>#36a2de</small>
+          </span>
+        </li>
+        <li class="darken20"></li>
+        <li class="darken40"></li>
+        <li class="darken60"></li>
+        <li class="darken80"></li>
+      </ol>
+    </card-colorscale>
+  </div>
+  <details>
+    <summary>Source Code</summary>
+    <module-lazy src="./examples/card-colorscale.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
+
+</section>
+
+<section>
+
+## Gauge
+
+<module-demo>
+  <div class="preview">
+    <form-gauge thresholds='[{"min":80,"label":"Excellent","color":"var(--color-green-50)"},{"min":50,"label":"Good","color":"var(--color-orange-50)"},{"min":0,"label":"Poor","color":"var(--color-pink-50)"}]'>
+      <label>
+        <span class="label">Progress</span>
+        <progress class="visually-hidden" value="79" max="100"></progress>
+        <span class="value"><span></span>%</span>
+        <small></small>
+      </label>
+      <button type="button" class="decrement" aria-label="Decrement">−</button>
+      <button type="button" class="increment" aria-label="Increment">+</button>
+    </form-gauge>
+  </div>
+  <details>
+    <summary>Source Code</summary>
+    <module-lazy src="./examples/form-gauge.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
+
+</section>
+
+<section>
+
 ## Carousel
 
 Fully accessible and responsive carousel component.
@@ -266,6 +334,107 @@ A combobox component that allows users to select an option from a list.
   <details>
     <summary>Source Code</summary>
     <module-lazy src="./examples/form-combobox.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
+
+</section>
+
+<section>
+
+## Dialog
+
+<module-demo>
+  <div class="preview">
+    <module-dialog>
+     	<basic-button>
+        <button type="button" class="open" aria-haspopup="dialog" aria-controls="example-dialog">Open Dialog</button>
+      </basic-button>
+     	<dialog id="example-dialog" aria-labelledby="example-dialog-title">
+    		<header>
+     			<h2 id="example-dialog-title">Dialog Title</h2>
+     			<button type="button" class="close" aria-label="Close Dialog" autofocus>×</button>
+    		</header>
+    		<module-scrollarea orientation="vertical">
+   			  <form method="dialog">
+    				<div class="content">
+   					  <p>
+    						Forts torterep mansporternme hood, weres mainig foold
+    						low, awayor inged penecke acrief naugui lancenc.
+    						Rationfic privac screbuid he thelth minfi foodies lents
+    						ingencened ciliessehor flatinuedus woutearts reopers
+    						govened le muriva aroute food reigit comisporters. Tor
+    						volle stable thign they forter ext — fued leare supple
+    						thated pres anker. Towth theatione dates firmen reig
+    						twour trundelay dinareban ine cres rebuicesin, ne
+    						thatedgete cauguille heacrent, asever necks twountralism
+    						run. Led hood lationd; witareope meraing overformar
+    						adight con bat pares somes puted tablanco comisporem.
+    						Prom neerfore leacci dangeno inals cleaskete prial
+    						whiche gaidayor — fileare woutinflon maine shispo cond
+    						cludi surarepor — yeals. Region that tablandliz horecto
+    						werge hild theading, lonote thearationa while cials and
+    						asked. Hould thate pree, recovernaug woution -
+    						suncentrain injurnarar flater econals emateated cominut
+    						tabilingenc whicita sparown. Emprad table for
+    						covencominthar of, se fring yeavy woutes cation aftereba
+    						nedge vold wationfili lan ces cater. Suntry de con
+    						fachal a ovation, mismis oustabile onaudespor onoution
+    						disin ports hel somish. Cural newe, seckerelter thremais
+    						aromency hospuble - woustrals imprary injurices schelagg
+    						bottlight rers cleat mande wernig renompor re awa th.
+    						Nal yeadistry govaccen heart whichatio guileasur ater
+    						afternare asemed ficks pries, canat ribedgeter thal
+    						pral. Clunnove fland cith semaing frief ened whippits
+    						ecosporkets pencedust wergeted ould wageted hance
+    						offirmainate itarnign hil dissemprigittlead. Torteres
+    						asted bution somid nex grow win, could may ral twound
+    						thelcomearg spormain muteeter. Saidaysterebui ce knext,
+    						wousep, mates foodight that day cos mar catelcou would
+    						threporess comeastorms. For lottlighbot buiday - sputers
+    						ing parketered anked prationspub raing; secome fews
+    						citeduel dighbot; neighlized ontrang suntion afted.
+    						Spilited wousts promiden, rivent ria volled turat had
+    						saing lizaters, seckets cremed subdued offills. Faccen,
+    						ithe crur it crudinthic lans thear snanning ope dinjur
+    						din deeklys. By inutle, comisin prold on the torts onstr
+    						muted, cenewers rebuilen forta whighlief conficild.
+    						Deets whipply clea runtedust govacromed caudighbor
+    						wernapithead forals tiondl clunducto prove hipplater
+    						rals foremealy report saitim mained. Ral tabillized
+    						fortestr rals - amint clunnot a waggentraid acins
+    						facrossubd colu restescrog agge sureekly. Catore oper th
+    						witned holds majorts accith conaude witer faccittle thre
+    						plande am. Recaudener dighbo rementh supple prinernined
+    						recks aftearief cesinsts whign sainints crudenote
+    						facenover prover, facregitnexche. Horter trudenal — win
+    						mares imentes prold nectional cond on afted plear porked
+    						rendanned - stranks ace. Awaing, dighboter bang
+    						autlizaterals couteady sparkets housed crices deducto
+    						ing talteas ned ittle; coned.
+   					  </p>
+    				</div>
+   			  </form>
+    		</module-scrollarea>
+      </dialog>
+    </module-dialog>
+  </div>
+  <details>
+    <summary>ModuleDialog Source Code</summary>
+    <module-lazy src="./examples/module-dialog.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>ModuleScrollarea Source Code</summary>
+    <module-lazy src="./examples/module-scrollarea.html">
       <card-callout>
         <p class="loading" role="status">Loading...</p>
         <p class="error" role="alert" aria-live="polite"></p>

@@ -9,11 +9,11 @@ import {
 	toggleClass,
 	UNSET,
 } from '../../..'
-import { asURL } from '../../functions/attribute-parser/as-url'
+import { asURL } from '../../functions/parser/as-url'
 import { fetchWithCache } from '../../functions/shared/fetch-with-cache'
 
 export type ModuleLazyProps = {
-	src: string
+	src: { value: string; error: string }
 }
 
 export default component('module-lazy', { src: asURL }, (el, { first }) => {

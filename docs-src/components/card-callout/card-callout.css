@@ -7,7 +7,7 @@ card-callout {
 	line-height: var(--line-height-l);
 	background: var(--color-blue-20);
 	border-left: var(--space-xxs) solid var(--color-blue-50);
-	border-radius: var(--space-xs);
+	border-radius: var(--space-s);
 
 	&::before {
 		position: absolute;

@@ -29,7 +29,7 @@ export default component(
 		),
 	},
 	(el, { all, useElements }) => {
-		const radios = useElements('input')
+		const radios = useElements('input', 'Native radio buttons needed.')
 
 		return [
 			setAttribute('value'),

@@ -8,7 +8,7 @@
 
 > **Reactive**\<`T`, `P`, `E`\> = keyof `P` \| [`Signal`](Signal.md)\<`NonNullable`\<`T`\>\> \| [`LooseExtractor`](LooseExtractor.md)\<`T` \| `null` \| `undefined`, `E`\>
 
-Defined in: [src/core/reactive.ts:26](https://github.com/zeixcom/ui-element/blob/1e5ebee179adfc4619d3d0e9d2b864d1e97ba797/src/core/reactive.ts#L26)
+Defined in: [src/core/reactive.ts:26](https://github.com/zeixcom/ui-element/blob/be16cef9b9f750168be795bfcb3a37afa34e2af7/src/core/reactive.ts#L26)
 
 ## Type Parameters
 
