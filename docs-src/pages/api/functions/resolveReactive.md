@@ -8,7 +8,7 @@
 
 > **resolveReactive**\<`T`, `P`, `E`\>(`reactive`, `host`, `target`, `context?`): `T`
 
-Defined in: [src/core/reactive.ts:75](https://github.com/zeixcom/ui-element/blob/be16cef9b9f750168be795bfcb3a37afa34e2af7/src/core/reactive.ts#L75)
+Defined in: [src/core/reactive.ts:75](https://github.com/zeixcom/ui-element/blob/e094bd31ef74080268e6d1b7a25d938efebeb3ee/src/core/reactive.ts#L75)
 
 ## Type Parameters
 

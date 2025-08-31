@@ -261,6 +261,10 @@
 <span class="line"><span style="color:#E6DB74">				'small'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#A6E22E">				setText</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> qualification.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">().label),</span></span>
 <span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#88846F">			// Enable/disable buttons based on value</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'button.increment'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">>=</span><span style="color:#F8F8F2"> max)),</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'button.decrement'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'disabled'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">&#x3C;=</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">))</span></span>
 <span class="line"><span style="color:#F8F8F2">		]</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>

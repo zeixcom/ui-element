@@ -82,6 +82,10 @@ export default component(
 				'small',
 				setText(() => qualification.get().label),
 			),
+
+			// Enable/disable buttons based on value
+			first('button.increment', setProperty('disabled', () => el.value >= max)),
+			first('button.decrement', setProperty('disabled', () => el.value <= 0))
 		]
 	},
 )

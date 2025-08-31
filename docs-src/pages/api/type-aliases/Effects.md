@@ -8,7 +8,7 @@
 
 > **Effects**\<`P`, `E`\> = [`Effect`](Effect.md)\<`P`, `E`\> \| [`Effect`](Effect.md)\<`P`, `E`\>[] \| `Promise`\<[`Effect`](Effect.md)\<`P`, `E`\>\> \| `Promise`\<[`Effect`](Effect.md)\<`P`, `E`\>[]\>
 
-Defined in: [src/core/reactive.ts:20](https://github.com/zeixcom/ui-element/blob/be16cef9b9f750168be795bfcb3a37afa34e2af7/src/core/reactive.ts#L20)
+Defined in: [src/core/reactive.ts:20](https://github.com/zeixcom/ui-element/blob/e094bd31ef74080268e6d1b7a25d938efebeb3ee/src/core/reactive.ts#L20)
 
 ## Type Parameters
 

@@ -8,7 +8,7 @@
 
 > **ElementEffects**\<`P`\> = \{\<`S`\>(`selector`, `effects`, `required?`): () => `void` \| [`Cleanup`](Cleanup.md); \<`E`\>(`selector`, `effects`, `required?`): () => `void` \| [`Cleanup`](Cleanup.md); \}
 
-Defined in: [src/core/dom.ts:84](https://github.com/zeixcom/ui-element/blob/be16cef9b9f750168be795bfcb3a37afa34e2af7/src/core/dom.ts#L84)
+Defined in: [src/core/dom.ts:84](https://github.com/zeixcom/ui-element/blob/e094bd31ef74080268e6d1b7a25d938efebeb3ee/src/core/dom.ts#L84)
 
 ## Type Parameters
 

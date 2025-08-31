@@ -104,32 +104,105 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
 
 <section>
 
-## Color Scale
+## Pagination
 
 <module-demo>
   <div class="preview">
-    <card-colorscale color="#36a2de" class="medium">
-      <ol role="presentation">
-        <li class="lighten80"></li>
-        <li class="lighten60"></li>
-        <li class="lighten40"></li>
-        <li class="lighten20"></li>
-        <li class="base">
-          <span class="label">
-            <strong>Blue</strong>
-            <small>#36a2de</small>
-          </span>
-        </li>
-        <li class="darken20"></li>
-        <li class="darken40"></li>
-        <li class="darken60"></li>
-        <li class="darken80"></li>
-      </ol>
-    </card-colorscale>
+    <module-pagination max="10" value="1">
+      <div>
+        <label>
+          <span class="visually-hidden">Page</span>
+          <input type="number" name="page" min="1" max="10" value="1" />
+        </label>
+        <span class="value visually-hidden" aria-current="page">1</span> of <span class="max">10</span>
+      </div>
+      <div class="buttons">
+        <button type="button" class="prev" disabled aria-label="Previous page">❮</button>
+        <button type="button" class="next" aria-label="Next page">❯</button>
+      </div>
+    </module-pagination>
   </div>
   <details>
     <summary>Source Code</summary>
+    <module-lazy src="./examples/module-pagination.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
+
+</section>
+
+<section>
+
+## Color Scale and Info
+
+<module-demo>
+  <div class="preview">
+    <module-colorinfo color="#36a2de">
+      <card-colorscale color="#36a2de" class="medium">
+        <ol role="presentation">
+          <li class="lighten80"></li>
+          <li class="lighten60"></li>
+          <li class="lighten40"></li>
+          <li class="lighten20"></li>
+          <li class="base">
+            <span class="label">
+              <strong>Blue</strong>
+              <small>#36a2de</small>
+            </span>
+          </li>
+          <li class="darken20"></li>
+          <li class="darken40"></li>
+          <li class="darken60"></li>
+          <li class="darken80"></li>
+        </ol>
+      </card-colorscale>
+      <details>
+        <summary>
+          <div class="summary">
+            <span class="swatch"></span>
+            <span class="label">
+              <strong>Blue</strong>
+              <small class="value">#36a2de</small>
+            </span>
+          </div>
+        </summary>
+        <div class="details">
+          <dl>
+            <dt>Lightness:</dt>
+            <dd class="lightness"></dd>
+            <dt>Chroma:</dt>
+            <dd class="chroma"></dd>
+            <dt>Hue:</dt>
+            <dd class="hue"></dd>
+          </dl>
+          <dl>
+            <dt>OKLCH:</dt>
+            <dd class="oklch"></dd>
+            <dt>RGB:</dt>
+            <dd class="rgb"></dd>
+            <dt>HSL:</dt>
+            <dd class="hsl"></dd>
+            </dl>
+          </div>
+      </details>
+    </module-colorinfo>
+  </div>
+  <details>
+    <summary>CardColorscale Source Code</summary>
     <module-lazy src="./examples/card-colorscale.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>ModuleColorinfo Source Code</summary>
+    <module-lazy src="./examples/module-colordetails.html">
       <card-callout>
         <p class="loading" role="status">Loading...</p>
         <p class="error" role="alert" aria-live="polite"></p>
