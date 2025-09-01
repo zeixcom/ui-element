@@ -8,4 +8,4 @@
 
 > `const` **DEV\_MODE**: `undefined` \| `string` = `process.env.DEV_MODE`
 
-Defined in: [src/core/util.ts:9](https://github.com/zeixcom/ui-element/blob/e094bd31ef74080268e6d1b7a25d938efebeb3ee/src/core/util.ts#L9)
+Defined in: [src/core/util.ts:9](https://github.com/zeixcom/ui-element/blob/df58db6949960ec0cd0685fb302ff1878e15bf79/src/core/util.ts#L9)

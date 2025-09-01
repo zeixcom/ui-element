@@ -8,7 +8,7 @@
 
 > **component**\<`P`\>(`name`, `init`, `setup`): `void`
 
-Defined in: [src/component.ts:157](https://github.com/zeixcom/ui-element/blob/e094bd31ef74080268e6d1b7a25d938efebeb3ee/src/component.ts#L157)
+Defined in: [src/component.ts:157](https://github.com/zeixcom/ui-element/blob/df58db6949960ec0cd0685fb302ff1878e15bf79/src/component.ts#L157)
 
 Define a component with dependency resolution and setup function (connectedCallback)
 

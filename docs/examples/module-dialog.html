@@ -267,9 +267,11 @@
 <span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">				'button.open'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">					el.open </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> true</span></span>
-<span class="line"><span style="color:#F8F8F2">				}),</span></span>
+<span class="line"><span style="color:#F8F8F2">				[</span></span>
+<span class="line"><span style="color:#A6E22E">					on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">						el.open </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> true</span></span>
+<span class="line"><span style="color:#F8F8F2">					}),</span></span>
+<span class="line"><span style="color:#F8F8F2">				],</span></span>
 <span class="line"><span style="color:#E6DB74">				'Native button to open dialog needed.'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">			),</span></span>
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'dialog'</span><span style="color:#F8F8F2">, [</span></span>
@@ -280,12 +282,11 @@
 <span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (event.key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'Escape'</span><span style="color:#F8F8F2">) el.open </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> false</span></span>
 <span class="line"><span style="color:#F8F8F2">				}),</span></span>
 <span class="line"><span style="color:#F8F8F2">			]),</span></span>
-<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#E6DB74">				'dialog .close'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'dialog .close'</span><span style="color:#F8F8F2">, [</span></span>
 <span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">					el.open </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> false</span></span>
 <span class="line"><span style="color:#F8F8F2">				}),</span></span>
-<span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"><span style="color:#F8F8F2">			]),</span></span>
 <span class="line"><span style="color:#F8F8F2">			() </span><span style="color:#66D9EF;font-style:italic">=></span></span>
 <span class="line"><span style="color:#A6E22E">				effect</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (el.open) {</span></span>

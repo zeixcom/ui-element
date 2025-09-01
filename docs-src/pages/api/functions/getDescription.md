@@ -8,7 +8,7 @@
 
 > **getDescription**\<`E`\>(`selector`): [`Extractor`](../type-aliases/Extractor.md)\<`string`, `E`\>
 
-Defined in: [src/lib/extractors.ts:49](https://github.com/zeixcom/ui-element/blob/e094bd31ef74080268e6d1b7a25d938efebeb3ee/src/lib/extractors.ts#L49)
+Defined in: [src/lib/extractors.ts:49](https://github.com/zeixcom/ui-element/blob/df58db6949960ec0cd0685fb302ff1878e15bf79/src/lib/extractors.ts#L49)
 
 ## Type Parameters
 

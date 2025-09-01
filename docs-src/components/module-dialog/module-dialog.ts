@@ -34,12 +34,11 @@ export default component(
 					if (event.key === 'Escape') el.open = false
 				}),
 			]),
-			first(
-				'dialog .close',
+			first('dialog .close', [
 				on('click', () => {
 					el.open = false
 				}),
-			),
+			]),
 			() =>
 				effect(() => {
 					if (el.open) {

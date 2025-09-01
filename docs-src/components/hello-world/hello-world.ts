@@ -1,4 +1,12 @@
-import { asString, type Component, component, on, setText } from '../../..'
+import {
+	asString,
+	type Component,
+	component,
+	fromDOM,
+	getText,
+	on,
+	setText,
+} from '../../..'
 
 export type HelloWorldProps = {
 	name: string
@@ -6,11 +14,7 @@ export type HelloWorldProps = {
 
 export default component(
 	'hello-world',
-	{
-		name: asString(
-			el => el.querySelector('span')?.textContent?.trim() ?? '',
-		),
-	},
+	{ name: asString(fromDOM({ span: getText() }, '')) },
 	(el, { first }) => {
 		const fallback = el.name
 		return [

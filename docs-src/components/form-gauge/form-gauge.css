@@ -91,6 +91,7 @@ form-gauge {
 
 	&[disabled] {
 		height: calc(0.8 * var(--form-gauge-size));
+		overflow-y: hidden;
 
 		& button {
 			display: none;

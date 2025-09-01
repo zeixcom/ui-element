@@ -4,8 +4,8 @@ import {
 	component,
 	computed,
 	fromDOM,
-	fromEvents,
 	getProperty,
+	on,
 	setAttribute,
 	setProperty,
 	setStyle,
@@ -13,7 +13,7 @@ import {
 } from '../../..'
 
 export type FormGaugeProps = {
-	readonly value: number
+	value: number
 }
 
 export type FormGaugeThreshold = {
@@ -24,29 +24,11 @@ export type FormGaugeThreshold = {
 
 export default component(
 	'form-gauge',
-	{
-		value: fromEvents<number>(
-			'button',
-			{
-				click: ({ target, value }) =>
-					value + (target.classList.contains('decrement') ? -1 : 1),
-				keydown: ({ event, value }) => {
-					const { key } = event as KeyboardEvent
-					if (['ArrowUp', 'ArrowDown', '-', '+'].includes(key)) {
-						event.stopPropagation()
-						event.preventDefault()
-						return (
-							value +
-							(key === 'ArrowDown' || key === '-' ? -1 : 1)
-						)
-					}
-				},
-			},
-			fromDOM({ progress: getProperty('value') }, asInteger()),
-		),
-	},
-	(el, { first }) => {
-		const max = el.querySelector('progress')?.max ?? 100
+	{ value: asInteger(fromDOM({ progress: getProperty('value') }, 0)) },
+	(el, { first, useElement }) => {
+		const max =
+			useElement('progress', 'Add a native <progress> element.').max ??
+			100
 		const thresholds: FormGaugeThreshold[] = (() => {
 			const attr = el.getAttribute('thresholds')
 			if (!attr) return []
@@ -58,9 +40,7 @@ export default component(
 		})()
 		const qualification = computed(
 			() =>
-				thresholds.find(
-					threshold => el.getSignal('value').get() >= threshold.min,
-				) || {
+				thresholds.find(threshold => el.value >= threshold.min) || {
 					label: '',
 					color: 'var(--color-primary)',
 				},
@@ -78,14 +58,31 @@ export default component(
 				() => `${(240 * el.value) / max}deg`,
 			),
 			setStyle('--form-gauge-color', () => qualification.get().color),
-			first(
-				'small',
-				setText(() => qualification.get().label),
-			),
+			first('small', [setText(() => qualification.get().label)]),
 
-			// Enable/disable buttons based on value
-			first('button.increment', setProperty('disabled', () => el.value >= max)),
-			first('button.decrement', setProperty('disabled', () => el.value <= 0))
+			// Event handlers on buttons and their disabled state
+			first('button.increment', [
+				setProperty('disabled', () => el.value >= max),
+				on('click', ({ event }) => {
+					el.value += event.shiftKey ? 10 : 1
+				}),
+			]),
+			first('button.decrement', [
+				setProperty('disabled', () => el.value <= 0),
+				on('click', ({ event }) => {
+					el.value -= event.shiftKey ? 10 : 1
+				}),
+			]),
+			on('keydown', ({ event }) => {
+				const { key, shiftKey } = event
+				if ((key === 'ArrowLeft' || key === '-') && el.value > 0)
+					el.value -= shiftKey ? 10 : 1
+				else if (
+					(key === 'ArrowRight' || key === '+') &&
+					el.value < max
+				)
+					el.value += shiftKey ? 10 : 1
+			}),
 		]
 	},
 )
