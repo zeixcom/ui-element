@@ -8,7 +8,7 @@
 
 > **hasClass**(`token`): [`Extractor`](../type-aliases/Extractor.md)\<`boolean`, `Element`\>
 
-Defined in: [src/lib/extractors.ts:33](https://github.com/zeixcom/ui-element/blob/df58db6949960ec0cd0685fb302ff1878e15bf79/src/lib/extractors.ts#L33)
+Defined in: [src/lib/extractors.ts:33](https://github.com/zeixcom/ui-element/blob/fd6a54ac92f1f6f52f6ec5af9f74d49d0d42ccec/src/lib/extractors.ts#L33)
 
 ## Parameters
 

@@ -8,7 +8,7 @@
 
 > **getText**\<`E`\>(): [`LooseExtractor`](../type-aliases/LooseExtractor.md)\<`string`, `E`\>
 
-Defined in: [src/lib/extractors.ts:4](https://github.com/zeixcom/ui-element/blob/df58db6949960ec0cd0685fb302ff1878e15bf79/src/lib/extractors.ts#L4)
+Defined in: [src/lib/extractors.ts:4](https://github.com/zeixcom/ui-element/blob/fd6a54ac92f1f6f52f6ec5af9f74d49d0d42ccec/src/lib/extractors.ts#L4)
 
 ## Type Parameters
 

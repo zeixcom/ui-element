@@ -1,0 +1,67 @@
+import { type Oklch } from 'culori/fn'
+import { asString, type Component, component, on, pass } from '../../..'
+import { asOklch } from '../../functions/parser/as-oklch'
+import { getStepColor } from '../../functions/shared/get-step-color'
+
+export type ModuleColoreditorProps = {
+	color: Oklch
+	name: string
+}
+
+export default component(
+	'module-coloreditor',
+	{
+		color: asOklch(),
+		name: asString('Blue'),
+	},
+	(el, { all, first }) => {
+		const effects = [
+			on('change', ({ event }) => {
+				const { target } = event
+				if (
+					target instanceof HTMLInputElement &&
+					target.name === 'name'
+				)
+					el.name = target.value
+			}),
+			on('color-change', ({ event }) => ({
+				color: (event as CustomEvent).detail,
+			})),
+			first('form-textbox', [pass({ name: 'name' })]),
+			first('form-colorgraph', [pass({ color: 'color' })]),
+			all('form-colorslider', [pass({ color: 'color' })]),
+			first('card-colorscale', [pass({ color: 'color', name: 'name' })]),
+			first('module-colorinfo.base', [
+				pass({
+					color: 'color',
+					name: () => el.name + ' 50',
+				}),
+			]),
+		]
+		for (let i = 1; i < 5; i++)
+			effects.push(
+				first(`module-colorinfo.lighten${(5 - i) * 20}`, [
+					pass({
+						color: () => getStepColor(el.color, 1 - i / 10),
+						name: () => `${el.name} ${i * 10}`,
+					}),
+				]),
+			)
+		for (let i = 1; i < 5; i++)
+			effects.push(
+				first(`module-colorinfo.darken${i * 20}`, [
+					pass({
+						color: () => getStepColor(el.color, 1 - (i + 5) / 10),
+						name: () => `${el.name} ${(i + 5) * 10}`,
+					}),
+				]),
+			)
+		return effects
+	},
+)
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'module-coloreditor': Component<ModuleColoreditorProps>
+	}
+}

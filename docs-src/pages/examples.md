@@ -137,12 +137,76 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
 
 <section>
 
-## Color Scale and Info
+## Color Editor
 
 <module-demo>
   <div class="preview">
-    <module-colorinfo color="#36a2de">
-      <card-colorscale color="#36a2de" class="medium">
+    <module-coloreditor color="#36a2de" name="Blue">
+      <form-colorgraph color="#143dda">
+        <div class="graph">
+          <canvas width="400" height="400"></canvas>
+          <button class="knob"><span class="visually-hidden">Drag</span></button>
+          <ol role="presentation">
+            <li class="lighten80"></li>
+            <li class="lighten60"></li>
+            <li class="lighten40"></li>
+            <li class="lighten20"></li>
+            <li class="darken20"></li>
+            <li class="darken40"></li>
+            <li class="darken60"></li>
+            <li class="darken80"></li>
+          </ol>
+        </div>
+        <div class="slider" role="slider" tabindex="0" aria-controls="hue">
+          <canvas width="360" height="1"></canvas>
+          <span class="thumb"></span>
+        </div>
+        <div class="lightness">
+          <label for="lightness">Lightness</label>
+          <div class="input">
+            <input id="lightness" name="lightness" type="number" />
+            <span class="unit">%</span>
+          </div>
+          <div class="buttons">
+            <button type="button" class="decrement" aria-label="Decrement">
+              −
+            </button>
+            <button type="button" class="increment" aria-label="Increment">
+              +
+            </button>
+          </div>
+        </div>
+        <div class="chroma">
+          <label for="chroma">Chroma</label>
+          <div class="input">
+            <input id="chroma" name="chroma" type="number" />
+          </div>
+          <div class="buttons">
+            <button type="button" class="decrement" aria-label="Decrement">
+              −
+            </button>
+            <button type="button" class="increment" aria-label="Increment">
+              +
+            </button>
+          </div>
+        </div>
+        <div class="hue">
+          <label for="hue">Hue</label>
+          <div class="input">
+            <input id="hue" name="hue" type="number" />
+            <span class="unit">°</span>
+          </div>
+          <div class="buttons">
+            <button type="button" class="decrement" aria-label="Decrement">
+              −
+            </button>
+            <button type="button" class="increment" aria-label="Increment">
+              +
+            </button>
+          </div>
+        </div>
+      </form-colorgraph>
+      <card-colorscale class="scale tiny" color="#36a2de">
         <ol role="presentation">
           <li class="lighten80"></li>
           <li class="lighten60"></li>
@@ -160,37 +224,370 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
           <li class="darken80"></li>
         </ol>
       </card-colorscale>
-      <details>
-        <summary>
-          <div class="summary">
-            <span class="swatch"></span>
-            <span class="label">
-              <strong>Blue</strong>
-              <small class="value">#36a2de</small>
-            </span>
-          </div>
-        </summary>
-        <div class="details">
-          <dl>
-            <dt>Lightness:</dt>
-            <dd class="lightness"></dd>
-            <dt>Chroma:</dt>
-            <dd class="chroma"></dd>
-            <dt>Hue:</dt>
-            <dd class="hue"></dd>
-          </dl>
-          <dl>
-            <dt>OKLCH:</dt>
-            <dd class="oklch"></dd>
-            <dt>RGB:</dt>
-            <dd class="rgb"></dd>
-            <dt>HSL:</dt>
-            <dd class="hsl"></dd>
-            </dl>
-          </div>
-      </details>
-    </module-colorinfo>
+      <form-textbox class="name">
+        <label for="name-input">Color name</label>
+        <div class="input">
+          <input type="text" id="name-input" name="name" value="Blue" required />
+        </div>
+        <p class="error" aria-live="assertive" id="name-error"></p>
+      </form-textbox>
+      <!-- <form-colorslider class="lightness" color="#36a2de" axis="l">
+        <label for="lightness">Lightness</label>
+        <div class="input">
+          <input id="lightness" name="lightness" type="number" />
+          <span class="unit">%</span>
+        </div>
+        <div class="buttons">
+          <button type="button" class="decrement" aria-label="Decrement">
+            −
+          </button>
+          <button type="button" class="increment" aria-label="Increment">
+            +
+          </button>
+        </div>
+        <div class="slider" role="slider" tabindex="0" aria-controls="hue">
+          <canvas width="360" height="1"></canvas>
+          <span class="thumb"></span>
+        </div>
+      </form-colorslider>
+      <form-colorslider class="chroma" color="#36a2de" axis="c">
+        <label for="chroma">Chroma</label>
+        <div class="input">
+          <input id="chroma" name="chroma" type="number" />
+        </div>
+        <div class="buttons">
+          <button type="button" class="decrement" aria-label="Decrement">
+            −
+          </button>
+          <button type="button" class="increment" aria-label="Increment">
+            +
+          </button>
+        </div>
+        <div class="slider" role="slider" tabindex="0" aria-controls="hue">
+          <canvas width="360" height="1"></canvas>
+          <span class="thumb"></span>
+        </div>
+      </form-colorslider>
+      <form-colorslider class="hue" color="#36a2de" axis="h">
+        <label for="hue">Hue</label>
+        <div class="input">
+          <input id="hue" name="hue" type="number" />
+          <span class="unit">°</span>
+        </div>
+        <div class="buttons">
+          <button type="button" class="decrement" aria-label="Decrement">
+            −
+          </button>
+          <button type="button" class="increment" aria-label="Increment">
+            +
+          </button>
+        </div>
+        <div class="slider" role="slider" tabindex="0" aria-controls="hue">
+          <canvas width="360" height="1"></canvas>
+          <span class="thumb"></span>
+        </div>
+      </form-colorslider> -->
+      <div class="info">
+        <module-colorinfo class="lighten80" color="#36a2de">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong>Blue</strong>
+                  <small class="value">#36a2de</small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd class="lightness"></dd>
+                <dt>Chroma:</dt>
+                <dd class="chroma"></dd>
+                <dt>Hue:</dt>
+                <dd class="hue"></dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd class="oklch"></dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="lighten60" color="#36a2de">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong>Blue</strong>
+                  <small class="value">#36a2de</small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd class="lightness"></dd>
+                <dt>Chroma:</dt>
+                <dd class="chroma"></dd>
+                <dt>Hue:</dt>
+                <dd class="hue"></dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd class="oklch"></dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="lighten40" color="#36a2de">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong>Blue</strong>
+                  <small class="value">#36a2de</small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd class="lightness"></dd>
+                <dt>Chroma:</dt>
+                <dd class="chroma"></dd>
+                <dt>Hue:</dt>
+                <dd class="hue"></dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd class="oklch"></dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="lighten20" color="#36a2de">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong>Blue</strong>
+                  <small class="value">#36a2de</small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd class="lightness"></dd>
+                <dt>Chroma:</dt>
+                <dd class="chroma"></dd>
+                <dt>Hue:</dt>
+                <dd class="hue"></dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd class="oklch"></dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="base" color="#36a2de">
+          <details open>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong>Blue</strong>
+                  <small class="value">#36a2de</small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd class="lightness"></dd>
+                <dt>Chroma:</dt>
+                <dd class="chroma"></dd>
+                <dt>Hue:</dt>
+                <dd class="hue"></dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd class="oklch"></dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="darken20" color="#36a2de">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong>Blue</strong>
+                  <small class="value">#36a2de</small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd class="lightness"></dd>
+                <dt>Chroma:</dt>
+                <dd class="chroma"></dd>
+                <dt>Hue:</dt>
+                <dd class="hue"></dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd class="oklch"></dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="darken40" color="#36a2de">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong>Blue</strong>
+                  <small class="value">#36a2de</small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd class="lightness"></dd>
+                <dt>Chroma:</dt>
+                <dd class="chroma"></dd>
+                <dt>Hue:</dt>
+                <dd class="hue"></dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd class="oklch"></dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="darken60" color="#36a2de">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong>Blue</strong>
+                  <small class="value">#36a2de</small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd class="lightness"></dd>
+                <dt>Chroma:</dt>
+                <dd class="chroma"></dd>
+                <dt>Hue:</dt>
+                <dd class="hue"></dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd class="oklch"></dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="darken80" color="#36a2de">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong>Blue</strong>
+                  <small class="value">#36a2de</small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd class="lightness"></dd>
+                <dt>Chroma:</dt>
+                <dd class="chroma"></dd>
+                <dt>Hue:</dt>
+                <dd class="hue"></dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd class="oklch"></dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+      </div>
+    </module-coloreditor>
   </div>
+  <details>
+    <summary>ModuleColoreditor Source Code</summary>
+    <module-lazy src="./examples/module-coloreditor.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>FormColorgraph Source Code</summary>
+    <module-lazy src="./examples/form-colorgraph.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
   <details>
     <summary>CardColorscale Source Code</summary>
     <module-lazy src="./examples/card-colorscale.html">
@@ -424,75 +821,75 @@ A combobox component that allows users to select an option from a list.
 <module-demo>
   <div class="preview">
     <module-dialog>
-     	<basic-button>
+       <basic-button>
         <button type="button" class="open" aria-haspopup="dialog" aria-controls="example-dialog">Open Dialog</button>
       </basic-button>
-     	<dialog id="example-dialog" aria-labelledby="example-dialog-title">
-    		<header>
-     			<h2 id="example-dialog-title">Dialog Title</h2>
-     			<button type="button" class="close" aria-label="Close Dialog" autofocus>×</button>
-    		</header>
-    		<module-scrollarea orientation="vertical">
-   			  <form method="dialog">
-    				<div class="content">
-   					  <p>
-    						Forts torterep mansporternme hood, weres mainig foold
-    						low, awayor inged penecke acrief naugui lancenc.
-    						Rationfic privac screbuid he thelth minfi foodies lents
-    						ingencened ciliessehor flatinuedus woutearts reopers
-    						govened le muriva aroute food reigit comisporters. Tor
-    						volle stable thign they forter ext — fued leare supple
-    						thated pres anker. Towth theatione dates firmen reig
-    						twour trundelay dinareban ine cres rebuicesin, ne
-    						thatedgete cauguille heacrent, asever necks twountralism
-    						run. Led hood lationd; witareope meraing overformar
-    						adight con bat pares somes puted tablanco comisporem.
-    						Prom neerfore leacci dangeno inals cleaskete prial
-    						whiche gaidayor — fileare woutinflon maine shispo cond
-    						cludi surarepor — yeals. Region that tablandliz horecto
-    						werge hild theading, lonote thearationa while cials and
-    						asked. Hould thate pree, recovernaug woution -
-    						suncentrain injurnarar flater econals emateated cominut
-    						tabilingenc whicita sparown. Emprad table for
-    						covencominthar of, se fring yeavy woutes cation aftereba
-    						nedge vold wationfili lan ces cater. Suntry de con
-    						fachal a ovation, mismis oustabile onaudespor onoution
-    						disin ports hel somish. Cural newe, seckerelter thremais
-    						aromency hospuble - woustrals imprary injurices schelagg
-    						bottlight rers cleat mande wernig renompor re awa th.
-    						Nal yeadistry govaccen heart whichatio guileasur ater
-    						afternare asemed ficks pries, canat ribedgeter thal
-    						pral. Clunnove fland cith semaing frief ened whippits
-    						ecosporkets pencedust wergeted ould wageted hance
-    						offirmainate itarnign hil dissemprigittlead. Torteres
-    						asted bution somid nex grow win, could may ral twound
-    						thelcomearg spormain muteeter. Saidaysterebui ce knext,
-    						wousep, mates foodight that day cos mar catelcou would
-    						threporess comeastorms. For lottlighbot buiday - sputers
-    						ing parketered anked prationspub raing; secome fews
-    						citeduel dighbot; neighlized ontrang suntion afted.
-    						Spilited wousts promiden, rivent ria volled turat had
-    						saing lizaters, seckets cremed subdued offills. Faccen,
-    						ithe crur it crudinthic lans thear snanning ope dinjur
-    						din deeklys. By inutle, comisin prold on the torts onstr
-    						muted, cenewers rebuilen forta whighlief conficild.
-    						Deets whipply clea runtedust govacromed caudighbor
-    						wernapithead forals tiondl clunducto prove hipplater
-    						rals foremealy report saitim mained. Ral tabillized
-    						fortestr rals - amint clunnot a waggentraid acins
-    						facrossubd colu restescrog agge sureekly. Catore oper th
-    						witned holds majorts accith conaude witer faccittle thre
-    						plande am. Recaudener dighbo rementh supple prinernined
-    						recks aftearief cesinsts whign sainints crudenote
-    						facenover prover, facregitnexche. Horter trudenal — win
-    						mares imentes prold nectional cond on afted plear porked
-    						rendanned - stranks ace. Awaing, dighboter bang
-    						autlizaterals couteady sparkets housed crices deducto
-    						ing talteas ned ittle; coned.
-   					  </p>
-    				</div>
-   			  </form>
-    		</module-scrollarea>
+       <dialog id="example-dialog" aria-labelledby="example-dialog-title">
+        <header>
+           <h2 id="example-dialog-title">Dialog Title</h2>
+           <button type="button" class="close" aria-label="Close Dialog" autofocus>×</button>
+        </header>
+        <module-scrollarea orientation="vertical">
+           <form method="dialog">
+            <div class="content">
+               <p>
+                Forts torterep mansporternme hood, weres mainig foold
+                low, awayor inged penecke acrief naugui lancenc.
+                Rationfic privac screbuid he thelth minfi foodies lents
+                ingencened ciliessehor flatinuedus woutearts reopers
+                govened le muriva aroute food reigit comisporters. Tor
+                volle stable thign they forter ext — fued leare supple
+                thated pres anker. Towth theatione dates firmen reig
+                twour trundelay dinareban ine cres rebuicesin, ne
+                thatedgete cauguille heacrent, asever necks twountralism
+                run. Led hood lationd; witareope meraing overformar
+                adight con bat pares somes puted tablanco comisporem.
+                Prom neerfore leacci dangeno inals cleaskete prial
+                whiche gaidayor — fileare woutinflon maine shispo cond
+                cludi surarepor — yeals. Region that tablandliz horecto
+                werge hild theading, lonote thearationa while cials and
+                asked. Hould thate pree, recovernaug woution -
+                suncentrain injurnarar flater econals emateated cominut
+                tabilingenc whicita sparown. Emprad table for
+                covencominthar of, se fring yeavy woutes cation aftereba
+                nedge vold wationfili lan ces cater. Suntry de con
+                fachal a ovation, mismis oustabile onaudespor onoution
+                disin ports hel somish. Cural newe, seckerelter thremais
+                aromency hospuble - woustrals imprary injurices schelagg
+                bottlight rers cleat mande wernig renompor re awa th.
+                Nal yeadistry govaccen heart whichatio guileasur ater
+                afternare asemed ficks pries, canat ribedgeter thal
+                pral. Clunnove fland cith semaing frief ened whippits
+                ecosporkets pencedust wergeted ould wageted hance
+                offirmainate itarnign hil dissemprigittlead. Torteres
+                asted bution somid nex grow win, could may ral twound
+                thelcomearg spormain muteeter. Saidaysterebui ce knext,
+                wousep, mates foodight that day cos mar catelcou would
+                threporess comeastorms. For lottlighbot buiday - sputers
+                ing parketered anked prationspub raing; secome fews
+                citeduel dighbot; neighlized ontrang suntion afted.
+                Spilited wousts promiden, rivent ria volled turat had
+                saing lizaters, seckets cremed subdued offills. Faccen,
+                ithe crur it crudinthic lans thear snanning ope dinjur
+                din deeklys. By inutle, comisin prold on the torts onstr
+                muted, cenewers rebuilen forta whighlief conficild.
+                Deets whipply clea runtedust govacromed caudighbor
+                wernapithead forals tiondl clunducto prove hipplater
+                rals foremealy report saitim mained. Ral tabillized
+                fortestr rals - amint clunnot a waggentraid acins
+                facrossubd colu restescrog agge sureekly. Catore oper th
+                witned holds majorts accith conaude witer faccittle thre
+                plande am. Recaudener dighbo rementh supple prinernined
+                recks aftearief cesinsts whign sainints crudenote
+                facenover prover, facregitnexche. Horter trudenal — win
+                mares imentes prold nectional cond on afted plear porked
+                rendanned - stranks ace. Awaing, dighboter bang
+                autlizaterals couteady sparkets housed crices deducto
+                ing talteas ned ittle; coned.
+               </p>
+            </div>
+           </form>
+        </module-scrollarea>
       </dialog>
     </module-dialog>
   </div>

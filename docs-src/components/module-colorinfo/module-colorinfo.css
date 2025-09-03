@@ -64,6 +64,10 @@ module-colorinfo {
 		display: inline-grid;
 		grid-template-rows: auto auto;
 		gap: var(--space-xxs) var(--space-xs);
+
+		&:last-of-type dt {
+			display: none;
+		}
 	}
 
 	& dt {

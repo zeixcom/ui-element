@@ -10,7 +10,7 @@
 
 > **fromSelector**\<`S`, `C`\>(`selector`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`\>[]\>, `C`\>
 
-Defined in: [src/core/dom.ts:442](https://github.com/zeixcom/ui-element/blob/df58db6949960ec0cd0685fb302ff1878e15bf79/src/core/dom.ts#L442)
+Defined in: [src/core/dom.ts:442](https://github.com/zeixcom/ui-element/blob/fd6a54ac92f1f6f52f6ec5af9f74d49d0d42ccec/src/core/dom.ts#L442)
 
 Produce a computed signal of an array of elements matching a selector
 
@@ -50,7 +50,7 @@ If observed mutations would trigger infinite mutation cycles
 
 > **fromSelector**\<`E`, `C`\>(`selector`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`E`[]\>, `C`\>
 
-Defined in: [src/core/dom.ts:445](https://github.com/zeixcom/ui-element/blob/df58db6949960ec0cd0685fb302ff1878e15bf79/src/core/dom.ts#L445)
+Defined in: [src/core/dom.ts:445](https://github.com/zeixcom/ui-element/blob/fd6a54ac92f1f6f52f6ec5af9f74d49d0d42ccec/src/core/dom.ts#L445)
 
 Produce a computed signal of an array of elements matching a selector
 

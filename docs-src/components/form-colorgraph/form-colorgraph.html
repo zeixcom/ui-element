@@ -1,0 +1,64 @@
+<form-colorgraph color="#143dda">
+	<div class="graph">
+		<canvas width="400" height="400"></canvas>
+		<button class="knob"><span class="visually-hidden">Drag</span></button>
+		<ol role="presentation">
+			<li class="lighten80"></li>
+			<li class="lighten60"></li>
+			<li class="lighten40"></li>
+			<li class="lighten20"></li>
+			<li class="darken20"></li>
+			<li class="darken40"></li>
+			<li class="darken60"></li>
+			<li class="darken80"></li>
+		</ol>
+	</div>
+	<div class="slider" role="slider" tabindex="0" aria-controls="hue">
+		<canvas width="360" height="1"></canvas>
+		<span class="thumb"></span>
+	</div>
+	<div class="lightness">
+		<label for="lightness">Lightness</label>
+		<div class="input">
+			<input id="lightness" name="lightness" type="number" />
+			<span class="unit">%</span>
+		</div>
+		<div class="buttons">
+			<button type="button" class="decrement" aria-label="Decrement">
+				−
+			</button>
+			<button type="button" class="increment" aria-label="Increment">
+				+
+			</button>
+		</div>
+	</div>
+	<div class="chroma">
+		<label for="chroma">Chroma</label>
+		<div class="input">
+			<input id="chroma" name="chroma" type="number" />
+		</div>
+		<div class="buttons">
+			<button type="button" class="decrement" aria-label="Decrement">
+				−
+			</button>
+			<button type="button" class="increment" aria-label="Increment">
+				+
+			</button>
+		</div>
+	</div>
+	<div class="hue">
+		<label for="hue">Hue</label>
+		<div class="input">
+			<input id="hue" name="hue" type="number" />
+			<span class="unit">°</span>
+		</div>
+		<div class="buttons">
+			<button type="button" class="decrement" aria-label="Decrement">
+				−
+			</button>
+			<button type="button" class="increment" aria-label="Increment">
+				+
+			</button>
+		</div>
+	</div>
+</form-colorgraph>

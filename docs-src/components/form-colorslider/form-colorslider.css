@@ -1,0 +1,183 @@
+form-colorslider {
+	display: grid;
+	grid-template-areas: "label label label" "slider input buttons";
+	grid-template-columns: 1fr 6rem auto;
+	column-gap: var(--space-s);
+
+	& label,
+	& button {
+		opacity: var(--opacity-dimmed);
+		transition: opacity var(--transition-short) var(--easing-inout);
+	}
+
+	& label {
+		grid-area: label;
+		display: block;
+		font-size: var(--font-size-s);
+		color: var(--color-text);
+	}
+
+	& input {
+		display: inline-block;
+		box-sizing: border-box;
+		background: var(--color-input);
+		color: var(--color-text);
+		border: none;
+		border-bottom: 1px solid var(--color-border);
+		padding: var(--space-xs) var(--space-xxs);
+		font-size: var(--font-size-m);
+		text-align: right;
+		height: var(--input-height);
+		width: 100%;
+		transition: color var(--transition-short) var(--easing-inout);
+
+		&[aria-invalid="true"] {
+			box-shadow: 0 0 var(--space-xxs) 2px var(--color-error-invalid);
+		}
+
+		&::placeholder {
+			color: var(--color-text);
+			opacity: var(--opacity-translucent);
+		}
+	}
+
+	.input {
+		grid-area: input;
+		display: inline-flex;
+		align-items: center;
+		column-gap: var(--space-xxs);
+	}
+
+	.slider {
+		--color-base: transparent;
+		--slider-width: 400px;
+		--slider-height: 40px;
+		--track-width: 360px;
+		--track-height: 8px;
+		--track-offset: 20px;
+
+		grid-area: slider;
+		position: relative;
+		display: inline-block;
+		height: var(--slider-height);
+		user-select: none;
+		transition: opacity var(--transition-medium) var(--easing-inout);
+	}
+
+	& canvas {
+		width: calc(100% - 2 * var(--track-offset));
+		height: var(--track-height);
+		margin: calc(var(--track-offset) - var(--track-height) / 2)
+			var(--track-offset);
+		user-select: none;
+	}
+
+	.thumb {
+		position: absolute;
+		top: calc(var(--slider-height) / 2);
+		left: var(--track-offset);
+		width: var(--input-height);
+		height: var(--input-height);
+		background-color: var(--color-base);
+		box-sizing: border-box;
+		border: 1px solid var(--color-border);
+		border-radius: 50%;
+		box-shadow: 0 0 var(--space-xxs) 2px var(--color-shadow);
+		cursor: ew-resize;
+		user-select: none;
+		touch-action: none;
+		opacity: var(--opacity-dimmed);
+		transform: translate(
+			calc(var(--input-height) / -2),
+			calc(var(--input-height) / -2)
+		);
+	}
+
+	.tooltip {
+		display: inline-block;
+		font-size: var(--font-size-xs);
+		background: rgba(0 0 0 / var(--opacity-dimmed));
+		color: white;
+		position: absolute;
+		top: calc(-1 * var(--input-height));
+		left: calc(0.5 * var(--input-height) - 2px);
+		transform: translateX(-50%);
+		padding: var(--space-xxs);
+		border-radius: var(--space-xxs);
+		margin-bottom: var(--space-xs);
+	}
+
+	.tooltip:before {
+		position: absolute;
+		bottom: calc(-1 * var(--space-xs));
+		left: calc(50% - var(--space-xs));
+		content: "";
+		width: 0;
+		height: 0;
+		border: var(--space-xs) solid transparent;
+		border-bottom-width: 0;
+		border-top-color: rgba(0 0 0 / var(--opacity-dimmed));
+	}
+
+	.buttons {
+		grid-area: buttons;
+		display: flex;
+		align-items: center;
+	}
+
+	& button {
+		flex-grow: 0;
+		box-sizing: border-box;
+		height: var(--input-height);
+		min-width: var(--input-height);
+		border: 1px solid var(--color-border);
+		background-color: var(--color-secondary);
+		color: var(--color-text);
+		padding: 0 var(--space-s);
+		font-size: var(--font-size-s);
+		line-height: var(--line-height-s);
+		white-space: nowrap;
+		cursor: pointer;
+		transition: all var(--transition-shorter) var(--easing-inout);
+
+		&:disabled {
+			opacity: var(--opacity-translucent);
+		}
+
+		&:not(:disabled) {
+			cursor: pointer;
+			opacity: var(--opacity-solid);
+
+			&:hover {
+				background-color: var(--color-secondary-hover);
+			}
+
+			&:active {
+				background-color: var(--color-secondary-active);
+			}
+		}
+
+		&:first-of-type {
+			border-radius: var(--space-xs) 0 0 var(--space-xs);
+			border-right-width: 0;
+		}
+
+		&:last-of-type {
+			border-radius: 0 var(--space-xs) var(--space-xs) 0;
+		}
+	}
+
+	input::-webkit-textfield-decoration-container {
+		height: 100%;
+	}
+
+	input::-webkit-inner-form-spinbutton {
+		appearance: none;
+	}
+}
+
+@container (width > 45em) {
+	form-colorslider {
+		grid-template-areas: "label label label" "input buttons slider";
+	}
+}

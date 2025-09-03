@@ -17,6 +17,8 @@ export type CardColorscaleProps = {
 	color: Oklch
 }
 
+const CONTRAST_THRESHOLD = 0.71 // lightness
+
 export default component(
 	'card-colorscale',
 	{
@@ -32,7 +34,7 @@ export default component(
 		() =>
 			effect((): undefined => {
 				const props = new Map()
-				const isLight = el.color.l > 0.71
+				const isLight = el.color.l > CONTRAST_THRESHOLD
 				const softStep = isLight ? 0.1 : 0.9
 				props.set('base', formatCss(el.color))
 				props.set('text', isLight ? 'black' : 'white')

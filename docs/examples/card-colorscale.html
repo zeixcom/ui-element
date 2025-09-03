@@ -237,6 +237,8 @@
 <span class="line"><span style="color:#F8F8F2">	color</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Oklch</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> CONTRAST_THRESHOLD </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 0.71</span><span style="color:#88846F"> // lightness</span></span>
+<span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">	'card-colorscale'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
@@ -252,7 +254,7 @@
 <span class="line"><span style="color:#F8F8F2">		() </span><span style="color:#66D9EF;font-style:italic">=></span></span>
 <span class="line"><span style="color:#A6E22E">			effect</span><span style="color:#F8F8F2">(()</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> undefined</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> props </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> Map</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> isLight </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.color.l </span><span style="color:#F92672">></span><span style="color:#AE81FF"> 0.71</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> isLight </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.color.l </span><span style="color:#F92672">></span><span style="color:#F8F8F2"> CONTRAST_THRESHOLD</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> softStep </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> isLight </span><span style="color:#F92672">?</span><span style="color:#AE81FF"> 0.1</span><span style="color:#F92672"> :</span><span style="color:#AE81FF"> 0.9</span></span>
 <span class="line"><span style="color:#F8F8F2">				props.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'base'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">formatCss</span><span style="color:#F8F8F2">(el.color))</span></span>
 <span class="line"><span style="color:#F8F8F2">				props.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'text'</span><span style="color:#F8F8F2">, isLight </span><span style="color:#F92672">?</span><span style="color:#E6DB74"> 'black'</span><span style="color:#F92672"> :</span><span style="color:#E6DB74"> 'white'</span><span style="color:#F8F8F2">)</span></span>
