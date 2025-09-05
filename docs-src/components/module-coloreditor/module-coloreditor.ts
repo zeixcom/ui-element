@@ -1,7 +1,7 @@
 import { type Oklch } from 'culori/fn'
 import { asString, type Component, component, on, pass } from '../../..'
-import { asOklch } from '../../functions/parser/as-oklch'
-import { getStepColor } from '../../functions/shared/get-step-color'
+import { asOklch } from '../../functions/parser/asOklch'
+import { getStepColor } from '../../functions/shared/getStepColor'
 
 export type ModuleColoreditorProps = {
 	color: Oklch
@@ -34,7 +34,7 @@ export default component(
 			first('module-colorinfo.base', [
 				pass({
 					color: 'color',
-					name: () => el.name + ' 50',
+					name: () => el.name + ' 500',
 				}),
 			]),
 		]
@@ -43,7 +43,7 @@ export default component(
 				first(`module-colorinfo.lighten${(5 - i) * 20}`, [
 					pass({
 						color: () => getStepColor(el.color, 1 - i / 10),
-						name: () => `${el.name} ${i * 10}`,
+						name: () => `${el.name} ${i * 100}`,
 					}),
 				]),
 			)
@@ -52,7 +52,7 @@ export default component(
 				first(`module-colorinfo.darken${i * 20}`, [
 					pass({
 						color: () => getStepColor(el.color, 1 - (i + 5) / 10),
-						name: () => `${el.name} ${(i + 5) * 10}`,
+						name: () => `${el.name} ${(i + 5) * 100}`,
 					}),
 				]),
 			)

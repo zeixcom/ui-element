@@ -11,7 +11,7 @@ import {
 	setText,
 	UNSET,
 } from '../../../'
-import { clearEffects, clearMethod } from '../../functions/shared/clear-input'
+import { clearEffects, clearMethod } from '../../functions/shared/clearInput'
 
 /* === Type === */
 

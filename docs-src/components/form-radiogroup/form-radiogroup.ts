@@ -8,7 +8,7 @@ import {
 	setProperty,
 	toggleClass,
 } from '../../..'
-import { manageFocusOnKeydown } from '../../functions/event-listener/manage-focus-on-keydown'
+import { onKeydownManageFocus } from '../../functions/event-listener/onKeydownManageFocus'
 
 export type FormRadiogroupProps = {
 	readonly value: string
@@ -37,7 +37,7 @@ export default component(
 				setProperty('tabIndex', target =>
 					target.value === el.value ? 0 : -1,
 				),
-				...manageFocusOnKeydown(radios, inputs =>
+				...onKeydownManageFocus(radios, inputs =>
 					inputs.findIndex(input => input.checked),
 				),
 			]),

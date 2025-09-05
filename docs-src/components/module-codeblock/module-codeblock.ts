@@ -5,7 +5,7 @@ import {
 	on,
 	toggleAttribute,
 } from '../../..'
-import { copyToClipboard } from '../basic-button/copy-to-clipboard'
+import { copyToClipboard } from '../basic-button/copyToClipboard'
 
 export type ModuleCodeblockProps = {
 	collapsed: boolean

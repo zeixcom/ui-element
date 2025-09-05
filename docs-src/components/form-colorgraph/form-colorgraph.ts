@@ -1,4 +1,4 @@
-import { formatCss, inGamut, type Oklch } from 'culori/fn'
+import { clampChroma, formatCss, inGamut, type Oklch } from 'culori/fn'
 import {
 	type Component,
 	component,
@@ -11,9 +11,9 @@ import {
 	setStyle,
 	state,
 } from '../../..'
-import { asOklch } from '../../functions/parser/as-oklch'
-import { getStepColor } from '../../functions/shared/get-step-color'
-import { rafThrottle } from '../../functions/shared/raf-throttle'
+import { asOklch } from '../../functions/parser/asOklch'
+import { getStepColor } from '../../functions/shared/getStepColor'
+import { rafThrottle } from '../../functions/shared/rafThrottle'
 
 export type FormColorgraphAxis = 'l' | 'c' | 'h'
 
@@ -22,14 +22,23 @@ export type FormColorgraphProps = {
 	lightness: number
 	chroma: number
 	hue: number
-	stepDown: (axis: FormColorgraphAxis, stepDecrement?: number) => void
-	stepUp: (axis: FormColorgraphAxis, stepIncrement?: number) => void
+	stepDown: (axis: FormColorgraphAxis, bigStep?: boolean) => void
+	stepUp: (axis: FormColorgraphAxis, bigStep?: boolean) => void
 }
 
 const inP3Gamut = inGamut('p3')
 const inRGBGamut = inGamut('rgb')
+const fn2Digits = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 })
+	.format
+const fn4Digits = new Intl.NumberFormat('en-US', { maximumFractionDigits: 4 })
+	.format
 const TRACK_OFFSET = 20 // pixels
 const CONTRAST_THRESHOLD = 0.71 // lightness
+const AXIS_MAX = { l: 1, c: 0.4, h: 360 }
+const AXIS_STEP = { l: 0.0025, c: 0.001, h: 1 }
+const AXIS_BIGSTEP = { l: 0.05, c: 0.02, h: 15 }
+const getStep = (axis: FormColorgraphAxis, shiftKey: boolean) =>
+	shiftKey ? AXIS_BIGSTEP[axis] : AXIS_STEP[axis]
 
 export default component<FormColorgraphProps>(
 	'form-colorgraph',
@@ -73,9 +82,6 @@ export default component<FormColorgraphProps>(
 		)
 
 		// Initialize
-		const max = { l: 1, c: 0.4, h: 360 }
-		const step = { l: 0.0025, c: 0.001, h: 1 }
-		const bigStep = { l: 0.05, c: 0.02, h: 15 }
 		lInput.min = '0'
 		lInput.max = '100'
 		cInput.min = '0'
@@ -93,24 +99,21 @@ export default component<FormColorgraphProps>(
 					? el.chroma
 					: el.hue
 		}
+		const commit = (color: Oklch) => {
+			el.color = color
+			emitEvent('color-change', 'color')
+		}
 		const setToNearestStep = (axis: FormColorgraphAxis, value: number) => {
-			const nearest = Math.round(value / step[axis]) * step[axis]
-			if (nearest >= 0 && nearest <= max[axis]) {
-				el.color = { ...el.color, [axis]: nearest }
-				emitEvent('color-change', 'color')
-			}
+			const nearest =
+				Math.round(value / AXIS_STEP[axis]) * AXIS_STEP[axis]
+			if (nearest >= 0 && nearest <= AXIS_MAX[axis])
+				commit({ ...el.color, [axis]: nearest })
 		}
-		el.stepDown = (axis: FormColorgraphAxis, stepDecrement?: number) => {
-			setToNearestStep(
-				axis,
-				getValue(axis) - (stepDecrement ?? step[axis]),
-			)
+		el.stepDown = (axis: FormColorgraphAxis, bigStep = false) => {
+			setToNearestStep(axis, getValue(axis) - getStep(axis, bigStep))
 		}
-		el.stepUp = (axis: FormColorgraphAxis, stepIncrement?: number) => {
-			setToNearestStep(
-				axis,
-				getValue(axis) + (stepIncrement ?? step[axis]),
-			)
+		el.stepUp = (axis: FormColorgraphAxis, bigStep = false) => {
+			setToNearestStep(axis, getValue(axis) + getStep(axis, bigStep))
 		}
 
 		// Internal states
@@ -120,24 +123,13 @@ export default component<FormColorgraphProps>(
 		// Helper functions
 		const formatNumber = (axis: FormColorgraphAxis, value: number) => {
 			const v = axis === 'l' ? value * 100 : value
-			return v.toFixed(
-				Math.min(
-					String(v).split('.')[1]?.length || 0,
-					axis === 'c' ? 4 : 2,
-				),
-			)
+			return axis === 'c' ? fn4Digits(v) : fn2Digits(v)
 		}
-		const commit = (color: Oklch) => {
-			el.color = color
-			emitEvent('color-change', 'color')
-		}
-		const moveKnob = rafThrottle((clientX, clientY, top, left, size) => {
+		const moveKnob = rafThrottle((x, y, top, left, size) => {
 			const color = {
 				...el.color,
-				c: Math.min(Math.max((clientX - left) / size, 0), 1) * max.c,
-				l:
-					(1 - Math.min(Math.max((clientY - top) / size, 0), 1)) *
-					max.l,
+				c: Math.min(Math.max((x - left) / size, 0), 1) * AXIS_MAX.c,
+				l: 1 - Math.min(Math.max((y - top) / size, 0), 1),
 			}
 			if (inP3Gamut(color)) commit(color)
 		})
@@ -145,22 +137,19 @@ export default component<FormColorgraphProps>(
 			x: number,
 			y: number,
 			h: number,
-		): Oklch | undefined => {
-			const newColor: Oklch = {
+			alpha: number = 1,
+		) =>
+			formatCss({
 				mode: 'oklch',
-				l: (1 - y) * max.l,
-				c: x * max.c,
-				h: h,
-			}
-			if (inRGBGamut(newColor)) return newColor
-			if (inP3Gamut(newColor)) newColor.alpha = 0.5
-			else return
-			return newColor
-		}
+				l: 1 - y,
+				c: x * AXIS_MAX.c,
+				h,
+				alpha,
+			})
 		const setStepPosition = (target: HTMLLIElement, color: Oklch): void => {
 			const size = canvasSize.get()
-			const x = Math.round((color.c * size) / max.c)
-			const y = Math.round(((1 - color.l) * size) / max.l)
+			const x = Math.round((color.c * size) / AXIS_MAX.c)
+			const y = Math.round((1 - color.l) * size)
 			target.style.setProperty('background-color', formatCss(color))
 			target.style.setProperty(
 				'border-color',
@@ -169,18 +158,15 @@ export default component<FormColorgraphProps>(
 			target.style.setProperty('left', `${x}px`)
 			target.style.setProperty('top', `${y}px`)
 		}
-		const moveThumb = rafThrottle((clientX, left, width) => {
+		const moveThumb = rafThrottle((x, left, width) => {
 			const color = {
 				...el.color,
-				h: Math.min(Math.max((clientX - left) / width, 0), 1) * max.h,
+				h: Math.min(Math.max((x - left) / width, 0), 1) * AXIS_MAX.h,
 			}
 			if (inP3Gamut(color)) commit(color)
 		})
 		const getHueFromPosition = (x: number): Oklch => {
-			const newColor = {
-				...el.color,
-				h: x * max.h,
-			}
+			const newColor = { ...el.color, h: x * AXIS_MAX.h }
 			if (inRGBGamut(newColor)) return newColor
 			if (inP3Gamut(newColor)) newColor.alpha = 0.5
 			else newColor.alpha = 0
@@ -252,21 +238,56 @@ export default component<FormColorgraphProps>(
 							colorSpace: 'display-p3',
 						})
 						if (!ctx) return
+
 						const h = el.hue
 						const n = Math.round(canvasSize.get())
+						const maxChroma = (
+							l: number,
+							gamut: 'rgb' | 'p3' = 'rgb',
+						) =>
+							clampChroma(
+								{ mode: 'oklch', l, c: AXIS_MAX.c, h },
+								'oklch',
+								gamut,
+							).c / AXIS_MAX.c
+						const gradientStops = (
+							minX: number,
+							maxX: number,
+							y: number,
+							alpha: number = 1,
+						) => [
+							getColorFromPosition(minX, y, h, alpha),
+							getColorFromPosition(maxX, y, h, alpha),
+						]
+						const drawGradient = (
+							minX: number,
+							y: number,
+							gamut: 'rgb' | 'p3' = 'rgb',
+						): [number, string] => {
+							const maxX = maxChroma(1 - y / n, gamut) * n
+							const gradient = ctx.createLinearGradient(
+								minX,
+								0,
+								maxX,
+								0,
+							)
+							const stops = gradientStops(
+								minX / n,
+								maxX / n,
+								y / n,
+								gamut === 'p3' ? 0.5 : 1,
+							)
+							gradient.addColorStop(0, stops[0])
+							gradient.addColorStop(1, stops[1])
+							ctx.fillStyle = gradient
+							ctx.fillRect(minX, y, maxX - minX, 1)
+							return [maxX, stops[1]]
+						}
 						ctx.clearRect(0, 0, n, n)
 						for (let y = 0; y < n; y++) {
-							for (let x = 0; x < n; x++) {
-								const col = formatCss(
-									getColorFromPosition(x / n, y / n, h),
-								)
-								if (col) {
-									ctx.fillStyle = col
-									ctx.fillRect(x, y, 1, 1)
-								} else {
-									x = n
-								}
-							}
+							const [maxRgbX, maxRgbColor] = drawGradient(0, y)
+							if (inP3Gamut(maxRgbColor))
+								drawGradient(maxRgbX, y, 'p3')
 						}
 					}),
 			]),
@@ -276,12 +297,12 @@ export default component<FormColorgraphProps>(
 					setStyle(
 						'top',
 						() =>
-							`${Math.round(((1 - el.lightness) * canvasSize.get()) / max.l)}px`,
+							`${Math.round((1 - el.lightness) * canvasSize.get())}px`,
 					),
 					setStyle(
 						'left',
 						() =>
-							`${Math.round((el.chroma * canvasSize.get()) / max.c)}px`,
+							`${Math.round((el.chroma * canvasSize.get()) / AXIS_MAX.c)}px`,
 					),
 					setStyle('--color-border', () =>
 						el.lightness > CONTRAST_THRESHOLD ? 'black' : 'white',
@@ -337,7 +358,7 @@ export default component<FormColorgraphProps>(
 					setStyle(
 						'left',
 						() =>
-							`${Math.round((el.hue * trackWidth.get()) / max.h) + TRACK_OFFSET}px`,
+							`${Math.round((el.hue * trackWidth.get()) / AXIS_MAX.h) + TRACK_OFFSET}px`,
 					),
 					setStyle('--color-border', () =>
 						el.lightness > CONTRAST_THRESHOLD ? 'black' : 'white',
@@ -350,11 +371,7 @@ export default component<FormColorgraphProps>(
 				[
 					on('click', ({ event, target }) => {
 						const axis = getAxis(target)
-						if (axis)
-							el.stepDown(
-								axis,
-								event.shiftKey ? bigStep[axis] : step[axis],
-							)
+						if (axis) el.stepDown(axis, event.shiftKey)
 					}),
 					setProperty('disabled', target => {
 						const axis = getAxis(target)
@@ -368,15 +385,11 @@ export default component<FormColorgraphProps>(
 				[
 					on('click', ({ event, target }) => {
 						const axis = getAxis(target)
-						if (axis)
-							el.stepUp(
-								axis,
-								event.shiftKey ? bigStep[axis] : step[axis],
-							)
+						if (axis) el.stepUp(axis, event.shiftKey)
 					}),
 					setProperty('disabled', target => {
 						const axis = getAxis(target)
-						return !axis || (el.color[axis] ?? 0) >= max[axis]
+						return !axis || (el.color[axis] ?? 0) >= AXIS_MAX[axis]
 					}),
 				],
 				'Add a <button.increment> to increment a value for a color channel.',
@@ -390,41 +403,34 @@ export default component<FormColorgraphProps>(
 					['+', '-'].includes(key)
 				) {
 					event.preventDefault()
-					event.stopImmediatePropagation()
+					event.stopPropagation()
 					const axis = getAxis(target)
 					if (axis) {
 						if (key === 'ArrowLeft' || key === '-')
-							el.stepDown(
-								axis,
-								shiftKey ? bigStep[axis] : step[axis],
-							)
+							el.stepDown(axis, shiftKey)
 						else if (key === 'ArrowRight' || key === '+')
-							el.stepUp(
-								axis,
-								shiftKey ? bigStep[axis] : step[axis],
-							)
+							el.stepUp(axis, shiftKey)
 					} else {
-						if (key === 'ArrowDown')
-							el.stepDown(
-								'l',
-								shiftKey ? bigStep['l'] : step['l'],
-							)
-						else if (key === 'ArrowUp')
-							el.stepUp('l', shiftKey ? bigStep['l'] : step['l'])
-						else if (key === 'ArrowLeft')
-							el.stepDown(
-								'c',
-								shiftKey ? bigStep['c'] : step['c'],
-							)
-						else if (key === 'ArrowRight')
-							el.stepUp('c', shiftKey ? bigStep['c'] : step['c'])
-						else if (key === '-')
-							el.stepDown(
-								'h',
-								shiftKey ? bigStep['h'] : step['h'],
-							)
-						else if (key === '+')
-							el.stepUp('h', shiftKey ? bigStep['h'] : step['h'])
+						switch (key) {
+							case 'ArrowDown':
+								el.stepDown('l', shiftKey)
+								break
+							case 'ArrowUp':
+								el.stepUp('l', shiftKey)
+								break
+							case 'ArrowLeft':
+								el.stepDown('c', shiftKey)
+								break
+							case 'ArrowRight':
+								el.stepUp('c', shiftKey)
+								break
+							case '-':
+								el.stepDown('h')
+								break
+							case '+':
+								el.stepUp('h')
+								break
+						}
 					}
 				}
 			}),

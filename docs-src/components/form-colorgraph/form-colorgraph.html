@@ -13,7 +13,13 @@
 			<li class="darken80"></li>
 		</ol>
 	</div>
-	<div class="slider" role="slider" tabindex="0" aria-controls="hue">
+	<div
+		class="slider"
+		role="slider"
+		tabindex="0"
+		aria-controls="hue"
+		aria-labelledby="hue-label"
+	>
 		<canvas width="360" height="1"></canvas>
 		<span class="thumb"></span>
 	</div>
@@ -47,7 +53,7 @@
 		</div>
 	</div>
 	<div class="hue">
-		<label for="hue">Hue</label>
+		<label id="hue-label" for="hue">Hue</label>
 		<div class="input">
 			<input id="hue" name="hue" type="number" />
 			<span class="unit">°</span>

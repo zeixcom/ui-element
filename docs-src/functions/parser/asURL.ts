@@ -1,4 +1,4 @@
-import type { Parser } from '../../..'
+import type { Parser } from '../../../types'
 
 export const asURL: Parser<{ value: string; error: string }> = (el, v) => {
 	let value = ''

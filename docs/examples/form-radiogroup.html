@@ -216,7 +216,7 @@
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
 <span class="line"><span style="color:#F8F8F2">	toggleClass,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { manageFocusOnKeydown } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/event-listener/manage-focus-on-keydown'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { onKeydownManageFocus } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/event-listener/onKeydownManageFocus'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">FormRadiogroupProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F92672">	readonly</span><span style="color:#F8F8F2"> value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
@@ -245,7 +245,7 @@
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tabIndex'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
 <span class="line"><span style="color:#F8F8F2">					target.value </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> el.value </span><span style="color:#F92672">?</span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> :</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
-<span class="line"><span style="color:#F92672">				...</span><span style="color:#A6E22E">manageFocusOnKeydown</span><span style="color:#F8F8F2">(radios, </span><span style="color:#FD971F;font-style:italic">inputs</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
+<span class="line"><span style="color:#F92672">				...</span><span style="color:#A6E22E">onKeydownManageFocus</span><span style="color:#F8F8F2">(radios, </span><span style="color:#FD971F;font-style:italic">inputs</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
 <span class="line"><span style="color:#F8F8F2">					inputs.</span><span style="color:#A6E22E">findIndex</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">input</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> input.checked),</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
 <span class="line"><span style="color:#F8F8F2">			]),</span></span>

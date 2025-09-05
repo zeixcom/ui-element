@@ -141,8 +141,33 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
 
 <module-demo>
   <div class="preview">
-    <module-coloreditor color="#36a2de" name="Blue">
-      <form-colorgraph color="#143dda">
+    <module-coloreditor color="oklch(.48 .23 263)" name="Blue">
+      <card-colorscale class="scale tiny">
+        <ol role="presentation">
+          <li class="lighten80"></li>
+          <li class="lighten60"></li>
+          <li class="lighten40"></li>
+          <li class="lighten20"></li>
+          <li class="base">
+            <span class="label">
+              <strong></strong>
+              <small></small>
+            </span>
+          </li>
+          <li class="darken20"></li>
+          <li class="darken40"></li>
+          <li class="darken60"></li>
+          <li class="darken80"></li>
+        </ol>
+      </card-colorscale>
+      <form-textbox class="name">
+        <label for="name-input">Color name</label>
+        <div class="input">
+          <input type="text" id="name-input" name="name" value="Blue" required />
+        </div>
+        <p class="error" aria-live="assertive" id="name-error"></p>
+      </form-textbox>
+      <form-colorgraph>
         <div class="graph">
           <canvas width="400" height="400"></canvas>
           <button class="knob"><span class="visually-hidden">Drag</span></button>
@@ -157,7 +182,7 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
             <li class="darken80"></li>
           </ol>
         </div>
-        <div class="slider" role="slider" tabindex="0" aria-controls="hue">
+        <div class="slider" role="slider" tabindex="0" aria-controls="hue" aria-labelledby="hue-label">
           <canvas width="360" height="1"></canvas>
           <span class="thumb"></span>
         </div>
@@ -191,7 +216,7 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
           </div>
         </div>
         <div class="hue">
-          <label for="hue">Hue</label>
+          <label id="hue-label" for="hue">Hue</label>
           <div class="input">
             <input id="hue" name="hue" type="number" />
             <span class="unit">°</span>
@@ -206,31 +231,6 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
           </div>
         </div>
       </form-colorgraph>
-      <card-colorscale class="scale tiny" color="#36a2de">
-        <ol role="presentation">
-          <li class="lighten80"></li>
-          <li class="lighten60"></li>
-          <li class="lighten40"></li>
-          <li class="lighten20"></li>
-          <li class="base">
-            <span class="label">
-              <strong>Blue</strong>
-              <small>#36a2de</small>
-            </span>
-          </li>
-          <li class="darken20"></li>
-          <li class="darken40"></li>
-          <li class="darken60"></li>
-          <li class="darken80"></li>
-        </ol>
-      </card-colorscale>
-      <form-textbox class="name">
-        <label for="name-input">Color name</label>
-        <div class="input">
-          <input type="text" id="name-input" name="name" value="Blue" required />
-        </div>
-        <p class="error" aria-live="assertive" id="name-error"></p>
-      </form-textbox>
       <!-- <form-colorslider class="lightness" color="#36a2de" axis="l">
         <label for="lightness">Lightness</label>
         <div class="input">
@@ -288,14 +288,14 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
         </div>
       </form-colorslider> -->
       <div class="info">
-        <module-colorinfo class="lighten80" color="#36a2de">
+        <module-colorinfo class="lighten80">
           <details>
             <summary>
               <div class="summary">
                 <span class="swatch"></span>
                 <span class="label">
-                  <strong>Blue</strong>
-                  <small class="value">#36a2de</small>
+                  <strong></strong>
+                  <small class="value"></small>
                 </span>
               </div>
             </summary>
@@ -319,14 +319,14 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
             </div>
           </details>
         </module-colorinfo>
-        <module-colorinfo class="lighten60" color="#36a2de">
+        <module-colorinfo class="lighten60">
           <details>
             <summary>
               <div class="summary">
                 <span class="swatch"></span>
                 <span class="label">
-                  <strong>Blue</strong>
-                  <small class="value">#36a2de</small>
+                  <strong></strong>
+                  <small class="value"></small>
                 </span>
               </div>
             </summary>
@@ -350,14 +350,14 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
             </div>
           </details>
         </module-colorinfo>
-        <module-colorinfo class="lighten40" color="#36a2de">
+        <module-colorinfo class="lighten40">
           <details>
             <summary>
               <div class="summary">
                 <span class="swatch"></span>
                 <span class="label">
-                  <strong>Blue</strong>
-                  <small class="value">#36a2de</small>
+                  <strong></strong>
+                  <small class="value"></small>
                 </span>
               </div>
             </summary>
@@ -381,14 +381,14 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
             </div>
           </details>
         </module-colorinfo>
-        <module-colorinfo class="lighten20" color="#36a2de">
+        <module-colorinfo class="lighten20">
           <details>
             <summary>
               <div class="summary">
                 <span class="swatch"></span>
                 <span class="label">
-                  <strong>Blue</strong>
-                  <small class="value">#36a2de</small>
+                  <strong></strong>
+                  <small class="value"></small>
                 </span>
               </div>
             </summary>
@@ -412,14 +412,14 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
             </div>
           </details>
         </module-colorinfo>
-        <module-colorinfo class="base" color="#36a2de">
+        <module-colorinfo class="base">
           <details open>
             <summary>
               <div class="summary">
                 <span class="swatch"></span>
                 <span class="label">
-                  <strong>Blue</strong>
-                  <small class="value">#36a2de</small>
+                  <strong></strong>
+                  <small class="value"></small>
                 </span>
               </div>
             </summary>
@@ -443,14 +443,14 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
             </div>
           </details>
         </module-colorinfo>
-        <module-colorinfo class="darken20" color="#36a2de">
+        <module-colorinfo class="darken20">
           <details>
             <summary>
               <div class="summary">
                 <span class="swatch"></span>
                 <span class="label">
-                  <strong>Blue</strong>
-                  <small class="value">#36a2de</small>
+                  <strong></strong>
+                  <small class="value"></small>
                 </span>
               </div>
             </summary>
@@ -474,14 +474,14 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
             </div>
           </details>
         </module-colorinfo>
-        <module-colorinfo class="darken40" color="#36a2de">
+        <module-colorinfo class="darken40">
           <details>
             <summary>
               <div class="summary">
                 <span class="swatch"></span>
                 <span class="label">
-                  <strong>Blue</strong>
-                  <small class="value">#36a2de</small>
+                  <strong></strong>
+                  <small class="value"></small>
                 </span>
               </div>
             </summary>
@@ -505,14 +505,14 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
             </div>
           </details>
         </module-colorinfo>
-        <module-colorinfo class="darken60" color="#36a2de">
+        <module-colorinfo class="darken60">
           <details>
             <summary>
               <div class="summary">
                 <span class="swatch"></span>
                 <span class="label">
-                  <strong>Blue</strong>
-                  <small class="value">#36a2de</small>
+                  <strong></strong>
+                  <small class="value"></small>
                 </span>
               </div>
             </summary>
@@ -536,14 +536,14 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
             </div>
           </details>
         </module-colorinfo>
-        <module-colorinfo class="darken80" color="#36a2de">
+        <module-colorinfo class="darken80">
           <details>
             <summary>
               <div class="summary">
                 <span class="swatch"></span>
                 <span class="label">
-                  <strong>Blue</strong>
-                  <small class="value">#36a2de</small>
+                  <strong></strong>
+                  <small class="value"></small>
                 </span>
               </div>
             </summary>

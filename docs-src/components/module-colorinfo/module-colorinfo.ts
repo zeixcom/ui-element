@@ -15,14 +15,17 @@ import {
 	formatRgb,
 	type Oklch,
 } from 'culori/fn'
-import { asOklch } from '../../functions/parser/as-oklch'
+import { asOklch } from '../../functions/parser/asOklch'
 
 export type ModuleColorinfoProps = {
 	name: string
 	color: Oklch
 }
 
-const formatNumber = (value: number, precision = 2) => value.toFixed(precision)
+const fn2Digits = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 })
+	.format
+const fn4Digits = new Intl.NumberFormat('en-US', { maximumFractionDigits: 4 })
+	.format
 
 export default component(
 	'module-colorinfo',
@@ -37,11 +40,11 @@ export default component(
 		]
 		for (const [name, fn] of Object.entries({
 			value: () => formatHex(el.color),
-			lightness: () => `${formatNumber(el.color.l * 100)}%`,
-			chroma: () => formatNumber(el.color.c, 4),
-			hue: () => `${formatNumber(el.color.h ?? 0)}°`,
+			lightness: () => `${fn2Digits(el.color.l * 100)}%`,
+			chroma: () => fn4Digits(el.color.c),
+			hue: () => `${fn2Digits(el.color.h ?? 0)}°`,
 			oklch: () =>
-				`oklch(${formatNumber(el.color.l, 4)} ${formatNumber(el.color.c, 4)} ${formatNumber(el.color.h ?? 0)})`,
+				`oklch(${fn4Digits(el.color.l)} ${fn4Digits(el.color.c)} ${fn2Digits(el.color.h ?? 0)})`,
 			rgb: () => formatRgb(el.color),
 			hsl: () => formatHsl(el.color),
 		})) {
