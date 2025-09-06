@@ -166,6 +166,7 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
           <input type="text" id="name-input" name="name" value="Blue" required />
         </div>
         <p class="error" aria-live="assertive" id="name-error"></p>
+        <p class="description" aria-live="polite" id="name-description"></p>
       </form-textbox>
       <form-colorgraph>
         <div class="graph">
@@ -648,7 +649,7 @@ Fully accessible and responsive carousel component.
 
 <module-demo>
   <div class="preview">
-    <module-carousel style="aspect-ratio: 16 / 9;">
+    <module-carousel>
       <h2 class="visually-hidden">Slides</h2>
       <div class="slides">
         <div id="slide1" role="tabpanel" aria-current="true" style="background: var(--color-blue-20);">

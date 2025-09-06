@@ -1,4 +1,9 @@
-import { type Oklch } from 'culori/fn'
+import {
+	colorsNamed,
+	differenceCiede2000,
+	nearest,
+	type Oklch,
+} from 'culori/fn'
 import { asString, type Component, component, on, pass } from '../../..'
 import { asOklch } from '../../functions/parser/asOklch'
 import { getStepColor } from '../../functions/shared/getStepColor'
@@ -6,6 +11,7 @@ import { getStepColor } from '../../functions/shared/getStepColor'
 export type ModuleColoreditorProps = {
 	color: Oklch
 	name: string
+	nearest: string
 }
 
 export default component(
@@ -13,6 +19,13 @@ export default component(
 	{
 		color: asOklch(),
 		name: asString('Blue'),
+		nearest: (el: HTMLElement & { color: Oklch }) => () => {
+			const nearestNamedColor = nearest(
+				Object.keys(colorsNamed),
+				differenceCiede2000(),
+			)
+			return nearestNamedColor(el.color)[0]
+		},
 	},
 	(el, { all, first }) => {
 		const effects = [
@@ -27,7 +40,12 @@ export default component(
 			on('color-change', ({ event }) => ({
 				color: (event as CustomEvent).detail,
 			})),
-			first('form-textbox', [pass({ name: 'name' })]),
+			first('form-textbox', [
+				pass({
+					value: 'name',
+					description: () => `Nearest named CSS color: ${el.nearest}`,
+				}),
+			]),
 			first('form-colorgraph', [pass({ color: 'color' })]),
 			all('form-colorslider', [pass({ color: 'color' })]),
 			first('card-colorscale', [pass({ color: 'color', name: 'name' })]),

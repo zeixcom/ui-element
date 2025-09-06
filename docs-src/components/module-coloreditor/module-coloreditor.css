@@ -1,12 +1,13 @@
 module-coloreditor {
 	display: grid;
 	grid-template-areas:
-		"scale name info"
-		"graph graph info"
-		"lightness lightness info"
-		"chroma chroma info"
-		"hue hue info";
-	grid-template-columns: auto 3fr 2fr;
+		"scale name"
+		"graph graph"
+		"lightness lightness"
+		"chroma chroma"
+		"hue hue"
+		"info info";
+	grid-template-columns: auto 1fr;
 	column-gap: var(--space-m);
 
 	> form-colorgraph {
@@ -39,5 +40,17 @@ module-coloreditor {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-xs);
+	}
+}
+
+@container (width > 45rem) {
+	module-coloreditor {
+		grid-template-areas:
+			"scale name info"
+			"graph graph info"
+			"lightness lightness info"
+			"chroma chroma info"
+			"hue hue info";
+		grid-template-columns: auto 3fr 2fr;
 	}
 }

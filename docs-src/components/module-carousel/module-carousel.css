@@ -4,11 +4,13 @@ module-carousel {
 	overflow: hidden;
 	margin-block-end: var(--space-l);
 	border-radius: var(--space-s);
+	container: carousel / inline-size;
 
 	.slides {
 		display: flex;
 		align-items: center;
 		width: 100%;
+		min-height: calc(100cqi / (16 / 9));
 		overflow-x: auto;
 		scroll-snap-type: x mandatory;
 		scroll-behavior: smooth;
@@ -18,6 +20,7 @@ module-carousel {
 	[role="tabpanel"] {
 		width: 100%;
 		height: 100%;
+		padding-bottom: var(--input-height);
 		text-align: center;
 		scroll-snap-align: start;
 		flex: 0 0 100%;

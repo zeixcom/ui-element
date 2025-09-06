@@ -2,16 +2,14 @@ form-colorgraph {
 	--color-base: transparent;
 	--step-size: 1.25rem;
 
-	display: grid;
-	grid-template-areas: "graph graph graph" "slider slider slider" "lightness chroma hue";
-	grid-template-columns: 1fr 1fr 1fr;
-	column-gap: var(--space-m);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-s);
 	margin: var(--space-m) 0;
 
-	> .graph {
+	.graph {
 		--canvas-size: 400px;
 
-		grid-area: graph;
 		position: relative;
 		width: 100%;
 		display: block;
@@ -124,18 +122,6 @@ form-colorgraph {
 		}
 	}
 
-	> .lightness {
-		grid-area: lightness;
-	}
-
-	> .chroma {
-		grid-area: chroma;
-	}
-
-	> .hue {
-		grid-area: hue;
-	}
-
 	> .lightness,
 	> .chroma,
 	> .hue {
@@ -197,7 +183,6 @@ form-colorgraph {
 		--track-height: 8px;
 		--track-offset: 20px;
 
-		grid-area: slider;
 		position: relative;
 		display: inline-block;
 		height: var(--slider-height);
@@ -315,5 +300,30 @@ form-colorgraph {
 
 	input::-webkit-inner-form-spinbutton {
 		appearance: none;
+	}
+}
+
+@container (width > 27rem) {
+	form-colorgraph {
+		display: grid;
+		grid-template-areas: "graph graph graph" "slider slider slider" "lightness chroma hue";
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: var(--space-s) var(--space-m);
+
+		.graph {
+			grid-area: graph;
+		}
+		.slider {
+			grid-area: slider;
+		}
+		.lightness {
+			grid-area: lightness;
+		}
+		.chroma {
+			grid-area: chroma;
+		}
+		.hue {
+			grid-area: hue;
+		}
 	}
 }

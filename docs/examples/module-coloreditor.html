@@ -67,6 +67,7 @@
 <span class="line"><span style="color:#F8F8F2">			/></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"error"</span><span style="color:#A6E22E"> aria-live</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"assertive"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"name-error"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">p</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"description"</span><span style="color:#A6E22E"> aria-live</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"polite"</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"name-description"</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">form-textbox</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">form-colorgraph</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"graph"</span><span style="color:#F8F8F2">></span></span>
@@ -440,12 +441,13 @@
 		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">module-coloreditor</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">grid</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	grid-template-areas</span><span style="color:#F8F8F2">:</span></span>
-<span class="line"><span style="color:#E6DB74">		"scale name info"</span></span>
-<span class="line"><span style="color:#E6DB74">		"graph graph info"</span></span>
-<span class="line"><span style="color:#E6DB74">		"lightness lightness info"</span></span>
-<span class="line"><span style="color:#E6DB74">		"chroma chroma info"</span></span>
-<span class="line"><span style="color:#E6DB74">		"hue hue info"</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">	grid-template-columns</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">auto</span><span style="color:#AE81FF"> 3</span><span style="color:#F92672">fr</span><span style="color:#AE81FF"> 2</span><span style="color:#F92672">fr</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#E6DB74">		"scale name"</span></span>
+<span class="line"><span style="color:#E6DB74">		"graph graph"</span></span>
+<span class="line"><span style="color:#E6DB74">		"lightness lightness"</span></span>
+<span class="line"><span style="color:#E6DB74">		"chroma chroma"</span></span>
+<span class="line"><span style="color:#E6DB74">		"hue hue"</span></span>
+<span class="line"><span style="color:#E6DB74">		"info info"</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	grid-template-columns</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">auto</span><span style="color:#AE81FF"> 1</span><span style="color:#F92672">fr</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	column-gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-m);</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">	> form-colorgraph {</span></span>
@@ -480,6 +482,18 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">		gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs);</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">@container</span><span style="color:#F8F8F2"> (width > 45rem) {</span></span>
+<span class="line"><span style="color:#F92672">	module-coloreditor</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		grid-template-areas</span><span style="color:#F8F8F2">:</span></span>
+<span class="line"><span style="color:#E6DB74">			"scale name info"</span></span>
+<span class="line"><span style="color:#E6DB74">			"graph graph info"</span></span>
+<span class="line"><span style="color:#E6DB74">			"lightness lightness info"</span></span>
+<span class="line"><span style="color:#E6DB74">			"chroma chroma info"</span></span>
+<span class="line"><span style="color:#E6DB74">			"hue hue info"</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		grid-template-columns</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">auto</span><span style="color:#AE81FF"> 3</span><span style="color:#F92672">fr</span><span style="color:#AE81FF"> 2</span><span style="color:#F92672">fr</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
 		<basic-button class="copy">
 			<button type="button" class="secondary small">
@@ -495,7 +509,12 @@
 			<span class="file">module-coloreditor.ts</span>
 			<span class="language">ts</span>
 		</p>
-		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { </span><span style="color:#F92672">type</span><span style="color:#F8F8F2"> Oklch } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> 'culori/fn'</span></span>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	colorsNamed,</span></span>
+<span class="line"><span style="color:#F8F8F2">	differenceCiede2000,</span></span>
+<span class="line"><span style="color:#F8F8F2">	nearest,</span></span>
+<span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Oklch,</span></span>
+<span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> 'culori/fn'</span></span>
 <span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asString, </span><span style="color:#F92672">type</span><span style="color:#F8F8F2"> Component, component, on, pass } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
 <span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asOklch } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/parser/asOklch'</span></span>
 <span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { getStepColor } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/shared/getStepColor'</span></span>
@@ -503,13 +522,21 @@
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">ModuleColoreditorProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">	color</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Oklch</span></span>
 <span class="line"><span style="color:#F8F8F2">	name</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
+<span class="line"><span style="color:#F8F8F2">	nearest</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">	'module-coloreditor'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
-<span class="line"><span style="color:#F8F8F2">		color: </span><span style="color:#A6E22E">asOklch</span><span style="color:#F8F8F2">({ mode: </span><span style="color:#E6DB74">'oklch'</span><span style="color:#F8F8F2">, l: </span><span style="color:#AE81FF">0.5</span><span style="color:#F8F8F2">, c: </span><span style="color:#AE81FF">0.232</span><span style="color:#F8F8F2">, h: </span><span style="color:#AE81FF">262</span><span style="color:#F8F8F2"> }),</span></span>
+<span class="line"><span style="color:#F8F8F2">		color: </span><span style="color:#A6E22E">asOklch</span><span style="color:#F8F8F2">(),</span></span>
 <span class="line"><span style="color:#F8F8F2">		name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'Blue'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#A6E22E">		nearest</span><span style="color:#F8F8F2">: (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F92672"> &#x26;</span><span style="color:#F8F8F2"> { color</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Oklch</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> nearestNamedColor </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> nearest</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">				Object.</span><span style="color:#A6E22E">keys</span><span style="color:#F8F8F2">(colorsNamed),</span></span>
+<span class="line"><span style="color:#A6E22E">				differenceCiede2000</span><span style="color:#F8F8F2">(),</span></span>
+<span class="line"><span style="color:#F8F8F2">			)</span></span>
+<span class="line"><span style="color:#F92672">			return</span><span style="color:#A6E22E"> nearestNamedColor</span><span style="color:#F8F8F2">(el.color)[</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">]</span></span>
+<span class="line"><span style="color:#F8F8F2">		},</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> effects </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span></span>
@@ -524,7 +551,12 @@
 <span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'color-change'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> ({</span></span>
 <span class="line"><span style="color:#F8F8F2">				color: (event </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">CustomEvent</span><span style="color:#F8F8F2">).detail,</span></span>
 <span class="line"><span style="color:#F8F8F2">			})),</span></span>
-<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-textbox'</span><span style="color:#F8F8F2">, [</span><span style="color:#A6E22E">pass</span><span style="color:#F8F8F2">({ name: </span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2"> })]),</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-textbox'</span><span style="color:#F8F8F2">, [</span></span>
+<span class="line"><span style="color:#A6E22E">				pass</span><span style="color:#F8F8F2">({</span></span>
+<span class="line"><span style="color:#F8F8F2">					value: </span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">					description</span><span style="color:#F8F8F2">: () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#E6DB74"> `Nearest named CSS color: </span><span style="color:#F92672">${</span><span style="color:#F8F8F2">el.nearest</span><span style="color:#F92672">}</span><span style="color:#E6DB74">`</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">				}),</span></span>
+<span class="line"><span style="color:#F8F8F2">			]),</span></span>
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-colorgraph'</span><span style="color:#F8F8F2">, [</span><span style="color:#A6E22E">pass</span><span style="color:#F8F8F2">({ color: </span><span style="color:#E6DB74">'color'</span><span style="color:#F8F8F2"> })]),</span></span>
 <span class="line"><span style="color:#A6E22E">			all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-colorslider'</span><span style="color:#F8F8F2">, [</span><span style="color:#A6E22E">pass</span><span style="color:#F8F8F2">({ color: </span><span style="color:#E6DB74">'color'</span><span style="color:#F8F8F2"> })]),</span></span>
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'card-colorscale'</span><span style="color:#F8F8F2">, [</span><span style="color:#A6E22E">pass</span><span style="color:#F8F8F2">({ color: </span><span style="color:#E6DB74">'color'</span><span style="color:#F8F8F2">, name: </span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2"> })]),</span></span>
