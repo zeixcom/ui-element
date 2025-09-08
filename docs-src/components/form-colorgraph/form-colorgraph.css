@@ -158,6 +158,14 @@ form-colorgraph {
 		height: var(--input-height);
 		width: 100%;
 		transition: color var(--transition-short) var(--easing-inout);
+		appearance: textfield;
+		-moz-appearance: textfield;
+
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
 
 		&[aria-invalid="true"] {
 			box-shadow: 0 0 var(--space-xxs) 2px var(--color-error-invalid);
@@ -303,7 +311,7 @@ form-colorgraph {
 	}
 }
 
-@container (width > 27rem) {
+@container (width > 18rem) {
 	form-colorgraph {
 		display: grid;
 		grid-template-areas: "graph graph graph" "slider slider slider" "lightness chroma hue";

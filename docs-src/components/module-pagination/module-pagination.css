@@ -20,6 +20,14 @@ module-pagination {
 		height: var(--input-height);
 		transition: color var(--transition-short) var(--easing-inout);
 		text-align: right;
+		appearance: textfield;
+		-moz-appearance: textfield;
+
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
 	}
 
 	.buttons {

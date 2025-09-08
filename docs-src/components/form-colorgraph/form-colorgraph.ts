@@ -84,10 +84,13 @@ export default component<FormColorgraphProps>(
 		// Initialize
 		lInput.min = '0'
 		lInput.max = '100'
+		lInput.step = 'any'
 		cInput.min = '0'
 		cInput.max = '0.4'
+		cInput.step = 'any'
 		hInput.min = '0'
 		hInput.max = '360'
+		hInput.step = 'any'
 		slider.setAttribute('aria-valuemin', '0')
 		slider.setAttribute('aria-valuemax', '360')
 
@@ -395,9 +398,14 @@ export default component<FormColorgraphProps>(
 				'Add a <button.increment> to increment a value for a color channel.',
 			),
 			on('keydown', ({ event }) => {
-				const target = event.target as HTMLElement
-				if (target?.localName === 'input') return
 				const { key, shiftKey } = event
+				const target = event.target as HTMLElement | null
+				if (
+					!target ||
+					(target.localName === 'input' &&
+						(key === 'ArrowLeft' || key === 'ArrowRight'))
+				)
+					return
 				if (
 					key.substring(0, 5) === 'Arrow' ||
 					['+', '-'].includes(key)
@@ -406,10 +414,31 @@ export default component<FormColorgraphProps>(
 					event.stopPropagation()
 					const axis = getAxis(target)
 					if (axis) {
-						if (key === 'ArrowLeft' || key === '-')
+						if (
+							key === 'ArrowLeft' ||
+							key === 'ArrowDown' ||
+							key === '-'
+						)
 							el.stepDown(axis, shiftKey)
-						else if (key === 'ArrowRight' || key === '+')
+						else if (
+							key === 'ArrowRight' ||
+							key === 'ArrowUp' ||
+							key === '+'
+						)
 							el.stepUp(axis, shiftKey)
+					} else if (target.role === 'slider') {
+						if (
+							key === 'ArrowLeft' ||
+							key === 'ArrowDown' ||
+							key === '-'
+						)
+							el.stepDown('h', shiftKey)
+						else if (
+							key === 'ArrowRight' ||
+							key === 'ArrowUp' ||
+							key === '+'
+						)
+							el.stepUp('h', shiftKey)
 					} else {
 						switch (key) {
 							case 'ArrowDown':

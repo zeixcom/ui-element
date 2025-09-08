@@ -296,22 +296,51 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
                 <span class="swatch"></span>
                 <span class="label">
                   <strong></strong>
-                  <small class="value"></small>
+                  <small class="hex"></small>
                 </span>
               </div>
             </summary>
             <div class="details">
               <dl>
                 <dt>Lightness:</dt>
-                <dd class="lightness"></dd>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
                 <dt>Chroma:</dt>
-                <dd class="chroma"></dd>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
                 <dt>Hue:</dt>
-                <dd class="hue"></dd>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
               </dl>
               <dl>
                 <dt>OKLCH:</dt>
-                <dd class="oklch"></dd>
+                <dd lang="en">
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
                 <dt>RGB:</dt>
                 <dd class="rgb"></dd>
                 <dt>HSL:</dt>
@@ -327,22 +356,51 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
                 <span class="swatch"></span>
                 <span class="label">
                   <strong></strong>
-                  <small class="value"></small>
+                  <small class="hex"></small>
                 </span>
               </div>
             </summary>
             <div class="details">
               <dl>
                 <dt>Lightness:</dt>
-                <dd class="lightness"></dd>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
                 <dt>Chroma:</dt>
-                <dd class="chroma"></dd>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
                 <dt>Hue:</dt>
-                <dd class="hue"></dd>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
               </dl>
               <dl>
                 <dt>OKLCH:</dt>
-                <dd class="oklch"></dd>
+                <dd lang="en">
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
                 <dt>RGB:</dt>
                 <dd class="rgb"></dd>
                 <dt>HSL:</dt>
@@ -358,22 +416,51 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
                 <span class="swatch"></span>
                 <span class="label">
                   <strong></strong>
-                  <small class="value"></small>
+                  <small class="hex"></small>
                 </span>
               </div>
             </summary>
             <div class="details">
               <dl>
                 <dt>Lightness:</dt>
-                <dd class="lightness"></dd>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
                 <dt>Chroma:</dt>
-                <dd class="chroma"></dd>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
                 <dt>Hue:</dt>
-                <dd class="hue"></dd>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
               </dl>
               <dl>
                 <dt>OKLCH:</dt>
-                <dd class="oklch"></dd>
+                <dd lang="en">
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
                 <dt>RGB:</dt>
                 <dd class="rgb"></dd>
                 <dt>HSL:</dt>
@@ -389,22 +476,51 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
                 <span class="swatch"></span>
                 <span class="label">
                   <strong></strong>
-                  <small class="value"></small>
+                  <small class="hex"></small>
                 </span>
               </div>
             </summary>
             <div class="details">
               <dl>
                 <dt>Lightness:</dt>
-                <dd class="lightness"></dd>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
                 <dt>Chroma:</dt>
-                <dd class="chroma"></dd>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
                 <dt>Hue:</dt>
-                <dd class="hue"></dd>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
               </dl>
               <dl>
                 <dt>OKLCH:</dt>
-                <dd class="oklch"></dd>
+                <dd lang="en">
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
                 <dt>RGB:</dt>
                 <dd class="rgb"></dd>
                 <dt>HSL:</dt>
@@ -420,22 +536,51 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
                 <span class="swatch"></span>
                 <span class="label">
                   <strong></strong>
-                  <small class="value"></small>
+                  <small class="hex"></small>
                 </span>
               </div>
             </summary>
             <div class="details">
               <dl>
                 <dt>Lightness:</dt>
-                <dd class="lightness"></dd>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
                 <dt>Chroma:</dt>
-                <dd class="chroma"></dd>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
                 <dt>Hue:</dt>
-                <dd class="hue"></dd>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
               </dl>
               <dl>
                 <dt>OKLCH:</dt>
-                <dd class="oklch"></dd>
+                <dd lang="en">
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
                 <dt>RGB:</dt>
                 <dd class="rgb"></dd>
                 <dt>HSL:</dt>
@@ -451,22 +596,51 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
                 <span class="swatch"></span>
                 <span class="label">
                   <strong></strong>
-                  <small class="value"></small>
+                  <small class="hex"></small>
                 </span>
               </div>
             </summary>
             <div class="details">
               <dl>
                 <dt>Lightness:</dt>
-                <dd class="lightness"></dd>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
                 <dt>Chroma:</dt>
-                <dd class="chroma"></dd>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
                 <dt>Hue:</dt>
-                <dd class="hue"></dd>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
               </dl>
               <dl>
                 <dt>OKLCH:</dt>
-                <dd class="oklch"></dd>
+                <dd lang="en">
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
                 <dt>RGB:</dt>
                 <dd class="rgb"></dd>
                 <dt>HSL:</dt>
@@ -482,22 +656,51 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
                 <span class="swatch"></span>
                 <span class="label">
                   <strong></strong>
-                  <small class="value"></small>
+                  <small class="hex"></small>
                 </span>
               </div>
             </summary>
             <div class="details">
               <dl>
                 <dt>Lightness:</dt>
-                <dd class="lightness"></dd>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
                 <dt>Chroma:</dt>
-                <dd class="chroma"></dd>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
                 <dt>Hue:</dt>
-                <dd class="hue"></dd>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
               </dl>
               <dl>
                 <dt>OKLCH:</dt>
-                <dd class="oklch"></dd>
+                <dd lang="en">
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
                 <dt>RGB:</dt>
                 <dd class="rgb"></dd>
                 <dt>HSL:</dt>
@@ -513,22 +716,51 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
                 <span class="swatch"></span>
                 <span class="label">
                   <strong></strong>
-                  <small class="value"></small>
+                  <small class="hex"></small>
                 </span>
               </div>
             </summary>
             <div class="details">
               <dl>
                 <dt>Lightness:</dt>
-                <dd class="lightness"></dd>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
                 <dt>Chroma:</dt>
-                <dd class="chroma"></dd>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
                 <dt>Hue:</dt>
-                <dd class="hue"></dd>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
               </dl>
               <dl>
                 <dt>OKLCH:</dt>
-                <dd class="oklch"></dd>
+                <dd>
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
                 <dt>RGB:</dt>
                 <dd class="rgb"></dd>
                 <dt>HSL:</dt>
@@ -544,22 +776,51 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
                 <span class="swatch"></span>
                 <span class="label">
                   <strong></strong>
-                  <small class="value"></small>
+                  <small class="hex"></small>
                 </span>
               </div>
             </summary>
             <div class="details">
               <dl>
                 <dt>Lightness:</dt>
-                <dd class="lightness"></dd>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
                 <dt>Chroma:</dt>
-                <dd class="chroma"></dd>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
                 <dt>Hue:</dt>
-                <dd class="hue"></dd>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
               </dl>
               <dl>
                 <dt>OKLCH:</dt>
-                <dd class="oklch"></dd>
+                <dd>
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
                 <dt>RGB:</dt>
                 <dd class="rgb"></dd>
                 <dt>HSL:</dt>

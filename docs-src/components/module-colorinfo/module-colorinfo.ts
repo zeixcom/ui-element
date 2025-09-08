@@ -4,6 +4,7 @@ import {
 	component,
 	fromDOM,
 	getText,
+	pass,
 	setStyle,
 	setText,
 } from '../../..'
@@ -20,38 +21,39 @@ import { asOklch } from '../../functions/parser/asOklch'
 export type ModuleColorinfoProps = {
 	name: string
 	color: Oklch
+	readonly css: string
+	readonly hex: string
+	readonly rgb: string
+	readonly hsl: string
+	readonly lightness: number
+	readonly chroma: number
+	readonly hue: number
 }
-
-const fn2Digits = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 })
-	.format
-const fn4Digits = new Intl.NumberFormat('en-US', { maximumFractionDigits: 4 })
-	.format
 
 export default component(
 	'module-colorinfo',
 	{
 		name: asString(fromDOM({ '.label strong': getText() }, '')),
 		color: asOklch(),
+		css: (el: HTMLElement & { color: Oklch }) => () => formatCss(el.color),
+		hex: (el: HTMLElement & { color: Oklch }) => () => formatHex(el.color),
+		rgb: (el: HTMLElement & { color: Oklch }) => () => formatRgb(el.color),
+		hsl: (el: HTMLElement & { color: Oklch }) => () => formatHsl(el.color),
+		lightness: (el: HTMLElement & { color: Oklch }) => () => el.color.l,
+		chroma: (el: HTMLElement & { color: Oklch }) => () => el.color.c,
+		hue: (el: HTMLElement & { color: Oklch }) => () => el.color.h ?? 0,
 	},
-	(el, { first }) => {
-		const fns = [
-			setStyle('--color-swatch', () => formatCss(el.color)),
-			first('.label strong', setText('name')),
-		]
-		for (const [name, fn] of Object.entries({
-			value: () => formatHex(el.color),
-			lightness: () => `${fn2Digits(el.color.l * 100)}%`,
-			chroma: () => fn4Digits(el.color.c),
-			hue: () => `${fn2Digits(el.color.h ?? 0)}°`,
-			oklch: () =>
-				`oklch(${fn4Digits(el.color.l)} ${fn4Digits(el.color.c)} ${fn2Digits(el.color.h ?? 0)})`,
-			rgb: () => formatRgb(el.color),
-			hsl: () => formatHsl(el.color),
-		})) {
-			fns.push(first(`.${name}`, setText(fn)))
-		}
-		return fns
-	},
+	(_, { all, first }) => [
+		setStyle('--color-swatch', 'css'),
+		setStyle('--color-fallback', 'hex'),
+		first('.label strong', setText('name')),
+		first('.hex', setText('hex')),
+		first('.rgb', setText('rgb')),
+		first('.hsl', setText('hsl')),
+		all('.lightness', pass({ value: 'lightness' })),
+		all('.chroma', pass({ value: 'chroma' })),
+		all('.hue', pass({ value: 'hue' })),
+	],
 )
 
 declare global {

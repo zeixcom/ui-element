@@ -1,5 +1,6 @@
 module-colorinfo {
 	--swatch-size: var(--input-height);
+	--color-fallback: transparent;
 
 	display: inline-flex;
 	gap: var(--space-l);
@@ -26,11 +27,23 @@ module-colorinfo {
 	}
 
 	.swatch {
+		position: relative;
 		display: inline-block;
 		background: var(--color-swatch);
 		width: var(--swatch-size);
 		height: var(--swatch-size);
 		border-radius: var(--space-xxs);
+		overflow: hidden;
+
+		&::before {
+			position: absolute;
+			content: "";
+			display: block;
+			width: 0;
+			height: 0;
+			border-left: var(--swatch-size) solid transparent;
+			border-bottom: var(--swatch-size) solid var(--color-fallback);
+		}
 	}
 
 	.label {
