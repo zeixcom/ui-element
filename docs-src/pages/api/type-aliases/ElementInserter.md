@@ -8,7 +8,7 @@
 
 > **ElementInserter**\<`E`\> = `object`
 
-Defined in: [src/lib/effects.ts:47](https://github.com/zeixcom/ui-element/blob/0d1d8bcd09361c4e51ed49d4aa52794efffd13c3/src/lib/effects.ts#L47)
+Defined in: [src/lib/effects.ts:47](https://github.com/zeixcom/ui-element/blob/c6a12f92c4afb67974fd3ace835c4c69a149176a/src/lib/effects.ts#L47)
 
 ## Type Parameters
 
@@ -22,7 +22,7 @@ Defined in: [src/lib/effects.ts:47](https://github.com/zeixcom/ui-element/blob/0
 
 > **create**: (`parent`) => `Element` \| `null`
 
-Defined in: [src/lib/effects.ts:49](https://github.com/zeixcom/ui-element/blob/0d1d8bcd09361c4e51ed49d4aa52794efffd13c3/src/lib/effects.ts#L49)
+Defined in: [src/lib/effects.ts:49](https://github.com/zeixcom/ui-element/blob/c6a12f92c4afb67974fd3ace835c4c69a149176a/src/lib/effects.ts#L49)
 
 #### Parameters
 
@@ -40,7 +40,7 @@ Defined in: [src/lib/effects.ts:49](https://github.com/zeixcom/ui-element/blob/0
 
 > `optional` **position**: `InsertPosition`
 
-Defined in: [src/lib/effects.ts:48](https://github.com/zeixcom/ui-element/blob/0d1d8bcd09361c4e51ed49d4aa52794efffd13c3/src/lib/effects.ts#L48)
+Defined in: [src/lib/effects.ts:48](https://github.com/zeixcom/ui-element/blob/c6a12f92c4afb67974fd3ace835c4c69a149176a/src/lib/effects.ts#L48)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [src/lib/effects.ts:48](https://github.com/zeixcom/ui-element/blob/0
 
 > `optional` **reject**: (`error`) => `void`
 
-Defined in: [src/lib/effects.ts:51](https://github.com/zeixcom/ui-element/blob/0d1d8bcd09361c4e51ed49d4aa52794efffd13c3/src/lib/effects.ts#L51)
+Defined in: [src/lib/effects.ts:51](https://github.com/zeixcom/ui-element/blob/c6a12f92c4afb67974fd3ace835c4c69a149176a/src/lib/effects.ts#L51)
 
 #### Parameters
 
@@ -66,7 +66,7 @@ Defined in: [src/lib/effects.ts:51](https://github.com/zeixcom/ui-element/blob/0
 
 > `optional` **resolve**: (`parent`) => `void`
 
-Defined in: [src/lib/effects.ts:50](https://github.com/zeixcom/ui-element/blob/0d1d8bcd09361c4e51ed49d4aa52794efffd13c3/src/lib/effects.ts#L50)
+Defined in: [src/lib/effects.ts:50](https://github.com/zeixcom/ui-element/blob/c6a12f92c4afb67974fd3ace835c4c69a149176a/src/lib/effects.ts#L50)
 
 #### Parameters
 

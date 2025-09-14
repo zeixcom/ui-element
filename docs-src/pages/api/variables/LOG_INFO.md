@@ -8,4 +8,4 @@
 
 > `const` **LOG\_INFO**: [`LogLevel`](../type-aliases/LogLevel.md) = `'info'`
 
-Defined in: [src/core/util.ts:12](https://github.com/zeixcom/ui-element/blob/0d1d8bcd09361c4e51ed49d4aa52794efffd13c3/src/core/util.ts#L12)
+Defined in: [src/core/util.ts:12](https://github.com/zeixcom/ui-element/blob/c6a12f92c4afb67974fd3ace835c4c69a149176a/src/core/util.ts#L12)

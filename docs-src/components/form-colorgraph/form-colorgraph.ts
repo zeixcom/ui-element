@@ -9,6 +9,7 @@ import {
 	setAttribute,
 	setProperty,
 	setStyle,
+	setText,
 	state,
 } from '../../..'
 import { asOklch } from '../../functions/parser/asOklch'
@@ -19,9 +20,9 @@ export type FormColorgraphAxis = 'l' | 'c' | 'h'
 
 export type FormColorgraphProps = {
 	color: Oklch
-	lightness: number
-	chroma: number
-	hue: number
+	readonly lightness: number
+	readonly chroma: number
+	readonly hue: number
 	stepDown: (axis: FormColorgraphAxis, bigStep?: boolean) => void
 	stepUp: (axis: FormColorgraphAxis, bigStep?: boolean) => void
 }
@@ -52,18 +53,20 @@ export default component<FormColorgraphProps>(
 	},
 	(el, { all, first, useElement }) => {
 		// Required elements
-		const lInput = useElement(
-			'input[name="lightness"]',
-			'Add an <input[name="lightness"]> element to control the lightness of the color.',
-		)
-		const cInput = useElement(
-			'input[name="chroma"]',
-			'Add an <input[name="chroma"]> element to control the chroma of the color.',
-		)
-		const hInput = useElement(
-			'input[name="hue"]',
-			'Add an <input[name="hue"]> element to control the hue of the color.',
-		)
+		const inputs = {
+			l: useElement(
+				'input[name="lightness"]',
+				'Add an <input[name="lightness"]> element to control the lightness of the color.',
+			),
+			c: useElement(
+				'input[name="chroma"]',
+				'Add an <input[name="chroma"]> element to control the chroma of the color.',
+			),
+			h: useElement(
+				'input[name="hue"]',
+				'Add an <input[name="hue"]> element to control the hue of the color.',
+			),
+		}
 		const graph = useElement(
 			'.graph',
 			'Add a <.graph> element as a container for the color graph.',
@@ -82,17 +85,22 @@ export default component<FormColorgraphProps>(
 		)
 
 		// Initialize
-		lInput.min = '0'
-		lInput.max = '100'
-		lInput.step = 'any'
-		cInput.min = '0'
-		cInput.max = '0.4'
-		cInput.step = 'any'
-		hInput.min = '0'
-		hInput.max = '360'
-		hInput.step = 'any'
+		for (const [key, input] of Object.entries(inputs)) {
+			input.min = '0'
+			input.max = key === 'l' ? '100' : key === 'c' ? '0.4' : '360'
+			input.step = 'any'
+		}
 		slider.setAttribute('aria-valuemin', '0')
 		slider.setAttribute('aria-valuemax', '360')
+
+		// Internal states
+		const canvasSize = state(graph.getBoundingClientRect().width)
+		const trackWidth = computed(() => canvasSize.get() - 2 * TRACK_OFFSET)
+		const errors = {
+			l: state(''),
+			c: state(''),
+			h: state(''),
+		}
 
 		// Step methods
 		const getValue = (axis: FormColorgraphAxis) => {
@@ -104,13 +112,22 @@ export default component<FormColorgraphProps>(
 		}
 		const commit = (color: Oklch) => {
 			el.color = color
+			for (const key of ['l', 'c', 'h']) {
+				errors[key].set('')
+			}
 			emitEvent('color-change', 'color')
 		}
 		const setToNearestStep = (axis: FormColorgraphAxis, value: number) => {
 			const nearest =
 				Math.round(value / AXIS_STEP[axis]) * AXIS_STEP[axis]
-			if (nearest >= 0 && nearest <= AXIS_MAX[axis])
-				commit({ ...el.color, [axis]: nearest })
+			if (nearest < 0 || nearest > AXIS_MAX[axis]) return
+			const color = { ...el.color, [axis]: nearest }
+			if (inP3Gamut(color)) {
+				commit(color)
+			} else {
+				inputs[axis].setCustomValidity('Color out of gamut')
+				errors[axis].set(inputs[axis].validationMessage)
+			}
 		}
 		el.stepDown = (axis: FormColorgraphAxis, bigStep = false) => {
 			setToNearestStep(axis, getValue(axis) - getStep(axis, bigStep))
@@ -118,10 +135,6 @@ export default component<FormColorgraphProps>(
 		el.stepUp = (axis: FormColorgraphAxis, bigStep = false) => {
 			setToNearestStep(axis, getValue(axis) + getStep(axis, bigStep))
 		}
-
-		// Internal states
-		const canvasSize = state(graph.getBoundingClientRect().width)
-		const trackWidth = computed(() => canvasSize.get() - 2 * TRACK_OFFSET)
 
 		// Helper functions
 		const formatNumber = (axis: FormColorgraphAxis, value: number) => {
@@ -199,6 +212,16 @@ export default component<FormColorgraphProps>(
 				}
 			},
 			all('input', [
+				setProperty('ariaInvalid', target => {
+					const axis = getAxis(target)
+					return axis ? String(!!errors[axis].get()) : 'false'
+				}),
+				setAttribute('aria-errormessage', target => {
+					const axis = getAxis(target)
+					return axis && errors[axis].get()
+						? `${target.id}-error`
+						: null
+				}),
 				setProperty('value', target => {
 					const axis = getAxis(target)
 					return axis ? formatNumber(axis, el.color[axis] ?? 0) : '0'
@@ -207,8 +230,22 @@ export default component<FormColorgraphProps>(
 					const axis = getAxis(target)
 					if (!axis) return
 					const value = target.valueAsNumber
-					const newColor = { ...el.color, [axis]: value }
-					if (inP3Gamut(newColor)) commit(newColor)
+					const newColor = {
+						...el.color,
+						[axis]: axis === 'l' ? value / 100 : value,
+					}
+					if (inP3Gamut(newColor)) {
+						commit(newColor)
+					} else {
+						target.setCustomValidity('Color out of gamut')
+						errors[axis].set(target.validationMessage)
+					}
+				}),
+			]),
+			all('.error', [
+				setText(target => {
+					const axis = getAxis(target)
+					return axis ? errors[axis].get() : ''
 				}),
 			]),
 			first('.graph', [

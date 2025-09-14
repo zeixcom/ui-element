@@ -8,7 +8,7 @@
 
 > **pass**\<`P`, `Q`\>(`reactives`): [`Effect`](../type-aliases/Effect.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`Q`\>\>
 
-Defined in: [src/lib/effects.ts:540](https://github.com/zeixcom/ui-element/blob/0d1d8bcd09361c4e51ed49d4aa52794efffd13c3/src/lib/effects.ts#L540)
+Defined in: [src/lib/effects.ts:540](https://github.com/zeixcom/ui-element/blob/c6a12f92c4afb67974fd3ace835c4c69a149176a/src/lib/effects.ts#L540)
 
 Effect for passing reactive values to a descendant UIElement component.
 

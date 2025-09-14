@@ -163,7 +163,7 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
       <form-textbox class="name">
         <label for="name-input">Color name</label>
         <div class="input">
-          <input type="text" id="name-input" name="name" value="Blue" required />
+          <input type="text" id="name-input" name="name" value="Blue" autocomplete="off" required />
         </div>
         <p class="error" aria-live="assertive" id="name-error"></p>
         <p class="description" aria-live="polite" id="name-description"></p>
@@ -194,13 +194,14 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
             <span class="unit">%</span>
           </div>
           <div class="buttons">
-            <button type="button" class="decrement" aria-label="Decrement">
+            <button type="button" class="decrement" aria-label="Decrement lightness">
               −
             </button>
-            <button type="button" class="increment" aria-label="Increment">
+            <button type="button" class="increment" aria-label="Increment lightness">
               +
             </button>
           </div>
+          <p class="error" aria-live="assertive" id="lightness-error"></p>
         </div>
         <div class="chroma">
           <label for="chroma">Chroma</label>
@@ -208,13 +209,14 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
             <input id="chroma" name="chroma" type="number" />
           </div>
           <div class="buttons">
-            <button type="button" class="decrement" aria-label="Decrement">
+            <button type="button" class="decrement" aria-label="Decrement chroma">
               −
             </button>
-            <button type="button" class="increment" aria-label="Increment">
+            <button type="button" class="increment" aria-label="Increment chroma">
               +
             </button>
           </div>
+          <p class="error" aria-live="assertive" id="chroma-error"></p>
         </div>
         <div class="hue">
           <label id="hue-label" for="hue">Hue</label>
@@ -223,13 +225,14 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
             <span class="unit">°</span>
           </div>
           <div class="buttons">
-            <button type="button" class="decrement" aria-label="Decrement">
+            <button type="button" class="decrement" aria-label="Decrement hue">
               −
             </button>
-            <button type="button" class="increment" aria-label="Increment">
+            <button type="button" class="increment" aria-label="Increment hue">
               +
             </button>
           </div>
+          <p class="error" aria-live="assertive" id="hue-error"></p>
         </div>
       </form-colorgraph>
       <!-- <form-colorslider class="lightness" color="#36a2de" axis="l">

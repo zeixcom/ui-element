@@ -19,7 +19,7 @@ module-carousel {
 
 	[role="tabpanel"] {
 		width: 100%;
-		height: 100%;
+		height: calc(100% - var(--input-height));
 		padding-bottom: var(--input-height);
 		text-align: center;
 		scroll-snap-align: start;

@@ -101,32 +101,6 @@ form-colorslider {
 		);
 	}
 
-	.tooltip {
-		display: inline-block;
-		font-size: var(--font-size-xs);
-		background: rgba(0 0 0 / var(--opacity-dimmed));
-		color: white;
-		position: absolute;
-		top: calc(-1 * var(--input-height));
-		left: calc(0.5 * var(--input-height) - 2px);
-		transform: translateX(-50%);
-		padding: var(--space-xxs);
-		border-radius: var(--space-xxs);
-		margin-bottom: var(--space-xs);
-	}
-
-	.tooltip:before {
-		position: absolute;
-		bottom: calc(-1 * var(--space-xs));
-		left: calc(50% - var(--space-xs));
-		content: "";
-		width: 0;
-		height: 0;
-		border: var(--space-xs) solid transparent;
-		border-bottom-width: 0;
-		border-top-color: rgba(0 0 0 / var(--opacity-dimmed));
-	}
-
 	.buttons {
 		grid-area: buttons;
 		display: flex;
@@ -173,14 +147,6 @@ form-colorslider {
 		&:last-of-type {
 			border-radius: 0 var(--space-xs) var(--space-xs) 0;
 		}
-	}
-
-	input::-webkit-textfield-decoration-container {
-		height: 100%;
-	}
-
-	input::-webkit-inner-form-spinbutton {
-		appearance: none;
 	}
 }
 

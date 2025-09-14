@@ -30,13 +30,22 @@
 			<span class="unit">%</span>
 		</div>
 		<div class="buttons">
-			<button type="button" class="decrement" aria-label="Decrement">
+			<button
+				type="button"
+				class="decrement"
+				aria-label="Decrement lightness"
+			>
 				−
 			</button>
-			<button type="button" class="increment" aria-label="Increment">
+			<button
+				type="button"
+				class="increment"
+				aria-label="Increment lightness"
+			>
 				+
 			</button>
 		</div>
+		<p class="error" aria-live="assertive" id="lightness-error"></p>
 	</div>
 	<div class="chroma">
 		<label for="chroma">Chroma</label>
@@ -44,13 +53,22 @@
 			<input id="chroma" name="chroma" type="number" />
 		</div>
 		<div class="buttons">
-			<button type="button" class="decrement" aria-label="Decrement">
+			<button
+				type="button"
+				class="decrement"
+				aria-label="Decrement chroma"
+			>
 				−
 			</button>
-			<button type="button" class="increment" aria-label="Increment">
+			<button
+				type="button"
+				class="increment"
+				aria-label="Increment chroma"
+			>
 				+
 			</button>
 		</div>
+		<p class="error" aria-live="assertive" id="chroma-error"></p>
 	</div>
 	<div class="hue">
 		<label id="hue-label" for="hue">Hue</label>
@@ -59,12 +77,13 @@
 			<span class="unit">°</span>
 		</div>
 		<div class="buttons">
-			<button type="button" class="decrement" aria-label="Decrement">
+			<button type="button" class="decrement" aria-label="Decrement hue">
 				−
 			</button>
-			<button type="button" class="increment" aria-label="Increment">
+			<button type="button" class="increment" aria-label="Increment hue">
 				+
 			</button>
 		</div>
+		<p class="error" aria-live="assertive" id="hue-error"></p>
 	</div>
 </form-colorgraph>

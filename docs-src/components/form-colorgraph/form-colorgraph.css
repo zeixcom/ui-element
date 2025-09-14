@@ -46,31 +46,6 @@ form-colorgraph {
 			}
 		}
 
-		/* .knob span {
-			display: inline-block;
-			background: rgba(0 0 0 / var(--opacity-dimmed));
-			color: white;
-			font-size: var(--font-size-xs);
-			position: absolute;
-			left: var(--input-height);
-			padding: var(--space-xxs);
-			border-radius: var(--space-xxs);
-			transform: translateY(-50%);
-			margin-left: var(--space-xs);
-		}
-
-		.knob span:before {
-			position: absolute;
-			left: calc(-1 * var(--space-xs));
-			top: calc(50% - var(--space-xs));
-			content: "";
-			width: 0;
-			height: 0;
-			border: var(--space-xs) solid transparent;
-			border-left-width: 0;
-			border-right-color: rgba(0 0 0 / var(--opacity-dimmed));
-		} */
-
 		& ol {
 			list-style: none;
 			margin: 0;
@@ -128,8 +103,9 @@ form-colorgraph {
 		display: grid;
 		align-items: center;
 		column-gap: var(--space-xs);
-		grid-template-areas: "label buttons" "input buttons";
+		grid-template-areas: "label label" "input buttons" "error error";
 		grid-template-columns: 1fr auto;
+		max-width: 12rem;
 	}
 
 	& label,
@@ -143,6 +119,7 @@ form-colorgraph {
 		display: block;
 		font-size: var(--font-size-s);
 		color: var(--color-text);
+		margin-bottom: var(--space-xxs);
 	}
 
 	& input {
@@ -181,7 +158,18 @@ form-colorgraph {
 		grid-area: input;
 		display: inline-flex;
 		align-items: center;
-		column-gap: var(--space-xxs);
+	}
+
+	.error {
+		grid-area: error;
+		margin: var(--space-xs) 0 0;
+		font-size: var(--font-size-xs);
+		line-height: var(--line-height-s);
+		color: color-mix(in srgb, var(--color-text) 50%, var(--color-error));
+
+		&:empty {
+			display: none;
+		}
 	}
 
 	.slider {
@@ -227,36 +215,9 @@ form-colorgraph {
 		);
 	}
 
-	/* .tooltip {
-		display: inline-block;
-		font-size: var(--font-size-xs);
-		background: rgba(0 0 0 / var(--opacity-dimmed));
-		color: white;
-		position: absolute;
-		top: calc(-1 * var(--input-height));
-		left: calc(0.5 * var(--input-height) - 2px);
-		transform: translateX(-50%);
-		padding: var(--space-xxs);
-		border-radius: var(--space-xxs);
-		margin-bottom: var(--space-xs);
-	}
-
-	.tooltip:before {
-		position: absolute;
-		bottom: calc(-1 * var(--space-xs));
-		left: calc(50% - var(--space-xs));
-		content: "";
-		width: 0;
-		height: 0;
-		border: var(--space-xs) solid transparent;
-		border-bottom-width: 0;
-		border-top-color: rgba(0 0 0 / var(--opacity-dimmed));
-	} */
-
 	.buttons {
 		grid-area: buttons;
 		display: flex;
-		flex-direction: column-reverse;
 		align-items: center;
 
 		& button {
@@ -292,31 +253,24 @@ form-colorgraph {
 			}
 
 			&:first-of-type {
-				border-radius: 0 0 50% 50%;
-				border-top-width: 0;
+				border-radius: var(--space-xs) 0 0 var(--space-xs);
+				border-right-width: 0;
 			}
 
 			&:last-of-type {
-				border-radius: 50% 50% 0 0;
+				border-radius: 0 var(--space-xs) var(--space-xs) 0;
 			}
 		}
 	}
-
-	input::-webkit-textfield-decoration-container {
-		height: 100%;
-	}
-
-	input::-webkit-inner-form-spinbutton {
-		appearance: none;
-	}
 }
 
-@container (width > 18rem) {
+@container (width > 27rem) {
 	form-colorgraph {
 		display: grid;
 		grid-template-areas: "graph graph graph" "slider slider slider" "lightness chroma hue";
 		grid-template-columns: 1fr 1fr 1fr;
 		gap: var(--space-s) var(--space-m);
+		align-items: start;
 
 		.graph {
 			grid-area: graph;

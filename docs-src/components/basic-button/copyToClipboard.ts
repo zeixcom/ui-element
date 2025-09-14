@@ -12,7 +12,7 @@ export const copyToClipboard =
 		container: HTMLElement,
 		messages: { [COPY_ERROR]?: string; [COPY_SUCCESS]?: string },
 	): Effect<ComponentProps, Component<BasicButtonProps>> =>
-	(host, button) =>
+	(_, button) =>
 		on('click', () => {
 			const label = button.label
 			let status: CopyStatus = COPY_SUCCESS
@@ -38,4 +38,4 @@ export const copyToClipboard =
 					status === COPY_SUCCESS ? 1000 : 3000,
 				)
 			})()
-		})(host, button)
+		})(_, button)

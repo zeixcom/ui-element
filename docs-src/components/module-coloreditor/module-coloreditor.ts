@@ -11,21 +11,27 @@ import { getStepColor } from '../../functions/shared/getStepColor'
 export type ModuleColoreditorProps = {
 	color: Oklch
 	name: string
-	nearest: string
+	readonly nearest: string
+	readonly lightness: number
+	readonly chroma: number
+	readonly hue: number
 }
+
+const nearestNamedColor = nearest(
+	Object.keys(colorsNamed),
+	differenceCiede2000(),
+)
 
 export default component(
 	'module-coloreditor',
 	{
 		color: asOklch(),
 		name: asString('Blue'),
-		nearest: (el: HTMLElement & { color: Oklch }) => () => {
-			const nearestNamedColor = nearest(
-				Object.keys(colorsNamed),
-				differenceCiede2000(),
-			)
-			return nearestNamedColor(el.color)[0]
-		},
+		nearest: (el: HTMLElement & { color: Oklch }) => () =>
+			nearestNamedColor(el.color)[0],
+		lightness: (el: HTMLElement & { color: Oklch }) => () => el.color.l,
+		chroma: (el: HTMLElement & { color: Oklch }) => () => el.color.c,
+		hue: (el: HTMLElement & { color: Oklch }) => () => el.color.h,
 	},
 	(el, { all, first }) => {
 		const effects = [
