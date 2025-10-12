@@ -3,7 +3,9 @@ import {
 	type Component,
 	component,
 	effect,
+	fromDOM,
 	fromSelector,
+	getText,
 	on,
 	setAttribute,
 	setProperty,
@@ -29,7 +31,7 @@ export default component<FormComboboxProps>(
 		value: '',
 		length: 0,
 		error: '',
-		description: '',
+		description: fromDOM({ '.description': getText() }, ''),
 		clear: clearMethod(),
 	},
 	(el, { first, all, useElement }) => {

@@ -12,28 +12,30 @@
 			</button>
 		</basic-button>
 	</form>
-	<ol filter="all"></ol>
-	<template>
-		<li>
-			<form-checkbox class="todo">
-				<label>
-					<input type="checkbox" class="visually-hidden" />
-					<span class="label">
-						<slot></slot>
-					</span>
-				</label>
-			</form-checkbox>
-			<basic-button class="delete">
-				<button
-					type="button"
-					class="tertiary destructive small"
-					aria-label="Delete"
-				>
-					<span class="label">✕</span>
-				</button>
-			</basic-button>
-		</li>
-	</template>
+	<module-insert>
+		<ol filter="all" data-container></ol>
+		<template>
+			<li>
+				<form-checkbox class="todo">
+					<label>
+						<input type="checkbox" class="visually-hidden" />
+						<span class="label">
+							<slot></slot>
+						</span>
+					</label>
+				</form-checkbox>
+				<basic-button class="delete">
+					<button
+						type="button"
+						class="tertiary destructive small"
+						aria-label="Delete"
+					>
+						<span class="label">✕</span>
+					</button>
+				</basic-button>
+			</li>
+		</template>
+	</module-insert>
 	<footer>
 		<basic-pluralize>
 			<p class="none">Well done, all done!</p>

@@ -1,5 +1,5 @@
-type CacheEntry = {
-	content: string
+type CacheEntry<T = unknown> = {
+	content: T
 	timestamp: number
 	etag?: string
 	lastModified?: string
@@ -46,13 +46,16 @@ const isCacheEntryValid = (entry: CacheEntry): boolean => {
  *
  * @param url - URL to fetch
  * @param signal - AbortSignal for cancellation
- * @returns Promise with content and cache status
+ * @param parseResponse - Function to parse the response body (defaults to text)
+ * @returns Promise with parsed content and cache status
  */
-export const fetchWithCache = async (
+export const fetchWithCache = async <T = string>(
 	url: string,
 	signal?: AbortSignal,
-): Promise<{ content: string; fromCache: boolean }> => {
-	const cached = cache.get(url)
+	parseResponse: (response: Response) => Promise<T> = (response: Response) =>
+		response.text() as Promise<T>,
+): Promise<{ content: T; fromCache: boolean }> => {
+	const cached = cache.get(url) as CacheEntry<T> | undefined
 	const headers: HeadersInit = {}
 
 	// Add conditional headers if we have cached data
@@ -70,7 +73,7 @@ export const fetchWithCache = async (
 		throw new Error(`HTTP error! status: ${response.status}`)
 	}
 
-	const content = await response.text()
+	const content = await parseResponse(response)
 	const cacheControl = response.headers.get('cache-control')
 	const etag = response.headers.get('etag')
 	const lastModified = response.headers.get('last-modified')
@@ -82,7 +85,7 @@ export const fetchWithCache = async (
 
 	// Store in cache if allowed
 	if (!cacheDirectives.noStore) {
-		const entry: CacheEntry = {
+		const entry: CacheEntry<T> = {
 			content,
 			timestamp: Date.now(),
 			etag: etag || undefined,

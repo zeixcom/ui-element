@@ -307,6 +307,8 @@ const server = Bun.serve({
 					return 'application/javascript; charset=UTF-8'
 				case 'css':
 					return 'text/css; charset=UTF-8'
+				case 'json':
+					return 'application/json; charset=UTF-8'
 				case 'png':
 					return 'image/png'
 				default:

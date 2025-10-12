@@ -3,6 +3,8 @@ import {
 	type Component,
 	component,
 	computed,
+	fromDOM,
+	getText,
 	on,
 	setAttribute,
 	setProperty,
@@ -24,7 +26,7 @@ export default component<FormTextboxProps>(
 		value: '',
 		length: 0,
 		error: '',
-		description: '',
+		description: fromDOM({ '.description': getText() }, ''),
 		clear: clearMethod<HTMLInputElement | HTMLTextAreaElement>(
 			'input, textarea',
 		),

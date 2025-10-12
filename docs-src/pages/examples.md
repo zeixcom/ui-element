@@ -137,6 +137,68 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
 
 <section>
 
+## Insert
+
+<module-demo>
+  <div class="preview">
+    <module-insert max="10">
+     	<ul data-container></ul>
+     	<template>
+        <li>
+          <basic-button class="delete">
+            <button type="button" class="destructive">Remove</button>
+          </basic-button>
+        </li>
+     	</template>
+     	<basic-button class="add">
+        <button type="button" class="constructive">Add</button>
+     	</basic-button>
+    </module-insert>
+  </div>
+  <details>
+    <summary>Source Code</summary>
+    <module-lazy src="./examples/module-insert.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
+
+</section>
+
+<section>
+
+## Listbox
+
+<module-demo>
+  <div class="preview">
+    <form-listbox id="timezone" src="examples/data/timezones.json">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite" hidden></p>
+      </card-callout>
+      <module-scrollarea orientation="vertical">
+        <div role="listbox" aria-label="Timezones" hidden></div>
+      </module-scrollarea>
+    </form-listbox>
+  </div>
+  <details>
+    <summary>Source Code</summary>
+    <module-lazy src="./examples/form-listbox.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
+
+</section>
+
+<section>
+
 ## Color Editor
 
 <module-demo>
@@ -1018,52 +1080,36 @@ A combobox component that allows users to select an option from a list.
 <module-demo>
   <div class="preview">
     <form-combobox value="">
-      <label for="city-input">Choose a city</label>
+      <label for="timezone-input" id="city-label">Choose a timezone</label>
       <div class="input">
         <input
-          id="city-input"
+          id="timezone-input"
           type="text"
           role="combobox"
           aria-expanded="false"
-          aria-controls="city-popup"
+          aria-controls="timezone-popup"
           aria-autocomplete="list"
           autocomplete="off"
           required
         />
-        <ol id="city-popup" role="listbox" hidden>
-          <li role="option" tabindex="-1">Amsterdam</li>
-          <li role="option" tabindex="-1">Berlin</li>
-          <li role="option" tabindex="-1">Copenhagen</li>
-          <li role="option" tabindex="-1">Dublin</li>
-          <li role="option" tabindex="-1">Edinburgh</li>
-          <li role="option" tabindex="-1">Frankfurt</li>
-          <li role="option" tabindex="-1">Geneva</li>
-          <li role="option" tabindex="-1">Helsinki</li>
-          <li role="option" tabindex="-1">Istanbul</li>
-          <li role="option" tabindex="-1">Jakarta</li>
-          <li role="option" tabindex="-1">Kairo</li>
-          <li role="option" tabindex="-1">London</li>
-          <li role="option" tabindex="-1">Madrid</li>
-          <li role="option" tabindex="-1">New York</li>
-          <li role="option" tabindex="-1">Oslo</li>
-          <li role="option" tabindex="-1">Paris</li>
-          <li role="option" tabindex="-1">Qingdao</li>
-          <li role="option" tabindex="-1">Rome</li>
-          <li role="option" tabindex="-1">Stockholm</li>
-          <li role="option" tabindex="-1">Tokyo</li>
-          <li role="option" tabindex="-1">Ulan Bator</li>
-          <li role="option" tabindex="-1">Vienna</li>
-          <li role="option" tabindex="-1">Warsaw</li>
-          <li role="option" tabindex="-1">Xi'an</li>
-          <li role="option" tabindex="-1">Yokohama</li>
-          <li role="option" tabindex="-1">Zurich</li>
-        </ol>
-        <button type="button" class="clear" aria-label="Clear input" hidden>
-          ✕
-        </button>
+      <form-listbox id="timezone-popup" src="examples/data/timezones.json" hidden>
+        <card-callout>
+          <p class="loading" role="status">Loading...</p>
+          <p class="error" role="alert" aria-live="polite" hidden></p>
+        </card-callout>
+        <module-scrollarea orientation="vertical">
+          <div role="listbox" aria-label="Timezones" hidden></div>
+        </module-scrollarea>
+      </form-listbox>
+      <button type="button" class="clear" aria-label="Clear input" hidden>
+        ✕
+      </button>
       </div>
-      <p class="error" aria-live="assertive" id="city-error"></p>
-      <p class="description" aria-live="polite" id="city-description">Tell us where you live so we can set your timezone for our calendar and notification features.</p>
+      <p class="error" aria-live="assertive" id="timezone-error"></p>
+      <p class="description" aria-live="polite" id="timezone-description">
+        Tell us where you live so we can set your timezone for our calendar and
+        notification features.
+      </p>
     </form-combobox>
   </div>
   <details>
@@ -1188,9 +1234,10 @@ A todo app component that allows users to add, mark as complete, filter by statu
 
 - `<form-textbox>` for input field to add tasks
 - `<basic-button>` for submit button and delete buttons
-- `<form-checkbox>` for marking tasks as complete
-- `<basic-pluralize>` for displaying the number of tasks
-- `<form-radiogroup>` for filtering tasks by status
+- `<module-insert>` to manage a dynamic list of tasks
+- `<form-checkbox>` to mark tasks as complete
+- `<basic-pluralize>` to display the number of tasks
+- `<form-radiogroup>` to filter tasks by status
 
 <module-demo>
   <div class="preview">
@@ -1208,22 +1255,24 @@ A todo app component that allows users to add, mark as complete, filter by statu
           </button>
         </basic-button>
       </form>
-      <ol filter="all"></ol>
-      <template>
-        <li>
-          <form-checkbox class="todo">
-            <label>
-              <input type="checkbox" class="visually-hidden" />
-              <span class="label"><slot></slot></span>
-            </label>
-          </form-checkbox>
-          <basic-button class="delete">
-            <button type="button" class="tertiary destructive small" aria-label="Delete">
-              <span class="label">✕</span>
-            </button>
-          </basic-button>
-        </li>
-      </template>
+      <module-insert>
+        <ol filter="all" data-container></ol>
+        <template>
+          <li>
+            <form-checkbox class="todo">
+              <label>
+                <input type="checkbox" class="visually-hidden" />
+                <span class="label"><slot></slot></span>
+              </label>
+            </form-checkbox>
+            <basic-button class="delete">
+              <button type="button" class="tertiary destructive small" aria-label="Delete">
+                <span class="label">✕</span>
+              </button>
+            </basic-button>
+          </li>
+        </template>
+      </module-insert>
       <footer>
         <basic-pluralize>
           <p class="none">Well done, all done!</p>
@@ -1297,6 +1346,15 @@ A todo app component that allows users to add, mark as complete, filter by statu
   <details>
     <summary>BasicButton Source Code</summary>
     <module-lazy src="./examples/basic-button.html">
+      <card-callout>
+        <p class="loading" role="status">Loading...</p>
+        <p class="error" role="alert" aria-live="polite"></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>ModuleInsert Source Code</summary>
+    <module-lazy src="./examples/module-insert.html">
       <card-callout>
         <p class="loading" role="status">Loading...</p>
         <p class="error" role="alert" aria-live="polite"></p>

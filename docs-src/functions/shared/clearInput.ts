@@ -1,9 +1,7 @@
 import { type Component, type Effect, on, show } from '../../..'
 
 /**
- * Creates a clear function for input components that properly handles
- * clearing the native input, custom validity, and dispatching events
- * to trigger sensor-based property updates
+ * Creates a clear function for input components
  *
  * @param {HTMLInputElement | HTMLTextAreaElement} selector - The native input or textarea element
  */
