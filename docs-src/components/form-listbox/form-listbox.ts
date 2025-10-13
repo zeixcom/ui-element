@@ -2,7 +2,10 @@ import {
 	type Component,
 	component,
 	computed,
+	dangerouslySetInnerHTML,
 	effect,
+	emitEvent,
+	fromSelector,
 	on,
 	setAttribute,
 	setProperty,
@@ -28,7 +31,10 @@ type FormListboxGroups = Record<
 
 type FormListboxProps = {
 	value: string
+	filter: string
 	src: { value: string; error: string }
+	options: HTMLElement[]
+	index: number
 }
 
 const ENTER_KEY = 'Enter'
@@ -42,33 +48,13 @@ component(
 	'form-listbox',
 	{
 		value: '',
+		filter: '',
 		src: asURL,
+		options: fromSelector<HTMLElement>('[role="option"]:not([hidden])'),
+		index: -1,
 	},
 	(el, { all, first }) => {
 		const error = state('')
-		const options = computed<FormListboxGroups | FormListboxOption[]>(
-			async abort => {
-				const url = el.src.value
-				if (el.src.error || !url) {
-					error.set(el.src.error ?? 'No URL provided')
-					return []
-				}
-
-				try {
-					error.set('')
-					const { content } = await fetchWithCache(
-						url,
-						abort,
-						response => response.json(),
-					)
-					return content
-				} catch (err) {
-					error.set(err instanceof Error ? err.message : String(err))
-					return []
-				}
-			},
-		)
-		const loading = () => options.get() === UNSET
 
 		const renderOptions = (items: FormListboxOption[]) =>
 			items
@@ -91,16 +77,39 @@ component(
 			return html
 		}
 
-		let index = -1
-		let elements: HTMLElement[] = []
+		const html = computed(async abort => {
+			const url = el.src.value
+			if (el.src.error || !url) {
+				error.set(el.src.error ?? 'No URL provided')
+				return ''
+			}
+
+			try {
+				error.set('')
+				const { content } = await fetchWithCache(url, abort, response =>
+					response.json(),
+				)
+				return Array.isArray(content)
+					? renderOptions(content)
+					: renderGroups(content)
+			} catch (err) {
+				error.set(err instanceof Error ? err.message : String(err))
+				return ''
+			}
+		})
+		const loading = () => html.get() === UNSET
+		const isSelected = (target: HTMLElement) =>
+			el.value === target.getAttribute('value')
 
 		return [
 			setAttribute('value'),
 			on('click', ({ event }) => {
-				const target = event.target as HTMLElement
-				if (target.closest('[role="option"]')) {
-					el.value = target.getAttribute('value') ?? ''
-					index = elements.indexOf(target)
+				const option = (event.target as HTMLElement).closest(
+					'[role="option"]',
+				) as HTMLElement
+				if (option) {
+					el.value = option.getAttribute('value') ?? ''
+					el.index = el.options.indexOf(option)
 				}
 			}),
 			on('keydown', ({ event }) => {
@@ -108,31 +117,39 @@ component(
 				if (!FOCUS_KEYS.includes(key)) return
 				event.preventDefault()
 				event.stopPropagation()
-				index =
+				const max = el.options.length - 1
+				el.index =
 					key === FIRST_KEY
 						? 0
 						: key === LAST_KEY
-							? elements.length - 1
+							? max
 							: Math.min(
 									Math.max(
-										index +
+										el.index +
 											(INCREMENT_KEYS.includes(key)
 												? 1
 												: -1),
 										0,
 									),
-									elements.length - 1,
+									max,
 								)
-				if (elements[index]) elements[index].focus()
+				if (el.options[el.index]) el.options[el.index].focus()
 			}),
 			on('keyup', ({ event }) => {
 				const { key } = event
 				if (key !== ENTER_KEY) return
 				event.preventDefault()
 				event.stopPropagation()
-				if (elements[index])
-					el.value = elements[index].getAttribute('value') ?? ''
+				if (el.options[el.index])
+					el.value = el.options[el.index].getAttribute('value') ?? ''
 			}),
+			emitEvent('form-listbox.change', 'value'),
+			() =>
+				effect((): undefined => {
+					const current = document.activeElement
+					if (current && el.contains(current))
+						el.index = el.options.indexOf(current as HTMLElement)
+				}),
 			first('card-callout', [show(() => loading() || !!error.get())]),
 			first('.loading', [show(() => loading())]),
 			first('.error', [show(() => !!error.get())]),
@@ -140,28 +157,42 @@ component(
 				'[role="listbox"]',
 				[
 					show(() => !loading() && !error.get()),
-					(_, target) =>
-						effect((): undefined => {
-							const items = options.get()
-							if (!items === UNSET) return
-							target.innerHTML = Array.isArray(items)
-								? renderOptions(items)
-								: renderGroups(items)
-							elements = Array.from(
-								target.querySelectorAll<HTMLElement>(
-									'[role="option"]',
-								),
-							)
-						}),
+					dangerouslySetInnerHTML(html),
 				],
 				'Needed to display list of options.',
 			),
+			all('[role="group"]', [
+				(_, target) => {
+					const visible = fromSelector(
+						'[role="option"]:not([hidden])',
+					)(target)
+					return effect((): undefined => {
+						target.hidden = !visible.get().length
+					})
+				},
+			]),
 			all('[role="option"]', [
 				setProperty('tabIndex', target =>
-					el.value === target.getAttribute('value') ? 0 : -1,
+					isSelected(target) ? 0 : -1,
 				),
+				show(target =>
+					target.textContent
+						?.trim()
+						.toLowerCase()
+						.includes(el.filter.toLowerCase()),
+				),
+				dangerouslySetInnerHTML(target => {
+					const filter = el.filter
+					const text = target.textContent
+					if (!filter.length || !text) return text
+					const regex = new RegExp(
+						filter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+						'gi',
+					)
+					return text.replace(regex, match => `<mark>${match}</mark>`)
+				}),
 				setProperty('ariaSelected', target =>
-					String(el.value === target.getAttribute('value')),
+					String(isSelected(target)),
 				),
 			]),
 		]
@@ -171,5 +202,8 @@ component(
 declare global {
 	interface HTMLElementTagNameMap {
 		'form-listbox': Component<FormListboxProps>
+	}
+	interface HTMLElementEventMap {
+		'form-listbox.change': CustomEvent<string>
 	}
 }

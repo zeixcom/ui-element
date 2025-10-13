@@ -64,6 +64,7 @@ form-combobox {
 	}
 
 	form-listbox {
+		display: none;
 		position: absolute;
 		list-style: none;
 		top: 100%;
@@ -102,6 +103,10 @@ form-combobox {
 
 		& input {
 			color: var(--color-text);
+		}
+
+		form-listbox:not([hidden]) {
+			display: block;
 		}
 	}
 }

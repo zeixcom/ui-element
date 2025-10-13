@@ -77,42 +77,42 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-input);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F8F8F2">		[</span><span style="color:#66D9EF;font-style:italic">role</span><span style="color:#F8F8F2">="group"] {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			padding-block-end</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#F8F8F2">	[</span><span style="color:#A6E22E">role</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"group"</span><span style="color:#F8F8F2">]</span><span style="color:#A6E22E">:not</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">:last-child</span><span style="color:#F8F8F2">) {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin-block-end</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	[</span><span style="color:#A6E22E">role</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"presentation"</span><span style="color:#F8F8F2">] {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		position</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">sticky</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		top</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-background);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-xs);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		font-weight</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-weight-bold);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		text-transform</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">uppercase</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		letter-spacing</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">px</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	[</span><span style="color:#A6E22E">role</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"option"</span><span style="color:#F8F8F2">] {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		line-height</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--line-height-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		cursor</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">pointer</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		transition</span><span style="color:#F8F8F2">: </span><span style="color:#F44747">background</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--transition-short) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--easing-inout);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;[aria-selected="true"] {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-primary);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text-inverted);</span></span>
 <span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F8F8F2">		[</span><span style="color:#A6E22E">role</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"presentation"</span><span style="color:#F8F8F2">] {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			position</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">sticky</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			top</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-background);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			padding</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-xs);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			font-weight</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-weight-bold);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			text-transform</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">uppercase</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			letter-spacing</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">px</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"><span style="color:#F8F8F2">		}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F8F8F2">		[</span><span style="color:#A6E22E">role</span><span style="color:#F92672">=</span><span style="color:#E6DB74">"option"</span><span style="color:#F8F8F2">] {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			padding</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-s);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			line-height</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--line-height-s);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			cursor</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">pointer</span><span style="color:#F8F8F2">;</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">			transition</span><span style="color:#F8F8F2">: </span><span style="color:#F44747">background</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--transition-short) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--easing-inout);</span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;</span><span style="color:#A6E22E">:hover</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-background-alt);</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F8F8F2">			&#x26;[aria-selected="true"] {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-primary);</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text-inverted);</span></span>
-<span class="line"><span style="color:#F8F8F2">			}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F8F8F2">			&#x26;</span><span style="color:#A6E22E">:hover</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-background-alt);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F8F8F2">				&#x26;[aria-selected="true"] {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">					background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-primary-hover);</span></span>
-<span class="line"><span style="color:#F8F8F2">				}</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-primary-hover);</span></span>
 <span class="line"><span style="color:#F8F8F2">			}</span></span>
 <span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
@@ -136,7 +136,10 @@
 <span class="line"><span style="color:#F92672">	type</span><span style="color:#F8F8F2"> Component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	component,</span></span>
 <span class="line"><span style="color:#F8F8F2">	computed,</span></span>
+<span class="line"><span style="color:#F8F8F2">	dangerouslySetInnerHTML,</span></span>
 <span class="line"><span style="color:#F8F8F2">	effect,</span></span>
+<span class="line"><span style="color:#F8F8F2">	emitEvent,</span></span>
+<span class="line"><span style="color:#F8F8F2">	fromSelector,</span></span>
 <span class="line"><span style="color:#F8F8F2">	on,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setAttribute,</span></span>
 <span class="line"><span style="color:#F8F8F2">	setProperty,</span></span>
@@ -162,7 +165,10 @@
 <span class="line"></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">FormListboxProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">	value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
+<span class="line"><span style="color:#F8F8F2">	filter</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
 <span class="line"><span style="color:#F8F8F2">	src</span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> { value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">; error</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2"> }</span></span>
+<span class="line"><span style="color:#F8F8F2">	options</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[]</span></span>
+<span class="line"><span style="color:#F8F8F2">	index</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> ENTER_KEY </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'Enter'</span></span>
@@ -176,33 +182,13 @@
 <span class="line"><span style="color:#E6DB74">	'form-listbox'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
 <span class="line"><span style="color:#F8F8F2">		value: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">		filter: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">		src: asURL,</span></span>
+<span class="line"><span style="color:#F8F8F2">		options: </span><span style="color:#A6E22E">fromSelector</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">>(</span><span style="color:#E6DB74">'[role="option"]:not([hidden])'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">		index: </span><span style="color:#F92672">-</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	},</span></span>
 <span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> error </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> options </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> computed</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">FormListboxGroups</span><span style="color:#F92672"> |</span><span> </span><span style="color:#A6E22E;text-decoration:underline">FormListboxOption</span><span style="color:#F8F8F2">[]>(</span></span>
-<span class="line"><span style="color:#F92672">			async</span><span style="color:#FD971F;font-style:italic"> abort</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> url </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.src.value</span></span>
-<span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> (el.src.error </span><span style="color:#F92672">||</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">url) {</span></span>
-<span class="line"><span style="color:#F8F8F2">					error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(el.src.error </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> 'No URL provided'</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#F92672">					return</span><span style="color:#F8F8F2"> []</span></span>
-<span class="line"><span style="color:#F8F8F2">				}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#F92672">				try</span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">					error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> { content } </span><span style="color:#F92672">=</span><span style="color:#F92672"> await</span><span style="color:#A6E22E"> fetchWithCache</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">						url,</span></span>
-<span class="line"><span style="color:#F8F8F2">						abort,</span></span>
-<span class="line"><span style="color:#FD971F;font-style:italic">						response</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> response.</span><span style="color:#A6E22E">json</span><span style="color:#F8F8F2">(),</span></span>
-<span class="line"><span style="color:#F8F8F2">					)</span></span>
-<span class="line"><span style="color:#F92672">					return</span><span style="color:#F8F8F2"> content</span></span>
-<span class="line"><span style="color:#F8F8F2">				} </span><span style="color:#F92672">catch</span><span style="color:#F8F8F2"> (err) {</span></span>
-<span class="line"><span style="color:#F8F8F2">					error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(err </span><span style="color:#F92672">instanceof</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Error</span><span style="color:#F92672"> ?</span><span style="color:#F8F8F2"> err.message </span><span style="color:#F92672">:</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(err))</span></span>
-<span class="line"><span style="color:#F92672">					return</span><span style="color:#F8F8F2"> []</span></span>
-<span class="line"><span style="color:#F8F8F2">				}</span></span>
-<span class="line"><span style="color:#F8F8F2">			},</span></span>
-<span class="line"><span style="color:#F8F8F2">		)</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#A6E22E"> loading</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> options.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> UNSET</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#A6E22E"> renderOptions</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">items</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">FormListboxOption</span><span style="color:#F8F8F2">[]) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
 <span class="line"><span style="color:#F8F8F2">			items</span></span>
@@ -225,16 +211,39 @@
 <span class="line"><span style="color:#F92672">			return</span><span style="color:#F8F8F2"> html</span></span>
 <span class="line"><span style="color:#F8F8F2">		}</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		let</span><span style="color:#F8F8F2"> index </span><span style="color:#F92672">=</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">		let</span><span style="color:#F8F8F2"> elements</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[] </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> []</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> html </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> computed</span><span style="color:#F8F8F2">(</span><span style="color:#F92672">async</span><span style="color:#FD971F;font-style:italic"> abort</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			const</span><span style="color:#F8F8F2"> url </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.src.value</span></span>
+<span class="line"><span style="color:#F92672">			if</span><span style="color:#F8F8F2"> (el.src.error </span><span style="color:#F92672">||</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">url) {</span></span>
+<span class="line"><span style="color:#F8F8F2">				error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(el.src.error </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> 'No URL provided'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F92672">				return</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">			try</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">				error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> { content } </span><span style="color:#F92672">=</span><span style="color:#F92672"> await</span><span style="color:#A6E22E"> fetchWithCache</span><span style="color:#F8F8F2">(url, abort, </span><span style="color:#FD971F;font-style:italic">response</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
+<span class="line"><span style="color:#F8F8F2">					response.</span><span style="color:#A6E22E">json</span><span style="color:#F8F8F2">(),</span></span>
+<span class="line"><span style="color:#F8F8F2">				)</span></span>
+<span class="line"><span style="color:#F92672">				return</span><span style="color:#F8F8F2"> Array.</span><span style="color:#A6E22E">isArray</span><span style="color:#F8F8F2">(content)</span></span>
+<span class="line"><span style="color:#F92672">					?</span><span style="color:#A6E22E"> renderOptions</span><span style="color:#F8F8F2">(content)</span></span>
+<span class="line"><span style="color:#F92672">					:</span><span style="color:#A6E22E"> renderGroups</span><span style="color:#F8F8F2">(content)</span></span>
+<span class="line"><span style="color:#F8F8F2">			} </span><span style="color:#F92672">catch</span><span style="color:#F8F8F2"> (err) {</span></span>
+<span class="line"><span style="color:#F8F8F2">				error.</span><span style="color:#A6E22E">set</span><span style="color:#F8F8F2">(err </span><span style="color:#F92672">instanceof</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Error</span><span style="color:#F92672"> ?</span><span style="color:#F8F8F2"> err.message </span><span style="color:#F92672">:</span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(err))</span></span>
+<span class="line"><span style="color:#F92672">				return</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"><span style="color:#F8F8F2">		})</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#A6E22E"> loading</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> html.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> UNSET</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#A6E22E"> isSelected</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#F8F8F2">			el.value </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> target.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#A6E22E">			setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> target </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> event.target </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span></span>
-<span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> (target.</span><span style="color:#A6E22E">closest</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'[role="option"]'</span><span style="color:#F8F8F2">)) {</span></span>
-<span class="line"><span style="color:#F8F8F2">					el.value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> target.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span></span>
-<span class="line"><span style="color:#F8F8F2">					index </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> elements.</span><span style="color:#A6E22E">indexOf</span><span style="color:#F8F8F2">(target)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> option </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> (event.target </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">).</span><span style="color:#A6E22E">closest</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">					'[role="option"]'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">				) </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span></span>
+<span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> (option) {</span></span>
+<span class="line"><span style="color:#F8F8F2">					el.value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> option.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#F8F8F2">					el.index </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.options.</span><span style="color:#A6E22E">indexOf</span><span style="color:#F8F8F2">(option)</span></span>
 <span class="line"><span style="color:#F8F8F2">				}</span></span>
 <span class="line"><span style="color:#F8F8F2">			}),</span></span>
 <span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'keydown'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
@@ -242,31 +251,39 @@
 <span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">FOCUS_KEYS.</span><span style="color:#A6E22E">includes</span><span style="color:#F8F8F2">(key)) </span><span style="color:#F92672">return</span></span>
 <span class="line"><span style="color:#F8F8F2">				event.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">				event.</span><span style="color:#A6E22E">stopPropagation</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F8F8F2">				index </span><span style="color:#F92672">=</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> max </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.options.length </span><span style="color:#F92672">-</span><span style="color:#AE81FF"> 1</span></span>
+<span class="line"><span style="color:#F8F8F2">				el.index </span><span style="color:#F92672">=</span></span>
 <span class="line"><span style="color:#F8F8F2">					key </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> FIRST_KEY</span></span>
 <span class="line"><span style="color:#F92672">						?</span><span style="color:#AE81FF"> 0</span></span>
 <span class="line"><span style="color:#F92672">						:</span><span style="color:#F8F8F2"> key </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> LAST_KEY</span></span>
-<span class="line"><span style="color:#F92672">							?</span><span style="color:#F8F8F2"> elements.length </span><span style="color:#F92672">-</span><span style="color:#AE81FF"> 1</span></span>
+<span class="line"><span style="color:#F92672">							?</span><span style="color:#F8F8F2"> max</span></span>
 <span class="line"><span style="color:#F92672">							:</span><span style="color:#F8F8F2"> Math.</span><span style="color:#A6E22E">min</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#F8F8F2">									Math.</span><span style="color:#A6E22E">max</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">										index </span><span style="color:#F92672">+</span></span>
+<span class="line"><span style="color:#F8F8F2">										el.index </span><span style="color:#F92672">+</span></span>
 <span class="line"><span style="color:#F8F8F2">											(INCREMENT_KEYS.</span><span style="color:#A6E22E">includes</span><span style="color:#F8F8F2">(key)</span></span>
 <span class="line"><span style="color:#F92672">												?</span><span style="color:#AE81FF"> 1</span></span>
 <span class="line"><span style="color:#F92672">												:</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#AE81FF">										0</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">									),</span></span>
-<span class="line"><span style="color:#F8F8F2">									elements.length </span><span style="color:#F92672">-</span><span style="color:#AE81FF"> 1</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">									max,</span></span>
 <span class="line"><span style="color:#F8F8F2">								)</span></span>
-<span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> (elements[index]) elements[index].</span><span style="color:#A6E22E">focus</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> (el.options[el.index]) el.options[el.index].</span><span style="color:#A6E22E">focus</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">			}),</span></span>
 <span class="line"><span style="color:#A6E22E">			on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'keyup'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">				const</span><span style="color:#F8F8F2"> { key } </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> event</span></span>
 <span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> (key </span><span style="color:#F92672">!==</span><span style="color:#F8F8F2"> ENTER_KEY) </span><span style="color:#F92672">return</span></span>
 <span class="line"><span style="color:#F8F8F2">				event.</span><span style="color:#A6E22E">preventDefault</span><span style="color:#F8F8F2">()</span></span>
 <span class="line"><span style="color:#F8F8F2">				event.</span><span style="color:#A6E22E">stopPropagation</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> (elements[index])</span></span>
-<span class="line"><span style="color:#F8F8F2">					el.value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> elements[index].</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span></span>
+<span class="line"><span style="color:#F92672">				if</span><span style="color:#F8F8F2"> (el.options[el.index])</span></span>
+<span class="line"><span style="color:#F8F8F2">					el.value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.options[el.index].</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span></span>
 <span class="line"><span style="color:#F8F8F2">			}),</span></span>
+<span class="line"><span style="color:#A6E22E">			emitEvent</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'form-listbox.change'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#F8F8F2">			() </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#A6E22E">				effect</span><span style="color:#F8F8F2">(()</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> undefined</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> current </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.activeElement</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (current </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">contains</span><span style="color:#F8F8F2">(current))</span></span>
+<span class="line"><span style="color:#F8F8F2">						el.index </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.options.</span><span style="color:#A6E22E">indexOf</span><span style="color:#F8F8F2">(current </span><span style="color:#F92672">as</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">				}),</span></span>
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'card-callout'</span><span style="color:#F8F8F2">, [</span><span style="color:#A6E22E">show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> loading</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">||</span><span style="color:#F92672"> !!</span><span style="color:#F8F8F2">error.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">())]),</span></span>
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.loading'</span><span style="color:#F8F8F2">, [</span><span style="color:#A6E22E">show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> loading</span><span style="color:#F8F8F2">())]),</span></span>
 <span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.error'</span><span style="color:#F8F8F2">, [</span><span style="color:#A6E22E">show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !!</span><span style="color:#F8F8F2">error.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">())]),</span></span>
@@ -274,28 +291,42 @@
 <span class="line"><span style="color:#E6DB74">				'[role="listbox"]'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">				[</span></span>
 <span class="line"><span style="color:#A6E22E">					show</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F92672"> !</span><span style="color:#A6E22E">loading</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">&#x26;&#x26;</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">error.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()),</span></span>
-<span class="line"><span style="color:#F8F8F2">					(</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span></span>
-<span class="line"><span style="color:#A6E22E">						effect</span><span style="color:#F8F8F2">(()</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> undefined</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">							const</span><span style="color:#F8F8F2"> items </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> options.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">()</span></span>
-<span class="line"><span style="color:#F92672">							if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">items </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> UNSET) </span><span style="color:#F92672">return</span></span>
-<span class="line"><span style="color:#F8F8F2">							target.innerHTML </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> Array.</span><span style="color:#A6E22E">isArray</span><span style="color:#F8F8F2">(items)</span></span>
-<span class="line"><span style="color:#F92672">								?</span><span style="color:#A6E22E"> renderOptions</span><span style="color:#F8F8F2">(items)</span></span>
-<span class="line"><span style="color:#F92672">								:</span><span style="color:#A6E22E"> renderGroups</span><span style="color:#F8F8F2">(items)</span></span>
-<span class="line"><span style="color:#F8F8F2">							elements </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> Array.</span><span style="color:#A6E22E">from</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">								target.</span><span style="color:#A6E22E">querySelectorAll</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">>(</span></span>
-<span class="line"><span style="color:#E6DB74">									'[role="option"]'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">								),</span></span>
-<span class="line"><span style="color:#F8F8F2">							)</span></span>
-<span class="line"><span style="color:#F8F8F2">						}),</span></span>
+<span class="line"><span style="color:#A6E22E">					dangerouslySetInnerHTML</span><span style="color:#F8F8F2">(html),</span></span>
 <span class="line"><span style="color:#F8F8F2">				],</span></span>
 <span class="line"><span style="color:#E6DB74">				'Needed to display list of options.'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"><span style="color:#A6E22E">			all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'[role="group"]'</span><span style="color:#F8F8F2">, [</span></span>
+<span class="line"><span style="color:#F8F8F2">				(</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> visible </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> fromSelector</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">						'[role="option"]:not([hidden])'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">					)(target)</span></span>
+<span class="line"><span style="color:#F92672">					return</span><span style="color:#A6E22E"> effect</span><span style="color:#F8F8F2">(()</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> undefined</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">						target.hidden </span><span style="color:#F92672">=</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">visible.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">().length</span></span>
+<span class="line"><span style="color:#F8F8F2">					})</span></span>
+<span class="line"><span style="color:#F8F8F2">				},</span></span>
+<span class="line"><span style="color:#F8F8F2">			]),</span></span>
 <span class="line"><span style="color:#A6E22E">			all</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'[role="option"]'</span><span style="color:#F8F8F2">, [</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'tabIndex'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
-<span class="line"><span style="color:#F8F8F2">					el.value </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> target.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">?</span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> :</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">					isSelected</span><span style="color:#F8F8F2">(target) </span><span style="color:#F92672">?</span><span style="color:#AE81FF"> 0</span><span style="color:#F92672"> :</span><span style="color:#F92672"> -</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
+<span class="line"><span style="color:#A6E22E">				show</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
+<span class="line"><span style="color:#F8F8F2">					target.textContent</span></span>
+<span class="line"><span style="color:#F8F8F2">						?.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">						.</span><span style="color:#A6E22E">toLowerCase</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">						.</span><span style="color:#A6E22E">includes</span><span style="color:#F8F8F2">(el.filter.</span><span style="color:#A6E22E">toLowerCase</span><span style="color:#F8F8F2">()),</span></span>
+<span class="line"><span style="color:#F8F8F2">				),</span></span>
+<span class="line"><span style="color:#A6E22E">				dangerouslySetInnerHTML</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> filter </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.filter</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> text </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> target.textContent</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">filter.length </span><span style="color:#F92672">||</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">text) </span><span style="color:#F92672">return</span><span style="color:#F8F8F2"> text</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> regex </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> RegExp</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F8F8F2">						filter.</span><span style="color:#A6E22E">replace</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">/</span><span style="color:#AE81FF">[.*+?^${}()|[\]\\]</span><span style="color:#E6DB74">/</span><span style="color:#F92672">g</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'</span><span style="color:#AE81FF">\\</span><span style="color:#E6DB74">$&#x26;'</span><span style="color:#F8F8F2">),</span></span>
+<span class="line"><span style="color:#E6DB74">						'gi'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">					)</span></span>
+<span class="line"><span style="color:#F92672">					return</span><span style="color:#F8F8F2"> text.</span><span style="color:#A6E22E">replace</span><span style="color:#F8F8F2">(regex, </span><span style="color:#FD971F;font-style:italic">match</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#E6DB74"> `&#x3C;mark></span><span style="color:#F92672">${</span><span style="color:#F8F8F2">match</span><span style="color:#F92672">}</span><span style="color:#E6DB74">&#x3C;/mark>`</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">				}),</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaSelected'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
-<span class="line"><span style="color:#A6E22E">					String</span><span style="color:#F8F8F2">(el.value </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> target.</span><span style="color:#A6E22E">getAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">)),</span></span>
+<span class="line"><span style="color:#A6E22E">					String</span><span style="color:#F8F8F2">(</span><span style="color:#A6E22E">isSelected</span><span style="color:#F8F8F2">(target)),</span></span>
 <span class="line"><span style="color:#F8F8F2">				),</span></span>
 <span class="line"><span style="color:#F8F8F2">			]),</span></span>
 <span class="line"><span style="color:#F8F8F2">		]</span></span>
@@ -305,6 +336,9 @@
 <span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#E6DB74">		'form-listbox'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">FormListboxProps</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementEventMap</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#E6DB74">		'form-listbox.change'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">CustomEvent</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>

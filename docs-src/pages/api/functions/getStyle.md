@@ -8,7 +8,7 @@
 
 > **getStyle**\<`E`\>(`prop`): [`Extractor`](../type-aliases/Extractor.md)\<`string`, `E`\>
 
-Defined in: [src/lib/extractors.ts:38](https://github.com/zeixcom/ui-element/blob/d8ce494088eb3ef4e25b26c5f9ab59c8ffc0b7d8/src/lib/extractors.ts#L38)
+Defined in: [src/lib/extractors.ts:38](https://github.com/zeixcom/ui-element/blob/7f61dd194cb59e759b06e6a58eadf265a006deb5/src/lib/extractors.ts#L38)
 
 ## Type Parameters
 

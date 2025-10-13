@@ -8,7 +8,7 @@
 
 > **Initializer**\<`T`, `C`\> = `T` \| [`Parser`](Parser.md)\<`T`, `C`\> \| [`Extractor`](Extractor.md)\<[`MaybeSignal`](MaybeSignal.md)\<`T`\>, `C`\> \| (`host`) => `void`
 
-Defined in: [src/component.ts:79](https://github.com/zeixcom/ui-element/blob/d8ce494088eb3ef4e25b26c5f9ab59c8ffc0b7d8/src/component.ts#L79)
+Defined in: [src/component.ts:79](https://github.com/zeixcom/ui-element/blob/7f61dd194cb59e759b06e6a58eadf265a006deb5/src/component.ts#L79)
 
 ## Type Parameters
 

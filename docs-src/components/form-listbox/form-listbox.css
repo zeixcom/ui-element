@@ -15,42 +15,42 @@ form-listbox {
 		padding: 0;
 		margin: 0;
 		background: var(--color-input);
+	}
 
-		[role="group"] {
-			padding-block-end: var(--space-s);
+	[role="group"]:not(:last-child) {
+		margin-block-end: var(--space-s);
+	}
+
+	[role="presentation"] {
+		position: sticky;
+		top: 0;
+		background-color: var(--color-background);
+		padding: var(--space-xs) var(--space-s);
+		font-size: var(--font-size-xs);
+		font-weight: var(--font-weight-bold);
+		text-transform: uppercase;
+		letter-spacing: 1px;
+	}
+
+	[role="option"] {
+		margin: 0;
+		padding: var(--space-xs) var(--space-s);
+		font-size: var(--font-size-s);
+		line-height: var(--line-height-s);
+		color: var(--color-text);
+		cursor: pointer;
+		transition: background var(--transition-short) var(--easing-inout);
+
+		&[aria-selected="true"] {
+			background: var(--color-primary);
+			color: var(--color-text-inverted);
 		}
 
-		[role="presentation"] {
-			position: sticky;
-			top: 0;
-			background-color: var(--color-background);
-			padding: var(--space-xs) var(--space-s);
-			font-size: var(--font-size-xs);
-			font-weight: var(--font-weight-bold);
-			text-transform: uppercase;
-			letter-spacing: 1px;
-		}
-
-		[role="option"] {
-			margin: 0;
-			padding: var(--space-xs) var(--space-s);
-			font-size: var(--font-size-s);
-			line-height: var(--line-height-s);
-			color: var(--color-text);
-			cursor: pointer;
-			transition: background var(--transition-short) var(--easing-inout);
+		&:hover {
+			background: var(--color-background-alt);
 
 			&[aria-selected="true"] {
-				background: var(--color-primary);
-				color: var(--color-text-inverted);
-			}
-
-			&:hover {
-				background: var(--color-background-alt);
-
-				&[aria-selected="true"] {
-					background: var(--color-primary-hover);
-				}
+				background: var(--color-primary-hover);
 			}
 		}
 	}
