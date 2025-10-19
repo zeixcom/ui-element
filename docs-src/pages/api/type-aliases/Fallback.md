@@ -8,7 +8,7 @@
 
 > **Fallback**\<`T`, `E`\> = `T` \| [`Extractor`](Extractor.md)\<`T`, `E`\>
 
-Defined in: [src/core/dom.ts:64](https://github.com/zeixcom/ui-element/blob/0bdd451e0266b456b3ed7c56ab9ac6ad476a6f80/src/core/dom.ts#L64)
+Defined in: [src/core/dom.ts:64](https://github.com/zeixcom/ui-element/blob/a146453261eafa2845c03f05c1529bc1192370e6/src/core/dom.ts#L64)
 
 ## Type Parameters
 

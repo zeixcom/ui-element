@@ -8,7 +8,7 @@
 
 > **ValidateComponentProps**\<`P`\> = `{ [K in keyof P]: ValidPropertyKey<K> extends never ? never : P[K] }`
 
-Defined in: [src/component.ts:53](https://github.com/zeixcom/ui-element/blob/0bdd451e0266b456b3ed7c56ab9ac6ad476a6f80/src/component.ts#L53)
+Defined in: [src/component.ts:53](https://github.com/zeixcom/ui-element/blob/a146453261eafa2845c03f05c1529bc1192370e6/src/component.ts#L53)
 
 ## Type Parameters
 

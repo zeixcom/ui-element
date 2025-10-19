@@ -147,6 +147,7 @@
 <span class="line"><span style="color:#F8F8F2">	state,</span></span>
 <span class="line"><span style="color:#F8F8F2">	UNSET,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
+<span class="line"></span>
 <span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asURL } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/parser/asURL'</span></span>
 <span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { fetchWithCache } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/shared/fetchWithCache'</span></span>
 <span class="line"></span>
@@ -319,10 +320,7 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> filter </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.filter</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> text </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> target.textContent</span></span>
 <span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (</span><span style="color:#F92672">!</span><span style="color:#F8F8F2">filter.length </span><span style="color:#F92672">||</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">text) </span><span style="color:#F92672">return</span><span style="color:#F8F8F2"> text</span></span>
-<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> regex </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> RegExp</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#F8F8F2">						filter.</span><span style="color:#A6E22E">replace</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">/</span><span style="color:#AE81FF">[.*+?^{}()|[\]\\]</span><span style="color:#E6DB74">/</span><span style="color:#F92672">g</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'</span><span style="color:#AE81FF">\\</span><span style="color:#E6DB74">$&#x26;'</span><span style="color:#F8F8F2">),</span></span>
-<span class="line"><span style="color:#E6DB74">						'gi'</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">					)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> regex </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> RegExp</span><span style="color:#F8F8F2">(RegExp.</span><span style="color:#A6E22E">escape</span><span style="color:#F8F8F2">(filter), </span><span style="color:#E6DB74">'gi'</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F92672">					return</span><span style="color:#F8F8F2"> text.</span><span style="color:#A6E22E">replace</span><span style="color:#F8F8F2">(regex, </span><span style="color:#FD971F;font-style:italic">match</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#E6DB74"> `&#x3C;mark></span><span style="color:#F92672">${</span><span style="color:#F8F8F2">match</span><span style="color:#F92672">}</span><span style="color:#E6DB74">&#x3C;/mark>`</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F8F8F2">				}),</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'ariaSelected'</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#66D9EF;font-style:italic"> =></span></span>
@@ -339,6 +337,10 @@
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementEventMap</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#E6DB74">		'form-listbox.change'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">CustomEvent</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#66D9EF;font-style:italic">string</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#88846F">	// TypeScript declaration for RegExp.escape (baseline 2025)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">RegExpConstructor</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#A6E22E">		escape</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">string</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">)</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
 <span class="line"><span style="color:#F8F8F2">	}</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>

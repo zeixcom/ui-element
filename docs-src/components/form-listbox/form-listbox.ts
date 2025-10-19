@@ -13,6 +13,7 @@ import {
 	state,
 	UNSET,
 } from '../../..'
+
 import { asURL } from '../../functions/parser/asURL'
 import { fetchWithCache } from '../../functions/shared/fetchWithCache'
 
@@ -185,10 +186,7 @@ component(
 					const filter = el.filter
 					const text = target.textContent
 					if (!filter.length || !text) return text
-					const regex = new RegExp(
-						filter.replace(/[.*+?^{}()|[\]\\]/g, '\\$&'),
-						'gi',
-					)
+					const regex = new RegExp(RegExp.escape(filter), 'gi')
 					return text.replace(regex, match => `<mark>${match}</mark>`)
 				}),
 				setProperty('ariaSelected', target =>
@@ -205,5 +203,9 @@ declare global {
 	}
 	interface HTMLElementEventMap {
 		'form-listbox.change': CustomEvent<string>
+	}
+	// TypeScript declaration for RegExp.escape (baseline 2025)
+	interface RegExpConstructor {
+		escape(string: string): string
 	}
 }
