@@ -18,7 +18,7 @@
 		>
 			<card-callout>
 				<p class="loading" role="status">Loading...</p>
-				<p class="error" role="alert" aria-live="polite" hidden></p>
+				<p class="error" role="alert" aria-live="assertive" hidden></p>
 			</card-callout>
 			<module-scrollarea orientation="vertical">
 				<div role="listbox" aria-label="Timezones" hidden></div>
@@ -28,7 +28,7 @@
 			✕
 		</button>
 	</div>
-	<p class="error" aria-live="assertive" id="timezone-error"></p>
+	<p class="error" role="alert" aria-live="assertive" id="timezone-error"></p>
 	<p class="description" aria-live="polite" id="timezone-description">
 		Tell us where you live so we can set your timezone for our calendar and
 		notification features.

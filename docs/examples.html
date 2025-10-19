@@ -12,7 +12,7 @@
 		/>
 		<link
 			rel="modulepreload"
-			href="./assets/main.js?v=95a0e8da"
+			href="./assets/main.js?v=40920244"
 		/>
 		<link
 			rel="stylesheet"
@@ -20,7 +20,7 @@
 		/>
 		<script
 			type="module"
-			src="./assets/main.js?v=95a0e8da"
+			src="./assets/main.js?v=40920244"
 		></script>
 	</head>
 	<body class="">
@@ -113,7 +113,7 @@
 	</nav>
 </section-menu>
 				<card-callout class="content danger" hidden>
-					<p class="error" role="alert" aria-live="polite"></p>
+					<p class="error" role="alert" aria-live="assertive"></p>
 				</card-callout>
 			</header>
 			<main id="main" class="content-grid"><section-hero>
@@ -134,8 +134,6 @@
 			<li><a href="#counter">Counter</a></li>
 <li><a href="#number-formatter">Number Formatter</a></li>
 <li><a href="#pagination">Pagination</a></li>
-<li><a href="#insert">Insert</a></li>
-<li><a href="#listbox">Listbox</a></li>
 <li><a href="#color-editor">Color Editor</a></li>
 <li><a href="#gauge">Gauge</a></li>
 <li><a href="#carousel">Carousel</a></li>
@@ -168,8 +166,8 @@
     <summary>Source Code</summary>
     <module-lazy src="./examples/basic-counter.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -234,8 +232,8 @@
     <summary>Source Code</summary>
     <module-lazy src="./examples/basic-number.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -271,78 +269,8 @@
     <summary>Source Code</summary>
     <module-lazy src="./examples/module-pagination.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
-      </card-callout>
-    </module-lazy>
-  </details>
-</module-demo>
-
-</section>
-
-<section>
-
-<h2 id="insert">
-                <a name="insert" class="anchor" href="#insert">
-	                <span class="permalink">🔗</span>
-					<span class="title">Insert</span>
-                </a>
-            </h2>
-<module-demo>
-  <div class="preview">
-    <module-insert max="10">
-     	<ul data-container></ul>
-     	<template>
-        <li>
-          <basic-button class="delete">
-            <button type="button" class="destructive">Remove</button>
-          </basic-button>
-        </li>
-     	</template>
-     	<basic-button class="add">
-        <button type="button" class="constructive">Add</button>
-     	</basic-button>
-    </module-insert>
-  </div>
-  <details>
-    <summary>Source Code</summary>
-    <module-lazy src="./examples/module-insert.html">
-      <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
-      </card-callout>
-    </module-lazy>
-  </details>
-</module-demo>
-
-</section>
-
-<section>
-
-<h2 id="listbox">
-                <a name="listbox" class="anchor" href="#listbox">
-	                <span class="permalink">🔗</span>
-					<span class="title">Listbox</span>
-                </a>
-            </h2>
-<module-demo>
-  <div class="preview">
-    <form-listbox id="timezone" src="examples/data/timezones.json">
-      <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite" hidden></p>
-      </card-callout>
-      <module-scrollarea orientation="vertical">
-        <div role="listbox" aria-label="Timezones" hidden></div>
-      </module-scrollarea>
-    </form-listbox>
-  </div>
-  <details>
-    <summary>Source Code</summary>
-    <module-lazy src="./examples/form-listbox.html">
-      <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -384,7 +312,7 @@
         <div class="input">
           <input type="text" id="name-input" name="name" value="Blue" autocomplete="off" required />
         </div>
-        <p class="error" aria-live="assertive" id="name-error"></p>
+        <p class="error" role="alert"aria-live="assertive" id="name-error"></p>
         <p class="description" aria-live="polite" id="name-description"></p>
       </form-textbox>
       <form-colorgraph>
@@ -420,7 +348,7 @@
               +
             </button>
           </div>
-          <p class="error" aria-live="assertive" id="lightness-error"></p>
+          <p class="error" role="alert" aria-live="assertive" id="lightness-error"></p>
         </div>
         <div class="chroma">
           <label for="chroma">Chroma</label>
@@ -435,7 +363,7 @@
               +
             </button>
           </div>
-          <p class="error" aria-live="assertive" id="chroma-error"></p>
+          <p class="error" role="alert" aria-live="assertive" id="chroma-error"></p>
         </div>
         <div class="hue">
           <label id="hue-label" for="hue">Hue</label>
@@ -451,7 +379,7 @@
               +
             </button>
           </div>
-          <p class="error" aria-live="assertive" id="hue-error"></p>
+          <p class="error" role="alert" aria-live="assertive" id="hue-error"></p>
         </div>
       </form-colorgraph>
       <!-- <form-colorslider class="lightness" color="#36a2de" axis="l">
@@ -1058,8 +986,8 @@
     <summary>ModuleColoreditor Source Code</summary>
     <module-lazy src="./examples/module-coloreditor.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1067,8 +995,8 @@
     <summary>FormColorgraph Source Code</summary>
     <module-lazy src="./examples/form-colorgraph.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1076,8 +1004,8 @@
     <summary>CardColorscale Source Code</summary>
     <module-lazy src="./examples/card-colorscale.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1085,8 +1013,8 @@
     <summary>ModuleColorinfo Source Code</summary>
     <module-lazy src="./examples/module-colordetails.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1119,8 +1047,8 @@
     <summary>Source Code</summary>
     <module-lazy src="./examples/form-gauge.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1251,8 +1179,8 @@
     <summary>Source Code</summary>
     <module-lazy src="./examples/module-carousel.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1286,8 +1214,8 @@
         />
       <form-listbox id="timezone-popup" src="examples/data/timezones.json" hidden>
         <card-callout>
-          <p class="loading" role="status">Loading...</p>
-          <p class="error" role="alert" aria-live="polite" hidden></p>
+          <p class="loading" role="status" aria-live="polite">Loading...</p>
+          <p class="error" role="alert" aria-live="assertive" hidden></p>
         </card-callout>
         <module-scrollarea orientation="vertical">
           <div role="listbox" aria-label="Timezones" hidden></div>
@@ -1305,11 +1233,38 @@
     </form-combobox>
   </div>
   <details>
-    <summary>Source Code</summary>
+    <summary>FormCombobox Source Code</summary>
     <module-lazy src="./examples/form-combobox.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>FormListbox Source Code</summary>
+    <module-lazy src="./examples/form-listbox.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>CardCallout Source Code</summary>
+    <module-lazy src="./examples/card-callout.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>ModuleScrollarea Source Code</summary>
+    <module-lazy src="./examples/module-scrollarea.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1404,8 +1359,8 @@
     <summary>ModuleDialog Source Code</summary>
     <module-lazy src="./examples/module-dialog.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1413,8 +1368,8 @@
     <summary>ModuleScrollarea Source Code</summary>
     <module-lazy src="./examples/module-scrollarea.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1529,8 +1484,8 @@
     <summary>ModuleTodo Source Code</summary>
     <module-lazy src="./examples/module-todo.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1538,8 +1493,8 @@
     <summary>FormTextbox Source Code</summary>
     <module-lazy src="./examples/form-textbox.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1547,8 +1502,8 @@
     <summary>BasicButton Source Code</summary>
     <module-lazy src="./examples/basic-button.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1556,8 +1511,8 @@
     <summary>ModuleInsert Source Code</summary>
     <module-lazy src="./examples/module-insert.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1565,8 +1520,8 @@
     <summary>FormCheckbox Source Code</summary>
     <module-lazy src="./examples/form-checkbox.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1574,8 +1529,8 @@
     <summary>BasicPluralize Source Code</summary>
     <module-lazy src="./examples/basic-pluralize.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1583,8 +1538,8 @@
     <summary>FormRadiogroup Source Code</summary>
     <module-lazy src="./examples/form-radiogroup.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1605,8 +1560,8 @@
   <div class="preview">
     <module-lazy src="./examples/module-lazy.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </div>
@@ -1614,8 +1569,8 @@
     <summary>ModuleLazy Source Code</summary>
     <module-lazy src="./examples/module-lazy.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1623,8 +1578,8 @@
     <summary>CardCallout Source Code</summary>
     <module-lazy src="./examples/card-callout.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>

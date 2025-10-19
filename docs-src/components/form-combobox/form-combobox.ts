@@ -34,7 +34,7 @@ export default component<FormComboboxProps>(
 	},
 	(el, { first, useElement }) => {
 		const input = useElement('input', 'Needed to enter value.')
-		const errorId = useElement('.error')?.id
+		const errorId = useElement('form-combobox > .error')?.id
 		const descriptionId = useElement('.description')?.id
 		const listbox = useElement('form-listbox', 'Needed to display options.')
 
@@ -63,7 +63,7 @@ export default component<FormComboboxProps>(
 			}),
 
 			// Effects on error and description
-			first('.error', setText('error')),
+			first('form-combobox > .error', setText('error')),
 			first('.description', setText('description')),
 
 			// Effects and event listeners on input
