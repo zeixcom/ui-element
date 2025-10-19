@@ -8,7 +8,7 @@
 
 > **asString**\<`E`\>(`fallback?`): [`Parser`](../type-aliases/Parser.md)\<`string`, `E`\>
 
-Defined in: [src/lib/parsers.ts:79](https://github.com/zeixcom/ui-element/blob/661f034749e9d67cfb1d46cbacb8c3372af8ed61/src/lib/parsers.ts#L79)
+Defined in: [src/lib/parsers.ts:79](https://github.com/zeixcom/ui-element/blob/0bdd451e0266b456b3ed7c56ab9ac6ad476a6f80/src/lib/parsers.ts#L79)
 
 Parse a string as a string with a fallback
 

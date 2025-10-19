@@ -186,7 +186,7 @@ component(
 					const text = target.textContent
 					if (!filter.length || !text) return text
 					const regex = new RegExp(
-						filter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+						filter.replace(/[.*+?^{}()|[\]\\]/g, '\\$&'),
 						'gi',
 					)
 					return text.replace(regex, match => `<mark>${match}</mark>`)
