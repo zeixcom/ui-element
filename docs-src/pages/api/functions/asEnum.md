@@ -8,7 +8,7 @@
 
 > **asEnum**(`valid`): [`Parser`](../type-aliases/Parser.md)\<`string`\>
 
-Defined in: [src/lib/parsers.ts:93](https://github.com/zeixcom/ui-element/blob/225e640fa98977b4408bfa74cd8ff2723fba3b84/src/lib/parsers.ts#L93)
+Defined in: [src/lib/parsers.ts:93](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/lib/parsers.ts#L93)
 
 Parse a string as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option
 

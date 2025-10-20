@@ -16,6 +16,7 @@ import {
 
 import { asURL } from '../../functions/parser/asURL'
 import { fetchWithCache } from '../../functions/shared/fetchWithCache'
+import { highlightMatch } from '../../functions/shared/highlightMatch'
 
 type FormListboxOption = {
 	value: string
@@ -182,13 +183,9 @@ component(
 						.toLowerCase()
 						.includes(el.filter.toLowerCase()),
 				),
-				dangerouslySetInnerHTML(target => {
-					const filter = el.filter.replace(/[^a-zA-Z0-9 -]/g, '')
-					const text = target.textContent
-					if (!filter.length || !text) return text
-					const regex = new RegExp(filter, 'gi')
-					return text.replace(regex, match => `<mark>${match}</mark>`)
-				}),
+				dangerouslySetInnerHTML(target =>
+					highlightMatch(target.textContent ?? '', el.filter),
+				),
 				setProperty('ariaSelected', target =>
 					String(isSelected(target)),
 				),
