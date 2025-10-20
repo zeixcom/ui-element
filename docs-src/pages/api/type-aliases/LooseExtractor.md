@@ -8,7 +8,7 @@
 
 > **LooseExtractor**\<`T`, `E`\> = (`element`) => `T` \| `null` \| `undefined`
 
-Defined in: [src/core/dom.ts:54](https://github.com/zeixcom/ui-element/blob/c6a12f92c4afb67974fd3ace835c4c69a149176a/src/core/dom.ts#L54)
+Defined in: [src/core/dom.ts:54](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L54)
 
 ## Type Parameters
 

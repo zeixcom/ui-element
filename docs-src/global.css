@@ -109,7 +109,7 @@
 	--color-background-alt: var(--color-neutral-20);
 	--color-border: var(--color-neutral-50);
 	--color-text: var(--color-purple-90);
-	--color-text-soft: var(--color-neutral-80);
+	--color-text-soft: var(--color-purple-80);
 	--color-text-inverted: var(--color-white); /* var(--color-purple-10); */
 	--color-shadow: rgb(0 0 0 / 10%);
 
@@ -233,6 +233,11 @@ body {
 		var(--color-selection) 50%,
 		transparent
 	);
+}
+
+mark {
+	background: color-mix(in srgb, var(--color-selection) 20%, transparent);
+	color: color-mix(in srgb, var(--color-selection) 20%, currentColor);
 }
 
 h1 {

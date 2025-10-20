@@ -35,7 +35,12 @@
 					✕
 				</button>
 			</div>
-			<p class="error" aria-live="assertive" id="city-error"></p>
+			<p
+				class="error"
+				role="alert"
+				aria-live="assertive"
+				id="city-error"
+			></p>
 			<p class="description" aria-live="polite" id="city-description">
 				Tell us where you live so we can set your timezone.
 			</p>
@@ -68,7 +73,12 @@
 					✕
 				</button>
 			</div>
-			<p class="error" aria-live="assertive" id="country-error"></p>
+			<p
+				class="error"
+				role="alert"
+				aria-live="assertive"
+				id="country-error"
+			></p>
 		</form-combobox>
 
 		<form-combobox id="test3" value="">
@@ -95,7 +105,12 @@
 					✕
 				</button>
 			</div>
-			<p class="error" aria-live="assertive" id="single-error"></p>
+			<p
+				class="error"
+				role="alert"
+				aria-live="assertive"
+				id="single-error"
+			></p>
 		</form-combobox>
 
 		<script type="module">
@@ -214,7 +229,6 @@
 						const el = document.getElementById('test1')
 						const input = el.querySelector('input')
 						const listbox = el.querySelector('[role="listbox"]')
-
 
 						assert.equal(el.value, '')
 						assert.equal(el.length, 0)
@@ -390,7 +404,6 @@
 						const el = document.getElementById('test1')
 						const input = el.querySelector('input')
 						const clearBtn = el.querySelector('.clear')
-
 
 						// Initially hidden when no content
 						assert.isTrue(clearBtn.hidden)
@@ -617,7 +630,6 @@
 						const el = document.getElementById('test1')
 						const input = el.querySelector('input')
 						const listbox = el.querySelector('[role="listbox"]')
-
 
 						// Check ARIA controls relationship
 						assert.equal(

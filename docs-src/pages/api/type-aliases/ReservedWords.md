@@ -8,4 +8,4 @@
 
 > **ReservedWords** = `"constructor"` \| `"prototype"` \| `"__proto__"` \| `"toString"` \| `"valueOf"` \| `"hasOwnProperty"` \| `"isPrototypeOf"` \| `"propertyIsEnumerable"` \| `"toLocaleString"`
 
-Defined in: [src/component.ts:38](https://github.com/zeixcom/ui-element/blob/c6a12f92c4afb67974fd3ace835c4c69a149176a/src/component.ts#L38)
+Defined in: [src/component.ts:38](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/component.ts#L38)

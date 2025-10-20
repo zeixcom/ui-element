@@ -6,7 +6,7 @@
 
 # Class: InvalidEffectsError
 
-Defined in: [src/core/errors.ts:64](https://github.com/zeixcom/ui-element/blob/c6a12f92c4afb67974fd3ace835c4c69a149176a/src/core/errors.ts#L64)
+Defined in: [src/core/errors.ts:64](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/errors.ts#L64)
 
 Error thrown when setup function does not return effects
 
@@ -24,7 +24,7 @@ Error thrown when setup function does not return effects
 
 > **new InvalidEffectsError**(`host`, `cause?`): `InvalidEffectsError`
 
-Defined in: [src/core/errors.ts:69](https://github.com/zeixcom/ui-element/blob/c6a12f92c4afb67974fd3ace835c4c69a149176a/src/core/errors.ts#L69)
+Defined in: [src/core/errors.ts:69](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/errors.ts#L69)
 
 #### Parameters
 

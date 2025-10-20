@@ -30,8 +30,8 @@ A simple click counter. Gets initial value from inner `span` element and increme
     <summary>Source Code</summary>
     <module-lazy src="./examples/basic-counter.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -93,8 +93,8 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
     <summary>Source Code</summary>
     <module-lazy src="./examples/basic-number.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -126,8 +126,8 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
     <summary>Source Code</summary>
     <module-lazy src="./examples/module-pagination.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -165,7 +165,7 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
         <div class="input">
           <input type="text" id="name-input" name="name" value="Blue" autocomplete="off" required />
         </div>
-        <p class="error" aria-live="assertive" id="name-error"></p>
+        <p class="error" role="alert"aria-live="assertive" id="name-error"></p>
         <p class="description" aria-live="polite" id="name-description"></p>
       </form-textbox>
       <form-colorgraph>
@@ -201,7 +201,7 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
               +
             </button>
           </div>
-          <p class="error" aria-live="assertive" id="lightness-error"></p>
+          <p class="error" role="alert" aria-live="assertive" id="lightness-error"></p>
         </div>
         <div class="chroma">
           <label for="chroma">Chroma</label>
@@ -216,7 +216,7 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
               +
             </button>
           </div>
-          <p class="error" aria-live="assertive" id="chroma-error"></p>
+          <p class="error" role="alert" aria-live="assertive" id="chroma-error"></p>
         </div>
         <div class="hue">
           <label id="hue-label" for="hue">Hue</label>
@@ -232,7 +232,7 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
               +
             </button>
           </div>
-          <p class="error" aria-live="assertive" id="hue-error"></p>
+          <p class="error" role="alert" aria-live="assertive" id="hue-error"></p>
         </div>
       </form-colorgraph>
       <!-- <form-colorslider class="lightness" color="#36a2de" axis="l">
@@ -839,8 +839,8 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
     <summary>ModuleColoreditor Source Code</summary>
     <module-lazy src="./examples/module-coloreditor.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -848,8 +848,8 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
     <summary>FormColorgraph Source Code</summary>
     <module-lazy src="./examples/form-colorgraph.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -857,8 +857,8 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
     <summary>CardColorscale Source Code</summary>
     <module-lazy src="./examples/card-colorscale.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -866,8 +866,8 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
     <summary>ModuleColorinfo Source Code</summary>
     <module-lazy src="./examples/module-colordetails.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -896,8 +896,8 @@ Display a number with a specific format using `Intl.NumberFormat` for localized 
     <summary>Source Code</summary>
     <module-lazy src="./examples/form-gauge.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1000,8 +1000,8 @@ Fully accessible and responsive carousel component.
     <summary>Source Code</summary>
     <module-lazy src="./examples/module-carousel.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1018,60 +1018,71 @@ A combobox component that allows users to select an option from a list.
 <module-demo>
   <div class="preview">
     <form-combobox value="">
-      <label for="city-input">Choose a city</label>
+      <label for="timezone-input" id="city-label">Choose a timezone</label>
       <div class="input">
         <input
-          id="city-input"
+          id="timezone-input"
           type="text"
           role="combobox"
           aria-expanded="false"
-          aria-controls="city-popup"
+          aria-controls="timezone-popup"
           aria-autocomplete="list"
           autocomplete="off"
           required
         />
-        <ol id="city-popup" role="listbox" hidden>
-          <li role="option" tabindex="-1">Amsterdam</li>
-          <li role="option" tabindex="-1">Berlin</li>
-          <li role="option" tabindex="-1">Copenhagen</li>
-          <li role="option" tabindex="-1">Dublin</li>
-          <li role="option" tabindex="-1">Edinburgh</li>
-          <li role="option" tabindex="-1">Frankfurt</li>
-          <li role="option" tabindex="-1">Geneva</li>
-          <li role="option" tabindex="-1">Helsinki</li>
-          <li role="option" tabindex="-1">Istanbul</li>
-          <li role="option" tabindex="-1">Jakarta</li>
-          <li role="option" tabindex="-1">Kairo</li>
-          <li role="option" tabindex="-1">London</li>
-          <li role="option" tabindex="-1">Madrid</li>
-          <li role="option" tabindex="-1">New York</li>
-          <li role="option" tabindex="-1">Oslo</li>
-          <li role="option" tabindex="-1">Paris</li>
-          <li role="option" tabindex="-1">Qingdao</li>
-          <li role="option" tabindex="-1">Rome</li>
-          <li role="option" tabindex="-1">Stockholm</li>
-          <li role="option" tabindex="-1">Tokyo</li>
-          <li role="option" tabindex="-1">Ulan Bator</li>
-          <li role="option" tabindex="-1">Vienna</li>
-          <li role="option" tabindex="-1">Warsaw</li>
-          <li role="option" tabindex="-1">Xi'an</li>
-          <li role="option" tabindex="-1">Yokohama</li>
-          <li role="option" tabindex="-1">Zurich</li>
-        </ol>
-        <button type="button" class="clear" aria-label="Clear input" hidden>
-          ✕
-        </button>
+      <form-listbox id="timezone-popup" src="examples/data/timezones.json" hidden>
+        <card-callout>
+          <p class="loading" role="status" aria-live="polite">Loading...</p>
+          <p class="error" role="alert" aria-live="assertive" hidden></p>
+        </card-callout>
+        <module-scrollarea orientation="vertical">
+          <div role="listbox" aria-label="Timezones" hidden></div>
+        </module-scrollarea>
+      </form-listbox>
+      <button type="button" class="clear" aria-label="Clear input" hidden>
+        ✕
+      </button>
       </div>
-      <p class="error" aria-live="assertive" id="city-error"></p>
-      <p class="description" aria-live="polite" id="city-description">Tell us where you live so we can set your timezone for our calendar and notification features.</p>
+      <p class="error" aria-live="assertive" id="timezone-error"></p>
+      <p class="description" aria-live="polite" id="timezone-description">
+        Tell us where you live so we can set your timezone for our calendar and
+        notification features.
+      </p>
     </form-combobox>
   </div>
   <details>
-    <summary>Source Code</summary>
+    <summary>FormCombobox Source Code</summary>
     <module-lazy src="./examples/form-combobox.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>FormListbox Source Code</summary>
+    <module-lazy src="./examples/form-listbox.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>CardCallout Source Code</summary>
+    <module-lazy src="./examples/card-callout.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>ModuleScrollarea Source Code</summary>
+    <module-lazy src="./examples/module-scrollarea.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1162,8 +1173,8 @@ A combobox component that allows users to select an option from a list.
     <summary>ModuleDialog Source Code</summary>
     <module-lazy src="./examples/module-dialog.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1171,8 +1182,8 @@ A combobox component that allows users to select an option from a list.
     <summary>ModuleScrollarea Source Code</summary>
     <module-lazy src="./examples/module-scrollarea.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1188,9 +1199,10 @@ A todo app component that allows users to add, mark as complete, filter by statu
 
 - `<form-textbox>` for input field to add tasks
 - `<basic-button>` for submit button and delete buttons
-- `<form-checkbox>` for marking tasks as complete
-- `<basic-pluralize>` for displaying the number of tasks
-- `<form-radiogroup>` for filtering tasks by status
+- `<module-insert>` to manage a dynamic list of tasks
+- `<form-checkbox>` to mark tasks as complete
+- `<basic-pluralize>` to display the number of tasks
+- `<form-radiogroup>` to filter tasks by status
 
 <module-demo>
   <div class="preview">
@@ -1208,22 +1220,24 @@ A todo app component that allows users to add, mark as complete, filter by statu
           </button>
         </basic-button>
       </form>
-      <ol filter="all"></ol>
-      <template>
-        <li>
-          <form-checkbox class="todo">
-            <label>
-              <input type="checkbox" class="visually-hidden" />
-              <span class="label"><slot></slot></span>
-            </label>
-          </form-checkbox>
-          <basic-button class="delete">
-            <button type="button" class="tertiary destructive small" aria-label="Delete">
-              <span class="label">✕</span>
-            </button>
-          </basic-button>
-        </li>
-      </template>
+      <module-insert>
+        <ol filter="all" data-container></ol>
+        <template>
+          <li>
+            <form-checkbox class="todo">
+              <label>
+                <input type="checkbox" class="visually-hidden" />
+                <span class="label"><slot></slot></span>
+              </label>
+            </form-checkbox>
+            <basic-button class="delete">
+              <button type="button" class="tertiary destructive small" aria-label="Delete">
+                <span class="label">✕</span>
+              </button>
+            </basic-button>
+          </li>
+        </template>
+      </module-insert>
       <footer>
         <basic-pluralize>
           <p class="none">Well done, all done!</p>
@@ -1280,8 +1294,8 @@ A todo app component that allows users to add, mark as complete, filter by statu
     <summary>ModuleTodo Source Code</summary>
     <module-lazy src="./examples/module-todo.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1289,8 +1303,8 @@ A todo app component that allows users to add, mark as complete, filter by statu
     <summary>FormTextbox Source Code</summary>
     <module-lazy src="./examples/form-textbox.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1298,8 +1312,17 @@ A todo app component that allows users to add, mark as complete, filter by statu
     <summary>BasicButton Source Code</summary>
     <module-lazy src="./examples/basic-button.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>ModuleInsert Source Code</summary>
+    <module-lazy src="./examples/module-insert.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1307,8 +1330,8 @@ A todo app component that allows users to add, mark as complete, filter by statu
     <summary>FormCheckbox Source Code</summary>
     <module-lazy src="./examples/form-checkbox.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1316,8 +1339,8 @@ A todo app component that allows users to add, mark as complete, filter by statu
     <summary>BasicPluralize Source Code</summary>
     <module-lazy src="./examples/basic-pluralize.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1325,8 +1348,8 @@ A todo app component that allows users to add, mark as complete, filter by statu
     <summary>FormRadiogroup Source Code</summary>
     <module-lazy src="./examples/form-radiogroup.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1344,8 +1367,8 @@ This example shows how to handle asynchronous data loading and error states. Use
   <div class="preview">
     <module-lazy src="./examples/module-lazy.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </div>
@@ -1353,8 +1376,8 @@ This example shows how to handle asynchronous data loading and error states. Use
     <summary>ModuleLazy Source Code</summary>
     <module-lazy src="./examples/module-lazy.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>
@@ -1362,8 +1385,8 @@ This example shows how to handle asynchronous data loading and error states. Use
     <summary>CardCallout Source Code</summary>
     <module-lazy src="./examples/card-callout.html">
       <card-callout>
-        <p class="loading" role="status">Loading...</p>
-        <p class="error" role="alert" aria-live="polite"></p>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
       </card-callout>
     </module-lazy>
   </details>

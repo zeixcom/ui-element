@@ -248,8 +248,8 @@ Here's how everything comes together:
 		<summary>ModuleCatalog Source Code</summary>
 		<module-lazy src="./examples/module-catalog.html">
 			<card-callout>
-				<p class="loading" role="status">Loading...</p>
-				<p class="error" role="alert" aria-live="polite"></p>
+				<p class="loading" role="status" aria-live="polite">Loading...</p>
+				<p class="error" role="alert" aria-live="assertive" hidden></p>
 			</card-callout>
 		</module-lazy>
 	</details>
@@ -257,8 +257,8 @@ Here's how everything comes together:
 		<summary>BasicButton Source Code</summary>
 		<module-lazy src="./examples/basic-button.html">
 			<card-callout>
-				<p class="loading" role="status">Loading...</p>
-				<p class="error" role="alert" aria-live="polite"></p>
+				<p class="loading" role="status" aria-live="polite">Loading...</p>
+				<p class="error" role="alert" aria-live="assertive" hidden></p>
 			</card-callout>
 		</module-lazy>
 	</details>
@@ -266,8 +266,8 @@ Here's how everything comes together:
 		<summary>FormSpinbutton Source Code</summary>
 		<module-lazy src="./examples/form-spinbutton.html">
 			<card-callout>
-				<p class="loading" role="status">Loading...</p>
-				<p class="error" role="alert" aria-live="polite"></p>
+				<p class="loading" role="status" aria-live="polite">Loading...</p>
+				<p class="error" role="alert" aria-live="asserive" hidden></p>
 			</card-callout>
 		</module-lazy>
 	</details>

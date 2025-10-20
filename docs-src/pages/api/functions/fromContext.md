@@ -8,7 +8,7 @@
 
 > **fromContext**\<`T`, `C`\>(`context`, `fallback`): [`Extractor`](../type-aliases/Extractor.md)\<[`Signal`](../type-aliases/Signal.md)\<`T`\>, `C`\>
 
-Defined in: [src/core/context.ts:125](https://github.com/zeixcom/ui-element/blob/c6a12f92c4afb67974fd3ace835c4c69a149176a/src/core/context.ts#L125)
+Defined in: [src/core/context.ts:125](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/context.ts#L125)
 
 Consume a context value for a component.
 

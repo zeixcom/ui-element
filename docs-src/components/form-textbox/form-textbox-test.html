@@ -17,7 +17,12 @@
 					required
 				/>
 			</div>
-			<p class="error" aria-live="assertive" id="name-error"></p>
+			<p
+				class="error"
+				role="alert"
+				aria-live="assertive"
+				id="name-error"
+			></p>
 			<p class="description" aria-live="polite" id="name-description">
 				Tell us how you want us to call you in our communications.
 			</p>
@@ -43,7 +48,12 @@
 					✕
 				</button>
 			</div>
-			<p class="error" aria-live="assertive" id="query-error"></p>
+			<p
+				class="error"
+				role="alert"
+				aria-live="assertive"
+				id="query-error"
+			></p>
 		</form-textbox>
 
 		<form-textbox id="test3">
@@ -56,7 +66,12 @@
 					maxlength="500"
 				></textarea>
 			</div>
-			<p class="error" aria-live="assertive" id="comment-error"></p>
+			<p
+				class="error"
+				role="alert"
+				aria-live="assertive"
+				id="comment-error"
+			></p>
 			<p
 				class="description"
 				aria-live="polite"
@@ -76,7 +91,12 @@
 					required
 				/>
 			</div>
-			<p class="error" aria-live="assertive" id="email-error"></p>
+			<p
+				class="error"
+				role="alert"
+				aria-live="assertive"
+				id="email-error"
+			></p>
 		</form-textbox>
 
 		<form-textbox id="test5">
@@ -84,7 +104,12 @@
 			<div class="input">
 				<input type="text" id="no-desc-input" name="no-desc" />
 			</div>
-			<p class="error" aria-live="assertive" id="no-desc-error"></p>
+			<p
+				class="error"
+				role="alert"
+				aria-live="assertive"
+				id="no-desc-error"
+			></p>
 		</form-textbox>
 
 		<script type="module">
@@ -166,7 +191,6 @@
 					it('should initialize with correct default state', async () => {
 						const el = document.getElementById('test1')
 						const input = el.querySelector('input')
-
 
 						assert.equal(el.value, '')
 						assert.equal(el.length, 0)
@@ -292,7 +316,6 @@
 						const textarea = el.querySelector('textarea')
 						const descriptionEl = el.querySelector('.description')
 
-
 						// Should show initial remaining count
 						assert.include(
 							descriptionEl.textContent,
@@ -312,7 +335,6 @@
 						const el = document.getElementById('test2')
 						const input = el.querySelector('input')
 						const clearBtn = el.querySelector('.clear')
-
 
 						// Initially hidden when no content
 						assert.isTrue(clearBtn.hidden)

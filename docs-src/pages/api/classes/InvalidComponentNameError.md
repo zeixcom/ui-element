@@ -6,7 +6,7 @@
 
 # Class: InvalidComponentNameError
 
-Defined in: [src/core/errors.ts:28](https://github.com/zeixcom/ui-element/blob/c6a12f92c4afb67974fd3ace835c4c69a149176a/src/core/errors.ts#L28)
+Defined in: [src/core/errors.ts:28](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/errors.ts#L28)
 
 Error thrown when component name violates rules for custom element names
 
@@ -24,7 +24,7 @@ Error thrown when component name violates rules for custom element names
 
 > **new InvalidComponentNameError**(`component`): `InvalidComponentNameError`
 
-Defined in: [src/core/errors.ts:32](https://github.com/zeixcom/ui-element/blob/c6a12f92c4afb67974fd3ace835c4c69a149176a/src/core/errors.ts#L32)
+Defined in: [src/core/errors.ts:32](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/errors.ts#L32)
 
 #### Parameters
 

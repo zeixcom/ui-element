@@ -17,7 +17,7 @@
 					<p>This is the initial content before navigation.</p>
 				</main>
 				<card-callout hidden>
-					<p class="error" role="alert" aria-live="polite"></p>
+					<p class="error" role="alert" aria-live="assertive"></p>
 				</card-callout>
 			</context-router>
 
@@ -30,7 +30,7 @@
 					<p>This uses a custom outlet selector.</p>
 				</section>
 				<card-callout hidden>
-					<p class="error" role="alert" aria-live="polite"></p>
+					<p class="error" role="alert" aria-live="assertive"></p>
 				</card-callout>
 			</context-router>
 		</div>
@@ -130,7 +130,6 @@
 						const invalidLink = document.createElement('a')
 						invalidLink.href = 'not-a-valid-url'
 						el.querySelector('nav').appendChild(invalidLink)
-
 
 						// Should not crash and should not be marked as active
 						assert.isFalse(invalidLink.classList.contains('active'))

@@ -25,11 +25,10 @@ export default component(
 			'form-textbox',
 			'Add <form-textbox> component to enter a new todo item.',
 		)
-		const template = useElement(
-			'template',
-			'Needed to define the list item template.',
+		const insert = useElement(
+			'module-insert',
+			'Add <module-insert> component to insert new todo items.',
 		)
-		const list = useElement('ol', 'Needed to display the list of todos.')
 		const filter = useElement('form-radiogroup')
 
 		return [
@@ -42,28 +41,19 @@ export default component(
 					event.preventDefault()
 					const value = textbox.value.trim()
 					if (!value) return
-					const li = document.importNode(
-						template.content,
-						true,
-					).firstElementChild
-					if (!(li instanceof HTMLLIElement))
-						throw new Error(
-							'Invalid template for list item; expected <li>',
-						)
-					li.querySelector('slot')?.replaceWith(value)
-					list.append(li)
+					insert.add(item => {
+						item.querySelector('slot')?.replaceWith(value)
+					})
 					textbox.clear()
 				}),
 			]),
 
 			// Control todo list
-			first('ol', [
+			first(
+				'ol',
 				setAttribute('filter', () => filter?.value || 'all'),
-				on('click', ({ event }) => {
-					const target = event.target as HTMLElement
-					if (target.closest('button')) target.closest('li')!.remove()
-				}),
-			]),
+				'Needed to display the list of todos.',
+			),
 
 			// Update count elements
 			first('basic-pluralize', [pass({ count: () => el.active.length })]),

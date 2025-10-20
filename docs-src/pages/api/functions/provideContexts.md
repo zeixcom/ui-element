@@ -8,7 +8,7 @@
 
 > **provideContexts**\<`P`, `K`\>(`contexts`): (`host`) => [`Cleanup`](../type-aliases/Cleanup.md)
 
-Defined in: [src/core/context.ts:98](https://github.com/zeixcom/ui-element/blob/c6a12f92c4afb67974fd3ace835c4c69a149176a/src/core/context.ts#L98)
+Defined in: [src/core/context.ts:98](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/context.ts#L98)
 
 Provide a context for descendant component consumers
 
