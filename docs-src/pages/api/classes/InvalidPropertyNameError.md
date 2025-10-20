@@ -6,7 +6,7 @@
 
 # Class: InvalidPropertyNameError
 
-Defined in: [src/core/errors.ts:45](https://github.com/zeixcom/ui-element/blob/a146453261eafa2845c03f05c1529bc1192370e6/src/core/errors.ts#L45)
+Defined in: [src/core/errors.ts:45](https://github.com/zeixcom/ui-element/blob/225e640fa98977b4408bfa74cd8ff2723fba3b84/src/core/errors.ts#L45)
 
 Error thrown when trying to assign a property name that conflicts with reserved words or inherited HTMLElement properties
 
@@ -24,7 +24,7 @@ Error thrown when trying to assign a property name that conflicts with reserved 
 
 > **new InvalidPropertyNameError**(`component`, `prop`, `reason`): `InvalidPropertyNameError`
 
-Defined in: [src/core/errors.ts:51](https://github.com/zeixcom/ui-element/blob/a146453261eafa2845c03f05c1529bc1192370e6/src/core/errors.ts#L51)
+Defined in: [src/core/errors.ts:51](https://github.com/zeixcom/ui-element/blob/225e640fa98977b4408bfa74cd8ff2723fba3b84/src/core/errors.ts#L51)
 
 #### Parameters
 

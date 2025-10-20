@@ -183,10 +183,10 @@ component(
 						.includes(el.filter.toLowerCase()),
 				),
 				dangerouslySetInnerHTML(target => {
-					const filter = el.filter
+					const filter = el.filter.replace(/[^a-zA-Z0-9 -]/g, '')
 					const text = target.textContent
 					if (!filter.length || !text) return text
-					const regex = new RegExp(RegExp.escape(filter), 'gi')
+					const regex = new RegExp(filter, 'gi')
 					return text.replace(regex, match => `<mark>${match}</mark>`)
 				}),
 				setProperty('ariaSelected', target =>
@@ -203,9 +203,5 @@ declare global {
 	}
 	interface HTMLElementEventMap {
 		'form-listbox.change': CustomEvent<string>
-	}
-	// TypeScript declaration for RegExp.escape (baseline 2025)
-	interface RegExpConstructor {
-		escape(string: string): string
 	}
 }
