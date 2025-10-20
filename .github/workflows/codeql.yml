@@ -11,14 +11,21 @@
 #
 name: "CodeQL Advanced"
 
+paths:
+  - src
+  - docs-src
+  - test
+  - types
+paths-ignore:
+  - "node_modules/**"
+  - "docs/**"
+
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
     paths-ignore:
-      - "node_modules/**"
-      - "docs/**"
       - "**/*.md"
   schedule:
     - cron: '42 2 * * 6'
