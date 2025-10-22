@@ -1,5 +1,5 @@
 /**
- * @name UIElement
+ * @name Le Truc
  * @version 0.14.0
  * @author Esther Brunner
  */

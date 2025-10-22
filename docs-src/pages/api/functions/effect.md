@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
-***
+---
 
-[@zeix/ui-element](../globals.md) / effect
+[@zeix/le-truc](../globals.md) / effect
 
 # Function: effect()
 
 > **effect**\<`S`\>(`matcher`): [`Cleanup`](../type-aliases/Cleanup.md)
 
-Defined in: node\_modules/@zeix/cause-effect/src/effect.ts:23
+Defined in: node_modules/@zeix/cause-effect/src/effect.ts:23
 
 Define what happens when a reactive state changes
 
@@ -16,7 +16,7 @@ Define what happens when a reactive state changes
 
 ### S
 
-`S` *extends* [`Signal`](../type-aliases/Signal.md)\<\{ \}\>[]
+`S` _extends_ [`Signal`](../type-aliases/Signal.md)\<\{ \}\>[]
 
 ## Parameters
 

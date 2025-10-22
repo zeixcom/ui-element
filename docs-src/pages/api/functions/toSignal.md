@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
-***
+---
 
-[@zeix/ui-element](../globals.md) / toSignal
+[@zeix/le-truc](../globals.md) / toSignal
 
 # Function: toSignal()
 
 > **toSignal**\<`T`\>(`value`): [`Signal`](../type-aliases/Signal.md)\<`T`\>
 
-Defined in: node\_modules/@zeix/cause-effect/src/signal.ts:45
+Defined in: node_modules/@zeix/cause-effect/src/signal.ts:45
 
 Convert a value to a Signal if it's not already a Signal
 
@@ -16,7 +16,7 @@ Convert a value to a Signal if it's not already a Signal
 
 ### T
 
-`T` *extends* `object`
+`T` _extends_ `object`
 
 ## Parameters
 

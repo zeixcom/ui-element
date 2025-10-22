@@ -187,7 +187,7 @@ const server = Bun.serve({
 				version: 1,
 				workspace: {
 					root: projectRoot,
-					uuid: 'ui-element-docs-workspace',
+					uuid: 'le-truc-docs-workspace',
 				},
 			}
 

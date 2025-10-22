@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
-***
+---
 
-[@zeix/ui-element](../globals.md) / setProperty
+[@zeix/le-truc](../globals.md) / setProperty
 
 # Function: setProperty()
 
 > **setProperty**\<`P`, `K`, `E`\>(`key`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:296](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/lib/effects.ts#L296)
+Defined in: [src/lib/effects.ts:296](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/lib/effects.ts#L296)
 
 Effect for setting a property on an element.
 Sets the specified property directly on the element object.
@@ -17,15 +17,15 @@ Sets the specified property directly on the element object.
 
 ### P
 
-`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
+`P` _extends_ [`ComponentProps`](../type-aliases/ComponentProps.md)
 
 ### K
 
-`K` *extends* `string`
+`K` _extends_ `string`
 
 ### E
 
-`E` *extends* `Element` = `HTMLElement`
+`E` _extends_ `Element` = `HTMLElement`
 
 ## Parameters
 

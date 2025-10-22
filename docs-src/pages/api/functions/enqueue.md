@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
-***
+---
 
-[@zeix/ui-element](../globals.md) / enqueue
+[@zeix/le-truc](../globals.md) / enqueue
 
 # Function: enqueue()
 
 > **enqueue**\<`T`\>(`fn`, `dedupe?`): `Promise`\<`undefined` \| `boolean` \| `T`\>
 
-Defined in: node\_modules/@zeix/cause-effect/src/scheduler.ts:147
+Defined in: node_modules/@zeix/cause-effect/src/scheduler.ts:147
 
 Enqueue a function to be executed on the next animation frame
 

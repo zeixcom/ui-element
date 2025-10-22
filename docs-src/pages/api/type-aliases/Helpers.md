@@ -1,20 +1,20 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
-***
+---
 
-[@zeix/ui-element](../globals.md) / Helpers
+[@zeix/le-truc](../globals.md) / Helpers
 
 # Type Alias: Helpers\<P\>
 
 > **Helpers**\<`P`\> = `object`
 
-Defined in: [src/core/dom.ts:97](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L97)
+Defined in: [src/core/dom.ts:97](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L97)
 
 ## Type Parameters
 
 ### P
 
-`P` *extends* [`ComponentProps`](ComponentProps.md)
+`P` _extends_ [`ComponentProps`](ComponentProps.md)
 
 ## Properties
 
@@ -22,28 +22,28 @@ Defined in: [src/core/dom.ts:97](https://github.com/zeixcom/ui-element/blob/a2e3
 
 > **all**: [`ElementEffects`](ElementEffects.md)\<`P`\>
 
-Defined in: [src/core/dom.ts:101](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L101)
+Defined in: [src/core/dom.ts:101](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L101)
 
-***
+---
 
 ### first
 
 > **first**: [`ElementEffects`](ElementEffects.md)\<`P`\>
 
-Defined in: [src/core/dom.ts:100](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L100)
+Defined in: [src/core/dom.ts:100](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L100)
 
-***
+---
 
 ### useElement
 
 > **useElement**: [`ElementUsage`](ElementUsage.md)
 
-Defined in: [src/core/dom.ts:98](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L98)
+Defined in: [src/core/dom.ts:98](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L98)
 
-***
+---
 
 ### useElements
 
 > **useElements**: [`ElementsUsage`](ElementsUsage.md)
 
-Defined in: [src/core/dom.ts:99](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L99)
+Defined in: [src/core/dom.ts:99](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L99)

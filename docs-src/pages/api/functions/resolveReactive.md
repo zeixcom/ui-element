@@ -1,28 +1,28 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
-***
+---
 
-[@zeix/ui-element](../globals.md) / resolveReactive
+[@zeix/le-truc](../globals.md) / resolveReactive
 
 # Function: resolveReactive()
 
 > **resolveReactive**\<`T`, `P`, `E`\>(`reactive`, `host`, `target`, `context?`): `T`
 
-Defined in: [src/core/reactive.ts:75](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/reactive.ts#L75)
+Defined in: [src/core/reactive.ts:75](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/reactive.ts#L75)
 
 ## Type Parameters
 
 ### T
 
-`T` *extends* `object`
+`T` _extends_ `object`
 
 ### P
 
-`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
+`P` _extends_ [`ComponentProps`](../type-aliases/ComponentProps.md)
 
 ### E
 
-`E` *extends* `Element` = [`Component`](../type-aliases/Component.md)\<`P`\>
+`E` _extends_ `Element` = [`Component`](../type-aliases/Component.md)\<`P`\>
 
 ## Parameters
 

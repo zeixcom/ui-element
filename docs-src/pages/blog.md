@@ -15,7 +15,7 @@ description: 'Latest articles and updates'
 
 <section>
 
-## Introducing UIElement
+## Introducing Le Truc
 
 - [The Case for Components](./blog/the-case-for-components.md)
 - [Rethinking Reactivity](./blog/rethinking-reactivity.md)

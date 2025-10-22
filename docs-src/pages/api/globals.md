@@ -1,8 +1,8 @@
-[**@zeix/ui-element**](README.md)
+[**@zeix/le-truc**](README.md)
 
-***
+---
 
-# @zeix/ui-element
+# @zeix/le-truc
 
 ## Classes
 
@@ -61,11 +61,11 @@
 
 ## Variables
 
-- [DEV\_MODE](variables/DEV_MODE.md)
-- [LOG\_DEBUG](variables/LOG_DEBUG.md)
-- [LOG\_ERROR](variables/LOG_ERROR.md)
-- [LOG\_INFO](variables/LOG_INFO.md)
-- [LOG\_WARN](variables/LOG_WARN.md)
+- [DEV_MODE](variables/DEV_MODE.md)
+- [LOG_DEBUG](variables/LOG_DEBUG.md)
+- [LOG_ERROR](variables/LOG_ERROR.md)
+- [LOG_INFO](variables/LOG_INFO.md)
+- [LOG_WARN](variables/LOG_WARN.md)
 - [RESET](variables/RESET.md)
 - [UNSET](variables/UNSET.md)
 

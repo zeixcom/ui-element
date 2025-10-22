@@ -1,24 +1,24 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
-***
+---
 
-[@zeix/ui-element](../globals.md) / MaybeSignal
+[@zeix/le-truc](../globals.md) / MaybeSignal
 
 # Type Alias: MaybeSignal\<T\>
 
 > **MaybeSignal**\<`T`\> = `T` \| [`Signal`](Signal.md)\<`T`\> \| [`ComputedCallback`](ComputedCallback.md)\<`T`\>
 
-Defined in: node\_modules/@zeix/cause-effect/src/signal.ts:14
+Defined in: node_modules/@zeix/cause-effect/src/signal.ts:14
 
 ## Type Parameters
 
 ### T
 
-`T` *extends* `object`
+`T` _extends_ `object`
 
 ## Name
 
-UIElement
+Le Truc
 
 ## Version
 

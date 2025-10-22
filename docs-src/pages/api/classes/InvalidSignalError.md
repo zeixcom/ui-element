@@ -1,12 +1,12 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
-***
+---
 
-[@zeix/ui-element](../globals.md) / InvalidSignalError
+[@zeix/le-truc](../globals.md) / InvalidSignalError
 
 # Class: InvalidSignalError
 
-Defined in: [src/core/errors.ts:82](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/errors.ts#L82)
+Defined in: [src/core/errors.ts:82](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/errors.ts#L82)
 
 Error thrown when setSignal on component is called with a non-signal value
 
@@ -24,7 +24,7 @@ Error thrown when setSignal on component is called with a non-signal value
 
 > **new InvalidSignalError**(`host`, `prop`): `InvalidSignalError`
 
-Defined in: [src/core/errors.ts:83](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/errors.ts#L83)
+Defined in: [src/core/errors.ts:83](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/errors.ts#L83)
 
 #### Parameters
 
@@ -50,7 +50,7 @@ Defined in: [src/core/errors.ts:83](https://github.com/zeixcom/ui-element/blob/a
 
 > `optional` **cause**: `unknown`
 
-Defined in: node\_modules/typescript/lib/lib.es2022.error.d.ts:26
+Defined in: node_modules/typescript/lib/lib.es2022.error.d.ts:26
 
 The cause of the error.
 
@@ -58,49 +58,49 @@ The cause of the error.
 
 `Error.cause`
 
-***
+---
 
 ### message
 
 > **message**: `string`
 
-Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1077
+Defined in: node_modules/typescript/lib/lib.es5.d.ts:1077
 
 #### Inherited from
 
 `Error.message`
 
-***
+---
 
 ### name
 
 > **name**: `string`
 
-Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1076
+Defined in: node_modules/typescript/lib/lib.es5.d.ts:1076
 
 #### Inherited from
 
 `Error.name`
 
-***
+---
 
 ### stack?
 
 > `optional` **stack**: `string`
 
-Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1078
+Defined in: node_modules/typescript/lib/lib.es5.d.ts:1078
 
 #### Inherited from
 
 `Error.stack`
 
-***
+---
 
 ### stackTraceLimit
 
 > `static` **stackTraceLimit**: `number`
 
-Defined in: node\_modules/bun-types/globals.d.ts:990
+Defined in: node_modules/bun-types/globals.d.ts:990
 
 The maximum number of stack frames to capture.
 
@@ -116,7 +116,7 @@ The maximum number of stack frames to capture.
 
 > `static` **captureStackTrace**(`targetObject`, `constructorOpt?`): `void`
 
-Defined in: node\_modules/bun-types/globals.d.ts:985
+Defined in: node_modules/bun-types/globals.d.ts:985
 
 Create .stack property on a target object
 
@@ -142,16 +142,16 @@ Create .stack property on a target object
 
 > `static` **captureStackTrace**(`targetObject`, `constructorOpt?`): `void`
 
-Defined in: node\_modules/@types/node/globals.d.ts:145
+Defined in: node_modules/@types/node/globals.d.ts:145
 
 Creates a `.stack` property on `targetObject`, which when accessed returns
 a string representing the location in the code at which
 `Error.captureStackTrace()` was called.
 
 ```js
-const myObject = {};
-Error.captureStackTrace(myObject);
-myObject.stack;  // Similar to `new Error().stack`
+const myObject = {}
+Error.captureStackTrace(myObject)
+myObject.stack // Similar to `new Error().stack`
 ```
 
 The first line of the trace will be prefixed with
@@ -166,26 +166,26 @@ details of error generation from the user. For instance:
 
 ```js
 function a() {
-  b();
+  b()
 }
 
 function b() {
-  c();
+  c()
 }
 
 function c() {
   // Create an error without stack trace to avoid calculating the stack trace twice.
-  const { stackTraceLimit } = Error;
-  Error.stackTraceLimit = 0;
-  const error = new Error();
-  Error.stackTraceLimit = stackTraceLimit;
+  const { stackTraceLimit } = Error
+  Error.stackTraceLimit = 0
+  const error = new Error()
+  Error.stackTraceLimit = stackTraceLimit
 
   // Capture the stack trace above function b
-  Error.captureStackTrace(error, b); // Neither function c, nor b is included in the stack trace
-  throw error;
+  Error.captureStackTrace(error, b) // Neither function c, nor b is included in the stack trace
+  throw error
 }
 
-a();
+a()
 ```
 
 ##### Parameters
@@ -206,13 +206,13 @@ a();
 
 `Error.captureStackTrace`
 
-***
+---
 
 ### isError()
 
 > `static` **isError**(`value`): `value is Error`
 
-Defined in: node\_modules/bun-types/globals.d.ts:980
+Defined in: node_modules/bun-types/globals.d.ts:980
 
 Check if a value is an instance of Error
 
@@ -234,13 +234,13 @@ True if the value is an instance of Error, false otherwise
 
 `Error.isError`
 
-***
+---
 
 ### prepareStackTrace()
 
 > `static` **prepareStackTrace**(`err`, `stackTraces`): `any`
 
-Defined in: node\_modules/@types/node/globals.d.ts:149
+Defined in: node_modules/@types/node/globals.d.ts:149
 
 #### Parameters
 

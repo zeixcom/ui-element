@@ -1,5 +1,5 @@
-// UIElement Docs Service Worker
-const CACHE_NAME = 'ui-element-docs-v1760925631959';
+// Le Truc Docs Service Worker
+const CACHE_NAME = 'le-truc-docs-v1760925631959';
 
 // Assets to cache on install
 const STATIC_ASSETS = [

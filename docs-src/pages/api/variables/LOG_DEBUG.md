@@ -1,11 +1,11 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
-***
+---
 
-[@zeix/ui-element](../globals.md) / LOG\_DEBUG
+[@zeix/le-truc](../globals.md) / LOG_DEBUG
 
-# Variable: LOG\_DEBUG
+# Variable: LOG_DEBUG
 
-> `const` **LOG\_DEBUG**: [`LogLevel`](../type-aliases/LogLevel.md) = `'debug'`
+> `const` **LOG_DEBUG**: [`LogLevel`](../type-aliases/LogLevel.md) = `'debug'`
 
-Defined in: [src/core/util.ts:11](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/util.ts#L11)
+Defined in: [src/core/util.ts:11](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/util.ts#L11)

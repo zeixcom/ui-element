@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
-***
+---
 
-[@zeix/ui-element](../globals.md) / setAttribute
+[@zeix/le-truc](../globals.md) / setAttribute
 
 # Function: setAttribute()
 
 > **setAttribute**\<`P`, `E`\>(`name`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:392](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/lib/effects.ts#L392)
+Defined in: [src/lib/effects.ts:392](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/lib/effects.ts#L392)
 
 Effect for setting an attribute on an element.
 Sets the specified attribute with security validation for unsafe values.
@@ -17,11 +17,11 @@ Sets the specified attribute with security validation for unsafe values.
 
 ### P
 
-`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
+`P` _extends_ [`ComponentProps`](../type-aliases/ComponentProps.md)
 
 ### E
 
-`E` *extends* `Element` = `HTMLElement`
+`E` _extends_ `Element` = `HTMLElement`
 
 ## Parameters
 

@@ -1,8 +1,8 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / batch
+[@zeix/le-truc](../globals.md) / batch
 
 # Function: batch()
 

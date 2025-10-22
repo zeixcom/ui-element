@@ -9,7 +9,7 @@ description: 'Components are a proven way to reduce complexity, encourage reuse,
 # The Case for Components
 
 <div>
-  <p class="lead"><strong>Components are a proven way to reduce complexity, encourage reuse, and allow teams to scale their work across independent user interface parts</strong>. But you don't need a framework to get these benefits. Let's explore how components help us build better interfaces – and how native Web Components and UIElement fit into that picture.</p>
+  <p class="lead"><strong>Components are a proven way to reduce complexity, encourage reuse, and allow teams to scale their work across independent user interface parts</strong>. But you don't need a framework to get these benefits. Let's explore how components help us build better interfaces – and how native Web Components and Le Truc fit into that picture.</p>
   {{ toc }}
 </div>
 </section-hero>
@@ -95,7 +95,7 @@ Web Components are registered using `customElements.define()` and automatically 
 
 ## A Solid Foundation
 
-**UIElement** builds on the Web Platform rather than abstracting over it. We embrace semantic HTML as the foundation. Add CSS to your components however you like and make them look great. Use Web Components to add reusable behavior.
+**Le Truc** builds on the Web Platform rather than abstracting over it. We embrace semantic HTML as the foundation. Add CSS to your components however you like and make them look great. Use Web Components to add reusable behavior.
 
 While native Web Components are powerful, they require you to wire things together manually – querying elements, adding event listeners, and managing updates. This works great for simple interactions, but what if we want other components or JavaScript code to control our component's state? Let's add a public API.
 
@@ -144,16 +144,16 @@ const helloWorld = document.querySelector('hello-world')
 helloWorld.name = 'Betty'
 ```
 
-This manual wiring works, but notice how much boilerplate we needed for a simple reactive property. As components grow more complex, this pattern becomes harder to maintain. This is where **UIElement** shines – it provides the reactivity patterns you need while staying close to the platform.
+This manual wiring works, but notice how much boilerplate we needed for a simple reactive property. As components grow more complex, this pattern becomes harder to maintain. This is where **Le Truc** shines – it provides the reactivity patterns you need while staying close to the platform.
 
-Here's the same component rewritten using UIElement. Notice how the concerns are cleanly separated:
+Here's the same component rewritten using Le Truc. Notice how the concerns are cleanly separated:
 
 - **State declaration**: `name: asString()` defines our component's reactive state
 - **Input handling**: The `on('input', ...)` handler updates state declaratively
 - **DOM updates**: `setText('name')` automatically keeps the display in sync
 
 ```js
-import { component, asString, on, setText } from '@zeix/ui-element'
+import { component, asString, on, setText } from '@zeix/le-truc'
 
 component(
   'hello-world',
@@ -182,7 +182,7 @@ The functions we use:
 - `on()` adds an event listener to an element and removes it when the component is disconnected.
 - `setText()` updates the text content of an element when a state change occurs.
 
-Components in UIElement are still standard Web Components that can be used everywhere. Other components need to know nothing more about UIElement components other than they are standard HTML elements with a few reactive properties according to a clearly defined contract – its public interface.
+Components in Le Truc are still standard Web Components that can be used everywhere. Other components need to know nothing more about Le Truc components other than they are standard HTML elements with a few reactive properties according to a clearly defined contract – its public interface.
 
 </section>
 
@@ -194,7 +194,7 @@ Here's what we've seen:
 
 - **Components** help you organize frontend code in ways that scale – conceptually and organizationally.
 - **Web Components** offer a native way to build encapsulated, reusable user interfaces without needing a framework.
-- **UIElement** builds on this foundation, simplifying common tasks like wiring inputs and syncing state to the DOM.
+- **Le Truc** builds on this foundation, simplifying common tasks like wiring inputs and syncing state to the DOM.
 
 In short: you don't need a framework to build with components. You just need a few functions that stay close to the platform, while smoothing over the rough edges.
 
@@ -206,7 +206,7 @@ In short: you don't need a framework to build with components. You just need a f
 
 In the next post, we'll revisit similar components and explore how reactivity can make more complex relationships easier to manage – like derived values, async state, and multiple sources of truth.
 
-We'll look at the pitfalls of imperative state wiring as logic grows, and how UIElement's signal graph provides a robust and minimal foundation for keeping your user interface in sync.
+We'll look at the pitfalls of imperative state wiring as logic grows, and how Le Truc's signal graph provides a robust and minimal foundation for keeping your user interface in sync.
 
 Stay tuned!
 

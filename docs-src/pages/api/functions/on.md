@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
-***
+---
 
-[@zeix/ui-element](../globals.md) / on
+[@zeix/le-truc](../globals.md) / on
 
 # Function: on()
 
 > **on**\<`K`, `P`, `E`\>(`type`, `handler`, `options`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/core/events.ts:147](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/events.ts#L147)
+Defined in: [src/core/events.ts:147](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/events.ts#L147)
 
 Effect for attaching an event listener to an element.
 Provides proper cleanup when the effect is disposed.
@@ -17,15 +17,15 @@ Provides proper cleanup when the effect is disposed.
 
 ### K
 
-`K` *extends* `string`
+`K` _extends_ `string`
 
 ### P
 
-`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
+`P` _extends_ [`ComponentProps`](../type-aliases/ComponentProps.md)
 
 ### E
 
-`E` *extends* `Element` = `HTMLElement`
+`E` _extends_ `Element` = `HTMLElement`
 
 ## Parameters
 

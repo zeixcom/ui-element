@@ -1,20 +1,20 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
-***
+---
 
-[@zeix/ui-element](../globals.md) / ElementEffects
+[@zeix/le-truc](../globals.md) / ElementEffects
 
 # Type Alias: ElementEffects()\<P\>
 
 > **ElementEffects**\<`P`\> = \{\<`S`\>(`selector`, `effects`, `required?`): () => `void` \| [`Cleanup`](Cleanup.md); \<`E`\>(`selector`, `effects`, `required?`): () => `void` \| [`Cleanup`](Cleanup.md); \}
 
-Defined in: [src/core/dom.ts:84](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L84)
+Defined in: [src/core/dom.ts:84](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L84)
 
 ## Type Parameters
 
 ### P
 
-`P` *extends* [`ComponentProps`](ComponentProps.md)
+`P` _extends_ [`ComponentProps`](ComponentProps.md)
 
 ## Call Signature
 
@@ -24,7 +24,7 @@ Defined in: [src/core/dom.ts:84](https://github.com/zeixcom/ui-element/blob/a2e3
 
 #### S
 
-`S` *extends* `string`
+`S` _extends_ `string`
 
 ### Parameters
 
@@ -56,7 +56,7 @@ Defined in: [src/core/dom.ts:84](https://github.com/zeixcom/ui-element/blob/a2e3
 
 #### E
 
-`E` *extends* `Element`
+`E` _extends_ `Element`
 
 ### Parameters
 

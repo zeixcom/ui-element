@@ -1,18 +1,18 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
-***
+---
 
-[@zeix/ui-element](../globals.md) / State
+[@zeix/le-truc](../globals.md) / State
 
 # Type Alias: State\<T\>
 
 > **State**\<`T`\> = `object`
 
-Defined in: node\_modules/@zeix/cause-effect/src/state.ts:7
+Defined in: node_modules/@zeix/cause-effect/src/state.ts:7
 
 ## Name
 
-UIElement
+Le Truc
 
 ## Version
 
@@ -26,7 +26,7 @@ Esther Brunner
 
 ### T
 
-`T` *extends* `object`
+`T` _extends_ `object`
 
 ## Properties
 
@@ -34,7 +34,7 @@ Esther Brunner
 
 > **\[toStringTag\]**: `"State"`
 
-Defined in: node\_modules/@zeix/cause-effect/src/state.ts:8
+Defined in: node_modules/@zeix/cause-effect/src/state.ts:8
 
 ## Methods
 
@@ -42,19 +42,19 @@ Defined in: node\_modules/@zeix/cause-effect/src/state.ts:8
 
 > **get**(): `T`
 
-Defined in: node\_modules/@zeix/cause-effect/src/state.ts:9
+Defined in: node_modules/@zeix/cause-effect/src/state.ts:9
 
 #### Returns
 
 `T`
 
-***
+---
 
 ### set()
 
 > **set**(`v`): `void`
 
-Defined in: node\_modules/@zeix/cause-effect/src/state.ts:10
+Defined in: node_modules/@zeix/cause-effect/src/state.ts:10
 
 #### Parameters
 
@@ -66,13 +66,13 @@ Defined in: node\_modules/@zeix/cause-effect/src/state.ts:10
 
 `void`
 
-***
+---
 
 ### update()
 
 > **update**(`fn`): `void`
 
-Defined in: node\_modules/@zeix/cause-effect/src/state.ts:11
+Defined in: node_modules/@zeix/cause-effect/src/state.ts:11
 
 #### Parameters
 

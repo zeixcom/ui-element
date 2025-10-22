@@ -1,18 +1,18 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
-***
+---
 
-[@zeix/ui-element](../globals.md) / Computed
+[@zeix/le-truc](../globals.md) / Computed
 
 # Type Alias: Computed\<T\>
 
 > **Computed**\<`T`\> = `object`
 
-Defined in: node\_modules/@zeix/cause-effect/src/computed.ts:19
+Defined in: node_modules/@zeix/cause-effect/src/computed.ts:19
 
 ## Name
 
-UIElement
+Le Truc
 
 ## Version
 
@@ -26,7 +26,7 @@ Esther Brunner
 
 ### T
 
-`T` *extends* `object`
+`T` _extends_ `object`
 
 ## Properties
 
@@ -34,7 +34,7 @@ Esther Brunner
 
 > **\[toStringTag\]**: `"Computed"`
 
-Defined in: node\_modules/@zeix/cause-effect/src/computed.ts:20
+Defined in: node_modules/@zeix/cause-effect/src/computed.ts:20
 
 ## Methods
 
@@ -42,7 +42,7 @@ Defined in: node\_modules/@zeix/cause-effect/src/computed.ts:20
 
 > **get**(): `T`
 
-Defined in: node\_modules/@zeix/cause-effect/src/computed.ts:21
+Defined in: node_modules/@zeix/cause-effect/src/computed.ts:21
 
 #### Returns
 

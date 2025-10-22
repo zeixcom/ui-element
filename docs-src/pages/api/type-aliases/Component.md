@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
-***
+---
 
-[@zeix/ui-element](../globals.md) / Component
+[@zeix/le-truc](../globals.md) / Component
 
 # Type Alias: Component\<P\>
 
 > **Component**\<`P`\> = `HTMLElement` & `P` & `object`
 
-Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/component.ts#L59)
+Defined in: [src/component.ts:59](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/component.ts#L59)
 
 ## Type declaration
 
@@ -24,7 +24,7 @@ Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/a2e
 
 ##### K
 
-`K` *extends* `string`
+`K` _extends_ `string`
 
 #### Parameters
 
@@ -52,7 +52,7 @@ Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/a2e
 
 ##### K
 
-`K` *extends* `string`
+`K` _extends_ `string`
 
 #### Parameters
 
@@ -72,7 +72,7 @@ Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/a2e
 
 ##### K
 
-`K` *extends* `string`
+`K` _extends_ `string`
 
 #### Parameters
 
@@ -92,4 +92,4 @@ Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/a2e
 
 ### P
 
-`P` *extends* [`ComponentProps`](ComponentProps.md)
+`P` _extends_ [`ComponentProps`](ComponentProps.md)

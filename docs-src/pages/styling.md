@@ -9,7 +9,7 @@ description: 'Scoped styles, CSS custom properties'
 # 🎨 Styling
 
 <div>
-  <p class="lead"><strong>Keep your components’ styles self-contained while supporting shared design tokens.</strong> UIElement offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
+  <p class="lead"><strong>Keep your components’ styles self-contained while supporting shared design tokens.</strong> Le Truc offers a refreshingly simple approach to create reactive Web Components that enhance your existing HTML.</p>
   {{ toc }}
 </div>
 </section-hero>
@@ -18,7 +18,7 @@ description: 'Scoped styles, CSS custom properties'
 
 ## Design Principles
 
-UIElement is focused on **state management and reactivity**, not styling. However, to **ensure consistent, maintainable, and reusable styles**, we recommend techniques that **scope component styles properly while allowing shared design tokens** (e.g., spacing, font sizes, colors, layout grids).
+Le Truc is focused on **state management and reactivity**, not styling. However, to **ensure consistent, maintainable, and reusable styles**, we recommend techniques that **scope component styles properly while allowing shared design tokens** (e.g., spacing, font sizes, colors, layout grids).
 
 - **Each component brings along its own specific styles.**
 - Component styles should be **scoped or encapsulated** so they don't leak out.
@@ -164,7 +164,7 @@ my-button {
 
 ## CSS-only Components
 
-Just because UIElement is a JavaScript library doesn't mean you have to use JavaScript in every component. It's perfectly fine to use custom elements just for styling purposes.
+Just because Le Truc is a JavaScript library doesn't mean you have to use JavaScript in every component. It's perfectly fine to use custom elements just for styling purposes.
 
 Here's the example of the `<card-callout>` we're using in this documentation:
 
