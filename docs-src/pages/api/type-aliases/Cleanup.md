@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / Cleanup
 
@@ -8,7 +8,7 @@
 
 > **Cleanup** = () => `void`
 
-Defined in: node_modules/@zeix/cause-effect/src/scheduler.ts:3
+Defined in: node\_modules/@zeix/cause-effect/src/scheduler.ts:3
 
 ## Returns
 

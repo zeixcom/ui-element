@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / state
 
@@ -8,7 +8,7 @@
 
 > **state**\<`T`\>(`initialValue`): [`State`](../type-aliases/State.md)\<`T`\>
 
-Defined in: node_modules/@zeix/cause-effect/src/state.ts:27
+Defined in: node\_modules/@zeix/cause-effect/src/state.ts:27
 
 Create a new state signal
 
@@ -16,7 +16,7 @@ Create a new state signal
 
 ### T
 
-`T` _extends_ `object`
+`T` *extends* `object`
 
 ## Parameters
 

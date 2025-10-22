@@ -1,6 +1,6 @@
 **@zeix/le-truc**
 
----
+***
 
 # Le Truc
 

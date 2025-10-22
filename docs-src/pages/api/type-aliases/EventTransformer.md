@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / EventTransformer
 
@@ -8,25 +8,25 @@
 
 > **EventTransformer**\<`T`, `E`, `C`, `Evt`\> = (`context`) => `T` \| `void`
 
-Defined in: [src/core/events.ts:29](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/events.ts#L29)
+Defined in: [src/core/events.ts:29](https://github.com/zeixcom/ui-element/blob/230cd6cc9b2252d1741350e7be8be3e04b6f2cf4/src/core/events.ts#L29)
 
 ## Type Parameters
 
 ### T
 
-`T` _extends_ `object`
+`T` *extends* `object`
 
 ### E
 
-`E` _extends_ `Element`
+`E` *extends* `Element`
 
 ### C
 
-`C` _extends_ `HTMLElement`
+`C` *extends* `HTMLElement`
 
 ### Evt
 
-`Evt` _extends_ `Event`
+`Evt` *extends* `Event`
 
 ## Parameters
 

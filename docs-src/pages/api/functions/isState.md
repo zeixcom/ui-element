@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / isState
 
@@ -8,7 +8,7 @@
 
 > **isState**\<`T`\>(`value`): `value is State<T>`
 
-Defined in: node_modules/@zeix/cause-effect/src/state.ts:83
+Defined in: node\_modules/@zeix/cause-effect/src/state.ts:83
 
 Check if the provided value is a State instance
 
@@ -16,7 +16,7 @@ Check if the provided value is a State instance
 
 ### T
 
-`T` _extends_ `object`
+`T` *extends* `object`
 
 ## Parameters
 

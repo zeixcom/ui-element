@@ -5,10 +5,23 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Examples – Le Truc Docs</title>
 		<meta name="description" content="Common use cases and demos" />
-		<link rel="preload" href="./assets/main.css?v=0adb5bf2" as="style" />
-		<link rel="modulepreload" href="./assets/main.js?v=0b0743f4" />
-		<link rel="stylesheet" href="./assets/main.css?v=0adb5bf2" />
-		<script type="module" src="./assets/main.js?v=0b0743f4"></script>
+		<link
+			rel="preload"
+			href="./assets/main.css?v=0adb5bf2"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="./assets/main.js?v=e36ac8b7"
+		/>
+		<link
+			rel="stylesheet"
+			href="./assets/main.css?v=0adb5bf2"
+		/>
+		<script
+			type="module"
+			src="./assets/main.js?v=e36ac8b7"
+		></script>
 	</head>
 	<body class="">
 		<context-router>
@@ -19,554 +32,357 @@
 				<h1 class="content">
 					Le Truc Docs <small>Version 0.14.0</small>
 				</h1>
+				
+<section-menu>
+	<nav>
+		<h2 class="visually-hidden">Main Menu</h2>
+		<ol>
+			
+				<li>
+					<a href="index.html">
+						<span class="icon">📖</span>
+						<strong>Introduction</strong>
+						<small>Overview and key benefits of Le Truc</small>
+					</a>
+				</li>
 
-				<section-menu>
-					<nav>
-						<h2 class="visually-hidden">Main Menu</h2>
-						<ol>
-							<li>
-								<a href="index.html">
-									<span class="icon">📖</span>
-									<strong>Introduction</strong>
-									<small
-										>Overview and key benefits of Le
-										Truc</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="getting-started.html">
+						<span class="icon">🚀</span>
+						<strong>Getting Started</strong>
+						<small>Installation, setup, and first steps</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="getting-started.html">
-									<span class="icon">🚀</span>
-									<strong>Getting Started</strong>
-									<small
-										>Installation, setup, and first
-										steps</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="components.html">
+						<span class="icon">🏗️</span>
+						<strong>Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="components.html">
-									<span class="icon">🏗️</span>
-									<strong>Components</strong>
-									<small
-										>Anatomy, lifecycle, signals,
-										effects</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="styling.html">
+						<span class="icon">🎨</span>
+						<strong>Styling</strong>
+						<small>Scoped styles, CSS custom properties</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="styling.html">
-									<span class="icon">🎨</span>
-									<strong>Styling</strong>
-									<small
-										>Scoped styles, CSS custom
-										properties</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="data-flow.html">
+						<span class="icon">🔄</span>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="data-flow.html">
-									<span class="icon">🔄</span>
-									<strong>Data Flow</strong>
-									<small
-										>Passing state, events, context</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="examples.html">
+						<span class="icon">🍽️</span>
+						<strong>Examples</strong>
+						<small>Common use cases and demos</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="examples.html">
-									<span class="icon">🍽️</span>
-									<strong>Examples</strong>
-									<small>Common use cases and demos</small>
-								</a>
-							</li>
+				<li>
+					<a href="blog.html">
+						<span class="icon">📜</span>
+						<strong>Blog</strong>
+						<small>Latest articles and updates</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="blog.html">
-									<span class="icon">📜</span>
-									<strong>Blog</strong>
-									<small>Latest articles and updates</small>
-								</a>
-							</li>
+				<li>
+					<a href="api.html">
+						<span class="icon">📚</span>
+						<strong>API Reference</strong>
+						<small>Functions, types, and constants</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="api.html">
-									<span class="icon">📚</span>
-									<strong>API Reference</strong>
-									<small
-										>Functions, types, and constants</small
-									>
-								</a>
-							</li>
-
-							<li>
-								<a href="about.html">
-									<span class="icon">🤝</span>
-									<strong>About</strong>
-									<small
-										>License, versioning, getting
-										involved</small
-									>
-								</a>
-							</li>
-						</ol>
-					</nav>
-				</section-menu>
+				<li>
+					<a href="about.html">
+						<span class="icon">🤝</span>
+						<strong>About</strong>
+						<small>License, versioning, getting involved</small>
+					</a>
+				</li>
+		</ol>
+	</nav>
+</section-menu>
 				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="assertive"></p>
 				</card-callout>
 			</header>
-			<main id="main" class="content-grid">
-				<section-hero>
-					<h1 id="examples-recipes">
-						<a
-							name="examples-recipes"
-							class="anchor"
-							href="#examples-recipes"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">🍽️ Examples &amp; Recipes</span>
-						</a>
-					</h1>
-					<div>
-						<p class="lead">
-							Discover practical examples and patterns for
-							building reactive, modular components with Le Truc.
-							Each example focuses on showcasing a specific
-							feature or best practice, guiding you through
-							real-world use cases.
-						</p>
+			<main id="main" class="content-grid"><section-hero>
 
-						<module-toc>
-							<nav>
-								<h2>In This Page</h2>
-								<ol>
-									<li><a href="#counter">Counter</a></li>
-									<li>
-										<a href="#number-formatter"
-											>Number Formatter</a
-										>
-									</li>
-									<li>
-										<a href="#pagination">Pagination</a>
-									</li>
-									<li>
-										<a href="#color-editor">Color Editor</a>
-									</li>
-									<li><a href="#gauge">Gauge</a></li>
-									<li><a href="#carousel">Carousel</a></li>
-									<li><a href="#combobox">Combobox</a></li>
-									<li><a href="#dialog">Dialog</a></li>
-									<li><a href="#todo-app">Todo App</a></li>
-									<li>
-										<a href="#lazy-loading">Lazy Loading</a>
-									</li>
-								</ol>
-							</nav>
-						</module-toc>
-					</div>
-				</section-hero>
+<h1 id="examples-recipes">
+                <a name="examples-recipes" class="anchor" href="#examples-recipes">
+	                <span class="permalink">🔗</span>
+					<span class="title">🍽️ Examples &amp; Recipes</span>
+                </a>
+            </h1>
+<div>
+  <p class="lead">Discover practical examples and patterns for building reactive, modular components with Le Truc. Each example focuses on showcasing a specific feature or best practice, guiding you through real-world use cases.</p>
+  
+<module-toc>
+	<nav>
+		<h2>In This Page</h2>
+		<ol>
+			<li><a href="#counter">Counter</a></li>
+<li><a href="#number-formatter">Number Formatter</a></li>
+<li><a href="#pagination">Pagination</a></li>
+<li><a href="#color-editor">Color Editor</a></li>
+<li><a href="#gauge">Gauge</a></li>
+<li><a href="#carousel">Carousel</a></li>
+<li><a href="#combobox">Combobox</a></li>
+<li><a href="#dialog">Dialog</a></li>
+<li><a href="#todo-app">Todo App</a></li>
+<li><a href="#lazy-loading">Lazy Loading</a></li>
+		</ol>
+	</nav>
+</module-toc>
+</div>
+</section-hero>
 
-				<section>
-					<h2 id="counter">
-						<a name="counter" class="anchor" href="#counter">
-							<span class="permalink">🔗</span>
-							<span class="title">Counter</span>
-						</a>
-					</h2>
-					<p>
-						A simple click counter. Gets initial value from inner
-						<code>span</code> element and increments it on click.
-					</p>
-					<module-demo>
-						<div class="preview">
-							<basic-counter>
-								<button type="button">💐 <span>5</span></button>
-							</basic-counter>
-						</div>
-						<details>
-							<summary>Source Code</summary>
-							<module-lazy src="./examples/basic-counter.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-					</module-demo>
-				</section>
+<section>
 
-				<section>
-					<h2 id="number-formatter">
-						<a
-							name="number-formatter"
-							class="anchor"
-							href="#number-formatter"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Number Formatter</span>
-						</a>
-					</h2>
-					<p>
-						Display a number with a specific format using
-						<code>Intl.NumberFormat</code> for localized formatting,
-						currency and unit display, and pluralization rules. Gets
-						locale from the component&#39;s or inherited
-						<code>lang</code> attribute. Full support for all
-						options of <code>Intl.NumberFormat</code> with basic
-						sanitization of JSON input from
-						<code>options</code> attribute.
-					</p>
-					<module-demo>
-						<div class="preview">
-							<ul>
-								<li>
-									inherited (en):
-									<basic-number
-										value="25678.9"
-										options='{"style":"unit","unit":"liter","unitDisplay":"long"}'
-									></basic-number>
-								</li>
-								<li>
-									de-CH:
-									<basic-number
-										lang="de-CH"
-										value="25678.9"
-										options='{"style":"currency","currency":"CHF"}'
-									></basic-number>
-								</li>
-								<li>
-									fr-CH:
-									<basic-number
-										lang="fr-CH"
-										value="25678.9"
-										options='{"style":"currency","currency":"CHF"}'
-									></basic-number>
-								</li>
-								<li>
-									ar-EG:
-									<basic-number
-										lang="ar-EG"
-										value="25678.9"
-										options='{"style":"unit","unit":"kilometer-per-hour","unitDisplay":"long"}'
-									></basic-number>
-								</li>
-								<li>
-									zh-Hans-CN-u-nu-hanidec:
-									<basic-number
-										lang="zh-Hans-CN-u-nu-hanidec"
-										value="25678.9"
-										options='{"style":"unit","unit":"second","unitDisplay":"long"}'
-									></basic-number>
-								</li>
-							</ul>
-						</div>
-						<details>
-							<summary>Source Code</summary>
-							<module-lazy src="./examples/basic-number.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-					</module-demo>
-				</section>
+<h2 id="counter">
+                <a name="counter" class="anchor" href="#counter">
+	                <span class="permalink">🔗</span>
+					<span class="title">Counter</span>
+                </a>
+            </h2>
+<p>A simple click counter. Gets initial value from inner <code>span</code> element and increments it on click.</p>
+<module-demo>
+  <div class="preview">
+    <basic-counter>
+       <button type="button">💐 <span>5</span></button>
+    </basic-counter>
+  </div>
+  <details>
+    <summary>Source Code</summary>
+    <module-lazy src="./examples/basic-counter.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
 
-				<section>
-					<h2 id="pagination">
-						<a name="pagination" class="anchor" href="#pagination">
-							<span class="permalink">🔗</span>
-							<span class="title">Pagination</span>
-						</a>
-					</h2>
-					<module-demo>
-						<div class="preview">
-							<module-pagination max="10" value="1">
-								<div>
-									<label>
-										<span class="visually-hidden"
-											>Page</span
-										>
-										<input
-											type="number"
-											name="page"
-											min="1"
-											max="10"
-											value="1"
-										/>
-									</label>
-									<span
-										class="value visually-hidden"
-										aria-current="page"
-										>1</span
-									>
-									of <span class="max">10</span>
-								</div>
-								<div class="buttons">
-									<button
-										type="button"
-										class="prev"
-										disabled
-										aria-label="Previous page"
-									>
-										❮
-									</button>
-									<button
-										type="button"
-										class="next"
-										aria-label="Next page"
-									>
-										❯
-									</button>
-								</div>
-							</module-pagination>
-						</div>
-						<details>
-							<summary>Source Code</summary>
-							<module-lazy
-								src="./examples/module-pagination.html"
-							>
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-					</module-demo>
-				</section>
+</section>
 
-				<section>
-					<h2 id="color-editor">
-						<a
-							name="color-editor"
-							class="anchor"
-							href="#color-editor"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Color Editor</span>
-						</a>
-					</h2>
-					<module-demo>
-						<div class="preview">
-							<module-coloreditor
-								color="oklch(.48 .23 263)"
-								name="Blue"
-							>
-								<card-colorscale class="scale tiny">
-									<ol role="presentation">
-										<li class="lighten80"></li>
-										<li class="lighten60"></li>
-										<li class="lighten40"></li>
-										<li class="lighten20"></li>
-										<li class="base">
-											<span class="label">
-												<strong></strong>
-												<small></small>
-											</span>
-										</li>
-										<li class="darken20"></li>
-										<li class="darken40"></li>
-										<li class="darken60"></li>
-										<li class="darken80"></li>
-									</ol>
-								</card-colorscale>
-								<form-textbox class="name">
-									<label for="name-input">Color name</label>
-									<div class="input">
-										<input
-											type="text"
-											id="name-input"
-											name="name"
-											value="Blue"
-											autocomplete="off"
-											required
-										/>
-									</div>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										id="name-error"
-									></p>
-									<p
-										class="description"
-										aria-live="polite"
-										id="name-description"
-									></p>
-								</form-textbox>
-								<form-colorgraph>
-									<div class="graph">
-										<canvas
-											width="400"
-											height="400"
-										></canvas>
-										<button class="knob">
-											<span class="visually-hidden"
-												>Drag</span
-											>
-										</button>
-										<ol role="presentation">
-											<li class="lighten80"></li>
-											<li class="lighten60"></li>
-											<li class="lighten40"></li>
-											<li class="lighten20"></li>
-											<li class="darken20"></li>
-											<li class="darken40"></li>
-											<li class="darken60"></li>
-											<li class="darken80"></li>
-										</ol>
-									</div>
-									<div
-										class="slider"
-										role="slider"
-										tabindex="0"
-										aria-controls="hue"
-										aria-labelledby="hue-label"
-									>
-										<canvas width="360" height="1"></canvas>
-										<span class="thumb"></span>
-									</div>
-									<div class="lightness">
-										<label for="lightness">Lightness</label>
-										<div class="input">
-											<input
-												id="lightness"
-												name="lightness"
-												type="number"
-											/>
-											<span class="unit">%</span>
-										</div>
-										<div class="buttons">
-											<button
-												type="button"
-												class="decrement"
-												aria-label="Decrement lightness"
-											>
-												−
-											</button>
-											<button
-												type="button"
-												class="increment"
-												aria-label="Increment lightness"
-											>
-												+
-											</button>
-										</div>
-										<p
-											class="error"
-											role="alert"
-											aria-live="assertive"
-											id="lightness-error"
-										></p>
-									</div>
-									<div class="chroma">
-										<label for="chroma">Chroma</label>
-										<div class="input">
-											<input
-												id="chroma"
-												name="chroma"
-												type="number"
-											/>
-										</div>
-										<div class="buttons">
-											<button
-												type="button"
-												class="decrement"
-												aria-label="Decrement chroma"
-											>
-												−
-											</button>
-											<button
-												type="button"
-												class="increment"
-												aria-label="Increment chroma"
-											>
-												+
-											</button>
-										</div>
-										<p
-											class="error"
-											role="alert"
-											aria-live="assertive"
-											id="chroma-error"
-										></p>
-									</div>
-									<div class="hue">
-										<label id="hue-label" for="hue"
-											>Hue</label
-										>
-										<div class="input">
-											<input
-												id="hue"
-												name="hue"
-												type="number"
-											/>
-											<span class="unit">°</span>
-										</div>
-										<div class="buttons">
-											<button
-												type="button"
-												class="decrement"
-												aria-label="Decrement hue"
-											>
-												−
-											</button>
-											<button
-												type="button"
-												class="increment"
-												aria-label="Increment hue"
-											>
-												+
-											</button>
-										</div>
-										<p
-											class="error"
-											role="alert"
-											aria-live="assertive"
-											id="hue-error"
-										></p>
-									</div>
-								</form-colorgraph>
-								<!-- <form-colorslider class="lightness" color="#36a2de" axis="l">
+<section>
+
+<h2 id="number-formatter">
+                <a name="number-formatter" class="anchor" href="#number-formatter">
+	                <span class="permalink">🔗</span>
+					<span class="title">Number Formatter</span>
+                </a>
+            </h2>
+<p>Display a number with a specific format using <code>Intl.NumberFormat</code> for localized formatting, currency and unit display, and pluralization rules. Gets locale from the component&#39;s or inherited <code>lang</code> attribute. Full support for all options of <code>Intl.NumberFormat</code> with basic sanitization of JSON input from <code>options</code> attribute.</p>
+<module-demo>
+  <div class="preview">
+    <ul>
+      <li>
+        inherited (en):
+        <basic-number
+          value="25678.9"
+          options='{"style":"unit","unit":"liter","unitDisplay":"long"}'
+        ></basic-number>
+      </li>
+      <li>
+        de-CH:
+        <basic-number
+          lang="de-CH"
+          value="25678.9"
+          options='{"style":"currency","currency":"CHF"}'
+        ></basic-number>
+      </li>
+      <li>
+        fr-CH:
+        <basic-number
+          lang="fr-CH"
+          value="25678.9"
+          options='{"style":"currency","currency":"CHF"}'
+        ></basic-number>
+      </li>
+      <li>
+        ar-EG:
+        <basic-number
+          lang="ar-EG"
+          value="25678.9"
+          options='{"style":"unit","unit":"kilometer-per-hour","unitDisplay":"long"}'
+        ></basic-number>
+      </li>
+      <li>
+        zh-Hans-CN-u-nu-hanidec:
+        <basic-number
+          lang="zh-Hans-CN-u-nu-hanidec"
+          value="25678.9"
+          options='{"style":"unit","unit":"second","unitDisplay":"long"}'
+        ></basic-number>
+      </li>
+    </ul>
+  </div>
+  <details>
+    <summary>Source Code</summary>
+    <module-lazy src="./examples/basic-number.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
+
+</section>
+
+<section>
+
+<h2 id="pagination">
+                <a name="pagination" class="anchor" href="#pagination">
+	                <span class="permalink">🔗</span>
+					<span class="title">Pagination</span>
+                </a>
+            </h2>
+<module-demo>
+  <div class="preview">
+    <module-pagination max="10" value="1">
+      <div>
+        <label>
+          <span class="visually-hidden">Page</span>
+          <input type="number" name="page" min="1" max="10" value="1" />
+        </label>
+        <span class="value visually-hidden" aria-current="page">1</span> of <span class="max">10</span>
+      </div>
+      <div class="buttons">
+        <button type="button" class="prev" disabled aria-label="Previous page">❮</button>
+        <button type="button" class="next" aria-label="Next page">❯</button>
+      </div>
+    </module-pagination>
+  </div>
+  <details>
+    <summary>Source Code</summary>
+    <module-lazy src="./examples/module-pagination.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
+
+</section>
+
+<section>
+
+<h2 id="color-editor">
+                <a name="color-editor" class="anchor" href="#color-editor">
+	                <span class="permalink">🔗</span>
+					<span class="title">Color Editor</span>
+                </a>
+            </h2>
+<module-demo>
+  <div class="preview">
+    <module-coloreditor color="oklch(.48 .23 263)" name="Blue">
+      <card-colorscale class="scale tiny">
+        <ol role="presentation">
+          <li class="lighten80"></li>
+          <li class="lighten60"></li>
+          <li class="lighten40"></li>
+          <li class="lighten20"></li>
+          <li class="base">
+            <span class="label">
+              <strong></strong>
+              <small></small>
+            </span>
+          </li>
+          <li class="darken20"></li>
+          <li class="darken40"></li>
+          <li class="darken60"></li>
+          <li class="darken80"></li>
+        </ol>
+      </card-colorscale>
+      <form-textbox class="name">
+        <label for="name-input">Color name</label>
+        <div class="input">
+          <input type="text" id="name-input" name="name" value="Blue" autocomplete="off" required />
+        </div>
+        <p class="error" role="alert"aria-live="assertive" id="name-error"></p>
+        <p class="description" aria-live="polite" id="name-description"></p>
+      </form-textbox>
+      <form-colorgraph>
+        <div class="graph">
+          <canvas width="400" height="400"></canvas>
+          <button class="knob"><span class="visually-hidden">Drag</span></button>
+          <ol role="presentation">
+            <li class="lighten80"></li>
+            <li class="lighten60"></li>
+            <li class="lighten40"></li>
+            <li class="lighten20"></li>
+            <li class="darken20"></li>
+            <li class="darken40"></li>
+            <li class="darken60"></li>
+            <li class="darken80"></li>
+          </ol>
+        </div>
+        <div class="slider" role="slider" tabindex="0" aria-controls="hue" aria-labelledby="hue-label">
+          <canvas width="360" height="1"></canvas>
+          <span class="thumb"></span>
+        </div>
+        <div class="lightness">
+          <label for="lightness">Lightness</label>
+          <div class="input">
+            <input id="lightness" name="lightness" type="number" />
+            <span class="unit">%</span>
+          </div>
+          <div class="buttons">
+            <button type="button" class="decrement" aria-label="Decrement lightness">
+              −
+            </button>
+            <button type="button" class="increment" aria-label="Increment lightness">
+              +
+            </button>
+          </div>
+          <p class="error" role="alert" aria-live="assertive" id="lightness-error"></p>
+        </div>
+        <div class="chroma">
+          <label for="chroma">Chroma</label>
+          <div class="input">
+            <input id="chroma" name="chroma" type="number" />
+          </div>
+          <div class="buttons">
+            <button type="button" class="decrement" aria-label="Decrement chroma">
+              −
+            </button>
+            <button type="button" class="increment" aria-label="Increment chroma">
+              +
+            </button>
+          </div>
+          <p class="error" role="alert" aria-live="assertive" id="chroma-error"></p>
+        </div>
+        <div class="hue">
+          <label id="hue-label" for="hue">Hue</label>
+          <div class="input">
+            <input id="hue" name="hue" type="number" />
+            <span class="unit">°</span>
+          </div>
+          <div class="buttons">
+            <button type="button" class="decrement" aria-label="Decrement hue">
+              −
+            </button>
+            <button type="button" class="increment" aria-label="Increment hue">
+              +
+            </button>
+          </div>
+          <p class="error" role="alert" aria-live="assertive" id="hue-error"></p>
+        </div>
+      </form-colorgraph>
+      <!-- <form-colorslider class="lightness" color="#36a2de" axis="l">
         <label for="lightness">Lightness</label>
         <div class="input">
           <input id="lightness" name="lightness" type="number" />
@@ -622,1695 +438,1155 @@
           <span class="thumb"></span>
         </div>
       </form-colorslider> -->
-								<div class="info">
-									<module-colorinfo class="lighten80">
-										<details>
-											<summary>
-												<div class="summary">
-													<span class="swatch"></span>
-													<span class="label">
-														<strong></strong>
-														<small
-															class="hex"
-														></small>
-													</span>
-												</div>
-											</summary>
-											<div class="details">
-												<dl>
-													<dt>Lightness:</dt>
-													<dd>
-														<basic-number
-															class="lightness"
-															options='{"style":"percent","maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-													<dt>Chroma:</dt>
-													<dd>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-													</dd>
-													<dt>Hue:</dt>
-													<dd>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-												</dl>
-												<dl>
-													<dt>OKLCH:</dt>
-													<dd lang="en">
-														oklch(<basic-number
-															class="lightness"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number
-														>)
-													</dd>
-													<dt>RGB:</dt>
-													<dd class="rgb"></dd>
-													<dt>HSL:</dt>
-													<dd class="hsl"></dd>
-												</dl>
-											</div>
-										</details>
-									</module-colorinfo>
-									<module-colorinfo class="lighten60">
-										<details>
-											<summary>
-												<div class="summary">
-													<span class="swatch"></span>
-													<span class="label">
-														<strong></strong>
-														<small
-															class="hex"
-														></small>
-													</span>
-												</div>
-											</summary>
-											<div class="details">
-												<dl>
-													<dt>Lightness:</dt>
-													<dd>
-														<basic-number
-															class="lightness"
-															options='{"style":"percent","maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-													<dt>Chroma:</dt>
-													<dd>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-													</dd>
-													<dt>Hue:</dt>
-													<dd>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-												</dl>
-												<dl>
-													<dt>OKLCH:</dt>
-													<dd lang="en">
-														oklch(<basic-number
-															class="lightness"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number
-														>)
-													</dd>
-													<dt>RGB:</dt>
-													<dd class="rgb"></dd>
-													<dt>HSL:</dt>
-													<dd class="hsl"></dd>
-												</dl>
-											</div>
-										</details>
-									</module-colorinfo>
-									<module-colorinfo class="lighten40">
-										<details>
-											<summary>
-												<div class="summary">
-													<span class="swatch"></span>
-													<span class="label">
-														<strong></strong>
-														<small
-															class="hex"
-														></small>
-													</span>
-												</div>
-											</summary>
-											<div class="details">
-												<dl>
-													<dt>Lightness:</dt>
-													<dd>
-														<basic-number
-															class="lightness"
-															options='{"style":"percent","maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-													<dt>Chroma:</dt>
-													<dd>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-													</dd>
-													<dt>Hue:</dt>
-													<dd>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-												</dl>
-												<dl>
-													<dt>OKLCH:</dt>
-													<dd lang="en">
-														oklch(<basic-number
-															class="lightness"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number
-														>)
-													</dd>
-													<dt>RGB:</dt>
-													<dd class="rgb"></dd>
-													<dt>HSL:</dt>
-													<dd class="hsl"></dd>
-												</dl>
-											</div>
-										</details>
-									</module-colorinfo>
-									<module-colorinfo class="lighten20">
-										<details>
-											<summary>
-												<div class="summary">
-													<span class="swatch"></span>
-													<span class="label">
-														<strong></strong>
-														<small
-															class="hex"
-														></small>
-													</span>
-												</div>
-											</summary>
-											<div class="details">
-												<dl>
-													<dt>Lightness:</dt>
-													<dd>
-														<basic-number
-															class="lightness"
-															options='{"style":"percent","maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-													<dt>Chroma:</dt>
-													<dd>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-													</dd>
-													<dt>Hue:</dt>
-													<dd>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-												</dl>
-												<dl>
-													<dt>OKLCH:</dt>
-													<dd lang="en">
-														oklch(<basic-number
-															class="lightness"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number
-														>)
-													</dd>
-													<dt>RGB:</dt>
-													<dd class="rgb"></dd>
-													<dt>HSL:</dt>
-													<dd class="hsl"></dd>
-												</dl>
-											</div>
-										</details>
-									</module-colorinfo>
-									<module-colorinfo class="base">
-										<details open>
-											<summary>
-												<div class="summary">
-													<span class="swatch"></span>
-													<span class="label">
-														<strong></strong>
-														<small
-															class="hex"
-														></small>
-													</span>
-												</div>
-											</summary>
-											<div class="details">
-												<dl>
-													<dt>Lightness:</dt>
-													<dd>
-														<basic-number
-															class="lightness"
-															options='{"style":"percent","maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-													<dt>Chroma:</dt>
-													<dd>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-													</dd>
-													<dt>Hue:</dt>
-													<dd>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-												</dl>
-												<dl>
-													<dt>OKLCH:</dt>
-													<dd lang="en">
-														oklch(<basic-number
-															class="lightness"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number
-														>)
-													</dd>
-													<dt>RGB:</dt>
-													<dd class="rgb"></dd>
-													<dt>HSL:</dt>
-													<dd class="hsl"></dd>
-												</dl>
-											</div>
-										</details>
-									</module-colorinfo>
-									<module-colorinfo class="darken20">
-										<details>
-											<summary>
-												<div class="summary">
-													<span class="swatch"></span>
-													<span class="label">
-														<strong></strong>
-														<small
-															class="hex"
-														></small>
-													</span>
-												</div>
-											</summary>
-											<div class="details">
-												<dl>
-													<dt>Lightness:</dt>
-													<dd>
-														<basic-number
-															class="lightness"
-															options='{"style":"percent","maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-													<dt>Chroma:</dt>
-													<dd>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-													</dd>
-													<dt>Hue:</dt>
-													<dd>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-												</dl>
-												<dl>
-													<dt>OKLCH:</dt>
-													<dd lang="en">
-														oklch(<basic-number
-															class="lightness"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number
-														>)
-													</dd>
-													<dt>RGB:</dt>
-													<dd class="rgb"></dd>
-													<dt>HSL:</dt>
-													<dd class="hsl"></dd>
-												</dl>
-											</div>
-										</details>
-									</module-colorinfo>
-									<module-colorinfo class="darken40">
-										<details>
-											<summary>
-												<div class="summary">
-													<span class="swatch"></span>
-													<span class="label">
-														<strong></strong>
-														<small
-															class="hex"
-														></small>
-													</span>
-												</div>
-											</summary>
-											<div class="details">
-												<dl>
-													<dt>Lightness:</dt>
-													<dd>
-														<basic-number
-															class="lightness"
-															options='{"style":"percent","maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-													<dt>Chroma:</dt>
-													<dd>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-													</dd>
-													<dt>Hue:</dt>
-													<dd>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-												</dl>
-												<dl>
-													<dt>OKLCH:</dt>
-													<dd lang="en">
-														oklch(<basic-number
-															class="lightness"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number
-														>)
-													</dd>
-													<dt>RGB:</dt>
-													<dd class="rgb"></dd>
-													<dt>HSL:</dt>
-													<dd class="hsl"></dd>
-												</dl>
-											</div>
-										</details>
-									</module-colorinfo>
-									<module-colorinfo class="darken60">
-										<details>
-											<summary>
-												<div class="summary">
-													<span class="swatch"></span>
-													<span class="label">
-														<strong></strong>
-														<small
-															class="hex"
-														></small>
-													</span>
-												</div>
-											</summary>
-											<div class="details">
-												<dl>
-													<dt>Lightness:</dt>
-													<dd>
-														<basic-number
-															class="lightness"
-															options='{"style":"percent","maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-													<dt>Chroma:</dt>
-													<dd>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-													</dd>
-													<dt>Hue:</dt>
-													<dd>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-												</dl>
-												<dl>
-													<dt>OKLCH:</dt>
-													<dd>
-														oklch(<basic-number
-															class="lightness"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number
-														>)
-													</dd>
-													<dt>RGB:</dt>
-													<dd class="rgb"></dd>
-													<dt>HSL:</dt>
-													<dd class="hsl"></dd>
-												</dl>
-											</div>
-										</details>
-									</module-colorinfo>
-									<module-colorinfo class="darken80">
-										<details>
-											<summary>
-												<div class="summary">
-													<span class="swatch"></span>
-													<span class="label">
-														<strong></strong>
-														<small
-															class="hex"
-														></small>
-													</span>
-												</div>
-											</summary>
-											<div class="details">
-												<dl>
-													<dt>Lightness:</dt>
-													<dd>
-														<basic-number
-															class="lightness"
-															options='{"style":"percent","maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-													<dt>Chroma:</dt>
-													<dd>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-													</dd>
-													<dt>Hue:</dt>
-													<dd>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number>
-													</dd>
-												</dl>
-												<dl>
-													<dt>OKLCH:</dt>
-													<dd>
-														oklch(<basic-number
-															class="lightness"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="chroma"
-															options='{"maximumFractionDigits":4}'
-														></basic-number>
-														<basic-number
-															class="hue"
-															options='{"maximumFractionDigits":2}'
-														></basic-number
-														>)
-													</dd>
-													<dt>RGB:</dt>
-													<dd class="rgb"></dd>
-													<dt>HSL:</dt>
-													<dd class="hsl"></dd>
-												</dl>
-											</div>
-										</details>
-									</module-colorinfo>
-								</div>
-							</module-coloreditor>
-						</div>
-						<details>
-							<summary>ModuleColoreditor Source Code</summary>
-							<module-lazy
-								src="./examples/module-coloreditor.html"
-							>
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-						<details>
-							<summary>FormColorgraph Source Code</summary>
-							<module-lazy src="./examples/form-colorgraph.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-						<details>
-							<summary>CardColorscale Source Code</summary>
-							<module-lazy src="./examples/card-colorscale.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-						<details>
-							<summary>ModuleColorinfo Source Code</summary>
-							<module-lazy
-								src="./examples/module-colordetails.html"
-							>
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-					</module-demo>
-				</section>
+      <div class="info">
+        <module-colorinfo class="lighten80">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong></strong>
+                  <small class="hex"></small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+                <dt>Chroma:</dt>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
+                <dt>Hue:</dt>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd lang="en">
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="lighten60">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong></strong>
+                  <small class="hex"></small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+                <dt>Chroma:</dt>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
+                <dt>Hue:</dt>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd lang="en">
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="lighten40">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong></strong>
+                  <small class="hex"></small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+                <dt>Chroma:</dt>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
+                <dt>Hue:</dt>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd lang="en">
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="lighten20">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong></strong>
+                  <small class="hex"></small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+                <dt>Chroma:</dt>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
+                <dt>Hue:</dt>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd lang="en">
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="base">
+          <details open>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong></strong>
+                  <small class="hex"></small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+                <dt>Chroma:</dt>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
+                <dt>Hue:</dt>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd lang="en">
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="darken20">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong></strong>
+                  <small class="hex"></small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+                <dt>Chroma:</dt>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
+                <dt>Hue:</dt>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd lang="en">
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="darken40">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong></strong>
+                  <small class="hex"></small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+                <dt>Chroma:</dt>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
+                <dt>Hue:</dt>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd lang="en">
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="darken60">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong></strong>
+                  <small class="hex"></small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+                <dt>Chroma:</dt>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
+                <dt>Hue:</dt>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd>
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+        <module-colorinfo class="darken80">
+          <details>
+            <summary>
+              <div class="summary">
+                <span class="swatch"></span>
+                <span class="label">
+                  <strong></strong>
+                  <small class="hex"></small>
+                </span>
+              </div>
+            </summary>
+            <div class="details">
+              <dl>
+                <dt>Lightness:</dt>
+                <dd>
+                  <basic-number
+                    class="lightness"
+                    options='{"style":"percent","maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+                <dt>Chroma:</dt>
+                <dd>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                </dd>
+                <dt>Hue:</dt>
+                <dd>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number>
+                </dd>
+              </dl>
+              <dl>
+                <dt>OKLCH:</dt>
+                <dd>
+                  oklch(<basic-number
+                    class="lightness"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="chroma"
+                    options='{"maximumFractionDigits":4}'
+                  ></basic-number>
+                  <basic-number
+                    class="hue"
+                    options='{"maximumFractionDigits":2}'
+                  ></basic-number
+                  >)
+                </dd>
+                <dt>RGB:</dt>
+                <dd class="rgb"></dd>
+                <dt>HSL:</dt>
+                <dd class="hsl"></dd>
+              </dl>
+            </div>
+          </details>
+        </module-colorinfo>
+      </div>
+    </module-coloreditor>
+  </div>
+  <details>
+    <summary>ModuleColoreditor Source Code</summary>
+    <module-lazy src="./examples/module-coloreditor.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>FormColorgraph Source Code</summary>
+    <module-lazy src="./examples/form-colorgraph.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>CardColorscale Source Code</summary>
+    <module-lazy src="./examples/card-colorscale.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>ModuleColorinfo Source Code</summary>
+    <module-lazy src="./examples/module-colordetails.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
 
-				<section>
-					<h2 id="gauge">
-						<a name="gauge" class="anchor" href="#gauge">
-							<span class="permalink">🔗</span>
-							<span class="title">Gauge</span>
-						</a>
-					</h2>
-					<module-demo>
-						<div class="preview">
-							<form-gauge
-								thresholds='[{"min":80,"label":"Excellent","color":"var(--color-green-50)"},{"min":50,"label":"Good","color":"var(--color-orange-50)"},{"min":0,"label":"Poor","color":"var(--color-pink-50)"}]'
-							>
-								<label>
-									<span class="label">Progress</span>
-									<progress
-										class="visually-hidden"
-										value="79"
-										max="100"
-									></progress>
-									<span class="value"><span></span>%</span>
-									<small></small>
-								</label>
-								<button
-									type="button"
-									class="decrement"
-									aria-label="Decrement"
-								>
-									−
-								</button>
-								<button
-									type="button"
-									class="increment"
-									aria-label="Increment"
-								>
-									+
-								</button>
-							</form-gauge>
-						</div>
-						<details>
-							<summary>Source Code</summary>
-							<module-lazy src="./examples/form-gauge.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-					</module-demo>
-				</section>
+</section>
 
-				<section>
-					<h2 id="carousel">
-						<a name="carousel" class="anchor" href="#carousel">
-							<span class="permalink">🔗</span>
-							<span class="title">Carousel</span>
-						</a>
-					</h2>
-					<p>Fully accessible and responsive carousel component.</p>
-					<module-demo>
-						<div class="preview">
-							<module-carousel>
-								<h2 class="visually-hidden">Slides</h2>
-								<div class="slides">
-									<div
-										id="slide1"
-										role="tabpanel"
-										aria-current="true"
-										style="background: var(--color-blue-20)"
-									>
-										<h3 id="slide-1">
-											<a
-												name="slide-1"
-												class="anchor"
-												href="#slide-1"
-											>
-												<span class="permalink"
-													>🔗</span
-												>
-												<span class="title"
-													>Slide 1</span
-												>
-											</a>
-										</h3>
-										<hello-world>
-											<label
-												>Your name<br />
-												<input
-													type="text"
-													name="name"
-													autocomplete="given-name"
-												/>
-											</label>
-											<p>Hello, <span>World</span>!</p>
-										</hello-world>
-									</div>
-									<div
-										id="slide2"
-										role="tabpanel"
-										aria-current="false"
-										style="
-											background: var(--color-purple-20);
-										"
-									>
-										<h3 id="slide-2">
-											<a
-												name="slide-2"
-												class="anchor"
-												href="#slide-2"
-											>
-												<span class="permalink"
-													>🔗</span
-												>
-												<span class="title"
-													>Slide 2</span
-												>
-											</a>
-										</h3>
-									</div>
-									<div
-										id="slide3"
-										role="tabpanel"
-										aria-current="false"
-										style="background: var(--color-pink-20)"
-									>
-										<h3 id="slide-3">
-											<a
-												name="slide-3"
-												class="anchor"
-												href="#slide-3"
-											>
-												<span class="permalink"
-													>🔗</span
-												>
-												<span class="title"
-													>Slide 3</span
-												>
-											</a>
-										</h3>
-									</div>
-									<div
-										id="slide4"
-										role="tabpanel"
-										aria-current="false"
-										style="
-											background: var(--color-orange-20);
-										"
-									>
-										<h3 id="slide-4">
-											<a
-												name="slide-4"
-												class="anchor"
-												href="#slide-4"
-											>
-												<span class="permalink"
-													>🔗</span
-												>
-												<span class="title"
-													>Slide 4</span
-												>
-											</a>
-										</h3>
-									</div>
-									<div
-										id="slide5"
-										role="tabpanel"
-										aria-current="false"
-										style="
-											background: var(--color-green-20);
-										"
-									>
-										<h3 id="slide-5">
-											<a
-												name="slide-5"
-												class="anchor"
-												href="#slide-5"
-											>
-												<span class="permalink"
-													>🔗</span
-												>
-												<span class="title"
-													>Slide 5</span
-												>
-											</a>
-										</h3>
-									</div>
-								</div>
-								<nav aria-label="Carousel Navigation">
-									<button
-										type="button"
-										class="prev"
-										aria-label="Previous"
-									>
-										❮
-									</button>
-									<button
-										type="button"
-										class="next"
-										aria-label="Next"
-									>
-										❯
-									</button>
-									<div role="tablist">
-										<button
-											role="tab"
-											aria-selected="true"
-											aria-controls="slide1"
-											aria-label="Slide 1"
-											data-index="0"
-											tabindex="0"
-										>
-											●
-										</button>
-										<button
-											role="tab"
-											aria-current="false"
-											aria-controls="slide2"
-											aria-label="Slide 2"
-											data-index="1"
-											tabindex="-1"
-										>
-											●
-										</button>
-										<button
-											role="tab"
-											aria-current="false"
-											aria-controls="slide3"
-											aria-label="Slide 3"
-											data-index="2"
-											tabindex="-1"
-										>
-											●
-										</button>
-										<button
-											role="tab"
-											aria-current="false"
-											aria-controls="slide4"
-											aria-label="Slide 4"
-											data-index="3"
-											tabindex="-1"
-										>
-											●
-										</button>
-										<button
-											role="tab"
-											aria-current="false"
-											aria-controls="slide5"
-											aria-label="Slide 5"
-											data-index="4"
-											tabindex="-1"
-										>
-											●
-										</button>
-									</div>
-								</nav>
-							</module-carousel>
-						</div>
-						<details>
-							<summary>Source Code</summary>
-							<module-lazy src="./examples/module-carousel.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-					</module-demo>
-				</section>
+<section>
 
-				<section>
-					<h2 id="combobox">
-						<a name="combobox" class="anchor" href="#combobox">
-							<span class="permalink">🔗</span>
-							<span class="title">Combobox</span>
-						</a>
-					</h2>
-					<p>
-						A combobox component that allows users to select an
-						option from a list.
-					</p>
-					<module-demo>
-						<div class="preview">
-							<form-combobox value="">
-								<label for="timezone-input" id="city-label"
-									>Choose a timezone</label
-								>
-								<div class="input">
-									<input
-										id="timezone-input"
-										type="text"
-										role="combobox"
-										aria-expanded="false"
-										aria-controls="timezone-popup"
-										aria-autocomplete="list"
-										autocomplete="off"
-										required
-									/>
-									<form-listbox
-										id="timezone-popup"
-										src="examples/data/timezones.json"
-										hidden
-									>
-										<card-callout>
-											<p
-												class="loading"
-												role="status"
-												aria-live="polite"
-											>
-												Loading...
-											</p>
-											<p
-												class="error"
-												role="alert"
-												aria-live="assertive"
-												hidden
-											></p>
-										</card-callout>
-										<module-scrollarea
-											orientation="vertical"
-										>
-											<div
-												role="listbox"
-												aria-label="Timezones"
-												hidden
-											></div>
-										</module-scrollarea>
-									</form-listbox>
-									<button
-										type="button"
-										class="clear"
-										aria-label="Clear input"
-										hidden
-									>
-										✕
-									</button>
-								</div>
-								<p
-									class="error"
-									aria-live="assertive"
-									id="timezone-error"
-								></p>
-								<p
-									class="description"
-									aria-live="polite"
-									id="timezone-description"
-								>
-									Tell us where you live so we can set your
-									timezone for our calendar and notification
-									features.
-								</p>
-							</form-combobox>
-						</div>
-						<details>
-							<summary>FormCombobox Source Code</summary>
-							<module-lazy src="./examples/form-combobox.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-						<details>
-							<summary>FormListbox Source Code</summary>
-							<module-lazy src="./examples/form-listbox.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-						<details>
-							<summary>CardCallout Source Code</summary>
-							<module-lazy src="./examples/card-callout.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-						<details>
-							<summary>ModuleScrollarea Source Code</summary>
-							<module-lazy
-								src="./examples/module-scrollarea.html"
-							>
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-					</module-demo>
-				</section>
+<h2 id="gauge">
+                <a name="gauge" class="anchor" href="#gauge">
+	                <span class="permalink">🔗</span>
+					<span class="title">Gauge</span>
+                </a>
+            </h2>
+<module-demo>
+  <div class="preview">
+    <form-gauge thresholds='[{"min":80,"label":"Excellent","color":"var(--color-green-50)"},{"min":50,"label":"Good","color":"var(--color-orange-50)"},{"min":0,"label":"Poor","color":"var(--color-pink-50)"}]'>
+      <label>
+        <span class="label">Progress</span>
+        <progress class="visually-hidden" value="79" max="100"></progress>
+        <span class="value"><span></span>%</span>
+        <small></small>
+      </label>
+      <button type="button" class="decrement" aria-label="Decrement">−</button>
+      <button type="button" class="increment" aria-label="Increment">+</button>
+    </form-gauge>
+  </div>
+  <details>
+    <summary>Source Code</summary>
+    <module-lazy src="./examples/form-gauge.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
 
-				<section>
-					<h2 id="dialog">
-						<a name="dialog" class="anchor" href="#dialog">
-							<span class="permalink">🔗</span>
-							<span class="title">Dialog</span>
-						</a>
-					</h2>
-					<module-demo>
-						<div class="preview">
-							<module-dialog>
-								<basic-button>
-									<button
-										type="button"
-										class="open"
-										aria-haspopup="dialog"
-										aria-controls="example-dialog"
-									>
-										Open Dialog
-									</button>
-								</basic-button>
-								<dialog
-									id="example-dialog"
-									aria-labelledby="example-dialog-title"
-								>
-									<header>
-										<h2 id="example-dialog-title">
-											Dialog Title
-										</h2>
-										<button
-											type="button"
-											class="close"
-											aria-label="Close Dialog"
-											autofocus
-										>
-											×
-										</button>
-									</header>
-									<module-scrollarea orientation="vertical">
-										<form method="dialog">
-											<div class="content">
-												<p>
-													Forts torterep mansporternme
-													hood, weres mainig foold
-													low, awayor inged penecke
-													acrief naugui lancenc.
-													Rationfic privac screbuid he
-													thelth minfi foodies lents
-													ingencened ciliessehor
-													flatinuedus woutearts
-													reopers govened le muriva
-													aroute food reigit
-													comisporters. Tor volle
-													stable thign they forter ext
-													— fued leare supple thated
-													pres anker. Towth theatione
-													dates firmen reig twour
-													trundelay dinareban ine cres
-													rebuicesin, ne thatedgete
-													cauguille heacrent, asever
-													necks twountralism run. Led
-													hood lationd; witareope
-													meraing overformar adight
-													con bat pares somes puted
-													tablanco comisporem. Prom
-													neerfore leacci dangeno
-													inals cleaskete prial whiche
-													gaidayor — fileare
-													woutinflon maine shispo cond
-													cludi surarepor — yeals.
-													Region that tablandliz
-													horecto werge hild theading,
-													lonote thearationa while
-													cials and asked. Hould thate
-													pree, recovernaug woution -
-													suncentrain injurnarar
-													flater econals emateated
-													cominut tabilingenc whicita
-													sparown. Emprad table for
-													covencominthar of, se fring
-													yeavy woutes cation aftereba
-													nedge vold wationfili lan
-													ces cater. Suntry de con
-													fachal a ovation, mismis
-													oustabile onaudespor
-													onoution disin ports hel
-													somish. Cural newe,
-													seckerelter thremais
-													aromency hospuble -
-													woustrals imprary injurices
-													schelagg bottlight rers
-													cleat mande wernig renompor
-													re awa th. Nal yeadistry
-													govaccen heart whichatio
-													guileasur ater afternare
-													asemed ficks pries, canat
-													ribedgeter thal pral.
-													Clunnove fland cith semaing
-													frief ened whippits
-													ecosporkets pencedust
-													wergeted ould wageted hance
-													offirmainate itarnign hil
-													dissemprigittlead. Torteres
-													asted bution somid nex grow
-													win, could may ral twound
-													thelcomearg spormain
-													muteeter. Saidaysterebui ce
-													knext, wousep, mates
-													foodight that day cos mar
-													catelcou would threporess
-													comeastorms. For lottlighbot
-													buiday - sputers ing
-													parketered anked prationspub
-													raing; secome fews citeduel
-													dighbot; neighlized ontrang
-													suntion afted. Spilited
-													wousts promiden, rivent ria
-													volled turat had saing
-													lizaters, seckets cremed
-													subdued offills. Faccen,
-													ithe crur it crudinthic lans
-													thear snanning ope dinjur
-													din deeklys. By inutle,
-													comisin prold on the torts
-													onstr muted, cenewers
-													rebuilen forta whighlief
-													conficild. Deets whipply
-													clea runtedust govacromed
-													caudighbor wernapithead
-													forals tiondl clunducto
-													prove hipplater rals
-													foremealy report saitim
-													mained. Ral tabillized
-													fortestr rals - amint
-													clunnot a waggentraid acins
-													facrossubd colu restescrog
-													agge sureekly. Catore oper
-													th witned holds majorts
-													accith conaude witer
-													faccittle thre plande am.
-													Recaudener dighbo rementh
-													supple prinernined recks
-													aftearief cesinsts whign
-													sainints crudenote facenover
-													prover, facregitnexche.
-													Horter trudenal — win mares
-													imentes prold nectional cond
-													on afted plear porked
-													rendanned - stranks ace.
-													Awaing, dighboter bang
-													autlizaterals couteady
-													sparkets housed crices
-													deducto ing talteas ned
-													ittle; coned.
-												</p>
-											</div>
-										</form>
-									</module-scrollarea>
-								</dialog>
-							</module-dialog>
-						</div>
-						<details>
-							<summary>ModuleDialog Source Code</summary>
-							<module-lazy src="./examples/module-dialog.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-						<details>
-							<summary>ModuleScrollarea Source Code</summary>
-							<module-lazy
-								src="./examples/module-scrollarea.html"
-							>
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-					</module-demo>
-				</section>
+</section>
 
-				<section>
-					<h2 id="todo-app">
-						<a name="todo-app" class="anchor" href="#todo-app">
-							<span class="permalink">🔗</span>
-							<span class="title">Todo App</span>
-						</a>
-					</h2>
-					<p>
-						A todo app component that allows users to add, mark as
-						complete, filter by status, and delete tasks. It
-						showcases how to compose a todo app component using the
-						following components:
-					</p>
-					<ul>
-						<li>
-							<code>&lt;form-textbox&gt;</code> for input field to
-							add tasks
-						</li>
-						<li>
-							<code>&lt;basic-button&gt;</code> for submit button
-							and delete buttons
-						</li>
-						<li>
-							<code>&lt;module-insert&gt;</code> to manage a
-							dynamic list of tasks
-						</li>
-						<li>
-							<code>&lt;form-checkbox&gt;</code> to mark tasks as
-							complete
-						</li>
-						<li>
-							<code>&lt;basic-pluralize&gt;</code> to display the
-							number of tasks
-						</li>
-						<li>
-							<code>&lt;form-radiogroup&gt;</code> to filter tasks
-							by status
-						</li>
-					</ul>
-					<module-demo>
-						<div class="preview">
-							<module-todo>
-								<form action="#">
-									<form-textbox>
-										<label for="add-todo"
-											>What needs to be done?</label
-										>
-										<div class="input">
-											<input
-												id="add-todo"
-												type="text"
-												value=""
-											/>
-										</div>
-									</form-textbox>
-									<basic-button class="submit">
-										<button
-											type="submit"
-											class="constructive"
-											disabled
-										>
-											<span class="label">Add Todo</span>
-										</button>
-									</basic-button>
-								</form>
-								<module-insert>
-									<ol filter="all" data-container></ol>
-									<template>
-										<li>
-											<form-checkbox class="todo">
-												<label>
-													<input
-														type="checkbox"
-														class="visually-hidden"
-													/>
-													<span class="label"
-														><slot></slot
-													></span>
-												</label>
-											</form-checkbox>
-											<basic-button class="delete">
-												<button
-													type="button"
-													class="tertiary destructive small"
-													aria-label="Delete"
-												>
-													<span class="label">✕</span>
-												</button>
-											</basic-button>
-										</li>
-									</template>
-								</module-insert>
-								<footer>
-									<basic-pluralize>
-										<p class="none">Well done, all done!</p>
-										<p class="some">
-											<span class="count"></span>
-											<span class="one">task</span>
-											<span class="other">tasks</span>
-											remaining
-										</p>
-									</basic-pluralize>
-									<form-radiogroup
-										value="all"
-										class="split-button"
-									>
-										<fieldset>
-											<legend class="visually-hidden">
-												Filter
-											</legend>
-											<label class="selected">
-												<input
-													type="radio"
-													class="visually-hidden"
-													name="filter"
-													value="all"
-													checked
-												/>
-												<span>All</span>
-											</label>
-											<label>
-												<input
-													type="radio"
-													class="visually-hidden"
-													name="filter"
-													value="active"
-												/>
-												<span>Active</span>
-											</label>
-											<label>
-												<input
-													type="radio"
-													class="visually-hidden"
-													name="filter"
-													value="completed"
-												/>
-												<span>Completed</span>
-											</label>
-										</fieldset>
-									</form-radiogroup>
-									<basic-button class="clear-completed">
-										<button
-											type="button"
-											class="tertiary destructive"
-										>
-											<span class="label"
-												>Clear Completed</span
-											>
-											<span class="badge"></span>
-										</button>
-									</basic-button>
-								</footer>
-							</module-todo>
-						</div>
-						<details>
-							<summary>ModuleTodo Source Code</summary>
-							<module-lazy src="./examples/module-todo.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-						<details>
-							<summary>FormTextbox Source Code</summary>
-							<module-lazy src="./examples/form-textbox.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-						<details>
-							<summary>BasicButton Source Code</summary>
-							<module-lazy src="./examples/basic-button.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-						<details>
-							<summary>ModuleInsert Source Code</summary>
-							<module-lazy src="./examples/module-insert.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-						<details>
-							<summary>FormCheckbox Source Code</summary>
-							<module-lazy src="./examples/form-checkbox.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-						<details>
-							<summary>BasicPluralize Source Code</summary>
-							<module-lazy src="./examples/basic-pluralize.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-						<details>
-							<summary>FormRadiogroup Source Code</summary>
-							<module-lazy src="./examples/form-radiogroup.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-					</module-demo>
-				</section>
+<section>
 
-				<section>
-					<h2 id="lazy-loading">
-						<a
-							name="lazy-loading"
-							class="anchor"
-							href="#lazy-loading"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Lazy Loading</span>
-						</a>
-					</h2>
-					<p>
-						This example shows how to handle asynchronous data
-						loading and error states. Uses
-						<code>&lt;card-callout&gt;</code> for consistent display
-						of callout messages of loading and error states.
-					</p>
-					<module-demo>
-						<div class="preview">
-							<module-lazy src="./examples/module-lazy.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</div>
-						<details>
-							<summary>ModuleLazy Source Code</summary>
-							<module-lazy src="./examples/module-lazy.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-						<details>
-							<summary>CardCallout Source Code</summary>
-							<module-lazy src="./examples/card-callout.html">
-								<card-callout>
-									<p
-										class="loading"
-										role="status"
-										aria-live="polite"
-									>
-										Loading...
-									</p>
-									<p
-										class="error"
-										role="alert"
-										aria-live="assertive"
-										hidden
-									></p>
-								</card-callout>
-							</module-lazy>
-						</details>
-					</module-demo>
-				</section>
-			</main>
+<h2 id="carousel">
+                <a name="carousel" class="anchor" href="#carousel">
+	                <span class="permalink">🔗</span>
+					<span class="title">Carousel</span>
+                </a>
+            </h2>
+<p>Fully accessible and responsive carousel component.</p>
+<module-demo>
+  <div class="preview">
+    <module-carousel>
+      <h2 class="visually-hidden">Slides</h2>
+      <div class="slides">
+        <div id="slide1" role="tabpanel" aria-current="true" style="background: var(--color-blue-20);">
+          <h3 id="slide-1">
+                <a name="slide-1" class="anchor" href="#slide-1">
+	                <span class="permalink">🔗</span>
+					<span class="title">Slide 1</span>
+                </a>
+            </h3>
+          <hello-world>
+            <label>Your name<br>
+              <input type="text" name="name" autocomplete="given-name">
+            </label>
+            <p>Hello, <span>World</span>!</p>
+          </hello-world>
+        </div>
+        <div id="slide2" role="tabpanel" aria-current="false" style="background: var(--color-purple-20);">
+          <h3 id="slide-2">
+                <a name="slide-2" class="anchor" href="#slide-2">
+	                <span class="permalink">🔗</span>
+					<span class="title">Slide 2</span>
+                </a>
+            </h3>
+        </div>
+        <div id="slide3" role="tabpanel" aria-current="false" style="background: var(--color-pink-20);">
+          <h3 id="slide-3">
+                <a name="slide-3" class="anchor" href="#slide-3">
+	                <span class="permalink">🔗</span>
+					<span class="title">Slide 3</span>
+                </a>
+            </h3>
+        </div>
+        <div id="slide4" role="tabpanel" aria-current="false" style="background: var(--color-orange-20);">
+          <h3 id="slide-4">
+                <a name="slide-4" class="anchor" href="#slide-4">
+	                <span class="permalink">🔗</span>
+					<span class="title">Slide 4</span>
+                </a>
+            </h3>
+        </div>
+        <div id="slide5" role="tabpanel" aria-current="false" style="background: var(--color-green-20);">
+          <h3 id="slide-5">
+                <a name="slide-5" class="anchor" href="#slide-5">
+	                <span class="permalink">🔗</span>
+					<span class="title">Slide 5</span>
+                </a>
+            </h3>
+        </div>
+      </div>
+      <nav aria-label="Carousel Navigation">
+        <button type="button" class="prev" aria-label="Previous">❮</button>
+        <button type="button" class="next" aria-label="Next">❯</button>
+        <div role="tablist">
+          <button
+            role="tab"
+            aria-selected="true"
+            aria-controls="slide1"
+            aria-label="Slide 1"
+            data-index="0"
+            tabindex="0"
+          >
+            ●
+          </button>
+          <button
+            role="tab"
+            aria-current="false"
+            aria-controls="slide2"
+            aria-label="Slide 2"
+            data-index="1"
+            tabindex="-1"
+          >
+            ●
+          </button>
+          <button
+            role="tab"
+            aria-current="false"
+            aria-controls="slide3"
+            aria-label="Slide 3"
+            data-index="2"
+            tabindex="-1"
+          >
+            ●
+          </button>
+          <button
+            role="tab"
+            aria-current="false"
+            aria-controls="slide4"
+            aria-label="Slide 4"
+            data-index="3"
+            tabindex="-1"
+          >
+            ●
+          </button>
+          <button
+            role="tab"
+            aria-current="false"
+            aria-controls="slide5"
+            aria-label="Slide 5"
+            data-index="4"
+            tabindex="-1"
+          >
+            ●
+          </button>
+        </div>
+      </nav>
+    </module-carousel>
+  </div>
+  <details>
+    <summary>Source Code</summary>
+    <module-lazy src="./examples/module-carousel.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
+
+</section>
+
+<section>
+
+<h2 id="combobox">
+                <a name="combobox" class="anchor" href="#combobox">
+	                <span class="permalink">🔗</span>
+					<span class="title">Combobox</span>
+                </a>
+            </h2>
+<p>A combobox component that allows users to select an option from a list.</p>
+<module-demo>
+  <div class="preview">
+    <form-combobox value="">
+      <label for="timezone-input" id="city-label">Choose a timezone</label>
+      <div class="input">
+        <input
+          id="timezone-input"
+          type="text"
+          role="combobox"
+          aria-expanded="false"
+          aria-controls="timezone-popup"
+          aria-autocomplete="list"
+          autocomplete="off"
+          required
+        />
+      <form-listbox id="timezone-popup" src="examples/data/timezones.json" hidden>
+        <card-callout>
+          <p class="loading" role="status" aria-live="polite">Loading...</p>
+          <p class="error" role="alert" aria-live="assertive" hidden></p>
+        </card-callout>
+        <module-scrollarea orientation="vertical">
+          <div role="listbox" aria-label="Timezones" hidden></div>
+        </module-scrollarea>
+      </form-listbox>
+      <button type="button" class="clear" aria-label="Clear input" hidden>
+        ✕
+      </button>
+      </div>
+      <p class="error" aria-live="assertive" id="timezone-error"></p>
+      <p class="description" aria-live="polite" id="timezone-description">
+        Tell us where you live so we can set your timezone for our calendar and
+        notification features.
+      </p>
+    </form-combobox>
+  </div>
+  <details>
+    <summary>FormCombobox Source Code</summary>
+    <module-lazy src="./examples/form-combobox.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>FormListbox Source Code</summary>
+    <module-lazy src="./examples/form-listbox.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>CardCallout Source Code</summary>
+    <module-lazy src="./examples/card-callout.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>ModuleScrollarea Source Code</summary>
+    <module-lazy src="./examples/module-scrollarea.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
+
+</section>
+
+<section>
+
+<h2 id="dialog">
+                <a name="dialog" class="anchor" href="#dialog">
+	                <span class="permalink">🔗</span>
+					<span class="title">Dialog</span>
+                </a>
+            </h2>
+<module-demo>
+  <div class="preview">
+    <module-dialog>
+       <basic-button>
+        <button type="button" class="open" aria-haspopup="dialog" aria-controls="example-dialog">Open Dialog</button>
+      </basic-button>
+       <dialog id="example-dialog" aria-labelledby="example-dialog-title">
+        <header>
+           <h2 id="example-dialog-title">Dialog Title</h2>
+           <button type="button" class="close" aria-label="Close Dialog" autofocus>×</button>
+        </header>
+        <module-scrollarea orientation="vertical">
+           <form method="dialog">
+            <div class="content">
+               <p>
+                Forts torterep mansporternme hood, weres mainig foold
+                low, awayor inged penecke acrief naugui lancenc.
+                Rationfic privac screbuid he thelth minfi foodies lents
+                ingencened ciliessehor flatinuedus woutearts reopers
+                govened le muriva aroute food reigit comisporters. Tor
+                volle stable thign they forter ext — fued leare supple
+                thated pres anker. Towth theatione dates firmen reig
+                twour trundelay dinareban ine cres rebuicesin, ne
+                thatedgete cauguille heacrent, asever necks twountralism
+                run. Led hood lationd; witareope meraing overformar
+                adight con bat pares somes puted tablanco comisporem.
+                Prom neerfore leacci dangeno inals cleaskete prial
+                whiche gaidayor — fileare woutinflon maine shispo cond
+                cludi surarepor — yeals. Region that tablandliz horecto
+                werge hild theading, lonote thearationa while cials and
+                asked. Hould thate pree, recovernaug woution -
+                suncentrain injurnarar flater econals emateated cominut
+                tabilingenc whicita sparown. Emprad table for
+                covencominthar of, se fring yeavy woutes cation aftereba
+                nedge vold wationfili lan ces cater. Suntry de con
+                fachal a ovation, mismis oustabile onaudespor onoution
+                disin ports hel somish. Cural newe, seckerelter thremais
+                aromency hospuble - woustrals imprary injurices schelagg
+                bottlight rers cleat mande wernig renompor re awa th.
+                Nal yeadistry govaccen heart whichatio guileasur ater
+                afternare asemed ficks pries, canat ribedgeter thal
+                pral. Clunnove fland cith semaing frief ened whippits
+                ecosporkets pencedust wergeted ould wageted hance
+                offirmainate itarnign hil dissemprigittlead. Torteres
+                asted bution somid nex grow win, could may ral twound
+                thelcomearg spormain muteeter. Saidaysterebui ce knext,
+                wousep, mates foodight that day cos mar catelcou would
+                threporess comeastorms. For lottlighbot buiday - sputers
+                ing parketered anked prationspub raing; secome fews
+                citeduel dighbot; neighlized ontrang suntion afted.
+                Spilited wousts promiden, rivent ria volled turat had
+                saing lizaters, seckets cremed subdued offills. Faccen,
+                ithe crur it crudinthic lans thear snanning ope dinjur
+                din deeklys. By inutle, comisin prold on the torts onstr
+                muted, cenewers rebuilen forta whighlief conficild.
+                Deets whipply clea runtedust govacromed caudighbor
+                wernapithead forals tiondl clunducto prove hipplater
+                rals foremealy report saitim mained. Ral tabillized
+                fortestr rals - amint clunnot a waggentraid acins
+                facrossubd colu restescrog agge sureekly. Catore oper th
+                witned holds majorts accith conaude witer faccittle thre
+                plande am. Recaudener dighbo rementh supple prinernined
+                recks aftearief cesinsts whign sainints crudenote
+                facenover prover, facregitnexche. Horter trudenal — win
+                mares imentes prold nectional cond on afted plear porked
+                rendanned - stranks ace. Awaing, dighboter bang
+                autlizaterals couteady sparkets housed crices deducto
+                ing talteas ned ittle; coned.
+               </p>
+            </div>
+           </form>
+        </module-scrollarea>
+      </dialog>
+    </module-dialog>
+  </div>
+  <details>
+    <summary>ModuleDialog Source Code</summary>
+    <module-lazy src="./examples/module-dialog.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>ModuleScrollarea Source Code</summary>
+    <module-lazy src="./examples/module-scrollarea.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
+
+</section>
+
+<section>
+
+<h2 id="todo-app">
+                <a name="todo-app" class="anchor" href="#todo-app">
+	                <span class="permalink">🔗</span>
+					<span class="title">Todo App</span>
+                </a>
+            </h2>
+<p>A todo app component that allows users to add, mark as complete, filter by status, and delete tasks. It showcases how to compose a todo app component using the following components:</p>
+<ul>
+<li><code>&lt;form-textbox&gt;</code> for input field to add tasks</li>
+<li><code>&lt;basic-button&gt;</code> for submit button and delete buttons</li>
+<li><code>&lt;module-insert&gt;</code> to manage a dynamic list of tasks</li>
+<li><code>&lt;form-checkbox&gt;</code> to mark tasks as complete</li>
+<li><code>&lt;basic-pluralize&gt;</code> to display the number of tasks</li>
+<li><code>&lt;form-radiogroup&gt;</code> to filter tasks by status</li>
+</ul>
+<module-demo>
+  <div class="preview">
+    <module-todo>
+      <form action="#">
+        <form-textbox>
+          <label for="add-todo">What needs to be done?</label>
+          <div class="input">
+            <input id="add-todo" type="text" value="" />
+          </div>
+        </form-textbox>
+        <basic-button class="submit">
+          <button type="submit" class="constructive" disabled>
+            <span class="label">Add Todo</span>
+          </button>
+        </basic-button>
+      </form>
+      <module-insert>
+        <ol filter="all" data-container></ol>
+        <template>
+          <li>
+            <form-checkbox class="todo">
+              <label>
+                <input type="checkbox" class="visually-hidden" />
+                <span class="label"><slot></slot></span>
+              </label>
+            </form-checkbox>
+            <basic-button class="delete">
+              <button type="button" class="tertiary destructive small" aria-label="Delete">
+                <span class="label">✕</span>
+              </button>
+            </basic-button>
+          </li>
+        </template>
+      </module-insert>
+      <footer>
+        <basic-pluralize>
+          <p class="none">Well done, all done!</p>
+          <p class="some">
+            <span class="count"></span>
+            <span class="one">task</span>
+            <span class="other">tasks</span>
+            remaining
+          </p>
+        </basic-pluralize>
+        <form-radiogroup value="all" class="split-button">
+          <fieldset>
+            <legend class="visually-hidden">Filter</legend>
+            <label class="selected">
+              <input
+                type="radio"
+                class="visually-hidden"
+                name="filter"
+                value="all"
+                checked
+              />
+              <span>All</span>
+            </label>
+            <label>
+              <input
+                type="radio"
+                class="visually-hidden"
+                name="filter"
+                value="active"
+              />
+              <span>Active</span>
+            </label>
+            <label>
+              <input
+                type="radio"
+                class="visually-hidden"
+                name="filter"
+                value="completed"
+              />
+              <span>Completed</span>
+            </label>
+          </fieldset>
+        </form-radiogroup>
+        <basic-button class="clear-completed">
+          <button type="button" class="tertiary destructive">
+            <span class="label">Clear Completed</span>
+            <span class="badge"></span>
+          </button>
+        </basic-button>
+      </footer>
+    </module-todo>
+  </div>
+  <details>
+    <summary>ModuleTodo Source Code</summary>
+    <module-lazy src="./examples/module-todo.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>FormTextbox Source Code</summary>
+    <module-lazy src="./examples/form-textbox.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>BasicButton Source Code</summary>
+    <module-lazy src="./examples/basic-button.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>ModuleInsert Source Code</summary>
+    <module-lazy src="./examples/module-insert.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>FormCheckbox Source Code</summary>
+    <module-lazy src="./examples/form-checkbox.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>BasicPluralize Source Code</summary>
+    <module-lazy src="./examples/basic-pluralize.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>FormRadiogroup Source Code</summary>
+    <module-lazy src="./examples/form-radiogroup.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
+
+</section>
+
+<section>
+
+<h2 id="lazy-loading">
+                <a name="lazy-loading" class="anchor" href="#lazy-loading">
+	                <span class="permalink">🔗</span>
+					<span class="title">Lazy Loading</span>
+                </a>
+            </h2>
+<p>This example shows how to handle asynchronous data loading and error states. Uses <code>&lt;card-callout&gt;</code> for consistent display of callout messages of loading and error states.</p>
+<module-demo>
+  <div class="preview">
+    <module-lazy src="./examples/module-lazy.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </div>
+  <details>
+    <summary>ModuleLazy Source Code</summary>
+    <module-lazy src="./examples/module-lazy.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+  <details>
+    <summary>CardCallout Source Code</summary>
+    <module-lazy src="./examples/card-callout.html">
+      <card-callout>
+        <p class="loading" role="status" aria-live="polite">Loading...</p>
+        <p class="error" role="alert" aria-live="assertive" hidden></p>
+      </card-callout>
+    </module-lazy>
+  </details>
+</module-demo>
+
+</section>
+</main>
 			<footer class="content-grid">
 				<div class="content">
 					<h2 class="visually-hidden">Footer</h2>

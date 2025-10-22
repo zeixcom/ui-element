@@ -5,10 +5,23 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Le Truc – Le Truc Docs</title>
 		<meta name="description" content="" />
-		<link rel="preload" href="../assets/main.css?v=0adb5bf2" as="style" />
-		<link rel="modulepreload" href="../assets/main.js?v=0b0743f4" />
-		<link rel="stylesheet" href="../assets/main.css?v=0adb5bf2" />
-		<script type="module" src="../assets/main.js?v=0b0743f4"></script>
+		<link
+			rel="preload"
+			href="../assets/main.css?v=0adb5bf2"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="../assets/main.js?v=e36ac8b7"
+		/>
+		<link
+			rel="stylesheet"
+			href="../assets/main.css?v=0adb5bf2"
+		/>
+		<script
+			type="module"
+			src="../assets/main.js?v=e36ac8b7"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
@@ -19,344 +32,192 @@
 				<h1 class="content">
 					Le Truc Docs <small>Version 0.14.0</small>
 				</h1>
+				
+<section-menu>
+	<nav>
+		<h2 class="visually-hidden">Main Menu</h2>
+		<ol>
+			
+				<li>
+					<a href="../index.html">
+						<span class="icon">📖</span>
+						<strong>Introduction</strong>
+						<small>Overview and key benefits of Le Truc</small>
+					</a>
+				</li>
 
-				<section-menu>
-					<nav>
-						<h2 class="visually-hidden">Main Menu</h2>
-						<ol>
-							<li>
-								<a href="../index.html">
-									<span class="icon">📖</span>
-									<strong>Introduction</strong>
-									<small
-										>Overview and key benefits of Le
-										Truc</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="../getting-started.html">
+						<span class="icon">🚀</span>
+						<strong>Getting Started</strong>
+						<small>Installation, setup, and first steps</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="../getting-started.html">
-									<span class="icon">🚀</span>
-									<strong>Getting Started</strong>
-									<small
-										>Installation, setup, and first
-										steps</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="../components.html">
+						<span class="icon">🏗️</span>
+						<strong>Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="../components.html">
-									<span class="icon">🏗️</span>
-									<strong>Components</strong>
-									<small
-										>Anatomy, lifecycle, signals,
-										effects</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="../styling.html">
+						<span class="icon">🎨</span>
+						<strong>Styling</strong>
+						<small>Scoped styles, CSS custom properties</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="../styling.html">
-									<span class="icon">🎨</span>
-									<strong>Styling</strong>
-									<small
-										>Scoped styles, CSS custom
-										properties</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="../data-flow.html">
+						<span class="icon">🔄</span>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="../data-flow.html">
-									<span class="icon">🔄</span>
-									<strong>Data Flow</strong>
-									<small
-										>Passing state, events, context</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="../examples.html">
+						<span class="icon">🍽️</span>
+						<strong>Examples</strong>
+						<small>Common use cases and demos</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="../examples.html">
-									<span class="icon">🍽️</span>
-									<strong>Examples</strong>
-									<small>Common use cases and demos</small>
-								</a>
-							</li>
+				<li>
+					<a href="../blog.html">
+						<span class="icon">📜</span>
+						<strong>Blog</strong>
+						<small>Latest articles and updates</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="../blog.html">
-									<span class="icon">📜</span>
-									<strong>Blog</strong>
-									<small>Latest articles and updates</small>
-								</a>
-							</li>
+				<li>
+					<a href="../api.html">
+						<span class="icon">📚</span>
+						<strong>API Reference</strong>
+						<small>Functions, types, and constants</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="../api.html">
-									<span class="icon">📚</span>
-									<strong>API Reference</strong>
-									<small
-										>Functions, types, and constants</small
-									>
-								</a>
-							</li>
-
-							<li>
-								<a href="../about.html">
-									<span class="icon">🤝</span>
-									<strong>About</strong>
-									<small
-										>License, versioning, getting
-										involved</small
-									>
-								</a>
-							</li>
-						</ol>
-					</nav>
-				</section-menu>
+				<li>
+					<a href="../about.html">
+						<span class="icon">🤝</span>
+						<strong>About</strong>
+						<small>License, versioning, getting involved</small>
+					</a>
+				</li>
+		</ol>
+	</nav>
+</section-menu>
 				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="assertive"></p>
 				</card-callout>
 			</header>
-			<main id="main" class="content-grid">
-				<section class="api-content">
-					<h1 id="uielement">
-						<a name="uielement" class="anchor" href="#uielement">
-							<span class="permalink">🔗</span>
-							<span class="title">Le Truc</span>
-						</a>
-					</h1>
-					<p>Version 0.14.0</p>
-					<p>
-						<strong>Le Truc</strong> - a HTML-first library for
-						reactive Web Components
-					</p>
-					<p>
-						Le Truc is a set of functions to build reusable, loosely
-						coupled Web Components with reactive properties. It
-						provides structure through components and simplifies
-						state management and DOM synchronization using
-						declarative signals and effects, leading to more
-						organized and maintainable code without a steep learning
-						curve.
-					</p>
-					<p>
-						Unlike SPA frameworks (React, Vue, Svelte, etc.) Le Truc
-						takes a HTML-first approach, progressively enhancing
-						sever-rendered HTML rather than recreating (rendering)
-						it using JavaScript. Le Truc achieves the same result as
-						SPA frameworks with SSR, but with a simpler, more
-						efficient approach. It works with a backend written in
-						any language or with any static site generator.
-					</p>
-					<h2 id="key-features">
-						<a
-							name="key-features"
-							class="anchor"
-							href="#key-features"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Key Features</span>
-						</a>
-					</h2>
-					<ul>
-						<li>
-							🧱 <strong>HTML Web Components</strong>: Build on
-							standard HTML and enhance it with encapsulated,
-							reusable Web Components. No virtual DOM – Le Truc
-							works directly with the real DOM.
-						</li>
-						<li>
-							🚦 <strong>Reactive Properties</strong>: Define
-							reactive properties for fine-grained, efficient
-							state management (signals). Changes automatically
-							propagate only to the parts of the DOM that need
-							updating, avoiding unnecessary re-renders.
-						</li>
-						<li>
-							🧩 <strong>Function Composition</strong>: Declare
-							component behavior by composing small, reusable
-							functions (attribute parsers and effects). This
-							promotes cleaner code compared to spaghetti code
-							problems that commonly occur when writing low-level
-							imperative code.
-						</li>
-						<li>
-							🛠️ <strong>Customizable</strong>: Le Truc is
-							designed to be easily customizable and extensible.
-							You can create your own custom attribute parsers and
-							effects to suit your specific needs.
-						</li>
-						<li>
-							🌐 <strong>Context Support</strong>: Share global
-							states across components without prop drilling or
-							tightly coupling logic.
-						</li>
-						<li>
-							🪶 <strong>Tiny footprint</strong>: Minimal core
-							(~4kB gzipped) with tree-shaking support, adding
-							only the necessary JavaScript to enhance your HTML.
-						</li>
-						<li>
-							🛡️ <strong>Type Safety</strong>: Get early warnings
-							when types don&#39;t match, improving code quality
-							and reducing bugs.
-						</li>
-					</ul>
-					<p>
-						Le Truc uses
-						<a href="https://github.com/zeixcom/cause-effect"
-							>Cause &amp; Effect</a
-						>
-						internally for state management with signals and for
-						scheduled DOM updates. But you could easily rewrite the
-						<code>component()</code> function to use a signals
-						library of your choice or to produce something else than
-						Web Components.
-					</p>
-					<h2 id="installation">
-						<a
-							name="installation"
-							class="anchor"
-							href="#installation"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Installation</span>
-						</a>
-					</h2>
-					<module-codeblock
-						language="bash"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">bash</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#88846F"># with npm</span></span>
+			<main id="main" class="content-grid"><section class="api-content">
+<h1 id="le-truc">
+                <a name="le-truc" class="anchor" href="#le-truc">
+	                <span class="permalink">🔗</span>
+					<span class="title">Le Truc</span>
+                </a>
+            </h1>
+<p>Version 0.14.0</p>
+<p><strong>Le Truc</strong> - a HTML-first library for reactive Web Components</p>
+<p>Le Truc is a set of functions to build reusable, loosely coupled Web Components with reactive properties. It provides structure through components and simplifies state management and DOM synchronization using declarative signals and effects, leading to more organized and maintainable code without a steep learning curve.</p>
+<p>Unlike SPA frameworks (React, Vue, Svelte, etc.) Le Truc takes a HTML-first approach, progressively enhancing sever-rendered HTML rather than recreating (rendering) it using JavaScript. Le Truc achieves the same result as SPA frameworks with SSR, but with a simpler, more efficient approach. It works with a backend written in any language or with any static site generator.</p>
+<h2 id="key-features">
+                <a name="key-features" class="anchor" href="#key-features">
+	                <span class="permalink">🔗</span>
+					<span class="title">Key Features</span>
+                </a>
+            </h2>
+<ul>
+<li>🧱 <strong>HTML Web Components</strong>: Build on standard HTML and enhance it with encapsulated, reusable Web Components. No virtual DOM – Le Truc works directly with the real DOM.</li>
+<li>🚦 <strong>Reactive Properties</strong>: Define reactive properties for fine-grained, efficient state management (signals). Changes automatically propagate only to the parts of the DOM that need updating, avoiding unnecessary re-renders.</li>
+<li>🧩 <strong>Function Composition</strong>: Declare component behavior by composing small, reusable functions (attribute parsers and effects). This promotes cleaner code compared to spaghetti code problems that commonly occur when writing low-level imperative code.</li>
+<li>🛠️ <strong>Customizable</strong>: Le Truc is designed to be easily customizable and extensible. You can create your own custom attribute parsers and effects to suit your specific needs.</li>
+<li>🌐 <strong>Context Support</strong>: Share global states across components without prop drilling or tightly coupling logic.</li>
+<li>🪶 <strong>Tiny footprint</strong>: Minimal core (~4kB gzipped) with tree-shaking support, adding only the necessary JavaScript to enhance your HTML.</li>
+<li>🛡️ <strong>Type Safety</strong>: Get early warnings when types don&#39;t match, improving code quality and reducing bugs.</li>
+</ul>
+<p>Le Truc uses <a href="https://github.com/zeixcom/cause-effect">Cause &amp; Effect</a> internally for state management with signals and for scheduled DOM updates. But you could easily rewrite the <code>component()</code> function to use a signals library of your choice or to produce something else than Web Components.</p>
+<h2 id="installation">
+                <a name="installation" class="anchor" href="#installation">
+	                <span class="permalink">🔗</span>
+					<span class="title">Installation</span>
+                </a>
+            </h2>
+<module-codeblock language="bash" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">bash</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#88846F"># with npm</span></span>
 <span class="line"><span style="color:#A6E22E">npm</span><span style="color:#E6DB74"> install</span><span style="color:#E6DB74"> @zeix/le-truc</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#88846F"># or with bun</span></span>
 <span class="line"><span style="color:#A6E22E">bun</span><span style="color:#E6DB74"> add</span><span style="color:#E6DB74"> @zeix/le-truc</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-					</module-codeblock>
-					<h2 id="documentation">
-						<a
-							name="documentation"
-							class="anchor"
-							href="#documentation"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Documentation</span>
-						</a>
-					</h2>
-					<p>
-						The full documentation is still work in progress. The
-						following chapters are already reasonably complete:
-					</p>
-					<ul>
-						<li>
-							<a
-								href="https://zeixcom.github.io/le-truc/index.html"
-								>Introduction</a
-							>
-						</li>
-						<li>
-							<a
-								href="https://zeixcom.github.io/le-truc/getting-started.html"
-								>Getting Started</a
-							>
-						</li>
-						<li>
-							<a
-								href="https://zeixcom.github.io/le-truc/components.html"
-								>Components</a
-							>
-						</li>
-						<li>
-							<a
-								href="https://zeixcom.github.io/le-truc/styling.html"
-								>Styling</a
-							>
-						</li>
-						<li>
-							<a
-								href="https://zeixcom.github.io/le-truc/data-flow.html"
-								>Data Flow</a
-							>
-						</li>
-						<li>
-							<a
-								href="https://zeixcom.github.io/le-truc/about.html"
-								>About</a
-							>
-						</li>
-					</ul>
-					<h2 id="basic-usage">
-						<a
-							name="basic-usage"
-							class="anchor"
-							href="#basic-usage"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Basic Usage</span>
-						</a>
-					</h2>
-					<h3 id="counter">
-						<a name="counter" class="anchor" href="#counter">
-							<span class="permalink">🔗</span>
-							<span class="title">Counter</span>
-						</a>
-					</h3>
-					<p>Server-rendered markup:</p>
-					<module-codeblock
-						language="html"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">html</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">basic-counter</span><span style="color:#A6E22E"> count</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"5"</span><span style="color:#F8F8F2">></span></span>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<h2 id="documentation">
+                <a name="documentation" class="anchor" href="#documentation">
+	                <span class="permalink">🔗</span>
+					<span class="title">Documentation</span>
+                </a>
+            </h2>
+<p>The full documentation is still work in progress. The following chapters are already reasonably complete:</p>
+<ul>
+<li><a href="https://zeixcom.github.io/le-truc/index.html">Introduction</a></li>
+<li><a href="https://zeixcom.github.io/le-truc/getting-started.html">Getting Started</a></li>
+<li><a href="https://zeixcom.github.io/le-truc/components.html">Components</a></li>
+<li><a href="https://zeixcom.github.io/le-truc/styling.html">Styling</a></li>
+<li><a href="https://zeixcom.github.io/le-truc/data-flow.html">Data Flow</a></li>
+<li><a href="https://zeixcom.github.io/le-truc/about.html">About</a></li>
+</ul>
+<h2 id="basic-usage">
+                <a name="basic-usage" class="anchor" href="#basic-usage">
+	                <span class="permalink">🔗</span>
+					<span class="title">Basic Usage</span>
+                </a>
+            </h2>
+<h3 id="counter">
+                <a name="counter" class="anchor" href="#counter">
+	                <span class="permalink">🔗</span>
+					<span class="title">Counter</span>
+                </a>
+            </h3>
+<p>Server-rendered markup:</p>
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">html</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">basic-counter</span><span style="color:#A6E22E"> count</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"5"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">button</span><span style="color:#A6E22E"> type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span><span style="color:#F8F8F2">>💐 &#x3C;</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>5&#x3C;/</span><span style="color:#F92672">span</span><span style="color:#F8F8F2">>&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">basic-counter</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-					</module-codeblock>
-					<p>Le Truc component:</p>
-					<module-codeblock
-						collapsed
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asInteger, component, on, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/le-truc'</span></span>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<p>Le Truc component:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asInteger, component, on, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/le-truc'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">  'basic-counter'</span><span style="color:#F8F8F2">,</span></span>
@@ -378,28 +239,20 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-						<button type="button" class="overlay">Expand</button>
-					</module-codeblock>
-					<p>Example styles:</p>
-					<module-codeblock
-						collapsed
-						language="css"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">css</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#F92672">basic-counter</span><span style="color:#F8F8F2"> {</span></span>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>Example styles:</p>
+<module-codeblock collapsed language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">css</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">basic-counter</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">  &#x26; button {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">    border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> solid</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--color-border);</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">    border-radius</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs);</span></span>
@@ -421,38 +274,27 @@
 <span class="line"><span style="color:#F8F8F2">  }</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-						<button type="button" class="overlay">Expand</button>
-					</module-codeblock>
-					<h3 id="tab-group">
-						<a name="tab-group" class="anchor" href="#tab-group">
-							<span class="permalink">🔗</span>
-							<span class="title">Tab Group</span>
-						</a>
-					</h3>
-					<p>
-						An example demonstrating how to create a fully
-						accessible tab navigation.
-					</p>
-					<p>Server-rendered markup:</p>
-					<module-codeblock
-						collapsed
-						language="html"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">html</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">module-tabgroup</span><span style="color:#F8F8F2">></span></span>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<h3 id="tab-group">
+                <a name="tab-group" class="anchor" href="#tab-group">
+	                <span class="permalink">🔗</span>
+					<span class="title">Tab Group</span>
+                </a>
+            </h3>
+<p>An example demonstrating how to create a fully accessible tab navigation.</p>
+<p>Server-rendered markup:</p>
+<module-codeblock collapsed language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">html</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">module-tabgroup</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">  &#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> role</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"tablist"</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#F92672">button</span></span>
 <span class="line"><span style="color:#A6E22E">      type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span></span>
@@ -496,52 +338,16 @@
 <span class="line"><span style="color:#F8F8F2">  &#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
 <span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">module-tabgroup</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-						<button type="button" class="overlay">Expand</button>
-					</module-codeblock>
-					<p>Le Truc component:</p>
-					<p>
-						`js<br />export const manageArrowKeyFocus = (elements,
-						index) =&gt; e =&gt; {<br />
-						if (!(e instanceof KeyboardEvent))<br />
-						throw new TypeError(&#39;Event is not a
-						KeyboardEvent&#39;)<br />
-						const handledKeys = [<br />
-						&#39;ArrowLeft&#39;,<br />
-						&#39;ArrowRight&#39;,<br />
-						&#39;ArrowUp&#39;,<br />
-						&#39;ArrowDown&#39;,<br />
-						&#39;Home&#39;,<br />
-						&#39;End&#39;,<br />
-						]<br />
-						if (handledKeys.includes(e.key)) {<br />
-						e.preventDefault()<br />
-						switch (e.key) {<br />
-						case &#39;ArrowLeft&#39;:<br />
-						case &#39;ArrowUp&#39;:<br />
-						index = index &lt; 1 ? elements.length - 1 : index -
-						1<br />
-						break<br />
-						case &#39;ArrowRight&#39;:<br />
-						case &#39;ArrowDown&#39;:<br />
-						index = index &gt;= elements.length - 1 ? 0 : index +
-						1<br />
-						break<br />
-						case &#39;Home&#39;:<br />
-						index = 0<br />
-						break<br />
-						case &#39;End&#39;:<br />
-						index = elements.length - 1<br />
-						break<br />
-						}<br />
-						if (elements[index]) elements[index].focus()<br />
-						}<br />}
-					</p>
-					<pre><code>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>Le Truc component:</p>
+<p>`js<br>export const manageArrowKeyFocus = (elements, index) =&gt; e =&gt; {<br>	if (!(e instanceof KeyboardEvent))<br>		throw new TypeError(&#39;Event is not a KeyboardEvent&#39;)<br>	const handledKeys = [<br>		&#39;ArrowLeft&#39;,<br>		&#39;ArrowRight&#39;,<br>		&#39;ArrowUp&#39;,<br>		&#39;ArrowDown&#39;,<br>		&#39;Home&#39;,<br>		&#39;End&#39;,<br>	]<br>	if (handledKeys.includes(e.key)) {<br>		e.preventDefault()<br>		switch (e.key) {<br>			case &#39;ArrowLeft&#39;:<br>			case &#39;ArrowUp&#39;:<br>				index = index &lt; 1 ? elements.length - 1 : index - 1<br>				break<br>			case &#39;ArrowRight&#39;:<br>			case &#39;ArrowDown&#39;:<br>				index = index &gt;= elements.length - 1 ? 0 : index + 1<br>				break<br>			case &#39;Home&#39;:<br>				index = 0<br>				break<br>			case &#39;End&#39;:<br>				index = elements.length - 1<br>				break<br>		}<br>		if (elements[index]) elements[index].focus()<br>	}<br>}</p>
+<pre><code>
 Example styles:
 
 
@@ -568,8 +374,8 @@ License: [MIT](_media/LICENSE)
 
 (c) 2025 [Zeix AG](https://zeix.com)
 </code></pre>
-				</section>
-			</main>
+
+</section></main>
 			<footer class="content-grid">
 				<div class="content">
 					<h2 class="visually-hidden">Footer</h2>

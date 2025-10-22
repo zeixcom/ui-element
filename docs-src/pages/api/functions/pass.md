@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / pass
 
@@ -8,7 +8,7 @@
 
 > **pass**\<`P`, `Q`\>(`reactives`): [`Effect`](../type-aliases/Effect.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`Q`\>\>
 
-Defined in: [src/lib/effects.ts:540](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/lib/effects.ts#L540)
+Defined in: [src/lib/effects.ts:540](https://github.com/zeixcom/ui-element/blob/230cd6cc9b2252d1741350e7be8be3e04b6f2cf4/src/lib/effects.ts#L540)
 
 Effect for passing reactive values to a descendant Le Truc component.
 
@@ -16,11 +16,11 @@ Effect for passing reactive values to a descendant Le Truc component.
 
 ### P
 
-`P` _extends_ [`ComponentProps`](../type-aliases/ComponentProps.md)
+`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
 
 ### Q
 
-`Q` _extends_ [`ComponentProps`](../type-aliases/ComponentProps.md)
+`Q` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
 
 ## Parameters
 

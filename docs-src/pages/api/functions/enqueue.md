@@ -1,14 +1,14 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / enqueue
 
 # Function: enqueue()
 
-> **enqueue**\<`T`\>(`fn`, `dedupe?`): `Promise`\<`undefined` \| `boolean` \| `T`\>
+> **enqueue**\<`T`\>(`fn`, `dedupe?`): `Promise`\<`boolean` \| `T` \| `undefined`\>
 
-Defined in: node_modules/@zeix/cause-effect/src/scheduler.ts:147
+Defined in: node\_modules/@zeix/cause-effect/src/scheduler.ts:147
 
 Enqueue a function to be executed on the next animation frame
 
@@ -37,4 +37,4 @@ Symbol for deduplication; if not provided, a unique Symbol is created ensuring t
 
 ## Returns
 
-`Promise`\<`undefined` \| `boolean` \| `T`\>
+`Promise`\<`boolean` \| `T` \| `undefined`\>

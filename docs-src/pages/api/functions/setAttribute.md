@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / setAttribute
 
@@ -8,7 +8,7 @@
 
 > **setAttribute**\<`P`, `E`\>(`name`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:392](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/lib/effects.ts#L392)
+Defined in: [src/lib/effects.ts:392](https://github.com/zeixcom/ui-element/blob/230cd6cc9b2252d1741350e7be8be3e04b6f2cf4/src/lib/effects.ts#L392)
 
 Effect for setting an attribute on an element.
 Sets the specified attribute with security validation for unsafe values.
@@ -17,11 +17,11 @@ Sets the specified attribute with security validation for unsafe values.
 
 ### P
 
-`P` _extends_ [`ComponentProps`](../type-aliases/ComponentProps.md)
+`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
 
 ### E
 
-`E` _extends_ `Element` = `HTMLElement`
+`E` *extends* `Element` = `HTMLElement`
 
 ## Parameters
 

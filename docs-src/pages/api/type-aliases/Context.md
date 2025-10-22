@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / Context
 
@@ -8,15 +8,15 @@
 
 > **Context**\<`K`, `V`\> = `K` & `object`
 
-Defined in: [src/core/context.ts:22](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/context.ts#L22)
+Defined in: [src/core/context.ts:22](https://github.com/zeixcom/ui-element/blob/230cd6cc9b2252d1741350e7be8be3e04b6f2cf4/src/core/context.ts#L22)
 
 A context key.
 
 A context key can be any type of object, including strings and symbols. The
-Context type brands the key type with the `__context__` property that
+ Context type brands the key type with the `__context__` property that
 carries the type of the value the context references.
 
-## Type declaration
+## Type Declaration
 
 ### \_\_context\_\_
 

@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / isParser
 
@@ -8,7 +8,7 @@
 
 > **isParser**\<`T`, `E`\>(`value`): `value is Parser<T, E>`
 
-Defined in: [src/core/dom.ts:160](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L160)
+Defined in: [src/core/dom.ts:160](https://github.com/zeixcom/ui-element/blob/230cd6cc9b2252d1741350e7be8be3e04b6f2cf4/src/core/dom.ts#L160)
 
 Check if a value is a string parser
 
@@ -16,11 +16,11 @@ Check if a value is a string parser
 
 ### T
 
-`T` _extends_ `object`
+`T` *extends* `object`
 
 ### E
 
-`E` _extends_ `Element` = `HTMLElement`
+`E` *extends* `Element` = `HTMLElement`
 
 ## Parameters
 

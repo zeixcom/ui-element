@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / EffectMatcher
 
@@ -8,7 +8,7 @@
 
 > **EffectMatcher**\<`S`\> = `object`
 
-Defined in: node_modules/@zeix/cause-effect/src/effect.ts:7
+Defined in: node\_modules/@zeix/cause-effect/src/effect.ts:7
 
 ## Name
 
@@ -26,7 +26,7 @@ Esther Brunner
 
 ### S
 
-`S` _extends_ [`Signal`](Signal.md)\<`unknown` & `object`\>[]
+`S` *extends* [`Signal`](Signal.md)\<`unknown` & `object`\>[]
 
 ## Properties
 
@@ -34,7 +34,7 @@ Esther Brunner
 
 > `optional` **err**: (...`errors`) => [`Cleanup`](Cleanup.md) \| `undefined`
 
-Defined in: node_modules/@zeix/cause-effect/src/effect.ts:10
+Defined in: node\_modules/@zeix/cause-effect/src/effect.ts:10
 
 #### Parameters
 
@@ -46,25 +46,25 @@ Defined in: node_modules/@zeix/cause-effect/src/effect.ts:10
 
 [`Cleanup`](Cleanup.md) \| `undefined`
 
----
+***
 
 ### nil()?
 
 > `optional` **nil**: () => [`Cleanup`](Cleanup.md) \| `undefined`
 
-Defined in: node_modules/@zeix/cause-effect/src/effect.ts:11
+Defined in: node\_modules/@zeix/cause-effect/src/effect.ts:11
 
 #### Returns
 
 [`Cleanup`](Cleanup.md) \| `undefined`
 
----
+***
 
 ### ok()
 
 > **ok**: (...`values`) => [`Cleanup`](Cleanup.md) \| `undefined`
 
-Defined in: node_modules/@zeix/cause-effect/src/effect.ts:9
+Defined in: node\_modules/@zeix/cause-effect/src/effect.ts:9
 
 #### Parameters
 
@@ -76,10 +76,10 @@ Defined in: node_modules/@zeix/cause-effect/src/effect.ts:9
 
 [`Cleanup`](Cleanup.md) \| `undefined`
 
----
+***
 
 ### signals
 
 > **signals**: `S`
 
-Defined in: node_modules/@zeix/cause-effect/src/effect.ts:8
+Defined in: node\_modules/@zeix/cause-effect/src/effect.ts:8

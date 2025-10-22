@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / insertOrRemoveElement
 
@@ -8,7 +8,7 @@
 
 > **insertOrRemoveElement**\<`P`, `E`\>(`reactive`, `inserter?`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:184](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/lib/effects.ts#L184)
+Defined in: [src/lib/effects.ts:184](https://github.com/zeixcom/ui-element/blob/230cd6cc9b2252d1741350e7be8be3e04b6f2cf4/src/lib/effects.ts#L184)
 
 Effect for dynamically inserting or removing elements based on a reactive numeric value.
 Positive values insert elements, negative values remove them.
@@ -17,11 +17,11 @@ Positive values insert elements, negative values remove them.
 
 ### P
 
-`P` _extends_ [`ComponentProps`](../type-aliases/ComponentProps.md)
+`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
 
 ### E
 
-`E` _extends_ `Element` = `HTMLElement`
+`E` *extends* `Element` = `HTMLElement`
 
 ## Parameters
 

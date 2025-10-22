@@ -4,14 +4,24 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Components – Le Truc Docs</title>
-		<meta
-			name="description"
-			content="Anatomy, lifecycle, signals, effects"
+		<meta name="description" content="Anatomy, lifecycle, signals, effects" />
+		<link
+			rel="preload"
+			href="./assets/main.css?v=0adb5bf2"
+			as="style"
 		/>
-		<link rel="preload" href="./assets/main.css?v=0adb5bf2" as="style" />
-		<link rel="modulepreload" href="./assets/main.js?v=0b0743f4" />
-		<link rel="stylesheet" href="./assets/main.css?v=0adb5bf2" />
-		<script type="module" src="./assets/main.js?v=0b0743f4"></script>
+		<link
+			rel="modulepreload"
+			href="./assets/main.js?v=e36ac8b7"
+		/>
+		<link
+			rel="stylesheet"
+			href="./assets/main.css?v=0adb5bf2"
+		/>
+		<script
+			type="module"
+			src="./assets/main.js?v=e36ac8b7"
+		></script>
 	</head>
 	<body class="">
 		<context-router>
@@ -22,285 +32,179 @@
 				<h1 class="content">
 					Le Truc Docs <small>Version 0.14.0</small>
 				</h1>
+				
+<section-menu>
+	<nav>
+		<h2 class="visually-hidden">Main Menu</h2>
+		<ol>
+			
+				<li>
+					<a href="index.html">
+						<span class="icon">📖</span>
+						<strong>Introduction</strong>
+						<small>Overview and key benefits of Le Truc</small>
+					</a>
+				</li>
 
-				<section-menu>
-					<nav>
-						<h2 class="visually-hidden">Main Menu</h2>
-						<ol>
-							<li>
-								<a href="index.html">
-									<span class="icon">📖</span>
-									<strong>Introduction</strong>
-									<small
-										>Overview and key benefits of Le
-										Truc</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="getting-started.html">
+						<span class="icon">🚀</span>
+						<strong>Getting Started</strong>
+						<small>Installation, setup, and first steps</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="getting-started.html">
-									<span class="icon">🚀</span>
-									<strong>Getting Started</strong>
-									<small
-										>Installation, setup, and first
-										steps</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="components.html">
+						<span class="icon">🏗️</span>
+						<strong>Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="components.html">
-									<span class="icon">🏗️</span>
-									<strong>Components</strong>
-									<small
-										>Anatomy, lifecycle, signals,
-										effects</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="styling.html">
+						<span class="icon">🎨</span>
+						<strong>Styling</strong>
+						<small>Scoped styles, CSS custom properties</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="styling.html">
-									<span class="icon">🎨</span>
-									<strong>Styling</strong>
-									<small
-										>Scoped styles, CSS custom
-										properties</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="data-flow.html">
+						<span class="icon">🔄</span>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="data-flow.html">
-									<span class="icon">🔄</span>
-									<strong>Data Flow</strong>
-									<small
-										>Passing state, events, context</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="examples.html">
+						<span class="icon">🍽️</span>
+						<strong>Examples</strong>
+						<small>Common use cases and demos</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="examples.html">
-									<span class="icon">🍽️</span>
-									<strong>Examples</strong>
-									<small>Common use cases and demos</small>
-								</a>
-							</li>
+				<li>
+					<a href="blog.html">
+						<span class="icon">📜</span>
+						<strong>Blog</strong>
+						<small>Latest articles and updates</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="blog.html">
-									<span class="icon">📜</span>
-									<strong>Blog</strong>
-									<small>Latest articles and updates</small>
-								</a>
-							</li>
+				<li>
+					<a href="api.html">
+						<span class="icon">📚</span>
+						<strong>API Reference</strong>
+						<small>Functions, types, and constants</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="api.html">
-									<span class="icon">📚</span>
-									<strong>API Reference</strong>
-									<small
-										>Functions, types, and constants</small
-									>
-								</a>
-							</li>
-
-							<li>
-								<a href="about.html">
-									<span class="icon">🤝</span>
-									<strong>About</strong>
-									<small
-										>License, versioning, getting
-										involved</small
-									>
-								</a>
-							</li>
-						</ol>
-					</nav>
-				</section-menu>
+				<li>
+					<a href="about.html">
+						<span class="icon">🤝</span>
+						<strong>About</strong>
+						<small>License, versioning, getting involved</small>
+					</a>
+				</li>
+		</ol>
+	</nav>
+</section-menu>
 				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="assertive"></p>
 				</card-callout>
 			</header>
-			<main id="main" class="content-grid">
-				<section-hero>
-					<h1 id="components">
-						<a name="components" class="anchor" href="#components">
-							<span class="permalink">🔗</span>
-							<span class="title">🏗️ Components</span>
-						</a>
-					</h1>
-					<div>
-						<p class="lead">
-							<strong
-								>Create lightweight, self-contained Web
-								Components with built-in reactivity</strong
-							>. Le Truc lets you define custom elements that
-							manage state efficiently, update the DOM
-							automatically, and enhance server-rendered pages
-							without an SPA framework.
-						</p>
+			<main id="main" class="content-grid"><section-hero>
 
-						<module-toc>
-							<nav>
-								<h2>In This Page</h2>
-								<ol>
-									<li>
-										<a href="#defining-a-component"
-											>Defining a Component</a
-										>
-									</li>
-									<li>
-										<a href="#component-lifecycle"
-											>Component Lifecycle</a
-										>
-									</li>
-									<li>
-										<a href="#managing-state-with-signals"
-											>Managing State with Signals</a
-										>
-									</li>
-									<li>
-										<a href="#selecting-elements"
-											>Selecting Elements</a
-										>
-									</li>
-									<li>
-										<a href="#adding-event-listeners"
-											>Adding Event Listeners</a
-										>
-									</li>
-									<li>
-										<a
-											href="#synchronizing-state-with-effects"
-											>Synchronizing State with Effects</a
-										>
-									</li>
-									<li>
-										<a href="#next-steps">Next Steps</a>
-									</li>
-								</ol>
-							</nav>
-						</module-toc>
-					</div>
-				</section-hero>
+<h1 id="components">
+                <a name="components" class="anchor" href="#components">
+	                <span class="permalink">🔗</span>
+					<span class="title">🏗️ Components</span>
+                </a>
+            </h1>
+<div>
+  <p class="lead"><strong>Create lightweight, self-contained Web Components with built-in reactivity</strong>. Le Truc lets you define custom elements that manage state efficiently, update the DOM automatically, and enhance server-rendered pages without an SPA framework.</p>
+  
+<module-toc>
+	<nav>
+		<h2>In This Page</h2>
+		<ol>
+			<li><a href="#defining-a-component">Defining a Component</a></li>
+<li><a href="#component-lifecycle">Component Lifecycle</a></li>
+<li><a href="#managing-state-with-signals">Managing State with Signals</a></li>
+<li><a href="#selecting-elements">Selecting Elements</a></li>
+<li><a href="#adding-event-listeners">Adding Event Listeners</a></li>
+<li><a href="#synchronizing-state-with-effects">Synchronizing State with Effects</a></li>
+<li><a href="#next-steps">Next Steps</a></li>
+		</ol>
+	</nav>
+</module-toc>
+</div>
+</section-hero>
 
-				<section>
-					<h2 id="defining-a-component">
-						<a
-							name="defining-a-component"
-							class="anchor"
-							href="#defining-a-component"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Defining a Component</span>
-						</a>
-					</h2>
-					<p>
-						Le Truc builds on <strong>Web Components</strong>,
-						extending <code>HTMLElement</code> to provide
-						<strong
-							>built-in state management and reactive
-							updates</strong
-						>.
-					</p>
-					<p>
-						Le Truc creates components using the
-						<code>component()</code> function:
-					</p>
-					<module-codeblock
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<section>
+
+<h2 id="defining-a-component">
+                <a name="defining-a-component" class="anchor" href="#defining-a-component">
+	                <span class="permalink">🔗</span>
+					<span class="title">Defining a Component</span>
+                </a>
+            </h2>
+<p>Le Truc builds on <strong>Web Components</strong>, extending <code>HTMLElement</code> to provide <strong>built-in state management and reactive updates</strong>.</p>
+<p>Le Truc creates components using the <code>component()</code> function:</p>
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {}, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">  // Component setup</span></span>
 <span class="line"><span style="color:#F8F8F2">])</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-					</module-codeblock>
-					<p>
-						Every Le Truc component must be registered with a valid
-						custom element tag name (two or more words joined with
-						<code>-</code>) as the first parameter.
-					</p>
-					<h3 id="using-the-custom-element-in-html">
-						<a
-							name="using-the-custom-element-in-html"
-							class="anchor"
-							href="#using-the-custom-element-in-html"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title"
-								>Using the Custom Element in HTML</span
-							>
-						</a>
-					</h3>
-					<p>
-						Once registered, the component can be used like any
-						native HTML element:
-					</p>
-					<module-codeblock
-						language="html"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">html</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">my-component</span><span style="color:#F8F8F2">>Content goes here&#x3C;/</span><span style="color:#F92672">my-component</span><span style="color:#F8F8F2">></span></span>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<p>Every Le Truc component must be registered with a valid custom element tag name (two or more words joined with <code>-</code>) as the first parameter.</p>
+<h3 id="using-the-custom-element-in-html">
+                <a name="using-the-custom-element-in-html" class="anchor" href="#using-the-custom-element-in-html">
+	                <span class="permalink">🔗</span>
+					<span class="title">Using the Custom Element in HTML</span>
+                </a>
+            </h3>
+<p>Once registered, the component can be used like any native HTML element:</p>
+<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">html</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">my-component</span><span style="color:#F8F8F2">>Content goes here&#x3C;/</span><span style="color:#F92672">my-component</span><span style="color:#F8F8F2">></span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-					</module-codeblock>
-					<h3 id="anatomy-of-a-component">
-						<a
-							name="anatomy-of-a-component"
-							class="anchor"
-							href="#anatomy-of-a-component"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Anatomy of a Component</span>
-						</a>
-					</h3>
-					<p>
-						Let&#39;s examine a complete component example to
-						understand how Le Truc works:
-					</p>
-					<module-codeblock
-						collapsed
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<h3 id="anatomy-of-a-component">
+                <a name="anatomy-of-a-component" class="anchor" href="#anatomy-of-a-component">
+	                <span class="permalink">🔗</span>
+					<span class="title">Anatomy of a Component</span>
+                </a>
+            </h3>
+<p>Let&#39;s examine a complete component example to understand how Le Truc works:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">  'hello-world'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  {</span></span>
 <span class="line"><span style="color:#F8F8F2">    name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">)?.textContent?.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">),</span></span>
@@ -317,109 +221,61 @@
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-						<button type="button" class="overlay">Expand</button>
-					</module-codeblock>
-					<h4 id="reactive-properties">
-						<a
-							name="reactive-properties"
-							class="anchor"
-							href="#reactive-properties"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Reactive Properties</span>
-						</a>
-					</h4>
-					<module-codeblock
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#F8F8F2">{</span></span>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<h4 id="reactive-properties">
+                <a name="reactive-properties" class="anchor" href="#reactive-properties">
+	                <span class="permalink">🔗</span>
+					<span class="title">Reactive Properties</span>
+                </a>
+            </h4>
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">{</span></span>
 <span class="line"><span style="color:#88846F">  // Create "name" property from attribute "name" as a string, falling back to server-rendered content</span></span>
 <span class="line"><span style="color:#F8F8F2">  name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> el.</span><span style="color:#A6E22E">querySelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">)?.textContent?.</span><span style="color:#A6E22E">trim</span><span style="color:#F8F8F2">() </span><span style="color:#F92672">??</span><span style="color:#E6DB74"> ''</span><span style="color:#F8F8F2">),</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-					</module-codeblock>
-					<p>
-						This creates a reactive property called
-						<code>name</code>:
-					</p>
-					<ul>
-						<li>
-							<code>asString()</code> observes the attribute
-							<code>name</code> and assigns its value as a string
-							to the <code>name</code> property
-						</li>
-						<li>
-							<code>el =&gt; ...</code> is an instruction how to
-							get the fallback value in the DOM if there is no
-							name attribute
-						</li>
-						<li>
-							Le Truc automatically reads &quot;World&quot; from
-							the <code>&lt;span&gt;</code> element as the initial
-							value
-						</li>
-						<li>
-							When <code>name</code> changes, any effects that
-							depend on it automatically update
-						</li>
-					</ul>
-					<h4 id="setup-function">
-						<a
-							name="setup-function"
-							class="anchor"
-							href="#setup-function"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Setup Function</span>
-						</a>
-					</h4>
-					<p>The setup function takes two arguments:</p>
-					<ol>
-						<li>
-							The component element. In this example we name it
-							<code>el</code>.
-						</li>
-						<li>
-							Helper functions for accessing descendant elements.
-							In this example we use <code>first</code> to find
-							the first descendant matching a selector and apply
-							effects to it.
-						</li>
-					</ol>
-					<p>The setup function returns an array of effects:</p>
-					<module-codeblock
-						collapsed
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<p>This creates a reactive property called <code>name</code>:</p>
+<ul>
+<li><code>asString()</code> observes the attribute <code>name</code> and assigns its value as a string to the <code>name</code> property</li>
+<li><code>el =&gt; ...</code> is an instruction how to get the fallback value in the DOM if there is no name attribute</li>
+<li>Le Truc automatically reads &quot;World&quot; from the <code>&lt;span&gt;</code> element as the initial value</li>
+<li>When <code>name</code> changes, any effects that depend on it automatically update</li>
+</ul>
+<h4 id="setup-function">
+                <a name="setup-function" class="anchor" href="#setup-function">
+	                <span class="permalink">🔗</span>
+					<span class="title">Setup Function</span>
+                </a>
+            </h4>
+<p>The setup function takes two arguments:</p>
+<ol>
+<li>The component element. In this example we name it <code>el</code>.</li>
+<li>Helper functions for accessing descendant elements. In this example we use <code>first</code> to find the first descendant matching a selector and apply effects to it.</li>
+</ol>
+<p>The setup function returns an array of effects:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#88846F">  // set the fallback value we want to use instead of an empty string</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> fallback </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> el.name</span></span>
 <span class="line"></span>
@@ -435,92 +291,48 @@
 <span class="line"><span style="color:#F8F8F2">  ]</span></span>
 <span class="line"><span style="color:#F8F8F2">},</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-						<button type="button" class="overlay">Expand</button>
-					</module-codeblock>
-					<p>Effects define <strong>component behaviors</strong>:</p>
-					<ul>
-						<li>
-							<code
-								>first(&#39;input&#39;, on(&#39;input&#39;,
-								...))</code
-							>
-							finds the first <code>&lt;input&gt;</code> and adds
-							an event listener
-						</li>
-						<li>
-							<code
-								>first(&#39;span&#39;,
-								setText(&#39;name&#39;))</code
-							>
-							finds the first <code>&lt;span&gt;</code> and keeps
-							its text in sync with the <code>name</code> property
-						</li>
-					</ul>
-					<p>Characteristics of Effects:</p>
-					<ul>
-						<li>
-							Effects run when the component is added to the page
-						</li>
-						<li>Effects rerun when their dependencies change</li>
-						<li>
-							Effects may return a cleanup function to be executed
-							when the target element or the component is removed
-							from the page
-						</li>
-					</ul>
-				</section>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>Effects define <strong>component behaviors</strong>:</p>
+<ul>
+<li><code>first(&#39;input&#39;, on(&#39;input&#39;, ...))</code> finds the first <code>&lt;input&gt;</code> and adds an event listener</li>
+<li><code>first(&#39;span&#39;, setText(&#39;name&#39;))</code> finds the first <code>&lt;span&gt;</code> and keeps its text in sync with the <code>name</code> property</li>
+</ul>
+<p>Characteristics of Effects:</p>
+<ul>
+<li>Effects run when the component is added to the page</li>
+<li>Effects rerun when their dependencies change</li>
+<li>Effects may return a cleanup function to be executed when the target element or the component is removed from the page</li>
+</ul>
+</section>
 
-				<section>
-					<h2 id="component-lifecycle">
-						<a
-							name="component-lifecycle"
-							class="anchor"
-							href="#component-lifecycle"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Component Lifecycle</span>
-						</a>
-					</h2>
-					<p>
-						Le Truc manages the
-						<strong>Web Component lifecycle</strong> from creation
-						to removal. Here&#39;s what happens.
-					</p>
-					<h3 id="component-creation">
-						<a
-							name="component-creation"
-							class="anchor"
-							href="#component-creation"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Component Creation</span>
-						</a>
-					</h3>
-					<p>
-						In the <code>constructor()</code> reactive properties
-						are initialized. You pass a second argument to the
-						<code>component()</code> function to defines initial
-						values for <strong>component states</strong>.
-					</p>
-					<module-codeblock
-						collapsed
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+<section>
+
+<h2 id="component-lifecycle">
+                <a name="component-lifecycle" class="anchor" href="#component-lifecycle">
+	                <span class="permalink">🔗</span>
+					<span class="title">Component Lifecycle</span>
+                </a>
+            </h2>
+<p>Le Truc manages the <strong>Web Component lifecycle</strong> from creation to removal. Here&#39;s what happens.</p>
+<h3 id="component-creation">
+                <a name="component-creation" class="anchor" href="#component-creation">
+	                <span class="permalink">🔗</span>
+					<span class="title">Component Creation</span>
+                </a>
+            </h3>
+<p>In the <code>constructor()</code> reactive properties are initialized. You pass a second argument to the <code>component()</code> function to defines initial values for <strong>component states</strong>.</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">  'my-component'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  {</span></span>
 <span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">, </span><span style="color:#88846F">// Initial value of "count" signal</span></span>
@@ -533,112 +345,51 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-						<button type="button" class="overlay">Expand</button>
-					</module-codeblock>
-					<p>
-						In this example you see all three ways to define a
-						reactive property:
-					</p>
-					<ul>
-						<li>
-							A <strong>static initial value</strong> for a
-							<code>State</code> signal (e.g.,
-							<code>count: 0</code>)
-						</li>
-						<li>
-							An <strong>attribute parser</strong> that may
-							provide a fallback value (e.g.,
-							<code>value: asInteger(5)</code>)
-						</li>
-						<li>
-							A <strong>signal producer</strong> function that
-							derives an initial value or a callback function from
-							other properties of the element (e.g.,
-							<code
-								>isEven: el =&gt; () =&gt; !(el.count % 2)</code
-							>) or bundled signal producers (e.g.
-							<code>fromContext(context, fallback)</code>)
-						</li>
-					</ul>
-					<card-callout class="caution">
-						<p>
-							<strong>Caution</strong>: Property initialization
-							runs
-							<strong
-								>before the element is attached to the
-								DOM</strong
-							>. You can&#39;t access not yet defined properties
-							or descendant elements here.
-						</p>
-					</card-callout>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>In this example you see all three ways to define a reactive property:</p>
+<ul>
+<li>A <strong>static initial value</strong> for a <code>State</code> signal (e.g., <code>count: 0</code>)</li>
+<li>An <strong>attribute parser</strong> that may provide a fallback value (e.g., <code>value: asInteger(5)</code>)</li>
+<li>A <strong>signal producer</strong> function that derives an initial value or a callback function from other properties of the element (e.g., <code>isEven: el =&gt; () =&gt; !(el.count % 2)</code>) or bundled signal producers (e.g. <code>fromContext(context, fallback)</code>)</li>
+</ul>
+<card-callout class="caution">
 
-					<h3 id="mounted-in-the-dom">
-						<a
-							name="mounted-in-the-dom"
-							class="anchor"
-							href="#mounted-in-the-dom"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Mounted in the DOM</span>
-						</a>
-					</h3>
-					<p>
-						Runs when the component is added to the page
-						(<code>connectedCallback()</code>). This is where you:
-					</p>
-					<ul>
-						<li><strong>Access sub-elements</strong></li>
-						<li><strong>Set up event listeners</strong></li>
-						<li><strong>Apply effects</strong></li>
-						<li><strong>Emit custom events</strong></li>
-						<li><strong>Provide context</strong></li>
-					</ul>
-					<p>The setup function has two arguments:</p>
-					<ol>
-						<li>
-							<code>el</code>: The component element instance.
-						</li>
-						<li>
-							<code>{ all, first }</code>: An object containing
-							two functions, <code>all</code> and
-							<code>first</code>, which can be used to select
-							elements within the component. See
-							<a href="#accessing-sub-elements"
-								>Accessing Sub-elements</a
-							>.
-						</li>
-					</ol>
-					<p>
-						Le Truc expects you to return an array of partially
-						applied functions to be executed during the setup phase.
-						The order doesn&#39;t matter, as each function targets a
-						specific element or event. So feel free to organize your
-						code in a way that makes sense to you.
-					</p>
-					<p>
-						Each of these functions will return a cleanup function
-						that will be executed during the
-						<code>disconnectedCallback()</code> lifecycle method.
-					</p>
-					<module-codeblock
-						collapsed
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+<p><strong>Caution</strong>: Property initialization runs <strong>before the element is attached to the DOM</strong>. You can&#39;t access not yet defined properties or descendant elements here.</p>
+</card-callout>
+
+<h3 id="mounted-in-the-dom">
+                <a name="mounted-in-the-dom" class="anchor" href="#mounted-in-the-dom">
+	                <span class="permalink">🔗</span>
+					<span class="title">Mounted in the DOM</span>
+                </a>
+            </h3>
+<p>Runs when the component is added to the page (<code>connectedCallback()</code>). This is where you:</p>
+<ul>
+<li><strong>Access sub-elements</strong></li>
+<li><strong>Set up event listeners</strong></li>
+<li><strong>Apply effects</strong></li>
+<li><strong>Emit custom events</strong></li>
+<li><strong>Provide context</strong></li>
+</ul>
+<p>The setup function has two arguments:</p>
+<ol>
+<li><code>el</code>: The component element instance.</li>
+<li><code>{ all, first }</code>: An object containing two functions, <code>all</code> and <code>first</code>, which can be used to select elements within the component. See <a href="#accessing-sub-elements">Accessing Sub-elements</a>.</li>
+</ol>
+<p>Le Truc expects you to return an array of partially applied functions to be executed during the setup phase. The order doesn&#39;t matter, as each function targets a specific element or event. So feel free to organize your code in a way that makes sense to you.</p>
+<p>Each of these functions will return a cleanup function that will be executed during the <code>disconnectedCallback()</code> lifecycle method.</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">  'my-component'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  {</span></span>
 <span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
@@ -659,52 +410,27 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-						<button type="button" class="overlay">Expand</button>
-					</module-codeblock>
-					<h3 id="removed-from-the-dom">
-						<a
-							name="removed-from-the-dom"
-							class="anchor"
-							href="#removed-from-the-dom"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Removed from the DOM</span>
-						</a>
-					</h3>
-					<p>
-						Runs when the component is removed
-						(<code>disconnectedCallback()</code>). Le Truc will run
-						all cleanup functions returned by event listeners and
-						effects during the setup phase
-						(<code>connectedCallback()</code>). This will
-						unsubscribe all signals the component is subscribed to,
-						so you don&#39;t need to worry about memory leaks.
-					</p>
-					<p>
-						If you added <strong>event listeners</strong> outside
-						the scope of your component or
-						<strong>subscribed manually to external APIs</strong>,
-						you need to return a cleanup function:
-					</p>
-					<module-codeblock
-						collapsed
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> [</span></span>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<h3 id="removed-from-the-dom">
+                <a name="removed-from-the-dom" class="anchor" href="#removed-from-the-dom">
+	                <span class="permalink">🔗</span>
+					<span class="title">Removed from the DOM</span>
+                </a>
+            </h3>
+<p>Runs when the component is removed (<code>disconnectedCallback()</code>). Le Truc will run all cleanup functions returned by event listeners and effects during the setup phase (<code>connectedCallback()</code>). This will unsubscribe all signals the component is subscribed to, so you don&#39;t need to worry about memory leaks.</p>
+<p>If you added <strong>event listeners</strong> outside the scope of your component or <strong>subscribed manually to external APIs</strong>, you need to return a cleanup function:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {}, </span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">  // Setup logic</span></span>
 <span class="line"><span style="color:#F8F8F2">  () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">    const</span><span style="color:#F8F8F2"> observer </span><span style="color:#F92672">=</span><span style="color:#F92672"> new</span><span style="color:#A6E22E"> IntersectionObserver</span><span style="color:#F8F8F2">(([</span><span style="color:#FD971F;font-style:italic">entry</span><span style="color:#F8F8F2">]) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
@@ -717,174 +443,76 @@
 <span class="line"><span style="color:#F8F8F2">  },</span></span>
 <span class="line"><span style="color:#F8F8F2">])</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-						<button type="button" class="overlay">Expand</button>
-					</module-codeblock>
-					<h3 id="observed-attributes">
-						<a
-							name="observed-attributes"
-							class="anchor"
-							href="#observed-attributes"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Observed Attributes</span>
-						</a>
-					</h3>
-					<p>
-						Le Truc automatically observes and converts attributes
-						with an associated <strong>parser function</strong> in
-						the init block and updates them whenever the attribute
-						changes (<code>attributeChangedCallback()</code>).
-					</p>
-				</section>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<h3 id="observed-attributes">
+                <a name="observed-attributes" class="anchor" href="#observed-attributes">
+	                <span class="permalink">🔗</span>
+					<span class="title">Observed Attributes</span>
+                </a>
+            </h3>
+<p>Le Truc automatically observes and converts attributes with an associated <strong>parser function</strong> in the init block and updates them whenever the attribute changes (<code>attributeChangedCallback()</code>).</p>
+</section>
 
-				<section>
-					<h2 id="managing-state-with-signals">
-						<a
-							name="managing-state-with-signals"
-							class="anchor"
-							href="#managing-state-with-signals"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title"
-								>Managing State with Signals</span
-							>
-						</a>
-					</h2>
-					<p>
-						Le Truc manages state using <strong>signals</strong>,
-						which are atomic reactive states that trigger updates
-						when they change. We use regular properties to access or
-						update them:
-					</p>
-					<module-codeblock
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F92672"> in</span><span style="color:#F8F8F2"> el) </span><span style="color:#88846F">// Check if the signal exists</span></span>
+<section>
+
+<h2 id="managing-state-with-signals">
+                <a name="managing-state-with-signals" class="anchor" href="#managing-state-with-signals">
+	                <span class="permalink">🔗</span>
+					<span class="title">Managing State with Signals</span>
+                </a>
+            </h2>
+<p>Le Truc manages state using <strong>signals</strong>, which are atomic reactive states that trigger updates when they change. We use regular properties to access or update them:</p>
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'count'</span><span style="color:#F92672"> in</span><span style="color:#F8F8F2"> el) </span><span style="color:#88846F">// Check if the signal exists</span></span>
 <span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#A6E22E">log</span><span style="color:#F8F8F2">(el.count) </span><span style="color:#88846F">// Read the signal value</span></span>
 <span class="line"><span style="color:#F8F8F2">el.count </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 42</span><span style="color:#88846F"> // Update the signal value</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-					</module-codeblock>
-					<h3 id="characteristics-and-special-values">
-						<a
-							name="characteristics-and-special-values"
-							class="anchor"
-							href="#characteristics-and-special-values"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title"
-								>Characteristics and Special Values</span
-							>
-						</a>
-					</h3>
-					<p>
-						Signals in Le Truc are of a
-						<strong>static type</strong> and
-						<strong>non-nullable</strong>. This allows to
-						<strong>simplify the logic</strong> as you will never
-						have to check the type or perform null-checks.
-					</p>
-					<ul>
-						<li>
-							If you use
-							<strong>TypeScript</strong> (recommended),
-							<strong>you will be warned</strong> that
-							<code>null</code> or <code>undefined</code> cannot
-							be assigned to a signal or if you try to assign a
-							value of a wrong type.
-						</li>
-						<li>
-							If you use vanilla
-							<strong>JavaScript</strong> without a build step,
-							setting a signal to <code>null</code> or
-							<code>undefined</code>
-							<strong
-								>will log an error to the console and
-								abort</strong
-							>. However, strict type checking is not enforced at
-							runtime.
-						</li>
-					</ul>
-					<p>
-						Because of the
-						<strong>non-nullable nature of signals</strong> in Le
-						Truc, we need two special values that can be assigned to
-						any signal type:
-					</p>
-					<ul>
-						<li>
-							<strong><code>RESET</code></strong
-							>: Will
-							<strong
-								>reset to the server-rendered version</strong
-							>
-							that was there before Le Truc took control. This is
-							what you want to do most of the times when a signal
-							lacks a specific value.
-						</li>
-						<li>
-							<strong><code>UNSET</code></strong
-							>: Will <strong>delete the signal</strong>,
-							<strong>unsubscribe its watchers</strong> and also
-							<strong
-								>delete related attributes or style
-								properties</strong
-							>
-							in effects. Use this with special care!
-						</li>
-					</ul>
-					<h3 id="initializing-state-from-attributes">
-						<a
-							name="initializing-state-from-attributes"
-							class="anchor"
-							href="#initializing-state-from-attributes"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title"
-								>Initializing State from Attributes</span
-							>
-						</a>
-					</h3>
-					<p>
-						The standard way to set initial state in Le Truc is via
-						<strong>server-rendered attributes</strong> on the
-						component that needs it. No props drilling as in other
-						frameworks. Le Trucs provides some bundled attribute
-						parsers to convert attribute values to the desired type.
-						And you can also define your own custom parsers.
-					</p>
-					<module-codeblock
-						collapsed
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<h3 id="characteristics-and-special-values">
+                <a name="characteristics-and-special-values" class="anchor" href="#characteristics-and-special-values">
+	                <span class="permalink">🔗</span>
+					<span class="title">Characteristics and Special Values</span>
+                </a>
+            </h3>
+<p>Signals in Le Truc are of a <strong>static type</strong> and <strong>non-nullable</strong>. This allows to <strong>simplify the logic</strong> as you will never have to check the type or perform null-checks.</p>
+<ul>
+<li>If you use <strong>TypeScript</strong> (recommended), <strong>you will be warned</strong> that <code>null</code> or <code>undefined</code> cannot be assigned to a signal or if you try to assign a value of a wrong type.</li>
+<li>If you use vanilla <strong>JavaScript</strong> without a build step, setting a signal to <code>null</code> or <code>undefined</code> <strong>will log an error to the console and abort</strong>. However, strict type checking is not enforced at runtime.</li>
+</ul>
+<p>Because of the <strong>non-nullable nature of signals</strong> in Le Truc, we need two special values that can be assigned to any signal type:</p>
+<ul>
+<li><strong><code>RESET</code></strong>: Will <strong>reset to the server-rendered version</strong> that was there before Le Truc took control. This is what you want to do most of the times when a signal lacks a specific value.</li>
+<li><strong><code>UNSET</code></strong>: Will <strong>delete the signal</strong>, <strong>unsubscribe its watchers</strong> and also <strong>delete related attributes or style properties</strong> in effects. Use this with special care!</li>
+</ul>
+<h3 id="initializing-state-from-attributes">
+                <a name="initializing-state-from-attributes" class="anchor" href="#initializing-state-from-attributes">
+	                <span class="permalink">🔗</span>
+					<span class="title">Initializing State from Attributes</span>
+                </a>
+            </h3>
+<p>The standard way to set initial state in Le Truc is via <strong>server-rendered attributes</strong> on the component that needs it. No props drilling as in other frameworks. Le Trucs provides some bundled attribute parsers to convert attribute values to the desired type. And you can also define your own custom parsers.</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">  'my-component'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  {</span></span>
 <span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(), </span><span style="color:#88846F">// Bundled parser: Convert '42' -> 42</span></span>
@@ -895,92 +523,54 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-						<button type="button" class="overlay">Expand</button>
-					</module-codeblock>
-					<card-callout class="caution">
-						<p>
-							<strong>Careful</strong>: Attributes
-							<strong>may not be present</strong> on the element
-							or
-							<strong>parsing to the desired type may fail</strong
-							>. To ensure <strong>non-nullability</strong> of
-							signals, Le Truc falls back to neutral defaults:
-						</p>
-						<ul>
-							<li>
-								<code>&quot;&quot;</code> (empty string) for
-								<code>string</code>
-							</li>
-							<li><code>0</code> for <code>number</code></li>
-							<li>
-								<code>{}</code> (empty object) for objects of
-								any kind
-							</li>
-						</ul>
-					</card-callout>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<card-callout class="caution">
 
-					<h3 id="bundled-attribute-parsers">
-						<a
-							name="bundled-attribute-parsers"
-							class="anchor"
-							href="#bundled-attribute-parsers"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Bundled Attribute Parsers</span>
-						</a>
-					</h3>
-					<p>
-						Le Truc provides several built-in parsers for common
-						attribute types. See the
-						<a href="api.html#parsers">Parsers section</a> in the
-						API reference for detailed descriptions and usage
-						examples.
-					</p>
-				</section>
+<p><strong>Careful</strong>: Attributes <strong>may not be present</strong> on the element or <strong>parsing to the desired type may fail</strong>. To ensure <strong>non-nullability</strong> of signals, Le Truc falls back to neutral defaults:</p>
+<ul>
+<li><code>&quot;&quot;</code> (empty string) for <code>string</code></li>
+<li><code>0</code> for <code>number</code></li>
+<li><code>{}</code> (empty object) for objects of any kind</li>
+</ul>
+</card-callout>
 
-				<section>
-					<h2 id="selecting-elements">
-						<a
-							name="selecting-elements"
-							class="anchor"
-							href="#selecting-elements"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Selecting Elements</span>
-						</a>
-					</h2>
-					<p>
-						Use the provided selector utilities to find elements
-						within your component:
-					</p>
-					<h3 id="first">
-						<a name="first" class="anchor" href="#first">
-							<span class="permalink">🔗</span>
-							<span class="title">first()</span>
-						</a>
-					</h3>
-					<p>
-						Selects the first matching element and applies effects:
-					</p>
-					<module-codeblock
-						collapsed
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+<h3 id="bundled-attribute-parsers">
+                <a name="bundled-attribute-parsers" class="anchor" href="#bundled-attribute-parsers">
+	                <span class="permalink">🔗</span>
+					<span class="title">Bundled Attribute Parsers</span>
+                </a>
+            </h3>
+<p>Le Truc provides several built-in parsers for common attribute types. See the <a href="api.html#parsers">Parsers section</a> in the API reference for detailed descriptions and usage examples.</p>
+</section>
+
+<section>
+
+<h2 id="selecting-elements">
+                <a name="selecting-elements" class="anchor" href="#selecting-elements">
+	                <span class="permalink">🔗</span>
+					<span class="title">Selecting Elements</span>
+                </a>
+            </h2>
+<p>Use the provided selector utilities to find elements within your component:</p>
+<h3 id="first">
+                <a name="first" class="anchor" href="#first">
+	                <span class="permalink">🔗</span>
+					<span class="title">first()</span>
+                </a>
+            </h3>
+<p>Selects the first matching element and applies effects:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">  'basic-counter'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  {</span></span>
 <span class="line"><span style="color:#F8F8F2">    count: </span><span style="color:#A6E22E">asInteger</span><span style="color:#F8F8F2">(),</span></span>
@@ -996,37 +586,26 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-						<button type="button" class="overlay">Expand</button>
-					</module-codeblock>
-					<h3 id="all">
-						<a name="all" class="anchor" href="#all">
-							<span class="permalink">🔗</span>
-							<span class="title">all()</span>
-						</a>
-					</h3>
-					<p>
-						Selects all matching elements and applies effects to
-						each:
-					</p>
-					<module-codeblock
-						collapsed
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<h3 id="all">
+                <a name="all" class="anchor" href="#all">
+	                <span class="permalink">🔗</span>
+					<span class="title">all()</span>
+                </a>
+            </h3>
+<p>Selects all matching elements and applies effects to each:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">  'module-tabgroup'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">  {</span></span>
 <span class="line"><span style="color:#F8F8F2">    selected: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
@@ -1055,68 +634,37 @@
 <span class="line"><span style="color:#F8F8F2">  ],</span></span>
 <span class="line"><span style="color:#F8F8F2">)</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-						<button type="button" class="overlay">Expand</button>
-					</module-codeblock>
-					<p>
-						The <code>first()</code> function expects the matched
-						element to be present at connection time. If not, it
-						will silently ignore the call.
-					</p>
-					<p>
-						On the other hand, the <code>all()</code> function
-						creates a dynamic array of elements that will be updated
-						whenever the matching elements are added or removed from
-						the component&#39;s DOM branch. Le Truc will apply the
-						given setup functions to added elements and run the
-						cleanup functions on removed elements.
-					</p>
-					<card-callout class="tip">
-						<p>
-							<strong>Tip</strong>: The
-							<code>all()</code> function is more flexible but
-							also more resource-intensive than
-							<code>first()</code>. Prefer
-							<code>first()</code> when targeting a single element
-							known to be present at connection time.
-						</p>
-					</card-callout>
-				</section>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>The <code>first()</code> function expects the matched element to be present at connection time. If not, it will silently ignore the call.</p>
+<p>On the other hand, the <code>all()</code> function creates a dynamic array of elements that will be updated whenever the matching elements are added or removed from the component&#39;s DOM branch. Le Truc will apply the given setup functions to added elements and run the cleanup functions on removed elements.</p>
+<card-callout class="tip">
 
-				<section>
-					<h2 id="adding-event-listeners">
-						<a
-							name="adding-event-listeners"
-							class="anchor"
-							href="#adding-event-listeners"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Adding Event Listeners</span>
-						</a>
-					</h2>
-					<p>
-						Event listeners allow to respond to user interactions.
-						They are the cause of changes in the component&#39;s
-						state.
-					</p>
-					<module-codeblock
-						collapsed
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {</span></span>
+<p><strong>Tip</strong>: The <code>all()</code> function is more flexible but also more resource-intensive than <code>first()</code>. Prefer <code>first()</code> when targeting a single element known to be present at connection time.</p>
+</card-callout>
+
+</section>
+
+<section>
+
+<h2 id="adding-event-listeners">
+                <a name="adding-event-listeners" class="anchor" href="#adding-event-listeners">
+	                <span class="permalink">🔗</span>
+					<span class="title">Adding Event Listeners</span>
+                </a>
+            </h2>
+<p>Event listeners allow to respond to user interactions. They are the cause of changes in the component&#39;s state.</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {</span></span>
 <span class="line"><span style="color:#F8F8F2">	active: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	value: </span><span style="color:#E6DB74">''</span></span>
 <span class="line"><span style="color:#F8F8F2">}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">all</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
@@ -1135,61 +683,37 @@
 <span class="line"><span style="color:#F8F8F2">	)</span></span>
 <span class="line"><span style="color:#F8F8F2">]</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-						<button type="button" class="overlay">Expand</button>
-					</module-codeblock>
-				</section>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+</section>
 
-				<section>
-					<h2 id="synchronizing-state-with-effects">
-						<a
-							name="synchronizing-state-with-effects"
-							class="anchor"
-							href="#synchronizing-state-with-effects"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title"
-								>Synchronizing State with Effects</span
-							>
-						</a>
-					</h2>
-					<p>
-						Effects
-						<strong>automatically update the DOM</strong> when
-						signals change, avoiding manual DOM manipulation.
-					</p>
-					<h3 id="applying-effects">
-						<a
-							name="applying-effects"
-							class="anchor"
-							href="#applying-effects"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Applying Effects</span>
-						</a>
-					</h3>
-					<p>
-						Apply one or multiple effects in the setup function (for
-						component itself) or in element selector functions:
-					</p>
-					<module-codeblock
-						collapsed
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#F8F8F2">;(</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
+<section>
+
+<h2 id="synchronizing-state-with-effects">
+                <a name="synchronizing-state-with-effects" class="anchor" href="#synchronizing-state-with-effects">
+	                <span class="permalink">🔗</span>
+					<span class="title">Synchronizing State with Effects</span>
+                </a>
+            </h2>
+<p>Effects <strong>automatically update the DOM</strong> when signals change, avoiding manual DOM manipulation.</p>
+<h3 id="applying-effects">
+                <a name="applying-effects" class="anchor" href="#applying-effects">
+	                <span class="permalink">🔗</span>
+					<span class="title">Applying Effects</span>
+                </a>
+            </h3>
+<p>Apply one or multiple effects in the setup function (for component itself) or in element selector functions:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">;(</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#88846F">  // On the component itself</span></span>
 <span class="line"><span style="color:#A6E22E">  setAttribute</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'open'</span><span style="color:#F8F8F2">, </span><span style="color:#E6DB74">'isOpen'</span><span style="color:#F8F8F2">), </span><span style="color:#88846F">// Set "open" attribute according to "isOpen" signal</span></span>
 <span class="line"></span>
@@ -1201,109 +725,57 @@
 <span class="line"><span style="color:#F8F8F2">  ),</span></span>
 <span class="line"><span style="color:#F8F8F2">]</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-						<button type="button" class="overlay">Expand</button>
-					</module-codeblock>
-					<p>
-						Again, the order of effects is not important. Feel free
-						to apply them in any order that suits your needs.
-					</p>
-					<h3 id="bundled-effects">
-						<a
-							name="bundled-effects"
-							class="anchor"
-							href="#bundled-effects"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Bundled Effects</span>
-						</a>
-					</h3>
-					<p>
-						Le Truc provides many built-in effects for common DOM
-						operations. See the
-						<a href="api.html#effects">Effects section</a> in the
-						API reference for detailed descriptions and usage
-						examples.
-					</p>
-					<h3 id="simplifying-effect-notation">
-						<a
-							name="simplifying-effect-notation"
-							class="anchor"
-							href="#simplifying-effect-notation"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title"
-								>Simplifying Effect Notation</span
-							>
-						</a>
-					</h3>
-					<p>
-						For effects that take two arguments,
-						<strong>the second argument can be omitted</strong> if
-						the signal key matches the targeted property name,
-						attribute, class, or style property.
-					</p>
-					<p>When signal key matches property name:</p>
-					<module-codeblock
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'even'</span><span style="color:#F8F8F2">))</span></span>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>Again, the order of effects is not important. Feel free to apply them in any order that suits your needs.</p>
+<h3 id="bundled-effects">
+                <a name="bundled-effects" class="anchor" href="#bundled-effects">
+	                <span class="permalink">🔗</span>
+					<span class="title">Bundled Effects</span>
+                </a>
+            </h3>
+<p>Le Truc provides many built-in effects for common DOM operations. See the <a href="api.html#effects">Effects section</a> in the API reference for detailed descriptions and usage examples.</p>
+<h3 id="simplifying-effect-notation">
+                <a name="simplifying-effect-notation" class="anchor" href="#simplifying-effect-notation">
+	                <span class="permalink">🔗</span>
+					<span class="title">Simplifying Effect Notation</span>
+                </a>
+            </h3>
+<p>For effects that take two arguments, <strong>the second argument can be omitted</strong> if the signal key matches the targeted property name, attribute, class, or style property.</p>
+<p>When signal key matches property name:</p>
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'.count'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">toggleClass</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'even'</span><span style="color:#F8F8F2">))</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-					</module-codeblock>
-					<p>
-						Here,
-						<code>toggleClass(&quot;even&quot;)</code> automatically
-						uses the <code>&quot;even&quot;</code> signal.
-					</p>
-					<h3 id="using-local-signals-for-protected-state">
-						<a
-							name="using-local-signals-for-protected-state"
-							class="anchor"
-							href="#using-local-signals-for-protected-state"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title"
-								>Using Local Signals for Protected State</span
-							>
-						</a>
-					</h3>
-					<p>
-						Local signals are useful for storing state that should
-						not be exposed to the outside world. They can be used to
-						manage internal state within a component:
-					</p>
-					<module-codeblock
-						collapsed
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {}, (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<p>Here, <code>toggleClass(&quot;even&quot;)</code> automatically uses the <code>&quot;even&quot;</code> signal.</p>
+<h3 id="using-local-signals-for-protected-state">
+                <a name="using-local-signals-for-protected-state" class="anchor" href="#using-local-signals-for-protected-state">
+	                <span class="permalink">🔗</span>
+					<span class="title">Using Local Signals for Protected State</span>
+                </a>
+            </h3>
+<p>Local signals are useful for storing state that should not be exposed to the outside world. They can be used to manage internal state within a component:</p>
+<module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'my-component'</span><span style="color:#F8F8F2">, {}, (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> count </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> state</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">  const</span><span style="color:#F8F8F2"> double </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> count.</span><span style="color:#A6E22E">map</span><span style="color:#F8F8F2">(</span><span style="color:#FD971F;font-style:italic">v</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> v </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">)</span></span>
 <span class="line"><span style="color:#F92672">  return</span><span style="color:#F8F8F2"> [</span></span>
@@ -1318,47 +790,27 @@
 <span class="line"><span style="color:#F8F8F2">  ]</span></span>
 <span class="line"><span style="color:#F8F8F2">})</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-						<button type="button" class="overlay">Expand</button>
-					</module-codeblock>
-					<p>
-						Outside components cannot access the
-						<code>count</code> or <code>double</code> signals.
-					</p>
-					<h3 id="using-functions-for-ad-hoc-derived-state">
-						<a
-							name="using-functions-for-ad-hoc-derived-state"
-							class="anchor"
-							href="#using-functions-for-ad-hoc-derived-state"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title"
-								>Using Functions for Ad-hoc Derived State</span
-							>
-						</a>
-					</h3>
-					<p>
-						Instead of a signal key or a local signal, you can
-						<strong>pass a function</strong> that derives a value
-						dynamically:
-					</p>
-					<module-codeblock
-						language="js"
-						copy-success="Copied!"
-						copy-error="Error trying to copy to clipboard!"
-					>
-						<p class="meta">
-							<span class="language">js</span>
-						</p>
-						<pre
-							class="shiki monokai"
-							style="background-color: #272822; color: #f8f8f2"
-							tabindex="0"
-						><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {</span></span>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	<button type="button" class="overlay">Expand</button>
+</module-codeblock>
+<p>Outside components cannot access the <code>count</code> or <code>double</code> signals.</p>
+<h3 id="using-functions-for-ad-hoc-derived-state">
+                <a name="using-functions-for-ad-hoc-derived-state" class="anchor" href="#using-functions-for-ad-hoc-derived-state">
+	                <span class="permalink">🔗</span>
+					<span class="title">Using Functions for Ad-hoc Derived State</span>
+                </a>
+            </h3>
+<p>Instead of a signal key or a local signal, you can <strong>pass a function</strong> that derives a value dynamically:</p>
+<module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+	<p class="meta">
+		
+		<span class="language">js</span>
+	</p>
+	<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">"my-component"</span><span style="color:#F8F8F2">, {</span></span>
 <span class="line"><span style="color:#F8F8F2">	count: </span><span style="color:#AE81FF">0</span></span>
 <span class="line"><span style="color:#F8F8F2">}, (</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">	const</span><span style="color:#F8F8F2"> double </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> computed</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> el.count </span><span style="color:#F92672">*</span><span style="color:#AE81FF"> 2</span><span style="color:#F8F8F2">);</span></span>
@@ -1368,89 +820,52 @@
 <span class="line"><span style="color:#F8F8F2">	];</span></span>
 <span class="line"><span style="color:#F8F8F2">});</span></span>
 <span class="line"></span></code></pre>
-						<basic-button class="copy">
-							<button type="button" class="secondary small">
-								<span class="label">Copy</span>
-							</button>
-						</basic-button>
-					</module-codeblock>
-					<card-callout class="tip">
-						<p><strong>When to use</strong></p>
-						<ul>
-							<li>
-								<strong
-									>Use a signal key or a local signal</strong
-								>
-								when the state is part of the component&#39;s
-								public interface or internally reused.
-							</li>
-							<li>
-								<strong>Use a function</strong> to
-								<strong>derive a value on the fly</strong> when
-								it is needed only in this one place.
-							</li>
-						</ul>
-						<p>
-							Ad-hoc derived state is more efficient than the
-							overhead of a memoized computed signal for simple
-							functions like converting to a string or boolean,
-							formatting a value or performing a calculation.
-						</p>
-					</card-callout>
+	<basic-button class="copy">
+		<button type="button" class="secondary small">
+			<span class="label">Copy</span>
+		</button>
+	</basic-button>
+	
+</module-codeblock>
+<card-callout class="tip">
 
-					<h3 id="efficient-fine-grained-updates">
-						<a
-							name="efficient-fine-grained-updates"
-							class="anchor"
-							href="#efficient-fine-grained-updates"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title"
-								>Efficient &amp; Fine-Grained Updates</span
-							>
-						</a>
-					</h3>
-					<p>
-						Unlike some frameworks that
-						<strong>re-render entire components</strong>, Le Truc
-						updates only what changes:
-					</p>
-					<ul>
-						<li>
-							<strong>No virtual DOM</strong> – Le Truc modifies
-							the DOM directly.
-						</li>
-						<li>
-							<strong>Signals propagate automatically</strong> –
-							no need to track dependencies manually.
-						</li>
-						<li>
-							<strong>Optimized with a scheduler</strong> –
-							multiple updates are batched efficiently.
-						</li>
-					</ul>
-				</section>
+<p><strong>When to use</strong></p>
+<ul>
+<li><strong>Use a signal key or a local signal</strong> when the state is part of the component&#39;s public interface or internally reused.</li>
+<li><strong>Use a function</strong> to <strong>derive a value on the fly</strong> when it is needed only in this one place.</li>
+</ul>
+<p>Ad-hoc derived state is more efficient than the overhead of a memoized computed signal for simple functions like converting to a string or boolean, formatting a value or performing a calculation.</p>
+</card-callout>
 
-				<section>
-					<h2 id="next-steps">
-						<a name="next-steps" class="anchor" href="#next-steps">
-							<span class="permalink">🔗</span>
-							<span class="title">Next Steps</span>
-						</a>
-					</h2>
-					<p>Now that you understand the basics, explore:</p>
-					<ul>
-						<li>
-							<a href="styling.html">Styling</a> – Learn
-							techniques to apply styles to components.
-						</li>
-						<li>
-							<a href="data-flow.html">Data Flow</a> – Learn about
-							passing state between components.
-						</li>
-					</ul>
-				</section>
-			</main>
+<h3 id="efficient-fine-grained-updates">
+                <a name="efficient-fine-grained-updates" class="anchor" href="#efficient-fine-grained-updates">
+	                <span class="permalink">🔗</span>
+					<span class="title">Efficient &amp; Fine-Grained Updates</span>
+                </a>
+            </h3>
+<p>Unlike some frameworks that <strong>re-render entire components</strong>, Le Truc updates only what changes:</p>
+<ul>
+<li><strong>No virtual DOM</strong> – Le Truc modifies the DOM directly.</li>
+<li><strong>Signals propagate automatically</strong> – no need to track dependencies manually.</li>
+<li><strong>Optimized with a scheduler</strong> – multiple updates are batched efficiently.</li>
+</ul>
+</section>
+
+<section>
+
+<h2 id="next-steps">
+                <a name="next-steps" class="anchor" href="#next-steps">
+	                <span class="permalink">🔗</span>
+					<span class="title">Next Steps</span>
+                </a>
+            </h2>
+<p>Now that you understand the basics, explore:</p>
+<ul>
+<li><a href="styling.html">Styling</a> – Learn techniques to apply styles to components.</li>
+<li><a href="data-flow.html">Data Flow</a> – Learn about passing state between components.</li>
+</ul>
+</section>
+</main>
 			<footer class="content-grid">
 				<div class="content">
 					<h2 class="visually-hidden">Footer</h2>

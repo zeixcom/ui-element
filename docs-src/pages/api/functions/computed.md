@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / computed
 
@@ -8,7 +8,7 @@
 
 > **computed**\<`T`\>(`fn`): [`Computed`](../type-aliases/Computed.md)\<`T`\>
 
-Defined in: node_modules/@zeix/cause-effect/src/computed.ts:40
+Defined in: node\_modules/@zeix/cause-effect/src/computed.ts:40
 
 Create a derived signal from existing signals
 
@@ -16,7 +16,7 @@ Create a derived signal from existing signals
 
 ### T
 
-`T` _extends_ `object`
+`T` *extends* `object`
 
 ## Parameters
 

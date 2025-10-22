@@ -10,9 +10,18 @@
 			href="../../assets/main.css?v=0adb5bf2"
 			as="style"
 		/>
-		<link rel="modulepreload" href="../../assets/main.js?v=0b0743f4" />
-		<link rel="stylesheet" href="../../assets/main.css?v=0adb5bf2" />
-		<script type="module" src="../../assets/main.js?v=0b0743f4"></script>
+		<link
+			rel="modulepreload"
+			href="../../assets/main.js?v=e36ac8b7"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../assets/main.css?v=0adb5bf2"
+		/>
+		<script
+			type="module"
+			src="../../assets/main.js?v=e36ac8b7"
+		></script>
 	</head>
 	<body class="api">
 		<context-router>
@@ -23,307 +32,233 @@
 				<h1 class="content">
 					Le Truc Docs <small>Version 0.14.0</small>
 				</h1>
+				
+<section-menu>
+	<nav>
+		<h2 class="visually-hidden">Main Menu</h2>
+		<ol>
+			
+				<li>
+					<a href="../../index.html">
+						<span class="icon">📖</span>
+						<strong>Introduction</strong>
+						<small>Overview and key benefits of Le Truc</small>
+					</a>
+				</li>
 
-				<section-menu>
-					<nav>
-						<h2 class="visually-hidden">Main Menu</h2>
-						<ol>
-							<li>
-								<a href="../../index.html">
-									<span class="icon">📖</span>
-									<strong>Introduction</strong>
-									<small
-										>Overview and key benefits of Le
-										Truc</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="../../getting-started.html">
+						<span class="icon">🚀</span>
+						<strong>Getting Started</strong>
+						<small>Installation, setup, and first steps</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="../../getting-started.html">
-									<span class="icon">🚀</span>
-									<strong>Getting Started</strong>
-									<small
-										>Installation, setup, and first
-										steps</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="../../components.html">
+						<span class="icon">🏗️</span>
+						<strong>Components</strong>
+						<small>Anatomy, lifecycle, signals, effects</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="../../components.html">
-									<span class="icon">🏗️</span>
-									<strong>Components</strong>
-									<small
-										>Anatomy, lifecycle, signals,
-										effects</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="../../styling.html">
+						<span class="icon">🎨</span>
+						<strong>Styling</strong>
+						<small>Scoped styles, CSS custom properties</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="../../styling.html">
-									<span class="icon">🎨</span>
-									<strong>Styling</strong>
-									<small
-										>Scoped styles, CSS custom
-										properties</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="../../data-flow.html">
+						<span class="icon">🔄</span>
+						<strong>Data Flow</strong>
+						<small>Passing state, events, context</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="../../data-flow.html">
-									<span class="icon">🔄</span>
-									<strong>Data Flow</strong>
-									<small
-										>Passing state, events, context</small
-									>
-								</a>
-							</li>
+				<li>
+					<a href="../../examples.html">
+						<span class="icon">🍽️</span>
+						<strong>Examples</strong>
+						<small>Common use cases and demos</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="../../examples.html">
-									<span class="icon">🍽️</span>
-									<strong>Examples</strong>
-									<small>Common use cases and demos</small>
-								</a>
-							</li>
+				<li>
+					<a href="../../blog.html">
+						<span class="icon">📜</span>
+						<strong>Blog</strong>
+						<small>Latest articles and updates</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="../../blog.html">
-									<span class="icon">📜</span>
-									<strong>Blog</strong>
-									<small>Latest articles and updates</small>
-								</a>
-							</li>
+				<li>
+					<a href="../../api.html">
+						<span class="icon">📚</span>
+						<strong>API Reference</strong>
+						<small>Functions, types, and constants</small>
+					</a>
+				</li>
 
-							<li>
-								<a href="../../api.html">
-									<span class="icon">📚</span>
-									<strong>API Reference</strong>
-									<small
-										>Functions, types, and constants</small
-									>
-								</a>
-							</li>
-
-							<li>
-								<a href="../../about.html">
-									<span class="icon">🤝</span>
-									<strong>About</strong>
-									<small
-										>License, versioning, getting
-										involved</small
-									>
-								</a>
-							</li>
-						</ol>
-					</nav>
-				</section-menu>
+				<li>
+					<a href="../../about.html">
+						<span class="icon">🤝</span>
+						<strong>About</strong>
+						<small>License, versioning, getting involved</small>
+					</a>
+				</li>
+		</ol>
+	</nav>
+</section-menu>
 				<card-callout class="content danger" hidden>
 					<p class="error" role="alert" aria-live="assertive"></p>
 				</card-callout>
 			</header>
-			<main id="main" class="content-grid">
-				<section class="api-content">
-					<h1 id="type-alias-effectmatcherltsgt">
-						<a
-							name="type-alias-effectmatcherltsgt"
-							class="anchor"
-							href="#type-alias-effectmatcherltsgt"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title"
-								>Type Alias: EffectMatcher&lt;S&gt;</span
-							>
-						</a>
-					</h1>
-					<blockquote>
-						<p>
-							<strong>EffectMatcher</strong>&lt;<code>S</code>&gt;
-							= <code>object</code>
-						</p>
-					</blockquote>
-					<p>
-						Defined in:
-						node_modules/@zeix/cause-effect/src/effect.ts:7
-					</p>
-					<h2 id="name">
-						<a name="name" class="anchor" href="#name">
-							<span class="permalink">🔗</span>
-							<span class="title">Name</span>
-						</a>
-					</h2>
-					<p>Le Truc</p>
-					<h2 id="version">
-						<a name="version" class="anchor" href="#version">
-							<span class="permalink">🔗</span>
-							<span class="title">Version</span>
-						</a>
-					</h2>
-					<p>0.14.0</p>
-					<h2 id="author">
-						<a name="author" class="anchor" href="#author">
-							<span class="permalink">🔗</span>
-							<span class="title">Author</span>
-						</a>
-					</h2>
-					<p>Esther Brunner</p>
-					<h2 id="type-parameters">
-						<a
-							name="type-parameters"
-							class="anchor"
-							href="#type-parameters"
-						>
-							<span class="permalink">🔗</span>
-							<span class="title">Type Parameters</span>
-						</a>
-					</h2>
-					<h3 id="s">
-						<a name="s" class="anchor" href="#s">
-							<span class="permalink">🔗</span>
-							<span class="title">S</span>
-						</a>
-					</h3>
-					<p>
-						<code>S</code> <em>extends</em>
-						<a href="Signal.html"><code>Signal</code></a
-						>&lt;<code>unknown</code> &amp;
-						<code>object</code>&gt;[]
-					</p>
-					<h2 id="properties">
-						<a name="properties" class="anchor" href="#properties">
-							<span class="permalink">🔗</span>
-							<span class="title">Properties</span>
-						</a>
-					</h2>
-					<h3 id="err">
-						<a name="err" class="anchor" href="#err">
-							<span class="permalink">🔗</span>
-							<span class="title">err()?</span>
-						</a>
-					</h3>
-					<blockquote>
-						<p>
-							<code>optional</code> <strong>err</strong>:
-							(...<code>errors</code>) =&gt;
-							<a href="Cleanup.html"><code>Cleanup</code></a> |
-							<code>undefined</code>
-						</p>
-					</blockquote>
-					<p>
-						Defined in:
-						node_modules/@zeix/cause-effect/src/effect.ts:10
-					</p>
-					<h4 id="parameters">
-						<a name="parameters" class="anchor" href="#parameters">
-							<span class="permalink">🔗</span>
-							<span class="title">Parameters</span>
-						</a>
-					</h4>
-					<h5 id="errors">
-						<a name="errors" class="anchor" href="#errors">
-							<span class="permalink">🔗</span>
-							<span class="title">errors</span>
-						</a>
-					</h5>
-					<p>...<code>Error</code>[]</p>
-					<h4 id="returns">
-						<a name="returns" class="anchor" href="#returns">
-							<span class="permalink">🔗</span>
-							<span class="title">Returns</span>
-						</a>
-					</h4>
-					<p>
-						<a href="Cleanup.html"><code>Cleanup</code></a> |
-						<code>undefined</code>
-					</p>
-					<hr />
-					<h3 id="nil">
-						<a name="nil" class="anchor" href="#nil">
-							<span class="permalink">🔗</span>
-							<span class="title">nil()?</span>
-						</a>
-					</h3>
-					<blockquote>
-						<p>
-							<code>optional</code> <strong>nil</strong>: () =&gt;
-							<a href="Cleanup.html"><code>Cleanup</code></a> |
-							<code>undefined</code>
-						</p>
-					</blockquote>
-					<p>
-						Defined in:
-						node_modules/@zeix/cause-effect/src/effect.ts:11
-					</p>
-					<h4 id="returns">
-						<a name="returns" class="anchor" href="#returns">
-							<span class="permalink">🔗</span>
-							<span class="title">Returns</span>
-						</a>
-					</h4>
-					<p>
-						<a href="Cleanup.html"><code>Cleanup</code></a> |
-						<code>undefined</code>
-					</p>
-					<hr />
-					<h3 id="ok">
-						<a name="ok" class="anchor" href="#ok">
-							<span class="permalink">🔗</span>
-							<span class="title">ok()</span>
-						</a>
-					</h3>
-					<blockquote>
-						<p>
-							<strong>ok</strong>: (...<code>values</code>) =&gt;
-							<a href="Cleanup.html"><code>Cleanup</code></a> |
-							<code>undefined</code>
-						</p>
-					</blockquote>
-					<p>
-						Defined in:
-						node_modules/@zeix/cause-effect/src/effect.ts:9
-					</p>
-					<h4 id="parameters">
-						<a name="parameters" class="anchor" href="#parameters">
-							<span class="permalink">🔗</span>
-							<span class="title">Parameters</span>
-						</a>
-					</h4>
-					<h5 id="values">
-						<a name="values" class="anchor" href="#values">
-							<span class="permalink">🔗</span>
-							<span class="title">values</span>
-						</a>
-					</h5>
-					<p>...<code>SignalValues</code>&lt;<code>S</code>&gt;</p>
-					<h4 id="returns">
-						<a name="returns" class="anchor" href="#returns">
-							<span class="permalink">🔗</span>
-							<span class="title">Returns</span>
-						</a>
-					</h4>
-					<p>
-						<a href="Cleanup.html"><code>Cleanup</code></a> |
-						<code>undefined</code>
-					</p>
-					<hr />
-					<h3 id="signals">
-						<a name="signals" class="anchor" href="#signals">
-							<span class="permalink">🔗</span>
-							<span class="title">signals</span>
-						</a>
-					</h3>
-					<blockquote>
-						<p><strong>signals</strong>: <code>S</code></p>
-					</blockquote>
-					<p>
-						Defined in:
-						node_modules/@zeix/cause-effect/src/effect.ts:8
-					</p>
-				</section>
-			</main>
+			<main id="main" class="content-grid"><section class="api-content">
+<h1 id="type-alias-effectmatcherltsgt">
+                <a name="type-alias-effectmatcherltsgt" class="anchor" href="#type-alias-effectmatcherltsgt">
+	                <span class="permalink">🔗</span>
+					<span class="title">Type Alias: EffectMatcher&lt;S&gt;</span>
+                </a>
+            </h1>
+<blockquote>
+<p><strong>EffectMatcher</strong>&lt;<code>S</code>&gt; = <code>object</code></p>
+</blockquote>
+<p>Defined in: node_modules/@zeix/cause-effect/src/effect.ts:7</p>
+<h2 id="name">
+                <a name="name" class="anchor" href="#name">
+	                <span class="permalink">🔗</span>
+					<span class="title">Name</span>
+                </a>
+            </h2>
+<p>Le Truc</p>
+<h2 id="version">
+                <a name="version" class="anchor" href="#version">
+	                <span class="permalink">🔗</span>
+					<span class="title">Version</span>
+                </a>
+            </h2>
+<p>0.14.0</p>
+<h2 id="author">
+                <a name="author" class="anchor" href="#author">
+	                <span class="permalink">🔗</span>
+					<span class="title">Author</span>
+                </a>
+            </h2>
+<p>Esther Brunner</p>
+<h2 id="type-parameters">
+                <a name="type-parameters" class="anchor" href="#type-parameters">
+	                <span class="permalink">🔗</span>
+					<span class="title">Type Parameters</span>
+                </a>
+            </h2>
+<h3 id="s">
+                <a name="s" class="anchor" href="#s">
+	                <span class="permalink">🔗</span>
+					<span class="title">S</span>
+                </a>
+            </h3>
+<p><code>S</code> <em>extends</em> <a href="Signal.html"><code>Signal</code></a>&lt;<code>unknown</code> &amp; <code>object</code>&gt;[]</p>
+<h2 id="properties">
+                <a name="properties" class="anchor" href="#properties">
+	                <span class="permalink">🔗</span>
+					<span class="title">Properties</span>
+                </a>
+            </h2>
+<h3 id="err">
+                <a name="err" class="anchor" href="#err">
+	                <span class="permalink">🔗</span>
+					<span class="title">err()?</span>
+                </a>
+            </h3>
+<blockquote>
+<p><code>optional</code> <strong>err</strong>: (...<code>errors</code>) =&gt; <a href="Cleanup.html"><code>Cleanup</code></a> | <code>undefined</code></p>
+</blockquote>
+<p>Defined in: node_modules/@zeix/cause-effect/src/effect.ts:10</p>
+<h4 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
+	                <span class="permalink">🔗</span>
+					<span class="title">Parameters</span>
+                </a>
+            </h4>
+<h5 id="errors">
+                <a name="errors" class="anchor" href="#errors">
+	                <span class="permalink">🔗</span>
+					<span class="title">errors</span>
+                </a>
+            </h5>
+<p>...<code>Error</code>[]</p>
+<h4 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
+                </a>
+            </h4>
+<p><a href="Cleanup.html"><code>Cleanup</code></a> | <code>undefined</code></p>
+<hr>
+<h3 id="nil">
+                <a name="nil" class="anchor" href="#nil">
+	                <span class="permalink">🔗</span>
+					<span class="title">nil()?</span>
+                </a>
+            </h3>
+<blockquote>
+<p><code>optional</code> <strong>nil</strong>: () =&gt; <a href="Cleanup.html"><code>Cleanup</code></a> | <code>undefined</code></p>
+</blockquote>
+<p>Defined in: node_modules/@zeix/cause-effect/src/effect.ts:11</p>
+<h4 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
+                </a>
+            </h4>
+<p><a href="Cleanup.html"><code>Cleanup</code></a> | <code>undefined</code></p>
+<hr>
+<h3 id="ok">
+                <a name="ok" class="anchor" href="#ok">
+	                <span class="permalink">🔗</span>
+					<span class="title">ok()</span>
+                </a>
+            </h3>
+<blockquote>
+<p><strong>ok</strong>: (...<code>values</code>) =&gt; <a href="Cleanup.html"><code>Cleanup</code></a> | <code>undefined</code></p>
+</blockquote>
+<p>Defined in: node_modules/@zeix/cause-effect/src/effect.ts:9</p>
+<h4 id="parameters">
+                <a name="parameters" class="anchor" href="#parameters">
+	                <span class="permalink">🔗</span>
+					<span class="title">Parameters</span>
+                </a>
+            </h4>
+<h5 id="values">
+                <a name="values" class="anchor" href="#values">
+	                <span class="permalink">🔗</span>
+					<span class="title">values</span>
+                </a>
+            </h5>
+<p>...<code>SignalValues</code>&lt;<code>S</code>&gt;</p>
+<h4 id="returns">
+                <a name="returns" class="anchor" href="#returns">
+	                <span class="permalink">🔗</span>
+					<span class="title">Returns</span>
+                </a>
+            </h4>
+<p><a href="Cleanup.html"><code>Cleanup</code></a> | <code>undefined</code></p>
+<hr>
+<h3 id="signals">
+                <a name="signals" class="anchor" href="#signals">
+	                <span class="permalink">🔗</span>
+					<span class="title">signals</span>
+                </a>
+            </h3>
+<blockquote>
+<p><strong>signals</strong>: <code>S</code></p>
+</blockquote>
+<p>Defined in: node_modules/@zeix/cause-effect/src/effect.ts:8</p>
+
+</section></main>
 			<footer class="content-grid">
 				<div class="content">
 					<h2 class="visually-hidden">Footer</h2>

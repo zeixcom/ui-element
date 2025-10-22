@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / provideContexts
 
@@ -8,7 +8,7 @@
 
 > **provideContexts**\<`P`, `K`\>(`contexts`): (`host`) => [`Cleanup`](../type-aliases/Cleanup.md)
 
-Defined in: [src/core/context.ts:98](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/context.ts#L98)
+Defined in: [src/core/context.ts:105](https://github.com/zeixcom/ui-element/blob/230cd6cc9b2252d1741350e7be8be3e04b6f2cf4/src/core/context.ts#L105)
 
 Provide a context for descendant component consumers
 
@@ -16,11 +16,11 @@ Provide a context for descendant component consumers
 
 ### P
 
-`P` _extends_ [`ComponentProps`](../type-aliases/ComponentProps.md)
+`P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
 
 ### K
 
-`K` _extends_ `string` \| `number` \| `symbol`
+`K` *extends* `string` \| `number` \| `symbol`
 
 ## Parameters
 

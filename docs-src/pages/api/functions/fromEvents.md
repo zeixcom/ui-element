@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / fromEvents
 
@@ -8,7 +8,7 @@
 
 > **fromEvents**\<`T`, `C`, `S`\>(`selector`, `events`, `initialize`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`T`\>, `C`\>
 
-Defined in: [src/core/events.ts:66](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/events.ts#L66)
+Defined in: [src/core/events.ts:66](https://github.com/zeixcom/ui-element/blob/230cd6cc9b2252d1741350e7be8be3e04b6f2cf4/src/core/events.ts#L66)
 
 Produce a computed signal from transformed event data
 
@@ -16,15 +16,15 @@ Produce a computed signal from transformed event data
 
 ### T
 
-`T` _extends_ `object`
+`T` *extends* `object`
 
 ### C
 
-`C` _extends_ `HTMLElement` = `HTMLElement`
+`C` *extends* `HTMLElement` = `HTMLElement`
 
 ### S
 
-`S` _extends_ `string` = `string`
+`S` *extends* `string` = `string`
 
 ## Parameters
 

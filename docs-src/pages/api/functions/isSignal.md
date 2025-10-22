@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / isSignal
 
@@ -8,7 +8,7 @@
 
 > **isSignal**\<`T`\>(`value`): `value is Signal<T>`
 
-Defined in: node_modules/@zeix/cause-effect/src/signal.ts:34
+Defined in: node\_modules/@zeix/cause-effect/src/signal.ts:34
 
 Check whether a value is a Signal or not
 
@@ -16,7 +16,7 @@ Check whether a value is a Signal or not
 
 ### T
 
-`T` _extends_ `object`
+`T` *extends* `object`
 
 ## Parameters
 

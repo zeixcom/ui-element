@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / Signal
 
@@ -8,7 +8,7 @@
 
 > **Signal**\<`T`\> = `object`
 
-Defined in: node_modules/@zeix/cause-effect/src/signal.ts:11
+Defined in: node\_modules/@zeix/cause-effect/src/signal.ts:11
 
 ## Name
 
@@ -26,7 +26,7 @@ Esther Brunner
 
 ### T
 
-`T` _extends_ `object`
+`T` *extends* `object`
 
 ## Methods
 
@@ -34,7 +34,7 @@ Esther Brunner
 
 > **get**(): `T`
 
-Defined in: node_modules/@zeix/cause-effect/src/signal.ts:12
+Defined in: node\_modules/@zeix/cause-effect/src/signal.ts:12
 
 #### Returns
 

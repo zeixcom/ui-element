@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / fromDOM
 
@@ -8,7 +8,7 @@
 
 > **fromDOM**\<`T`, `C`, `S`\>(`extractors`, `fallback`): [`Extractor`](../type-aliases/Extractor.md)\<`T`, `C`\>
 
-Defined in: [src/core/dom.ts:186](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L186)
+Defined in: [src/core/dom.ts:186](https://github.com/zeixcom/ui-element/blob/230cd6cc9b2252d1741350e7be8be3e04b6f2cf4/src/core/dom.ts#L186)
 
 Get a value from elements in the DOM
 
@@ -16,15 +16,15 @@ Get a value from elements in the DOM
 
 ### T
 
-`T` _extends_ `object`
+`T` *extends* `object`
 
 ### C
 
-`C` _extends_ `HTMLElement` = `HTMLElement`
+`C` *extends* `HTMLElement` = `HTMLElement`
 
 ### S
 
-`S` _extends_ \{ \[K in string\]: LooseExtractor\<string \| T, ElementFromSelector\<K\>\> \} = \{ \}
+`S` *extends* \{ \[K in string\]: LooseExtractor\<string \| T, ElementFromSelector\<K\>\> \} = \{ \}
 
 ## Parameters
 

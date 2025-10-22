@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / effect
 
@@ -8,7 +8,7 @@
 
 > **effect**\<`S`\>(`matcher`): [`Cleanup`](../type-aliases/Cleanup.md)
 
-Defined in: node_modules/@zeix/cause-effect/src/effect.ts:23
+Defined in: node\_modules/@zeix/cause-effect/src/effect.ts:23
 
 Define what happens when a reactive state changes
 
@@ -16,7 +16,7 @@ Define what happens when a reactive state changes
 
 ### S
 
-`S` _extends_ [`Signal`](../type-aliases/Signal.md)\<\{ \}\>[]
+`S` *extends* [`Signal`](../type-aliases/Signal.md)\<\{ \}\>[]
 
 ## Parameters
 
@@ -24,7 +24,7 @@ Define what happens when a reactive state changes
 
 effect matcher or callback
 
-[`EffectMatcher`](../type-aliases/EffectMatcher.md)\<`S`\> | () => `undefined` \| [`Cleanup`](../type-aliases/Cleanup.md)
+[`EffectMatcher`](../type-aliases/EffectMatcher.md)\<`S`\> | () => [`Cleanup`](../type-aliases/Cleanup.md) \| `undefined`
 
 ## Returns
 

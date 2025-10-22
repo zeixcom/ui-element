@@ -1,14 +1,14 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / ElementUsage
 
 # Type Alias: ElementUsage()
 
-> **ElementUsage** = \{\<`S`\>(`selector`, `required`): [`ElementFromSelector`](ElementFromSelector.md)\<`S`\>; \<`S`\>(`selector`): `null` \| [`ElementFromSelector`](ElementFromSelector.md)\<`S`\>; \<`E`\>(`selector`, `required`): `E`; \<`E`\>(`selector`): `null` \| `E`; \}
+> **ElementUsage** = \{\<`S`\>(`selector`, `required`): [`ElementFromSelector`](ElementFromSelector.md)\<`S`\>; \<`S`\>(`selector`): [`ElementFromSelector`](ElementFromSelector.md)\<`S`\> \| `null`; \<`E`\>(`selector`, `required`): `E`; \<`E`\>(`selector`): `E` \| `null`; \}
 
-Defined in: [src/core/dom.ts:72](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L72)
+Defined in: [src/core/dom.ts:72](https://github.com/zeixcom/ui-element/blob/230cd6cc9b2252d1741350e7be8be3e04b6f2cf4/src/core/dom.ts#L72)
 
 ## Call Signature
 
@@ -18,7 +18,7 @@ Defined in: [src/core/dom.ts:72](https://github.com/zeixcom/le-truc/blob/a2e3a5b
 
 #### S
 
-`S` _extends_ `string`
+`S` *extends* `string`
 
 ### Parameters
 
@@ -36,13 +36,13 @@ Defined in: [src/core/dom.ts:72](https://github.com/zeixcom/le-truc/blob/a2e3a5b
 
 ## Call Signature
 
-> \<`S`\>(`selector`): `null` \| [`ElementFromSelector`](ElementFromSelector.md)\<`S`\>
+> \<`S`\>(`selector`): [`ElementFromSelector`](ElementFromSelector.md)\<`S`\> \| `null`
 
 ### Type Parameters
 
 #### S
 
-`S` _extends_ `string`
+`S` *extends* `string`
 
 ### Parameters
 
@@ -52,7 +52,7 @@ Defined in: [src/core/dom.ts:72](https://github.com/zeixcom/le-truc/blob/a2e3a5b
 
 ### Returns
 
-`null` \| [`ElementFromSelector`](ElementFromSelector.md)\<`S`\>
+[`ElementFromSelector`](ElementFromSelector.md)\<`S`\> \| `null`
 
 ## Call Signature
 
@@ -62,7 +62,7 @@ Defined in: [src/core/dom.ts:72](https://github.com/zeixcom/le-truc/blob/a2e3a5b
 
 #### E
 
-`E` _extends_ `Element`
+`E` *extends* `Element`
 
 ### Parameters
 
@@ -80,13 +80,13 @@ Defined in: [src/core/dom.ts:72](https://github.com/zeixcom/le-truc/blob/a2e3a5b
 
 ## Call Signature
 
-> \<`E`\>(`selector`): `null` \| `E`
+> \<`E`\>(`selector`): `E` \| `null`
 
 ### Type Parameters
 
 #### E
 
-`E` _extends_ `Element`
+`E` *extends* `Element`
 
 ### Parameters
 
@@ -96,4 +96,4 @@ Defined in: [src/core/dom.ts:72](https://github.com/zeixcom/le-truc/blob/a2e3a5b
 
 ### Returns
 
-`null` \| `E`
+`E` \| `null`

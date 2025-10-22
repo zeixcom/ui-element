@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / State
 
@@ -8,7 +8,7 @@
 
 > **State**\<`T`\> = `object`
 
-Defined in: node_modules/@zeix/cause-effect/src/state.ts:7
+Defined in: node\_modules/@zeix/cause-effect/src/state.ts:7
 
 ## Name
 
@@ -26,7 +26,7 @@ Esther Brunner
 
 ### T
 
-`T` _extends_ `object`
+`T` *extends* `object`
 
 ## Properties
 
@@ -34,7 +34,7 @@ Esther Brunner
 
 > **\[toStringTag\]**: `"State"`
 
-Defined in: node_modules/@zeix/cause-effect/src/state.ts:8
+Defined in: node\_modules/@zeix/cause-effect/src/state.ts:8
 
 ## Methods
 
@@ -42,19 +42,19 @@ Defined in: node_modules/@zeix/cause-effect/src/state.ts:8
 
 > **get**(): `T`
 
-Defined in: node_modules/@zeix/cause-effect/src/state.ts:9
+Defined in: node\_modules/@zeix/cause-effect/src/state.ts:9
 
 #### Returns
 
 `T`
 
----
+***
 
 ### set()
 
 > **set**(`v`): `void`
 
-Defined in: node_modules/@zeix/cause-effect/src/state.ts:10
+Defined in: node\_modules/@zeix/cause-effect/src/state.ts:10
 
 #### Parameters
 
@@ -66,13 +66,13 @@ Defined in: node_modules/@zeix/cause-effect/src/state.ts:10
 
 `void`
 
----
+***
 
 ### update()
 
 > **update**(`fn`): `void`
 
-Defined in: node_modules/@zeix/cause-effect/src/state.ts:11
+Defined in: node\_modules/@zeix/cause-effect/src/state.ts:11
 
 #### Parameters
 

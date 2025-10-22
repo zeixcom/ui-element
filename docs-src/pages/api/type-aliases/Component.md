@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / Component
 
@@ -8,9 +8,9 @@
 
 > **Component**\<`P`\> = `HTMLElement` & `P` & `object`
 
-Defined in: [src/component.ts:59](https://github.com/zeixcom/le-truc/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/component.ts#L59)
+Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/230cd6cc9b2252d1741350e7be8be3e04b6f2cf4/src/component.ts#L59)
 
-## Type declaration
+## Type Declaration
 
 ### debug?
 
@@ -24,7 +24,7 @@ Defined in: [src/component.ts:59](https://github.com/zeixcom/le-truc/blob/a2e3a5
 
 ##### K
 
-`K` _extends_ `string`
+`K` *extends* `string`
 
 #### Parameters
 
@@ -34,11 +34,11 @@ Defined in: [src/component.ts:59](https://github.com/zeixcom/le-truc/blob/a2e3a5
 
 ##### oldValue
 
-`null` | `string`
+`string` | `null`
 
 ##### newValue
 
-`null` | `string`
+`string` | `null`
 
 #### Returns
 
@@ -52,7 +52,7 @@ Defined in: [src/component.ts:59](https://github.com/zeixcom/le-truc/blob/a2e3a5
 
 ##### K
 
-`K` _extends_ `string`
+`K` *extends* `string`
 
 #### Parameters
 
@@ -72,7 +72,7 @@ Defined in: [src/component.ts:59](https://github.com/zeixcom/le-truc/blob/a2e3a5
 
 ##### K
 
-`K` _extends_ `string`
+`K` *extends* `string`
 
 #### Parameters
 
@@ -92,4 +92,4 @@ Defined in: [src/component.ts:59](https://github.com/zeixcom/le-truc/blob/a2e3a5
 
 ### P
 
-`P` _extends_ [`ComponentProps`](ComponentProps.md)
+`P` *extends* [`ComponentProps`](ComponentProps.md)

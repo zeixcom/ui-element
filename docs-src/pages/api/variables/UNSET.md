@@ -1,6 +1,6 @@
 [**@zeix/le-truc**](../README.md)
 
----
+***
 
 [@zeix/le-truc](../globals.md) / UNSET
 
@@ -8,7 +8,7 @@
 
 > `const` **UNSET**: `any`
 
-Defined in: node_modules/@zeix/cause-effect/src/signal.ts:23
+Defined in: node\_modules/@zeix/cause-effect/src/signal.ts:23
 
 ## Name
 
