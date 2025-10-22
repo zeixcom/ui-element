@@ -2,6 +2,7 @@
  * Configuration system with type safety and validation
  */
 
+import { createHash } from 'crypto'
 import { existsSync, readFileSync } from 'fs'
 import { resolve } from 'path'
 import type { DeepPartial, DevServerConfig } from './types.js'
@@ -548,4 +549,31 @@ export function getBuildCommands(filePath: string): string[] {
 		throw new Error('Configuration not loaded')
 	}
 	return getBuildCommandsForFile(filePath, configManager.config)
+}
+
+// Path constants
+export const PAGES_DIR = './docs-src/pages'
+export const COMPONENTS_DIR = './docs-src/components'
+export const FRAGMENTS_DIR = './docs-src/fragments'
+export const OUTPUT_DIR = './docs'
+export const ASSETS_DIR = './docs/assets'
+export const INCLUDES_DIR = './docs-src/includes'
+export const LAYOUT_FILE = './docs-src/layout.html'
+export const MENU_FILE = './docs-src/menu.html'
+
+// Page ordering configuration
+export const PAGE_ORDER = [
+	'index.md',
+	'getting-started.md',
+	'installation.md',
+	'quick-start.md',
+	'api-reference.md',
+	'examples.md',
+	'troubleshooting.md',
+	'changelog.md',
+]
+
+// Utility functions
+export function generateAssetHash(content: string, length: number = 8): string {
+	return createHash('sha256').update(content).digest('hex').slice(0, length)
 }

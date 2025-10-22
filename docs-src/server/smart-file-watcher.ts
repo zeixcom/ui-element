@@ -420,9 +420,18 @@ export class SmartFileWatcher implements ISmartFileWatcher {
 		filePath: string,
 		config: WatchPathConfig,
 	): string[] {
-		// If config has explicit build commands, use them
+		// If config has explicit build commands, use them and enhance for src directory
 		if (config.buildCommands.length > 0) {
-			return config.buildCommands
+			const commands = [...config.buildCommands]
+
+			// Add build:docs-api for TypeScript files in src directory
+			if (config.directory.includes('src') && filePath.endsWith('.ts')) {
+				if (!commands.includes('build:docs-api')) {
+					commands.push('build:docs-api')
+				}
+			}
+
+			return commands
 		}
 
 		// Dynamic mapping for components directory

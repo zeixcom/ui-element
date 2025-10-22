@@ -8,7 +8,7 @@
 
 > **getFallback**\<`T`, `E`\>(`element`, `fallback`): `T`
 
-Defined in: [src/core/dom.ts:172](https://github.com/zeixcom/ui-element/blob/230cd6cc9b2252d1741350e7be8be3e04b6f2cf4/src/core/dom.ts#L172)
+Defined in: [src/core/dom.ts:172](https://github.com/zeixcom/ui-element/blob/b9ddf83c928c93d84a49a796a2342da755e4896e/src/core/dom.ts#L172)
 
 Get a fallback value for an element
 

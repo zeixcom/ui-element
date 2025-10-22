@@ -26,7 +26,10 @@
 		"test:debug": "DEBUG=true web-test-runner --config test/web-test-runner.config.js --manual",
 		"test:components": "bun run build:docs-js && web-test-runner \"docs-src/components/**/*-test.html\" --config test/web-test-runner.config.js",
 		"test:components:watch": "bun run build:docs-js && web-test-runner \"docs-src/components/**/*-test.html\" --config test/web-test-runner.config.js --watch",
-		"test:all": "bun run test && bun run test:components"
+		"test:server": "bun test docs-src/server/test/*.test.ts",
+		"test:server:watch": "bun test --watch docs-src/server/test/*.test.ts",
+		"test:server:coverage": "bun test --coverage docs-src/server/test/*.test.ts",
+		"test:all": "bun run test && bun run test:components && bun run test:server"
 	},
 	"keywords": [
 		"Le Truc",
