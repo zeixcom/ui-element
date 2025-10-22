@@ -1,403 +1,292 @@
-import { ServerWebSocket } from 'bun'
-import { exec } from 'child_process'
-import { watch } from 'fs/promises'
-import { resolve } from 'path'
-import { promisify } from 'util'
-import { brotliCompressSync, gzipSync } from 'zlib'
+#!/usr/bin/env bun
 
-const execAsync = promisify(exec)
-const sockets = new Set<ServerWebSocket>()
+/**
+ * Documentation Development Server
+ * Modern dev server with Bun 1.3+ file watching and HMR capabilities
+ */
 
-// Track ongoing rebuilds to prevent duplicates
-let isRebuilding = false
-let pendingRebuild = false
+import { existsSync } from 'fs'
+import { ConfigManager } from './config.js'
+import { DevServer } from './dev-server.js'
+import type { DevServerConfig } from './types.js'
 
-// Function to rebuild docs and notify clients (now takes buildCommands)
-async function rebuildDocs(
-	buildCommands: string[] = ['build:docs-js', 'build:docs-html'],
-) {
-	if (isRebuilding) {
-		pendingRebuild = true
-		return
-	}
+/**
+ * Main application class
+ */
+class DevServerApp {
+	private server: DevServer | null = null
+	private config: DevServerConfig | null = null
 
-	isRebuilding = true
-	console.log(`\n🔄 Rebuilding docs with: ${buildCommands.join(', ')}`)
-	const startTime = performance.now()
-
-	try {
-		for (const cmd of buildCommands) {
-			console.log(`▶️ Running: bun run ${cmd}`)
-			await execAsync(`bun run ${cmd}`)
-		}
-		const duration = (performance.now() - startTime).toFixed(2)
-		console.log(`✨ Docs rebuilt successfully in ${duration}ms!`)
-
-		// Notify all connected clients to reload
-		sockets.forEach(socket => {
-			socket.send('reload')
-		})
-	} catch (error) {
-		console.error('❌ Error rebuilding docs:', error)
-	} finally {
-		isRebuilding = false
-		if (pendingRebuild) {
-			pendingRebuild = false
-			setTimeout(() => rebuildDocs(buildCommands), 100)
-		}
-	}
-}
-
-// Track recent file changes to prevent duplicate processing
-const fileDebounceTimers = new Map<string, NodeJS.Timeout>()
-const FILE_DEBOUNCE_DELAY = 300 // ms
-
-// Watch for changes in markdown files and components
-async function watchDocs() {
-	console.log(
-		'👀 Watching for changes in docs-src/pages, docs-src/components, and src...',
-	)
-
-	// Define watch configurations
-	const watchConfigs = [
-		{
-			path: 'docs-src/pages',
-			extensions: ['.md'],
-			label: '📝',
-		},
-		{
-			path: 'docs-src/components',
-			extensions: ['.ts', '.html', '.css'],
-			label: '🔧',
-		},
-		{
-			path: 'src',
-			extensions: ['.ts'],
-			label: '📦',
-		},
-	]
-
-	// Map file changes to build commands
-	function getBuildCommands(filePath: string): string[] {
-		if (filePath.startsWith('docs-src/components/')) {
-			if (filePath.endsWith('.ts')) return ['build:docs-js']
-			if (filePath.endsWith('.css')) return ['build:docs-css']
-			if (filePath.endsWith('.html')) return ['build:docs-html']
-			if (filePath.endsWith('.md')) return ['build:docs-html']
-		}
-		if (
-			filePath.startsWith('docs-src/pages/') &&
-			filePath.endsWith('.md')
-		) {
-			return ['build:docs-html']
-		}
-		if (filePath.startsWith('src/') && filePath.endsWith('.ts')) {
-			return ['build', 'build:docs-js', 'build:docs-api']
-		}
-		return []
-	}
-
-	// Generic file change handler
-	const handleFileChange = async (
-		event: any,
-		config: (typeof watchConfigs)[0],
-	) => {
-		const filename = event.filename
-		const eventType = event.eventType || event.type || 'unknown'
-		if (
-			!filename ||
-			!config.extensions.some(ext => filename.endsWith(ext))
-		) {
-			return
-		}
-
-		// Use absolute file path as debounce key
-		const absFilePath = `${config.path}/${filename}`
-		const debounceKey = absFilePath
-
-		if (fileDebounceTimers.has(debounceKey)) {
-			clearTimeout(fileDebounceTimers.get(debounceKey))
-		}
-		fileDebounceTimers.set(
-			debounceKey,
-			setTimeout(async () => {
-				fileDebounceTimers.delete(debounceKey)
-				const buildCommands = getBuildCommands(absFilePath)
-				console.log(
-					`\n${config.label} Debounced change [${eventType}]: ${absFilePath}`,
-				)
-				if (buildCommands.length === 0) {
-					console.log('⚠️ No build command mapped for this change.')
-					return
-				}
-				console.log(`🔨 Will run: ${buildCommands.join(', ')}`)
-				await rebuildDocs(buildCommands)
-			}, FILE_DEBOUNCE_DELAY),
-		)
-	}
-
-	// Start all watchers (one per directory)
-	const watchers = watchConfigs.map(config =>
-		(async () => {
-			const watcher = watch(config.path, { recursive: true })
-			for await (const event of watcher) {
-				await handleFileChange(event, config)
-			}
-		})(),
-	)
-
-	Promise.all(watchers).catch(console.error)
-}
-
-// Start the watcher
-watchDocs().catch(console.error)
-
-const server = Bun.serve({
-	port: 3000,
-	websocket: {
-		open(ws: ServerWebSocket) {
-			console.log('🔌 Client connected')
-			sockets.add(ws)
-		},
-		close(ws: ServerWebSocket) {
-			console.log('🔌 Client disconnected')
-			sockets.delete(ws)
-		},
-		message(_ws: ServerWebSocket, message: string) {
-			console.log('📨 Received message:', message)
-		},
-	},
-	async fetch(req) {
-		const url = new URL(req.url)
-		const path = url.pathname
-
-		// Handle WebSocket upgrade
-		if (path === '/ws') {
-			const upgraded = server.upgrade(req)
-			if (!upgraded) {
-				return new Response('Upgrade failed', { status: 400 })
-			}
-			return new Response()
-		}
-
-		// Handle Chrome DevTools workspace configuration
-		if (path === '/.well-known/appspecific/com.chrome.devtools.json') {
-			const projectRoot = resolve('.')
-			const config = {
-				version: 1,
-				workspace: {
-					root: projectRoot,
-					uuid: 'le-truc-docs-workspace',
-				},
-			}
-
-			return new Response(JSON.stringify(config, null, 2), {
-				headers: {
-					'Content-Type': 'application/json; charset=UTF-8',
-					'X-Content-Type-Options': 'nosniff',
-					'Cache-Control': 'no-cache, no-store, must-revalidate',
-				},
-			})
-		}
-
-		// Check if client accepts compression (moved up before HTML handling)
-		const acceptEncoding = req.headers.get('accept-encoding') || ''
-		const supportsGzip = acceptEncoding.includes('gzip')
-		const supportsBrotli = acceptEncoding.includes('br')
-
-		// Inject the reload script into HTML responses
-		if (path.endsWith('.html') || path === '/') {
-			try {
-				let content = await Bun.file(
-					`./docs${path === '/' ? '/index.html' : path}`,
-				).text()
-				const reloadScript = `
-					<script>
-						const ws = new WebSocket('ws://' + window.location.host + '/ws');
-						ws.onmessage = (event) => {
-							if (event.data === 'reload') {
-								console.log('🔄 Reloading page...');
-								window.location.reload();
-							}
-						};
-					</script>
-				`
-				content = content.replace('</body>', `${reloadScript}</body>`)
-
-				// Apply compression for HTML content
-				const headers: HeadersInit = {
-					'Content-Type': 'text/html; charset=UTF-8',
-					'X-Content-Type-Options': 'nosniff',
-				}
-
-				if (supportsBrotli) {
-					const compressed = brotliCompressSync(
-						Buffer.from(content, 'utf8'),
-					)
-					return new Response(compressed, {
-						headers: {
-							...headers,
-							'Content-Encoding': 'br',
-							Vary: 'Accept-Encoding',
-						},
-					})
-				} else if (supportsGzip) {
-					const compressed = gzipSync(Buffer.from(content, 'utf8'))
-					return new Response(compressed, {
-						headers: {
-							...headers,
-							'Content-Encoding': 'gzip',
-							Vary: 'Accept-Encoding',
-						},
-					})
-				}
-
-				return new Response(content, { headers })
-			} catch (error) {
-				console.warn(`⚠️ Not found: ${path}, Error: ${error.message}`)
-				return new Response('Fallback response')
-			}
-		}
-
-		// Handle source file serving for DevTools workspace sync
-		if (path.startsWith('/src/') || path.startsWith('/docs-src/')) {
-			try {
-				const filePath = `.${path}`
-				const file = Bun.file(filePath)
-
-				// Determine content type for source files
-				const getSourceType = (path: string) => {
-					const ext = path.split('.').pop()
-					switch (ext) {
-						case 'ts':
-							return 'application/typescript; charset=UTF-8'
-						case 'js':
-							return 'application/javascript; charset=UTF-8'
-						case 'css':
-							return 'text/css; charset=UTF-8'
-						case 'html':
-							return 'text/html; charset=UTF-8'
-						case 'md':
-							return 'text/markdown; charset=UTF-8'
-						case 'json':
-							return 'application/json; charset=UTF-8'
-						default:
-							return 'text/plain; charset=UTF-8'
-					}
-				}
-
-				const headers: HeadersInit = {
-					'Content-Type': getSourceType(path),
-					'X-Content-Type-Options': 'nosniff',
-					'Cache-Control': 'no-cache, no-store, must-revalidate',
-				}
-
-				return new Response(await file.bytes(), { headers })
-			} catch {
-				console.warn(`⚠️ Source file not found: ${path}`)
-				return new Response('Source file not found', { status: 404 })
-			}
-		}
-
-		// Handle other static files
-		const type = (path: string) => {
-			const ext = path.split('.').pop()
-			switch (ext) {
-				case 'js':
-					return 'application/javascript; charset=UTF-8'
-				case 'css':
-					return 'text/css; charset=UTF-8'
-				case 'json':
-					return 'application/json; charset=UTF-8'
-				case 'png':
-					return 'image/png'
-				default:
-					return 'text/html; charset=UTF-8'
-			}
-		}
-
-		// Generate cache headers based on path
-		const getCacheHeaders = (path: string): Record<string, string> => {
-			// Check if this is a versioned asset (contains hash)
-			const isVersionedAsset =
-				/\.(css|js)\?v=[a-f0-9]+$/.test(path) ||
-				/\/main\.[a-f0-9]+\.(css|js)$/.test(path)
-
-			if (isVersionedAsset) {
-				// Long cache for versioned assets (1 year)
-				return {
-					'Cache-Control': 'public, max-age=31536000, immutable',
-					'X-Content-Type-Options': 'nosniff',
-				}
-			}
-
-			// Check if this is an asset in /assets/ directory
-			if (path.startsWith('/assets/')) {
-				return {
-					'Cache-Control': 'public, max-age=31536000, immutable',
-					'X-Content-Type-Options': 'nosniff',
-				}
-			}
-
-			// Default headers for other files
-			return {
-				'X-Content-Type-Options': 'nosniff',
-			}
-		}
-
+	/**
+	 * Initialize and start the development server
+	 */
+	public async start(): Promise<void> {
 		try {
-			if (!path.match(/\.(js|css|png|ico)$/)) {
-				console.log(`🌐 Serving: ${path}`)
-			}
+			console.log('🚀 Documentation Development Server')
+			console.log('   Powered by Bun 1.3+ with Smart File Watching')
+			console.log('')
 
-			const cacheHeaders = getCacheHeaders(path)
-			const headers: HeadersInit = {
-				'Content-Type': type(path),
-				...cacheHeaders,
-			}
+			// Load configuration
+			console.log('⚙️  Loading configuration...')
+			const configManager = new ConfigManager()
+			this.config = await configManager.load()
 
-			// Check if file should be compressed (text files)
-			const shouldCompress =
-				path.match(/\.(html|css|js|json|xml|txt|md)$/) ||
-				type(path).startsWith('text/') ||
-				type(path).includes('javascript') ||
-				type(path).includes('json')
+			console.log(`✅ Configuration loaded`)
+			console.log(`   📁 Pages: ${this.config.paths.pages}`)
+			console.log(`   🔧 Components: ${this.config.paths.components}`)
+			console.log(`   📦 Source: ${this.config.paths.src}`)
+			console.log(`   📤 Output: ${this.config.paths.output}`)
+			console.log('')
 
-			if (shouldCompress && (supportsBrotli || supportsGzip)) {
-				const fileContent = await Bun.file(`./docs${path}`).bytes()
+			// Validate required directories exist
+			this.validateDirectories()
 
-				if (supportsBrotli) {
-					const compressed = brotliCompressSync(fileContent)
-					return new Response(compressed, {
-						headers: {
-							...headers,
-							'Content-Encoding': 'br',
-							Vary: 'Accept-Encoding',
-						},
-					})
-				} else if (supportsGzip) {
-					const compressed = gzipSync(fileContent)
-					return new Response(compressed, {
-						headers: {
-							...headers,
-							'Content-Encoding': 'gzip',
-							Vary: 'Accept-Encoding',
-						},
-					})
-				}
-			}
+			// Create and start server
+			this.server = new DevServer(this.config)
+			await this.server.start()
 
-			return new Response(await Bun.file(`./docs${path}`).bytes(), {
-				headers,
-			})
+			// Setup graceful shutdown
+			this.setupGracefulShutdown()
+
+			console.log('')
+			console.log('🎉 Server is ready!')
+			console.log(
+				`   🌐 Open: http://${this.config.server.host}:${this.config.server.port}`,
+			)
+			console.log('   👀 Watching for file changes...')
+			console.log('   ⚡ Hot reloading enabled')
+			console.log('')
+			console.log('Press Ctrl+C to stop the server')
 		} catch (error) {
-			console.warn(`⚠️ Not found: ${path}, Error: ${error.message}`)
-			return new Response('Fallback response')
+			console.error('\n❌ Failed to start server:', error.message)
+
+			if (error.name === 'ConfigValidationError') {
+				console.error(`   Configuration error: ${error.message}`)
+				process.exit(1)
+			}
+
+			console.error('\nStacktrace:', error.stack)
+			process.exit(1)
 		}
-	},
-})
+	}
 
-console.log(`\n🚀 Server started at http://localhost:${server.port}`)
-console.log('♨️  Hot Module Reloading is enabled\n')
+	/**
+	 * Stop the development server
+	 */
+	public async stop(): Promise<void> {
+		if (this.server) {
+			console.log('\n🛑 Shutting down server...')
+			await this.server.stop()
+			this.server = null
+		}
+	}
 
-export {}
+	/**
+	 * Get server statistics
+	 */
+	public getStats() {
+		return this.server?.getStats() || null
+	}
+
+	/**
+	 * Validate that required directories exist
+	 */
+	private validateDirectories(): void {
+		const requiredDirs = [
+			{ path: this.config!.paths.pages, name: 'Pages directory' },
+			{
+				path: this.config!.paths.components,
+				name: 'Components directory',
+			},
+			{ path: this.config!.paths.includes, name: 'Includes directory' },
+		]
+
+		const requiredFiles = [
+			{ path: this.config!.paths.layout, name: 'Layout template' },
+		]
+
+		let hasError = false
+
+		for (const { path, name } of requiredDirs) {
+			if (!existsSync(path)) {
+				console.error(`❌ ${name} not found: ${path}`)
+				hasError = true
+			}
+		}
+
+		for (const { path, name } of requiredFiles) {
+			if (!existsSync(path)) {
+				console.error(`❌ ${name} not found: ${path}`)
+				hasError = true
+			}
+		}
+
+		if (hasError) {
+			console.error(
+				"\n💡 Make sure you're running this from the project root directory.",
+			)
+			process.exit(1)
+		}
+	}
+
+	/**
+	 * Setup graceful shutdown handlers
+	 */
+	private setupGracefulShutdown(): void {
+		const shutdown = async (signal: string) => {
+			console.log(`\n📡 Received ${signal}, shutting down gracefully...`)
+			await this.stop()
+			process.exit(0)
+		}
+
+		process.on('SIGINT', () => shutdown('SIGINT'))
+		process.on('SIGTERM', () => shutdown('SIGTERM'))
+		process.on('SIGQUIT', () => shutdown('SIGQUIT'))
+
+		// Handle uncaught errors
+		process.on('uncaughtException', error => {
+			console.error('\n💥 Uncaught Exception:', error)
+			process.exit(1)
+		})
+
+		process.on('unhandledRejection', (reason, promise) => {
+			console.error(
+				'\n💥 Unhandled Rejection at:',
+				promise,
+				'reason:',
+				reason,
+			)
+			process.exit(1)
+		})
+	}
+}
+
+/**
+ * CLI interface for development server
+ */
+async function main() {
+	const args = process.argv.slice(2)
+
+	// Simple argument parsing
+	const options = {
+		port: 3000,
+		host: 'localhost',
+		help: false,
+		stats: false,
+	}
+
+	for (let i = 0; i < args.length; i++) {
+		const arg = args[i]
+		switch (arg) {
+			case '--port':
+			case '-p': {
+				const port = parseInt(args[++i], 10)
+				if (!isNaN(port) && port > 0 && port < 65536) {
+					options.port = port
+				} else {
+					console.error('❌ Invalid port number')
+					process.exit(1)
+				}
+				break
+			}
+
+			case '--host':
+			case '-h':
+				options.host = args[++i]
+				break
+
+			case '--help':
+				options.help = true
+				break
+
+			case '--stats':
+				options.stats = true
+				break
+
+			default:
+				if (arg.startsWith('-')) {
+					console.error(`❌ Unknown option: ${arg}`)
+					console.error('Use --help for usage information')
+					process.exit(1)
+				}
+		}
+	}
+
+	if (options.help) {
+		console.log(`
+Documentation Development Server
+
+USAGE:
+    bun run serve:docs [OPTIONS]
+
+OPTIONS:
+    -p, --port <PORT>     Server port (default: 3000)
+    -h, --host <HOST>     Server host (default: localhost)
+    --stats               Show server statistics
+    --help                Show this help message
+
+EXAMPLES:
+    bun run serve:docs
+    bun run serve:docs --port 8080
+    bun run serve:docs --host 0.0.0.0 --port 3001
+    bun run serve:docs --stats
+
+ENVIRONMENT VARIABLES:
+    DEV_SERVER_PORT       Override default port
+    DEV_SERVER_HOST       Override default host
+    OPTIMIZE_LAYOUT       Enable/disable layout optimization (true/false)
+    DEV_MODE             Enable/disable development mode (true/false)
+`)
+		process.exit(0)
+	}
+
+	// Override config with CLI options
+	if (options.port !== 3000) {
+		process.env.DEV_SERVER_PORT = options.port.toString()
+	}
+	if (options.host !== 'localhost') {
+		process.env.DEV_SERVER_HOST = options.host
+	}
+
+	// Create and start the application
+	const app = new DevServerApp()
+
+	if (options.stats) {
+		// Show periodic statistics
+		setInterval(() => {
+			const stats = app.getStats()
+			if (stats) {
+				console.log('\n📊 Server Statistics:')
+				console.log(`   🌐 Running: ${stats.server.isRunning}`)
+				console.log(`   📡 Port: ${stats.server.port}`)
+				console.log(
+					`   👥 Connected clients: ${stats.server.connectedClients}`,
+				)
+				console.log(
+					`   👀 Watched paths: ${stats.watcher.watchedPaths}`,
+				)
+				console.log(
+					`   👀 Watched paths: ${stats.watcher.watchedPaths}`,
+				)
+				console.log(`   ⚡ Watcher active: ${stats.watcher.isActive}`)
+				console.log(`   📦 Plugins: ${stats.buildSystem.pluginCount}`)
+				console.log(
+					`   🔄 Build system ready: ${stats.buildSystem.pluginCount > 0}`,
+				)
+				console.log('')
+			}
+		}, 30000) // Every 30 seconds
+	}
+
+	await app.start()
+}
+
+// Run if this is the main module
+if (import.meta.main) {
+	main().catch(error => {
+		console.error('💥 Fatal error:', error)
+		process.exit(1)
+	})
+}
+
+export { DevServerApp }
