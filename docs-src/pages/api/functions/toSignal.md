@@ -1,8 +1,8 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / toSignal
+[@zeix/le-truc](../globals.md) / toSignal
 
 # Function: toSignal()
 

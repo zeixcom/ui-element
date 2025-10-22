@@ -1,8 +1,8 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / EffectMatcher
+[@zeix/le-truc](../globals.md) / EffectMatcher
 
 # Type Alias: EffectMatcher\<S\>
 
@@ -12,7 +12,7 @@ Defined in: node\_modules/@zeix/cause-effect/src/effect.ts:7
 
 ## Name
 
-UIElement
+Le Truc
 
 ## Version
 

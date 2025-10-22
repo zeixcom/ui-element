@@ -1,5 +1,5 @@
 /**
- * @name UIElement DEV_MODE
+ * @name Le Truc DEV_MODE
  * @version 0.14.0
  * @author Esther Brunner
  */

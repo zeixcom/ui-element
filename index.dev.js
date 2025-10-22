@@ -1063,7 +1063,7 @@ var pass = (reactives) => (host, target) => {
   if (!isCustomElement(target))
     throw new TypeError(`Target ${elementName(target)} is not a custom element`);
   if (!hasMethod(target, "setSignal"))
-    throw new TypeError(`Target ${elementName(target)} is not a UIElement component`);
+    throw new TypeError(`Target ${elementName(target)} is not a Le Truc component`);
   for (const [prop, reactive] of Object.entries(reactives)) {
     target.setSignal(prop, isString(reactive) ? host.getSignal(reactive) : toSignal(reactive));
   }

@@ -1,8 +1,8 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / effect
+[@zeix/le-truc](../globals.md) / effect
 
 # Function: effect()
 
@@ -24,7 +24,7 @@ Define what happens when a reactive state changes
 
 effect matcher or callback
 
-[`EffectMatcher`](../type-aliases/EffectMatcher.md)\<`S`\> | () => `undefined` \| [`Cleanup`](../type-aliases/Cleanup.md)
+[`EffectMatcher`](../type-aliases/EffectMatcher.md)\<`S`\> | () => [`Cleanup`](../type-aliases/Cleanup.md) \| `undefined`
 
 ## Returns
 

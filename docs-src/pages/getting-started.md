@@ -9,39 +9,39 @@ description: 'Installation, setup, and first steps'
 # 🚀 Getting Started
 
 <div>
-  <p class="lead"><strong>Set up UIElement in minutes – no build tools required</strong>. Or use any package manager and bundler to take advantage of TypeScript support and optimize frontend assets.</p>
+  <p class="lead"><strong>Set up Le Truc in minutes – no build tools required</strong>. Or use any package manager and bundler to take advantage of TypeScript support and optimize frontend assets.</p>
   {{ toc }}
 </div>
 </section-hero>
 
 <section>
 
-## How to Install UIElement
+## How to Install Le Truc
 
-UIElement works **without build tools** but also supports **package managers and bundlers** for larger projects. Choose the option that best fits your needs.
+Le Truc works **without build tools** but also supports **package managers and bundlers** for larger projects. Choose the option that best fits your needs.
 
 ### Using a CDN
 
-For the easiest setup, include UIElement via a CDN. This is ideal for **testing or quick projects** where you want lightweight interactivity without additional tooling.
+For the easiest setup, include Le Truc via a CDN. This is ideal for **testing or quick projects** where you want lightweight interactivity without additional tooling.
 
 ```html (page.html)
-<script src="https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@zeix/le-truc@latest/index.js"></script>
 ```
 
 </section>
 
 <section>
 
-### Self-Hosting UIElement
+### Self-Hosting Le Truc
 
-For production use, you may want to **self-host UIElement** to avoid relying on a CDN. You can download the latest version from:
+For production use, you may want to **self-host Le Truc** to avoid relying on a CDN. You can download the latest version from:
 
-<a href="https://github.com/zeixcom/ui-element/blob/main/index.js" target="_blank">Github Repository</a>
+<a href="https://github.com/zeixcom/le-truc/blob/main/index.js" target="_blank">Github Repository</a>
 
 Simply host the file on your server and include it like this:
 
 ```html (page.html)
-<script src="/path/to/your/hosted/ui-element.js"></script>
+<script src="/path/to/your/hosted/le-truc.js"></script>
 ```
 
 **Why self-host?**
@@ -57,7 +57,7 @@ Remember to keep the hosted file updated to use the latest features and bug fixe
 
 ### Installing via Package Managers
 
-If you're using a **bundler** like **Vite, Webpack, or Rollup**, install UIElement via NPM or Bun:
+If you're using a **bundler** like **Vite, Webpack, or Rollup**, install Le Truc via NPM or Bun:
 
 <module-tabgroup>
 <div role="tablist">
@@ -67,14 +67,14 @@ If you're using a **bundler** like **Vite, Webpack, or Rollup**, install UIEleme
 <div role="tabpanel" id="panel_installation-npm" aria-labelledby="trigger_installation-npm">
 
 ```sh ($)
-npm install @zeix/ui-element
+npm install @zeix/le-truc
 ```
 
 </div>
 <div role="tabpanel" id="panel_installation-bun" aria-labelledby="trigger_installation-bun">
 
 ```sh ($)
-bun add @zeix/ui-element
+bun add @zeix/le-truc
 ```
 
 </div>
@@ -83,7 +83,7 @@ bun add @zeix/ui-element
 Then import the needed functions in your JavaScript:
 
 ```js (main.js)
-import { asString, component, on, setText } from '@zeix/ui-element'
+import { asString, component, on, setText } from '@zeix/le-truc'
 ```
 
 </section>
@@ -124,7 +124,7 @@ Save the following inside a `<script type="module">` tag or an external JavaScri
     component,
     on,
     setText,
-  } from 'https://cdn.jsdelivr.net/npm/@zeix/ui-element@latest/index.js'
+  } from 'https://cdn.jsdelivr.net/npm/@zeix/le-truc@latest/index.js'
 
   component(
     'hello-world',
@@ -147,7 +147,7 @@ Save the following inside a `<script type="module">` tag or an external JavaScri
 
 ### Understanding Your First Component
 
-This component demonstrates UIElement's core concepts:
+This component demonstrates Le Truc's core concepts:
 
 - **Reactive Properties**: `name: asString(...)` creates a reactive property that syncs with the `name` attribute and falls back to the `<span>` content
 - **Effects**: The setup function returns effects that handle user input and update the display text
@@ -182,7 +182,7 @@ If it's not working:
 
 - Check the browser console for errors (missing imports, typos).
 - Ensure your `<script>` tag is set to `type="module"` when using ES modules.
-- If using NPM, confirm UIElement is installed inside `node_modules/@zeix/ui-element`.
+- If using NPM, confirm Le Truc is installed inside `node_modules/@zeix/le-truc`.
 
 </section>
 
@@ -190,7 +190,7 @@ If it's not working:
 
 ## Next Steps
 
-You've successfully created your first reactive component! Now you're ready to dive deeper into UIElement's core concepts:
+You've successfully created your first reactive component! Now you're ready to dive deeper into Le Truc's core concepts:
 
 **Next: Building [Components](components.html)**
 Learn the fundamental building blocks: component anatomy, element selection, basic state management, and event handling patterns.

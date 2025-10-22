@@ -1,8 +1,8 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / ComputedCallback
+[@zeix/le-truc](../globals.md) / ComputedCallback
 
 # Type Alias: ComputedCallback\<T\>
 
@@ -18,7 +18,7 @@ Defined in: node\_modules/@zeix/cause-effect/src/computed.ts:23
 
 ## Name
 
-UIElement
+Le Truc
 
 ## Version
 

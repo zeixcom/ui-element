@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / resolveReactive
+[@zeix/le-truc](../globals.md) / resolveReactive
 
 # Function: resolveReactive()
 
 > **resolveReactive**\<`T`, `P`, `E`\>(`reactive`, `host`, `target`, `context?`): `T`
 
-Defined in: [src/core/reactive.ts:75](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/reactive.ts#L75)
+Defined in: [src/core/reactive.ts:75](https://github.com/zeixcom/ui-element/blob/230cd6cc9b2252d1741350e7be8be3e04b6f2cf4/src/core/reactive.ts#L75)
 
 ## Type Parameters
 

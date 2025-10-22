@@ -1,8 +1,8 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / Signal
+[@zeix/le-truc](../globals.md) / Signal
 
 # Type Alias: Signal\<T\>
 
@@ -12,7 +12,7 @@ Defined in: node\_modules/@zeix/cause-effect/src/signal.ts:11
 
 ## Name
 
-UIElement
+Le Truc
 
 ## Version
 

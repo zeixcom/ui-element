@@ -1,8 +1,8 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / computed
+[@zeix/le-truc](../globals.md) / computed
 
 # Function: computed()
 

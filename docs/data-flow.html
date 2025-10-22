@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Data Flow – UIElement Docs</title>
+		<title>Data Flow – Le Truc Docs</title>
 		<meta name="description" content="Passing state, events, context" />
 		<link
 			rel="preload"
@@ -12,7 +12,7 @@
 		/>
 		<link
 			rel="modulepreload"
-			href="./assets/main.js?v=0b0743f4"
+			href="./assets/main.js?v=e36ac8b7"
 		/>
 		<link
 			rel="stylesheet"
@@ -20,7 +20,7 @@
 		/>
 		<script
 			type="module"
-			src="./assets/main.js?v=0b0743f4"
+			src="./assets/main.js?v=e36ac8b7"
 		></script>
 	</head>
 	<body class="">
@@ -30,7 +30,7 @@
 					Skip to main content
 				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.14.0</small>
+					Le Truc Docs <small>Version 0.14.0</small>
 				</h1>
 				
 <section-menu>
@@ -42,7 +42,7 @@
 					<a href="index.html">
 						<span class="icon">📖</span>
 						<strong>Introduction</strong>
-						<small>Overview and key benefits of UIElement</small>
+						<small>Overview and key benefits of Le Truc</small>
 					</a>
 				</li>
 
@@ -125,7 +125,7 @@
                 </a>
             </h1>
 <div>
-  <p class="lead"><strong>Learn how UIElement components can work together seamlessly.</strong> Start with simple parent-child relationships, then explore advanced patterns like custom events and shared state. Build modular, loosely coupled components that communicate efficiently.</p>
+  <p class="lead"><strong>Learn how Le Truc components can work together seamlessly.</strong> Start with simple parent-child relationships, then explore advanced patterns like custom events and shared state. Build modular, loosely coupled components that communicate efficiently.</p>
   
 <module-toc>
 	<nav>
@@ -202,7 +202,7 @@
 	<button type="button" class="overlay">Expand</button>
 </module-codeblock>
 <p>The <code>fromDescendants()</code> function returns a signal of the reduced array of all matching elements. In contrast to a static <code>querySelectorAll()</code> call, the <code>fromDescendants()</code> function is reactive and updates whenever new elements are added or removed from the DOM.</p>
-<p>Then, we need to convert the total of all product quantities to a string and pass it on to the <code>BasicButton</code> component. In UIElement we use the <code>pass()</code> function to share state across components:</p>
+<p>Then, we need to convert the total of all product quantities to a string and pass it on to the <code>BasicButton</code> component. In Le Truc we use the <code>pass()</code> function to share state across components:</p>
 <module-codeblock collapsed language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		<span class="file">module-catalog.js</span>
@@ -509,7 +509,7 @@
 	</basic-button>
 	<button type="button" class="overlay">Expand</button>
 </module-codeblock>
-<p>This enables full type checking, autocompletion, and access to UIElement component methods like <code>.getSignal()</code> and <code>.setSignal()</code>.</p>
+<p>This enables full type checking, autocompletion, and access to Le Truc component methods like <code>.getSignal()</code> and <code>.setSignal()</code>.</p>
 <h3 id="example-shopping-cart-events">
                 <a name="example-shopping-cart-events" class="anchor" href="#example-shopping-cart-events">
 	                <span class="permalink">🔗</span>
@@ -569,7 +569,7 @@
 <span class="line"><span style="color:#E6DB74">      'itemAdded'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">      ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">source</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">value</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#88846F">        // TypeScript knows 'source' is Component&#x3C;ProductCardProps></span></span>
-<span class="line"><span style="color:#88846F">        // Can access UIElement methods like source.getSignal('quantity')</span></span>
+<span class="line"><span style="color:#88846F">        // Can access Le Truc methods like source.getSignal('quantity')</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">        const</span><span style="color:#F8F8F2"> newItem </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">          id: event.detail.id,</span></span>
 <span class="line"><span style="color:#F8F8F2">          quantity: event.detail.quantity,</span></span>
@@ -636,7 +636,7 @@
 					<span class="title">Component Type Safety Best Practices</span>
                 </a>
             </h3>
-<p>Each UIElement component should declare its own <code>HTMLElementTagNameMap</code> extension:</p>
+<p>Each Le Truc component should declare its own <code>HTMLElementTagNameMap</code> extension:</p>
 <module-codeblock collapsed language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 	<p class="meta">
 		
@@ -672,7 +672,7 @@
 <p>This enables:</p>
 <ul>
 <li><strong>Full type safety</strong> when using signal producers like <code>fromDescendants(&#39;my-component&#39;, ...)</code></li>
-<li><strong>Access to UIElement methods</strong> like <code>.getSignal()</code> and <code>.setSignal()</code></li>
+<li><strong>Access to Le Truc methods</strong> like <code>.getSignal()</code> and <code>.setSignal()</code></li>
 <li><strong>IntelliSense</strong> for component properties and methods</li>
 <li><strong>Compile-time validation</strong> of component interactions</li>
 </ul>
