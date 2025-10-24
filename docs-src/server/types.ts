@@ -397,7 +397,7 @@ export interface ServerEvents {
 	'build:start': { files: string[]; commands: string[] }
 	'build:complete': { results: BuildOutput[]; duration: number }
 	'build:error': { error: BuildErrorClass; files: string[] }
-	'file:changed': { event: FileChangeEvent; buildCommands: string[] }
+	'file:changed': { event: FileChangeEvent; buildCommands?: string[] }
 	'client:connected': { socket: ServerWebSocket; clientCount: number }
 	'client:disconnected': { socket: ServerWebSocket; clientCount: number }
 	'server:ready': { port: number; host: string }

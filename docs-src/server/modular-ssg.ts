@@ -3,8 +3,8 @@
  */
 
 import { existsSync, readFileSync, writeFileSync } from 'fs'
-import { mkdir } from 'fs/promises'
-import { dirname, resolve } from 'path'
+import { mkdir, readdir, stat } from 'fs/promises'
+import { dirname, join, resolve } from 'path'
 import type {
 	BuildInput,
 	BuildOutput,
@@ -259,12 +259,101 @@ export class ModularSSG implements IModularSSG {
 	/**
 	 * Build all discoverable files
 	 */
-	private async buildAll(_results: BuildOutput[]): Promise<void> {
-		// This would typically discover files from configured directories
-		// For now, we'll focus on the plugin architecture
-		console.log(
-			'📁 Full build not yet implemented - use incremental builds',
-		)
+	private async buildAll(results: BuildOutput[]): Promise<void> {
+		console.log('🔍 Discovering files for full build...')
+
+		// Discover all files that plugins can process
+		const allFiles: string[] = []
+
+		// Search in standard directories
+		const searchDirs = [
+			this.config.paths.pages,
+			this.config.paths.components,
+			this.config.paths.src,
+		]
+
+		for (const searchDir of searchDirs) {
+			const absoluteDir = resolve(searchDir)
+			if (existsSync(absoluteDir)) {
+				const files = await this.discoverFiles(absoluteDir)
+				allFiles.push(...files)
+			}
+		}
+
+		console.log(`📂 Discovered ${allFiles.length} files`)
+
+		// Filter files that have applicable plugins
+		const buildableFiles: string[] = []
+		for (const file of allFiles) {
+			const applicablePlugins = this.getApplicablePlugins(file)
+			if (applicablePlugins.length > 0) {
+				buildableFiles.push(file)
+			}
+		}
+
+		console.log(`🔧 Found ${buildableFiles.length} buildable files`)
+
+		// Build all applicable files
+		for (const filePath of buildableFiles) {
+			try {
+				const result = await this.buildFile(filePath)
+				results.push(result)
+			} catch (error) {
+				console.error(`❌ Failed to build ${filePath}:`, error)
+				results.push({
+					success: false,
+					filePath,
+					errors: [
+						{
+							message: `Build failed: ${error.message}`,
+							file: filePath,
+						},
+					],
+				})
+			}
+		}
+	}
+
+	/**
+	 * Recursively discover all files in a directory
+	 */
+	private async discoverFiles(
+		dir: string,
+		files: string[] = [],
+	): Promise<string[]> {
+		try {
+			const entries = await readdir(dir)
+
+			for (const entry of entries) {
+				const fullPath = join(dir, entry)
+				const stats = await stat(fullPath)
+
+				if (stats.isDirectory()) {
+					// Skip hidden directories and common ignore patterns
+					if (
+						!entry.startsWith('.') &&
+						entry !== 'node_modules' &&
+						entry !== 'dist' &&
+						entry !== 'build'
+					) {
+						await this.discoverFiles(fullPath, files)
+					}
+				} else if (stats.isFile()) {
+					// Skip hidden files and common ignore patterns
+					if (
+						!entry.startsWith('.') &&
+						!entry.endsWith('.tmp') &&
+						!entry.endsWith('~')
+					) {
+						files.push(fullPath)
+					}
+				}
+			}
+		} catch (error) {
+			console.warn(`⚠️ Warning: Could not read directory ${dir}:`, error)
+		}
+
+		return files
 	}
 
 	/**

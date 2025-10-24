@@ -460,7 +460,9 @@ describe('ModularSSG', () => {
 		it('should handle empty file list', async () => {
 			const results = await ssg.build([])
 
-			expect(results).toEqual([])
+			// Empty array now triggers full build (discovers files)
+			expect(results.length).toBeGreaterThan(0)
+			expect(results.every(r => r.success)).toBe(true)
 
 			// Should still emit events
 			expect(mockEventEmitter.emit.calls.length).toBeGreaterThan(0)

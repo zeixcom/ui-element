@@ -8,7 +8,7 @@
 
 > **getAttribute**\<`E`\>(`attr`): [`LooseExtractor`](../type-aliases/LooseExtractor.md)\<`string`, `E`\>
 
-Defined in: [src/lib/extractors.ts:28](https://github.com/zeixcom/ui-element/blob/b9ddf83c928c93d84a49a796a2342da755e4896e/src/lib/extractors.ts#L28)
+Defined in: [src/lib/extractors.ts:28](https://github.com/zeixcom/ui-element/blob/824b5fcbd5a33ce95b6c2a43bfe0cce0fd18afb8/src/lib/extractors.ts#L28)
 
 ## Type Parameters
 

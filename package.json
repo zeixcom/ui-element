@@ -14,6 +14,7 @@
 		"build:docs-api": "typedoc --plugin typedoc-plugin-markdown --out ./docs-src/pages/api/ index.ts",
 		"build:docs-optimized": "bun ./docs-src/server/build-optimized-assets.ts",
 		"build:docs": "bun run build:docs-js && bun run build:docs-css && bun run build:docs-optimized && bun run build:docs-html && bun run build:docs-api",
+		"build:docs:unified": "bun run docs-src/server/unified-build.ts",
 		"build:docs:fast": "OPTIMIZE_LAYOUT=false bun run build:docs-js && bun run build:docs-css && bun run build:docs-html && bun run build:docs-api",
 		"serve:docs": "bun run --hot ./docs-src/server/serve-docs.ts",
 		"verify:devtools": "bun ./docs-src/server/verify-devtools-config.ts",

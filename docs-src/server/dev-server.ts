@@ -3,13 +3,14 @@
  */
 
 import { ServerWebSocket } from 'bun'
-import { exec } from 'child_process'
 import { existsSync } from 'fs'
 import { resolve } from 'path'
-import { promisify } from 'util'
 import { brotliCompressSync, gzipSync } from 'zlib'
 import { EventEmitter } from './event-emitter.js'
 import { ModularSSG } from './modular-ssg.js'
+import { AssetPlugin } from './plugins/asset-plugin.js'
+import { FragmentPlugin } from './plugins/fragment-plugin.js'
+import { MarkdownPlugin } from './plugins/markdown-plugin.js'
 import { SmartFileWatcher } from './smart-file-watcher.js'
 import type {
 	DevServerConfig,
@@ -18,8 +19,6 @@ import type {
 	ResponseOptions,
 	ServerContext,
 } from './types.js'
-
-const execAsync = promisify(exec)
 
 /**
  * Development Server with Bun 1.3 features
@@ -48,6 +47,18 @@ export class DevServer {
 	public async start(): Promise<void> {
 		try {
 			console.log('🚀 Starting Development Server with Bun 1.3...')
+
+			// Initialize plugin system (skip in test environments)
+			const isTestEnv =
+				process.env.NODE_ENV === 'test' ||
+				process.env.BUN_ENV === 'test'
+			if (!isTestEnv) {
+				await this.initializePlugins()
+			} else {
+				console.log(
+					'⚠️ Skipping plugin initialization in test environment',
+				)
+			}
 
 			// Start file watcher
 			await this.context.watcher.start()
@@ -143,8 +154,8 @@ export class DevServer {
 	 * Setup event handlers
 	 */
 	private setupEventHandlers(): void {
-		this.eventEmitter.on('file:changed', async ({ buildCommands }) => {
-			await this.handleFileChange(buildCommands)
+		this.eventEmitter.on('file:changed', async ({ event }) => {
+			await this.handleFileChange(event.filePath)
 		})
 
 		this.eventEmitter.on('build:complete', ({ duration }) => {
@@ -544,9 +555,9 @@ export class DevServer {
 	}
 
 	/**
-	 * Handle file changes by triggering builds
+	 * Handle file changes by triggering plugin-based builds
 	 */
-	private async handleFileChange(buildCommands: string[]): Promise<void> {
+	private async handleFileChange(filePath: string): Promise<void> {
 		if (this.context.isRebuilding) {
 			this.context.pendingRebuild = true
 			return
@@ -556,37 +567,101 @@ export class DevServer {
 		const startTime = performance.now()
 
 		try {
+			// Check if plugins are available (not in test environment)
+			const plugins = this.context.buildSystem.getPlugins()
+			if (plugins.length === 0) {
+				console.log(
+					'⚠️ No plugins available, skipping file processing in test environment',
+				)
+				const duration = performance.now() - startTime
+				this.eventEmitter.emit('build:complete', {
+					results: [],
+					duration,
+				})
+				return
+			}
+
+			// Get applicable plugins for this file
+			const applicablePlugins =
+				this.context.buildSystem.getApplicablePlugins(filePath)
+			const pluginNames = applicablePlugins.map(p => p.name)
+
 			this.eventEmitter.emit('build:start', {
-				files: ['changed'],
-				commands: buildCommands,
+				files: [filePath],
+				commands: pluginNames,
 			})
 
 			console.log(
-				`🔄 Executing build commands: ${buildCommands.join(', ')}`,
+				`🔄 Processing ${filePath} with plugins: ${pluginNames.join(', ')}`,
 			)
 
-			for (const command of buildCommands) {
-				console.log(`▶️  Running: bun run ${command}`)
-				await execAsync(`bun run ${command}`)
-			}
+			// Build the specific file using the plugin system
+			const result = await this.context.buildSystem.buildFile(filePath)
 
-			const duration = performance.now() - startTime
-			this.eventEmitter.emit('build:complete', {
-				results: [],
-				duration,
-			})
+			if (result.success) {
+				// Write output if content was generated
+				if (result.content) {
+					await this.context.buildSystem.writeOutput(result)
+				}
+
+				const duration = performance.now() - startTime
+				this.eventEmitter.emit('build:complete', {
+					results: [result],
+					duration,
+				})
+			} else {
+				this.eventEmitter?.emit('build:error', {
+					error: {
+						message: result.errors?.[0]?.message || 'Build failed',
+						code: 'PLUGIN_BUILD_ERROR',
+						file: filePath,
+					} as any,
+					files: [filePath],
+				})
+			}
 		} catch (error) {
+			console.error('❌ Plugin build error:', error)
 			this.eventEmitter?.emit('build:error', {
-				error: error as any,
-				files: [],
+				error: {
+					message: error.message || 'Unknown plugin error',
+					code: 'PLUGIN_EXECUTION_ERROR',
+					file: filePath,
+				} as any,
+				files: [filePath],
 			})
 		} finally {
 			this.context.isRebuilding = false
 			if (this.context.pendingRebuild) {
 				this.context.pendingRebuild = false
 				// Re-trigger with a small delay
-				setTimeout(() => this.handleFileChange(buildCommands), 100)
+				setTimeout(() => this.handleFileChange(filePath), 100)
 			}
+		}
+	}
+
+	/**
+	 * Initialize and register plugins with the build system
+	 */
+	private async initializePlugins(): Promise<void> {
+		console.log('🔧 Initializing plugin system for dev server...')
+
+		try {
+			// Build assets first to get optimization results
+			const assetPlugin = new AssetPlugin()
+			const optimizedAssets = await assetPlugin.buildAllAssets()
+
+			// Register plugins in order
+			this.context.buildSystem.use(new MarkdownPlugin(optimizedAssets))
+			this.context.buildSystem.use(new FragmentPlugin())
+			this.context.buildSystem.use(assetPlugin)
+
+			// Initialize all plugins
+			await this.context.buildSystem.initialize()
+
+			console.log('✅ Plugin system initialized for development')
+		} catch (error) {
+			console.error('❌ Failed to initialize plugins:', error)
+			throw error
 		}
 	}
 
@@ -594,18 +669,32 @@ export class DevServer {
 	 * Handle manual build requests
 	 */
 	private async handleBuildRequest(files: string[]): Promise<void> {
+		// Check if plugins are available (not in test environment)
+		const plugins = this.context.buildSystem.getPlugins()
+		if (plugins.length === 0) {
+			console.log(
+				'⚠️ No plugins available, skipping build request in test environment',
+			)
+			return
+		}
+
 		if (files.length === 0) {
 			console.log('🔧 Manual full build requested')
-			await this.handleFileChange([
-				'build:docs-js',
-				'build:docs-css',
-				'build:docs-html',
-			])
+			try {
+				const results = await this.context.buildSystem.build()
+				const successful = results.filter(r => r.success).length
+				const failed = results.filter(r => !r.success).length
+				console.log(
+					`✅ Built ${successful} files successfully, ${failed} failed`,
+				)
+			} catch (error) {
+				console.error('❌ Full build failed:', error)
+			}
 		} else {
 			console.log(`🔧 Manual build requested for: ${files.join(', ')}`)
-			// Determine build commands for specific files
-			// This would be more sophisticated in a real implementation
-			await this.handleFileChange(['build:docs-html'])
+			for (const file of files) {
+				await this.handleFileChange(file)
+			}
 		}
 	}
 

@@ -391,58 +391,12 @@ export class SmartFileWatcher implements ISmartFileWatcher {
 			`\n${config.label} Change detected [${event.eventType}]: ${event.filePath}`,
 		)
 
-		// Determine build commands
-		const buildCommands = this.getBuildCommandsForFile(
-			event.filePath,
-			config,
-		)
-
-		if (buildCommands.length === 0) {
-			console.log('⚠️  No build commands mapped for this file')
-			return
-		}
-
-		console.log(`🔨 Build commands: ${buildCommands.join(', ')}`)
-
-		// Emit file change event
+		// Emit file change event directly - plugins will determine what to do
 		this.eventEmitter?.emit('file:changed', {
 			event,
-			buildCommands,
 		})
 
 		this.state.lastChange = Date.now()
-	}
-
-	/**
-	 * Get build commands for a specific file
-	 */
-	private getBuildCommandsForFile(
-		filePath: string,
-		config: WatchPathConfig,
-	): string[] {
-		// If config has explicit build commands, use them and enhance for src directory
-		if (config.buildCommands.length > 0) {
-			const commands = [...config.buildCommands]
-
-			// Add build:docs-api for TypeScript files in src directory
-			if (config.directory.includes('src') && filePath.endsWith('.ts')) {
-				if (!commands.includes('build:docs-api')) {
-					commands.push('build:docs-api')
-				}
-			}
-
-			return commands
-		}
-
-		// Dynamic mapping for components directory
-		if (config.directory.includes('components')) {
-			if (filePath.endsWith('.ts')) return ['build:docs-js']
-			if (filePath.endsWith('.css')) return ['build:docs-css']
-			if (filePath.endsWith('.html')) return ['build:docs-html']
-			if (filePath.endsWith('.md')) return ['build:docs-html']
-		}
-
-		return []
 	}
 
 	/**

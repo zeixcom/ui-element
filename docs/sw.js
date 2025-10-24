@@ -1,5 +1,5 @@
 // Le Truc Docs Service Worker
-const CACHE_NAME = 'le-truc-docs-v1761148013726';
+const CACHE_NAME = 'le-truc-docs-v1761302228012';
 
 // Assets to cache on install
 const STATIC_ASSETS = [

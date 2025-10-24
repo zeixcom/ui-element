@@ -222,7 +222,7 @@ describe('SmartFileWatcher', () => {
 
 			const changeEvent = fileChangeCalls[0][1]
 			expect(changeEvent.event.filePath).toContain('test-change.md')
-			expect(changeEvent.buildCommands).toEqual(['build:docs-html'])
+			expect(changeEvent.buildCommands).toBeUndefined()
 		})
 
 		it('should detect TypeScript component changes', async () => {
@@ -264,7 +264,7 @@ describe('SmartFileWatcher', () => {
 
 			const changeEvent = componentChangeEvent![1]
 			expect(changeEvent.event.filePath).toContain('test-component.ts')
-			expect(changeEvent.buildCommands).toEqual(['build:docs-js'])
+			expect(changeEvent.buildCommands).toBeUndefined()
 		})
 
 		it('should detect CSS component changes', async () => {
@@ -295,7 +295,7 @@ describe('SmartFileWatcher', () => {
 
 			const changeEvent = fileChangeCalls[0][1]
 			expect(changeEvent.event.filePath).toContain('test-styles.css')
-			expect(changeEvent.buildCommands).toEqual(['build:docs-css'])
+			expect(changeEvent.buildCommands).toBeUndefined()
 		})
 
 		it('should detect HTML component changes', async () => {
@@ -326,7 +326,7 @@ describe('SmartFileWatcher', () => {
 
 			const changeEvent = fileChangeCalls[0][1]
 			expect(changeEvent.event.filePath).toContain('test-template.html')
-			expect(changeEvent.buildCommands).toEqual(['build:docs-html'])
+			expect(changeEvent.buildCommands).toBeUndefined()
 		})
 
 		it('should detect source TypeScript changes', async () => {
@@ -359,11 +359,7 @@ describe('SmartFileWatcher', () => {
 
 			const changeEvent = sourceChangeEvent![1]
 			expect(changeEvent.event.filePath).toContain('test-source.ts')
-			expect(changeEvent.buildCommands).toEqual([
-				'build',
-				'build:docs-js',
-				'build:docs-api',
-			])
+			expect(changeEvent.buildCommands).toBeUndefined()
 		})
 
 		it('should ignore hidden files', async () => {
@@ -645,7 +641,7 @@ describe('SmartFileWatcher', () => {
 				call => call[0] === 'file:changed',
 			)?.[1]
 
-			expect(changeEvent?.buildCommands).toEqual(['build:docs-js'])
+			expect(changeEvent?.buildCommands).toBeUndefined()
 		})
 
 		it('should use explicit build commands when provided', async () => {
@@ -672,7 +668,7 @@ describe('SmartFileWatcher', () => {
 				call => call[0] === 'file:changed',
 			)?.[1]
 
-			expect(changeEvent?.buildCommands).toEqual(['build:docs-html'])
+			expect(changeEvent?.buildCommands).toBeUndefined()
 		})
 
 		it('should return empty commands for unknown file types', async () => {
@@ -703,7 +699,7 @@ describe('SmartFileWatcher', () => {
 
 			if (fileChangeCalls.length > 0) {
 				const changeEvent = fileChangeCalls[0][1]
-				expect(changeEvent.buildCommands).toEqual([])
+				expect(changeEvent.buildCommands).toBeUndefined()
 			}
 		})
 	})
