@@ -1,16 +1,16 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / Component
+[@zeix/le-truc](../globals.md) / Component
 
 # Type Alias: Component\<P\>
 
 > **Component**\<`P`\> = `HTMLElement` & `P` & `object`
 
-Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/component.ts#L59)
+Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/824b5fcbd5a33ce95b6c2a43bfe0cce0fd18afb8/src/component.ts#L59)
 
-## Type declaration
+## Type Declaration
 
 ### debug?
 
@@ -34,11 +34,11 @@ Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/a2e
 
 ##### oldValue
 
-`null` | `string`
+`string` | `null`
 
 ##### newValue
 
-`null` | `string`
+`string` | `null`
 
 #### Returns
 

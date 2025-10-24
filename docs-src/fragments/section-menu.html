@@ -1,0 +1,110 @@
+
+<module-tabgroup>
+	<div role="tablist">
+		
+			<button
+				type="button"
+				role="tab"
+				id="trigger_section-menu.css"
+				aria-controls="panel_section-menu.css"
+				aria-selected="true"
+				tabindex="0"
+			>CSS</button>
+	</div>
+	
+<div role="tabpanel" id="panel_section-menu.css" aria-labelledby="trigger_section-menu.css">
+	<module-codeblock language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">section-menu.css</span>
+			<span class="language">css</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">section-menu</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	grid-column</span><span style="color:#F8F8F2">: breakout;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; ol {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">grid</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		list-style</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">none</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin-block</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-l);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		grid-template-columns</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">fr</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">li</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">a</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">grid</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		grid-template-areas</span><span style="color:#F8F8F2">: </span><span style="color:#E6DB74">"icon title"</span><span style="color:#E6DB74"> "icon description"</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		grid-template-columns</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">auto</span><span style="color:#AE81FF"> 1</span><span style="color:#F92672">fr</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		grid-template-rows</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">auto</span><span style="color:#AE81FF"> 1</span><span style="color:#F92672">fr</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		border-radius</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		height</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">calc</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">100</span><span style="color:#F92672">%</span><span style="color:#F92672"> -</span><span style="color:#AE81FF"> 2</span><span style="color:#F92672"> *</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-m));</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		text-decoration</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">none</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;:hover,</span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;:focus {</span></span>
+<span class="line"><span style="color:#F8F8F2">			background-color: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-secondary-hover);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;</span><span style="color:#A6E22E">.active</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-background-alt);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">		.icon</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			grid-area</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">icon</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			align-items</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">center</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			justify-content</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">center</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-l);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			width</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xl);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			height</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xl);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			border-radius</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">50</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-background);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">px</span><span style="color:#66D9EF"> solid</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--color-border);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26; </span><span style="color:#F92672">strong</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			grid-area</span><span style="color:#F8F8F2">: title;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			line-height</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--line-height-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26; </span><span style="color:#F92672">small</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			grid-area</span><span style="color:#F8F8F2">: description;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			line-height</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--line-height-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text-soft);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">@media</span><span style="color:#66D9EF"> screen</span><span style="color:#F92672"> and</span><span style="color:#F8F8F2"> (</span><span style="color:#66D9EF;font-style:italic">min-width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">32</span><span style="color:#F92672">em</span><span style="color:#F8F8F2">) </span><span style="color:#F92672">and</span><span style="color:#F8F8F2"> (</span><span style="color:#66D9EF;font-style:italic">max-width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">48</span><span style="color:#F92672">em</span><span style="color:#F8F8F2">) {</span></span>
+<span class="line"><span style="color:#F92672">	section-menu</span><span style="color:#F92672"> ol</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		grid-template-columns</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">fr</span><span style="color:#AE81FF"> 1</span><span style="color:#F92672">fr</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-m);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">@media</span><span style="color:#66D9EF"> screen</span><span style="color:#F92672"> and</span><span style="color:#F8F8F2"> (</span><span style="color:#66D9EF;font-style:italic">min-width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">48</span><span style="color:#F92672">em</span><span style="color:#F8F8F2">) {</span></span>
+<span class="line"><span style="color:#F92672">	section-menu</span><span style="color:#F92672"> ol</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		grid-template-columns</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">1</span><span style="color:#F92672">fr</span><span style="color:#AE81FF"> 1</span><span style="color:#F92672">fr</span><span style="color:#AE81FF"> 1</span><span style="color:#F92672">fr</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		gap</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-l);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+		<basic-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</basic-button>
+	</module-codeblock>
+</div>
+</module-tabgroup>

@@ -9,7 +9,7 @@ description: 'Passing state, events, context'
 # 🔄 Data Flow
 
 <div>
-  <p class="lead"><strong>Learn how UIElement components can work together seamlessly.</strong> Start with simple parent-child relationships, then explore advanced patterns like custom events and shared state. Build modular, loosely coupled components that communicate efficiently.</p>
+  <p class="lead"><strong>Learn how Le Truc components can work together seamlessly.</strong> Start with simple parent-child relationships, then explore advanced patterns like custom events and shared state. Build modular, loosely coupled components that communicate efficiently.</p>
   {{ toc }}
 </div>
 </section-hero>
@@ -54,7 +54,7 @@ component(
 
 The `fromDescendants()` function returns a signal of the reduced array of all matching elements. In contrast to a static `querySelectorAll()` call, the `fromDescendants()` function is reactive and updates whenever new elements are added or removed from the DOM.
 
-Then, we need to convert the total of all product quantities to a string and pass it on to the `BasicButton` component. In UIElement we use the `pass()` function to share state across components:
+Then, we need to convert the total of all product quantities to a string and pass it on to the `BasicButton` component. In Le Truc we use the `pass()` function to share state across components:
 
 ```js (module-catalog.js)
 component(
@@ -306,7 +306,7 @@ declare global {
 }
 ```
 
-This enables full type checking, autocompletion, and access to UIElement component methods like `.getSignal()` and `.setSignal()`.
+This enables full type checking, autocompletion, and access to Le Truc component methods like `.getSignal()` and `.setSignal()`.
 
 ### Example: Shopping Cart Events
 
@@ -350,7 +350,7 @@ component(
       'itemAdded',
       ({ event, source, value }) => {
         // TypeScript knows 'source' is Component<ProductCardProps>
-        // Can access UIElement methods like source.getSignal('quantity')
+        // Can access Le Truc methods like source.getSignal('quantity')
         const newItem = {
           id: event.detail.id,
           quantity: event.detail.quantity,
@@ -397,7 +397,7 @@ declare global {
 
 ### Component Type Safety Best Practices
 
-Each UIElement component should declare its own `HTMLElementTagNameMap` extension:
+Each Le Truc component should declare its own `HTMLElementTagNameMap` extension:
 
 ```ts
 // In my-component.ts
@@ -424,7 +424,7 @@ declare global {
 This enables:
 
 - **Full type safety** when using signal producers like `fromDescendants('my-component', ...)`
-- **Access to UIElement methods** like `.getSignal()` and `.setSignal()`
+- **Access to Le Truc methods** like `.getSignal()` and `.setSignal()`
 - **IntelliSense** for component properties and methods
 - **Compile-time validation** of component interactions
 

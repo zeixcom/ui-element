@@ -235,8 +235,7 @@ function effect(matcher) {
     err = (error) => {
       console.error(error);
     },
-    nil = () => {
-    }
+    nil = () => {}
   } = isFunction(matcher) ? { signals: [], ok: matcher } : matcher;
   let running = false;
   const run = watch(() => observe(() => {
@@ -707,7 +706,7 @@ var CONTEXT_REQUEST = "context-request";
 class ContextRequestEvent extends Event {
   context;
   callback;
-  subscribe2;
+  subscribe;
   constructor(context, callback, subscribe2 = false) {
     super(CONTEXT_REQUEST, {
       bubbles: true,
@@ -1063,7 +1062,7 @@ var pass = (reactives) => (host, target) => {
   if (!isCustomElement(target))
     throw new TypeError(`Target ${elementName(target)} is not a custom element`);
   if (!hasMethod(target, "setSignal"))
-    throw new TypeError(`Target ${elementName(target)} is not a UIElement component`);
+    throw new TypeError(`Target ${elementName(target)} is not a Le Truc component`);
   for (const [prop, reactive] of Object.entries(reactives)) {
     target.setSignal(prop, isString(reactive) ? host.getSignal(reactive) : toSignal(reactive));
   }

@@ -1,0 +1,326 @@
+
+<module-tabgroup>
+	<div role="tablist">
+		
+			<button
+				type="button"
+				role="tab"
+				id="trigger_module-dialog.html"
+				aria-controls="panel_module-dialog.html"
+				aria-selected="false"
+				tabindex="-1"
+			>HTML</button>
+		
+			<button
+				type="button"
+				role="tab"
+				id="trigger_module-dialog.css"
+				aria-controls="panel_module-dialog.css"
+				aria-selected="false"
+				tabindex="-1"
+			>CSS</button>
+		
+			<button
+				type="button"
+				role="tab"
+				id="trigger_module-dialog.ts"
+				aria-controls="panel_module-dialog.ts"
+				aria-selected="true"
+				tabindex="0"
+			>TypeScript</button>
+	</div>
+	
+<div role="tabpanel" id="panel_module-dialog.html" aria-labelledby="trigger_module-dialog.html" hidden>
+	<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">module-dialog.html</span>
+			<span class="language">html</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">module-dialog</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">button</span></span>
+<span class="line"><span style="color:#A6E22E">		type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span></span>
+<span class="line"><span style="color:#A6E22E">		class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"open"</span></span>
+<span class="line"><span style="color:#A6E22E">		aria-haspopup</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"dialog"</span></span>
+<span class="line"><span style="color:#A6E22E">		aria-controls</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"example-dialog"</span></span>
+<span class="line"><span style="color:#F8F8F2">	></span></span>
+<span class="line"><span style="color:#F8F8F2">		Open Dialog</span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;</span><span style="color:#F92672">dialog</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"example-dialog"</span><span style="color:#A6E22E"> aria-labelledby</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"example-dialog-title"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">header</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">h2</span><span style="color:#A6E22E"> id</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"example-dialog-title"</span><span style="color:#F8F8F2">>Dialog Title&#x3C;/</span><span style="color:#F92672">h2</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">button</span></span>
+<span class="line"><span style="color:#A6E22E">				type</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"button"</span></span>
+<span class="line"><span style="color:#A6E22E">				class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"close"</span></span>
+<span class="line"><span style="color:#A6E22E">				aria-label</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"Close Dialog"</span></span>
+<span class="line"><span style="color:#A6E22E">				autofocus</span></span>
+<span class="line"><span style="color:#F8F8F2">			></span></span>
+<span class="line"><span style="color:#F8F8F2">				×</span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">button</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">header</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;</span><span style="color:#F92672">module-scrollarea</span><span style="color:#A6E22E"> orientation</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"vertical"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;</span><span style="color:#F92672">form</span><span style="color:#A6E22E"> method</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"dialog"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;</span><span style="color:#F92672">div</span><span style="color:#A6E22E"> class</span><span style="color:#F8F8F2">=</span><span style="color:#E6DB74">"content"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">						Forts torterep mansporternme hood, weres mainig foold</span></span>
+<span class="line"><span style="color:#F8F8F2">						low, awayor inged penecke acrief naugui lancenc.</span></span>
+<span class="line"><span style="color:#F8F8F2">						Rationfic privac screbuid he thelth minfi foodies lents</span></span>
+<span class="line"><span style="color:#F8F8F2">						ingencened ciliessehor flatinuedus woutearts reopers</span></span>
+<span class="line"><span style="color:#F8F8F2">						govened le muriva aroute food reigit comisporters. Tor</span></span>
+<span class="line"><span style="color:#F8F8F2">						volle stable thign they forter ext — fued leare supple</span></span>
+<span class="line"><span style="color:#F8F8F2">						thated pres anker. Towth theatione dates firmen reig</span></span>
+<span class="line"><span style="color:#F8F8F2">						twour trundelay dinareban ine cres rebuicesin, ne</span></span>
+<span class="line"><span style="color:#F8F8F2">						thatedgete cauguille heacrent, asever necks twountralism</span></span>
+<span class="line"><span style="color:#F8F8F2">						run. Led hood lationd; witareope meraing overformar</span></span>
+<span class="line"><span style="color:#F8F8F2">						adight con bat pares somes puted tablanco comisporem.</span></span>
+<span class="line"><span style="color:#F8F8F2">						Prom neerfore leacci dangeno inals cleaskete prial</span></span>
+<span class="line"><span style="color:#F8F8F2">						whiche gaidayor — fileare woutinflon maine shispo cond</span></span>
+<span class="line"><span style="color:#F8F8F2">						cludi surarepor — yeals. Region that tablandliz horecto</span></span>
+<span class="line"><span style="color:#F8F8F2">						werge hild theading, lonote thearationa while cials and</span></span>
+<span class="line"><span style="color:#F8F8F2">						asked. Hould thate pree, recovernaug woution -</span></span>
+<span class="line"><span style="color:#F8F8F2">						suncentrain injurnarar flater econals emateated cominut</span></span>
+<span class="line"><span style="color:#F8F8F2">						tabilingenc whicita sparown. Emprad table for</span></span>
+<span class="line"><span style="color:#F8F8F2">						covencominthar of, se fring yeavy woutes cation aftereba</span></span>
+<span class="line"><span style="color:#F8F8F2">						nedge vold wationfili lan ces cater. Suntry de con</span></span>
+<span class="line"><span style="color:#F8F8F2">						fachal a ovation, mismis oustabile onaudespor onoution</span></span>
+<span class="line"><span style="color:#F8F8F2">						disin ports hel somish. Cural newe, seckerelter thremais</span></span>
+<span class="line"><span style="color:#F8F8F2">						aromency hospuble - woustrals imprary injurices schelagg</span></span>
+<span class="line"><span style="color:#F8F8F2">						bottlight rers cleat mande wernig renompor re awa th.</span></span>
+<span class="line"><span style="color:#F8F8F2">						Nal yeadistry govaccen heart whichatio guileasur ater</span></span>
+<span class="line"><span style="color:#F8F8F2">						afternare asemed ficks pries, canat ribedgeter thal</span></span>
+<span class="line"><span style="color:#F8F8F2">						pral. Clunnove fland cith semaing frief ened whippits</span></span>
+<span class="line"><span style="color:#F8F8F2">						ecosporkets pencedust wergeted ould wageted hance</span></span>
+<span class="line"><span style="color:#F8F8F2">						offirmainate itarnign hil dissemprigittlead. Torteres</span></span>
+<span class="line"><span style="color:#F8F8F2">						asted bution somid nex grow win, could may ral twound</span></span>
+<span class="line"><span style="color:#F8F8F2">						thelcomearg spormain muteeter. Saidaysterebui ce knext,</span></span>
+<span class="line"><span style="color:#F8F8F2">						wousep, mates foodight that day cos mar catelcou would</span></span>
+<span class="line"><span style="color:#F8F8F2">						threporess comeastorms. For lottlighbot buiday - sputers</span></span>
+<span class="line"><span style="color:#F8F8F2">						ing parketered anked prationspub raing; secome fews</span></span>
+<span class="line"><span style="color:#F8F8F2">						citeduel dighbot; neighlized ontrang suntion afted.</span></span>
+<span class="line"><span style="color:#F8F8F2">						Spilited wousts promiden, rivent ria volled turat had</span></span>
+<span class="line"><span style="color:#F8F8F2">						saing lizaters, seckets cremed subdued offills. Faccen,</span></span>
+<span class="line"><span style="color:#F8F8F2">						ithe crur it crudinthic lans thear snanning ope dinjur</span></span>
+<span class="line"><span style="color:#F8F8F2">						din deeklys. By inutle, comisin prold on the torts onstr</span></span>
+<span class="line"><span style="color:#F8F8F2">						muted, cenewers rebuilen forta whighlief conficild.</span></span>
+<span class="line"><span style="color:#F8F8F2">						Deets whipply clea runtedust govacromed caudighbor</span></span>
+<span class="line"><span style="color:#F8F8F2">						wernapithead forals tiondl clunducto prove hipplater</span></span>
+<span class="line"><span style="color:#F8F8F2">						rals foremealy report saitim mained. Ral tabillized</span></span>
+<span class="line"><span style="color:#F8F8F2">						fortestr rals - amint clunnot a waggentraid acins</span></span>
+<span class="line"><span style="color:#F8F8F2">						facrossubd colu restescrog agge sureekly. Catore oper th</span></span>
+<span class="line"><span style="color:#F8F8F2">						witned holds majorts accith conaude witer faccittle thre</span></span>
+<span class="line"><span style="color:#F8F8F2">						plande am. Recaudener dighbo rementh supple prinernined</span></span>
+<span class="line"><span style="color:#F8F8F2">						recks aftearief cesinsts whign sainints crudenote</span></span>
+<span class="line"><span style="color:#F8F8F2">						facenover prover, facregitnexche. Horter trudenal — win</span></span>
+<span class="line"><span style="color:#F8F8F2">						mares imentes prold nectional cond on afted plear porked</span></span>
+<span class="line"><span style="color:#F8F8F2">						rendanned - stranks ace. Awaing, dighboter bang</span></span>
+<span class="line"><span style="color:#F8F8F2">						autlizaterals couteady sparkets housed crices deducto</span></span>
+<span class="line"><span style="color:#F8F8F2">						ing talteas ned ittle; coned.</span></span>
+<span class="line"><span style="color:#F8F8F2">					&#x3C;/</span><span style="color:#F92672">p</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">				&#x3C;/</span><span style="color:#F92672">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">			&#x3C;/</span><span style="color:#F92672">form</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">		&#x3C;/</span><span style="color:#F92672">module-scrollarea</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	&#x3C;/</span><span style="color:#F92672">dialog</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">&#x3C;/</span><span style="color:#F92672">module-dialog</span><span style="color:#F8F8F2">></span></span>
+<span class="line"></span></code></pre>
+		<basic-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</basic-button>
+	</module-codeblock>
+</div>
+
+<div role="tabpanel" id="panel_module-dialog.css" aria-labelledby="trigger_module-dialog.css" hidden>
+	<module-codeblock language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">module-dialog.css</span>
+			<span class="language">css</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">body</span><span style="color:#A6E22E">.scroll-lock</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	position</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">fixed</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	overflow-y</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">hidden</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">module-dialog</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	> button {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">none</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		cursor</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">pointer</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">dialog</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">none</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		flex-direction</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">column</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">auto</span><span style="color:#AE81FF"> 0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">100</span><span style="color:#F92672">vw</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		max-width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">100</span><span style="color:#F92672">%</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		max-height</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">100</span><span style="color:#F92672">dvh</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-text);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-background);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		opacity</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--opacity-transparent);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		transition</span><span style="color:#F8F8F2">: opacity </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--transition-medium) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--easing-inout);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;::backdrop {</span></span>
+<span class="line"><span style="color:#F8F8F2">			backdrop-filter: </span><span style="color:#66D9EF">blur</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			transition</span><span style="color:#F8F8F2">: backdrop-filter </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--transition-medium)</span></span>
+<span class="line"><span style="color:#66D9EF">				var</span><span style="color:#F8F8F2">(--easing-inout);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">transparent</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">	&#x26; </span><span style="color:#F92672">dialog</span><span style="color:#F8F8F2">[</span><span style="color:#A6E22E">open</span><span style="color:#F8F8F2">] {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		opacity</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--opacity-solid);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		> </span><span style="color:#66D9EF;font-style:italic">header</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			display</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">flex</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			justify-content</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">space-between</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			align-items</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">center</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			margin</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#AE81FF"> 0</span><span style="color:#AE81FF"> 0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-l);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">			> h2 {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-l);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				font-weight</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-weight-bold);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				margin</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xs) </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">			.close</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				border</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				background</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">none</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				cursor</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">pointer</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				font-size</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--font-size-l);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				margin</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-m);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-primary);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				border-radius</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-xxs);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">				box-sizing</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">border-box</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">				&#x26;:hover {</span></span>
+<span class="line"><span style="color:#66D9EF">					color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-primary-hover);</span></span>
+<span class="line"><span style="color:#F8F8F2">				}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">				&#x26;</span><span style="color:#A6E22E">:active</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">					color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-primary-active);</span></span>
+<span class="line"><span style="color:#F8F8F2">				}</span></span>
+<span class="line"><span style="color:#F8F8F2">			}</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#A6E22E">		.content</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			padding</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-l) </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">		&#x26;</span><span style="color:#A6E22E">::backdrop</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			backdrop-filter</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">blur</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">1</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">			background-color</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-shadow);</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">@media</span><span style="color:#F8F8F2"> (</span><span style="color:#66D9EF;font-style:italic">min-width</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">48</span><span style="color:#F92672">em</span><span style="color:#F8F8F2">) {</span></span>
+<span class="line"><span style="color:#F92672">	module-dialog</span><span style="color:#F92672"> dialog</span><span style="color:#F8F8F2">[</span><span style="color:#A6E22E">open</span><span style="color:#F8F8F2">] {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		width</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">min</span><span style="color:#F8F8F2">(</span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--content-max-width), </span><span style="color:#66D9EF">calc</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">100</span><span style="color:#F92672">%</span><span style="color:#F92672"> -</span><span style="color:#AE81FF"> 2</span><span style="color:#F92672"> *</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-l)));</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		max-height</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">calc</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">100</span><span style="color:#F92672">dvh</span><span style="color:#F92672"> -</span><span style="color:#AE81FF"> 2</span><span style="color:#F92672">rem</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		border-radius</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--space-s);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		box-shadow</span><span style="color:#F8F8F2">: </span><span style="color:#AE81FF">0</span><span style="color:#AE81FF"> 0</span><span style="color:#66D9EF"> var</span><span style="color:#F8F8F2">(--space-s) </span><span style="color:#66D9EF">var</span><span style="color:#F8F8F2">(--color-shadow);</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		margin</span><span style="color:#F8F8F2">: </span><span style="color:#66D9EF">auto</span><span style="color:#66D9EF"> auto</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+		<basic-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</basic-button>
+	</module-codeblock>
+</div>
+
+<div role="tabpanel" id="panel_module-dialog.ts" aria-labelledby="trigger_module-dialog.ts">
+	<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
+		<p class="meta">
+			<span class="file">module-dialog.ts</span>
+			<span class="language">ts</span>
+		</p>
+		<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { </span><span style="color:#F92672">type</span><span style="color:#F8F8F2"> Component, component, effect, on } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">ModuleDialogProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">	open</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> boolean</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> SCROLL_LOCK_CLASS </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'scroll-lock'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">	'module-dialog'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	{</span></span>
+<span class="line"><span style="color:#F8F8F2">		open: </span><span style="color:#AE81FF">false</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
+<span class="line"><span style="color:#F8F8F2">	(</span><span style="color:#FD971F;font-style:italic">el</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">useElement</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		const</span><span style="color:#F8F8F2"> dialog </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> useElement</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">			'dialog'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#E6DB74">			'Native dialog needed as container for modal content.'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">		)</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">		let</span><span style="color:#F8F8F2"> scrollTop </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> 0</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">		return</span><span style="color:#F8F8F2"> [</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#E6DB74">				'button.open'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">					el.open </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> true</span></span>
+<span class="line"><span style="color:#F8F8F2">				}),</span></span>
+<span class="line"><span style="color:#E6DB74">				'Native button to open dialog needed.'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">			),</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'dialog'</span><span style="color:#F8F8F2">, [</span></span>
+<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (event.target </span><span style="color:#F92672">===</span><span style="color:#F8F8F2"> dialog) el.open </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> false</span></span>
+<span class="line"><span style="color:#F8F8F2">				}),</span></span>
+<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'keydown'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">event</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (event.key </span><span style="color:#F92672">===</span><span style="color:#E6DB74"> 'Escape'</span><span style="color:#F8F8F2">) el.open </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> false</span></span>
+<span class="line"><span style="color:#F8F8F2">				}),</span></span>
+<span class="line"><span style="color:#F8F8F2">			]),</span></span>
+<span class="line"><span style="color:#A6E22E">			first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'dialog .close'</span><span style="color:#F8F8F2">, [</span></span>
+<span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'click'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">					el.open </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> false</span></span>
+<span class="line"><span style="color:#F8F8F2">				}),</span></span>
+<span class="line"><span style="color:#F8F8F2">			]),</span></span>
+<span class="line"><span style="color:#F8F8F2">			() </span><span style="color:#66D9EF;font-style:italic">=></span></span>
+<span class="line"><span style="color:#A6E22E">				effect</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">					if</span><span style="color:#F8F8F2"> (el.open) {</span></span>
+<span class="line"><span style="color:#F8F8F2">						dialog.</span><span style="color:#A6E22E">showModal</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">						scrollTop </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> document.documentElement.scrollTop</span></span>
+<span class="line"><span style="color:#F8F8F2">						document.body.classList.</span><span style="color:#A6E22E">add</span><span style="color:#F8F8F2">(SCROLL_LOCK_CLASS)</span></span>
+<span class="line"><span style="color:#F8F8F2">						document.body.style.top </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> `-</span><span style="color:#F92672">${</span><span style="color:#F8F8F2">scrollTop</span><span style="color:#F92672">}</span><span style="color:#E6DB74">px`</span></span>
+<span class="line"><span style="color:#F8F8F2">					} </span><span style="color:#F92672">else</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">						document.body.classList.</span><span style="color:#A6E22E">remove</span><span style="color:#F8F8F2">(SCROLL_LOCK_CLASS)</span></span>
+<span class="line"><span style="color:#F8F8F2">						window.</span><span style="color:#A6E22E">scrollTo</span><span style="color:#F8F8F2">({</span></span>
+<span class="line"><span style="color:#F8F8F2">							top: scrollTop,</span></span>
+<span class="line"><span style="color:#F8F8F2">							left: </span><span style="color:#AE81FF">0</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">							behavior: </span><span style="color:#E6DB74">'instant'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">						})</span></span>
+<span class="line"><span style="color:#F8F8F2">						document.body.style.</span><span style="color:#A6E22E">removeProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'top'</span><span style="color:#F8F8F2">)</span></span>
+<span class="line"><span style="color:#F8F8F2">						dialog.</span><span style="color:#A6E22E">close</span><span style="color:#F8F8F2">()</span></span>
+<span class="line"><span style="color:#F8F8F2">					}</span></span>
+<span class="line"><span style="color:#F92672">					return</span><span style="color:#F8F8F2"> () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">						el.open </span><span style="color:#F92672">=</span><span style="color:#AE81FF"> false</span></span>
+<span class="line"><span style="color:#F8F8F2">					}</span></span>
+<span class="line"><span style="color:#F8F8F2">				}),</span></span>
+<span class="line"><span style="color:#F8F8F2">		]</span></span>
+<span class="line"><span style="color:#F8F8F2">	},</span></span>
+<span class="line"><span style="color:#F8F8F2">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F92672">declare</span><span style="color:#F8F8F2"> global {</span></span>
+<span class="line"><span style="color:#66D9EF;font-style:italic">	interface</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElementTagNameMap</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#E6DB74">		'module-dialog'</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">Component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">ModuleDialogProps</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span></code></pre>
+		<basic-button class="copy">
+			<button type="button" class="secondary small">
+				<span class="label">Copy</span>
+			</button>
+		</basic-button>
+	</module-codeblock>
+</div>
+</module-tabgroup>

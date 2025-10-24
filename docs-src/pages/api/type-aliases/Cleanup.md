@@ -1,8 +1,8 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / Cleanup
+[@zeix/le-truc](../globals.md) / Cleanup
 
 # Type Alias: Cleanup()
 
@@ -16,7 +16,7 @@ Defined in: node\_modules/@zeix/cause-effect/src/scheduler.ts:3
 
 ## Name
 
-UIElement
+Le Truc
 
 ## Version
 

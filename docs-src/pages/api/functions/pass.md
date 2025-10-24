@@ -1,16 +1,16 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / pass
+[@zeix/le-truc](../globals.md) / pass
 
 # Function: pass()
 
 > **pass**\<`P`, `Q`\>(`reactives`): [`Effect`](../type-aliases/Effect.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`Q`\>\>
 
-Defined in: [src/lib/effects.ts:540](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/lib/effects.ts#L540)
+Defined in: [src/lib/effects.ts:540](https://github.com/zeixcom/ui-element/blob/824b5fcbd5a33ce95b6c2a43bfe0cce0fd18afb8/src/lib/effects.ts#L540)
 
-Effect for passing reactive values to a descendant UIElement component.
+Effect for passing reactive values to a descendant Le Truc component.
 
 ## Type Parameters
 
@@ -42,7 +42,7 @@ Effect function that passes reactive values to the descendant component
 
 ## Throws
 
-When the provided reactives are not an object or the target is not a UIElement component
+When the provided reactives are not an object or the target is not a Le Truc component
 
 ## Throws
 

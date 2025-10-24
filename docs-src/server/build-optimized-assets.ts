@@ -160,8 +160,8 @@ export const generateServiceWorker = async (
 	cssHash: string,
 	jsHash: string,
 ): Promise<void> => {
-	const swContent = `// UIElement Docs Service Worker
-const CACHE_NAME = 'ui-element-docs-v${Date.now()}';
+	const swContent = `// Le Truc Docs Service Worker
+const CACHE_NAME = 'le-truc-docs-v${Date.now()}';
 
 // Assets to cache on install
 const STATIC_ASSETS = [
