@@ -2,7 +2,7 @@
  * Simple event emitter for the dev server
  */
 
-import type { EventHandler, IEventEmitter, ServerEvents } from './types.js'
+import type { EventHandler, IEventEmitter, ServerEvents } from './types'
 
 /**
  * Simple event emitter implementation

@@ -5,12 +5,13 @@
 import { afterEach, beforeEach, describe, expect, it } from 'bun:test'
 import { writeFileSync } from 'fs'
 import { join } from 'path'
-import { ConfigManager } from '../config.js'
-import { DevServer } from '../dev-server.js'
-import { EventEmitter } from '../event-emitter.js'
-import { ModularSSG } from '../modular-ssg.js'
-import { SmartFileWatcher } from '../smart-file-watcher.js'
-import type { DevServerConfig } from '../types.js'
+import { DEFAULT_CONFIG } from '../config'
+import { ConfigManager } from '../config-manager'
+import { DevServer } from '../dev-server'
+import { EventEmitter } from '../event-emitter'
+import { ModularSSG } from '../modular-ssg'
+import { SmartFileWatcher } from '../smart-file-watcher'
+import type { DevServerConfig } from '../types'
 import {
 	createTestContext,
 	delay,
@@ -18,7 +19,7 @@ import {
 	mockConsole,
 	type TestContext,
 	TestWebSocketClient,
-} from './helpers/test-setup.js'
+} from './helpers/test-setup'
 
 describe('Integration Tests', () => {
 	let testContext: TestContext
@@ -194,7 +195,7 @@ describe('Integration Tests', () => {
 		it('should integrate ConfigManager, FileWatcher, SSG, and Server', async () => {
 			// Test that all components work together correctly
 			const configManager = new ConfigManager()
-			const config = await configManager.load()
+			const config = await configManager.load(DEFAULT_CONFIG)
 
 			// Override config for testing
 			config.server.port = testPort

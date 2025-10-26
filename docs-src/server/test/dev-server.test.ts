@@ -5,7 +5,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'bun:test'
 import { mkdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
-import { DevServer } from '../dev-server.js'
+import { DevServer } from '../dev-server'
 
 import {
 	createTestContext,
@@ -15,7 +15,7 @@ import {
 	type TestContext,
 	TestWebSocketClient,
 	waitFor,
-} from './helpers/test-setup.js'
+} from './helpers/test-setup'
 
 describe('DevServer', () => {
 	let testContext: TestContext

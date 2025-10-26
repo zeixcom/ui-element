@@ -47,6 +47,30 @@ const TEST_SUITES: TestSuite[] = [
 		coverage: true,
 	},
 	{
+		name: 'Markdown Plugin',
+		pattern: 'markdown-plugin.test.ts',
+		timeout: 60000,
+		coverage: true,
+	},
+	{
+		name: 'Fragment Plugin',
+		pattern: 'fragment-plugin.test.ts',
+		timeout: 45000,
+		coverage: true,
+	},
+	{
+		name: 'Asset Plugin',
+		pattern: 'asset-plugin.test.ts',
+		timeout: 45000,
+		coverage: true,
+	},
+	{
+		name: 'HMR Integration',
+		pattern: 'hmr-integration.test.ts',
+		timeout: 60000,
+		coverage: true,
+	},
+	{
 		name: 'Modular SSG',
 		pattern: 'modular-ssg.test.ts',
 		timeout: 30000,
@@ -275,7 +299,7 @@ class TestRunner {
 						rmSync(dir, { recursive: true, force: true })
 					}
 				}
-			} catch (error) {
+			} catch (_error) {
 				// Ignore cleanup errors
 			}
 		}

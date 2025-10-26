@@ -12,7 +12,7 @@ import type {
 	DevServerConfig,
 	IEventEmitter,
 	IModularSSG,
-} from './types.js'
+} from './types'
 
 /**
  * Plugin-based Static Site Generator

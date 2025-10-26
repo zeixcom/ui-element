@@ -8,7 +8,7 @@
 
 > **Effect**\<`P`, `E`\> = (`host`, `element`) => [`Cleanup`](Cleanup.md) \| `void`
 
-Defined in: [src/core/reactive.ts:15](https://github.com/zeixcom/ui-element/blob/824b5fcbd5a33ce95b6c2a43bfe0cce0fd18afb8/src/core/reactive.ts#L15)
+Defined in: [src/core/reactive.ts:15](https://github.com/zeixcom/ui-element/blob/6f2dec0b8de4a8a6010a0f1311d8457054510e5b/src/core/reactive.ts#L15)
 
 ## Type Parameters
 

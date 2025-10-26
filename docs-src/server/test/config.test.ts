@@ -3,15 +3,15 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it } from 'bun:test'
-import { existsSync, mkdirSync, rmSync, writeFileSync } from 'fs'
+import { rmSync } from 'fs'
 import { join } from 'path'
+import { DEFAULT_CONFIG } from '../config'
 import {
 	ConfigManager,
 	ConfigValidationError,
 	getBuildCommandsForFile,
-} from '../config.js'
-import type { DevServerConfig } from '../types.js'
-import { createTestContext, type TestContext } from './helpers/test-setup.js'
+} from '../config-manager'
+import { createTestContext, type TestContext } from './helpers/test-setup'
 
 describe('ConfigManager', () => {
 	let testContext: TestContext
@@ -45,7 +45,7 @@ describe('ConfigManager', () => {
 	describe('load()', () => {
 		it('should load default configuration successfully', async () => {
 			const configManager = new ConfigManager()
-			const config = await configManager.load()
+			const config = await configManager.load(DEFAULT_CONFIG)
 
 			expect(config).toBeDefined()
 			expect(config.server).toBeDefined()
@@ -56,7 +56,7 @@ describe('ConfigManager', () => {
 
 		it('should resolve relative paths to absolute paths', async () => {
 			const configManager = new ConfigManager()
-			const config = await configManager.load()
+			const config = await configManager.load(DEFAULT_CONFIG)
 
 			expect(config.paths.pages).toContain('docs-src/pages')
 			expect(config.paths.components).toContain('docs-src/components')
@@ -75,9 +75,9 @@ describe('ConfigManager', () => {
 			const originalCwd = process.cwd()
 			try {
 				process.chdir(tempDir)
-				await expect(configManager.load()).rejects.toThrow(
-					ConfigValidationError,
-				)
+				await expect(
+					configManager.load(DEFAULT_CONFIG),
+				).rejects.toThrow(ConfigValidationError)
 			} finally {
 				process.chdir(originalCwd)
 			}
@@ -92,9 +92,9 @@ describe('ConfigManager', () => {
 			const originalCwd = process.cwd()
 			try {
 				process.chdir(tempDir)
-				await expect(configManager.load()).rejects.toThrow(
-					ConfigValidationError,
-				)
+				await expect(
+					configManager.load(DEFAULT_CONFIG),
+				).rejects.toThrow(ConfigValidationError)
 			} finally {
 				process.chdir(originalCwd)
 			}
@@ -106,7 +106,7 @@ describe('ConfigManager', () => {
 			process.env.DEV_SERVER_PORT = '4000'
 
 			const configManager = new ConfigManager()
-			const config = await configManager.load()
+			const config = await configManager.load(DEFAULT_CONFIG)
 
 			expect(config.server.port).toBe(4000)
 		})
@@ -115,7 +115,7 @@ describe('ConfigManager', () => {
 			process.env.DEV_SERVER_HOST = '0.0.0.0'
 
 			const configManager = new ConfigManager()
-			const config = await configManager.load()
+			const config = await configManager.load(DEFAULT_CONFIG)
 
 			expect(config.server.host).toBe('0.0.0.0')
 		})
@@ -124,7 +124,7 @@ describe('ConfigManager', () => {
 			process.env.OPTIMIZE_LAYOUT = 'false'
 
 			const configManager = new ConfigManager()
-			const config = await configManager.load()
+			const config = await configManager.load(DEFAULT_CONFIG)
 
 			expect(config.build.optimizeLayout).toBe(false)
 		})
@@ -133,7 +133,7 @@ describe('ConfigManager', () => {
 			process.env.DEV_MODE = 'false'
 
 			const configManager = new ConfigManager()
-			const config = await configManager.load()
+			const config = await configManager.load(DEFAULT_CONFIG)
 
 			expect(config.server.development).toBe(false)
 		})
@@ -142,7 +142,7 @@ describe('ConfigManager', () => {
 			process.env.DEV_SERVER_PORT = 'invalid'
 
 			const configManager = new ConfigManager()
-			const config = await configManager.load()
+			const config = await configManager.load(DEFAULT_CONFIG)
 
 			expect(config.server.port).toBe(3000) // Should use default
 		})
@@ -258,7 +258,7 @@ describe('ConfigManager', () => {
 	describe('getBuildCommands()', () => {
 		it('should return build commands for markdown files', async () => {
 			const testConfigManager = new ConfigManager()
-			await testConfigManager.load()
+			await testConfigManager.load(DEFAULT_CONFIG)
 
 			// Use the internal function directly with the test config
 			const commands = getBuildCommandsForFile(
@@ -270,7 +270,7 @@ describe('ConfigManager', () => {
 
 		it('should return build commands for TypeScript component files', async () => {
 			const testConfigManager = new ConfigManager()
-			await testConfigManager.load()
+			await testConfigManager.load(DEFAULT_CONFIG)
 
 			const commands = getBuildCommandsForFile(
 				'docs-src/components/test.ts',
@@ -281,7 +281,7 @@ describe('ConfigManager', () => {
 
 		it('should return build commands for CSS component files', async () => {
 			const testConfigManager = new ConfigManager()
-			await testConfigManager.load()
+			await testConfigManager.load(DEFAULT_CONFIG)
 
 			const commands = getBuildCommandsForFile(
 				'docs-src/components/test.css',
@@ -292,7 +292,7 @@ describe('ConfigManager', () => {
 
 		it('should return build commands for HTML component files', async () => {
 			const testConfigManager = new ConfigManager()
-			await testConfigManager.load()
+			await testConfigManager.load(DEFAULT_CONFIG)
 
 			const commands = getBuildCommandsForFile(
 				'docs-src/components/test.html',
@@ -303,7 +303,7 @@ describe('ConfigManager', () => {
 
 		it('should return build commands for source TypeScript files', async () => {
 			const testConfigManager = new ConfigManager()
-			await testConfigManager.load()
+			await testConfigManager.load(DEFAULT_CONFIG)
 
 			const commands = getBuildCommandsForFile(
 				'src/main.ts',
@@ -318,7 +318,7 @@ describe('ConfigManager', () => {
 
 		it('should return empty array for unmatched files', async () => {
 			const testConfigManager = new ConfigManager()
-			await testConfigManager.load()
+			await testConfigManager.load(DEFAULT_CONFIG)
 
 			const commands = getBuildCommandsForFile(
 				'random/file.txt',
@@ -330,7 +330,7 @@ describe('ConfigManager', () => {
 
 	describe('create() static method', () => {
 		it('should create config with defaults', () => {
-			const config = ConfigManager.create()
+			const config = ConfigManager.create(DEFAULT_CONFIG)
 
 			expect(config.server.port).toBe(3000)
 			expect(config.server.host).toBe('localhost')
@@ -345,7 +345,7 @@ describe('ConfigManager', () => {
 				},
 			}
 
-			const config = ConfigManager.create(customConfig)
+			const config = ConfigManager.create(DEFAULT_CONFIG, customConfig)
 
 			expect(config.server.port).toBe(4000)
 			expect(config.server.host).toBe('0.0.0.0')
@@ -360,7 +360,7 @@ describe('ConfigManager', () => {
 			}
 
 			expect(() => {
-				ConfigManager.create(invalidConfig)
+				ConfigManager.create(DEFAULT_CONFIG, invalidConfig)
 			}).toThrow(ConfigValidationError)
 		})
 	})
@@ -370,14 +370,14 @@ describe('ConfigManager', () => {
 			const configManager = new ConfigManager()
 
 			// Load initial config
-			const config1 = await configManager.load()
+			const config1 = await configManager.load(DEFAULT_CONFIG)
 			expect(config1.server.port).toBe(3000)
 
 			// Change environment variable
 			process.env.DEV_SERVER_PORT = '5000'
 
 			// Reload config
-			const config2 = await configManager.reload()
+			const config2 = await configManager.reload(DEFAULT_CONFIG)
 			expect(config2.server.port).toBe(5000)
 		})
 
@@ -387,7 +387,7 @@ describe('ConfigManager', () => {
 			// Don't call load() first
 			process.env.DEV_SERVER_PORT = '5000'
 
-			const config = await configManager.reload()
+			const config = await configManager.reload(DEFAULT_CONFIG)
 			expect(config.server.port).toBe(5000)
 		})
 	})
@@ -395,7 +395,7 @@ describe('ConfigManager', () => {
 	describe('config getter', () => {
 		it('should return loaded configuration', async () => {
 			const configManager = new ConfigManager()
-			await configManager.load()
+			await configManager.load(DEFAULT_CONFIG)
 
 			const config = configManager.config
 			expect(config).toBeDefined()
@@ -406,40 +406,13 @@ describe('ConfigManager', () => {
 			const configManager = new ConfigManager()
 
 			expect(() => {
-				const config = configManager.config
+				const _config = configManager.config
 			}).toThrow('Configuration not loaded. Call load() first.')
 		})
 	})
 
 	describe('configuration merging', () => {
 		it('should deep merge nested objects', () => {
-			const base: DevServerConfig = {
-				server: { port: 3000, host: 'localhost', development: true },
-				paths: {
-					pages: './pages',
-					components: './components',
-					src: './src',
-					output: './output',
-					assets: './assets',
-					includes: './includes',
-					layout: './layout.html',
-				},
-				build: {
-					optimizeLayout: true,
-					generateSourceMaps: true,
-					minify: false,
-					cacheMaxAge: 3600,
-				},
-				watch: {
-					debounceDelay: 300,
-					paths: [],
-				},
-				assets: {
-					compression: { enabled: true, brotli: true, gzip: true },
-					versioning: { enabled: false, hashLength: 8 },
-				},
-			}
-
 			const override = {
 				server: { port: 4000 }, // Should override port only
 				build: { minify: true }, // Should override minify only
@@ -448,7 +421,7 @@ describe('ConfigManager', () => {
 				},
 			}
 
-			const config = ConfigManager.create(override)
+			const config = ConfigManager.create(DEFAULT_CONFIG, override)
 
 			expect(config.server.port).toBe(4000)
 			expect(config.server.host).toBe('localhost') // Should keep original
@@ -472,7 +445,7 @@ describe('ConfigManager', () => {
 				},
 			}
 
-			const config = ConfigManager.create(override)
+			const config = ConfigManager.create(DEFAULT_CONFIG, override)
 
 			expect(config.watch.paths).toHaveLength(1)
 			expect(config.watch.paths[0].directory).toContain('custom')
@@ -482,7 +455,7 @@ describe('ConfigManager', () => {
 	describe('watch path enhancement', () => {
 		it('should enhance watch paths with dynamic build commands', async () => {
 			const configManager = new ConfigManager()
-			const config = await configManager.load()
+			const config = await configManager.load(DEFAULT_CONFIG)
 
 			const componentsPath = config.watch.paths.find(p =>
 				p.directory.includes('components'),
@@ -494,7 +467,7 @@ describe('ConfigManager', () => {
 
 		it('should preserve explicit build commands', async () => {
 			const configManager = new ConfigManager()
-			const config = await configManager.load()
+			const config = await configManager.load(DEFAULT_CONFIG)
 
 			const pagesPath = config.watch.paths.find(p =>
 				p.directory.includes('pages'),

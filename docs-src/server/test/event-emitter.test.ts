@@ -3,9 +3,9 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it } from 'bun:test'
-import { EventEmitter } from '../event-emitter.js'
-import type { ServerEvents } from '../types.js'
-import { createMockFunction, delay } from './helpers/test-setup.js'
+import { EventEmitter } from '../event-emitter'
+import type { ServerEvents } from '../types'
+import { createMockFunction, delay } from './helpers/test-setup'
 
 describe('EventEmitter', () => {
 	let eventEmitter: EventEmitter
@@ -115,9 +115,15 @@ describe('EventEmitter', () => {
 		it('should preserve handler execution order', () => {
 			const executionOrder: number[] = []
 
-			const handler1 = createMockFunction(() => executionOrder.push(1))
-			const handler2 = createMockFunction(() => executionOrder.push(2))
-			const handler3 = createMockFunction(() => executionOrder.push(3))
+			const handler1 = createMockFunction(() => {
+				executionOrder.push(1)
+			})
+			const handler2 = createMockFunction(() => {
+				executionOrder.push(2)
+			})
+			const handler3 = createMockFunction(() => {
+				executionOrder.push(3)
+			})
 
 			eventEmitter.on('build:start', handler1)
 			eventEmitter.on('build:start', handler2)

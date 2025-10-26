@@ -6,9 +6,10 @@
  */
 
 import { existsSync } from 'fs'
-import { ConfigManager } from './config.js'
-import { DevServer } from './dev-server.js'
-import type { DevServerConfig } from './types.js'
+import { DEFAULT_CONFIG } from './config'
+import { ConfigManager } from './config-manager'
+import { DevServer } from './dev-server'
+import type { DevServerConfig } from './types'
 
 /**
  * Main application class
@@ -29,7 +30,7 @@ class DevServerApp {
 			// Load configuration
 			console.log('⚙️  Loading configuration...')
 			const configManager = new ConfigManager()
-			this.config = await configManager.load()
+			this.config = await configManager.load(DEFAULT_CONFIG)
 
 			console.log(`✅ Configuration loaded`)
 			console.log(`   📁 Pages: ${this.config.paths.pages}`)

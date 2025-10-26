@@ -4,7 +4,7 @@
 
 import { existsSync, mkdirSync, rmSync, writeFileSync } from 'fs'
 import { join, resolve } from 'path'
-import type { DevServerConfig } from '../../types.ts'
+import type { DevServerConfig } from '../../types'
 
 export interface TestContext {
 	tempDir: string

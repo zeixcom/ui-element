@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Test Page Info – Le Truc Docs</title>
+		<meta name="description" content="Testing page info generation" />
+		<link
+			rel="preload"
+			href="./assets/main.css?v=test-css-hash"
+			as="style"
+		/>
+		<link
+			rel="modulepreload"
+			href="./assets/main.js?v=test-js-hash"
+		/>
+		<link
+			rel="stylesheet"
+			href="./assets/main.css?v=test-css-hash"
+		/>
+		<script
+			type="module"
+			src="./assets/main.js?v=test-js-hash"
+		></script>
+	</head>
+	<body class="">
+		<context-router>
+			<header class="content-grid">
+				<a href="#main" class="skiplink visually-hidden">
+					Skip to main content
+				</a>
+				<h1 class="content">
+					Le Truc Docs <small>Version 0.14.0</small>
+				</h1>
+				<section-menu>
+	<nav>
+		<h2 class="visually-hidden">Main Menu</h2>
+		<ol>
+			<li>
+			<a href="index.html">
+				<span class="icon">🏠</span>
+				<strong>Home</strong>
+				<small>Home page</small>
+			</a>
+		</li><li>
+			<a href="about.html">
+				<span class="icon">ℹ️</span>
+				<strong>About</strong>
+				<small>About page</small>
+			</a>
+		</li>
+		</ol>
+	</nav>
+</section-menu>
+				<card-callout class="content danger" hidden>
+					<p class="error" role="alert" aria-live="assertive"></p>
+				</card-callout>
+			</header>
+			<main id="main" class="content-grid"><h1 id="test-content">
+                <a name="test-content" class="anchor" href="#test-content">
+	                <span class="permalink">🔗</span>
+					<span class="title">Test Content</span>
+                </a>
+            </h1>
+</main>
+			<footer class="content-grid">
+				<div class="content">
+					<h2 class="visually-hidden">Footer</h2>
+					<p>© 2024 – 2025 Zeix AG</p>
+				</div>
+			</footer>
+		</context-router>
+	</body>
+</html>

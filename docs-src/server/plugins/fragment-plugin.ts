@@ -1,24 +1,14 @@
 import { readdir, readFile, stat, writeFile } from 'fs/promises'
 import { join } from 'path'
-import { COMPONENTS_DIR, FRAGMENTS_DIR } from '../config.js'
-import { BaseBuildPlugin } from '../modular-ssg.js'
-import { highlightedCode } from '../transform-codeblocks.js'
-import type { BuildInput, BuildOutput, DevServerConfig } from '../types.js'
-
-interface PanelType {
-	type: string
-	label: string
-	filePath: string
-	selected: boolean
-}
+import { codeToHtml } from 'shiki'
+import { COMPONENTS_DIR, FRAGMENTS_DIR } from '../config'
+import { BaseBuildPlugin } from '../modular-ssg'
+import { enhancedTabGroup, type PanelType } from '../templates/fragments'
+import type { BuildInput, BuildOutput } from '../types'
 
 interface ComponentFragmentInfo {
 	name: string
-	files: {
-		html?: string
-		css?: string
-		typescript?: string
-	}
+	files: { html?: string; css?: string; typescript?: string }
 	panelTypes: PanelType[]
 }
 
@@ -39,14 +29,10 @@ export class FragmentPlugin extends BaseBuildPlugin {
 		)
 	}
 
-	public async initialize(_config: DevServerConfig): Promise<void> {
-		console.log(`🔧 Initializing ${this.name}...`)
-		console.log(`✅ ${this.name} initialized`)
-	}
+	public async initialize(): Promise<void> {}
 
 	public async transform(input: BuildInput): Promise<BuildOutput> {
 		try {
-			// Extract component name from file path
 			const componentName = this.extractComponentName(input.filePath)
 			if (!componentName) {
 				return this.createError(
@@ -55,18 +41,12 @@ export class FragmentPlugin extends BaseBuildPlugin {
 				)
 			}
 
-			// Check if we've already processed this component
 			if (this.processedComponents.has(componentName)) {
 				return this.createSuccess(input, {
 					content: 'already-processed',
-					metadata: {
-						componentName,
-						skipped: true,
-					},
 				})
 			}
 
-			// Process the entire component (all files)
 			await this.processComponent(componentName)
 			this.processedComponents.add(componentName)
 
@@ -78,10 +58,6 @@ export class FragmentPlugin extends BaseBuildPlugin {
 				},
 			})
 		} catch (error) {
-			console.error(
-				`❌ FragmentPlugin error processing ${input.filePath}:`,
-				error,
-			)
 			return this.createError(
 				input,
 				`Failed to process fragment: ${error.message}`,
@@ -89,17 +65,11 @@ export class FragmentPlugin extends BaseBuildPlugin {
 		}
 	}
 
-	/**
-	 * Extract component name from file path
-	 */
 	private extractComponentName(filePath: string): string | null {
 		const match = filePath.match(/components[/\\]([^/\\]+)[/\\]/)
 		return match ? match[1] : null
 	}
 
-	/**
-	 * Check if a file exists
-	 */
 	private async fileExists(path: string): Promise<boolean> {
 		try {
 			await stat(path)
@@ -109,187 +79,110 @@ export class FragmentPlugin extends BaseBuildPlugin {
 		}
 	}
 
-	/**
-	 * Generate a single panel for the tabbed interface
-	 */
-	private async generatePanel(
-		name: string,
-		panelType: PanelType,
-	): Promise<string> {
-		const { type, filePath, selected } = panelType
-		const hidden = selected ? '' : ' hidden'
-		const content = await readFile(filePath, 'utf8')
-
-		// Apply syntax highlighting
-		const highlighted = await highlightedCode(content, type)
-
-		return `
-<div role="tabpanel" id="panel_${name}.${type}" aria-labelledby="trigger_${name}.${type}"${hidden}>
-	<module-codeblock language="${type}" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
-		<p class="meta">
-			<span class="file">${name}.${type}</span>
-			<span class="language">${type}</span>
-		</p>
-		${highlighted}
-		<basic-button class="copy">
-			<button type="button" class="secondary small">
-				<span class="label">Copy</span>
-			</button>
-		</basic-button>
-	</module-codeblock>
-</div>`
-	}
-
-	/**
-	 * Process a single component and generate its fragment
-	 */
 	private async processComponent(name: string): Promise<void> {
-		console.log(`📂 Processing component: ${name}`)
+		const panelConfigs = [
+			{ type: 'html', label: 'HTML' },
+			{ type: 'css', label: 'CSS' },
+			{ type: 'ts', label: 'TypeScript' },
+		]
 
-		// Check which files exist for this component
-		const allPanels = (
+		const panels = (
 			await Promise.all(
-				[
-					{ type: 'html', label: 'HTML' },
-					{ type: 'css', label: 'CSS' },
-					{ type: 'ts', label: 'TypeScript' },
-				]
-					.map((panel: Partial<PanelType>) => ({
-						...panel,
-						filePath: join(
-							COMPONENTS_DIR,
-							name,
-							`${name}.${panel.type}`,
-						),
-						selected: false,
-					}))
-					.map(async panel =>
-						(await this.fileExists(panel.filePath)) ? panel : null,
-					),
+				panelConfigs.map(async config => {
+					const filePath = join(
+						COMPONENTS_DIR,
+						name,
+						`${name}.${config.type}`,
+					)
+					return (await this.fileExists(filePath))
+						? { ...config, filePath, selected: false }
+						: null
+				}),
 			)
-		).filter(panel => panel !== null) as PanelType[]
+		).filter(Boolean) as PanelType[]
 
-		if (allPanels.length === 0) {
-			console.warn(`⚠️ No valid files found for component: ${name}`)
-			return
-		}
+		if (panels.length === 0) return
 
 		// Select the last panel by default (typically TypeScript)
-		allPanels[allPanels.length - 1].selected = true
+		panels[panels.length - 1].selected = true
 
-		// Generate panels
-		const panels = await Promise.all(
-			allPanels.map(panel => this.generatePanel(name, panel)),
+		// Generate syntax-highlighted code for all panels
+		const highlightedCodes = await Promise.all(
+			panels.map(async panel => {
+				const content = await readFile(panel.filePath, 'utf8')
+				return await codeToHtml(content, {
+					lang: panel.type,
+					theme: 'monokai',
+				})
+			}),
 		)
 
-		// Generate the complete fragment with tabbed interface
-		const fragment = `
-<module-tabgroup>
-	<div role="tablist">
-		${allPanels
-			.map(
-				panel => `
-		<button
-			type="button"
-			role="tab"
-			id="trigger_${name}.${panel.type}"
-			aria-controls="panel_${name}.${panel.type}"
-			aria-selected="${String(panel.selected)}"
-			tabindex="${panel.selected ? '0' : '-1'}"
-		>${panel.label}</button>`,
-			)
-			.join('\n\t')}
-	</div>
-	${panels.join('\n')}
-</module-tabgroup>`
-
-		// Write the fragment to the output directory
-		const outputPath = join(FRAGMENTS_DIR, `${name}.html`)
-		await writeFile(outputPath, fragment, 'utf8')
-		console.log(`✅ Generated: ${name}.html`)
+		const fragment = enhancedTabGroup(name, panels, highlightedCodes)
+		await writeFile(join(FRAGMENTS_DIR, `${name}.html`), fragment, 'utf8')
 	}
 
-	/**
-	 * Process all components in the components directory
-	 */
 	public async processAllComponents(): Promise<ComponentFragmentInfo[]> {
-		console.log('🔄 Processing all component fragments...')
+		const components = await readdir(COMPONENTS_DIR)
+		const processedInfo: ComponentFragmentInfo[] = []
 
-		try {
-			const components = await readdir(COMPONENTS_DIR)
-			const processedInfo: ComponentFragmentInfo[] = []
+		for (const componentName of components) {
+			const componentPath = join(COMPONENTS_DIR, componentName)
+			const stats = await stat(componentPath)
 
-			for (const componentName of components) {
-				const componentPath = join(COMPONENTS_DIR, componentName)
-				const stats = await stat(componentPath)
+			if (stats.isDirectory()) {
+				await this.processComponent(componentName)
+				this.processedComponents.add(componentName)
 
-				if (stats.isDirectory()) {
-					await this.processComponent(componentName)
-					this.processedComponents.add(componentName)
+				const info: ComponentFragmentInfo = {
+					name: componentName,
+					files: {},
+					panelTypes: [],
+				}
 
-					// Gather component info
-					const info: ComponentFragmentInfo = {
-						name: componentName,
-						files: {},
-						panelTypes: [],
-					}
+				const fileTypes = [
+					{ ext: 'html', key: 'html' as const },
+					{ ext: 'css', key: 'css' as const },
+					{ ext: 'ts', key: 'typescript' as const },
+				]
 
-					// Check which files exist
-					const fileTypes = [
-						{ ext: 'html', key: 'html' as const },
-						{ ext: 'css', key: 'css' as const },
-						{ ext: 'ts', key: 'typescript' as const },
-					]
-
-					for (const { ext, key } of fileTypes) {
-						const filePath = join(
-							componentPath,
-							`${componentName}.${ext}`,
-						)
-						if (await this.fileExists(filePath)) {
-							info.files[key] = filePath
-							info.panelTypes.push({
-								type: ext,
-								label: ext.toUpperCase(),
-								filePath,
-								selected: false,
-							})
-						}
-					}
-
-					if (info.panelTypes.length > 0) {
-						info.panelTypes[info.panelTypes.length - 1].selected =
-							true
-						processedInfo.push(info)
+				for (const { ext, key } of fileTypes) {
+					const filePath = join(
+						componentPath,
+						`${componentName}.${ext}`,
+					)
+					if (await this.fileExists(filePath)) {
+						info.files[key] = filePath
+						info.panelTypes.push({
+							type: ext,
+							label: ext.toUpperCase(),
+							filePath,
+							selected: false,
+						})
 					}
 				}
-			}
 
-			console.log(`✨ Processed ${processedInfo.length} components!`)
-			return processedInfo
-		} catch (error) {
-			console.error('❌ Error processing components:', error)
-			throw error
+				if (info.panelTypes.length > 0) {
+					info.panelTypes[info.panelTypes.length - 1].selected = true
+					processedInfo.push(info)
+				}
+			}
 		}
+
+		return processedInfo
 	}
 
-	/**
-	 * Get list of processed components
-	 */
 	public getProcessedComponents(): string[] {
 		return Array.from(this.processedComponents)
 	}
 
 	public async cleanup(): Promise<void> {
 		this.processedComponents.clear()
-		console.log(`🧹 Cleaned up ${this.name}`)
 	}
 
 	public async getDependencies(filePath: string): Promise<string[]> {
 		const componentName = this.extractComponentName(filePath)
 		if (!componentName) return []
 
-		// Return all related files for this component
 		const dependencies: string[] = []
 		const fileTypes = ['html', 'css', 'ts']
 

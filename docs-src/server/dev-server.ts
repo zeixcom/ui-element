@@ -6,19 +6,19 @@ import { ServerWebSocket } from 'bun'
 import { existsSync } from 'fs'
 import { resolve } from 'path'
 import { brotliCompressSync, gzipSync } from 'zlib'
-import { EventEmitter } from './event-emitter.js'
-import { ModularSSG } from './modular-ssg.js'
-import { AssetPlugin } from './plugins/asset-plugin.js'
-import { FragmentPlugin } from './plugins/fragment-plugin.js'
-import { MarkdownPlugin } from './plugins/markdown-plugin.js'
-import { SmartFileWatcher } from './smart-file-watcher.js'
+import { EventEmitter } from './event-emitter'
+import { ModularSSG } from './modular-ssg'
+import { AssetPlugin } from './plugins/asset-plugin'
+import { FragmentPlugin } from './plugins/fragment-plugin'
+import { MarkdownPlugin } from './plugins/markdown-plugin'
+import { SmartFileWatcher } from './smart-file-watcher'
 import type {
 	DevServerConfig,
 	IEventEmitter,
 	RequestContext,
 	ResponseOptions,
 	ServerContext,
-} from './types.js'
+} from './types'
 
 /**
  * Development Server with Bun 1.3 features

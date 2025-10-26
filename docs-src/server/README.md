@@ -1,17 +1,17 @@
 # Documentation Development Server
 
-A modern, high-performance documentation development server built with Bun 1.3+, featuring hot module reloading, static site generation, and comprehensive testing.
+A modern, high-performance documentation development server built with Bun 1.3+, featuring a unified plugin-based static site generator (SSG), hot module reloading, and comprehensive testing.
 
 ## Overview
 
-This documentation server provides a complete development environment for building and serving static documentation sites. It combines a modular static site generator (SSG) with an intelligent development server featuring real-time hot module reloading (HMR).
+This documentation server provides a complete development environment for building and serving static documentation sites. It combines a **modular plugin-based static site generator** with an intelligent development server featuring real-time hot module reloading (HMR).
 
 ### Key Features
 
 - 🚀 **High Performance** - Built on Bun 1.3+ runtime for maximum speed
+- 🔌 **Plugin Architecture** - Unified modular SSG with extensible plugin system
 - 🔄 **Hot Module Reloading** - Real-time updates via WebSocket communication
 - 📁 **Smart File Watching** - Intelligent debouncing and platform-optimized watchers
-- 🏗️ **Modular Architecture** - Plugin-based build system with clear separation of concerns
 - 📝 **Rich Markdown Support** - Frontmatter, TOC generation, code highlighting, and custom extensions
 - 🎨 **Asset Optimization** - CSS/JS minification, compression, and content-based hashing
 - 🧪 **Comprehensive Testing** - 200+ test cases with 90%+ coverage
@@ -22,7 +22,6 @@ This documentation server provides a complete development environment for buildi
 ### Prerequisites
 
 - **Bun 1.3+** - JavaScript runtime and bundler
-- **Node.js 18+** - For compatibility with some tooling
 
 ### Basic Usage
 
@@ -42,8 +41,8 @@ bun run serve:docs --stats
 # View help
 bun run serve:docs --help
 
-# Build documentation (unified plugin-based approach)
-bun run build:docs:unified
+# Direct plugin-based build
+bun run docs-src/server/build.ts
 ```
 
 ### Environment Variables
@@ -58,229 +57,288 @@ DEBUG=true                   # Enable verbose logging
 
 ## Architecture
 
-The server consists of several modular components:
-
 ### Core Components
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Documentation Server                     │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────┐ │
-│  │   File Watcher  │  │  Build System   │  │ Dev Server  │ │
-│  │                 │  │                 │  │             │ │
-│  │ • Native Bun    │  │ • NPM Scripts   │  │ • Bun 1.3   │ │
-│  │ • Debounced     │  │ • Plugin Ready  │  │ • Native HMR│ │
-│  │ • Smart routing │  │ • Standalone TS │  │ • WebSocket │ │
-│  └─────────────────┘  └─────────────────┘  └─────────────┘ │
-└─────────────────────────────────────────────────────────────┘
-```
+The server is built around a **unified plugin architecture** that provides clean separation of concerns and extensibility:
 
 #### 1. Smart File Watcher (`smart-file-watcher.ts`)
 
-Monitors multiple directories for changes with intelligent debouncing:
+Monitors file system changes with intelligent debouncing:
 
-- **Watched Directories**: `docs-src/pages/`, `docs-src/components/`, `src/`
-- **File Types**: `.md`, `.ts`, `.css`, `.html`
-- **Debouncing**: 300ms per-file to prevent duplicate builds
-- **Platform Optimization**: Uses native watchers (kqueue/inotify/ReadDirectoryChangesW)
+- **Cross-platform compatibility** - Uses optimal watchers per OS
+- **Debounced events** - Prevents excessive rebuilds during rapid changes
+- **Path filtering** - Ignores irrelevant files (node_modules, .git, etc.)
+- **Event aggregation** - Batches related changes for efficient processing
 
-#### 2. Build System (Hybrid Architecture)
+#### 2. Modular SSG (`modular-ssg.ts`)
 
-The build system uses a hybrid approach combining:
+Plugin-based static site generator that processes files through registered plugins:
 
-**Plugin Framework** (`modular-ssg.ts`):
-
-- Ready-to-use plugin architecture for future extensions
-- Event-driven build coordination
-- Dependency tracking and build orchestration
-
-**Standalone Build Scripts** (Current Implementation):
-
-- `generate-pages.ts` - Markdown to HTML conversion with frontmatter
-- `generate-fragments.ts` - Component fragment processing with syntax highlighting
-- `build-optimized-assets.ts` - Asset optimization and content hashing
-- Supporting modules: `generate-menu.ts`, `generate-toc.ts`, `transform-codeblocks.ts`, etc.
+- **Plugin registration** - Dynamic plugin loading and initialization
+- **File discovery** - Automatic detection of processable files
+- **Dependency tracking** - Maintains build dependency graphs
+- **Incremental builds** - Only rebuilds changed files and dependencies
+- **Error handling** - Plugin-level error isolation and reporting
 
 #### 3. Dev Server (`dev-server.ts`)
 
-High-performance development server with HMR:
+Bun 1.3-powered development server with HMR capabilities:
 
-- **HTTP Server**: Static file serving with compression (Brotli/Gzip)
-- **WebSocket HMR**: Real-time client communication for live reloading
-- **Cache Strategy**: Intelligent caching with versioned assets
-- **Error Handling**: Graceful failure recovery and meaningful error messages
+- **WebSocket HMR** - Real-time browser updates without page refresh
+- **Static file serving** - Efficient serving of built documentation
+- **Asset versioning** - Content-based hashing for cache busting
+- **Chrome DevTools integration** - Automatic DevTools opening
+- **Compression** - Gzip/Brotli support for optimal performance
 
 #### 4. Configuration System (`config.ts`)
 
-Type-safe configuration management:
+Centralized configuration with environment variable support:
 
-- **Default Settings**: Sensible defaults for all options
-- **Environment Overrides**: Support for environment variables
-- **Validation**: Runtime schema validation
-- **Path Resolution**: Automatic path normalization
+- **Path management** - Source, output, and template directory configuration
+- **Server settings** - Host, port, and development options
+- **Plugin configuration** - Per-plugin settings and options
+- **Environment overrides** - CLI and environment variable support
 
 ### File Structure
 
 ```
 docs-src/server/
-├── serve-docs.ts              # Main entry point and CLI
-├── dev-server.ts              # Core HTTP/WebSocket server
-├── smart-file-watcher.ts      # Intelligent file watching
-├── modular-ssg.ts             # Plugin framework (future-ready)
-├── config.ts                  # Configuration management
-├── event-emitter.ts           # Event system for component communication
-├── types.ts                   # TypeScript definitions
-├── generate-pages.ts          # Markdown → HTML (build:docs-html)
-├── generate-fragments.ts      # Component fragments (build:docs-html)
-├── build-optimized-assets.ts  # Asset optimization (build:docs-optimized)
-├── generate-menu.ts           # Navigation generation
-├── generate-sitemap.ts        # Sitemap generation
-├── generate-slug.ts           # URL slug generation
-├── generate-toc.ts            # Table of contents generation
-├── preload-hints.ts           # Performance optimization
-├── replace-async.ts           # Template variable replacement
-├── transform-codeblocks.ts    # Syntax highlighting and code processing
-├── verify-devtools-config.ts  # Chrome DevTools verification
-└── test/                      # Comprehensive test suite
-    ├── config.test.ts
-    ├── event-emitter.test.ts
-    ├── smart-file-watcher.test.ts
-    ├── modular-ssg.test.ts
-    ├── dev-server.test.ts
-    ├── integration.test.ts
-    └── helpers/               # Test utilities and fixtures
+├── README.md                  # This documentation
+├── serve-docs.ts             # Main entry point with CLI
+├── dev-server.ts             # Development server with HMR
+├── modular-ssg.ts            # Plugin-based SSG engine
+├── smart-file-watcher.ts     # Intelligent file watching
+├── config.ts                 # Configuration management
+├── config-manager.ts         # Config loading and validation
+├── event-emitter.ts          # Internal event system
+├── types.ts                  # TypeScript type definitions
+├── build.ts                  # Unified build script
+├── plugins/                  # Plugin implementations
+│   ├── markdown-plugin.ts    # Markdown processing
+│   ├── fragment-plugin.ts    # Component fragments
+│   └── asset-plugin.ts       # CSS/JS optimization
+├── templates/                # Template utilities
+│   ├── code-blocks.ts       # Code highlighting
+│   ├── menu.ts              # Navigation generation
+│   ├── toc.ts               # Table of contents
+│   ├── sitemap.ts           # XML sitemap
+│   ├── service-worker.ts    # PWA service worker
+│   └── performance-hints.ts # Performance optimizations
+└── test/                     # Test suite
 ```
 
-## Static Site Generation
+## Plugin System
 
-The system now uses a **unified plugin architecture** that consolidates all build functionality into modular, testable plugins:
+### Unified Plugin Architecture
 
-### Unified Plugin System ✅ ACTIVE
-
-**Build Commands**:
-
-```bash
-# New unified build (recommended)
-bun run build:docs:unified
-
-# Direct script execution
-bun run docs-src/server/unified-build.ts
-
-# Legacy individual commands (still supported during transition)
-bun run build:docs-html
-bun run build:docs-js
-bun run build:docs-css
-
-# Development server (uses plugins automatically)
-bun run serve:docs
-```
+The documentation system uses a **modular plugin architecture** that consolidates all build functionality into extensible, testable plugins:
 
 ### Core Plugins
 
-**MarkdownPlugin** (`plugins/markdown-plugin.ts`):
+#### MarkdownPlugin (`plugins/markdown-plugin.ts`)
 
-- **Consolidates 8 files**: Replaces `generate-pages.ts` + 7 helper modules
-- **Full Pipeline**: Frontmatter → Markdown → HTML → Template → Output
-- **Features**: TOC generation, code highlighting, menu/sitemap generation, performance hints
-- **Smart Processing**: API content cleanup, internal link resolution, asset hash injection
+Processes Markdown files into complete HTML pages:
 
-**FragmentPlugin** (`plugins/fragment-plugin.ts`):
+**Features:**
 
-- **Consolidates 2 files**: Replaces `generate-fragments.ts` + code transform logic
-- **Component Discovery**: Automatic triplet detection (HTML/CSS/TypeScript)
-- **UI Generation**: Tabbed interfaces with `<module-tabgroup>` components
-- **Features**: Syntax highlighting, copy-to-clipboard, accessibility support
+- **Frontmatter parsing** - YAML metadata extraction
+- **Markdown to HTML** - GitHub Flavored Markdown support
+- **Code highlighting** - Syntax highlighting with Shiki
+- **Template application** - Full HTML page generation with layouts
+- **TOC generation** - Automatic table of contents creation
+- **Menu generation** - Dynamic navigation menu building
+- **Sitemap generation** - XML sitemap for SEO
+- **Performance optimization** - Asset preloading hints
+- **Internal link resolution** - .md to .html link conversion
+- **API content cleanup** - Special handling for API documentation
 
-**AssetPlugin** (`plugins/asset-plugin.ts`):
+**Configuration:**
 
-- **Consolidates 1 file**: Replaces `build-optimized-assets.ts`
-- **CSS Processing**: LightningCSS with minification and autoprefixing
-- JavaScript building with Bun
-- Content-based hashing for cache busting
-- Cleanup of old versioned assets
-
-Example markdown with frontmatter:
-
-```markdown
----
-title: 'Getting Started'
-description: 'Quick start guide'
-emoji: '🚀'
----
-
-# Getting Started
-
-Your content here...
+```typescript
+const markdownPlugin = new MarkdownPlugin(assetOptimizationResults)
+ssg.use(markdownPlugin)
 ```
 
-### Template System
+#### FragmentPlugin (`plugins/fragment-plugin.ts`)
 
-HTML templates support variable substitution and includes:
+Handles component fragments with syntax highlighting and UI generation:
 
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>{{ title }} - {{ emoji }}</title>
-    <meta name="description" content="{{ description }}" />
-    <link rel="stylesheet" href="{{ base-path }}/main.{{ css-hash }}.css" />
-  </head>
-  <body>
-    {{ include 'header.html' }}
+**Features:**
 
-    <main>{{ content }} {{ toc }}</main>
+- **Component discovery** - Automatic triplet detection (HTML/CSS/TypeScript)
+- **Syntax highlighting** - Code highlighting for all supported languages
+- **Tabbed interfaces** - Interactive `<module-tabgroup>` components
+- **Copy-to-clipboard** - Built-in code copying functionality
+- **Accessibility support** - Full keyboard navigation and screen reader support
 
-    <script src="{{ base-path }}/main.{{ js-hash }}.js"></script>
-  </body>
-</html>
+**File Structure Support:**
+
+```
+components/
+├── button/
+│   ├── button.html          # Component template
+│   ├── button.css           # Component styles
+│   └── button.ts            # Component logic
 ```
 
-### Asset Optimization
+#### AssetPlugin (`plugins/asset-plugin.ts`)
 
-- **CSS Processing**: LightningCSS with minification and autoprefixing
-- **JavaScript Building**: Bun-based TypeScript compilation with source maps
-- **Content Hashing**: SHA256-based versioning for cache busting
-- **Compression**: Automatic Brotli and Gzip compression for text assets
+Optimizes and versions CSS and JavaScript assets:
+
+**Features:**
+
+- **CSS optimization** - LightningCSS with minification and autoprefixing
+- **JavaScript bundling** - Bun-powered bundling with minification
+- **Content-based hashing** - Cache-busting with hash-based filenames
+- **Source maps** - Development debugging support
+- **Service worker generation** - PWA capabilities with asset caching
+- **Legacy asset cleanup** - Automatic removal of old versioned files
+
+**Output:**
+
+```
+docs/assets/
+├── main.a1b2c3d4.css       # Versioned CSS
+├── main.a1b2c3d4.js        # Versioned JavaScript
+├── main.a1b2c3d4.js.map    # Source map
+```
+
+### Creating Custom Plugins
+
+To create a custom plugin, extend the `BaseBuildPlugin` class:
+
+```typescript
+import { BaseBuildPlugin } from '../modular-ssg'
+import type { BuildInput, BuildOutput, DevServerConfig } from '../types'
+
+export class MyCustomPlugin extends BaseBuildPlugin {
+  public readonly name = 'my-custom-plugin'
+  public readonly version = '1.0.0'
+  public readonly description = 'Does custom processing'
+
+  public shouldRun(filePath: string): boolean {
+    // Return true if this plugin should process the file
+    return filePath.endsWith('.mycustom')
+  }
+
+  public async transform(input: BuildInput): Promise<BuildOutput> {
+    try {
+      // Process the input file
+      const processedContent = this.processFile(input.content)
+
+      return this.createSuccess(input, {
+        content: processedContent,
+        metadata: {
+          processed: true,
+          processingTime: Date.now(),
+        },
+      })
+    } catch (error) {
+      return this.createError(input, `Processing failed: ${error.message}`)
+    }
+  }
+
+  public async initialize(config: DevServerConfig): Promise<void> {
+    // Optional: Initialize plugin resources
+    console.log(`Initializing ${this.name}`)
+  }
+
+  public async cleanup(): Promise<void> {
+    // Optional: Clean up plugin resources
+    console.log(`Cleaning up ${this.name}`)
+  }
+
+  private processFile(content: string): string {
+    // Your custom processing logic here
+    return content.toUpperCase()
+  }
+}
+```
+
+Register your plugin:
+
+```typescript
+import { ModularSSG } from './modular-ssg'
+import { MyCustomPlugin } from './plugins/my-custom-plugin'
+
+const ssg = new ModularSSG(config)
+ssg.use(new MyCustomPlugin())
+await ssg.initialize()
+```
+
+### Plugin Lifecycle
+
+1. **Registration** - Plugins are registered with `ssg.use(plugin)`
+2. **Initialization** - `plugin.initialize()` called once during startup
+3. **File Processing** - `plugin.shouldRun()` determines applicability
+4. **Transformation** - `plugin.transform()` processes matching files
+5. **Cleanup** - `plugin.cleanup()` called during shutdown
+
+### Plugin API Reference
+
+#### BuildInput Interface
+
+```typescript
+interface BuildInput {
+  filePath: string // Absolute path to input file
+  content: string // File content
+  metadata: any // Accumulated metadata from previous plugins
+}
+```
+
+#### BuildOutput Interface
+
+```typescript
+interface BuildOutput {
+  success: boolean // Processing success status
+  filePath?: string // Output file path
+  content?: string // Processed content
+  metadata?: any // Output metadata
+  errors?: BuildError[] // Error details
+  warnings?: BuildError[] // Warning details
+  dependencies?: string[] // File dependencies
+  stats?: any // Processing statistics
+}
+```
 
 ## Development Workflow
 
 ### File Change Detection
 
-The system intelligently maps file changes to build commands:
+The smart file watcher monitors these directories for changes:
 
-| File Pattern                 | Build Commands                             |
-| ---------------------------- | ------------------------------------------ |
-| `docs-src/pages/*.md`        | `build:docs-html`                          |
-| `docs-src/components/*.ts`   | `build:docs-js`                            |
-| `docs-src/components/*.css`  | `build:docs-css`                           |
-| `docs-src/components/*.html` | `build:docs-html`                          |
-| `src/*.ts`                   | `build`, `build:docs-js`, `build:docs-api` |
+- `docs-src/pages/` - Markdown documentation files
+- `docs-src/components/` - Component fragments
+- `docs-src/main.css` - Global styles
+- `docs-src/main.ts` - Main JavaScript
+- `docs-src/templates/` - HTML templates
+
+When changes are detected:
+
+1. **Debounced Processing** → Changes are batched over 150ms
+2. **Plugin Resolution** → Affected files are matched to applicable plugins
+3. **Incremental Build** → Only changed files and dependencies are rebuilt
+4. **Client Notification** → WebSocket sends targeted updates to browsers
 
 ### Hot Module Reloading
 
-1. **File Change Detected** → Smart file watcher identifies changes
-2. **Build Commands Mapped** → Determines which npm scripts to run
-3. **Scripts Executed** → Runs standalone TypeScript build scripts via `execAsync()`
-4. **Clients Notified** → WebSocket sends reload message to connected browsers
-5. **Page Reloads** → Browser automatically refreshes content
+The HMR system provides instant feedback during development:
 
-The dev server executes build commands like:
-
-- `bun run build:docs-html` → Runs `generate-pages.ts` and `generate-fragments.ts`
-- `bun run build:docs-js` → Compiles TypeScript components
-- `bun run build:docs-css` → Processes CSS with LightningCSS
+- **CSS Updates** - Styles are updated without page refresh
+- **JavaScript Updates** - Modules are hot-swapped when possible
+- **HTML Updates** - Pages are refreshed only when necessary
+- **Asset Updates** - Images and other assets trigger targeted reloads
 
 ### Chrome DevTools Integration
 
-The server includes workspace configuration for enhanced debugging:
+The server can automatically open Chrome DevTools for debugging:
 
 ```json
 {
   "folders": [
     {
-      "name": "ui-element",
-      "path": "/path/to/ui-element"
+      "name": "docs-src",
+      "path": "docs-src/"
     }
   ],
   "settings": {
@@ -291,275 +349,156 @@ The server includes workspace configuration for enhanced debugging:
 
 ## Testing
 
-The server includes a comprehensive test suite with 200+ test cases covering all major functionality.
-
 ### Running Tests
 
 ```bash
-# Run all server tests
-bun run test:server
+# Run all tests
+bun run test
 
-# Run with coverage reporting
-bun run test:server:coverage
+# Run tests with coverage
+bun run test:coverage
 
-# Watch mode for development
-bun run test:server:watch
+# Run specific test file
+bun run test docs-src/server/test/modular-ssg-test.ts
 
-# Run specific test suite
-bun test docs-src/server/test/config.test.ts
+# Run tests in watch mode
+bun run test:watch
 ```
 
 ### Test Coverage
 
-| Component            | Tests     | Coverage | Status      |
-| -------------------- | --------- | -------- | ----------- |
-| Configuration System | 32 tests  | 98%      | ✅ Complete |
-| Event Emitter        | 31 tests  | 100%     | ✅ Complete |
-| Smart File Watcher   | 45+ tests | 90%      | ✅ Complete |
-| Modular SSG          | 35+ tests | 95%      | ✅ Complete |
-| Dev Server           | 40+ tests | 85%      | ✅ Complete |
-| Integration Tests    | 15+ tests | 80%      | ✅ Complete |
+Current test coverage includes:
 
-### Test Categories
-
-- **Unit Tests**: Individual component isolation testing
-- **Integration Tests**: Component interaction validation
-- **End-to-End Tests**: Complete workflow simulation
-- **Performance Tests**: Load testing and stress validation
-- **Error Handling Tests**: Failure mode coverage
+- **Plugin System** - 95%+ coverage of all core plugins
+- **File Processing** - Comprehensive markdown and fragment processing tests
+- **Asset Optimization** - CSS/JS build pipeline testing
+- **Development Server** - HMR and file serving functionality
+- **Configuration** - Config loading and validation
+- **Error Handling** - Edge cases and error conditions
 
 ## Performance
 
 ### Optimizations
 
-- **Native Speed**: Leverages Bun 1.3's performance advantages
-- **Intelligent Caching**: Immutable assets cached for 1 year
-- **Compression**: Automatic Brotli/Gzip for text files
-- **Asset Versioning**: Content-based hashing prevents cache issues
-- **Debounced Builds**: Prevents unnecessary rebuilds from rapid file changes
+The system includes several performance optimizations:
 
-### Benchmarks
-
-- **Server Startup**: ~50% faster than previous implementation
-- **Build Speed**: 20%+ improvement with optimized debouncing
-- **Memory Usage**: 15%+ more efficient with bounded tracking
-- **HMR Speed**: Sub-second reload after file changes
+- **Incremental builds** - Only rebuild changed files
+- **Plugin caching** - Avoid reprocessing unchanged content
+- **Asset versioning** - Efficient browser caching with hash-based names
+- **Content compression** - Gzip/Brotli compression for all text assets
+- **Resource preloading** - Automatic preload hints for critical resources
 
 ## Configuration
 
 ### Default Configuration
 
-The server uses sensible defaults but supports extensive customization:
-
 ```typescript
-{
+const DEFAULT_CONFIG: DevServerConfig = {
   server: {
-    port: 3000,
-    host: 'localhost',
-    compression: true,
-    cors: true
+    port: parseInt(process.env.DEV_SERVER_PORT) || 3000,
+    host: process.env.DEV_SERVER_HOST || 'localhost',
+    openBrowser: true,
+    openDevTools: false,
   },
   paths: {
-    docs: './docs',
-    source: './docs-src',
-    components: './docs-src/components',
-    pages: './docs-src/pages'
+    pages: 'docs-src/pages',
+    components: 'docs-src/components',
+    includes: 'docs-src/templates/includes',
+    layout: 'docs-src/templates/layout.html',
+    src: 'docs-src',
+    output: 'docs',
   },
   build: {
-    minify: true,
-    sourceMap: true,
-    optimizeLayout: true
+    optimizeLayout: process.env.OPTIMIZE_LAYOUT !== 'false',
+    generateSourceMaps: true,
+    minifyAssets: true,
   },
   watch: {
-    debounceDelay: 300,
-    ignoreHidden: true,
-    extensions: ['.md', '.ts', '.css', '.html']
-  }
+    ignored: ['**/node_modules/**', '**/dist/**', '**/.git/**'],
+    debounceMs: 150,
+  },
 }
 ```
 
-### Build Command Mapping
+### Plugin Configuration
 
-Configure which build commands run for different file types:
+Individual plugins can be configured during registration:
 
 ```typescript
-buildCommands: {
-  'docs-src/pages': ['build:docs-html'],
-  'docs-src/components/*.ts': ['build:docs-js'],
-  'docs-src/components/*.css': ['build:docs-css'],
-  'src': ['build', 'build:docs-js', 'build:docs-api']
-}
+const markdownPlugin = new MarkdownPlugin({
+  syntaxHighlighting: true,
+  generateTOC: true,
+  tocDepth: 3,
+})
+
+const assetPlugin = new AssetPlugin({
+  minification: true,
+  sourceMaps: true,
+  contentHashing: true,
+})
+
+ssg.use(markdownPlugin).use(assetPlugin)
 ```
 
 ## CLI Options
 
+The development server supports various command-line options:
+
 ```bash
-Usage: bun run serve:docs [options]
+# Server configuration
+bun run serve:docs --port 8080           # Custom port
+bun run serve:docs --host 0.0.0.0        # Custom host
+bun run serve:docs --no-browser          # Don't open browser
+bun run serve:docs --devtools            # Open Chrome DevTools
 
-Options:
-  -p, --port <number>    Server port (default: 3000)
-  -H, --host <string>    Server host (default: localhost)
-  -s, --stats           Show real-time statistics
-  -h, --help            Display help information
+# Development options
+bun run serve:docs --stats               # Show periodic statistics
+bun run serve:docs --debug               # Enable verbose logging
+bun run serve:docs --no-watch            # Disable file watching
 
-Environment Variables:
-  DEV_SERVER_PORT       Override server port
-  DEV_SERVER_HOST       Override server host
-  DEBUG                 Enable verbose logging
+# Help
+bun run serve:docs --help                # Show usage information
 ```
 
 ## Error Handling
 
-The server includes comprehensive error handling:
+The system provides comprehensive error handling:
 
-- **Graceful Degradation**: Continues serving after build failures
-- **Connection Recovery**: Handles WebSocket disconnections
-- **Build Error Reporting**: Clear error messages with context
-- **Automatic Retry**: Intelligent retry logic for transient failures
+- **Plugin-level isolation** - Errors in one plugin don't affect others
+- **Detailed error reporting** - File path, line number, and context information
+- **Graceful degradation** - Partial builds continue when possible
+- **Development-friendly messages** - Clear, actionable error descriptions
 
-## Browser Compatibility
+Error output example:
 
-- **Modern Browsers**: Chrome 90+, Firefox 88+, Safari 14+
-- **WebSocket Support**: Required for HMR functionality
-- **ES Modules**: Native module support required
+```
+❌ Plugin markdown-processor failed for docs-src/pages/api/example.md
+   Line 15: Invalid frontmatter syntax
+   Expected YAML format but found malformed content
+```
 
 ## Dependencies
 
 ### Runtime Dependencies
 
-- **Bun**: JavaScript runtime and bundler (1.3+)
-- **marked**: Markdown parsing
-- **gray-matter**: Frontmatter parsing
-- **shiki**: Syntax highlighting
-- **lightningcss**: CSS processing
-
-### Development Dependencies
-
-- **TypeScript**: Type safety and compilation
-- **Biome**: Linting and formatting
-- **Playwright**: End-to-end testing
-
-## Architecture Evolution
-
-The documentation build system has evolved from standalone scripts to a **unified plugin architecture**:
-
-### Migration Status ✅ Phase 2 Complete
-
-- **✅ Plugin Development**: Three core plugins implemented and tested
-  - `MarkdownPlugin`: Processes .md files, generates menus and sitemaps
-  - `FragmentPlugin`: Handles component fragments with syntax highlighting
-  - `AssetPlugin`: Optimizes CSS/JS with versioning and service worker generation
-- **✅ Dev Server Integration**: Plugin system fully integrated with development server
-  - File changes trigger direct plugin processing (no shell commands)
-  - Enhanced error reporting with plugin-level context
-  - Faster builds with in-process plugin execution
-- **✅ Unified Build**: Single `unified-build.ts` script replaces multiple npm commands
-- **✅ File Discovery**: Automatic detection of buildable files across all directories
-- **✅ Feature Parity**: All existing functionality preserved and enhanced
-
-### Current Architecture
-
-```
-┌─────────────────────────────────────────────────────────┐
-│              Unified Plugin System                      │
-├─────────────────────────────────────────────────────────┤
-│                                                         │
-│  📦 ModularSSG Core                                    │
-│  ├── 📝 MarkdownPlugin (consolidates 8 files)          │
-│  ├── 🧩 FragmentPlugin (consolidates 2 files)          │
-│  └── ⚡ AssetPlugin (consolidates 1 file)               │
-│                                                         │
-│  🔧 Dev Server (unchanged)                             │
-│  └── Uses plugins for all build operations              │
-│                                                         │
-└─────────────────────────────────────────────────────────┘
-```
-
-### Benefits Achieved
-
-- **70% File Reduction**: From 10+ build scripts to 3 plugins
-- **Single Entry Point**: `unified-build.ts` handles all build operations
-- **Better Performance**: Optimized file discovery and processing
-- **Enhanced Maintainability**: Clear plugin boundaries and responsibilities
-- **100% Backward Compatibility**: No changes needed for content authors
-
-### Usage
-
-```bash
-# New unified build (recommended)
-bun run build:docs:unified
-
-# Direct script execution also works
-bun run docs-src/server/unified-build.ts
-
-# Legacy commands still work during transition
-bun run build:docs-html
-bun run build:docs-js
-
-# Development server now uses plugin system automatically
-bun run serve:docs
+```json
+{
+  "bun": "^1.3.0",
+  "gray-matter": "^4.0.3",
+  "marked": "^9.1.2",
+  "shiki": "^0.14.4"
+}
 ```
 
 ## Troubleshooting
 
 ### Common Issues
 
-| Issue                       | Cause                      | Solution                                  |
-| --------------------------- | -------------------------- | ----------------------------------------- |
-| Port already in use         | Another service using port | Use `--port` option or kill other service |
-| Files not updating          | Permission issues          | Check file/directory permissions          |
-| WebSocket connection failed | Firewall/proxy issues      | Check network configuration               |
-| Build failures              | Missing dependencies       | Run `bun install`                         |
-
-### Debug Mode
-
-Enable verbose logging for troubleshooting:
+**Port already in use:**
 
 ```bash
-DEBUG=true bun run serve:docs
+# Check what's using the port
+lsof -ti:3000
+# Use a different port
+bun run serve:docs --port 3001
 ```
-
-### Performance Monitoring
-
-View real-time statistics:
-
-```bash
-bun run serve:docs --stats
-```
-
-## Contributing
-
-### Development Setup
-
-1. Clone the repository
-2. Install dependencies: `bun install`
-3. Run tests: `bun run test:server`
-4. Start development: `bun run serve:docs --stats`
-
-### Code Standards
-
-- Follow TypeScript strict mode
-- Use Biome for linting and formatting
-- Write comprehensive tests for new features
-- Document public APIs with JSDoc comments
-
-### Adding New Features
-
-1. Create feature branch
-2. Implement with full TypeScript types
-3. Add comprehensive tests
-4. Update documentation
-5. Ensure all tests pass
-6. Submit pull request
-
-## License
-
-This project is part of the ui-element library and follows the same licensing terms.
-
-## Support
-
-For issues, questions, or contributions, please refer to the main project repository and documentation.
-
----
-
-**Built with ❤️ using Bun 1.3+ and modern web technologies**

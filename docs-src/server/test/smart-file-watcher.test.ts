@@ -5,8 +5,8 @@
 import { afterEach, beforeEach, describe, expect, it } from 'bun:test'
 import { mkdirSync, rmSync, writeFileSync } from 'fs'
 import { join } from 'path'
-import { SmartFileWatcher } from '../smart-file-watcher.js'
-import type {} from '../types.js'
+import { SmartFileWatcher } from '../smart-file-watcher'
+import type {} from '../types'
 import {
 	createMockFunction,
 	createTestContext,

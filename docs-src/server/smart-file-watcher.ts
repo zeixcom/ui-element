@@ -12,7 +12,7 @@ import type {
 	ISmartFileWatcher,
 	WatcherState,
 	WatchPathConfig,
-} from './types.js'
+} from './types'
 
 /**
  * Enhanced file watcher with smart debouncing and change detection

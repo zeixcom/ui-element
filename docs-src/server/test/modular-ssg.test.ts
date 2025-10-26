@@ -5,13 +5,13 @@
 import { afterEach, beforeEach, describe, expect, it } from 'bun:test'
 import { existsSync, rmSync, writeFileSync } from 'fs'
 import { join, resolve } from 'path'
-import { BaseBuildPlugin, ModularSSG } from '../modular-ssg.js'
-import type { BuildInput, BuildOutput, DevServerConfig } from '../types.js'
+import { BaseBuildPlugin, ModularSSG } from '../modular-ssg'
+import type { BuildInput, BuildOutput, DevServerConfig } from '../types'
 import {
 	createMockFunction,
 	createTestContext,
 	type TestContext,
-} from './helpers/test-setup.js'
+} from './helpers/test-setup'
 
 // Test plugin implementations
 class TestMarkdownPlugin extends BaseBuildPlugin {
