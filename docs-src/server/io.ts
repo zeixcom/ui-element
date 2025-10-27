@@ -1,81 +1,8 @@
-import { State, state, UNSET } from '@zeix/cause-effect'
 import { createHash } from 'crypto'
-import { existsSync, mkdirSync, watch, writeFileSync } from 'fs'
-import { readdir, readFile, stat } from 'fs/promises'
-import { dirname, extname, join, relative } from 'path'
-import { OUTPUT_DIR } from './config'
+import { existsSync, mkdirSync, writeFileSync } from 'fs'
+import { readFile, stat } from 'fs/promises'
+import { dirname, relative } from 'path'
 import { FileInfo, PageMetadata } from './types'
-
-type WatcherOptions = {
-	recursive?: boolean
-	extensions?: string[]
-	ignore?: string[]
-}
-
-export function watchFiles(
-	directory: string,
-	options: WatcherOptions,
-): State<Map<string, FileInfo>> {
-	const { recursive = false, extensions = [], ignore = [] } = options
-	const signal = state<Map<string, FileInfo>>(UNSET)
-
-	const isMatching = (file: string): boolean => {
-		if (ignore.some(pattern => file.includes(pattern))) return false
-		if (extensions.length > 0) {
-			const ext = extname(file)
-			return extensions.includes(ext)
-		}
-		return true
-	}
-
-	;(async () => {
-		const files: Map<string, FileInfo> = new Map()
-
-		try {
-			const entries = await readdir(directory, {
-				withFileTypes: true,
-				recursive,
-			})
-
-			for (const entry of entries) {
-				if (entry.isFile() && isMatching(entry.name)) {
-					const filePath = join(directory, entry.name)
-					const fileInfo = await createFileInfo(filePath, entry.name)
-					files.set(filePath, fileInfo)
-				}
-			}
-			signal.set(files)
-		} catch (error) {
-			console.error(`Error listing files in ${directory}:`, error)
-		}
-	})()
-
-	console.log('Watching files in directory:', directory)
-
-	watch(
-		directory,
-		{ recursive: options.recursive, persistent: true },
-		async (event, filename) => {
-			if (!filename || !isMatching(filename)) return
-
-			const filePath = join(directory, filename)
-			if (event === 'rename' && !existsSync(filePath)) {
-				signal.update(files => {
-					files.delete(filePath)
-					return files
-				})
-			} else {
-				const fileInfo = await createFileInfo(filePath, filename)
-				signal.update(files => {
-					files.set(filePath, fileInfo)
-					return files
-				})
-			}
-		},
-	)
-
-	return signal
-}
 
 export function getRelativePath(
 	basePath: string,
@@ -198,10 +125,26 @@ export function writeFileSyncSafe(filePath: string, content: string): boolean {
 			mkdirSync(dir, { recursive: true })
 		}
 
-		writeFileSync(join(OUTPUT_DIR, filePath), content, 'utf-8')
+		writeFileSync(filePath, content, 'utf-8')
 		return true
 	} catch (error) {
 		console.error(`Error writing file ${filePath}:`, error)
 		return false
 	}
+}
+
+export function hasFileChanged(
+	current: FileInfo | null,
+	previous: FileInfo | null,
+): boolean {
+	if (!current && !previous) return false
+	if (!current || !previous) return true
+
+	// Quick check: modification time
+	if (current.lastModified !== previous.lastModified) return true
+
+	// Thorough check: content hash
+	if (current.hash !== previous.hash) return true
+
+	return false
 }
