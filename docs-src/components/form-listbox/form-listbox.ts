@@ -14,9 +14,9 @@ import {
 	UNSET,
 } from '../../..'
 
-import { asURL } from '../../functions/parser/asURL'
-import { fetchWithCache } from '../../functions/shared/fetchWithCache'
-import { highlightMatch } from '../../functions/shared/highlightMatch'
+import { asURL } from '../_shared/asURL'
+import { fetchWithCache } from '../_shared/fetchWithCache'
+import { highlightMatch } from '../_shared/highlightMatch'
 
 type FormListboxOption = {
 	value: string

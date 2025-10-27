@@ -5,8 +5,8 @@ import {
 	type Oklch,
 } from 'culori/fn'
 import { asString, type Component, component, on, pass } from '../../..'
-import { asOklch } from '../../functions/parser/asOklch'
-import { getStepColor } from '../../functions/shared/getStepColor'
+import { asOklch } from '../_shared/asOklch'
+import { getStepColor } from '../_shared/getStepColor'
 
 export type ModuleColoreditorProps = {
 	color: Oklch

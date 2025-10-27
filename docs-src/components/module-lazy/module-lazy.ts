@@ -9,8 +9,8 @@ import {
 	toggleClass,
 	UNSET,
 } from '../../..'
-import { asURL } from '../../functions/parser/asURL'
-import { fetchWithCache } from '../../functions/shared/fetchWithCache'
+import { asURL } from '../_shared/asURL'
+import { fetchWithCache } from '../_shared/fetchWithCache'
 
 export type ModuleLazyProps = {
 	src: { value: string; error: string }

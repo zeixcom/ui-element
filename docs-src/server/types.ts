@@ -2,6 +2,7 @@
  * TypeScript types and interfaces for the dev server architecture
  */
 
+import { Computed, State } from '@zeix/cause-effect'
 import type { ServerWebSocket } from 'bun'
 
 // ============================================================================
@@ -107,6 +108,45 @@ export interface BuildStats {
 	outputSize?: number
 }
 
+export interface FileSystemSignals {
+	// Input signals (reactive data sources)
+	markdownFiles: State<Map<string, { content: string; lastModified: number }>>
+	templateFiles: State<Map<string, { content: string; lastModified: number }>>
+	componentFiles: State<
+		Map<string, { content: string; lastModified: number }>
+	>
+	assetFiles: State<Map<string, { hash: string; lastModified: number }>>
+
+	// Derived signals (computed from inputs)
+	processedPages: Computed<ProcessedPage[]>
+	navigationMenu: Computed<string>
+	sitemap: Computed<string>
+	dependencyGraph: Computed<Map<string, Set<string>>>
+
+	// Asset optimization results
+	optimizedAssets: State<{
+		css: { mainCSSHash: string }
+		js: { mainJSHash: string }
+	}>
+}
+
+export interface FileSystemOptions {
+	config: DevServerConfig
+	baseUrl?: string
+}
+
+export interface FileProcessor {
+	signals: FileSystemSignals
+	updateFile(filePath: string, content: string, lastModified: number): void
+	removeFile(filePath: string): void
+	updateAssets(assetInfo: {
+		css: { mainCSSHash: string }
+		js: { mainJSHash: string }
+	}): void
+	processFileChange(event: FileChangeEvent): Promise<void>
+	setupEffects(): () => void // Returns cleanup function
+}
+
 export interface BuildPlugin {
 	name: string
 	version?: string
@@ -118,14 +158,33 @@ export interface BuildPlugin {
 	/** Transform the input */
 	transform(input: BuildInput): Promise<BuildOutput>
 
-	/** Optional: Initialize plugin */
-	initialize?(config: DevServerConfig): Promise<void>
-
 	/** Optional: Cleanup plugin */
 	cleanup?(): Promise<void>
 
 	/** Optional: Get plugin dependencies */
 	getDependencies?(filePath: string): Promise<string[]>
+
+	/** Initialize plugin with reactive signals */
+	initialize?(
+		config: DevServerConfig,
+		signals: FileSystemSignals,
+		processor: FileProcessor,
+	): Promise<void>
+
+	/** Set up reactive effects for this plugin */
+	setupEffects?(signals: FileSystemSignals): () => void // Returns cleanup function
+
+	/** Handle reactive file changes (called automatically by signal effects) */
+	onFileChange?(
+		event: FileChangeEvent,
+		signals: FileSystemSignals,
+	): Promise<void>
+
+	/** Get files that this plugin should reactively watch */
+	getWatchPatterns?(): string[]
+
+	/** Check if plugin should react to a specific file change */
+	shouldReactToChange?(filePath: string, eventType: string): boolean
 }
 
 // ============================================================================
@@ -137,6 +196,37 @@ export interface FileChangeEvent {
 	eventType: 'rename' | 'change' | 'create' | 'delete'
 	filePath: string
 	timestamp: number
+}
+
+export interface BuildOptions {
+	/** Enable watch mode for development */
+	watch: boolean
+	/** Enable verbose logging */
+	verbose: boolean
+	/** Production mode optimizations */
+	production: boolean
+	/** Force full rebuild */
+	force: boolean
+	/** Specific files to build (if not provided, builds all) */
+	files?: string[]
+	/** Skip certain build steps */
+	skip?: string[]
+}
+
+export interface BuildResult {
+	success: boolean
+	duration: number
+	filesProcessed: number
+	errors: Error[]
+	warnings: string[]
+	stats: {
+		menuGenerated: boolean
+		assetsBuilt: boolean
+		fragmentsGenerated: boolean
+		pagesProcessed: number
+		sitemapGenerated: boolean
+		serviceWorkerGenerated: boolean
+	}
 }
 
 export interface WatcherState {
@@ -178,6 +268,41 @@ export interface ResponseOptions {
 // ============================================================================
 // Content Processing Types
 // ============================================================================
+
+export interface FileInfo {
+	path: string
+	filename: string
+	content: string
+	hash: string
+	lastModified: number
+	size: number
+	exists: boolean
+}
+
+export interface ProcessedFile extends FileInfo {
+	outputPath?: string
+	metadata?: Record<string, unknown>
+	dependencies: string[]
+}
+
+export interface ComponentFile {
+	name: string
+	html?: FileInfo
+	css?: FileInfo
+	typescript?: FileInfo
+	lastModified: number
+}
+
+export interface PageInfo {
+	title: string
+	emoji: string
+	description: string
+	url: string
+	filename: string
+	relativePath: string
+	lastModified: number
+	section?: string
+}
 
 export interface PageMetadata {
 	title?: string

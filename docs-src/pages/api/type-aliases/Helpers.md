@@ -8,7 +8,7 @@
 
 > **Helpers**\<`P`\> = `object`
 
-Defined in: [src/core/dom.ts:97](https://github.com/zeixcom/ui-element/blob/6f2dec0b8de4a8a6010a0f1311d8457054510e5b/src/core/dom.ts#L97)
+Defined in: [src/core/dom.ts:97](https://github.com/zeixcom/ui-element/blob/e2d0534c92417874d64304e2f9afb7062e5cf6fa/src/core/dom.ts#L97)
 
 ## Type Parameters
 
@@ -22,7 +22,7 @@ Defined in: [src/core/dom.ts:97](https://github.com/zeixcom/ui-element/blob/6f2d
 
 > **all**: [`ElementEffects`](ElementEffects.md)\<`P`\>
 
-Defined in: [src/core/dom.ts:101](https://github.com/zeixcom/ui-element/blob/6f2dec0b8de4a8a6010a0f1311d8457054510e5b/src/core/dom.ts#L101)
+Defined in: [src/core/dom.ts:101](https://github.com/zeixcom/ui-element/blob/e2d0534c92417874d64304e2f9afb7062e5cf6fa/src/core/dom.ts#L101)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [src/core/dom.ts:101](https://github.com/zeixcom/ui-element/blob/6f2
 
 > **first**: [`ElementEffects`](ElementEffects.md)\<`P`\>
 
-Defined in: [src/core/dom.ts:100](https://github.com/zeixcom/ui-element/blob/6f2dec0b8de4a8a6010a0f1311d8457054510e5b/src/core/dom.ts#L100)
+Defined in: [src/core/dom.ts:100](https://github.com/zeixcom/ui-element/blob/e2d0534c92417874d64304e2f9afb7062e5cf6fa/src/core/dom.ts#L100)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: [src/core/dom.ts:100](https://github.com/zeixcom/ui-element/blob/6f2
 
 > **useElement**: [`ElementUsage`](ElementUsage.md)
 
-Defined in: [src/core/dom.ts:98](https://github.com/zeixcom/ui-element/blob/6f2dec0b8de4a8a6010a0f1311d8457054510e5b/src/core/dom.ts#L98)
+Defined in: [src/core/dom.ts:98](https://github.com/zeixcom/ui-element/blob/e2d0534c92417874d64304e2f9afb7062e5cf6fa/src/core/dom.ts#L98)
 
 ***
 
@@ -46,4 +46,4 @@ Defined in: [src/core/dom.ts:98](https://github.com/zeixcom/ui-element/blob/6f2d
 
 > **useElements**: [`ElementsUsage`](ElementsUsage.md)
 
-Defined in: [src/core/dom.ts:99](https://github.com/zeixcom/ui-element/blob/6f2dec0b8de4a8a6010a0f1311d8457054510e5b/src/core/dom.ts#L99)
+Defined in: [src/core/dom.ts:99](https://github.com/zeixcom/ui-element/blob/e2d0534c92417874d64304e2f9afb7062e5cf6fa/src/core/dom.ts#L99)

@@ -10,7 +10,7 @@ import {
 	setProperty,
 	setText,
 } from '../../..'
-import { clearEffects, clearMethod } from '../../functions/shared/clearInput'
+import { clearEffects, clearMethod } from '../_shared/clearInput'
 
 export type FormTextboxProps = {
 	value: string

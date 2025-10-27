@@ -8,7 +8,7 @@
 
 > **fromEvents**\<`T`, `C`, `S`\>(`selector`, `events`, `initialize`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`T`\>, `C`\>
 
-Defined in: [src/core/events.ts:66](https://github.com/zeixcom/ui-element/blob/6f2dec0b8de4a8a6010a0f1311d8457054510e5b/src/core/events.ts#L66)
+Defined in: [src/core/events.ts:66](https://github.com/zeixcom/ui-element/blob/e2d0534c92417874d64304e2f9afb7062e5cf6fa/src/core/events.ts#L66)
 
 Produce a computed signal from transformed event data
 

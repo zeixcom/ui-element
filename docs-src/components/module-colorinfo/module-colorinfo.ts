@@ -16,7 +16,7 @@ import {
 	formatRgb,
 	type Oklch,
 } from 'culori/fn'
-import { asOklch } from '../../functions/parser/asOklch'
+import { asOklch } from '../_shared/asOklch'
 
 export type ModuleColorinfoProps = {
 	name: string
