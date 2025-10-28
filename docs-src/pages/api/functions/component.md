@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / component
+[@zeix/le-truc](../globals.md) / component
 
 # Function: component()
 
 > **component**\<`P`\>(`name`, `init`, `setup`): `void`
 
-Defined in: [src/component.ts:157](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/component.ts#L157)
+Defined in: [src/component.ts:157](https://github.com/zeixcom/ui-element/blob/1c934178f8926c03a10af2b29ad6cc201eead501/src/component.ts#L157)
 
 Define a component with dependency resolution and setup function (connectedCallback)
 

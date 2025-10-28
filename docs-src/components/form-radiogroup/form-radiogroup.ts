@@ -8,7 +8,7 @@ import {
 	setProperty,
 	toggleClass,
 } from '../../..'
-import { onKeydownManageFocus } from '../../functions/event-listener/onKeydownManageFocus'
+import { onKeydownManageFocus } from '../_shared/onKeydownManageFocus'
 
 export type FormRadiogroupProps = {
 	readonly value: string

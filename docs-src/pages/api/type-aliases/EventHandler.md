@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / EventHandler
+[@zeix/le-truc](../globals.md) / EventHandler
 
 # Type Alias: EventHandler()\<P, E, Evt\>
 
 > **EventHandler**\<`P`, `E`, `Evt`\> = (`context`) => `{ [K in keyof P]?: P[K] }` \| `void`
 
-Defined in: [src/core/events.ts:44](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/events.ts#L44)
+Defined in: [src/core/events.ts:44](https://github.com/zeixcom/ui-element/blob/1c934178f8926c03a10af2b29ad6cc201eead501/src/core/events.ts#L44)
 
 ## Type Parameters
 

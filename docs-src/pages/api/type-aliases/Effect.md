@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / Effect
+[@zeix/le-truc](../globals.md) / Effect
 
 # Type Alias: Effect()\<P, E\>
 
 > **Effect**\<`P`, `E`\> = (`host`, `element`) => [`Cleanup`](Cleanup.md) \| `void`
 
-Defined in: [src/core/reactive.ts:15](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/reactive.ts#L15)
+Defined in: [src/core/reactive.ts:15](https://github.com/zeixcom/ui-element/blob/1c934178f8926c03a10af2b29ad6cc201eead501/src/core/reactive.ts#L15)
 
 ## Type Parameters
 

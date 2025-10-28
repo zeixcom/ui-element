@@ -75,15 +75,22 @@ const CONTEXT_REQUEST = 'context-request'
  * @property {boolean} [subscribe=false] - whether to subscribe to context changes
  */
 class ContextRequestEvent<T extends UnknownContext> extends Event {
+	readonly context: T
+	readonly callback: ContextCallback<ContextType<T>>
+	readonly subscribe: boolean
+
 	constructor(
-		public readonly context: T,
-		public readonly callback: ContextCallback<ContextType<T>>,
-		public readonly subscribe: boolean = false,
+		context: T,
+		callback: ContextCallback<ContextType<T>>,
+		subscribe: boolean = false,
 	) {
 		super(CONTEXT_REQUEST, {
 			bubbles: true,
 			composed: true,
 		})
+		this.context = context
+		this.callback = callback
+		this.subscribe = subscribe
 	}
 }
 

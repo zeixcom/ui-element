@@ -1,8 +1,8 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / State
+[@zeix/le-truc](../globals.md) / State
 
 # Type Alias: State\<T\>
 
@@ -12,7 +12,7 @@ Defined in: node\_modules/@zeix/cause-effect/src/state.ts:7
 
 ## Name
 
-UIElement
+Le Truc
 
 ## Version
 

@@ -1,45 +1,45 @@
-# UIElement
+# Le Truc
 
 Version 0.14.0
 
-**UIElement** - a HTML-first library for reactive Web Components
+**Le Truc** - a HTML-first library for reactive Web Components
 
-UIElement is a set of functions to build reusable, loosely coupled Web Components with reactive properties. It provides structure through components and simplifies state management and DOM synchronization using declarative signals and effects, leading to more organized and maintainable code without a steep learning curve.
+Le Truc is a set of functions to build reusable, loosely coupled Web Components with reactive properties. It provides structure through components and simplifies state management and DOM synchronization using declarative signals and effects, leading to more organized and maintainable code without a steep learning curve.
 
-Unlike SPA frameworks (React, Vue, Svelte, etc.) UIElement takes a HTML-first approach, progressively enhancing sever-rendered HTML rather than recreating (rendering) it using JavaScript. UIElement achieves the same result as SPA frameworks with SSR, but with a simpler, more efficient approach. It works with a backend written in any language or with any static site generator.
+Unlike SPA frameworks (React, Vue, Svelte, etc.) Le Truc takes a HTML-first approach, progressively enhancing sever-rendered HTML rather than recreating (rendering) it using JavaScript. Le Truc achieves the same result as SPA frameworks with SSR, but with a simpler, more efficient approach. It works with a backend written in any language or with any static site generator.
 
 ## Key Features
 
-- 🧱 **HTML Web Components**: Build on standard HTML and enhance it with encapsulated, reusable Web Components. No virtual DOM – UIElement works directly with the real DOM.
+- 🧱 **HTML Web Components**: Build on standard HTML and enhance it with encapsulated, reusable Web Components. No virtual DOM – Le Truc works directly with the real DOM.
 - 🚦 **Reactive Properties**: Define reactive properties for fine-grained, efficient state management (signals). Changes automatically propagate only to the parts of the DOM that need updating, avoiding unnecessary re-renders.
 - 🧩 **Function Composition**: Declare component behavior by composing small, reusable functions (attribute parsers and effects). This promotes cleaner code compared to spaghetti code problems that commonly occur when writing low-level imperative code.
-- 🛠️ **Customizable**: UIElement is designed to be easily customizable and extensible. You can create your own custom attribute parsers and effects to suit your specific needs.
+- 🛠️ **Customizable**: Le Truc is designed to be easily customizable and extensible. You can create your own custom attribute parsers and effects to suit your specific needs.
 - 🌐 **Context Support**: Share global states across components without prop drilling or tightly coupling logic.
 - 🪶 **Tiny footprint**: Minimal core (~4kB gzipped) with tree-shaking support, adding only the necessary JavaScript to enhance your HTML.
 - 🛡️ **Type Safety**: Get early warnings when types don't match, improving code quality and reducing bugs.
 
-UIElement uses [Cause & Effect](https://github.com/zeixcom/cause-effect) internally for state management with signals and for scheduled DOM updates. But you could easily rewrite the `component()` function to use a signals library of your choice or to produce something else than Web Components.
+Le Truc uses [Cause & Effect](https://github.com/zeixcom/cause-effect) internally for state management with signals and for scheduled DOM updates. But you could easily rewrite the `component()` function to use a signals library of your choice or to produce something else than Web Components.
 
 ## Installation
 
 ```bash
 # with npm
-npm install @zeix/ui-element
+npm install @zeix/le-truc
 
 # or with bun
-bun add @zeix/ui-element
+bun add @zeix/le-truc
 ```
 
 ## Documentation
 
 The full documentation is still work in progress. The following chapters are already reasonably complete:
 
-- [Introduction](https://zeixcom.github.io/ui-element/index.html)
-- [Getting Started](https://zeixcom.github.io/ui-element/getting-started.html)
-- [Components](https://zeixcom.github.io/ui-element/components.html)
-- [Styling](https://zeixcom.github.io/ui-element/styling.html)
-- [Data Flow](https://zeixcom.github.io/ui-element/data-flow.html)
-- [About](https://zeixcom.github.io/ui-element/about.html)
+- [Introduction](https://zeixcom.github.io/le-truc/index.html)
+- [Getting Started](https://zeixcom.github.io/le-truc/getting-started.html)
+- [Components](https://zeixcom.github.io/le-truc/components.html)
+- [Styling](https://zeixcom.github.io/le-truc/styling.html)
+- [Data Flow](https://zeixcom.github.io/le-truc/data-flow.html)
+- [About](https://zeixcom.github.io/le-truc/about.html)
 
 ## Basic Usage
 
@@ -53,10 +53,10 @@ Server-rendered markup:
 </basic-counter>
 ```
 
-UIElement component:
+Le Truc component:
 
 ```js
-import { asInteger, component, on, setText } from '@zeix/ui-element'
+import { asInteger, component, on, setText } from '@zeix/le-truc'
 
 export default component(
   'basic-counter',
@@ -157,10 +157,10 @@ Server-rendered markup:
 </module-tabgroup>
 ```
 
-UIElement component:
+Le Truc component:
 
 ````js
-import { component, on, setProperty, show } from '@zeix/ui-element'
+import { component, on, setProperty, show } from '@zeix/le-truc'
 import { manageArrowKeyFocus } from './manage-arrow-key-focus'
 
 export default component('module-tabgroup', {
@@ -298,7 +298,7 @@ An example demonstrating how to use a custom attribute parser (sanitize an URL) 
 </module-lazy>
 ```
 
-UIElement component:
+Le Truc component:
 
 ```js
 import {
@@ -310,7 +310,7 @@ import {
   show,
   state,
   toggleClass,
-} from '@zeix/ui-element'
+} from '@zeix/le-truc'
 import { asURL } from './as-url'
 
 export default component(

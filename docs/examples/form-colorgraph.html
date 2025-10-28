@@ -1,36 +1,29 @@
-
 <module-tabgroup>
 	<div role="tablist">
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_form-colorgraph.html"
-				aria-controls="panel_form-colorgraph.html"
-				aria-selected="false"
-				tabindex="-1"
-			>HTML</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_form-colorgraph.css"
-				aria-controls="panel_form-colorgraph.css"
-				aria-selected="false"
-				tabindex="-1"
-			>CSS</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_form-colorgraph.ts"
-				aria-controls="panel_form-colorgraph.ts"
-				aria-selected="true"
-				tabindex="0"
-			>TypeScript</button>
+		<button
+			type="button"
+			role="tab"
+			id="trigger_form-colorgraph.html"
+			aria-controls="panel_form-colorgraph.html"
+			aria-selected="false"
+			tabindex="-1"
+		>HTML</button><button
+			type="button"
+			role="tab"
+			id="trigger_form-colorgraph.css"
+			aria-controls="panel_form-colorgraph.css"
+			aria-selected="false"
+			tabindex="-1"
+		>CSS</button><button
+			type="button"
+			role="tab"
+			id="trigger_form-colorgraph.ts"
+			aria-controls="panel_form-colorgraph.ts"
+			aria-selected="true"
+			tabindex="0"
+		>TypeScript</button>
 	</div>
-	
-<div role="tabpanel" id="panel_form-colorgraph.html" aria-labelledby="trigger_form-colorgraph.html" hidden>
+	<div role="tabpanel" id="panel_form-colorgraph.html" aria-labelledby="trigger_form-colorgraph.html" hidden>
 	<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">form-colorgraph.html</span>
@@ -143,7 +136,6 @@
 		</basic-button>
 	</module-codeblock>
 </div>
-
 <div role="tabpanel" id="panel_form-colorgraph.css" aria-labelledby="trigger_form-colorgraph.css" hidden>
 	<module-codeblock language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
@@ -449,7 +441,6 @@
 		</basic-button>
 	</module-codeblock>
 </div>
-
 <div role="tabpanel" id="panel_form-colorgraph.ts" aria-labelledby="trigger_form-colorgraph.ts">
 	<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
@@ -470,9 +461,9 @@
 <span class="line"><span style="color:#F8F8F2">	setText,</span></span>
 <span class="line"><span style="color:#F8F8F2">	state,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asOklch } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/parser/asOklch'</span></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { getStepColor } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/shared/getStepColor'</span></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { rafThrottle } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/shared/rafThrottle'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asOklch } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../_shared/asOklch'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { getStepColor } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../_shared/getStepColor'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { rafThrottle } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../_shared/rafThrottle'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">FormColorgraphAxis</span><span style="color:#F92672"> =</span><span style="color:#E6DB74"> 'l'</span><span style="color:#F92672"> |</span><span style="color:#E6DB74"> 'c'</span><span style="color:#F92672"> |</span><span style="color:#E6DB74"> 'h'</span></span>
 <span class="line"></span>

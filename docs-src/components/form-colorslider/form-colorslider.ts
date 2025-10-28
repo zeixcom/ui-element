@@ -13,8 +13,8 @@ import {
 	setStyle,
 	state,
 } from '../../..'
-import { asOklch } from '../../functions/parser/asOklch'
-import { rafThrottle } from '../../functions/shared/rafThrottle'
+import { asOklch } from '../_shared/asOklch'
+import { rafThrottle } from '../_shared/rafThrottle'
 
 export type FormColorsliderProps = {
 	color: Oklch

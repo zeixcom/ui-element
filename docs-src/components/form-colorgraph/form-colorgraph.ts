@@ -12,9 +12,9 @@ import {
 	setText,
 	state,
 } from '../../..'
-import { asOklch } from '../../functions/parser/asOklch'
-import { getStepColor } from '../../functions/shared/getStepColor'
-import { rafThrottle } from '../../functions/shared/rafThrottle'
+import { asOklch } from '../_shared/asOklch'
+import { getStepColor } from '../_shared/getStepColor'
+import { rafThrottle } from '../_shared/rafThrottle'
 
 export type FormColorgraphAxis = 'l' | 'c' | 'h'
 

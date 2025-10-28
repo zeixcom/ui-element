@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / EventTransformer
+[@zeix/le-truc](../globals.md) / EventTransformer
 
 # Type Alias: EventTransformer()\<T, E, C, Evt\>
 
 > **EventTransformer**\<`T`, `E`, `C`, `Evt`\> = (`context`) => `T` \| `void`
 
-Defined in: [src/core/events.ts:29](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/events.ts#L29)
+Defined in: [src/core/events.ts:29](https://github.com/zeixcom/ui-element/blob/1c934178f8926c03a10af2b29ad6cc201eead501/src/core/events.ts#L29)
 
 ## Type Parameters
 

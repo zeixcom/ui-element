@@ -142,12 +142,12 @@ declare const setStyle: <P extends ComponentProps, E extends HTMLElement | SVGEl
  */
 declare const dangerouslySetInnerHTML: <P extends ComponentProps, E extends Element = HTMLElement>(reactive: Reactive<string, P, E>, options?: DangerouslySetInnerHTMLOptions) => Effect<P, E>;
 /**
- * Effect for passing reactive values to a descendant UIElement component.
+ * Effect for passing reactive values to a descendant Le Truc component.
  *
  * @since 0.13.3
  * @param {Reactives<Component<Q>, P>} reactives - Reactive values to pass
  * @returns {Effect<P, Component<Q>>} Effect function that passes reactive values to the descendant component
- * @throws {TypeError} When the provided reactives are not an object or the target is not a UIElement component
+ * @throws {TypeError} When the provided reactives are not an object or the target is not a Le Truc component
  * @throws {Error} When passing signals failed for some other reason
  */
 declare const pass: <P extends ComponentProps, Q extends ComponentProps>(reactives: Reactives<Component<Q>, P>) => Effect<P, Component<Q>>;

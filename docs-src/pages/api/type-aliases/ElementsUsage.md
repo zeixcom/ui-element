@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / ElementsUsage
+[@zeix/le-truc](../globals.md) / ElementsUsage
 
 # Type Alias: ElementsUsage()
 
 > **ElementsUsage** = \{\<`S`\>(`selector`, `required?`): [`ElementFromSelector`](ElementFromSelector.md)\<`S`\>[]; \<`E`\>(`selector`, `required?`): `E`[]; \}
 
-Defined in: [src/core/dom.ts:79](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L79)
+Defined in: [src/core/dom.ts:79](https://github.com/zeixcom/ui-element/blob/1c934178f8926c03a10af2b29ad6cc201eead501/src/core/dom.ts#L79)
 
 ## Call Signature
 
