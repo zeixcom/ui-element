@@ -32,6 +32,23 @@ export type PageMetadata = {
 	updated?: Date
 }
 
+export type ProcessedMarkdownFile = FileInfo & {
+	metadata: PageMetadata
+	processedContent: string
+	htmlContent: string
+	section?: string
+	depth: number
+	relativePath: string
+	basePath: string
+	title: string
+}
+
+export type CodeBlock = {
+	header: string
+	code: string
+	highlightedCode: string
+}
+
 export type WatcherOptions = {
 	recursive?: boolean
 	extensions?: string[]

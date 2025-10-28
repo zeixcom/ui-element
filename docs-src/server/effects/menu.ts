@@ -1,27 +1,34 @@
-import { effect, enqueue } from '@zeix/cause-effect'
+import { effect } from '@zeix/cause-effect'
 import { menu } from '../../templates/menu'
 import { MENU_FILE } from '../config'
 import { markdownFiles } from '../file-signals'
 import { writeFileSyncSafe } from '../io'
-
-const MENU_SYMBOL = Symbol('MENU')
+import type { PageInfo } from '../types'
 
 export const menuEffect = () =>
-	effect((): undefined => {
-		enqueue((): undefined => {
-			writeFileSyncSafe(
-				MENU_FILE,
-				menu(
-					markdownFiles.pageInfos
-						.get()
-						.filter(info => info.section === ''),
-				),
+	effect({
+		signals: [markdownFiles.pageInfos],
+		ok: (pageInfos: PageInfo[]): undefined => {
+			console.log(`📄 Generated ${pageInfos.length} page infos`)
+
+			// Filter for root pages (files directly in pages directory, not in subdirectories)
+			const rootPages = pageInfos.filter(
+				info => !info.relativePath.includes('/'),
 			)
-		}, MENU_SYMBOL)
-			.then(() => {
-				console.log('Menu file written successfully')
-			})
-			.catch(error => {
-				console.error('Error writing menu file:', String(error))
-			})
+			console.log(
+				`🏠 Found ${rootPages.length} root pages out of ${pageInfos.length} total`,
+			)
+
+			if (rootPages.length > 0) {
+				writeFileSyncSafe(MENU_FILE, menu(rootPages))
+				console.log(
+					`Menu file written successfully with ${rootPages.length} pages`,
+				)
+			} else {
+				console.log('No root pages found, skipping menu generation')
+			}
+		},
+		err: (error: Error): undefined => {
+			console.error('Error in menu effect:', error.message)
+		},
 	})

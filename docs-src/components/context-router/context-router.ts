@@ -14,8 +14,8 @@ import {
 	toggleClass,
 	UNSET,
 } from '../../..'
-import { fetchWithCache } from '../../functions/shared/fetchWithCache'
-import { isInternalLink } from '../../functions/shared/isInternalLink'
+import { fetchWithCache } from '../_shared/fetchWithCache'
+import { isInternalLink } from '../_shared/isInternalLink'
 
 export type ContextRouterProps = {
 	'router-pathname': string

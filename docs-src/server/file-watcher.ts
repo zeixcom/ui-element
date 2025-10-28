@@ -32,7 +32,7 @@ export function watchFiles(
 
 			for (const entry of entries) {
 				if (entry.isFile() && isMatching(entry.name)) {
-					const filePath = join(directory, entry.name)
+					const filePath = join(entry.parentPath, entry.name)
 					const fileInfo = await createFileInfo(filePath, entry.name)
 					files.set(filePath, fileInfo)
 				}

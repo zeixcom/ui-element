@@ -1,36 +1,29 @@
-
 <module-tabgroup>
 	<div role="tablist">
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_form-combobox.html"
-				aria-controls="panel_form-combobox.html"
-				aria-selected="false"
-				tabindex="-1"
-			>HTML</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_form-combobox.css"
-				aria-controls="panel_form-combobox.css"
-				aria-selected="false"
-				tabindex="-1"
-			>CSS</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_form-combobox.ts"
-				aria-controls="panel_form-combobox.ts"
-				aria-selected="true"
-				tabindex="0"
-			>TypeScript</button>
+		<button
+			type="button"
+			role="tab"
+			id="trigger_form-combobox.html"
+			aria-controls="panel_form-combobox.html"
+			aria-selected="false"
+			tabindex="-1"
+		>HTML</button><button
+			type="button"
+			role="tab"
+			id="trigger_form-combobox.css"
+			aria-controls="panel_form-combobox.css"
+			aria-selected="false"
+			tabindex="-1"
+		>CSS</button><button
+			type="button"
+			role="tab"
+			id="trigger_form-combobox.ts"
+			aria-controls="panel_form-combobox.ts"
+			aria-selected="true"
+			tabindex="0"
+		>TypeScript</button>
 	</div>
-	
-<div role="tabpanel" id="panel_form-combobox.html" aria-labelledby="trigger_form-combobox.html" hidden>
+	<div role="tabpanel" id="panel_form-combobox.html" aria-labelledby="trigger_form-combobox.html" hidden>
 	<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">form-combobox.html</span>
@@ -80,7 +73,6 @@
 		</basic-button>
 	</module-codeblock>
 </div>
-
 <div role="tabpanel" id="panel_form-combobox.css" aria-labelledby="trigger_form-combobox.css" hidden>
 	<module-codeblock language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
@@ -207,7 +199,6 @@
 		</basic-button>
 	</module-codeblock>
 </div>
-
 <div role="tabpanel" id="panel_form-combobox.ts" aria-labelledby="trigger_form-combobox.ts">
 	<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
@@ -229,7 +220,7 @@
 <span class="line"><span style="color:#F8F8F2">	show,</span></span>
 <span class="line"><span style="color:#F8F8F2">	state,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { clearEffects, clearMethod } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/shared/clearInput'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { clearEffects, clearMethod } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../_shared/clearInput'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F92672">export</span><span style="color:#66D9EF;font-style:italic"> type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">FormComboboxProps</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">	value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>

@@ -13,7 +13,7 @@ import {
 	show,
 	state,
 } from '../../..'
-import { clearEffects, clearMethod } from '../../functions/shared/clearInput'
+import { clearEffects, clearMethod } from '../_shared/clearInput'
 
 export type FormComboboxProps = {
 	value: string

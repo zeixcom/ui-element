@@ -9,8 +9,8 @@ import {
 	getText,
 	setText,
 } from '../../..'
-import { asOklch } from '../../functions/parser/asOklch'
-import { getStepColor } from '../../functions/shared/getStepColor'
+import { asOklch } from '../_shared/asOklch'
+import { getStepColor } from '../_shared/getStepColor'
 
 export type CardColorscaleProps = {
 	name: string

@@ -10,7 +10,7 @@ export function getRelativePath(
 ): string | null {
 	try {
 		const relativePath = relative(basePath, filePath)
-		return relativePath.startsWith('.') ? relativePath : null
+		return relativePath.startsWith('..') ? null : relativePath
 	} catch (error) {
 		console.error(`Error getting relative path for ${filePath}:`, error)
 		return null

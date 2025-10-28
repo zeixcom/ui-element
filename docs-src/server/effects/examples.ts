@@ -1,4 +1,4 @@
-import { effect, enqueue } from '@zeix/cause-effect'
+import { effect } from '@zeix/cause-effect'
 import { codeToHtml } from 'shiki'
 import { type PanelType, tabGroup } from '../../templates/fragments'
 import { EXAMPLES_DIR } from '../config'
@@ -9,8 +9,6 @@ import {
 } from '../file-signals'
 import { writeFileSyncSafe } from '../io'
 import { FileInfo } from '../types'
-
-const EXAMPLE_SYMBOL = Symbol('Example')
 
 const highlightCode = async (content: string, type: string) =>
 	await codeToHtml(content, {
@@ -54,29 +52,43 @@ const generatePanels = async (
 }
 
 export const examplesEffect = () =>
-	effect((): undefined => {
-		// Dependencies
-		const htmlFiles = componentMarkup.sources.get()
-		const cssFiles = componentStyles.sources.get()
-		const tsFiles = componentScripts.sources.get()
+	effect({
+		signals: [
+			componentMarkup.sources,
+			componentStyles.sources,
+			componentScripts.sources,
+		],
+		ok: (): undefined => {
+			try {
+				console.log('🔄 Rebuilding example fragments...')
 
-		enqueue((): undefined => {
-			Array.from(htmlFiles.values()).forEach(async html => {
-				const name = html.path.replace(/\.html$/, '')
-				const css = cssFiles.get(name + '.css')
-				const ts = tsFiles.get(name + '.ts')
+				const htmlFiles = componentMarkup.sources.get()
+				const cssFiles = componentStyles.sources.get()
+				const tsFiles = componentScripts.sources.get()
 
-				const panels = await generatePanels(html, css, ts)
-				writeFileSyncSafe(EXAMPLES_DIR, tabGroup(name, panels))
-			})
-		}, EXAMPLE_SYMBOL)
-			.then(() => {
+				Array.from(htmlFiles.values()).forEach(async html => {
+					const name = html.path.replace(/\.html$/, '')
+					const css = cssFiles.get(name + '.css')
+					const ts = tsFiles.get(name + '.ts')
+
+					const panels = await generatePanels(html, css, ts)
+					const componentName = name.split('/').pop() || name
+					const outputPath = `${EXAMPLES_DIR}/${componentName}.html`
+					return writeFileSyncSafe(
+						outputPath,
+						tabGroup(componentName, panels),
+					)
+				})
+
 				console.log('Example fragments successfully rebuilt')
-			})
-			.catch(error => {
+			} catch (error) {
 				console.error(
-					'Example fragments failed to rebuild',
+					'Example fragments failed to rebuild:',
 					String(error),
 				)
-			})
+			}
+		},
+		err: (error: Error): undefined => {
+			console.error('Error in examples effect:', error.message)
+		},
 	})
