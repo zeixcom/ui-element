@@ -8,7 +8,7 @@
 
 > **Cleanup** = () => `void`
 
-Defined in: node\_modules/@zeix/cause-effect/src/scheduler.ts:3
+Defined in: node\_modules/@zeix/cause-effect/types/src/scheduler.d.ts:1
 
 ## Returns
 

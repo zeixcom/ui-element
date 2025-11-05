@@ -1,4 +1,4 @@
-import { effect } from '@zeix/cause-effect'
+import { effect, match, resolve } from '@zeix/cause-effect'
 import { codeToHtml } from 'shiki'
 import { type PanelType, tabGroup } from '../../templates/fragments'
 import { EXAMPLES_DIR } from '../config'
@@ -52,43 +52,46 @@ const generatePanels = async (
 }
 
 export const examplesEffect = () =>
-	effect({
-		signals: [
-			componentMarkup.sources,
-			componentStyles.sources,
-			componentScripts.sources,
-		],
-		ok: (): undefined => {
-			try {
-				console.log('🔄 Rebuilding example fragments...')
+	effect(() => {
+		match(
+			resolve({
+				htmlFiles: componentMarkup.sources,
+				cssFiles: componentStyles.sources,
+				tsFiles: componentScripts.sources,
+			}),
+			{
+				ok: ({ htmlFiles, cssFiles, tsFiles }) => {
+					try {
+						console.log('🔄 Rebuilding example fragments...')
 
-				const htmlFiles = componentMarkup.sources.get()
-				const cssFiles = componentStyles.sources.get()
-				const tsFiles = componentScripts.sources.get()
+						Array.from(htmlFiles.values()).forEach(async html => {
+							const name = html.path.replace(/\.html$/, '')
+							const css = cssFiles.get(name + '.css')
+							const ts = tsFiles.get(name + '.ts')
 
-				Array.from(htmlFiles.values()).forEach(async html => {
-					const name = html.path.replace(/\.html$/, '')
-					const css = cssFiles.get(name + '.css')
-					const ts = tsFiles.get(name + '.ts')
+							const panels = await generatePanels(html, css, ts)
+							const componentName = name.split('/').pop() || name
+							const outputPath = `${EXAMPLES_DIR}/${componentName}.html`
+							return writeFileSyncSafe(
+								outputPath,
+								tabGroup(componentName, panels),
+							)
+						})
 
-					const panels = await generatePanels(html, css, ts)
-					const componentName = name.split('/').pop() || name
-					const outputPath = `${EXAMPLES_DIR}/${componentName}.html`
-					return writeFileSyncSafe(
-						outputPath,
-						tabGroup(componentName, panels),
+						console.log('Example fragments successfully rebuilt')
+					} catch (error) {
+						console.error(
+							'Example fragments failed to rebuild:',
+							String(error),
+						)
+					}
+				},
+				err: errors => {
+					console.error(
+						'Error in examples effect:',
+						errors[0].message,
 					)
-				})
-
-				console.log('Example fragments successfully rebuilt')
-			} catch (error) {
-				console.error(
-					'Example fragments failed to rebuild:',
-					String(error),
-				)
-			}
-		},
-		err: (error: Error): undefined => {
-			console.error('Error in examples effect:', error.message)
-		},
+				},
+			},
+		)
 	})

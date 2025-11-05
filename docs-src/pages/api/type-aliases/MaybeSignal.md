@@ -8,7 +8,7 @@
 
 > **MaybeSignal**\<`T`\> = `T` \| [`Signal`](Signal.md)\<`T`\> \| [`ComputedCallback`](ComputedCallback.md)\<`T`\>
 
-Defined in: node\_modules/@zeix/cause-effect/src/signal.ts:14
+Defined in: node\_modules/@zeix/cause-effect/types/src/signal.d.ts:7
 
 ## Type Parameters
 

@@ -10,7 +10,13 @@
 		<script type="module">
 			import { runTests } from '@web/test-runner-mocha'
 			import { assert } from '@esm-bundle/chai'
-			import { fromSelector, computed, effect } from '../../index.dev.js'
+			import {
+				fromSelector,
+				computed,
+				effect,
+				match,
+				resolve,
+			} from '../../index.dev.js'
 
 			const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 			const animationFrame = async () =>
@@ -132,14 +138,13 @@
 								element.hidden = false
 							})
 
-						const cleanup = effect({
-							signals: [signal],
-							ok: elements =>
-								elements
-									.filter(element => !element.hidden)
-									.map(element => {
-										element.hidden = true
-									}),
+						const cleanup = effect(() => {
+							const elements = signal.get()
+							elements
+								.filter(element => !element.hidden)
+								.map(element => {
+									element.hidden = true
+								})
 						})
 
 						// Wait for initial effect to run
@@ -282,11 +287,9 @@
 								fromSelector('.rapid-test')(container)
 							let updateCount = 0
 
-							const cleanup = effect({
-								signals: [signal],
-								ok: () => {
-									updateCount++
-								},
+							const cleanup = effect(() => {
+								signal.get()
+								updateCount++
 							})
 
 							// Rapid mutations
@@ -295,7 +298,6 @@
 								element.classList.add('rapid-test')
 								container.appendChild(element)
 							}
-
 
 							// Should handle rapid mutations without excessive updates
 							assert.isAtLeast(updateCount, 1)
@@ -315,22 +317,15 @@
 							const signal = fromSelector('.circular')(container)
 							let errorThrown = false
 
-							const cleanup = effect({
-								signals: [signal],
-								ok: elements => {
-									// Create circular mutation by adding element in response to signal change
-									if (elements.length < 3) {
-										const newElement =
-											document.createElement('div')
-										newElement.classList.add('circular')
-										container.appendChild(newElement)
-									}
-								},
-								error: error => {
-									errorThrown = true
-									assert.instanceOf(error, Error)
-									assert.include(error.message, 'circular')
-								},
+							const cleanup = effect(() => {
+								const elements = signal.get()
+								// Create circular mutation by adding element in response to signal change
+								if (elements.length < 3) {
+									const newElement =
+										document.createElement('div')
+									newElement.classList.add('circular')
+									container.appendChild(newElement)
+								}
 							})
 
 							// Trigger the circular mutation
@@ -341,10 +336,11 @@
 							// Wait for effects to run
 							await animationFrame()
 
-							// Either error should be caught or effect should have run multiple times
-							assert.isTrue(
-								errorThrown || signal.get().length >= 3,
-								'Should either throw circular mutation error or handle rapid mutations',
+							// Effect should have run multiple times and handled rapid mutations
+							assert.isAtLeast(
+								signal.get().length,
+								3,
+								'Should handle rapid mutations',
 							)
 
 							cleanup()
@@ -432,11 +428,9 @@
 							const signal = fromSelector('.dynamic')(container)
 							let lastCount = 0
 
-							const cleanup = effect({
-								signals: [signal],
-								ok: elements => {
-									lastCount = elements.length
-								},
+							const cleanup = effect(() => {
+								const elements = signal.get()
+								lastCount = elements.length
 							})
 
 							// Add elements rapidly
@@ -472,18 +466,13 @@
 								fromSelector('.event-test')(container)
 							let eventCount = 0
 
-							const cleanup = effect({
-								signals: [signal],
-								ok: elements => {
-									elements.forEach(element => {
-										element.addEventListener(
-											'click',
-											() => {
-												eventCount++
-											},
-										)
+							const cleanup = effect(() => {
+								const elements = signal.get()
+								elements.forEach(element => {
+									element.addEventListener('click', () => {
+										eventCount++
 									})
-								},
+								})
 							})
 
 							// Add element and trigger event
@@ -521,11 +510,9 @@
 								fromSelector('.cleanup-test')(container)
 							let effectRuns = 0
 
-							const cleanup = effect({
-								signals: [signal],
-								ok: () => {
-									effectRuns++
-								},
+							const cleanup = effect(() => {
+								signal.get()
+								effectRuns++
 							})
 
 							// Add and remove elements

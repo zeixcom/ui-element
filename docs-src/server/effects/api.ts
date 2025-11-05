@@ -1,12 +1,11 @@
-import { effect } from '@zeix/cause-effect'
+import { effect, match, resolve } from '@zeix/cause-effect'
 import { execSync } from 'child_process'
 import { libraryScripts } from '../file-signals'
 
 export const apiEffect = () =>
-	effect({
-		signals: [libraryScripts.sources],
-		ok: (): undefined => {
-			;(async () => {
+	effect(() => {
+		match(resolve({ library: libraryScripts.sources }), {
+			ok: async () => {
 				try {
 					console.log('📚 Rebuilding API documentation...')
 
@@ -20,11 +19,12 @@ export const apiEffect = () =>
 				} catch (error) {
 					console.error('Failed to rebuild API documentation:', error)
 				}
-			})()
-			return undefined
-		},
-		err: (error: Error): undefined => {
-			console.error('API reference failed to rebuild', String(error))
-			return undefined
-		},
+			},
+			err: errors => {
+				console.error(
+					'API reference failed to rebuild',
+					String(errors[0]),
+				)
+			},
+		})
 	})

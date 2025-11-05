@@ -8,7 +8,7 @@
 
 > **Extractor**\<`T`, `E`\> = (`element`) => `T`
 
-Defined in: [src/core/dom.ts:50](https://github.com/zeixcom/ui-element/blob/1c934178f8926c03a10af2b29ad6cc201eead501/src/core/dom.ts#L50)
+Defined in: [src/core/dom.ts:50](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/core/dom.ts#L50)
 
 ## Type Parameters
 

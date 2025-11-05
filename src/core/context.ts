@@ -134,7 +134,7 @@ const fromContext =
 		fallback: Fallback<T, C>,
 	): Extractor<Signal<T>, C> =>
 	(host: C) => {
-		let consumed: Signal<T> = toSignal(getFallback(host, fallback))
+		let consumed = toSignal(getFallback(host, fallback)) as Signal<T>
 		host.dispatchEvent(
 			new ContextRequestEvent(context, (value: Signal<T>) => {
 				consumed = value

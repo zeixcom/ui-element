@@ -1,4 +1,4 @@
-import { type MaybeSignal, type Signal } from '@zeix/cause-effect';
+import { type Computed, type MaybeSignal, type Signal, type State, type Store } from '@zeix/cause-effect';
 import { type Extractor, type Helpers, type Parser } from './core/dom';
 import { type Effects } from './core/reactive';
 type ReservedWords = 'constructor' | 'prototype' | '__proto__' | 'toString' | 'valueOf' | 'hasOwnProperty' | 'isPrototypeOf' | 'propertyIsEnumerable' | 'toLocaleString';
@@ -9,11 +9,12 @@ type ValidateComponentProps<P> = {
 type ComponentProps = {
     [K in string as ValidPropertyKey<K>]: unknown & {};
 };
+type AnySignalType = Signal<any> | State<any> | Computed<any> | Store<any>;
 type Component<P extends ComponentProps> = HTMLElement & P & {
     attributeChangedCallback<K extends keyof P & string>(name: K, oldValue: string | null, newValue: string | null): void;
     debug?: boolean;
     getSignal<K extends keyof P & string>(prop: K): Signal<P[K]>;
-    setSignal<K extends keyof P & string>(prop: K, signal: Signal<P[K]>): void;
+    setSignal<K extends keyof P & string>(prop: K, signal: AnySignalType): void;
 };
 type Initializer<T extends {}, C extends HTMLElement> = T | Parser<T, C> | Extractor<MaybeSignal<T>, C> | ((host: C) => void);
 type Setup<P extends ComponentProps> = (host: Component<P>, helpers: Helpers<P>) => Effects<P, Component<P>>;

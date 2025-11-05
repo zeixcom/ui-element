@@ -8,7 +8,7 @@
 
 > **Component**\<`P`\> = `HTMLElement` & `P` & `object`
 
-Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/1c934178f8926c03a10af2b29ad6cc201eead501/src/component.ts#L59)
+Defined in: [src/component.ts:60](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/component.ts#L60)
 
 ## Type Declaration
 
@@ -24,7 +24,7 @@ Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/1c9
 
 ##### K
 
-`K` *extends* `string`
+`K` *extends* `string` \| `number` \| `symbol`
 
 #### Parameters
 
@@ -52,7 +52,7 @@ Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/1c9
 
 ##### K
 
-`K` *extends* `string`
+`K` *extends* `string` \| `number` \| `symbol`
 
 #### Parameters
 
@@ -72,7 +72,7 @@ Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/1c9
 
 ##### K
 
-`K` *extends* `string`
+`K` *extends* `string` \| `number` \| `symbol`
 
 #### Parameters
 

@@ -554,6 +554,7 @@ const pass =
 		for (const [prop, reactive] of Object.entries(reactives)) {
 			target.setSignal(
 				prop,
+				// @ts-expect-error signal types don't match
 				isString(reactive)
 					? host.getSignal(reactive)
 					: toSignal(reactive),

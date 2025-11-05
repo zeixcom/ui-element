@@ -8,7 +8,7 @@
 
 > **ComputedCallback**\<`T`\> = (`abort`) => `Promise`\<`T`\> \| () => `T`
 
-Defined in: node\_modules/@zeix/cause-effect/src/computed.ts:23
+Defined in: node\_modules/@zeix/cause-effect/types/src/computed.d.ts:5
 
 ## Type Parameters
 

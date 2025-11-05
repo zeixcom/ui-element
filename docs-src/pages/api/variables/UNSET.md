@@ -8,7 +8,7 @@
 
 > `const` **UNSET**: `any`
 
-Defined in: node\_modules/@zeix/cause-effect/src/signal.ts:23
+Defined in: node\_modules/@zeix/cause-effect/types/src/signal.d.ts:12
 
 ## Name
 

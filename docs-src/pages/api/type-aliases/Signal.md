@@ -8,7 +8,7 @@
 
 > **Signal**\<`T`\> = `object`
 
-Defined in: node\_modules/@zeix/cause-effect/src/signal.ts:11
+Defined in: node\_modules/@zeix/cause-effect/types/src/signal.d.ts:4
 
 ## Name
 
@@ -34,7 +34,7 @@ Esther Brunner
 
 > **get**(): `T`
 
-Defined in: node\_modules/@zeix/cause-effect/src/signal.ts:12
+Defined in: node\_modules/@zeix/cause-effect/types/src/signal.d.ts:5
 
 #### Returns
 
