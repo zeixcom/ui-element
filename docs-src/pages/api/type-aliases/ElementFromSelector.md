@@ -1,14 +1,14 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / ElementFromSelector
+[@zeix/el-truco](../globals.md) / ElementFromSelector
 
 # Type Alias: ElementFromSelector\<S\>
 
 > **ElementFromSelector**\<`S`\> = [`KnownTag`](KnownTag.md)\<`S`\> *extends* `never` ? `HTMLElement` : [`KnownTag`](KnownTag.md)\<`S`\> *extends* keyof `HTMLElementTagNameMap` ? `HTMLElementTagNameMap`\[[`KnownTag`](KnownTag.md)\<`S`\>\] : [`KnownTag`](KnownTag.md)\<`S`\> *extends* keyof `SVGElementTagNameMap` ? `SVGElementTagNameMap`\[[`KnownTag`](KnownTag.md)\<`S`\>\] : [`KnownTag`](KnownTag.md)\<`S`\> *extends* keyof `MathMLElementTagNameMap` ? `MathMLElementTagNameMap`\[[`KnownTag`](KnownTag.md)\<`S`\>\] : `HTMLElement`
 
-Defined in: [src/core/dom.ts:40](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/core/dom.ts#L40)
+Defined in: [src/core/dom.ts:42](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/core/dom.ts#L42)
 
 ## Type Parameters
 

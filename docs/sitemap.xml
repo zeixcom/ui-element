@@ -1,476 +1,596 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
-		<loc>https://zeixcom.github.io/le-truc/examples.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/examples.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.8</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.8</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/components.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/components.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.8</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/blog.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/blog.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.8</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/getting-started.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/getting-started.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.8</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/index.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/index.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>1.0</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/data-flow.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/data-flow.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.8</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/styling.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/styling.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.8</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/about.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/about.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.8</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/blog/composing-complexity.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/blog/composing-complexity.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.6</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/blog/rethinking-reactivity.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/blog/rethinking-reactivity.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.6</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/blog/flow-from-cause-to-effect.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/blog/flow-from-cause-to-effect.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.6</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/blog/html-first-thinking.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/blog/html-first-thinking.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.6</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/blog/the-case-for-components.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/blog/the-case-for-components.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.6</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/globals.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/globals.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/variables/DEV_MODE.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/interfaces/StoreAddEvent.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/variables/isState.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/interfaces/StoreChangeEvent.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/variables/effect.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/interfaces/StoreRemoveEvent.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/variables/isSignal.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/interfaces/StoreSortEvent.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/variables/LOG_ERROR.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/asEnum.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/variables/state.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/resolveReactive.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/variables/LOG_INFO.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/asBoolean.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/variables/computed.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/getProperty.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/variables/enqueue.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/emitEvent.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/variables/isComputed.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/getAttribute.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/variables/UNSET.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/insertOrRemoveElement.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/variables/LOG_DEBUG.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/asJSON.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/variables/LOG_WARN.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/fromDOM.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/variables/RESET.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/match.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/variables/batch.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/asString.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/Reactives.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/setProperty.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/Parser.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/fromSelector.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/EventTransformer.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/getLabel.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/Context.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/component.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/Setup.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/toggleClass.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/ElementsUsage.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/resolve.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/Effect.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/hasAttribute.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/ElementUsage.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/pass.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/Fallback.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/log.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/Helpers.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/getDescription.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/State.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/fromContext.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/ElementFromSelector.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/getText.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/ParserOrFallback.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/toggleAttribute.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/EventTransformers.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/setText.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/Component.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/hasClass.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/Signal.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/setStyle.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/DangerouslySetInnerHTMLOptions.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/show.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/ElementUpdater.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/asNumber.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/ValidateComponentProps.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/dangerouslySetInnerHTML.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/Computed.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/setAttribute.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/EventHandler.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/asInteger.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/Effects.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/isParser.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/ContextType.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/on.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/MaybeSignal.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/provideContexts.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/Reactive.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/getStyle.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/Cleanup.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/fromEvents.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/Extractor.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/getFallback.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/UpdateOperation.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/isState.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/UnknownContext.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/isSymbol.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/ReservedWords.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/isAbortError.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/LogLevel.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/diff.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/ElementEffects.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/isRecordOrArray.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/ExtractTag.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/isNumber.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/asEnum.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/effect.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/resolveReactive.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/toError.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/asBoolean.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/isSignal.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/getProperty.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/LOG_ERROR.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/emitEvent.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/state.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/getAttribute.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/isFunction.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/insertOrRemoveElement.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/LOG_INFO.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/asJSON.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/computed.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/toSignal.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/isMutableSignal.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/fromDOM.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/store.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/match.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/enqueue.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/asString.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/isString.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/setProperty.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/isComputed.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/fromSelector.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/UNSET.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/getLabel.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/LOG_DEBUG.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/component.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/isRecord.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/toggleClass.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/isEqual.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/resolve.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/LOG_WARN.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/hasAttribute.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/isStore.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/pass.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/RESET.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/log.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/batch.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/getDescription.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/isAsyncFunction.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/fromContext.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/classes/DependencyTimeoutError.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/getText.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/classes/CircularMutationError.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/updateElement.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/classes/CircularDependencyError.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/toggleAttribute.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/classes/StoreKeyReadonlyError.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/setText.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/classes/StoreKeyRangeError.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/hasClass.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/classes/StoreKeyExistsError.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/setStyle.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/classes/NullishSignalValueError.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/show.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/classes/MissingElementError.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/asNumber.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/classes/InvalidSignalValueError.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/dangerouslySetInnerHTML.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/classes/InvalidSignalError.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/setAttribute.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/classes/InvalidPropertyNameError.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/asInteger.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/classes/InvalidEffectsError.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/isParser.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/classes/InvalidComponentNameError.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/on.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/variables/DEV_MODE.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/provideContexts.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/ValidPropertyKey.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/getStyle.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/ValidateComponentProps.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/fromEvents.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/UpdateOperation.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/functions/getFallback.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/UnknownContext.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/classes/DependencyTimeoutError.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/StoreEventMap.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/classes/CircularMutationError.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Store.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/classes/InvalidPropertyNameError.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/State.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/classes/InvalidEffectsError.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Signal.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/classes/InvalidComponentNameError.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Setup.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/classes/MissingElementError.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/ResolveResult.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/classes/InvalidSignalError.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/ReservedWords.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/ComputedCallback.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Reactives.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/ElementInserter.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Reactive.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/ComponentProps.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/ParserOrFallback.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/EventType.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Parser.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/KnownTag.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/MaybeCleanup.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/LooseExtractor.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/MatchHandlers.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/Initializer.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/LooseExtractor.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url><url>
-		<loc>https://zeixcom.github.io/le-truc/api/type-aliases/ValidPropertyKey.html</loc>
-		<lastmod>2025-11-05T18:11:20.475Z</lastmod>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/LogLevel.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/ContextType.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Fallback.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Context.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/ExtractTag.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/ComputedCallback.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Computed.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/ElementInserter.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Extractor.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/ComponentProps.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/ElementFromSelector.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/EventType.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Component.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/ElementEffects.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/EventTransformers.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Effects.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Cleanup.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/KnownTag.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Initializer.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Helpers.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/EventTransformer.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/EffectCallback.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/Effect.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/DiffResult.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/EventHandler.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/ElementUsage.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/DangerouslySetInnerHTMLOptions.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/ElementUpdater.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/type-aliases/ElementsUsage.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/updateElement.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
+		<priority>0.5</priority>
+	</url><url>
+		<loc>https://zeixcom.github.io/el-truco/api/functions/toSignal.html</loc>
+		<lastmod>2025-11-10T09:40:41.038Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 </urlset>

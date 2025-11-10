@@ -2,20 +2,22 @@ import {
 	type Cleanup,
 	isFunction,
 	isSignal,
+	isString,
+	type MaybeCleanup,
 	type Signal,
 } from '@zeix/cause-effect'
 
 import type { Component, ComponentProps } from '../component'
 import type { LooseExtractor } from './dom'
 import { InvalidEffectsError } from './errors'
-import { elementName, isString, LOG_ERROR, log, valueString } from './util'
+import { elementName, LOG_ERROR, log, valueString } from './util'
 
 /* === Types === */
 
 type Effect<P extends ComponentProps, E extends Element> = (
 	host: Component<P>,
 	element: E,
-) => Cleanup | void
+) => MaybeCleanup
 
 type Effects<P extends ComponentProps, E extends Element> =
 	| Effect<P, E>
@@ -25,8 +27,8 @@ type Effects<P extends ComponentProps, E extends Element> =
 
 type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> =
 	| keyof P
-	| Signal<NonNullable<T>>
-	| LooseExtractor<T | null | undefined, E>
+	| Signal<T & {}>
+	| LooseExtractor<T, E>
 
 /* === Constants === */
 
@@ -84,7 +86,7 @@ const resolveReactive = <
 ): T => {
 	try {
 		return isString(reactive)
-			? (host.getSignal(reactive).get() as unknown as T)
+			? (host[reactive] as unknown as T)
 			: isSignal(reactive)
 				? reactive.get()
 				: isFunction(reactive)

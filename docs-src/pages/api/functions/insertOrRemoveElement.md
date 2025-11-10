@@ -1,14 +1,14 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / insertOrRemoveElement
+[@zeix/el-truco](../globals.md) / insertOrRemoveElement
 
 # Function: insertOrRemoveElement()
 
 > **insertOrRemoveElement**\<`P`, `E`\>(`reactive`, `inserter?`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:184](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/lib/effects.ts#L184)
+Defined in: [src/lib/effects.ts:190](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/lib/effects.ts#L190)
 
 Effect for dynamically inserting or removing elements based on a reactive numeric value.
 Positive values insert elements, negative values remove them.

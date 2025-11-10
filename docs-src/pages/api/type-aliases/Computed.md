@@ -1,8 +1,8 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / Computed
+[@zeix/el-truco](../globals.md) / Computed
 
 # Type Alias: Computed\<T\>
 
@@ -12,11 +12,11 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/computed.d.ts:1
 
 ## Name
 
-Le Truc
+El Truco
 
 ## Version
 
-0.14.0
+0.15.0
 
 ## Author
 

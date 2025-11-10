@@ -2,6 +2,8 @@ import {
 	type Cleanup,
 	type Computed,
 	isFunction,
+	isString,
+	type MaybeCleanup,
 	notify,
 	subscribe,
 	TYPE_COMPUTED,
@@ -12,7 +14,7 @@ import {
 import type { Component, ComponentProps } from '../component'
 import { CircularMutationError, MissingElementError } from './errors'
 import { type Effects, runEffects } from './reactive'
-import { isCustomElement, isElement, isString } from './util'
+import { isCustomElement, isElement } from './util'
 
 /* === Types === */
 
@@ -86,12 +88,12 @@ type ElementEffects<P extends ComponentProps> = {
 		selector: S,
 		effects: Effects<P, ElementFromSelector<S>>,
 		required?: string,
-	): () => Cleanup | void
+	): () => MaybeCleanup
 	<E extends Element>(
 		selector: string,
 		effects: Effects<P, E>,
 		required?: string,
-	): () => Cleanup | void
+	): () => MaybeCleanup
 }
 
 type Helpers<P extends ComponentProps> = {

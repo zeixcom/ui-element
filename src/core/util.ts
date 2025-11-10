@@ -1,4 +1,4 @@
-import { isFunction } from '@zeix/cause-effect'
+import { isFunction, isString } from '@zeix/cause-effect'
 
 /* === Types === */
 
@@ -39,9 +39,6 @@ const classString = (classList: DOMTokenList | undefined | null): string =>
 const isDefinedObject = /*#__PURE__*/ (
 	value: unknown,
 ): value is Record<string, unknown> => !!value && typeof value === 'object'
-
-const isString = /*#__PURE__*/ (value: unknown): value is string =>
-	typeof value === 'string'
 
 const hasMethod = /*#__PURE__*/ <T extends object, K extends PropertyKey, R>(
 	obj: T,
@@ -147,7 +144,6 @@ const log = <T>(value: T, msg: string, level: LogLevel = LOG_DEBUG): T => {
 export {
 	type LogLevel,
 	hasMethod,
-	isString,
 	isDefinedObject,
 	isElement,
 	isCustomElement,

@@ -1,14 +1,14 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / Setup
+[@zeix/el-truco](../globals.md) / Setup
 
 # Type Alias: Setup()\<P\>
 
 > **Setup**\<`P`\> = (`host`, `helpers`) => [`Effects`](Effects.md)\<`P`, [`Component`](Component.md)\<`P`\>\>
 
-Defined in: [src/component.ts:83](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/component.ts#L83)
+Defined in: [src/component.ts:82](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/component.ts#L82)
 
 ## Type Parameters
 

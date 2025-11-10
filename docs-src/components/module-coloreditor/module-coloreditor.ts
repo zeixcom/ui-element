@@ -34,6 +34,8 @@ export default component(
 		hue: (el: HTMLElement & { color: Oklch }) => () => el.color.h,
 	},
 	(el, { all, first }) => {
+		el.debug = true
+
 		const effects = [
 			on('change', ({ event }) => {
 				const { target } = event

@@ -1,14 +1,14 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / setAttribute
+[@zeix/el-truco](../globals.md) / setAttribute
 
 # Function: setAttribute()
 
 > **setAttribute**\<`P`, `E`\>(`name`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:392](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/lib/effects.ts#L392)
+Defined in: [src/lib/effects.ts:398](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/lib/effects.ts#L398)
 
 Effect for setting an attribute on an element.
 Sets the specified attribute with security validation for unsafe values.
@@ -33,7 +33,7 @@ Name of the attribute to set
 
 ### reactive
 
-[`Reactive`](../type-aliases/Reactive.md)\<`string`, `P`, `E`\> = `name`
+[`Reactive`](../type-aliases/Reactive.md)\<`string`, `P`, `E`\> = `...`
 
 Reactive value bound to the attribute value (defaults to attribute name)
 

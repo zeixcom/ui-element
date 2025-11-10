@@ -1,12 +1,12 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / InvalidSignalError
+[@zeix/el-truco](../globals.md) / InvalidSignalError
 
 # Class: InvalidSignalError
 
-Defined in: [src/core/errors.ts:82](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/core/errors.ts#L82)
+Defined in: [src/core/errors.ts:83](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/core/errors.ts#L83)
 
 Error thrown when setSignal on component is called with a non-signal value
 
@@ -16,7 +16,7 @@ Error thrown when setSignal on component is called with a non-signal value
 
 ## Extends
 
-- `Error`
+- `TypeError`
 
 ## Constructors
 
@@ -24,7 +24,7 @@ Error thrown when setSignal on component is called with a non-signal value
 
 > **new InvalidSignalError**(`host`, `prop`): `InvalidSignalError`
 
-Defined in: [src/core/errors.ts:83](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/core/errors.ts#L83)
+Defined in: [src/core/errors.ts:88](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/core/errors.ts#L88)
 
 #### Parameters
 
@@ -32,9 +32,13 @@ Defined in: [src/core/errors.ts:83](https://github.com/zeixcom/ui-element/blob/d
 
 `HTMLElement`
 
+Host component
+
 ##### prop
 
 `string`
+
+Property name
 
 #### Returns
 
@@ -42,7 +46,7 @@ Defined in: [src/core/errors.ts:83](https://github.com/zeixcom/ui-element/blob/d
 
 #### Overrides
 
-`Error.constructor`
+`TypeError.constructor`
 
 ## Properties
 
@@ -56,7 +60,7 @@ The cause of the error.
 
 #### Inherited from
 
-`Error.cause`
+`TypeError.cause`
 
 ***
 
@@ -68,7 +72,7 @@ Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1077
 
 #### Inherited from
 
-`Error.message`
+`TypeError.message`
 
 ***
 
@@ -80,7 +84,7 @@ Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1076
 
 #### Inherited from
 
-`Error.name`
+`TypeError.name`
 
 ***
 
@@ -92,7 +96,7 @@ Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1078
 
 #### Inherited from
 
-`Error.stack`
+`TypeError.stack`
 
 ***
 
@@ -114,7 +118,7 @@ not capture any frames.
 
 #### Inherited from
 
-`Error.stackTraceLimit`
+`TypeError.stackTraceLimit`
 
 ## Methods
 
@@ -186,7 +190,7 @@ a();
 
 ##### Inherited from
 
-`Error.captureStackTrace`
+`TypeError.captureStackTrace`
 
 #### Call Signature
 
@@ -212,7 +216,7 @@ Create .stack property on a target object
 
 ##### Inherited from
 
-`Error.captureStackTrace`
+`TypeError.captureStackTrace`
 
 ***
 
@@ -238,7 +242,7 @@ Indicates whether the argument provided is a built-in Error instance or not.
 
 ##### Inherited from
 
-`Error.isError`
+`TypeError.isError`
 
 #### Call Signature
 
@@ -264,7 +268,7 @@ True if the value is an instance of Error, false otherwise
 
 ##### Inherited from
 
-`Error.isError`
+`TypeError.isError`
 
 ***
 
@@ -294,4 +298,4 @@ https://v8.dev/docs/stack-trace-api#customizing-stack-traces
 
 #### Inherited from
 
-`Error.prepareStackTrace`
+`TypeError.prepareStackTrace`

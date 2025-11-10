@@ -1,12 +1,12 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / DependencyTimeoutError
+[@zeix/el-truco](../globals.md) / DependencyTimeoutError
 
 # Class: DependencyTimeoutError
 
-Defined in: [src/core/errors.ts:115](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/core/errors.ts#L115)
+Defined in: [src/core/errors.ts:120](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/core/errors.ts#L120)
 
 Error when a component's dependencies are not met within a specified timeout
 
@@ -24,7 +24,7 @@ Error when a component's dependencies are not met within a specified timeout
 
 > **new DependencyTimeoutError**(`host`, `missing`): `DependencyTimeoutError`
 
-Defined in: [src/core/errors.ts:116](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/core/errors.ts#L116)
+Defined in: [src/core/errors.ts:125](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/core/errors.ts#L125)
 
 #### Parameters
 
@@ -32,9 +32,13 @@ Defined in: [src/core/errors.ts:116](https://github.com/zeixcom/ui-element/blob/
 
 `HTMLElement`
 
+Host component
+
 ##### missing
 
 `string`[]
+
+List of missing dependencies
 
 #### Returns
 

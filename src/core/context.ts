@@ -1,9 +1,4 @@
-import {
-	type Cleanup,
-	isFunction,
-	type Signal,
-	toSignal,
-} from '@zeix/cause-effect'
+import { type Cleanup, isFunction, type Signal } from '@zeix/cause-effect'
 
 import type { Component, ComponentProps } from '../component'
 import { type Extractor, type Fallback, getFallback } from './dom'
@@ -113,7 +108,7 @@ const provideContexts =
 				isFunction(callback)
 			) {
 				e.stopImmediatePropagation()
-				callback(host.getSignal(String(context)))
+				callback(() => host[String(context)])
 			}
 		}
 		host.addEventListener(CONTEXT_REQUEST, listener)
@@ -124,20 +119,20 @@ const provideContexts =
  * Consume a context value for a component.
  *
  * @since 0.13.1
- * @param {Context<K, Signal<T>>} context - Context key to consume
+ * @param {Context<K, () => T>} context - Context key to consume
  * @param {Fallback<P[K]>} fallback - Fallback value or extractor function
- * @returns {Extractor<Signal<T>, C>} Function that returns the consumed context signal or a signal of the fallback value
+ * @returns {Extractor<() => T, C>} Function that returns the consumed context getter or a signal of the fallback value
  */
 const fromContext =
 	<T extends {}, C extends HTMLElement = HTMLElement>(
-		context: Context<string, Signal<T>>,
+		context: Context<string, () => T>,
 		fallback: Fallback<T, C>,
-	): Extractor<Signal<T>, C> =>
+	): Extractor<() => T, C> =>
 	(host: C) => {
-		let consumed = toSignal(getFallback(host, fallback)) as Signal<T>
+		let consumed = () => getFallback(host, fallback)
 		host.dispatchEvent(
-			new ContextRequestEvent(context, (value: Signal<T>) => {
-				consumed = value
+			new ContextRequestEvent(context, (getter: () => T) => {
+				consumed = getter
 			}),
 		)
 		return consumed

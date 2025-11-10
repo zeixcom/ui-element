@@ -1,45 +1,45 @@
-# Le Truc
+# El Truco
 
-Version 0.14.0
+Version 0.15.0
 
-**Le Truc** - a HTML-first library for reactive Web Components
+**El Truco** - a HTML-first library for reactive Web Components
 
-Le Truc is a set of functions to build reusable, loosely coupled Web Components with reactive properties. It provides structure through components and simplifies state management and DOM synchronization using declarative signals and effects, leading to more organized and maintainable code without a steep learning curve.
+El Truco is a set of functions to build reusable, loosely coupled Web Components with reactive properties. It provides structure through components and simplifies state management and DOM synchronization using declarative signals and effects, leading to more organized and maintainable code without a steep learning curve.
 
-Unlike SPA frameworks (React, Vue, Svelte, etc.) Le Truc takes a HTML-first approach, progressively enhancing sever-rendered HTML rather than recreating (rendering) it using JavaScript. Le Truc achieves the same result as SPA frameworks with SSR, but with a simpler, more efficient approach. It works with a backend written in any language or with any static site generator.
+Unlike SPA frameworks (React, Vue, Svelte, etc.) El Truco takes a HTML-first approach, progressively enhancing sever-rendered HTML rather than recreating (rendering) it using JavaScript. El Truco achieves the same result as SPA frameworks with SSR, but with a simpler, more efficient approach. It works with a backend written in any language or with any static site generator.
 
 ## Key Features
 
-- 🧱 **HTML Web Components**: Build on standard HTML and enhance it with encapsulated, reusable Web Components. No virtual DOM – Le Truc works directly with the real DOM.
+- 🧱 **HTML Web Components**: Build on standard HTML and enhance it with encapsulated, reusable Web Components. No virtual DOM – El Truco works directly with the real DOM.
 - 🚦 **Reactive Properties**: Define reactive properties for fine-grained, efficient state management (signals). Changes automatically propagate only to the parts of the DOM that need updating, avoiding unnecessary re-renders.
 - 🧩 **Function Composition**: Declare component behavior by composing small, reusable functions (attribute parsers and effects). This promotes cleaner code compared to spaghetti code problems that commonly occur when writing low-level imperative code.
-- 🛠️ **Customizable**: Le Truc is designed to be easily customizable and extensible. You can create your own custom attribute parsers and effects to suit your specific needs.
+- 🛠️ **Customizable**: El Truco is designed to be easily customizable and extensible. You can create your own custom attribute parsers and effects to suit your specific needs.
 - 🌐 **Context Support**: Share global states across components without prop drilling or tightly coupling logic.
 - 🪶 **Tiny footprint**: Minimal core (~4kB gzipped) with tree-shaking support, adding only the necessary JavaScript to enhance your HTML.
 - 🛡️ **Type Safety**: Get early warnings when types don't match, improving code quality and reducing bugs.
 
-Le Truc uses [Cause & Effect](https://github.com/zeixcom/cause-effect) internally for state management with signals and for scheduled DOM updates. But you could easily rewrite the `component()` function to use a signals library of your choice or to produce something else than Web Components.
+El Truco uses [Cause & Effect](https://github.com/zeixcom/cause-effect) internally for state management with signals and for scheduled DOM updates. But you could easily rewrite the `component()` function to use a signals library of your choice or to produce something else than Web Components.
 
 ## Installation
 
 ```bash
 # with npm
-npm install @zeix/le-truc
+npm install @zeix/el-truco
 
 # or with bun
-bun add @zeix/le-truc
+bun add @zeix/el-truco
 ```
 
 ## Documentation
 
 The full documentation is still work in progress. The following chapters are already reasonably complete:
 
-- [Introduction](https://zeixcom.github.io/le-truc/index.html)
-- [Getting Started](https://zeixcom.github.io/le-truc/getting-started.html)
-- [Components](https://zeixcom.github.io/le-truc/components.html)
-- [Styling](https://zeixcom.github.io/le-truc/styling.html)
-- [Data Flow](https://zeixcom.github.io/le-truc/data-flow.html)
-- [About](https://zeixcom.github.io/le-truc/about.html)
+- [Introduction](https://zeixcom.github.io/el-truco/index.html)
+- [Getting Started](https://zeixcom.github.io/el-truco/getting-started.html)
+- [Components](https://zeixcom.github.io/el-truco/components.html)
+- [Styling](https://zeixcom.github.io/el-truco/styling.html)
+- [Data Flow](https://zeixcom.github.io/el-truco/data-flow.html)
+- [About](https://zeixcom.github.io/el-truco/about.html)
 
 ## Basic Usage
 
@@ -53,10 +53,10 @@ Server-rendered markup:
 </basic-counter>
 ```
 
-Le Truc component:
+El Truco component:
 
 ```js
-import { asInteger, component, on, setText } from '@zeix/le-truc'
+import { asInteger, component, on, setText } from '@zeix/el-truco'
 
 export default component(
   'basic-counter',
@@ -157,10 +157,10 @@ Server-rendered markup:
 </module-tabgroup>
 ```
 
-Le Truc component:
+El Truco component:
 
 ````js
-import { component, on, setProperty, show } from '@zeix/le-truc'
+import { component, on, setProperty, show } from '@zeix/el-truco'
 import { manageArrowKeyFocus } from './manage-arrow-key-focus'
 
 export default component('module-tabgroup', {
@@ -298,7 +298,7 @@ An example demonstrating how to use a custom attribute parser (sanitize an URL) 
 </module-lazy>
 ```
 
-Le Truc component:
+El Truco component:
 
 ```js
 import {
@@ -310,7 +310,7 @@ import {
   show,
   state,
   toggleClass,
-} from '@zeix/le-truc'
+} from '@zeix/el-truco'
 import { asURL } from './as-url'
 
 export default component(

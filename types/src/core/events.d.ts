@@ -49,5 +49,5 @@ declare const on: <K extends keyof HTMLElementEventMap | string, P extends Compo
  * @param {Reactive<T, P, E>} reactive - Reactive value bound to the event detail
  * @returns {Effect<P, E>} Effect function that emits custom events
  */
-declare const emitEvent: <T, P extends ComponentProps, E extends Element = HTMLElement>(type: string, reactive: Reactive<T, P, E>) => Effect<P, E>;
+declare const emitEvent: <T extends {}, P extends ComponentProps, E extends Element = HTMLElement>(type: string, reactive: Reactive<T, P, E>) => Effect<P, E>;
 export { type EventType, type EventTransformer, type EventTransformers, type EventHandler, emitEvent, fromEvents, on, };

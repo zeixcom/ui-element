@@ -1,4 +1,3 @@
-import { type Computed, type MaybeSignal, type Signal, type State, type Store } from '@zeix/cause-effect';
 import { type Extractor, type Helpers, type Parser } from './core/dom';
 import { type Effects } from './core/reactive';
 type ReservedWords = 'constructor' | 'prototype' | '__proto__' | 'toString' | 'valueOf' | 'hasOwnProperty' | 'isPrototypeOf' | 'propertyIsEnumerable' | 'toLocaleString';
@@ -9,24 +8,21 @@ type ValidateComponentProps<P> = {
 type ComponentProps = {
     [K in string as ValidPropertyKey<K>]: unknown & {};
 };
-type AnySignalType = Signal<any> | State<any> | Computed<any> | Store<any>;
 type Component<P extends ComponentProps> = HTMLElement & P & {
-    attributeChangedCallback<K extends keyof P & string>(name: K, oldValue: string | null, newValue: string | null): void;
+    attributeChangedCallback<K extends keyof P>(name: K, oldValue: string | null, newValue: string | null): void;
     debug?: boolean;
-    getSignal<K extends keyof P & string>(prop: K): Signal<P[K]>;
-    setSignal<K extends keyof P & string>(prop: K, signal: AnySignalType): void;
 };
-type Initializer<T extends {}, C extends HTMLElement> = T | Parser<T, C> | Extractor<MaybeSignal<T>, C> | ((host: C) => void);
+type Initializer<T extends {}, C extends HTMLElement> = T | Parser<T, C> | Extractor<T, C> | ((host: C) => void);
 type Setup<P extends ComponentProps> = (host: Component<P>, helpers: Helpers<P>) => Effects<P, Component<P>>;
 /**
  * Define a component with dependency resolution and setup function (connectedCallback)
  *
  * @since 0.14.0
  * @param {string} name - Name of the custom element
- * @param {{ [K in keyof P]: Initializer<NonNullable<P[K]>, Component<P>> }} init - Signals of the component
+ * @param {{ [K in keyof P]: Initializer<P[K] & {}, Component<P>> }} init - Signals of the component
  * @param {Setup<P>} setup - Setup function to be called after dependencies are resolved
  * @throws {InvalidComponentNameError} If component name is invalid
  * @throws {InvalidPropertyNameError} If property name is invalid
  */
-declare function component<P extends ComponentProps & ValidateComponentProps<P>>(name: string, init: { [K in keyof P]: Initializer<NonNullable<P[K]>, Component<P>>; } | undefined, setup: Setup<P>): void;
+declare function component<P extends ComponentProps & ValidateComponentProps<P>>(name: string, init: { [K in keyof P]: Initializer<P[K] & {}, Component<P>>; } | undefined, setup: Setup<P>): Component<P>;
 export { type Component, type ComponentProps, type ReservedWords, type ValidPropertyKey, type ValidateComponentProps, type Initializer, type Setup, component, };

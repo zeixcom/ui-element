@@ -3,24 +3,24 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Data Flow – Le Truc Docs</title>
+		<title>Data Flow – El Truco Docs</title>
 		<meta name="description" content="Passing state, events, context" />
 		<link
 			rel="preload"
-			href="./assets/main.css?v=mhmbdq7l"
+			href="./assets/main.css?v=mhsyca2j"
 			as="style"
 		/>
 		<link
 			rel="modulepreload"
-			href="./assets/main.js?v=mhmbdq7l"
+			href="./assets/main.js?v=mhsyca2j"
 		/>
 		<link
 			rel="stylesheet"
-			href="./assets/main.css?v=mhmbdq7l"
+			href="./assets/main.css?v=mhsyca2j"
 		/>
 		<script
 			type="module"
-			src="./assets/main.js?v=mhmbdq7l"
+			src="./assets/main.js?v=mhsyca2j"
 		></script>
 	</head>
 	<body class="">
@@ -30,7 +30,7 @@
 					Skip to main content
 				</a>
 				<h1 class="content">
-					Le Truc Docs <small>Version 0.14.0</small>
+					El Truco Docs <small>Version 0.15.0</small>
 				</h1>
 				<section-menu>
 	<nav>
@@ -82,7 +82,7 @@
 			<a href="index.html">
 				<span class="icon">📖</span>
 				<strong>Introduction</strong>
-				<small>Overview and key benefits of Le Truc</small>
+				<small>Overview and key benefits of El Truco</small>
 			</a>
 		</li><li>
 			<a href="styling.html">
@@ -107,7 +107,7 @@
 							</a>
 						</h1>
 <div>
-  <p class="lead"><strong>Learn how Le Truc components can work together seamlessly.</strong> Start with simple parent-child relationships, then explore advanced patterns like custom events and shared state. Build modular, loosely coupled components that communicate efficiently.</p>
+  <p class="lead"><strong>Learn how El Truco components can work together seamlessly.</strong> Start with simple parent-child relationships, then explore advanced patterns like custom events and shared state. Build modular, loosely coupled components that communicate efficiently.</p>
   <module-toc>
 		<nav>
 			<h2>On This Page</h2>
@@ -164,7 +164,7 @@
 <p>First, we need to observe the quantities of all <code>FormSpinbutton</code> components. For this, we create a signal of all children matching the <code>form-spinbutton</code> selector:</p>
 <p><strong>CODE_BLOCK_PLACEHOLDER_0</strong></p>
 <p>The <code>fromDescendants()</code> function returns a signal of the reduced array of all matching elements. In contrast to a static <code>querySelectorAll()</code> call, the <code>fromDescendants()</code> function is reactive and updates whenever new elements are added or removed from the DOM.</p>
-<p>Then, we need to convert the total of all product quantities to a string and pass it on to the <code>BasicButton</code> component. In Le Truc we use the <code>pass()</code> function to share state across components:</p>
+<p>Then, we need to convert the total of all product quantities to a string and pass it on to the <code>BasicButton</code> component. In El Truco we use the <code>pass()</code> function to share state across components:</p>
 <p><strong>CODE_BLOCK_PLACEHOLDER_1</strong></p>
 <p>Allright, that&#39;s it!</p>
 <ul>
@@ -331,7 +331,7 @@
 						</h3>
 <p>To get full TypeScript support, declare your components and custom events globally:</p>
 <p><strong>CODE_BLOCK_PLACEHOLDER_4</strong></p>
-<p>This enables full type checking, autocompletion, and access to Le Truc component methods like <code>.getSignal()</code> and <code>.setSignal()</code>.</p>
+<p>This enables full type checking, autocompletion, and access to El Truco component methods like <code>.getSignal()</code> and <code>.setSignal()</code>.</p>
 <h3 id="example-shopping-cart-events">
 							<a name="example-shopping-cart-events" class="anchor" href="#example-shopping-cart-events">
 								<span class="permalink">🔗</span>
@@ -372,12 +372,12 @@
 								<span class="title">Component Type Safety Best Practices</span>
 							</a>
 						</h3>
-<p>Each Le Truc component should declare its own <code>HTMLElementTagNameMap</code> extension:</p>
+<p>Each El Truco component should declare its own <code>HTMLElementTagNameMap</code> extension:</p>
 <p><strong>CODE_BLOCK_PLACEHOLDER_7</strong></p>
 <p>This enables:</p>
 <ul>
 <li><strong>Full type safety</strong> when using signal producers like <code>fromDescendants(&#39;my-component&#39;, ...)</code></li>
-<li><strong>Access to Le Truc methods</strong> like <code>.getSignal()</code> and <code>.setSignal()</code></li>
+<li><strong>Access to El Truco methods</strong> like <code>.getSignal()</code> and <code>.setSignal()</code></li>
 <li><strong>IntelliSense</strong> for component properties and methods</li>
 <li><strong>Compile-time validation</strong> of component interactions</li>
 </ul>

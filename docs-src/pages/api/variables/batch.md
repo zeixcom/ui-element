@@ -1,8 +1,8 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / batch
+[@zeix/el-truco](../globals.md) / batch
 
 # Variable: batch()
 

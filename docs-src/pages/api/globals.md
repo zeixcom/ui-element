@@ -1,18 +1,31 @@
-[**@zeix/le-truc**](README.md)
+[**@zeix/el-truco**](README.md)
 
 ***
 
-# @zeix/le-truc
+# @zeix/el-truco
 
 ## Classes
 
+- [CircularDependencyError](classes/CircularDependencyError.md)
 - [CircularMutationError](classes/CircularMutationError.md)
 - [DependencyTimeoutError](classes/DependencyTimeoutError.md)
 - [InvalidComponentNameError](classes/InvalidComponentNameError.md)
 - [InvalidEffectsError](classes/InvalidEffectsError.md)
 - [InvalidPropertyNameError](classes/InvalidPropertyNameError.md)
 - [InvalidSignalError](classes/InvalidSignalError.md)
+- [InvalidSignalValueError](classes/InvalidSignalValueError.md)
 - [MissingElementError](classes/MissingElementError.md)
+- [NullishSignalValueError](classes/NullishSignalValueError.md)
+- [StoreKeyExistsError](classes/StoreKeyExistsError.md)
+- [StoreKeyRangeError](classes/StoreKeyRangeError.md)
+- [StoreKeyReadonlyError](classes/StoreKeyReadonlyError.md)
+
+## Interfaces
+
+- [StoreAddEvent](interfaces/StoreAddEvent.md)
+- [StoreChangeEvent](interfaces/StoreChangeEvent.md)
+- [StoreRemoveEvent](interfaces/StoreRemoveEvent.md)
+- [StoreSortEvent](interfaces/StoreSortEvent.md)
 
 ## Type Aliases
 
@@ -24,7 +37,9 @@
 - [Context](type-aliases/Context.md)
 - [ContextType](type-aliases/ContextType.md)
 - [DangerouslySetInnerHTMLOptions](type-aliases/DangerouslySetInnerHTMLOptions.md)
+- [DiffResult](type-aliases/DiffResult.md)
 - [Effect](type-aliases/Effect.md)
+- [EffectCallback](type-aliases/EffectCallback.md)
 - [Effects](type-aliases/Effects.md)
 - [ElementEffects](type-aliases/ElementEffects.md)
 - [ElementFromSelector](type-aliases/ElementFromSelector.md)
@@ -44,15 +59,19 @@
 - [KnownTag](type-aliases/KnownTag.md)
 - [LogLevel](type-aliases/LogLevel.md)
 - [LooseExtractor](type-aliases/LooseExtractor.md)
-- [MaybeSignal](type-aliases/MaybeSignal.md)
+- [MatchHandlers](type-aliases/MatchHandlers.md)
+- [MaybeCleanup](type-aliases/MaybeCleanup.md)
 - [Parser](type-aliases/Parser.md)
 - [ParserOrFallback](type-aliases/ParserOrFallback.md)
 - [Reactive](type-aliases/Reactive.md)
 - [Reactives](type-aliases/Reactives.md)
 - [ReservedWords](type-aliases/ReservedWords.md)
+- [ResolveResult](type-aliases/ResolveResult.md)
 - [Setup](type-aliases/Setup.md)
 - [Signal](type-aliases/Signal.md)
 - [State](type-aliases/State.md)
+- [Store](type-aliases/Store.md)
+- [StoreEventMap](type-aliases/StoreEventMap.md)
 - [UnknownContext](type-aliases/UnknownContext.md)
 - [UpdateOperation](type-aliases/UpdateOperation.md)
 - [ValidateComponentProps](type-aliases/ValidateComponentProps.md)
@@ -63,17 +82,31 @@
 - [batch](variables/batch.md)
 - [computed](variables/computed.md)
 - [DEV\_MODE](variables/DEV_MODE.md)
+- [diff](variables/diff.md)
 - [effect](variables/effect.md)
 - [enqueue](variables/enqueue.md)
+- [isAbortError](variables/isAbortError.md)
+- [isAsyncFunction](variables/isAsyncFunction.md)
 - [isComputed](variables/isComputed.md)
+- [isEqual](variables/isEqual.md)
+- [isFunction](variables/isFunction.md)
+- [isMutableSignal](variables/isMutableSignal.md)
+- [isNumber](variables/isNumber.md)
+- [isRecord](variables/isRecord.md)
+- [isRecordOrArray](variables/isRecordOrArray.md)
 - [isSignal](variables/isSignal.md)
 - [isState](variables/isState.md)
+- [isStore](variables/isStore.md)
+- [isString](variables/isString.md)
+- [isSymbol](variables/isSymbol.md)
 - [LOG\_DEBUG](variables/LOG_DEBUG.md)
 - [LOG\_ERROR](variables/LOG_ERROR.md)
 - [LOG\_INFO](variables/LOG_INFO.md)
 - [LOG\_WARN](variables/LOG_WARN.md)
 - [RESET](variables/RESET.md)
 - [state](variables/state.md)
+- [store](variables/store.md)
+- [toError](variables/toError.md)
 - [UNSET](variables/UNSET.md)
 
 ## Functions

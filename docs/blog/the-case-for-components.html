@@ -3,24 +3,24 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>The Case for Components – Le Truc Docs</title>
+		<title>The Case for Components – El Truco Docs</title>
 		<meta name="description" content="Components are a proven way to reduce complexity, encourage reuse, and allow teams to scale their work across independent user interface parts." />
 		<link
 			rel="preload"
-			href="../assets/main.css?v=mhmbdq7l"
+			href="../assets/main.css?v=mhsyca2l"
 			as="style"
 		/>
 		<link
 			rel="modulepreload"
-			href="../assets/main.js?v=mhmbdq7l"
+			href="../assets/main.js?v=mhsyca2l"
 		/>
 		<link
 			rel="stylesheet"
-			href="../assets/main.css?v=mhmbdq7l"
+			href="../assets/main.css?v=mhsyca2l"
 		/>
 		<script
 			type="module"
-			src="../assets/main.js?v=mhmbdq7l"
+			src="../assets/main.js?v=mhsyca2l"
 		></script>
 	</head>
 	<body class="blog">
@@ -30,7 +30,7 @@
 					Skip to main content
 				</a>
 				<h1 class="content">
-					Le Truc Docs <small>Version 0.14.0</small>
+					El Truco Docs <small>Version 0.15.0</small>
 				</h1>
 				<section-menu>
 	<nav>
@@ -82,7 +82,7 @@
 			<a href="index.html">
 				<span class="icon">📖</span>
 				<strong>Introduction</strong>
-				<small>Overview and key benefits of Le Truc</small>
+				<small>Overview and key benefits of El Truco</small>
 			</a>
 		</li><li>
 			<a href="styling.html">
@@ -107,7 +107,7 @@
 							</a>
 						</h1>
 <div>
-  <p class="lead"><strong>Components are a proven way to reduce complexity, encourage reuse, and allow teams to scale their work across independent user interface parts</strong>. But you don't need a framework to get these benefits. Let's explore how components help us build better interfaces – and how native Web Components and Le Truc fit into that picture.</p>
+  <p class="lead"><strong>Components are a proven way to reduce complexity, encourage reuse, and allow teams to scale their work across independent user interface parts</strong>. But you don't need a framework to get these benefits. Let's explore how components help us build better interfaces – and how native Web Components and El Truco fit into that picture.</p>
   <module-toc>
 		<nav>
 			<h2>On This Page</h2>
@@ -180,7 +180,7 @@
 								<span class="title">A Solid Foundation</span>
 							</a>
 						</h2>
-<p><strong>Le Truc</strong> builds on the Web Platform rather than abstracting over it. We embrace semantic HTML as the foundation. Add CSS to your components however you like and make them look great. Use Web Components to add reusable behavior.</p>
+<p><strong>El Truco</strong> builds on the Web Platform rather than abstracting over it. We embrace semantic HTML as the foundation. Add CSS to your components however you like and make them look great. Use Web Components to add reusable behavior.</p>
 <p>While native Web Components are powerful, they require you to wire things together manually – querying elements, adding event listeners, and managing updates. This works great for simple interactions, but what if we want other components or JavaScript code to control our component&#39;s state? Let&#39;s add a public API.</p>
 <p>To achieve this, we can expose an observed attribute and a public property. Observed attributes allow our component to react when the attribute changes. Element properties usually mirror attributes, but they can be of any type, not just strings. We need a setter function to react to changes in the property.</p>
 <p><strong>CODE_BLOCK_PLACEHOLDER_4</strong></p>
@@ -188,8 +188,8 @@
 <p><strong>CODE_BLOCK_PLACEHOLDER_5</strong></p>
 <p>... or via JavaScript:</p>
 <p><strong>CODE_BLOCK_PLACEHOLDER_6</strong></p>
-<p>This manual wiring works, but notice how much boilerplate we needed for a simple reactive property. As components grow more complex, this pattern becomes harder to maintain. This is where <strong>Le Truc</strong> shines – it provides the reactivity patterns you need while staying close to the platform.</p>
-<p>Here&#39;s the same component rewritten using Le Truc. Notice how the concerns are cleanly separated:</p>
+<p>This manual wiring works, but notice how much boilerplate we needed for a simple reactive property. As components grow more complex, this pattern becomes harder to maintain. This is where <strong>El Truco</strong> shines – it provides the reactivity patterns you need while staying close to the platform.</p>
+<p>Here&#39;s the same component rewritten using El Truco. Notice how the concerns are cleanly separated:</p>
 <ul>
 <li><strong>State declaration</strong>: <code>name: asString()</code> defines our component&#39;s reactive state</li>
 <li><strong>Input handling</strong>: The <code>on(&#39;input&#39;, ...)</code> handler updates state declaratively</li>
@@ -205,7 +205,7 @@
 <li><code>on()</code> adds an event listener to an element and removes it when the component is disconnected.</li>
 <li><code>setText()</code> updates the text content of an element when a state change occurs.</li>
 </ul>
-<p>Components in Le Truc are still standard Web Components that can be used everywhere. Other components need to know nothing more about Le Truc components other than they are standard HTML elements with a few reactive properties according to a clearly defined contract – its public interface.</p>
+<p>Components in El Truco are still standard Web Components that can be used everywhere. Other components need to know nothing more about El Truco components other than they are standard HTML elements with a few reactive properties according to a clearly defined contract – its public interface.</p>
 </section>
 
 <section>
@@ -220,7 +220,7 @@
 <ul>
 <li><strong>Components</strong> help you organize frontend code in ways that scale – conceptually and organizationally.</li>
 <li><strong>Web Components</strong> offer a native way to build encapsulated, reusable user interfaces without needing a framework.</li>
-<li><strong>Le Truc</strong> builds on this foundation, simplifying common tasks like wiring inputs and syncing state to the DOM.</li>
+<li><strong>El Truco</strong> builds on this foundation, simplifying common tasks like wiring inputs and syncing state to the DOM.</li>
 </ul>
 <p>In short: you don&#39;t need a framework to build with components. You just need a few functions that stay close to the platform, while smoothing over the rough edges.</p>
 </section>
@@ -234,7 +234,7 @@
 							</a>
 						</h2>
 <p>In the next post, we&#39;ll revisit similar components and explore how reactivity can make more complex relationships easier to manage – like derived values, async state, and multiple sources of truth.</p>
-<p>We&#39;ll look at the pitfalls of imperative state wiring as logic grows, and how Le Truc&#39;s signal graph provides a robust and minimal foundation for keeping your user interface in sync.</p>
+<p>We&#39;ll look at the pitfalls of imperative state wiring as logic grows, and how El Truco&#39;s signal graph provides a robust and minimal foundation for keeping your user interface in sync.</p>
 <p>Stay tuned!</p>
 </section>
 </main>

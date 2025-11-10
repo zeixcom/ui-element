@@ -1,14 +1,14 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / asEnum
+[@zeix/el-truco](../globals.md) / asEnum
 
 # Function: asEnum()
 
 > **asEnum**(`valid`): [`Parser`](../type-aliases/Parser.md)\<`string`\>
 
-Defined in: [src/lib/parsers.ts:93](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/lib/parsers.ts#L93)
+Defined in: [src/lib/parsers.ts:93](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/lib/parsers.ts#L93)
 
 Parse a string as a multi-state value (for examnple: true, false, mixed), defaulting to the first valid option
 

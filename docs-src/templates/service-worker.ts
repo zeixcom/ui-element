@@ -30,7 +30,7 @@ const DEFAULT_STATIC_ASSETS = ['/', '/index.html']
 /**
  * Generate cache name with timestamp
  */
-function generateCacheName(baseName: string = 'le-truc-docs'): string {
+function generateCacheName(baseName: string = 'el-truco-docs'): string {
 	return `${baseName}-v${Date.now()}`
 }
 
@@ -246,7 +246,7 @@ self.addEventListener('fetch', (event) => {
  */
 export function serviceWorkerHeader(version?: string): string {
 	const versionText = version ? ` v${version}` : ''
-	return js`// Le Truc Docs Service Worker${versionText}
+	return js`// El Truco Docs Service Worker${versionText}
 // Generated at ${new Date().toISOString()}
 // Auto-generated - do not edit manually`
 }

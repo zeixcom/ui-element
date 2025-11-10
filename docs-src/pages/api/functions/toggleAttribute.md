@@ -1,14 +1,14 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / toggleAttribute
+[@zeix/el-truco](../globals.md) / toggleAttribute
 
 # Function: toggleAttribute()
 
 > **toggleAttribute**\<`P`, `E`\>(`name`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:420](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/lib/effects.ts#L420)
+Defined in: [src/lib/effects.ts:426](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/lib/effects.ts#L426)
 
 Effect for toggling a boolean attribute on an element.
 When the reactive value is true, the attribute is present; when false, it's absent.
@@ -33,7 +33,7 @@ Name of the attribute to toggle
 
 ### reactive
 
-[`Reactive`](../type-aliases/Reactive.md)\<`boolean`, `P`, `E`\> = `name`
+[`Reactive`](../type-aliases/Reactive.md)\<`boolean`, `P`, `E`\> = `...`
 
 Reactive value bound to the attribute presence (defaults to attribute name)
 

@@ -1,4 +1,4 @@
-# Le Truc Docs - HTTP Headers Configuration
+# El Truco Docs - HTTP Headers Configuration
 # This file configures optimal caching and security headers for static site deployment
 
 # Cache static assets for 1 year

@@ -1,22 +1,22 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / UNSET
+[@zeix/el-truco](../globals.md) / UNSET
 
 # Variable: UNSET
 
 > `const` **UNSET**: `any`
 
-Defined in: node\_modules/@zeix/cause-effect/types/src/signal.d.ts:12
+Defined in: node\_modules/@zeix/cause-effect/types/src/util.d.ts:1
 
 ## Name
 
-Le Truc
+El Truco
 
 ## Version
 
-0.14.0
+0.15.0
 
 ## Author
 

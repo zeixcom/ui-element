@@ -5,7 +5,6 @@ declare const LOG_INFO: LogLevel;
 declare const LOG_WARN: LogLevel;
 declare const LOG_ERROR: LogLevel;
 declare const isDefinedObject: (value: unknown) => value is Record<string, unknown>;
-declare const isString: (value: unknown) => value is string;
 declare const hasMethod: <T extends object, K extends PropertyKey, R>(obj: T, methodName: K) => obj is T & Record<K, (...args: any[]) => R>;
 /**
  * Check if a node is an Element
@@ -62,4 +61,4 @@ declare const typeString: (value: unknown) => string;
  * @returns {T} - value passed through
  */
 declare const log: <T>(value: T, msg: string, level?: LogLevel) => T;
-export { type LogLevel, hasMethod, isString, isDefinedObject, isElement, isCustomElement, isUpgradedComponent, log, elementName, valueString, typeString, DEV_MODE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, };
+export { type LogLevel, hasMethod, isDefinedObject, isElement, isCustomElement, isUpgradedComponent, log, elementName, valueString, typeString, DEV_MODE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, };

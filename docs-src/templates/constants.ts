@@ -144,7 +144,7 @@ export const DEVELOPMENT_CONFIG = {
 
 // Template generation metadata
 export const TEMPLATE_METADATA = {
-	GENERATOR: 'Le Truc Template System',
+	GENERATOR: 'El Truco Template System',
 	VERSION: '1.0.0',
 	GENERATION_TIMESTAMP: () => new Date().toISOString(),
 	AUTO_GENERATED_WARNING: 'Auto-generated - do not edit manually',

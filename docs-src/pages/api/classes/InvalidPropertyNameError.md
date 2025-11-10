@@ -1,12 +1,12 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / InvalidPropertyNameError
+[@zeix/el-truco](../globals.md) / InvalidPropertyNameError
 
 # Class: InvalidPropertyNameError
 
-Defined in: [src/core/errors.ts:45](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/core/errors.ts#L45)
+Defined in: [src/core/errors.ts:45](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/core/errors.ts#L45)
 
 Error thrown when trying to assign a property name that conflicts with reserved words or inherited HTMLElement properties
 
@@ -16,7 +16,7 @@ Error thrown when trying to assign a property name that conflicts with reserved 
 
 ## Extends
 
-- `Error`
+- `TypeError`
 
 ## Constructors
 
@@ -24,7 +24,7 @@ Error thrown when trying to assign a property name that conflicts with reserved 
 
 > **new InvalidPropertyNameError**(`component`, `prop`, `reason`): `InvalidPropertyNameError`
 
-Defined in: [src/core/errors.ts:51](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/core/errors.ts#L51)
+Defined in: [src/core/errors.ts:51](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/core/errors.ts#L51)
 
 #### Parameters
 
@@ -52,7 +52,7 @@ Explanation why the property is invalid
 
 #### Overrides
 
-`Error.constructor`
+`TypeError.constructor`
 
 ## Properties
 
@@ -66,7 +66,7 @@ The cause of the error.
 
 #### Inherited from
 
-`Error.cause`
+`TypeError.cause`
 
 ***
 
@@ -78,7 +78,7 @@ Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1077
 
 #### Inherited from
 
-`Error.message`
+`TypeError.message`
 
 ***
 
@@ -90,7 +90,7 @@ Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1076
 
 #### Inherited from
 
-`Error.name`
+`TypeError.name`
 
 ***
 
@@ -102,7 +102,7 @@ Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1078
 
 #### Inherited from
 
-`Error.stack`
+`TypeError.stack`
 
 ***
 
@@ -124,7 +124,7 @@ not capture any frames.
 
 #### Inherited from
 
-`Error.stackTraceLimit`
+`TypeError.stackTraceLimit`
 
 ## Methods
 
@@ -196,7 +196,7 @@ a();
 
 ##### Inherited from
 
-`Error.captureStackTrace`
+`TypeError.captureStackTrace`
 
 #### Call Signature
 
@@ -222,7 +222,7 @@ Create .stack property on a target object
 
 ##### Inherited from
 
-`Error.captureStackTrace`
+`TypeError.captureStackTrace`
 
 ***
 
@@ -248,7 +248,7 @@ Indicates whether the argument provided is a built-in Error instance or not.
 
 ##### Inherited from
 
-`Error.isError`
+`TypeError.isError`
 
 #### Call Signature
 
@@ -274,7 +274,7 @@ True if the value is an instance of Error, false otherwise
 
 ##### Inherited from
 
-`Error.isError`
+`TypeError.isError`
 
 ***
 
@@ -304,4 +304,4 @@ https://v8.dev/docs/stack-trace-api#customizing-stack-traces
 
 #### Inherited from
 
-`Error.prepareStackTrace`
+`TypeError.prepareStackTrace`

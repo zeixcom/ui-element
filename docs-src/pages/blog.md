@@ -15,7 +15,7 @@ description: 'Latest articles and updates'
 
 <section>
 
-## Introducing Le Truc
+## Introducing El Truco
 
 - [The Case for Components](./blog/the-case-for-components.md)
 - [Rethinking Reactivity](./blog/rethinking-reactivity.md)

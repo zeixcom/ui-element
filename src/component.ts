@@ -1,13 +1,15 @@
 import {
 	type Cleanup,
+	type ComputedCallback,
+	computed,
 	isComputed,
 	isFunction,
+	isMutableSignal,
 	isSignal,
 	isState,
 	isStore,
-	type MaybeSignal,
 	type Signal,
-	toSignal,
+	state,
 	UNSET,
 } from '@zeix/cause-effect'
 
@@ -28,6 +30,7 @@ import { type Effects, runEffects } from './core/reactive'
 import {
 	DEV_MODE,
 	elementName,
+	LOG_ERROR,
 	LOG_WARN,
 	log,
 	typeString,
@@ -68,16 +71,12 @@ type Component<P extends ComponentProps> = HTMLElement &
 
 		// Custom element properties
 		debug?: boolean
-
-		// Component-specific signal methods
-		getSignal<K extends keyof P>(prop: K): Signal<P[K]>
-		setSignal<K extends keyof P>(prop: K, signal: Signal<P[K]>): void
 	}
 
 type Initializer<T extends {}, C extends HTMLElement> =
 	| T
 	| Parser<T, C>
-	| Extractor<MaybeSignal<T>, C>
+	| Extractor<T, C>
 	| ((host: C) => void)
 
 type Setup<P extends ComponentProps> = (
@@ -147,7 +146,7 @@ const validatePropertyName = (prop: string): string | null => {
  *
  * @since 0.14.0
  * @param {string} name - Name of the custom element
- * @param {{ [K in keyof P]: Initializer<NonNullable<P[K]>, Component<P>> }} init - Signals of the component
+ * @param {{ [K in keyof P]: Initializer<P[K] & {}, Component<P>> }} init - Signals of the component
  * @param {Setup<P>} setup - Setup function to be called after dependencies are resolved
  * @throws {InvalidComponentNameError} If component name is invalid
  * @throws {InvalidPropertyNameError} If property name is invalid
@@ -155,9 +154,9 @@ const validatePropertyName = (prop: string): string | null => {
 function component<P extends ComponentProps & ValidateComponentProps<P>>(
 	name: string,
 	init: {
-		[K in keyof P]: Initializer<NonNullable<P[K]>, Component<P>>
+		[K in keyof P]: Initializer<P[K] & {}, Component<P>>
 	} = {} as {
-		[K in keyof P]: Initializer<NonNullable<P[K]>, Component<P>>
+		[K in keyof P]: Initializer<P[K] & {}, Component<P>>
 	},
 	setup: Setup<P>,
 ): Component<P> {
@@ -197,8 +196,7 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 				const result = isFunction(initializer)
 					? initializer(this, null)
 					: initializer
-				if (result != null)
-					this.setSignal(prop, toSignal(result) as Signal<P[keyof P]>)
+				if (result != null) this.#setAccessor(prop, result)
 			}
 
 			// Getting effects collects dependencies as a side-effect
@@ -280,40 +278,23 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 					`Attribute "${String(attr)}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`,
 				)
 			if (attr in this) (this as unknown as P)[attr] = parsed
-			else
-				this.setSignal(
-					attr,
-					toSignal(parsed) as unknown as Signal<P[K]>,
-				)
-		}
-
-		/**
-		 * Get the the signal for a given key
-		 *
-		 * @since 0.12.0
-		 * @param {K} key - Key to get signal for
-		 * @returns {Signal<P[K]>} Current value of signal; undefined if state does not exist
-		 */
-		getSignal<K extends keyof P>(key: K): Signal<P[K]> {
-			const signal = this.#signals[key]
-			if (DEV_MODE && this.debug)
-				log(
-					signal,
-					`Get ${typeString(signal)} "${String(key)}" in ${elementName(this)}`,
-				)
-			return signal
+			else this.#setAccessor(attr, parsed, true)
 		}
 
 		/**
 		 * Set the signal for a given key
 		 *
-		 * @since 0.12.0
-		 * @param {K} key - Key to set signal for
-		 * @param {Signal<P[K]>} signal - Signal to set value to
+		 * @since 0.15.0
+		 * @param {K} key - Key to set accessor for
+		 * @param {Signal<P[K]>} value - Initial value, signal or computed callback to create signal
 		 * @throws {InvalidPropertyNameError} If key is not a valid property name
 		 * @throws {InvalidSignalError} If signal is not a valid signal
 		 */
-		setSignal<K extends keyof P>(key: K, signal: Signal<P[K]>): void {
+		#setAccessor<K extends keyof P>(
+			key: K,
+			value: P[K] | Signal<P[K]> | ComputedCallback<P[K]>,
+			writable: boolean | ((value: P[K]) => void) = false,
+		): void {
 			const error = validatePropertyName(String(key))
 			if (error)
 				throw new InvalidPropertyNameError(
@@ -321,22 +302,39 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 					String(key),
 					error,
 				)
-			if (!isSignal(signal))
+			const signal = isSignal(value)
+				? value
+				: isFunction(value)
+					? computed(value)
+					: state(value)
+			if (!isSignal<P[K]>(signal))
 				throw new InvalidSignalError(this, String(key))
 			const prev = this.#signals[key]
-			const writable = isState(signal) || isStore(signal)
-			this.#signals[key] = signal as Signal<P[K]>
-			Object.defineProperty(this, key, {
-				get: signal.get,
-				set: writable ? signal.set : undefined,
-				enumerable: true,
-				configurable: writable,
-			})
+			const setter = isFunction(writable)
+				? writable
+				: !!writable && isMutableSignal(signal)
+					? signal.set
+					: undefined
+			this.#signals[key] = signal
+			try {
+				Object.defineProperty(this, key, {
+					get: signal.get,
+					set: setter,
+					enumerable: true,
+					configurable: !!setter,
+				})
+			} catch (error) {
+				log(
+					error,
+					`Failed to define property "${String(key)}" in ${elementName(this)}`,
+					LOG_ERROR,
+				)
+			}
 			if ((prev && isState(prev)) || isStore(prev)) prev.set(UNSET)
 			if (DEV_MODE && this.debug)
 				log(
 					signal,
-					`Set ${typeString(signal)} "${String(key)} in ${elementName(this)}`,
+					`Set ${typeString(signal)} "${String(key)}" in ${elementName(this)}`,
 				)
 		}
 	}

@@ -1,14 +1,14 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / fromContext
+[@zeix/el-truco](../globals.md) / fromContext
 
 # Function: fromContext()
 
-> **fromContext**\<`T`, `C`\>(`context`, `fallback`): [`Extractor`](../type-aliases/Extractor.md)\<[`Signal`](../type-aliases/Signal.md)\<`T`\>, `C`\>
+> **fromContext**\<`T`, `C`\>(`context`, `fallback`): [`Extractor`](../type-aliases/Extractor.md)\<() => `T`, `C`\>
 
-Defined in: [src/core/context.ts:132](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/core/context.ts#L132)
+Defined in: [src/core/context.ts:127](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/core/context.ts#L127)
 
 Consume a context value for a component.
 
@@ -26,7 +26,7 @@ Consume a context value for a component.
 
 ### context
 
-[`Context`](../type-aliases/Context.md)\<`string`, [`Signal`](../type-aliases/Signal.md)\<`T`\>\>
+[`Context`](../type-aliases/Context.md)\<`string`, () => `T`\>
 
 Context key to consume
 
@@ -38,9 +38,9 @@ Fallback value or extractor function
 
 ## Returns
 
-[`Extractor`](../type-aliases/Extractor.md)\<[`Signal`](../type-aliases/Signal.md)\<`T`\>, `C`\>
+[`Extractor`](../type-aliases/Extractor.md)\<() => `T`, `C`\>
 
-Function that returns the consumed context signal or a signal of the fallback value
+Function that returns the consumed context getter or a signal of the fallback value
 
 ## Since
 

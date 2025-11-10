@@ -5,7 +5,7 @@ import { libraryScripts } from '../file-signals'
 export const apiEffect = () =>
 	effect(() => {
 		match(resolve({ library: libraryScripts.sources }), {
-			ok: async () => {
+			ok: () => {
 				try {
 					console.log('📚 Rebuilding API documentation...')
 

@@ -3,24 +3,24 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Components – Le Truc Docs</title>
+		<title>Components – El Truco Docs</title>
 		<meta name="description" content="Anatomy, lifecycle, signals, effects" />
 		<link
 			rel="preload"
-			href="./assets/main.css?v=mhmbdq7m"
+			href="./assets/main.css?v=mhsyca2m"
 			as="style"
 		/>
 		<link
 			rel="modulepreload"
-			href="./assets/main.js?v=mhmbdq7m"
+			href="./assets/main.js?v=mhsyca2m"
 		/>
 		<link
 			rel="stylesheet"
-			href="./assets/main.css?v=mhmbdq7m"
+			href="./assets/main.css?v=mhsyca2m"
 		/>
 		<script
 			type="module"
-			src="./assets/main.js?v=mhmbdq7m"
+			src="./assets/main.js?v=mhsyca2m"
 		></script>
 	</head>
 	<body class="">
@@ -30,7 +30,7 @@
 					Skip to main content
 				</a>
 				<h1 class="content">
-					Le Truc Docs <small>Version 0.14.0</small>
+					El Truco Docs <small>Version 0.15.0</small>
 				</h1>
 				<section-menu>
 	<nav>
@@ -82,7 +82,7 @@
 			<a href="index.html">
 				<span class="icon">📖</span>
 				<strong>Introduction</strong>
-				<small>Overview and key benefits of Le Truc</small>
+				<small>Overview and key benefits of El Truco</small>
 			</a>
 		</li><li>
 			<a href="styling.html">
@@ -107,7 +107,7 @@
 							</a>
 						</h1>
 <div>
-  <p class="lead"><strong>Create lightweight, self-contained Web Components with built-in reactivity</strong>. Le Truc lets you define custom elements that manage state efficiently, update the DOM automatically, and enhance server-rendered pages without an SPA framework.</p>
+  <p class="lead"><strong>Create lightweight, self-contained Web Components with built-in reactivity</strong>. El Truco lets you define custom elements that manage state efficiently, update the DOM automatically, and enhance server-rendered pages without an SPA framework.</p>
   <module-toc>
 		<nav>
 			<h2>On This Page</h2>
@@ -139,10 +139,10 @@
 								<span class="title">Defining a Component</span>
 							</a>
 						</h2>
-<p>Le Truc builds on <strong>Web Components</strong>, extending <code>HTMLElement</code> to provide <strong>built-in state management and reactive updates</strong>.</p>
-<p>Le Truc creates components using the <code>component()</code> function:</p>
+<p>El Truco builds on <strong>Web Components</strong>, extending <code>HTMLElement</code> to provide <strong>built-in state management and reactive updates</strong>.</p>
+<p>El Truco creates components using the <code>component()</code> function:</p>
 <p><strong>CODE_BLOCK_PLACEHOLDER_0</strong></p>
-<p>Every Le Truc component must be registered with a valid custom element tag name (two or more words joined with <code>-</code>) as the first parameter.</p>
+<p>Every El Truco component must be registered with a valid custom element tag name (two or more words joined with <code>-</code>) as the first parameter.</p>
 <h3 id="using-the-custom-element-in-html">
 							<a name="using-the-custom-element-in-html" class="anchor" href="#using-the-custom-element-in-html">
 								<span class="permalink">🔗</span>
@@ -157,7 +157,7 @@
 								<span class="title">Anatomy of a Component</span>
 							</a>
 						</h3>
-<p>Let&#39;s examine a complete component example to understand how Le Truc works:</p>
+<p>Let&#39;s examine a complete component example to understand how El Truco works:</p>
 <p><strong>CODE_BLOCK_PLACEHOLDER_2</strong></p>
 <h4 id="reactive-properties">
 							<a name="reactive-properties" class="anchor" href="#reactive-properties">
@@ -170,7 +170,7 @@
 <ul>
 <li><code>asString()</code> observes the attribute <code>name</code> and assigns its value as a string to the <code>name</code> property</li>
 <li><code>el =&gt; ...</code> is an instruction how to get the fallback value in the DOM if there is no name attribute</li>
-<li>Le Truc automatically reads &quot;World&quot; from the <code>&lt;span&gt;</code> element as the initial value</li>
+<li>El Truco automatically reads &quot;World&quot; from the <code>&lt;span&gt;</code> element as the initial value</li>
 <li>When <code>name</code> changes, any effects that depend on it automatically update</li>
 </ul>
 <h4 id="setup-function">
@@ -207,7 +207,7 @@
 								<span class="title">Component Lifecycle</span>
 							</a>
 						</h2>
-<p>Le Truc manages the <strong>Web Component lifecycle</strong> from creation to removal. Here&#39;s what happens.</p>
+<p>El Truco manages the <strong>Web Component lifecycle</strong> from creation to removal. Here&#39;s what happens.</p>
 <h3 id="component-creation">
 							<a name="component-creation" class="anchor" href="#component-creation">
 								<span class="permalink">🔗</span>
@@ -246,7 +246,7 @@
 <li><code>el</code>: The component element instance.</li>
 <li><code>{ all, first }</code>: An object containing two functions, <code>all</code> and <code>first</code>, which can be used to select elements within the component. See <a href="#accessing-sub-elements">Accessing Sub-elements</a>.</li>
 </ol>
-<p>Le Truc expects you to return an array of partially applied functions to be executed during the setup phase. The order doesn&#39;t matter, as each function targets a specific element or event. So feel free to organize your code in a way that makes sense to you.</p>
+<p>El Truco expects you to return an array of partially applied functions to be executed during the setup phase. The order doesn&#39;t matter, as each function targets a specific element or event. So feel free to organize your code in a way that makes sense to you.</p>
 <p>Each of these functions will return a cleanup function that will be executed during the <code>disconnectedCallback()</code> lifecycle method.</p>
 <p><strong>CODE_BLOCK_PLACEHOLDER_6</strong></p>
 <h3 id="removed-from-the-dom">
@@ -255,7 +255,7 @@
 								<span class="title">Removed from the DOM</span>
 							</a>
 						</h3>
-<p>Runs when the component is removed (<code>disconnectedCallback()</code>). Le Truc will run all cleanup functions returned by event listeners and effects during the setup phase (<code>connectedCallback()</code>). This will unsubscribe all signals the component is subscribed to, so you don&#39;t need to worry about memory leaks.</p>
+<p>Runs when the component is removed (<code>disconnectedCallback()</code>). El Truco will run all cleanup functions returned by event listeners and effects during the setup phase (<code>connectedCallback()</code>). This will unsubscribe all signals the component is subscribed to, so you don&#39;t need to worry about memory leaks.</p>
 <p>If you added <strong>event listeners</strong> outside the scope of your component or <strong>subscribed manually to external APIs</strong>, you need to return a cleanup function:</p>
 <p><strong>CODE_BLOCK_PLACEHOLDER_7</strong></p>
 <h3 id="observed-attributes">
@@ -264,7 +264,7 @@
 								<span class="title">Observed Attributes</span>
 							</a>
 						</h3>
-<p>Le Truc automatically observes and converts attributes with an associated <strong>parser function</strong> in the init block and updates them whenever the attribute changes (<code>attributeChangedCallback()</code>).</p>
+<p>El Truco automatically observes and converts attributes with an associated <strong>parser function</strong> in the init block and updates them whenever the attribute changes (<code>attributeChangedCallback()</code>).</p>
 </section>
 
 <section>
@@ -275,7 +275,7 @@
 								<span class="title">Managing State with Signals</span>
 							</a>
 						</h2>
-<p>Le Truc manages state using <strong>signals</strong>, which are atomic reactive states that trigger updates when they change. We use regular properties to access or update them:</p>
+<p>El Truco manages state using <strong>signals</strong>, which are atomic reactive states that trigger updates when they change. We use regular properties to access or update them:</p>
 <p><strong>CODE_BLOCK_PLACEHOLDER_8</strong></p>
 <h3 id="characteristics-and-special-values">
 							<a name="characteristics-and-special-values" class="anchor" href="#characteristics-and-special-values">
@@ -283,14 +283,14 @@
 								<span class="title">Characteristics and Special Values</span>
 							</a>
 						</h3>
-<p>Signals in Le Truc are of a <strong>static type</strong> and <strong>non-nullable</strong>. This allows to <strong>simplify the logic</strong> as you will never have to check the type or perform null-checks.</p>
+<p>Signals in El Truco are of a <strong>static type</strong> and <strong>non-nullable</strong>. This allows to <strong>simplify the logic</strong> as you will never have to check the type or perform null-checks.</p>
 <ul>
 <li>If you use <strong>TypeScript</strong> (recommended), <strong>you will be warned</strong> that <code>null</code> or <code>undefined</code> cannot be assigned to a signal or if you try to assign a value of a wrong type.</li>
 <li>If you use vanilla <strong>JavaScript</strong> without a build step, setting a signal to <code>null</code> or <code>undefined</code> <strong>will log an error to the console and abort</strong>. However, strict type checking is not enforced at runtime.</li>
 </ul>
-<p>Because of the <strong>non-nullable nature of signals</strong> in Le Truc, we need two special values that can be assigned to any signal type:</p>
+<p>Because of the <strong>non-nullable nature of signals</strong> in El Truco, we need two special values that can be assigned to any signal type:</p>
 <ul>
-<li><strong><code>RESET</code></strong>: Will <strong>reset to the server-rendered version</strong> that was there before Le Truc took control. This is what you want to do most of the times when a signal lacks a specific value.</li>
+<li><strong><code>RESET</code></strong>: Will <strong>reset to the server-rendered version</strong> that was there before El Truco took control. This is what you want to do most of the times when a signal lacks a specific value.</li>
 <li><strong><code>UNSET</code></strong>: Will <strong>delete the signal</strong>, <strong>unsubscribe its watchers</strong> and also <strong>delete related attributes or style properties</strong> in effects. Use this with special care!</li>
 </ul>
 <h3 id="initializing-state-from-attributes">
@@ -299,11 +299,11 @@
 								<span class="title">Initializing State from Attributes</span>
 							</a>
 						</h3>
-<p>The standard way to set initial state in Le Truc is via <strong>server-rendered attributes</strong> on the component that needs it. No props drilling as in other frameworks. Le Trucs provides some bundled attribute parsers to convert attribute values to the desired type. And you can also define your own custom parsers.</p>
+<p>The standard way to set initial state in El Truco is via <strong>server-rendered attributes</strong> on the component that needs it. No props drilling as in other frameworks. El Trucos provides some bundled attribute parsers to convert attribute values to the desired type. And you can also define your own custom parsers.</p>
 <p><strong>CODE_BLOCK_PLACEHOLDER_9</strong></p>
 <card-callout class="caution">
 
-<p><strong>Careful</strong>: Attributes <strong>may not be present</strong> on the element or <strong>parsing to the desired type may fail</strong>. To ensure <strong>non-nullability</strong> of signals, Le Truc falls back to neutral defaults:</p>
+<p><strong>Careful</strong>: Attributes <strong>may not be present</strong> on the element or <strong>parsing to the desired type may fail</strong>. To ensure <strong>non-nullability</strong> of signals, El Truco falls back to neutral defaults:</p>
 <ul>
 <li><code>&quot;&quot;</code> (empty string) for <code>string</code></li>
 <li><code>0</code> for <code>number</code></li>
@@ -317,7 +317,7 @@
 								<span class="title">Bundled Attribute Parsers</span>
 							</a>
 						</h3>
-<p>Le Truc provides several built-in parsers for common attribute types. See the <a href="api.html#parsers">Parsers section</a> in the API reference for detailed descriptions and usage examples.</p>
+<p>El Truco provides several built-in parsers for common attribute types. See the <a href="api.html#parsers">Parsers section</a> in the API reference for detailed descriptions and usage examples.</p>
 </section>
 
 <section>
@@ -346,7 +346,7 @@
 <p>Selects all matching elements and applies effects to each:</p>
 <p><strong>CODE_BLOCK_PLACEHOLDER_11</strong></p>
 <p>The <code>first()</code> function expects the matched element to be present at connection time. If not, it will silently ignore the call.</p>
-<p>On the other hand, the <code>all()</code> function creates a dynamic array of elements that will be updated whenever the matching elements are added or removed from the component&#39;s DOM branch. Le Truc will apply the given setup functions to added elements and run the cleanup functions on removed elements.</p>
+<p>On the other hand, the <code>all()</code> function creates a dynamic array of elements that will be updated whenever the matching elements are added or removed from the component&#39;s DOM branch. El Truco will apply the given setup functions to added elements and run the cleanup functions on removed elements.</p>
 <card-callout class="tip">
 
 <p><strong>Tip</strong>: The <code>all()</code> function is more flexible but also more resource-intensive than <code>first()</code>. Prefer <code>first()</code> when targeting a single element known to be present at connection time.</p>
@@ -390,7 +390,7 @@
 								<span class="title">Bundled Effects</span>
 							</a>
 						</h3>
-<p>Le Truc provides many built-in effects for common DOM operations. See the <a href="api.html#effects">Effects section</a> in the API reference for detailed descriptions and usage examples.</p>
+<p>El Truco provides many built-in effects for common DOM operations. See the <a href="api.html#effects">Effects section</a> in the API reference for detailed descriptions and usage examples.</p>
 <h3 id="simplifying-effect-notation">
 							<a name="simplifying-effect-notation" class="anchor" href="#simplifying-effect-notation">
 								<span class="permalink">🔗</span>
@@ -434,9 +434,9 @@
 								<span class="title">Efficient &amp; Fine-Grained Updates</span>
 							</a>
 						</h3>
-<p>Unlike some frameworks that <strong>re-render entire components</strong>, Le Truc updates only what changes:</p>
+<p>Unlike some frameworks that <strong>re-render entire components</strong>, El Truco updates only what changes:</p>
 <ul>
-<li><strong>No virtual DOM</strong> – Le Truc modifies the DOM directly.</li>
+<li><strong>No virtual DOM</strong> – El Truco modifies the DOM directly.</li>
 <li><strong>Signals propagate automatically</strong> – no need to track dependencies manually.</li>
 <li><strong>Optimized with a scheduler</strong> – multiple updates are batched efficiently.</li>
 </ul>

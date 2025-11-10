@@ -1,12 +1,12 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / resolve
+[@zeix/el-truco](../globals.md) / resolve
 
 # Function: resolve()
 
-> **resolve**\<`S`\>(`signals`): `ResolveResult`\<`S`\>
+> **resolve**\<`S`\>(`signals`): [`ResolveResult`](../type-aliases/ResolveResult.md)\<`S`\>
 
 Defined in: node\_modules/@zeix/cause-effect/types/src/resolve.d.ts:28
 
@@ -31,7 +31,7 @@ Signals to resolve
 
 ## Returns
 
-`ResolveResult`\<`S`\>
+[`ResolveResult`](../type-aliases/ResolveResult.md)\<`S`\>
 
 - Discriminated union result
 

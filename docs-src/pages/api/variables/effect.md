@@ -1,8 +1,8 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / effect
+[@zeix/el-truco](../globals.md) / effect
 
 # Variable: effect()
 
@@ -20,7 +20,7 @@ re-runs or is cleaned up, preventing stale async operations.
 
 ### callback
 
-`EffectCallback`
+[`EffectCallback`](../type-aliases/EffectCallback.md)
 
 Synchronous or asynchronous effect callback
 

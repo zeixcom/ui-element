@@ -1,8 +1,8 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / fromSelector
+[@zeix/el-truco](../globals.md) / fromSelector
 
 # Function: fromSelector()
 
@@ -10,7 +10,7 @@
 
 > **fromSelector**\<`S`, `C`\>(`selector`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<[`ElementFromSelector`](../type-aliases/ElementFromSelector.md)\<`S`\>[]\>, `C`\>
 
-Defined in: [src/core/dom.ts:442](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/core/dom.ts#L442)
+Defined in: [src/core/dom.ts:444](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/core/dom.ts#L444)
 
 Produce a computed signal of an array of elements matching a selector
 
@@ -50,7 +50,7 @@ If observed mutations would trigger infinite mutation cycles
 
 > **fromSelector**\<`E`, `C`\>(`selector`): [`Extractor`](../type-aliases/Extractor.md)\<[`Computed`](../type-aliases/Computed.md)\<`E`[]\>, `C`\>
 
-Defined in: [src/core/dom.ts:445](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/core/dom.ts#L445)
+Defined in: [src/core/dom.ts:447](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/core/dom.ts#L447)
 
 Produce a computed signal of an array of elements matching a selector
 

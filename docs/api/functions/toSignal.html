@@ -3,24 +3,24 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>toSignal – Le Truc Docs</title>
+		<title>toSignal – El Truco Docs</title>
 		<meta name="description" content="" />
 		<link
 			rel="preload"
-			href="../../assets/main.css?v=mhmbdq7l"
+			href="../../assets/main.css?v=mhsyca2m"
 			as="style"
 		/>
 		<link
 			rel="modulepreload"
-			href="../../assets/main.js?v=mhmbdq7l"
+			href="../../assets/main.js?v=mhsyca2m"
 		/>
 		<link
 			rel="stylesheet"
-			href="../../assets/main.css?v=mhmbdq7l"
+			href="../../assets/main.css?v=mhsyca2m"
 		/>
 		<script
 			type="module"
-			src="../../assets/main.js?v=mhmbdq7l"
+			src="../../assets/main.js?v=mhsyca2m"
 		></script>
 	</head>
 	<body class="api">
@@ -30,7 +30,7 @@
 					Skip to main content
 				</a>
 				<h1 class="content">
-					Le Truc Docs <small>Version 0.14.0</small>
+					El Truco Docs <small>Version 0.15.0</small>
 				</h1>
 				<section-menu>
 	<nav>
@@ -82,7 +82,7 @@
 			<a href="index.html">
 				<span class="icon">📖</span>
 				<strong>Introduction</strong>
-				<small>Overview and key benefits of Le Truc</small>
+				<small>Overview and key benefits of El Truco</small>
 			</a>
 		</li><li>
 			<a href="styling.html">
@@ -105,191 +105,54 @@
 								<span class="title">Function: toSignal()</span>
 							</a>
 						</h1>
-<h2 id="name">
-							<a name="name" class="anchor" href="#name">
-								<span class="permalink">🔗</span>
-								<span class="title">Name</span>
-							</a>
-						</h2>
-<p>Le Truc</p>
-<h2 id="version">
-							<a name="version" class="anchor" href="#version">
-								<span class="permalink">🔗</span>
-								<span class="title">Version</span>
-							</a>
-						</h2>
-<p>0.14.0</p>
-<h2 id="author">
-							<a name="author" class="anchor" href="#author">
-								<span class="permalink">🔗</span>
-								<span class="title">Author</span>
-							</a>
-						</h2>
-<p>Esther Brunner</p>
-<h2 id="call-signature">
-							<a name="call-signature" class="anchor" href="#call-signature">
-								<span class="permalink">🔗</span>
-								<span class="title">Call Signature</span>
-							</a>
-						</h2>
 <blockquote>
-<p><strong>toSignal</strong>&lt;<code>T</code>&gt;(<code>value</code>): <code>Store</code>&lt;<code>Record</code>&lt;<code>string</code>, <code>T</code>&gt;&gt;</p>
+<p><strong>toSignal</strong>&lt;<code>T</code>&gt;(<code>value</code>): <code>T</code> <em>extends</em> <a href="../type-aliases/Store.html"><code>Store</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/Store.html"><code>Store</code></a>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> <a href="../type-aliases/State.html"><code>State</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/State.html"><code>State</code></a>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> <a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> readonly <code>U</code>[] ? <a href="../type-aliases/Store.html"><code>Store</code></a>&lt;<code>U</code>[]&gt; : <code>T</code> <em>extends</em> <code>Record</code>&lt;<code>string</code>, { }&gt; ? <a href="../type-aliases/Store.html"><code>Store</code></a>&lt;{ [K in string | number | symbol]: T&lt;T&gt;[K] }&gt; : <code>T</code> <em>extends</em> <a href="../type-aliases/ComputedCallback.html"><code>ComputedCallback</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>U</code>&gt; : <a href="../type-aliases/State.html"><code>State</code></a>&lt;<code>T</code>&gt;</p>
 </blockquote>
-<p>Defined in: node_modules/@zeix/cause-effect/types/src/signal.d.ts:28</p>
+<p>Defined in: node_modules/@zeix/cause-effect/types/src/signal.d.ts:34</p>
 <p>Convert a value to a Signal if it&#39;s not already a Signal</p>
-<h3 id="type-parameters">
+<h2 id="type-parameters">
 							<a name="type-parameters" class="anchor" href="#type-parameters">
 								<span class="permalink">🔗</span>
 								<span class="title">Type Parameters</span>
 							</a>
-						</h3>
-<h4 id="t">
+						</h2>
+<h3 id="t">
 							<a name="t" class="anchor" href="#t">
 								<span class="permalink">🔗</span>
 								<span class="title">T</span>
 							</a>
-						</h4>
+						</h3>
 <p><code>T</code> <em>extends</em> <code>object</code></p>
-<h3 id="parameters">
+<h2 id="parameters">
 							<a name="parameters" class="anchor" href="#parameters">
 								<span class="permalink">🔗</span>
 								<span class="title">Parameters</span>
-							</a>
-						</h3>
-<h4 id="value">
-							<a name="value" class="anchor" href="#value">
-								<span class="permalink">🔗</span>
-								<span class="title">value</span>
-							</a>
-						</h4>
-<p><code>T</code>[]</p>
-<p>value to convert</p>
-<h3 id="returns">
-							<a name="returns" class="anchor" href="#returns">
-								<span class="permalink">🔗</span>
-								<span class="title">Returns</span>
-							</a>
-						</h3>
-<p><code>Store</code>&lt;<code>Record</code>&lt;<code>string</code>, <code>T</code>&gt;&gt;</p>
-<ul>
-<li>Signal instance</li>
-</ul>
-<h3 id="since">
-							<a name="since" class="anchor" href="#since">
-								<span class="permalink">🔗</span>
-								<span class="title">Since</span>
-							</a>
-						</h3>
-<p>0.9.6</p>
-<h2 id="call-signature">
-							<a name="call-signature" class="anchor" href="#call-signature">
-								<span class="permalink">🔗</span>
-								<span class="title">Call Signature</span>
 							</a>
 						</h2>
-<blockquote>
-<p><strong>toSignal</strong>&lt;<code>T</code>&gt;(<code>value</code>): <a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;</p>
-</blockquote>
-<p>Defined in: node_modules/@zeix/cause-effect/types/src/signal.d.ts:29</p>
-<p>Convert a value to a Signal if it&#39;s not already a Signal</p>
-<h3 id="type-parameters">
-							<a name="type-parameters" class="anchor" href="#type-parameters">
-								<span class="permalink">🔗</span>
-								<span class="title">Type Parameters</span>
-							</a>
-						</h3>
-<h4 id="t">
-							<a name="t" class="anchor" href="#t">
-								<span class="permalink">🔗</span>
-								<span class="title">T</span>
-							</a>
-						</h4>
-<p><code>T</code> <em>extends</em> <code>object</code></p>
-<h3 id="parameters">
-							<a name="parameters" class="anchor" href="#parameters">
-								<span class="permalink">🔗</span>
-								<span class="title">Parameters</span>
-							</a>
-						</h3>
-<h4 id="value">
+<h3 id="value">
 							<a name="value" class="anchor" href="#value">
 								<span class="permalink">🔗</span>
 								<span class="title">value</span>
 							</a>
-						</h4>
-<p>value to convert</p>
-<p>() =&gt; <code>T</code> | (<code>abort</code>) =&gt; <code>Promise</code>&lt;<code>T</code>&gt;</p>
-<h3 id="returns">
-							<a name="returns" class="anchor" href="#returns">
-								<span class="permalink">🔗</span>
-								<span class="title">Returns</span>
-							</a>
 						</h3>
-<p><a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>T</code>&gt;</p>
-<ul>
-<li>Signal instance</li>
-</ul>
-<h3 id="since">
-							<a name="since" class="anchor" href="#since">
-								<span class="permalink">🔗</span>
-								<span class="title">Since</span>
-							</a>
-						</h3>
-<p>0.9.6</p>
-<h2 id="call-signature">
-							<a name="call-signature" class="anchor" href="#call-signature">
-								<span class="permalink">🔗</span>
-								<span class="title">Call Signature</span>
-							</a>
-						</h2>
-<blockquote>
-<p><strong>toSignal</strong>&lt;<code>T</code>&gt;(<code>value</code>): <code>T</code> <em>extends</em> <code>Store</code>&lt;<code>U</code>&gt; ? <code>Store</code>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> <a href="../type-aliases/State.html"><code>State</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/State.html"><code>State</code></a>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> <a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> <code>Record</code>&lt;<code>string</code>, { }&gt; ? <code>Store</code>&lt;{ [K in string | number | symbol]: T&lt;T&gt;[K] }&gt; : <a href="../type-aliases/State.html"><code>State</code></a>&lt;<code>T</code>&gt;</p>
-</blockquote>
-<p>Defined in: node_modules/@zeix/cause-effect/types/src/signal.d.ts:30</p>
-<p>Convert a value to a Signal if it&#39;s not already a Signal</p>
-<h3 id="type-parameters">
-							<a name="type-parameters" class="anchor" href="#type-parameters">
-								<span class="permalink">🔗</span>
-								<span class="title">Type Parameters</span>
-							</a>
-						</h3>
-<h4 id="t">
-							<a name="t" class="anchor" href="#t">
-								<span class="permalink">🔗</span>
-								<span class="title">T</span>
-							</a>
-						</h4>
-<p><code>T</code> <em>extends</em> <code>object</code></p>
-<h3 id="parameters">
-							<a name="parameters" class="anchor" href="#parameters">
-								<span class="permalink">🔗</span>
-								<span class="title">Parameters</span>
-							</a>
-						</h3>
-<h4 id="value">
-							<a name="value" class="anchor" href="#value">
-								<span class="permalink">🔗</span>
-								<span class="title">value</span>
-							</a>
-						</h4>
 <p><code>T</code></p>
 <p>value to convert</p>
-<h3 id="returns">
+<h2 id="returns">
 							<a name="returns" class="anchor" href="#returns">
 								<span class="permalink">🔗</span>
 								<span class="title">Returns</span>
 							</a>
-						</h3>
-<p><code>T</code> <em>extends</em> <code>Store</code>&lt;<code>U</code>&gt; ? <code>Store</code>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> <a href="../type-aliases/State.html"><code>State</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/State.html"><code>State</code></a>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> <a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> <code>Record</code>&lt;<code>string</code>, { }&gt; ? <code>Store</code>&lt;{ [K in string | number | symbol]: T&lt;T&gt;[K] }&gt; : <a href="../type-aliases/State.html"><code>State</code></a>&lt;<code>T</code>&gt;</p>
+						</h2>
+<p><code>T</code> <em>extends</em> <a href="../type-aliases/Store.html"><code>Store</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/Store.html"><code>Store</code></a>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> <a href="../type-aliases/State.html"><code>State</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/State.html"><code>State</code></a>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> <a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/Signal.html"><code>Signal</code></a>&lt;<code>U</code>&gt; : <code>T</code> <em>extends</em> readonly <code>U</code>[] ? <a href="../type-aliases/Store.html"><code>Store</code></a>&lt;<code>U</code>[]&gt; : <code>T</code> <em>extends</em> <code>Record</code>&lt;<code>string</code>, { }&gt; ? <a href="../type-aliases/Store.html"><code>Store</code></a>&lt;{ [K in string | number | symbol]: T&lt;T&gt;[K] }&gt; : <code>T</code> <em>extends</em> <a href="../type-aliases/ComputedCallback.html"><code>ComputedCallback</code></a>&lt;<code>U</code>&gt; ? <a href="../type-aliases/Computed.html"><code>Computed</code></a>&lt;<code>U</code>&gt; : <a href="../type-aliases/State.html"><code>State</code></a>&lt;<code>T</code>&gt;</p>
 <ul>
 <li>Signal instance</li>
 </ul>
-<h3 id="since">
+<h2 id="since">
 							<a name="since" class="anchor" href="#since">
 								<span class="permalink">🔗</span>
 								<span class="title">Since</span>
 							</a>
-						</h3>
+						</h2>
 <p>0.9.6</p>
 
 </section></main>

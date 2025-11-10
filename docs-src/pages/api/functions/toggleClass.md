@@ -1,14 +1,14 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / toggleClass
+[@zeix/el-truco](../globals.md) / toggleClass
 
 # Function: toggleClass()
 
 > **toggleClass**\<`P`, `E`\>(`token`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:445](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/lib/effects.ts#L445)
+Defined in: [src/lib/effects.ts:451](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/lib/effects.ts#L451)
 
 Effect for toggling a CSS class token on an element.
 When the reactive value is true, the class is added; when false, it's removed.
@@ -33,7 +33,7 @@ CSS class token to toggle
 
 ### reactive
 
-[`Reactive`](../type-aliases/Reactive.md)\<`boolean`, `P`, `E`\> = `token`
+[`Reactive`](../type-aliases/Reactive.md)\<`boolean`, `P`, `E`\> = `...`
 
 Reactive value bound to the class presence (defaults to class name)
 

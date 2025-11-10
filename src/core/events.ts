@@ -193,7 +193,7 @@ const on =
  * @returns {Effect<P, E>} Effect function that emits custom events
  */
 const emitEvent =
-	<T, P extends ComponentProps, E extends Element = HTMLElement>(
+	<T extends {}, P extends ComponentProps, E extends Element = HTMLElement>(
 		type: string,
 		reactive: Reactive<T, P, E>,
 	): Effect<P, E> =>

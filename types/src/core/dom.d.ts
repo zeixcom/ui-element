@@ -1,4 +1,4 @@
-import { type Cleanup, type Computed } from '@zeix/cause-effect';
+import { type Computed, type MaybeCleanup } from '@zeix/cause-effect';
 import type { Component, ComponentProps } from '../component';
 import { type Effects } from './reactive';
 type ExtractTag<S extends string> = S extends `${infer T}.${string}` ? T : S extends `${infer T}#${string}` ? T : S extends `${infer T}:${string}` ? T : S extends `${infer T}[${string}` ? T : S;
@@ -20,8 +20,8 @@ type ElementsUsage = {
     <E extends Element>(selector: string, required?: string): E[];
 };
 type ElementEffects<P extends ComponentProps> = {
-    <S extends string>(selector: S, effects: Effects<P, ElementFromSelector<S>>, required?: string): () => Cleanup | void;
-    <E extends Element>(selector: string, effects: Effects<P, E>, required?: string): () => Cleanup | void;
+    <S extends string>(selector: S, effects: Effects<P, ElementFromSelector<S>>, required?: string): () => MaybeCleanup;
+    <E extends Element>(selector: string, effects: Effects<P, E>, required?: string): () => MaybeCleanup;
 };
 type Helpers<P extends ComponentProps> = {
     useElement: ElementUsage;

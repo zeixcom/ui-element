@@ -1,9 +1,9 @@
-import { type Cleanup, type Signal } from '@zeix/cause-effect';
+import { type Cleanup, type MaybeCleanup, type Signal } from '@zeix/cause-effect';
 import type { Component, ComponentProps } from '../component';
 import type { LooseExtractor } from './dom';
-type Effect<P extends ComponentProps, E extends Element> = (host: Component<P>, element: E) => Cleanup | void;
+type Effect<P extends ComponentProps, E extends Element> = (host: Component<P>, element: E) => MaybeCleanup;
 type Effects<P extends ComponentProps, E extends Element> = Effect<P, E> | Effect<P, E>[] | Promise<Effect<P, E>> | Promise<Effect<P, E>[]>;
-type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> = keyof P | Signal<NonNullable<T>> | LooseExtractor<T | null | undefined, E>;
+type Reactive<T, P extends ComponentProps, E extends Element = HTMLElement> = keyof P | Signal<T & {}> | LooseExtractor<T, E>;
 declare const RESET: any;
 /**
  * Run one or more effect functions on a component's element

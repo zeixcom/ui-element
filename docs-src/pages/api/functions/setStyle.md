@@ -1,14 +1,14 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / setStyle
+[@zeix/el-truco](../globals.md) / setStyle
 
 # Function: setStyle()
 
 > **setStyle**\<`P`, `E`\>(`prop`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:467](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/lib/effects.ts#L467)
+Defined in: [src/lib/effects.ts:473](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/lib/effects.ts#L473)
 
 Effect for setting a CSS style property on an element.
 Sets the specified style property with support for deletion via UNSET.
@@ -33,7 +33,7 @@ Name of the CSS style property to set
 
 ### reactive
 
-[`Reactive`](../type-aliases/Reactive.md)\<`string`, `P`, `E`\> = `prop`
+[`Reactive`](../type-aliases/Reactive.md)\<`string`, `P`, `E`\> = `...`
 
 Reactive value bound to the style property value (defaults to property name)
 

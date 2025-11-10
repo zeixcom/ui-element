@@ -15,7 +15,7 @@ declare class CircularMutationError extends Error {
  *
  * @since 0.14.0
  */
-declare class InvalidComponentNameError extends Error {
+declare class InvalidComponentNameError extends TypeError {
     /**
      * @param {string} component - Component name
      */
@@ -26,7 +26,7 @@ declare class InvalidComponentNameError extends Error {
  *
  * @since 0.14.0
  */
-declare class InvalidPropertyNameError extends Error {
+declare class InvalidPropertyNameError extends TypeError {
     /**
      * @param {string} component - Component name
      * @param {string} prop - Property name
@@ -39,7 +39,7 @@ declare class InvalidPropertyNameError extends Error {
  *
  * @since 0.14.0
  */
-declare class InvalidEffectsError extends Error {
+declare class InvalidEffectsError extends TypeError {
     /**
      * @param {HTMLElement} host - Host component
      * @param {Error} cause - Error that caused the invalid effects
@@ -51,7 +51,11 @@ declare class InvalidEffectsError extends Error {
  *
  * @since 0.14.0
  */
-declare class InvalidSignalError extends Error {
+declare class InvalidSignalError extends TypeError {
+    /**
+     * @param {HTMLElement} host - Host component
+     * @param {string} prop - Property name
+     */
     constructor(host: HTMLElement, prop: string);
 }
 /**
@@ -73,6 +77,47 @@ declare class MissingElementError extends Error {
  * @since 0.14.0
  */
 declare class DependencyTimeoutError extends Error {
+    /**
+     * @param {HTMLElement} host - Host component
+     * @param {string[]} missing - List of missing dependencies
+     */
     constructor(host: HTMLElement, missing: string[]);
 }
-export { CircularMutationError, DependencyTimeoutError, InvalidComponentNameError, InvalidPropertyNameError, InvalidEffectsError, InvalidSignalError, MissingElementError, };
+/**
+ * Error thrown when reactives passed to a component are invalid
+ *
+ * @since 0.15.0
+ */
+declare class InvalidReactivesError extends TypeError {
+    /**
+     * @param {HTMLElement} host - Host component
+     * @param {HTMLElement} target - Target component
+     * @param {unknown} reactives - Reactives passed to the component
+     */
+    constructor(host: HTMLElement, target: HTMLElement, reactives: unknown);
+}
+/**
+ * Error thrown when target element is not a custom element as expected
+ *
+ * @since 0.15.0
+ */
+declare class InvalidCustomElementError extends TypeError {
+    /**
+     * @param {HTMLElement} target - Target component
+     * @param {string} where - Location where the error occurred
+     */
+    constructor(target: HTMLElement, where: string);
+}
+/**
+ * Error thrown when target element is not a custom element as expected
+ *
+ * @since 0.15.0
+ */
+declare class InvalidComponentError extends TypeError {
+    /**
+     * @param {HTMLElement} target - Target component
+     * @param {string} where - Location where the error occurred
+     */
+    constructor(target: HTMLElement, where: string);
+}
+export { CircularMutationError, DependencyTimeoutError, InvalidComponentError, InvalidComponentNameError, InvalidCustomElementError, InvalidPropertyNameError, InvalidEffectsError, InvalidReactivesError, InvalidSignalError, MissingElementError, };

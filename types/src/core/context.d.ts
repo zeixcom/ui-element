@@ -72,9 +72,9 @@ declare const provideContexts: <P extends ComponentProps, K extends keyof P>(con
  * Consume a context value for a component.
  *
  * @since 0.13.1
- * @param {Context<K, Signal<T>>} context - Context key to consume
+ * @param {Context<K, () => T>} context - Context key to consume
  * @param {Fallback<P[K]>} fallback - Fallback value or extractor function
- * @returns {Extractor<Signal<T>, C>} Function that returns the consumed context signal or a signal of the fallback value
+ * @returns {Extractor<() => T, C>} Function that returns the consumed context getter or a signal of the fallback value
  */
-declare const fromContext: <T extends {}, C extends HTMLElement = HTMLElement>(context: Context<string, Signal<T>>, fallback: Fallback<T, C>) => Extractor<Signal<T>, C>;
+declare const fromContext: <T extends {}, C extends HTMLElement = HTMLElement>(context: Context<string, () => T>, fallback: Fallback<T, C>) => Extractor<() => T, C>;
 export { type Context, type UnknownContext, type ContextType, CONTEXT_REQUEST, ContextRequestEvent, provideContexts, fromContext, };

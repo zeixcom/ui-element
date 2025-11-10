@@ -1,8 +1,8 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / match
+[@zeix/el-truco](../globals.md) / match
 
 # Function: match()
 
@@ -26,13 +26,13 @@ cleanup logic, use a hoisted let variable in your effect.
 
 ### result
 
-`ResolveResult`\<`S`\>
+[`ResolveResult`](../type-aliases/ResolveResult.md)\<`S`\>
 
 Result from resolve()
 
 ### handlers
 
-`MatchHandlers`\<`S`\>
+[`MatchHandlers`](../type-aliases/MatchHandlers.md)\<`S`\>
 
 Handlers for different states (side effects only)
 

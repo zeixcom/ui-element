@@ -1,14 +1,14 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / Reactives
+[@zeix/el-truco](../globals.md) / Reactives
 
 # Type Alias: Reactives\<E, P\>
 
-> **Reactives**\<`E`, `P`\> = `{ [K in keyof E]?: Reactive<E[K], P, E> }`
+> **Reactives**\<`E`, `P`\> = `{ [K in keyof E & string]?: Reactive<E[K], P, E> }`
 
-Defined in: [src/lib/effects.ts:31](https://github.com/zeixcom/ui-element/blob/d3571cdc68e3e4116ef066c6fac00c4d1c8957d3/src/lib/effects.ts#L31)
+Defined in: [src/lib/effects.ts:37](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/lib/effects.ts#L37)
 
 ## Type Parameters
 

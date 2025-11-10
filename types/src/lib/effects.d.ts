@@ -1,7 +1,7 @@
 import type { Component, ComponentProps } from '../component';
 import { type Effect, type Reactive } from '../core/reactive';
 type Reactives<E extends Element, P extends ComponentProps> = {
-    [K in keyof E]?: Reactive<E[K], P, E>;
+    [K in keyof E & string]?: Reactive<E[K], P, E>;
 };
 type UpdateOperation = 'a' | 'c' | 'd' | 'h' | 'm' | 'p' | 's' | 't';
 type ElementUpdater<E extends Element, T> = {
@@ -62,7 +62,7 @@ declare const setText: <P extends ComponentProps, E extends Element = HTMLElemen
  * @param {Reactive<E[K], P, E>} reactive - Reactive value bound to the property value (defaults to property name)
  * @returns {Effect<P, E>} Effect function that sets the property on the element
  */
-declare const setProperty: <P extends ComponentProps, K extends keyof E & string, E extends Element = HTMLElement>(key: K, reactive?: Reactive<E[K], P, E>) => Effect<P, E>;
+declare const setProperty: <P extends ComponentProps, K extends keyof E & string, E extends Element = HTMLElement>(key: K, reactive?: Reactive<E[K] & {}, P, E>) => Effect<P, E>;
 /**
  * Effect for controlling element visibility by setting the 'hidden' property.
  * When the reactive value is true, the element is shown; when false, it's hidden.
@@ -142,12 +142,14 @@ declare const setStyle: <P extends ComponentProps, E extends HTMLElement | SVGEl
  */
 declare const dangerouslySetInnerHTML: <P extends ComponentProps, E extends Element = HTMLElement>(reactive: Reactive<string, P, E>, options?: DangerouslySetInnerHTMLOptions) => Effect<P, E>;
 /**
- * Effect for passing reactive values to a descendant Le Truc component.
+ * Effect for passing reactive values to a descendant El Truco component.
  *
- * @since 0.13.3
+ * @since 0.15.0
  * @param {Reactives<Component<Q>, P>} reactives - Reactive values to pass
  * @returns {Effect<P, Component<Q>>} Effect function that passes reactive values to the descendant component
- * @throws {TypeError} When the provided reactives are not an object or the target is not a Le Truc component
+ * @throws {InvalidCustomElementError} When the target element is not a valid custom element
+ * @throws {InvalidComponentError} When the target element is not a valid El Truco component
+ * @throws {InvalidReactivesError} When the provided reactives is not a record of signals, reactive property names or functions
  * @throws {Error} When passing signals failed for some other reason
  */
 declare const pass: <P extends ComponentProps, Q extends ComponentProps>(reactives: Reactives<Component<Q>, P>) => Effect<P, Component<Q>>;

@@ -1,16 +1,16 @@
-[**@zeix/le-truc**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/le-truc](../globals.md) / isSignal
+[@zeix/el-truco](../globals.md) / isSignal
 
 # Variable: isSignal()
 
 > `const` **isSignal**: \<`T`\>(`value`) => `value is Signal<T>`
 
-Defined in: node\_modules/@zeix/cause-effect/types/src/signal.d.ts:20
+Defined in: node\_modules/@zeix/cause-effect/types/src/signal.d.ts:18
 
-Check whether a value is a Signal or not
+Check whether a value is a Signal
 
 ## Type Parameters
 
