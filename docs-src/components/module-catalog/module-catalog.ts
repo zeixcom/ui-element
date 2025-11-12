@@ -1,7 +1,5 @@
 import { component, computed, pass } from '../../..'
 
-// import '../form-spinbutton/form-spinbutton'
-
 export default component('module-catalog', {}, (_, { first, useElements }) => {
 	const total = computed(() =>
 		useElements(
@@ -10,11 +8,12 @@ export default component('module-catalog', {}, (_, { first, useElements }) => {
 		).reduce((sum, item) => sum + item.value, 0),
 	)
 	return [
-		first('basic-button', [
+		first(
+			'basic-button',
 			pass({
 				disabled: () => !total.get(),
 				badge: () => (total.get() > 0 ? String(total.get()) : ''),
 			}),
-		]),
+		),
 	]
 })

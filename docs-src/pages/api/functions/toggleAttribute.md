@@ -8,7 +8,7 @@
 
 > **toggleAttribute**\<`P`, `E`\>(`name`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:426](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/lib/effects.ts#L426)
+Defined in: [src/lib/effects.ts:406](https://github.com/zeixcom/ui-element/blob/8085b01c567eb5438a72e6d26eca9f9f0ad6e39f/src/lib/effects.ts#L406)
 
 Effect for toggling a boolean attribute on an element.
 When the reactive value is true, the attribute is present; when false, it's absent.

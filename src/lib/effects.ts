@@ -2,41 +2,21 @@ import {
 	type Cleanup,
 	effect,
 	isFunction,
-	isRecord,
 	isSignal,
 	isState,
-	isString,
-	type MaybeCleanup,
-	state,
 	UNSET,
 } from '@zeix/cause-effect'
 
-import type { Component, ComponentProps } from '../component'
-import {
-	InvalidComponentError,
-	InvalidCustomElementError,
-	InvalidReactivesError,
-} from '../core/errors'
+import type { ComponentProps } from '../component'
 import {
 	type Effect,
 	RESET,
 	type Reactive,
 	resolveReactive,
 } from '../core/reactive'
-import {
-	DEV_MODE,
-	elementName,
-	hasMethod,
-	isCustomElement,
-	LOG_ERROR,
-	log,
-} from '../core/util'
+import { DEV_MODE, elementName, hasMethod, LOG_ERROR, log } from '../core/util'
 
 /* === Types === */
-
-type Reactives<E extends Element, P extends ComponentProps> = {
-	[K in keyof E & string]?: Reactive<E[K], P, E>
-}
 
 type UpdateOperation = 'a' | 'c' | 'd' | 'h' | 'm' | 'p' | 's' | 't'
 
@@ -533,89 +513,9 @@ const dangerouslySetInnerHTML = <
 		},
 	})
 
-/**
- * Effect for passing reactive values to a descendant El Truco component.
- *
- * @since 0.15.0
- * @param {Reactives<Component<Q>, P>} reactives - Reactive values to pass
- * @returns {Effect<P, Component<Q>>} Effect function that passes reactive values to the descendant component
- * @throws {InvalidCustomElementError} When the target element is not a valid custom element
- * @throws {InvalidComponentError} When the target element is not a valid El Truco component
- * @throws {InvalidReactivesError} When the provided reactives is not a record of signals, reactive property names or functions
- * @throws {Error} When passing signals failed for some other reason
- */
-const pass =
-	<P extends ComponentProps, Q extends ComponentProps>(
-		reactives: Reactives<Component<Q>, P>,
-	): Effect<P, Component<Q>> =>
-	(host, target): MaybeCleanup => {
-		if (!isCustomElement(target))
-			throw new InvalidCustomElementError(
-				target,
-				`pass from ${elementName(host)}`,
-			)
-		if (!hasMethod(target, 'setSignal'))
-			throw new InvalidComponentError(
-				target,
-				`pass from ${elementName(host)}`,
-			)
-		if (!isRecord(reactives))
-			throw new InvalidReactivesError(host, target, reactives)
-
-		const cleanupMap = new Map<keyof Q, PropertyDescriptor>()
-
-		const getAccessor = <K extends keyof Q>(
-			_prop: K,
-			reactive: Reactive<Q[K], P, Component<Q>>,
-		): [() => Q[K], ((value: Q[K]) => void) | undefined] => {
-			const result =
-				isFunction(reactive) && reactive.length === 1
-					? reactive(target)
-					: reactive
-			if (
-				Array.isArray(result) &&
-				result.length === 2 &&
-				isFunction(result[0]) &&
-				!result[1].length
-			)
-				return result as [
-					() => Q[K],
-					((value: Q[K]) => void) | undefined,
-				]
-			if (isFunction<Q[K]>(result)) return [result, undefined]
-			if (isSignal<Q[K]>(result)) return [result.get, undefined]
-			if (isString(result)) return [() => host[result] as Q[K], undefined]
-			const signal = state(result as Q[K])
-			return [signal.get, signal.set]
-		}
-
-		for (const [prop, reactive] of Object.entries(reactives)) {
-			if (reactive == null) continue
-			const descriptor = Object.getOwnPropertyDescriptor(target, prop)
-			if (!(prop in target) || !descriptor?.configurable) continue
-
-			cleanupMap.set(prop, descriptor)
-			const [getter, setter] = getAccessor(prop, reactive)
-			Object.defineProperty(target, prop, {
-				configurable: true,
-				enumerable: true,
-				get: getter,
-				set: setter,
-			})
-		}
-
-		// Reset to original descriptors on cleanup
-		return () => {
-			for (const [prop, descriptor] of cleanupMap) {
-				Object.defineProperty(target, prop, descriptor)
-			}
-		}
-	}
-
 /* === Exports === */
 
 export {
-	type Reactives,
 	type UpdateOperation,
 	type ElementUpdater,
 	type ElementInserter,
@@ -632,5 +532,4 @@ export {
 	toggleClass,
 	setStyle,
 	dangerouslySetInnerHTML,
-	pass,
 }

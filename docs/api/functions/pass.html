@@ -7,20 +7,20 @@
 		<meta name="description" content="" />
 		<link
 			rel="preload"
-			href="../../assets/main.css?v=mhsyca2k"
+			href="../../assets/main.css?v=mhwa1qfn"
 			as="style"
 		/>
 		<link
 			rel="modulepreload"
-			href="../../assets/main.js?v=mhsyca2k"
+			href="../../assets/main.js?v=mhwa1qfn"
 		/>
 		<link
 			rel="stylesheet"
-			href="../../assets/main.css?v=mhsyca2k"
+			href="../../assets/main.css?v=mhwa1qfn"
 		/>
 		<script
 			type="module"
-			src="../../assets/main.js?v=mhsyca2k"
+			src="../../assets/main.js?v=mhwa1qfn"
 		></script>
 	</head>
 	<body class="api">
@@ -106,9 +106,9 @@
 							</a>
 						</h1>
 <blockquote>
-<p><strong>pass</strong>&lt;<code>P</code>, <code>Q</code>&gt;(<code>reactives</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>Q</code>&gt;&gt;</p>
+<p><strong>pass</strong>&lt;<code>P</code>, <code>Q</code>&gt;(<code>props</code>): <a href="../type-aliases/Effect.html"><code>Effect</code></a>&lt;<code>P</code>, <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>Q</code>&gt;&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/lib/effects.ts#L548">src/lib/effects.ts:548</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/8085b01c567eb5438a72e6d26eca9f9f0ad6e39f/src/core/reactive.ts#L148">src/core/reactive.ts:148</a></p>
 <p>Effect for passing reactive values to a descendant El Truco component.</p>
 <h2 id="type-parameters">
 							<a name="type-parameters" class="anchor" href="#type-parameters">
@@ -136,14 +136,14 @@
 								<span class="title">Parameters</span>
 							</a>
 						</h2>
-<h3 id="reactives">
-							<a name="reactives" class="anchor" href="#reactives">
+<h3 id="props">
+							<a name="props" class="anchor" href="#props">
 								<span class="permalink">🔗</span>
-								<span class="title">reactives</span>
+								<span class="title">props</span>
 							</a>
 						</h3>
-<p><a href="../type-aliases/Reactives.html"><code>Reactives</code></a>&lt;<a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>Q</code>&gt;, <code>P</code>&gt;</p>
 <p>Reactive values to pass</p>
+<p><a href="../type-aliases/PassedProps.html"><code>PassedProps</code></a>&lt;<code>P</code>, <code>Q</code>&gt; | (<code>target</code>) =&gt; <a href="../type-aliases/PassedProps.html"><code>PassedProps</code></a>&lt;<code>P</code>, <code>Q</code>&gt;</p>
 <h2 id="returns">
 							<a name="returns" class="anchor" href="#returns">
 								<span class="permalink">🔗</span>
@@ -166,13 +166,6 @@
 							</a>
 						</h2>
 <p>When the target element is not a valid custom element</p>
-<h2 id="throws">
-							<a name="throws" class="anchor" href="#throws">
-								<span class="permalink">🔗</span>
-								<span class="title">Throws</span>
-							</a>
-						</h2>
-<p>When the target element is not a valid El Truco component</p>
 <h2 id="throws">
 							<a name="throws" class="anchor" href="#throws">
 								<span class="permalink">🔗</span>

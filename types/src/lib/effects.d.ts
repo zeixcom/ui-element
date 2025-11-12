@@ -1,8 +1,5 @@
-import type { Component, ComponentProps } from '../component';
+import type { ComponentProps } from '../component';
 import { type Effect, type Reactive } from '../core/reactive';
-type Reactives<E extends Element, P extends ComponentProps> = {
-    [K in keyof E & string]?: Reactive<E[K], P, E>;
-};
 type UpdateOperation = 'a' | 'c' | 'd' | 'h' | 'm' | 'p' | 's' | 't';
 type ElementUpdater<E extends Element, T> = {
     op: UpdateOperation;
@@ -141,16 +138,4 @@ declare const setStyle: <P extends ComponentProps, E extends HTMLElement | SVGEl
  * @returns {Effect<P, E>} Effect function that sets the inner HTML of the element
  */
 declare const dangerouslySetInnerHTML: <P extends ComponentProps, E extends Element = HTMLElement>(reactive: Reactive<string, P, E>, options?: DangerouslySetInnerHTMLOptions) => Effect<P, E>;
-/**
- * Effect for passing reactive values to a descendant El Truco component.
- *
- * @since 0.15.0
- * @param {Reactives<Component<Q>, P>} reactives - Reactive values to pass
- * @returns {Effect<P, Component<Q>>} Effect function that passes reactive values to the descendant component
- * @throws {InvalidCustomElementError} When the target element is not a valid custom element
- * @throws {InvalidComponentError} When the target element is not a valid El Truco component
- * @throws {InvalidReactivesError} When the provided reactives is not a record of signals, reactive property names or functions
- * @throws {Error} When passing signals failed for some other reason
- */
-declare const pass: <P extends ComponentProps, Q extends ComponentProps>(reactives: Reactives<Component<Q>, P>) => Effect<P, Component<Q>>;
-export { type Reactives, type UpdateOperation, type ElementUpdater, type ElementInserter, type DangerouslySetInnerHTMLOptions, updateElement, insertOrRemoveElement, setText, setProperty, show, callMethod, focus, setAttribute, toggleAttribute, toggleClass, setStyle, dangerouslySetInnerHTML, pass, };
+export { type UpdateOperation, type ElementUpdater, type ElementInserter, type DangerouslySetInnerHTMLOptions, updateElement, insertOrRemoveElement, setText, setProperty, show, callMethod, focus, setAttribute, toggleAttribute, toggleClass, setStyle, dangerouslySetInnerHTML, };

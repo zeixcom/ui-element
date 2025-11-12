@@ -248,4 +248,7 @@ declare global {
 	interface HTMLElementTagNameMap {
 		'form-colorslider': Component<FormColorsliderProps>
 	}
+	interface HTMLElementEventMap {
+		'color-change': CustomEvent<Oklch>
+	}
 }

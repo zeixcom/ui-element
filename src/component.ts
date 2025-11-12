@@ -3,6 +3,7 @@ import {
 	type ComputedCallback,
 	computed,
 	isComputed,
+	isComputedCallback,
 	isFunction,
 	isMutableSignal,
 	isSignal,
@@ -24,13 +25,11 @@ import {
 	DependencyTimeoutError,
 	InvalidComponentNameError,
 	InvalidPropertyNameError,
-	InvalidSignalError,
 } from './core/errors'
 import { type Effects, runEffects } from './core/reactive'
 import {
 	DEV_MODE,
 	elementName,
-	LOG_ERROR,
 	LOG_WARN,
 	log,
 	typeString,
@@ -278,7 +277,7 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 					`Attribute "${String(attr)}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`,
 				)
 			if (attr in this) (this as unknown as P)[attr] = parsed
-			else this.#setAccessor(attr, parsed, true)
+			else this.#setAccessor(attr, parsed)
 		}
 
 		/**
@@ -287,49 +286,25 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 		 * @since 0.15.0
 		 * @param {K} key - Key to set accessor for
 		 * @param {Signal<P[K]>} value - Initial value, signal or computed callback to create signal
-		 * @throws {InvalidPropertyNameError} If key is not a valid property name
-		 * @throws {InvalidSignalError} If signal is not a valid signal
 		 */
 		#setAccessor<K extends keyof P>(
 			key: K,
 			value: P[K] | Signal<P[K]> | ComputedCallback<P[K]>,
-			writable: boolean | ((value: P[K]) => void) = false,
 		): void {
-			const error = validatePropertyName(String(key))
-			if (error)
-				throw new InvalidPropertyNameError(
-					this.localName,
-					String(key),
-					error,
-				)
 			const signal = isSignal(value)
 				? value
-				: isFunction(value)
+				: isComputedCallback(value)
 					? computed(value)
 					: state(value)
-			if (!isSignal<P[K]>(signal))
-				throw new InvalidSignalError(this, String(key))
 			const prev = this.#signals[key]
-			const setter = isFunction(writable)
-				? writable
-				: !!writable && isMutableSignal(signal)
-					? signal.set
-					: undefined
+			const mutable = isMutableSignal(signal)
 			this.#signals[key] = signal
-			try {
-				Object.defineProperty(this, key, {
-					get: signal.get,
-					set: setter,
-					enumerable: true,
-					configurable: !!setter,
-				})
-			} catch (error) {
-				log(
-					error,
-					`Failed to define property "${String(key)}" in ${elementName(this)}`,
-					LOG_ERROR,
-				)
-			}
+			Object.defineProperty(this, key, {
+				get: signal.get,
+				set: mutable ? signal.set : undefined,
+				enumerable: true,
+				configurable: mutable,
+			})
 			if ((prev && isState(prev)) || isStore(prev)) prev.set(UNSET)
 			if (DEV_MODE && this.debug)
 				log(

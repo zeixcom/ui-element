@@ -6,9 +6,9 @@
 
 # Function: pass()
 
-> **pass**\<`P`, `Q`\>(`reactives`): [`Effect`](../type-aliases/Effect.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`Q`\>\>
+> **pass**\<`P`, `Q`\>(`props`): [`Effect`](../type-aliases/Effect.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`Q`\>\>
 
-Defined in: [src/lib/effects.ts:548](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/lib/effects.ts#L548)
+Defined in: [src/core/reactive.ts:148](https://github.com/zeixcom/ui-element/blob/8085b01c567eb5438a72e6d26eca9f9f0ad6e39f/src/core/reactive.ts#L148)
 
 Effect for passing reactive values to a descendant El Truco component.
 
@@ -24,11 +24,11 @@ Effect for passing reactive values to a descendant El Truco component.
 
 ## Parameters
 
-### reactives
-
-[`Reactives`](../type-aliases/Reactives.md)\<[`Component`](../type-aliases/Component.md)\<`Q`\>, `P`\>
+### props
 
 Reactive values to pass
+
+[`PassedProps`](../type-aliases/PassedProps.md)\<`P`, `Q`\> | (`target`) => [`PassedProps`](../type-aliases/PassedProps.md)\<`P`, `Q`\>
 
 ## Returns
 
@@ -43,10 +43,6 @@ Effect function that passes reactive values to the descendant component
 ## Throws
 
 When the target element is not a valid custom element
-
-## Throws
-
-When the target element is not a valid El Truco component
 
 ## Throws
 

@@ -8,7 +8,7 @@
 
 > **asNumber**\<`E`\>(`fallback?`): [`Parser`](../type-aliases/Parser.md)\<`number`, `E`\>
 
-Defined in: [src/lib/parsers.ts:65](https://github.com/zeixcom/ui-element/blob/a49c7d7fbed01d04dd21940c975f1839fc83bb07/src/lib/parsers.ts#L65)
+Defined in: [src/lib/parsers.ts:65](https://github.com/zeixcom/ui-element/blob/8085b01c567eb5438a72e6d26eca9f9f0ad6e39f/src/lib/parsers.ts#L65)
 
 Parse a string as a number with a fallback
 

@@ -13,7 +13,7 @@ import {
 	state,
 } from '../../..'
 import { asOklch } from '../_shared/asOklch'
-import { getStepColor } from '../_shared/getStepColor'
+import { getStepColor } from '../_shared/color'
 import { rafThrottle } from '../_shared/rafThrottle'
 
 export type FormColorgraphAxis = 'l' | 'c' | 'h'
@@ -532,5 +532,8 @@ export default component<FormColorgraphProps>(
 declare global {
 	interface HTMLElementTagNameMap {
 		'form-colorgraph': Component<FormColorgraphProps>
+	}
+	interface HTMLElementEventMap {
+		'color-change': CustomEvent<Oklch>
 	}
 }

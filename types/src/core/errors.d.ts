@@ -108,16 +108,4 @@ declare class InvalidCustomElementError extends TypeError {
      */
     constructor(target: HTMLElement, where: string);
 }
-/**
- * Error thrown when target element is not a custom element as expected
- *
- * @since 0.15.0
- */
-declare class InvalidComponentError extends TypeError {
-    /**
-     * @param {HTMLElement} target - Target component
-     * @param {string} where - Location where the error occurred
-     */
-    constructor(target: HTMLElement, where: string);
-}
-export { CircularMutationError, DependencyTimeoutError, InvalidComponentError, InvalidComponentNameError, InvalidCustomElementError, InvalidPropertyNameError, InvalidEffectsError, InvalidReactivesError, InvalidSignalError, MissingElementError, };
+export { CircularMutationError, DependencyTimeoutError, InvalidComponentNameError, InvalidCustomElementError, InvalidPropertyNameError, InvalidEffectsError, InvalidReactivesError, InvalidSignalError, MissingElementError, };

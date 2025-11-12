@@ -808,13 +808,6 @@ class InvalidCustomElementError extends TypeError {
   }
 }
 
-class InvalidComponentError extends TypeError {
-  constructor(target, where) {
-    super(`Target ${elementName(target)} is not a El Truco component in ${where}.`);
-    this.name = "InvalidComponentError";
-  }
-}
-
 // src/core/reactive.ts
 var RESET = Symbol("RESET");
 var runEffects = (effects, host, target = host) => {
@@ -845,6 +838,44 @@ var resolveReactive = (reactive, host, target, context) => {
     }
     return RESET;
   }
+};
+var pass = (props) => (host, target) => {
+  if (!isCustomElement(target))
+    throw new InvalidCustomElementError(target, `pass from ${elementName(host)}`);
+  const reactives = isFunction(props) ? props(target) : props;
+  if (!isRecord(reactives))
+    throw new InvalidReactivesError(host, target, reactives);
+  const resetProperties = {};
+  const getGetter = (value) => {
+    if (isSignal(value))
+      return value.get;
+    const fn = isString(value) && value in host ? () => host[value] : isComputedCallback(value) ? value : undefined;
+    return fn ? computed(fn).get : undefined;
+  };
+  for (const [prop, reactive] of Object.entries(reactives)) {
+    if (reactive == null)
+      continue;
+    const descriptor = Object.getOwnPropertyDescriptor(target, prop);
+    if (!(prop in target) || !descriptor?.configurable)
+      continue;
+    const applied = isFunction(reactive) && reactive.length === 1 ? reactive(target) : reactive;
+    const isArray = Array.isArray(applied) && applied.length === 2;
+    const getter = getGetter(isArray ? applied[0] : applied);
+    const setter = isArray && isFunction(applied[1]) ? applied[1] : undefined;
+    if (!getter)
+      continue;
+    resetProperties[prop] = descriptor;
+    Object.defineProperty(target, prop, {
+      configurable: true,
+      enumerable: true,
+      get: getter,
+      set: setter
+    });
+    descriptor.set?.call(target, UNSET);
+  }
+  return () => {
+    Object.defineProperties(target, resetProperties);
+  };
 };
 
 // src/core/dom.ts
@@ -1130,28 +1161,19 @@ function component(name, init = {}, setup) {
       if (attr in this)
         this[attr] = parsed;
       else
-        this.#setAccessor(attr, parsed, true);
+        this.#setAccessor(attr, parsed);
     }
-    #setAccessor(key, value, writable = false) {
-      const error = validatePropertyName(String(key));
-      if (error)
-        throw new InvalidPropertyNameError(this.localName, String(key), error);
-      const signal = isSignal(value) ? value : isFunction(value) ? computed(value) : state(value);
-      if (!isSignal(signal))
-        throw new InvalidSignalError(this, String(key));
+    #setAccessor(key, value) {
+      const signal = isSignal(value) ? value : isComputedCallback(value) ? computed(value) : state(value);
       const prev = this.#signals[key];
-      const setter = isFunction(writable) ? writable : !!writable && isMutableSignal(signal) ? signal.set : undefined;
+      const mutable = isMutableSignal(signal);
       this.#signals[key] = signal;
-      try {
-        Object.defineProperty(this, key, {
-          get: signal.get,
-          set: setter,
-          enumerable: true,
-          configurable: !!setter
-        });
-      } catch (error2) {
-        log(error2, `Failed to define property "${String(key)}" in ${elementName(this)}`, LOG_ERROR);
-      }
+      Object.defineProperty(this, key, {
+        get: signal.get,
+        set: mutable ? signal.set : undefined,
+        enumerable: true,
+        configurable: mutable
+      });
       if (prev && isState(prev) || isStore(prev))
         prev.set(UNSET);
       if (DEV_MODE && this.debug)
@@ -1517,48 +1539,6 @@ var dangerouslySetInnerHTML = (reactive, options = {}) => updateElement(reactive
     return " with scripts";
   }
 });
-var pass = (reactives) => (host, target) => {
-  if (!isCustomElement(target))
-    throw new InvalidCustomElementError(target, `pass from ${elementName(host)}`);
-  if (!hasMethod(target, "setSignal"))
-    throw new InvalidComponentError(target, `pass from ${elementName(host)}`);
-  if (!isRecord(reactives))
-    throw new InvalidReactivesError(host, target, reactives);
-  const cleanupMap = new Map;
-  const getAccessor = (_prop, reactive) => {
-    const result = isFunction(reactive) && reactive.length === 1 ? reactive(target) : reactive;
-    if (Array.isArray(result) && result.length === 2 && isFunction(result[0]) && !result[1].length)
-      return result;
-    if (isFunction(result))
-      return [result, undefined];
-    if (isSignal(result))
-      return [result.get, undefined];
-    if (isString(result))
-      return [() => host[result], undefined];
-    const signal = state(result);
-    return [signal.get, signal.set];
-  };
-  for (const [prop, reactive] of Object.entries(reactives)) {
-    if (reactive == null)
-      continue;
-    const descriptor = Object.getOwnPropertyDescriptor(target, prop);
-    if (!(prop in target) || !descriptor?.configurable)
-      continue;
-    cleanupMap.set(prop, descriptor);
-    const [getter, setter] = getAccessor(prop, reactive);
-    Object.defineProperty(target, prop, {
-      configurable: true,
-      enumerable: true,
-      get: getter,
-      set: setter
-    });
-  }
-  return () => {
-    for (const [prop, descriptor] of cleanupMap) {
-      Object.defineProperty(target, prop, descriptor);
-    }
-  };
-};
 // src/lib/extractors.ts
 var getText = () => (element) => element.textContent?.trim();
 var getIdrefText = (attr) => (element) => {
@@ -1696,8 +1676,10 @@ export {
   LOG_DEBUG,
   InvalidSignalValueError,
   InvalidSignalError,
+  InvalidReactivesError,
   InvalidPropertyNameError,
   InvalidEffectsError,
+  InvalidCustomElementError,
   InvalidComponentNameError,
   DependencyTimeoutError,
   DEV_MODE,

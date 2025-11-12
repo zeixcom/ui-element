@@ -167,28 +167,9 @@ class InvalidCustomElementError extends TypeError {
 	}
 }
 
-/**
- * Error thrown when target element is not a custom element as expected
- *
- * @since 0.15.0
- */
-class InvalidComponentError extends TypeError {
-	/**
-	 * @param {HTMLElement} target - Target component
-	 * @param {string} where - Location where the error occurred
-	 */
-	constructor(target: HTMLElement, where: string) {
-		super(
-			`Target ${elementName(target)} is not a El Truco component in ${where}.`,
-		)
-		this.name = 'InvalidComponentError'
-	}
-}
-
 export {
 	CircularMutationError,
 	DependencyTimeoutError,
-	InvalidComponentError,
 	InvalidComponentNameError,
 	InvalidCustomElementError,
 	InvalidPropertyNameError,
