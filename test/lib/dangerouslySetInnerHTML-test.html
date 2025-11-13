@@ -136,9 +136,7 @@
 
 						try {
 							// Create mock host component
-							const host = {
-								getSignal: () => htmlSignal,
-							}
+							const host = {}
 
 							// Apply dangerouslySetInnerHTML with signal
 							const cleanup = dangerouslySetInnerHTML(htmlSignal)(
@@ -194,9 +192,7 @@
 							)
 
 							// Create mock host component
-							const host = {
-								getSignal: () => htmlSignal,
-							}
+							const host = {}
 
 							// Apply dangerouslySetInnerHTML
 							const cleanup = dangerouslySetInnerHTML(htmlSignal)(
@@ -255,9 +251,7 @@
 
 						try {
 							// Create mock host component
-							const host = {
-								getSignal: () => htmlSignal,
-							}
+							const host = {}
 
 							// Apply dangerouslySetInnerHTML
 							const cleanup = dangerouslySetInnerHTML(htmlSignal)(
@@ -307,9 +301,7 @@
 							)
 
 							// Create mock host component
-							const host = {
-								getSignal: () => htmlSignal,
-							}
+							const host = {}
 
 							// This should not throw an error
 							const cleanup = dangerouslySetInnerHTML(htmlSignal)(
@@ -346,11 +338,11 @@
 						try {
 							// Create mock host component
 							const host = {
-								getSignal: prop => {
-									if (prop === 'items') return itemsSignal
-									if (prop === 'showDetails')
-										return showDetailsSignal
-									return { get: () => null }
+								get items() {
+									return itemsSignal.get()
+								},
+								get showDetails() {
+									return showDetailsSignal.get()
 								},
 							}
 
@@ -372,7 +364,6 @@
 
 								return `<ul class="item-list">${listItems}</ul>`
 							})(host, element)
-
 
 							// Initial state - 3 items without details
 							let list = element.querySelector('.item-list')

@@ -1,36 +1,29 @@
-
 <module-tabgroup>
 	<div role="tablist">
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_form-listbox.html"
-				aria-controls="panel_form-listbox.html"
-				aria-selected="false"
-				tabindex="-1"
-			>HTML</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_form-listbox.css"
-				aria-controls="panel_form-listbox.css"
-				aria-selected="false"
-				tabindex="-1"
-			>CSS</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_form-listbox.ts"
-				aria-controls="panel_form-listbox.ts"
-				aria-selected="true"
-				tabindex="0"
-			>TypeScript</button>
+		<button
+			type="button"
+			role="tab"
+			id="trigger_form-listbox.html"
+			aria-controls="panel_form-listbox.html"
+			aria-selected="false"
+			tabindex="-1"
+		>HTML</button><button
+			type="button"
+			role="tab"
+			id="trigger_form-listbox.css"
+			aria-controls="panel_form-listbox.css"
+			aria-selected="false"
+			tabindex="-1"
+		>CSS</button><button
+			type="button"
+			role="tab"
+			id="trigger_form-listbox.ts"
+			aria-controls="panel_form-listbox.ts"
+			aria-selected="true"
+			tabindex="0"
+		>TypeScript</button>
 	</div>
-	
-<div role="tabpanel" id="panel_form-listbox.html" aria-labelledby="trigger_form-listbox.html" hidden>
+	<div role="tabpanel" id="panel_form-listbox.html" aria-labelledby="trigger_form-listbox.html" hidden>
 	<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">form-listbox.html</span>
@@ -53,7 +46,6 @@
 		</basic-button>
 	</module-codeblock>
 </div>
-
 <div role="tabpanel" id="panel_form-listbox.css" aria-labelledby="trigger_form-listbox.css" hidden>
 	<module-codeblock language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
@@ -125,7 +117,6 @@
 		</basic-button>
 	</module-codeblock>
 </div>
-
 <div role="tabpanel" id="panel_form-listbox.ts" aria-labelledby="trigger_form-listbox.ts">
 	<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
@@ -148,9 +139,9 @@
 <span class="line"><span style="color:#F8F8F2">	UNSET,</span></span>
 <span class="line"><span style="color:#F8F8F2">} </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../..'</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asURL } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/parser/asURL'</span></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { fetchWithCache } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/shared/fetchWithCache'</span></span>
-<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { highlightMatch } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../../functions/shared/highlightMatch'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asURL } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../_shared/asURL'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { fetchWithCache } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../_shared/fetchWithCache'</span></span>
+<span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { highlightMatch } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '../_shared/highlightMatch'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">type</span><span> </span><span style="color:#A6E22E;text-decoration:underline">FormListboxOption</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">	value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
@@ -169,7 +160,7 @@
 <span class="line"><span style="color:#F8F8F2">	value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
 <span class="line"><span style="color:#F8F8F2">	filter</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
 <span class="line"><span style="color:#F8F8F2">	src</span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> { value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">; error</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2"> }</span></span>
-<span class="line"><span style="color:#F8F8F2">	options</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[]</span></span>
+<span class="line"><span style="color:#F92672">	readonly</span><span style="color:#F8F8F2"> options</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[]</span></span>
 <span class="line"><span style="color:#F8F8F2">	index</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
@@ -180,7 +171,7 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> LAST_KEY </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'End'</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> FOCUS_KEYS </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#F92672">...</span><span style="color:#F8F8F2">DECREMENT_KEYS, </span><span style="color:#F92672">...</span><span style="color:#F8F8F2">INCREMENT_KEYS, FIRST_KEY, LAST_KEY]</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">FormListboxProps</span><span style="color:#F8F8F2">>(</span></span>
 <span class="line"><span style="color:#E6DB74">	'form-listbox'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
 <span class="line"><span style="color:#F8F8F2">		value: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
@@ -302,7 +293,7 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> visible </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> fromSelector</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">						'[role="option"]:not([hidden])'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">					)(target)</span></span>
-<span class="line"><span style="color:#F92672">					return</span><span style="color:#A6E22E"> effect</span><span style="color:#F8F8F2">(()</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> undefined</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">					return</span><span style="color:#A6E22E"> effect</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">						target.hidden </span><span style="color:#F92672">=</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">visible.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">().length</span></span>
 <span class="line"><span style="color:#F8F8F2">					})</span></span>
 <span class="line"><span style="color:#F8F8F2">				},</span></span>

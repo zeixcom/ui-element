@@ -1,36 +1,29 @@
-
 <module-tabgroup>
 	<div role="tablist">
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_module-pagination.html"
-				aria-controls="panel_module-pagination.html"
-				aria-selected="false"
-				tabindex="-1"
-			>HTML</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_module-pagination.css"
-				aria-controls="panel_module-pagination.css"
-				aria-selected="false"
-				tabindex="-1"
-			>CSS</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_module-pagination.ts"
-				aria-controls="panel_module-pagination.ts"
-				aria-selected="true"
-				tabindex="0"
-			>TypeScript</button>
+		<button
+			type="button"
+			role="tab"
+			id="trigger_module-pagination.html"
+			aria-controls="panel_module-pagination.html"
+			aria-selected="false"
+			tabindex="-1"
+		>HTML</button><button
+			type="button"
+			role="tab"
+			id="trigger_module-pagination.css"
+			aria-controls="panel_module-pagination.css"
+			aria-selected="false"
+			tabindex="-1"
+		>CSS</button><button
+			type="button"
+			role="tab"
+			id="trigger_module-pagination.ts"
+			aria-controls="panel_module-pagination.ts"
+			aria-selected="true"
+			tabindex="0"
+		>TypeScript</button>
 	</div>
-	
-<div role="tabpanel" id="panel_module-pagination.html" aria-labelledby="trigger_module-pagination.html" hidden>
+	<div role="tabpanel" id="panel_module-pagination.html" aria-labelledby="trigger_module-pagination.html" hidden>
 	<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">module-pagination.html</span>
@@ -60,7 +53,6 @@
 		</basic-button>
 	</module-codeblock>
 </div>
-
 <div role="tabpanel" id="panel_module-pagination.css" aria-labelledby="trigger_module-pagination.css" hidden>
 	<module-codeblock language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
@@ -154,7 +146,6 @@
 		</basic-button>
 	</module-codeblock>
 </div>
-
 <div role="tabpanel" id="panel_module-pagination.ts" aria-labelledby="trigger_module-pagination.ts">
 	<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
@@ -200,10 +191,7 @@
 <span class="line"><span style="color:#E6DB74">			'input'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">			[</span></span>
 <span class="line"><span style="color:#A6E22E">				on</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'change'</span><span style="color:#F8F8F2">, ({ </span><span style="color:#FD971F;font-style:italic">target</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
-<span class="line"><span style="color:#F8F8F2">					el.value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> Math.</span><span style="color:#A6E22E">max</span><span style="color:#F8F8F2">(</span></span>
-<span class="line"><span style="color:#AE81FF">						1</span><span style="color:#F8F8F2">,</span></span>
-<span class="line"><span style="color:#F8F8F2">						Math.</span><span style="color:#A6E22E">min</span><span style="color:#F8F8F2">(target.valueAsNumber, el.max),</span></span>
-<span class="line"><span style="color:#F8F8F2">					)</span></span>
+<span class="line"><span style="color:#F8F8F2">					el.value </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> Math.</span><span style="color:#A6E22E">max</span><span style="color:#F8F8F2">(</span><span style="color:#AE81FF">1</span><span style="color:#F8F8F2">, Math.</span><span style="color:#A6E22E">min</span><span style="color:#F8F8F2">(target.valueAsNumber, el.max))</span></span>
 <span class="line"><span style="color:#F8F8F2">				}),</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'value'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(el.value)),</span></span>
 <span class="line"><span style="color:#A6E22E">				setProperty</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'max'</span><span style="color:#F8F8F2">, () </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#A6E22E"> String</span><span style="color:#F8F8F2">(el.max)),</span></span>

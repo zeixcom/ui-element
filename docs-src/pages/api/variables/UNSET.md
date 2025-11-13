@@ -1,22 +1,22 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / UNSET
+[@zeix/el-truco](../globals.md) / UNSET
 
 # Variable: UNSET
 
 > `const` **UNSET**: `any`
 
-Defined in: node\_modules/@zeix/cause-effect/src/signal.ts:23
+Defined in: node\_modules/@zeix/cause-effect/types/src/util.d.ts:1
 
 ## Name
 
-UIElement
+El Truco
 
 ## Version
 
-0.14.0
+0.15.0
 
 ## Author
 

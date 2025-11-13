@@ -1,22 +1,22 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / Signal
+[@zeix/el-truco](../globals.md) / Signal
 
 # Type Alias: Signal\<T\>
 
 > **Signal**\<`T`\> = `object`
 
-Defined in: node\_modules/@zeix/cause-effect/src/signal.ts:11
+Defined in: node\_modules/@zeix/cause-effect/types/src/signal.d.ts:4
 
 ## Name
 
-UIElement
+El Truco
 
 ## Version
 
-0.14.0
+0.15.0
 
 ## Author
 
@@ -34,7 +34,7 @@ Esther Brunner
 
 > **get**(): `T`
 
-Defined in: node\_modules/@zeix/cause-effect/src/signal.ts:12
+Defined in: node\_modules/@zeix/cause-effect/types/src/signal.d.ts:5
 
 #### Returns
 

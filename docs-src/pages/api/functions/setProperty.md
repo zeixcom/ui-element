@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / setProperty
+[@zeix/el-truco](../globals.md) / setProperty
 
 # Function: setProperty()
 
 > **setProperty**\<`P`, `K`, `E`\>(`key`, `reactive`): [`Effect`](../type-aliases/Effect.md)\<`P`, `E`\>
 
-Defined in: [src/lib/effects.ts:296](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/lib/effects.ts#L296)
+Defined in: [src/lib/effects.ts:278](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/lib/effects.ts#L278)
 
 Effect for setting a property on an element.
 Sets the specified property directly on the element object.
@@ -37,7 +37,7 @@ Name of the property to set
 
 ### reactive
 
-[`Reactive`](../type-aliases/Reactive.md)\<`E`\[`K`\], `P`, `E`\> = `...`
+[`Reactive`](../type-aliases/Reactive.md)\<`E`\[`K`\] & `object`, `P`, `E`\> = `...`
 
 Reactive value bound to the property value (defaults to property name)
 

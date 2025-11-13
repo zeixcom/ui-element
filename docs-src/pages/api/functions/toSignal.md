@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / toSignal
+[@zeix/el-truco](../globals.md) / toSignal
 
 # Function: toSignal()
 
-> **toSignal**\<`T`\>(`value`): [`Signal`](../type-aliases/Signal.md)\<`T`\>
+> **toSignal**\<`T`\>(`value`): `T` *extends* [`Store`](../type-aliases/Store.md)\<`U`\> ? [`Store`](../type-aliases/Store.md)\<`U`\> : `T` *extends* [`State`](../type-aliases/State.md)\<`U`\> ? [`State`](../type-aliases/State.md)\<`U`\> : `T` *extends* [`Computed`](../type-aliases/Computed.md)\<`U`\> ? [`Computed`](../type-aliases/Computed.md)\<`U`\> : `T` *extends* [`Signal`](../type-aliases/Signal.md)\<`U`\> ? [`Signal`](../type-aliases/Signal.md)\<`U`\> : `T` *extends* readonly `U`[] ? [`Store`](../type-aliases/Store.md)\<`U`[]\> : `T` *extends* `Record`\<`string`, \{ \}\> ? [`Store`](../type-aliases/Store.md)\<\{ \[K in string \| number \| symbol\]: T\<T\>\[K\] \}\> : `T` *extends* [`ComputedCallback`](../type-aliases/ComputedCallback.md)\<`U`\> ? [`Computed`](../type-aliases/Computed.md)\<`U`\> : [`State`](../type-aliases/State.md)\<`T`\>
 
-Defined in: node\_modules/@zeix/cause-effect/src/signal.ts:45
+Defined in: node\_modules/@zeix/cause-effect/types/src/signal.d.ts:34
 
 Convert a value to a Signal if it's not already a Signal
 
@@ -22,15 +22,15 @@ Convert a value to a Signal if it's not already a Signal
 
 ### value
 
-[`MaybeSignal`](../type-aliases/MaybeSignal.md)\<`T`\>
+`T`
 
-value to convert to a Signal
+value to convert
 
 ## Returns
 
-[`Signal`](../type-aliases/Signal.md)\<`T`\>
+`T` *extends* [`Store`](../type-aliases/Store.md)\<`U`\> ? [`Store`](../type-aliases/Store.md)\<`U`\> : `T` *extends* [`State`](../type-aliases/State.md)\<`U`\> ? [`State`](../type-aliases/State.md)\<`U`\> : `T` *extends* [`Computed`](../type-aliases/Computed.md)\<`U`\> ? [`Computed`](../type-aliases/Computed.md)\<`U`\> : `T` *extends* [`Signal`](../type-aliases/Signal.md)\<`U`\> ? [`Signal`](../type-aliases/Signal.md)\<`U`\> : `T` *extends* readonly `U`[] ? [`Store`](../type-aliases/Store.md)\<`U`[]\> : `T` *extends* `Record`\<`string`, \{ \}\> ? [`Store`](../type-aliases/Store.md)\<\{ \[K in string \| number \| symbol\]: T\<T\>\[K\] \}\> : `T` *extends* [`ComputedCallback`](../type-aliases/ComputedCallback.md)\<`U`\> ? [`Computed`](../type-aliases/Computed.md)\<`U`\> : [`State`](../type-aliases/State.md)\<`T`\>
 
-- converted Signal
+- Signal instance
 
 ## Since
 

@@ -1,22 +1,22 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / State
+[@zeix/el-truco](../globals.md) / State
 
 # Type Alias: State\<T\>
 
 > **State**\<`T`\> = `object`
 
-Defined in: node\_modules/@zeix/cause-effect/src/state.ts:7
+Defined in: node\_modules/@zeix/cause-effect/types/src/state.d.ts:1
 
 ## Name
 
-UIElement
+El Truco
 
 ## Version
 
-0.14.0
+0.15.0
 
 ## Author
 
@@ -34,7 +34,7 @@ Esther Brunner
 
 > **\[toStringTag\]**: `"State"`
 
-Defined in: node\_modules/@zeix/cause-effect/src/state.ts:8
+Defined in: node\_modules/@zeix/cause-effect/types/src/state.d.ts:2
 
 ## Methods
 
@@ -42,7 +42,7 @@ Defined in: node\_modules/@zeix/cause-effect/src/state.ts:8
 
 > **get**(): `T`
 
-Defined in: node\_modules/@zeix/cause-effect/src/state.ts:9
+Defined in: node\_modules/@zeix/cause-effect/types/src/state.d.ts:3
 
 #### Returns
 
@@ -54,7 +54,7 @@ Defined in: node\_modules/@zeix/cause-effect/src/state.ts:9
 
 > **set**(`v`): `void`
 
-Defined in: node\_modules/@zeix/cause-effect/src/state.ts:10
+Defined in: node\_modules/@zeix/cause-effect/types/src/state.d.ts:4
 
 #### Parameters
 
@@ -72,7 +72,7 @@ Defined in: node\_modules/@zeix/cause-effect/src/state.ts:10
 
 > **update**(`fn`): `void`
 
-Defined in: node\_modules/@zeix/cause-effect/src/state.ts:11
+Defined in: node\_modules/@zeix/cause-effect/types/src/state.d.ts:5
 
 #### Parameters
 

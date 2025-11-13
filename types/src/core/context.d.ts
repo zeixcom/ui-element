@@ -1,4 +1,4 @@
-import { type Cleanup, type Signal } from '@zeix/cause-effect';
+import { type Cleanup } from '@zeix/cause-effect';
 import type { Component, ComponentProps } from '../component';
 import { type Extractor, type Fallback } from './dom';
 /** @see https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md */
@@ -64,17 +64,17 @@ declare class ContextRequestEvent<T extends UnknownContext> extends Event {
  * Provide a context for descendant component consumers
  *
  * @since 0.13.3
- * @param {Context<K, Signal<P[K]>>[]} contexts - Array of contexts to provide
+ * @param {Context<K, () => P[K]>[]} contexts - Array of contexts to provide
  * @returns {(host: Component<P>) => Cleanup} Function to add an event listener for ContextRequestEvent returning a cleanup function to remove the event listener
  */
-declare const provideContexts: <P extends ComponentProps, K extends keyof P>(contexts: Context<K, Signal<P[K]>>[]) => ((host: Component<P>) => Cleanup);
+declare const provideContexts: <P extends ComponentProps, K extends keyof P>(contexts: Context<K, () => P[K]>[]) => ((host: Component<P>) => Cleanup);
 /**
  * Consume a context value for a component.
  *
  * @since 0.13.1
- * @param {Context<K, Signal<T>>} context - Context key to consume
+ * @param {Context<K, () => T>} context - Context key to consume
  * @param {Fallback<P[K]>} fallback - Fallback value or extractor function
- * @returns {Extractor<Signal<T>, C>} Function that returns the consumed context signal or a signal of the fallback value
+ * @returns {Extractor<() => T, C>} Function that returns the consumed context getter or a signal of the fallback value
  */
-declare const fromContext: <T extends {}, C extends HTMLElement = HTMLElement>(context: Context<string, Signal<T>>, fallback: Fallback<T, C>) => Extractor<Signal<T>, C>;
+declare const fromContext: <T extends {}, C extends HTMLElement = HTMLElement>(context: Context<string, () => T>, fallback: Fallback<T, C>) => Extractor<() => T, C>;
 export { type Context, type UnknownContext, type ContextType, CONTEXT_REQUEST, ContextRequestEvent, provideContexts, fromContext, };

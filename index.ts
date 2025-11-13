@@ -1,26 +1,57 @@
 /**
- * @name UIElement
- * @version 0.14.0
+ * @name El Truco
+ * @version 0.15.0
  * @author Esther Brunner
  */
 
 // From Cause & Effect
 export {
 	batch,
+	CircularDependencyError,
 	type Cleanup,
 	type Computed,
 	type ComputedCallback,
 	computed,
-	type EffectMatcher,
+	type DiffResult,
+	diff,
+	type EffectCallback,
 	effect,
 	enqueue,
+	InvalidSignalValueError,
+	isAbortError,
+	isAsyncFunction,
 	isComputed,
+	isEqual,
+	isFunction,
+	isMutableSignal,
+	isNumber,
+	isRecord,
+	isRecordOrArray,
 	isSignal,
 	isState,
-	type MaybeSignal,
+	isStore,
+	isString,
+	isSymbol,
+	type MatchHandlers,
+	type MaybeCleanup,
+	match,
+	NullishSignalValueError,
+	type ResolveResult,
+	resolve,
 	type Signal,
 	type State,
+	type Store,
+	type StoreAddEvent,
+	type StoreChangeEvent,
+	type StoreEventMap,
+	StoreKeyExistsError,
+	StoreKeyRangeError,
+	StoreKeyReadonlyError,
+	type StoreRemoveEvent,
+	type StoreSortEvent,
 	state,
+	store,
+	toError,
 	toSignal,
 	UNSET,
 } from '@zeix/cause-effect'
@@ -65,9 +96,10 @@ export {
 	CircularMutationError,
 	DependencyTimeoutError,
 	InvalidComponentNameError,
+	InvalidCustomElementError,
 	InvalidEffectsError,
 	InvalidPropertyNameError,
-	InvalidSignalError,
+	InvalidReactivesError,
 	MissingElementError,
 } from './src/core/errors'
 export {
@@ -82,6 +114,9 @@ export {
 export {
 	type Effect,
 	type Effects,
+	type PassedProp,
+	type PassedProps,
+	pass,
 	RESET,
 	type Reactive,
 	resolveReactive,
@@ -101,8 +136,6 @@ export {
 	type ElementInserter,
 	type ElementUpdater,
 	insertOrRemoveElement,
-	pass,
-	type Reactives,
 	// callMethod,
 	// focus,
 	setAttribute,

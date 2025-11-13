@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / ElementEffects
+[@zeix/el-truco](../globals.md) / ElementEffects
 
 # Type Alias: ElementEffects()\<P\>
 
-> **ElementEffects**\<`P`\> = \{\<`S`\>(`selector`, `effects`, `required?`): () => `void` \| [`Cleanup`](Cleanup.md); \<`E`\>(`selector`, `effects`, `required?`): () => `void` \| [`Cleanup`](Cleanup.md); \}
+> **ElementEffects**\<`P`\> = \{\<`S`\>(`selector`, `effects`, `required?`): () => [`MaybeCleanup`](MaybeCleanup.md); \<`E`\>(`selector`, `effects`, `required?`): () => [`MaybeCleanup`](MaybeCleanup.md); \}
 
-Defined in: [src/core/dom.ts:84](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/dom.ts#L84)
+Defined in: [src/core/dom.ts:86](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/dom.ts#L86)
 
 ## Type Parameters
 
@@ -18,7 +18,7 @@ Defined in: [src/core/dom.ts:84](https://github.com/zeixcom/ui-element/blob/a2e3
 
 ## Call Signature
 
-> \<`S`\>(`selector`, `effects`, `required?`): () => `void` \| [`Cleanup`](Cleanup.md)
+> \<`S`\>(`selector`, `effects`, `required?`): () => [`MaybeCleanup`](MaybeCleanup.md)
 
 ### Type Parameters
 
@@ -42,15 +42,15 @@ Defined in: [src/core/dom.ts:84](https://github.com/zeixcom/ui-element/blob/a2e3
 
 ### Returns
 
-> (): `void` \| [`Cleanup`](Cleanup.md)
+> (): [`MaybeCleanup`](MaybeCleanup.md)
 
 #### Returns
 
-`void` \| [`Cleanup`](Cleanup.md)
+[`MaybeCleanup`](MaybeCleanup.md)
 
 ## Call Signature
 
-> \<`E`\>(`selector`, `effects`, `required?`): () => `void` \| [`Cleanup`](Cleanup.md)
+> \<`E`\>(`selector`, `effects`, `required?`): () => [`MaybeCleanup`](MaybeCleanup.md)
 
 ### Type Parameters
 
@@ -74,8 +74,8 @@ Defined in: [src/core/dom.ts:84](https://github.com/zeixcom/ui-element/blob/a2e3
 
 ### Returns
 
-> (): `void` \| [`Cleanup`](Cleanup.md)
+> (): [`MaybeCleanup`](MaybeCleanup.md)
 
 #### Returns
 
-`void` \| [`Cleanup`](Cleanup.md)
+[`MaybeCleanup`](MaybeCleanup.md)

@@ -3,24 +3,24 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>fromDOM – UIElement Docs</title>
+		<title>fromDOM – El Truco Docs</title>
 		<meta name="description" content="" />
 		<link
 			rel="preload"
-			href="../../assets/main.css?v=0adb5bf2"
+			href="../../assets/main.css?v=mhxdrgfy"
 			as="style"
 		/>
 		<link
 			rel="modulepreload"
-			href="../../assets/main.js?v=0b0743f4"
+			href="../../assets/main.js?v=mhxdrgfy"
 		/>
 		<link
 			rel="stylesheet"
-			href="../../assets/main.css?v=0adb5bf2"
+			href="../../assets/main.css?v=mhxdrgfy"
 		/>
 		<script
 			type="module"
-			src="../../assets/main.js?v=0b0743f4"
+			src="../../assets/main.js?v=mhxdrgfy"
 		></script>
 	</head>
 	<body class="api">
@@ -30,85 +30,67 @@
 					Skip to main content
 				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.14.0</small>
+					El Truco Docs <small>Version 0.15.0</small>
 				</h1>
-				
-<section-menu>
+				<section-menu>
 	<nav>
 		<h2 class="visually-hidden">Main Menu</h2>
 		<ol>
-			
-				<li>
-					<a href="../../index.html">
-						<span class="icon">📖</span>
-						<strong>Introduction</strong>
-						<small>Overview and key benefits of UIElement</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../getting-started.html">
-						<span class="icon">🚀</span>
-						<strong>Getting Started</strong>
-						<small>Installation, setup, and first steps</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../components.html">
-						<span class="icon">🏗️</span>
-						<strong>Components</strong>
-						<small>Anatomy, lifecycle, signals, effects</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../styling.html">
-						<span class="icon">🎨</span>
-						<strong>Styling</strong>
-						<small>Scoped styles, CSS custom properties</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../data-flow.html">
-						<span class="icon">🔄</span>
-						<strong>Data Flow</strong>
-						<small>Passing state, events, context</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../examples.html">
-						<span class="icon">🍽️</span>
-						<strong>Examples</strong>
-						<small>Common use cases and demos</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../blog.html">
-						<span class="icon">📜</span>
-						<strong>Blog</strong>
-						<small>Latest articles and updates</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../api.html">
-						<span class="icon">📚</span>
-						<strong>API Reference</strong>
-						<small>Functions, types, and constants</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../about.html">
-						<span class="icon">🤝</span>
-						<strong>About</strong>
-						<small>License, versioning, getting involved</small>
-					</a>
-				</li>
+			<li>
+			<a href="about.html">
+				<span class="icon">🤝</span>
+				<strong>About</strong>
+				<small>License, versioning, getting involved</small>
+			</a>
+		</li><li>
+			<a href="api.html">
+				<span class="icon">📚</span>
+				<strong>API Reference</strong>
+				<small>Functions, types, and constants</small>
+			</a>
+		</li><li>
+			<a href="blog.html">
+				<span class="icon">📜</span>
+				<strong>Blog</strong>
+				<small>Latest articles and updates</small>
+			</a>
+		</li><li>
+			<a href="components.html">
+				<span class="icon">🏗️</span>
+				<strong>Components</strong>
+				<small>Anatomy, lifecycle, signals, effects</small>
+			</a>
+		</li><li>
+			<a href="data-flow.html">
+				<span class="icon">🔄</span>
+				<strong>Data Flow</strong>
+				<small>Passing state, events, context</small>
+			</a>
+		</li><li>
+			<a href="examples.html">
+				<span class="icon">🍽️</span>
+				<strong>Examples</strong>
+				<small>Common use cases and demos</small>
+			</a>
+		</li><li>
+			<a href="getting-started.html">
+				<span class="icon">🚀</span>
+				<strong>Getting Started</strong>
+				<small>Installation, setup, and first steps</small>
+			</a>
+		</li><li>
+			<a href="index.html">
+				<span class="icon">📖</span>
+				<strong>Introduction</strong>
+				<small>Overview and key benefits of El Truco</small>
+			</a>
+		</li><li>
+			<a href="styling.html">
+				<span class="icon">🎨</span>
+				<strong>Styling</strong>
+				<small>Scoped styles, CSS custom properties</small>
+			</a>
+		</li>
 		</ol>
 	</nav>
 </section-menu>
@@ -118,79 +100,79 @@
 			</header>
 			<main id="main" class="content-grid"><section class="api-content">
 <h1 id="function-fromdom">
-                <a name="function-fromdom" class="anchor" href="#function-fromdom">
-	                <span class="permalink">🔗</span>
-					<span class="title">Function: fromDOM()</span>
-                </a>
-            </h1>
+							<a name="function-fromdom" class="anchor" href="#function-fromdom">
+								<span class="permalink">🔗</span>
+								<span class="title">Function: fromDOM()</span>
+							</a>
+						</h1>
 <blockquote>
 <p><strong>fromDOM</strong>&lt;<code>T</code>, <code>C</code>, <code>S</code>&gt;(<code>extractors</code>, <code>fallback</code>): <a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<code>T</code>, <code>C</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/225e640fa98977b4408bfa74cd8ff2723fba3b84/src/core/dom.ts#L186">src/core/dom.ts:186</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/dom.ts#L188">src/core/dom.ts:188</a></p>
 <p>Get a value from elements in the DOM</p>
 <h2 id="type-parameters">
-                <a name="type-parameters" class="anchor" href="#type-parameters">
-	                <span class="permalink">🔗</span>
-					<span class="title">Type Parameters</span>
-                </a>
-            </h2>
+							<a name="type-parameters" class="anchor" href="#type-parameters">
+								<span class="permalink">🔗</span>
+								<span class="title">Type Parameters</span>
+							</a>
+						</h2>
 <h3 id="t">
-                <a name="t" class="anchor" href="#t">
-	                <span class="permalink">🔗</span>
-					<span class="title">T</span>
-                </a>
-            </h3>
+							<a name="t" class="anchor" href="#t">
+								<span class="permalink">🔗</span>
+								<span class="title">T</span>
+							</a>
+						</h3>
 <p><code>T</code> <em>extends</em> <code>object</code></p>
 <h3 id="c">
-                <a name="c" class="anchor" href="#c">
-	                <span class="permalink">🔗</span>
-					<span class="title">C</span>
-                </a>
-            </h3>
+							<a name="c" class="anchor" href="#c">
+								<span class="permalink">🔗</span>
+								<span class="title">C</span>
+							</a>
+						</h3>
 <p><code>C</code> <em>extends</em> <code>HTMLElement</code> = <code>HTMLElement</code></p>
 <h3 id="s">
-                <a name="s" class="anchor" href="#s">
-	                <span class="permalink">🔗</span>
-					<span class="title">S</span>
-                </a>
-            </h3>
+							<a name="s" class="anchor" href="#s">
+								<span class="permalink">🔗</span>
+								<span class="title">S</span>
+							</a>
+						</h3>
 <p><code>S</code> <em>extends</em> { [K in string]: LooseExtractor&lt;string | T, ElementFromSelector&lt;K&gt;&gt; } = { }</p>
 <h2 id="parameters">
-                <a name="parameters" class="anchor" href="#parameters">
-	                <span class="permalink">🔗</span>
-					<span class="title">Parameters</span>
-                </a>
-            </h2>
+							<a name="parameters" class="anchor" href="#parameters">
+								<span class="permalink">🔗</span>
+								<span class="title">Parameters</span>
+							</a>
+						</h2>
 <h3 id="extractors">
-                <a name="extractors" class="anchor" href="#extractors">
-	                <span class="permalink">🔗</span>
-					<span class="title">extractors</span>
-                </a>
-            </h3>
+							<a name="extractors" class="anchor" href="#extractors">
+								<span class="permalink">🔗</span>
+								<span class="title">extractors</span>
+							</a>
+						</h3>
 <p><code>S</code></p>
 <p>An object of extractor functions for selectors as keys to get a value from</p>
 <h3 id="fallback">
-                <a name="fallback" class="anchor" href="#fallback">
-	                <span class="permalink">🔗</span>
-					<span class="title">fallback</span>
-                </a>
-            </h3>
+							<a name="fallback" class="anchor" href="#fallback">
+								<span class="permalink">🔗</span>
+								<span class="title">fallback</span>
+							</a>
+						</h3>
 <p><a href="../type-aliases/ParserOrFallback.html"><code>ParserOrFallback</code></a>&lt;<code>T</code>, <code>C</code>&gt;</p>
 <p>Fallback value or parser function</p>
 <h2 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-					<span class="title">Returns</span>
-                </a>
-            </h2>
+							<a name="returns" class="anchor" href="#returns">
+								<span class="permalink">🔗</span>
+								<span class="title">Returns</span>
+							</a>
+						</h2>
 <p><a href="../type-aliases/Extractor.html"><code>Extractor</code></a>&lt;<code>T</code>, <code>C</code>&gt;</p>
 <p>Loose extractor function to apply to the host element</p>
 <h2 id="since">
-                <a name="since" class="anchor" href="#since">
-	                <span class="permalink">🔗</span>
-					<span class="title">Since</span>
-                </a>
-            </h2>
+							<a name="since" class="anchor" href="#since">
+								<span class="permalink">🔗</span>
+								<span class="title">Since</span>
+							</a>
+						</h2>
 <p>0.14.0</p>
 
 </section></main>

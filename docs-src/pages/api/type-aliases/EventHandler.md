@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / EventHandler
+[@zeix/el-truco](../globals.md) / EventHandler
 
 # Type Alias: EventHandler()\<P, E, Evt\>
 
-> **EventHandler**\<`P`, `E`, `Evt`\> = (`context`) => `{ [K in keyof P]?: P[K] }` \| `void`
+> **EventHandler**\<`P`, `E`, `Evt`\> = (`context`) => `{ [K in keyof P]?: P[K] }` \| `void` \| `Promise`\<`void`\>
 
-Defined in: [src/core/events.ts:44](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/core/events.ts#L44)
+Defined in: [src/core/events.ts:49](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/events.ts#L49)
 
 ## Type Parameters
 
@@ -42,4 +42,4 @@ Defined in: [src/core/events.ts:44](https://github.com/zeixcom/ui-element/blob/a
 
 ## Returns
 
-`{ [K in keyof P]?: P[K] }` \| `void`
+`{ [K in keyof P]?: P[K] }` \| `void` \| `Promise`\<`void`\>

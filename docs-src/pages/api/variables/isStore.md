@@ -1,0 +1,37 @@
+[**@zeix/el-truco**](../README.md)
+
+***
+
+[@zeix/el-truco](../globals.md) / isStore
+
+# Variable: isStore()
+
+> `const` **isStore**: \<`T`\>(`value`) => `value is Store<T>`
+
+Defined in: node\_modules/@zeix/cause-effect/types/src/store.d.ts:79
+
+Check if the provided value is a Store instance
+
+## Type Parameters
+
+### T
+
+`T` *extends* `UnknownRecordOrArray`
+
+## Parameters
+
+### value
+
+`unknown`
+
+value to check
+
+## Returns
+
+`value is Store<T>`
+
+- true if the value is a Store instance, false otherwise
+
+## Since
+
+0.15.0

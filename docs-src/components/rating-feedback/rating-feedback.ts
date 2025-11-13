@@ -36,14 +36,9 @@ export default component(
 			]),
 
 			// Effects on rating changes
-			first('.feedback', [
-				show(() => !submitted.get() && !!rating.get()),
-			]),
+			first('.feedback', [show(() => !submitted.get() && !!rating.get())]),
 			all('.feedback p', [
-				show(
-					target =>
-						rating.get() === parseInt(target.dataset['key'] || '0'),
-				),
+				show(target => rating.get() === parseInt(target.dataset['key'] || '0')),
 			]),
 
 			// Effect on empty state

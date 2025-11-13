@@ -1,16 +1,16 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / pass
+[@zeix/el-truco](../globals.md) / pass
 
 # Function: pass()
 
-> **pass**\<`P`, `Q`\>(`reactives`): [`Effect`](../type-aliases/Effect.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`Q`\>\>
+> **pass**\<`P`, `Q`\>(`props`): [`Effect`](../type-aliases/Effect.md)\<`P`, [`Component`](../type-aliases/Component.md)\<`Q`\>\>
 
-Defined in: [src/lib/effects.ts:540](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/lib/effects.ts#L540)
+Defined in: [src/core/reactive.ts:148](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/reactive.ts#L148)
 
-Effect for passing reactive values to a descendant UIElement component.
+Effect for passing reactive values to a descendant El Truco component.
 
 ## Type Parameters
 
@@ -24,11 +24,11 @@ Effect for passing reactive values to a descendant UIElement component.
 
 ## Parameters
 
-### reactives
-
-[`Reactives`](../type-aliases/Reactives.md)\<[`Component`](../type-aliases/Component.md)\<`Q`\>, `P`\>
+### props
 
 Reactive values to pass
+
+[`PassedProps`](../type-aliases/PassedProps.md)\<`P`, `Q`\> | (`target`) => [`PassedProps`](../type-aliases/PassedProps.md)\<`P`, `Q`\>
 
 ## Returns
 
@@ -38,11 +38,15 @@ Effect function that passes reactive values to the descendant component
 
 ## Since
 
-0.13.3
+0.15.0
 
 ## Throws
 
-When the provided reactives are not an object or the target is not a UIElement component
+When the target element is not a valid custom element
+
+## Throws
+
+When the provided reactives is not a record of signals, reactive property names or functions
 
 ## Throws
 

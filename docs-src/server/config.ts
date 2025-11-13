@@ -1,35 +1,26 @@
-import { createHash } from 'crypto'
-import { readFileSync } from 'fs'
-import { join } from 'path'
+/**
+ * Development server configuration
+ */
+export const BASE_URL = 'https://zeixcom.github.io/el-truco'
 
+// Path constants
+export const INPUT_DIR = './docs-src'
 export const PAGES_DIR = './docs-src/pages'
+export const CSS_FILE = './docs-src/main.css'
+export const TS_FILE = './docs-src/main.ts'
+export const COMPONENTS_DIR = './docs-src/components'
+export const SRC_DIR = './src'
 export const LAYOUT_FILE = './docs-src/layout.html'
 export const INCLUDES_DIR = './docs-src/includes'
-export const MENU_FILE = join(INCLUDES_DIR, 'menu.html')
+export const MENU_FILE = './docs-src/includes/menu.html'
+export const TEMPLATES_DIR = './docs-src/templates'
+
 export const OUTPUT_DIR = './docs'
-
-// Define the directory for code examples
-export const COMPONENTS_DIR = './docs-src/components'
-export const FRAGMENTS_DIR = './docs/examples'
-
-// Asset versioning and caching configuration
 export const ASSETS_DIR = './docs/assets'
-export const CACHE_MAX_AGE = 31536000 // 1 year in seconds
+export const EXAMPLES_DIR = './docs/examples'
+export const SITEMAP_FILE = './docs/sitemap.xml'
 
-// Generate content hash for asset versioning
-export const generateAssetHash = (input: string | Buffer): string => {
-	try {
-		const content = typeof input === 'string' ? readFileSync(input) : input
-		return createHash('sha256')
-			.update(content)
-			.digest('hex')
-			.substring(0, 8)
-	} catch {
-		return 'dev'
-	}
-}
-
-// Define a manual order for the menu
+// Page ordering configuration
 export const PAGE_ORDER = [
 	'index',
 	'getting-started',
@@ -37,7 +28,7 @@ export const PAGE_ORDER = [
 	'styling',
 	'data-flow',
 	'examples',
-	'blog',
 	'api',
+	'blog',
 	'about',
 ]

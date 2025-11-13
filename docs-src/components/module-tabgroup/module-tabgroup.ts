@@ -29,7 +29,7 @@ const getSelected = (
 		],
 	)
 
-export default component(
+export default component<ModuleTabgroupProps>(
 	'module-tabgroup',
 	{
 		tabs: fromSelector('button[role="tab"]'),

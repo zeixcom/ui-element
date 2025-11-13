@@ -1,6 +1,6 @@
-# Contributing to UIElement
+# Contributing to El Truco
 
-Thank you for your interest in contributing to **UIElement**! Your contributions help improve the project and benefit the community. This guide outlines how to get involved.
+Thank you for your interest in contributing to **El Truco**! Your contributions help improve the project and benefit the community. This guide outlines how to get involved.
 
 ---
 
@@ -31,7 +31,7 @@ By participating in this project, you agree to abide by our **[Code of Conduct](
 If you find a bug or have a feature request:
 
 1. **Search the issue tracker** to check if your issue has already been reported.
-2. If not, [open a new issue](https://github.com/zeixcom/ui-element/issues/new) and provide:
+2. If not, [open a new issue](https://github.com/zeixcom/el-truco/issues/new) and provide:
    - A clear and descriptive title.
    - Steps to reproduce the issue (if applicable).
    - Expected vs. actual behavior.
@@ -71,7 +71,7 @@ To set up the project locally:
 bun install
 ```
 
-(UIElement uses Bun as its package manager and runtime.)
+(El Truco uses Bun as its package manager and runtime.)
 
 **Run tests in watch mode:**
 
@@ -157,4 +157,4 @@ By contributing, you agree that your contributions will be licensed under the MI
 
 ---
 
-Thank you for contributing to UIElement! 🚀
+Thank you for contributing to El Truco! 🚀

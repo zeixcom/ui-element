@@ -14,7 +14,7 @@ export type ModuleCarouselProps = {
 
 const wrapAround = (index: number, total: number) => (index + total) % total
 
-export default component(
+export default component<ModuleCarouselProps>(
 	'module-carousel',
 	{
 		slides: fromSelector('[role="tabpanel"]'),

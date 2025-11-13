@@ -1,36 +1,29 @@
-
 <module-tabgroup>
 	<div role="tablist">
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_module-carousel.html"
-				aria-controls="panel_module-carousel.html"
-				aria-selected="false"
-				tabindex="-1"
-			>HTML</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_module-carousel.css"
-				aria-controls="panel_module-carousel.css"
-				aria-selected="false"
-				tabindex="-1"
-			>CSS</button>
-		
-			<button
-				type="button"
-				role="tab"
-				id="trigger_module-carousel.ts"
-				aria-controls="panel_module-carousel.ts"
-				aria-selected="true"
-				tabindex="0"
-			>TypeScript</button>
+		<button
+			type="button"
+			role="tab"
+			id="trigger_module-carousel.html"
+			aria-controls="panel_module-carousel.html"
+			aria-selected="false"
+			tabindex="-1"
+		>HTML</button><button
+			type="button"
+			role="tab"
+			id="trigger_module-carousel.css"
+			aria-controls="panel_module-carousel.css"
+			aria-selected="false"
+			tabindex="-1"
+		>CSS</button><button
+			type="button"
+			role="tab"
+			id="trigger_module-carousel.ts"
+			aria-controls="panel_module-carousel.ts"
+			aria-selected="true"
+			tabindex="0"
+		>TypeScript</button>
 	</div>
-	
-<div role="tabpanel" id="panel_module-carousel.html" aria-labelledby="trigger_module-carousel.html" hidden>
+	<div role="tabpanel" id="panel_module-carousel.html" aria-labelledby="trigger_module-carousel.html" hidden>
 	<module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
 			<span class="file">module-carousel.html</span>
@@ -285,7 +278,6 @@
 		</basic-button>
 	</module-codeblock>
 </div>
-
 <div role="tabpanel" id="panel_module-carousel.css" aria-labelledby="trigger_module-carousel.css" hidden>
 	<module-codeblock language="css" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
@@ -413,7 +405,6 @@
 		</basic-button>
 	</module-codeblock>
 </div>
-
 <div role="tabpanel" id="panel_module-carousel.ts" aria-labelledby="trigger_module-carousel.ts">
 	<module-codeblock language="ts" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
 		<p class="meta">
@@ -436,7 +427,7 @@
 <span class="line"></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#A6E22E"> wrapAround</span><span style="color:#F92672"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FD971F;font-style:italic">index</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">, </span><span style="color:#FD971F;font-style:italic">total</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span><span style="color:#F8F8F2">) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> (index </span><span style="color:#F92672">+</span><span style="color:#F8F8F2"> total) </span><span style="color:#F92672">%</span><span style="color:#F8F8F2"> total</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#F92672">export</span><span style="color:#F92672"> default</span><span style="color:#A6E22E"> component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">ModuleCarouselProps</span><span style="color:#F8F8F2">>(</span></span>
 <span class="line"><span style="color:#E6DB74">	'module-carousel'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
 <span class="line"><span style="color:#F8F8F2">		slides: </span><span style="color:#A6E22E">fromSelector</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'[role="tabpanel"]'</span><span style="color:#F8F8F2">),</span></span>

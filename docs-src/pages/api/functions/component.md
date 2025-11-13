@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / component
+[@zeix/el-truco](../globals.md) / component
 
 # Function: component()
 
-> **component**\<`P`\>(`name`, `init`, `setup`): `void`
+> **component**\<`P`\>(`name`, `init`, `setup`): [`Component`](../type-aliases/Component.md)\<`P`\>
 
-Defined in: [src/component.ts:157](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/component.ts#L157)
+Defined in: [src/component.ts:155](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/component.ts#L155)
 
 Define a component with dependency resolution and setup function (connectedCallback)
 
@@ -40,7 +40,7 @@ Setup function to be called after dependencies are resolved
 
 ## Returns
 
-`void`
+[`Component`](../type-aliases/Component.md)\<`P`\>
 
 ## Since
 

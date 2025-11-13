@@ -8,7 +8,7 @@ type EventTransformer<T extends {}, E extends Element, C extends HTMLElement, Ev
     host: C;
     target: E;
     value: T;
-}) => T | void;
+}) => T | void | Promise<void>;
 type EventTransformers<T extends {}, E extends Element, C extends HTMLElement> = {
     [K in keyof HTMLElementEventMap]?: EventTransformer<T, E, C, EventType<K>>;
 };
@@ -18,7 +18,7 @@ type EventHandler<P extends ComponentProps, E extends Element, Evt extends Event
     target: E;
 }) => {
     [K in keyof P]?: P[K];
-} | void;
+} | void | Promise<void>;
 /**
  * Produce a computed signal from transformed event data
  *
@@ -49,5 +49,5 @@ declare const on: <K extends keyof HTMLElementEventMap | string, P extends Compo
  * @param {Reactive<T, P, E>} reactive - Reactive value bound to the event detail
  * @returns {Effect<P, E>} Effect function that emits custom events
  */
-declare const emitEvent: <T, P extends ComponentProps, E extends Element = HTMLElement>(type: string, reactive: Reactive<T, P, E>) => Effect<P, E>;
+declare const emitEvent: <T extends {}, P extends ComponentProps, E extends Element = HTMLElement>(type: string, reactive: Reactive<T, P, E>) => Effect<P, E>;
 export { type EventType, type EventTransformer, type EventTransformers, type EventHandler, emitEvent, fromEvents, on, };

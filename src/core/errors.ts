@@ -1,4 +1,4 @@
-import { elementName } from './util'
+import { elementName, valueString } from './util'
 
 /* === Error Classes === */
 
@@ -25,7 +25,7 @@ class CircularMutationError extends Error {
  *
  * @since 0.14.0
  */
-class InvalidComponentNameError extends Error {
+class InvalidComponentNameError extends TypeError {
 	/**
 	 * @param {string} component - Component name
 	 */
@@ -42,7 +42,7 @@ class InvalidComponentNameError extends Error {
  *
  * @since 0.14.0
  */
-class InvalidPropertyNameError extends Error {
+class InvalidPropertyNameError extends TypeError {
 	/**
 	 * @param {string} component - Component name
 	 * @param {string} prop - Property name
@@ -61,7 +61,7 @@ class InvalidPropertyNameError extends Error {
  *
  * @since 0.14.0
  */
-class InvalidEffectsError extends Error {
+class InvalidEffectsError extends TypeError {
 	/**
 	 * @param {HTMLElement} host - Host component
 	 * @param {Error} cause - Error that caused the invalid effects
@@ -72,19 +72,6 @@ class InvalidEffectsError extends Error {
 		)
 		this.name = 'InvalidEffectsError'
 		if (cause) this.cause = cause
-	}
-}
-/**
- * Error thrown when setSignal on component is called with a non-signal value
- *
- * @since 0.14.0
- */
-class InvalidSignalError extends Error {
-	constructor(host: HTMLElement, prop: string) {
-		super(
-			`Expected signal as value for property "${String(prop)}" in component ${elementName(host)}.`,
-		)
-		this.name = 'InvalidSignalError'
 	}
 }
 
@@ -113,6 +100,10 @@ class MissingElementError extends Error {
  * @since 0.14.0
  */
 class DependencyTimeoutError extends Error {
+	/**
+	 * @param {HTMLElement} host - Host component
+	 * @param {string[]} missing - List of missing dependencies
+	 */
 	constructor(host: HTMLElement, missing: string[]) {
 		super(
 			`Timeout waiting for: [${missing.join(', ')}] in component ${elementName(host)}.`,
@@ -121,12 +112,50 @@ class DependencyTimeoutError extends Error {
 	}
 }
 
+/**
+ * Error thrown when reactives passed to a component are invalid
+ *
+ * @since 0.15.0
+ */
+class InvalidReactivesError extends TypeError {
+	/**
+	 * @param {HTMLElement} host - Host component
+	 * @param {HTMLElement} target - Target component
+	 * @param {unknown} reactives - Reactives passed to the component
+	 */
+	constructor(host: HTMLElement, target: HTMLElement, reactives: unknown) {
+		super(
+			`Expected reactives passed from ${elementName(host)} to ${elementName(target)} to be a record of signals, reactive property names or functions. Got ${valueString(reactives)}.`,
+		)
+		this.name = 'InvalidReactivesError'
+	}
+}
+
+/**
+ * Error thrown when target element is not a custom element as expected
+ *
+ * @since 0.15.0
+ */
+class InvalidCustomElementError extends TypeError {
+	/**
+	 * @param {HTMLElement} target - Target component
+	 * @param {string} where - Location where the error occurred
+	 */
+	constructor(target: HTMLElement, where: string) {
+		super(
+			`Target ${elementName(target)} is not a custom element in ${where}.`,
+		)
+		this.name = 'InvalidCustomElementError'
+	}
+}
+
 export {
 	CircularMutationError,
 	DependencyTimeoutError,
 	InvalidComponentNameError,
+	InvalidCustomElementError,
 	InvalidPropertyNameError,
 	InvalidEffectsError,
-	InvalidSignalError,
+	InvalidReactivesError,
 	MissingElementError,
 }

@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / getStyle
+[@zeix/el-truco](../globals.md) / getStyle
 
 # Function: getStyle()
 
 > **getStyle**\<`E`\>(`prop`): [`Extractor`](../type-aliases/Extractor.md)\<`string`, `E`\>
 
-Defined in: [src/lib/extractors.ts:38](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/lib/extractors.ts#L38)
+Defined in: [src/lib/extractors.ts:38](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/lib/extractors.ts#L38)
 
 ## Type Parameters
 

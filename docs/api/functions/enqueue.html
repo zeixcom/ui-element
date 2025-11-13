@@ -3,24 +3,24 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>enqueue – UIElement Docs</title>
+		<title>enqueue – El Truco Docs</title>
 		<meta name="description" content="" />
 		<link
 			rel="preload"
-			href="../../assets/main.css?v=0adb5bf2"
+			href="../../assets/main.css?v=mhb2o0ag"
 			as="style"
 		/>
 		<link
 			rel="modulepreload"
-			href="../../assets/main.js?v=0b0743f4"
+			href="../../assets/main.js?v=mhb2o0ag"
 		/>
 		<link
 			rel="stylesheet"
-			href="../../assets/main.css?v=0adb5bf2"
+			href="../../assets/main.css?v=mhb2o0ag"
 		/>
 		<script
 			type="module"
-			src="../../assets/main.js?v=0b0743f4"
+			src="../../assets/main.js?v=mhb2o0ag"
 		></script>
 	</head>
 	<body class="api">
@@ -30,85 +30,67 @@
 					Skip to main content
 				</a>
 				<h1 class="content">
-					UIElement Docs <small>Version 0.14.0</small>
+					El Truco Docs <small>Version 0.14.0</small>
 				</h1>
-				
-<section-menu>
+				<section-menu>
 	<nav>
 		<h2 class="visually-hidden">Main Menu</h2>
 		<ol>
-			
-				<li>
-					<a href="../../index.html">
-						<span class="icon">📖</span>
-						<strong>Introduction</strong>
-						<small>Overview and key benefits of UIElement</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../getting-started.html">
-						<span class="icon">🚀</span>
-						<strong>Getting Started</strong>
-						<small>Installation, setup, and first steps</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../components.html">
-						<span class="icon">🏗️</span>
-						<strong>Components</strong>
-						<small>Anatomy, lifecycle, signals, effects</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../styling.html">
-						<span class="icon">🎨</span>
-						<strong>Styling</strong>
-						<small>Scoped styles, CSS custom properties</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../data-flow.html">
-						<span class="icon">🔄</span>
-						<strong>Data Flow</strong>
-						<small>Passing state, events, context</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../examples.html">
-						<span class="icon">🍽️</span>
-						<strong>Examples</strong>
-						<small>Common use cases and demos</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../blog.html">
-						<span class="icon">📜</span>
-						<strong>Blog</strong>
-						<small>Latest articles and updates</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../api.html">
-						<span class="icon">📚</span>
-						<strong>API Reference</strong>
-						<small>Functions, types, and constants</small>
-					</a>
-				</li>
-
-				<li>
-					<a href="../../about.html">
-						<span class="icon">🤝</span>
-						<strong>About</strong>
-						<small>License, versioning, getting involved</small>
-					</a>
-				</li>
+			<li>
+			<a href="about.html">
+				<span class="icon">🤝</span>
+				<strong>About</strong>
+				<small>License, versioning, getting involved</small>
+			</a>
+		</li><li>
+			<a href="api.html">
+				<span class="icon">📚</span>
+				<strong>API Reference</strong>
+				<small>Functions, types, and constants</small>
+			</a>
+		</li><li>
+			<a href="blog.html">
+				<span class="icon">📜</span>
+				<strong>Blog</strong>
+				<small>Latest articles and updates</small>
+			</a>
+		</li><li>
+			<a href="components.html">
+				<span class="icon">🏗️</span>
+				<strong>Components</strong>
+				<small>Anatomy, lifecycle, signals, effects</small>
+			</a>
+		</li><li>
+			<a href="data-flow.html">
+				<span class="icon">🔄</span>
+				<strong>Data Flow</strong>
+				<small>Passing state, events, context</small>
+			</a>
+		</li><li>
+			<a href="examples.html">
+				<span class="icon">🍽️</span>
+				<strong>Examples</strong>
+				<small>Common use cases and demos</small>
+			</a>
+		</li><li>
+			<a href="getting-started.html">
+				<span class="icon">🚀</span>
+				<strong>Getting Started</strong>
+				<small>Installation, setup, and first steps</small>
+			</a>
+		</li><li>
+			<a href="index.html">
+				<span class="icon">📖</span>
+				<strong>Introduction</strong>
+				<small>Overview and key benefits of El Truco</small>
+			</a>
+		</li><li>
+			<a href="styling.html">
+				<span class="icon">🎨</span>
+				<strong>Styling</strong>
+				<small>Scoped styles, CSS custom properties</small>
+			</a>
+		</li>
 		</ol>
 	</nav>
 </section-menu>
@@ -118,59 +100,59 @@
 			</header>
 			<main id="main" class="content-grid"><section class="api-content">
 <h1 id="function-enqueue">
-                <a name="function-enqueue" class="anchor" href="#function-enqueue">
-	                <span class="permalink">🔗</span>
-					<span class="title">Function: enqueue()</span>
-                </a>
-            </h1>
+							<a name="function-enqueue" class="anchor" href="#function-enqueue">
+								<span class="permalink">🔗</span>
+								<span class="title">Function: enqueue()</span>
+							</a>
+						</h1>
 <blockquote>
-<p><strong>enqueue</strong>&lt;<code>T</code>&gt;(<code>fn</code>, <code>dedupe?</code>): <code>Promise</code>&lt;<code>undefined</code> | <code>boolean</code> | <code>T</code>&gt;</p>
+<p><strong>enqueue</strong>&lt;<code>T</code>&gt;(<code>fn</code>, <code>dedupe?</code>): <code>Promise</code>&lt;<code>boolean</code> | <code>T</code> | <code>undefined</code>&gt;</p>
 </blockquote>
 <p>Defined in: node_modules/@zeix/cause-effect/src/scheduler.ts:147</p>
 <p>Enqueue a function to be executed on the next animation frame</p>
 <p>If the same Symbol is provided for multiple calls before the next animation frame,<br>only the latest call will be executed (deduplication).</p>
 <h2 id="type-parameters">
-                <a name="type-parameters" class="anchor" href="#type-parameters">
-	                <span class="permalink">🔗</span>
-					<span class="title">Type Parameters</span>
-                </a>
-            </h2>
+							<a name="type-parameters" class="anchor" href="#type-parameters">
+								<span class="permalink">🔗</span>
+								<span class="title">Type Parameters</span>
+							</a>
+						</h2>
 <h3 id="t">
-                <a name="t" class="anchor" href="#t">
-	                <span class="permalink">🔗</span>
-					<span class="title">T</span>
-                </a>
-            </h3>
+							<a name="t" class="anchor" href="#t">
+								<span class="permalink">🔗</span>
+								<span class="title">T</span>
+							</a>
+						</h3>
 <p><code>T</code></p>
 <h2 id="parameters">
-                <a name="parameters" class="anchor" href="#parameters">
-	                <span class="permalink">🔗</span>
-					<span class="title">Parameters</span>
-                </a>
-            </h2>
+							<a name="parameters" class="anchor" href="#parameters">
+								<span class="permalink">🔗</span>
+								<span class="title">Parameters</span>
+							</a>
+						</h2>
 <h3 id="fn">
-                <a name="fn" class="anchor" href="#fn">
-	                <span class="permalink">🔗</span>
-					<span class="title">fn</span>
-                </a>
-            </h3>
+							<a name="fn" class="anchor" href="#fn">
+								<span class="permalink">🔗</span>
+								<span class="title">fn</span>
+							</a>
+						</h3>
 <p><code>Updater</code></p>
 <p>function to be executed on the next animation frame; can return updated value <T>, success <boolean> or void</p>
 <h3 id="dedupe">
-                <a name="dedupe" class="anchor" href="#dedupe">
-	                <span class="permalink">🔗</span>
-					<span class="title">dedupe?</span>
-                </a>
-            </h3>
+							<a name="dedupe" class="anchor" href="#dedupe">
+								<span class="permalink">🔗</span>
+								<span class="title">dedupe?</span>
+							</a>
+						</h3>
 <p><code>symbol</code></p>
 <p>Symbol for deduplication; if not provided, a unique Symbol is created ensuring the update is always executed</p>
 <h2 id="returns">
-                <a name="returns" class="anchor" href="#returns">
-	                <span class="permalink">🔗</span>
-					<span class="title">Returns</span>
-                </a>
-            </h2>
-<p><code>Promise</code>&lt;<code>undefined</code> | <code>boolean</code> | <code>T</code>&gt;</p>
+							<a name="returns" class="anchor" href="#returns">
+								<span class="permalink">🔗</span>
+								<span class="title">Returns</span>
+							</a>
+						</h2>
+<p><code>Promise</code>&lt;<code>boolean</code> | <code>T</code> | <code>undefined</code>&gt;</p>
 
 </section></main>
 			<footer class="content-grid">

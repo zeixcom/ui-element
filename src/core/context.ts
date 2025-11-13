@@ -1,9 +1,4 @@
-import {
-	type Cleanup,
-	isFunction,
-	type Signal,
-	toSignal,
-} from '@zeix/cause-effect'
+import { type Cleanup, isFunction } from '@zeix/cause-effect'
 
 import type { Component, ComponentProps } from '../component'
 import { type Extractor, type Fallback, getFallback } from './dom'
@@ -75,15 +70,22 @@ const CONTEXT_REQUEST = 'context-request'
  * @property {boolean} [subscribe=false] - whether to subscribe to context changes
  */
 class ContextRequestEvent<T extends UnknownContext> extends Event {
+	readonly context: T
+	readonly callback: ContextCallback<ContextType<T>>
+	readonly subscribe: boolean
+
 	constructor(
-		public readonly context: T,
-		public readonly callback: ContextCallback<ContextType<T>>,
-		public readonly subscribe: boolean = false,
+		context: T,
+		callback: ContextCallback<ContextType<T>>,
+		subscribe: boolean = false,
 	) {
 		super(CONTEXT_REQUEST, {
 			bubbles: true,
 			composed: true,
 		})
+		this.context = context
+		this.callback = callback
+		this.subscribe = subscribe
 	}
 }
 
@@ -91,22 +93,22 @@ class ContextRequestEvent<T extends UnknownContext> extends Event {
  * Provide a context for descendant component consumers
  *
  * @since 0.13.3
- * @param {Context<K, Signal<P[K]>>[]} contexts - Array of contexts to provide
+ * @param {Context<K, () => P[K]>[]} contexts - Array of contexts to provide
  * @returns {(host: Component<P>) => Cleanup} Function to add an event listener for ContextRequestEvent returning a cleanup function to remove the event listener
  */
 const provideContexts =
 	<P extends ComponentProps, K extends keyof P>(
-		contexts: Context<K, Signal<P[K]>>[],
+		contexts: Context<K, () => P[K]>[],
 	): ((host: Component<P>) => Cleanup) =>
 	(host: Component<P>) => {
 		const listener = (e: ContextRequestEvent<UnknownContext>) => {
 			const { context, callback } = e
 			if (
-				contexts.includes(context as Context<K, Signal<P[K]>>) &&
+				contexts.includes(context as Context<K, () => P[K]>) &&
 				isFunction(callback)
 			) {
 				e.stopImmediatePropagation()
-				callback(host.getSignal(String(context)))
+				callback(() => host[String(context)])
 			}
 		}
 		host.addEventListener(CONTEXT_REQUEST, listener)
@@ -117,20 +119,20 @@ const provideContexts =
  * Consume a context value for a component.
  *
  * @since 0.13.1
- * @param {Context<K, Signal<T>>} context - Context key to consume
+ * @param {Context<K, () => T>} context - Context key to consume
  * @param {Fallback<P[K]>} fallback - Fallback value or extractor function
- * @returns {Extractor<Signal<T>, C>} Function that returns the consumed context signal or a signal of the fallback value
+ * @returns {Extractor<() => T, C>} Function that returns the consumed context getter or a signal of the fallback value
  */
 const fromContext =
 	<T extends {}, C extends HTMLElement = HTMLElement>(
-		context: Context<string, Signal<T>>,
+		context: Context<string, () => T>,
 		fallback: Fallback<T, C>,
-	): Extractor<Signal<T>, C> =>
+	): Extractor<() => T, C> =>
 	(host: C) => {
-		let consumed: Signal<T> = toSignal(getFallback(host, fallback))
+		let consumed = () => getFallback(host, fallback)
 		host.dispatchEvent(
-			new ContextRequestEvent(context, (value: Signal<T>) => {
-				consumed = value
+			new ContextRequestEvent(context, (getter: () => T) => {
+				consumed = getter
 			}),
 		)
 		return consumed

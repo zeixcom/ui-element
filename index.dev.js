@@ -1,3 +1,165 @@
+// node_modules/@zeix/cause-effect/src/errors.ts
+class CircularDependencyError extends Error {
+  constructor(where) {
+    super(`Circular dependency detected in ${where}`);
+    this.name = "CircularDependencyError";
+  }
+}
+
+class InvalidSignalValueError extends TypeError {
+  constructor(where, value) {
+    super(`Invalid signal value ${value} in ${where}`);
+    this.name = "InvalidSignalValueError";
+  }
+}
+
+class NullishSignalValueError extends TypeError {
+  constructor(where) {
+    super(`Nullish signal values are not allowed in ${where}`);
+    this.name = "NullishSignalValueError";
+  }
+}
+
+class StoreKeyExistsError extends Error {
+  constructor(key, value) {
+    super(`Could not add store key "${key}" with value ${value} because it already exists`);
+    this.name = "StoreKeyExistsError";
+  }
+}
+
+class StoreKeyRangeError extends RangeError {
+  constructor(index) {
+    super(`Could not remove store index ${String(index)} because it is out of range`);
+    this.name = "StoreKeyRangeError";
+  }
+}
+
+class StoreKeyReadonlyError extends Error {
+  constructor(key, value) {
+    super(`Could not set store key "${key}" to ${value} because it is readonly`);
+    this.name = "StoreKeyReadonlyError";
+  }
+}
+
+// node_modules/@zeix/cause-effect/src/util.ts
+var UNSET = Symbol();
+var isString = (value) => typeof value === "string";
+var isNumber = (value) => typeof value === "number";
+var isSymbol = (value) => typeof value === "symbol";
+var isFunction = (fn) => typeof fn === "function";
+var isAsyncFunction = (fn) => isFunction(fn) && fn.constructor.name === "AsyncFunction";
+var isDefinedObject = (value) => !!value && typeof value === "object";
+var isObjectOfType = (value, type) => Object.prototype.toString.call(value) === `[object ${type}]`;
+var isRecord = (value) => isObjectOfType(value, "Object");
+var isRecordOrArray = (value) => isRecord(value) || Array.isArray(value);
+var validArrayIndexes = (keys) => {
+  if (!keys.length)
+    return null;
+  const indexes = keys.map((k) => isString(k) ? parseInt(k, 10) : isNumber(k) ? k : NaN);
+  return indexes.every((index) => Number.isFinite(index) && index >= 0) ? indexes.sort((a, b) => a - b) : null;
+};
+var isAbortError = (error) => error instanceof DOMException && error.name === "AbortError";
+var toError = (reason) => reason instanceof Error ? reason : Error(String(reason));
+var recordToArray = (record) => {
+  const indexes = validArrayIndexes(Object.keys(record));
+  if (indexes === null)
+    return record;
+  const array = [];
+  for (const index of indexes) {
+    array.push(record[String(index)]);
+  }
+  return array;
+};
+var valueString = (value) => isString(value) ? `"${value}"` : isDefinedObject(value) ? JSON.stringify(value) : String(value);
+
+// node_modules/@zeix/cause-effect/src/diff.ts
+var isEqual = (a, b, visited) => {
+  if (Object.is(a, b))
+    return true;
+  if (typeof a !== typeof b)
+    return false;
+  if (typeof a !== "object" || a === null || b === null)
+    return false;
+  if (!visited)
+    visited = new WeakSet;
+  if (visited.has(a) || visited.has(b))
+    throw new CircularDependencyError("isEqual");
+  visited.add(a);
+  visited.add(b);
+  try {
+    if (Array.isArray(a) && Array.isArray(b)) {
+      if (a.length !== b.length)
+        return false;
+      for (let i = 0;i < a.length; i++) {
+        if (!isEqual(a[i], b[i], visited))
+          return false;
+      }
+      return true;
+    }
+    if (Array.isArray(a) !== Array.isArray(b))
+      return false;
+    if (isRecord(a) && isRecord(b)) {
+      const aKeys = Object.keys(a);
+      const bKeys = Object.keys(b);
+      if (aKeys.length !== bKeys.length)
+        return false;
+      for (const key of aKeys) {
+        if (!(key in b))
+          return false;
+        if (!isEqual(a[key], b[key], visited))
+          return false;
+      }
+      return true;
+    }
+    return false;
+  } finally {
+    visited.delete(a);
+    visited.delete(b);
+  }
+};
+var diff = (oldObj, newObj) => {
+  const oldValid = isRecordOrArray(oldObj);
+  const newValid = isRecordOrArray(newObj);
+  if (!oldValid || !newValid) {
+    const changed2 = !Object.is(oldObj, newObj);
+    return {
+      changed: changed2,
+      add: changed2 && newValid ? newObj : {},
+      change: {},
+      remove: changed2 && oldValid ? oldObj : {}
+    };
+  }
+  const visited = new WeakSet;
+  const add = {};
+  const change = {};
+  const remove = {};
+  const oldKeys = Object.keys(oldObj);
+  const newKeys = Object.keys(newObj);
+  const allKeys = new Set([...oldKeys, ...newKeys]);
+  for (const key of allKeys) {
+    const oldHas = key in oldObj;
+    const newHas = key in newObj;
+    if (!oldHas && newHas) {
+      add[key] = newObj[key];
+      continue;
+    } else if (oldHas && !newHas) {
+      remove[key] = UNSET;
+      continue;
+    }
+    const oldValue = oldObj[key];
+    const newValue = newObj[key];
+    if (!isEqual(oldValue, newValue, visited))
+      change[key] = newValue;
+  }
+  const changed = Object.keys(add).length > 0 || Object.keys(change).length > 0 || Object.keys(remove).length > 0;
+  return {
+    changed,
+    add,
+    change,
+    remove
+  };
+};
+
 // node_modules/@zeix/cause-effect/src/scheduler.ts
 var active;
 var pending = new Set;
@@ -87,50 +249,6 @@ var enqueue = (fn, dedupe) => new Promise((resolve, reject) => {
   requestTick();
 });
 
-// node_modules/@zeix/cause-effect/src/util.ts
-var isFunction = (value) => typeof value === "function";
-var isObjectOfType = (value, type) => Object.prototype.toString.call(value) === `[object ${type}]`;
-var toError = (reason) => reason instanceof Error ? reason : Error(String(reason));
-
-class CircularDependencyError extends Error {
-  constructor(where) {
-    super(`Circular dependency in ${where} detected`);
-    this.name = "CircularDependencyError";
-  }
-}
-
-// node_modules/@zeix/cause-effect/src/state.ts
-var TYPE_STATE = "State";
-var state = (initialValue) => {
-  const watchers = new Set;
-  let value = initialValue;
-  const s = {
-    [Symbol.toStringTag]: TYPE_STATE,
-    get: () => {
-      subscribe(watchers);
-      return value;
-    },
-    set: (v) => {
-      if (Object.is(value, v))
-        return;
-      value = v;
-      notify(watchers);
-      if (UNSET === value)
-        watchers.clear();
-    },
-    update: (fn) => {
-      s.set(fn(value));
-    }
-  };
-  return s;
-};
-var isState = (value) => isObjectOfType(value, TYPE_STATE);
-
-// node_modules/@zeix/cause-effect/src/signal.ts
-var UNSET = Symbol();
-var isSignal = (value) => isState(value) || isComputed(value);
-var toSignal = (value) => isSignal(value) ? value : isComputedCallback(value) ? computed(value) : state(value);
-
 // node_modules/@zeix/cause-effect/src/computed.ts
 var TYPE_COMPUTED = "Computed";
 var computed = (fn) => {
@@ -142,7 +260,7 @@ var computed = (fn) => {
   let changed = false;
   let computing = false;
   const ok = (v) => {
-    if (!Object.is(v, value)) {
+    if (!isEqual(v, value)) {
       value = v;
       changed = true;
     }
@@ -169,17 +287,20 @@ var computed = (fn) => {
   };
   const mark = watch(() => {
     dirty = true;
-    controller?.abort("Aborted because source signal changed");
+    controller?.abort();
     if (watchers.size)
       notify(watchers);
     else
       mark.cleanup();
   });
+  mark.off(() => {
+    controller?.abort();
+  });
   const compute = () => observe(() => {
     if (computing)
       throw new CircularDependencyError("computed");
     changed = false;
-    if (isFunction(fn) && fn.constructor.name === "AsyncFunction") {
+    if (isAsyncFunction(fn)) {
       if (controller)
         return value;
       controller = new AbortController;
@@ -196,7 +317,7 @@ var computed = (fn) => {
     try {
       result = controller ? fn(controller.signal) : fn();
     } catch (e) {
-      if (e instanceof DOMException && e.name === "AbortError")
+      if (isAbortError(e))
         nil();
       else
         err(e);
@@ -228,47 +349,366 @@ var computed = (fn) => {
 var isComputed = (value) => isObjectOfType(value, TYPE_COMPUTED);
 var isComputedCallback = (value) => isFunction(value) && value.length < 2;
 // node_modules/@zeix/cause-effect/src/effect.ts
-function effect(matcher) {
-  const {
-    signals,
-    ok,
-    err = (error) => {
-      console.error(error);
-    },
-    nil = () => {
-    }
-  } = isFunction(matcher) ? { signals: [], ok: matcher } : matcher;
+var effect = (callback) => {
+  const isAsync = isAsyncFunction(callback);
   let running = false;
+  let controller;
   const run = watch(() => observe(() => {
     if (running)
       throw new CircularDependencyError("effect");
     running = true;
-    const errors = [];
-    let pending2 = false;
-    const values = signals.map((signal) => {
-      try {
-        const value = signal.get();
-        if (value === UNSET)
-          pending2 = true;
-        return value;
-      } catch (e) {
-        errors.push(toError(e));
-        return UNSET;
-      }
-    });
+    controller?.abort();
+    controller = undefined;
     let cleanup;
     try {
-      cleanup = pending2 ? nil() : errors.length ? err(...errors) : ok(...values);
-    } catch (e) {
-      cleanup = err(toError(e));
-    } finally {
-      if (isFunction(cleanup))
-        run.off(cleanup);
+      if (isAsync) {
+        controller = new AbortController;
+        const currentController = controller;
+        callback(controller.signal).then((cleanup2) => {
+          if (isFunction(cleanup2) && controller === currentController)
+            run.off(cleanup2);
+        }).catch((error) => {
+          if (!isAbortError(error))
+            console.error("Async effect error:", error);
+        });
+      } else {
+        cleanup = callback();
+        if (isFunction(cleanup))
+          run.off(cleanup);
+      }
+    } catch (error) {
+      if (!isAbortError(error))
+        console.error("Effect callback error:", error);
     }
     running = false;
   }, run));
   run();
-  return () => run.cleanup();
+  return () => {
+    controller?.abort();
+    run.cleanup();
+  };
+};
+// node_modules/@zeix/cause-effect/src/match.ts
+function match(result, handlers) {
+  try {
+    if (result.pending)
+      handlers.nil?.();
+    else if (result.errors)
+      handlers.err?.(result.errors);
+    else if (result.ok)
+      handlers.ok(result.values);
+  } catch (error) {
+    if (handlers.err && (!result.errors || !result.errors.includes(toError(error))))
+      handlers.err(result.errors ? [...result.errors, toError(error)] : [toError(error)]);
+    else
+      throw error;
+  }
+}
+// node_modules/@zeix/cause-effect/src/resolve.ts
+function resolve(signals) {
+  const errors = [];
+  let pending2 = false;
+  const values = {};
+  for (const [key, signal] of Object.entries(signals)) {
+    try {
+      const value = signal.get();
+      if (value === UNSET)
+        pending2 = true;
+      else
+        values[key] = value;
+    } catch (e) {
+      errors.push(toError(e));
+    }
+  }
+  if (pending2)
+    return { ok: false, pending: true };
+  if (errors.length > 0)
+    return { ok: false, errors };
+  return { ok: true, values };
+}
+// node_modules/@zeix/cause-effect/src/state.ts
+var TYPE_STATE = "State";
+var state = (initialValue) => {
+  const watchers = new Set;
+  let value = initialValue;
+  const s = {
+    [Symbol.toStringTag]: TYPE_STATE,
+    get: () => {
+      subscribe(watchers);
+      return value;
+    },
+    set: (v) => {
+      if (v == null)
+        throw new NullishSignalValueError("state");
+      if (isEqual(value, v))
+        return;
+      value = v;
+      notify(watchers);
+      if (UNSET === value)
+        watchers.clear();
+    },
+    update: (fn) => {
+      s.set(fn(value));
+    }
+  };
+  return s;
+};
+var isState = (value) => isObjectOfType(value, TYPE_STATE);
+
+// node_modules/@zeix/cause-effect/src/store.ts
+var TYPE_STORE = "Store";
+var STORE_EVENT_ADD = "store-add";
+var STORE_EVENT_CHANGE = "store-change";
+var STORE_EVENT_REMOVE = "store-remove";
+var STORE_EVENT_SORT = "store-sort";
+var store = (initialValue) => {
+  const watchers = new Set;
+  const eventTarget = new EventTarget;
+  const signals = new Map;
+  const cleanups = new Map;
+  const isArrayLike = Array.isArray(initialValue);
+  const size = state(0);
+  const current = () => {
+    const record = {};
+    for (const [key, signal] of signals) {
+      record[key] = signal.get();
+    }
+    return record;
+  };
+  const emit = (type, detail) => eventTarget.dispatchEvent(new CustomEvent(type, { detail }));
+  const getSortedIndexes = () => Array.from(signals.keys()).map((k) => Number(k)).filter((n) => Number.isInteger(n)).sort((a, b) => a - b);
+  const isValidValue = (key, value) => {
+    if (value == null)
+      throw new NullishSignalValueError(`store for key "${key}"`);
+    if (value === UNSET)
+      return true;
+    if (isSymbol(value) || isFunction(value) || isComputed(value))
+      throw new InvalidSignalValueError(`store for key "${key}"`, valueString(value));
+    return true;
+  };
+  const addProperty = (key, value, single = false) => {
+    if (!isValidValue(key, value))
+      return false;
+    const signal = isState(value) || isStore(value) ? value : isRecord(value) ? store(value) : Array.isArray(value) ? store(value) : state(value);
+    signals.set(key, signal);
+    const cleanup = effect(() => {
+      const currentValue = signal.get();
+      if (currentValue != null)
+        emit(STORE_EVENT_CHANGE, {
+          [key]: currentValue
+        });
+    });
+    cleanups.set(key, cleanup);
+    if (single) {
+      size.set(signals.size);
+      notify(watchers);
+      emit(STORE_EVENT_ADD, {
+        [key]: value
+      });
+    }
+    return true;
+  };
+  const removeProperty = (key, single = false) => {
+    const ok = signals.delete(key);
+    if (ok) {
+      const cleanup = cleanups.get(key);
+      if (cleanup)
+        cleanup();
+      cleanups.delete(key);
+    }
+    if (single) {
+      size.set(signals.size);
+      notify(watchers);
+      emit(STORE_EVENT_REMOVE, {
+        [key]: UNSET
+      });
+    }
+    return ok;
+  };
+  const reconcile = (oldValue, newValue, initialRun) => {
+    const changes = diff(oldValue, newValue);
+    batch(() => {
+      if (Object.keys(changes.add).length) {
+        for (const key in changes.add) {
+          const value = changes.add[key] ?? UNSET;
+          addProperty(key, value);
+        }
+        if (initialRun) {
+          setTimeout(() => {
+            emit(STORE_EVENT_ADD, changes.add);
+          }, 0);
+        } else {
+          emit(STORE_EVENT_ADD, changes.add);
+        }
+      }
+      if (Object.keys(changes.change).length) {
+        for (const key in changes.change) {
+          const value = changes.change[key];
+          if (!isValidValue(key, value))
+            continue;
+          const signal = signals.get(key);
+          if (isMutableSignal(signal))
+            signal.set(value);
+          else
+            throw new StoreKeyReadonlyError(key, valueString(value));
+        }
+        emit(STORE_EVENT_CHANGE, changes.change);
+      }
+      if (Object.keys(changes.remove).length) {
+        for (const key in changes.remove)
+          removeProperty(key);
+        emit(STORE_EVENT_REMOVE, changes.remove);
+      }
+      size.set(signals.size);
+    });
+    return changes.changed;
+  };
+  reconcile({}, initialValue, true);
+  const s = {
+    add: isArrayLike ? (v) => {
+      const nextIndex = signals.size;
+      const key = String(nextIndex);
+      addProperty(key, v, true);
+    } : (k, v) => {
+      if (!signals.has(k))
+        addProperty(k, v, true);
+      else
+        throw new StoreKeyExistsError(k, valueString(v));
+    },
+    get: () => {
+      subscribe(watchers);
+      return recordToArray(current());
+    },
+    remove: isArrayLike ? (index) => {
+      const currentArray = recordToArray(current());
+      const currentLength = signals.size;
+      if (!Array.isArray(currentArray) || index <= -currentLength || index >= currentLength)
+        throw new StoreKeyRangeError(index);
+      const newArray = [...currentArray];
+      newArray.splice(index, 1);
+      if (reconcile(currentArray, newArray))
+        notify(watchers);
+    } : (k) => {
+      if (signals.has(k))
+        removeProperty(k, true);
+    },
+    set: (v) => {
+      if (reconcile(current(), v)) {
+        notify(watchers);
+        if (UNSET === v)
+          watchers.clear();
+      }
+    },
+    update: (fn) => {
+      const oldValue = current();
+      const newValue = fn(recordToArray(oldValue));
+      if (reconcile(oldValue, newValue)) {
+        notify(watchers);
+        if (UNSET === newValue)
+          watchers.clear();
+      }
+    },
+    sort: (compareFn) => {
+      const entries = Array.from(signals.entries()).map(([key, signal]) => [key, signal.get()]).sort(compareFn ? (a, b) => compareFn(a[1], b[1]) : (a, b) => String(a[1]).localeCompare(String(b[1])));
+      const newOrder = entries.map(([key]) => String(key));
+      const newSignals = new Map;
+      entries.forEach(([key], newIndex) => {
+        const oldKey = String(key);
+        const newKey = isArrayLike ? String(newIndex) : String(key);
+        const signal = signals.get(oldKey);
+        if (signal)
+          newSignals.set(newKey, signal);
+      });
+      signals.clear();
+      newSignals.forEach((signal, key) => signals.set(key, signal));
+      notify(watchers);
+      emit(STORE_EVENT_SORT, newOrder);
+    },
+    addEventListener: eventTarget.addEventListener.bind(eventTarget),
+    removeEventListener: eventTarget.removeEventListener.bind(eventTarget),
+    dispatchEvent: eventTarget.dispatchEvent.bind(eventTarget),
+    size
+  };
+  return new Proxy({}, {
+    get(_target, prop) {
+      if (prop === Symbol.toStringTag)
+        return TYPE_STORE;
+      if (prop === Symbol.isConcatSpreadable)
+        return isArrayLike;
+      if (prop === Symbol.iterator)
+        return isArrayLike ? function* () {
+          const indexes = getSortedIndexes();
+          for (const index of indexes) {
+            const signal = signals.get(String(index));
+            if (signal)
+              yield signal;
+          }
+        } : function* () {
+          for (const [key, signal] of signals)
+            yield [key, signal];
+        };
+      if (isSymbol(prop))
+        return;
+      if (prop in s)
+        return s[prop];
+      if (prop === "length" && isArrayLike) {
+        subscribe(watchers);
+        return size.get();
+      }
+      return signals.get(prop);
+    },
+    has(_target, prop) {
+      const stringProp = String(prop);
+      return stringProp && signals.has(stringProp) || Object.keys(s).includes(stringProp) || prop === Symbol.toStringTag || prop === Symbol.iterator || prop === Symbol.isConcatSpreadable || prop === "length" && isArrayLike;
+    },
+    ownKeys() {
+      return isArrayLike ? getSortedIndexes().map((key) => String(key)).concat(["length"]) : Array.from(signals.keys()).map((key) => String(key));
+    },
+    getOwnPropertyDescriptor(_target, prop) {
+      const nonEnumerable = (value) => ({
+        enumerable: false,
+        configurable: true,
+        writable: false,
+        value
+      });
+      if (prop === "length" && isArrayLike)
+        return {
+          enumerable: true,
+          configurable: true,
+          writable: false,
+          value: size.get()
+        };
+      if (prop === Symbol.isConcatSpreadable)
+        return nonEnumerable(isArrayLike);
+      if (prop === Symbol.toStringTag)
+        return nonEnumerable(TYPE_STORE);
+      if (isSymbol(prop))
+        return;
+      if (Object.keys(s).includes(prop))
+        return nonEnumerable(s[prop]);
+      const signal = signals.get(prop);
+      return signal ? {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: signal
+      } : undefined;
+    }
+  });
+};
+var isStore = (value) => isObjectOfType(value, TYPE_STORE);
+
+// node_modules/@zeix/cause-effect/src/signal.ts
+var isSignal = (value) => isState(value) || isComputed(value) || isStore(value);
+var isMutableSignal = (value) => isState(value) || isStore(value);
+function toSignal(value) {
+  if (isSignal(value))
+    return value;
+  if (isComputedCallback(value))
+    return computed(value);
+  if (Array.isArray(value) || isRecord(value))
+    return store(value);
+  return state(value);
 }
 // src/core/util.ts
 var DEV_MODE = true;
@@ -278,13 +718,11 @@ var LOG_WARN = "warn";
 var LOG_ERROR = "error";
 var idString = (id) => id ? `#${id}` : "";
 var classString = (classList) => classList?.length ? `.${Array.from(classList).join(".")}` : "";
-var isDefinedObject = (value) => !!value && typeof value === "object";
-var isString = (value) => typeof value === "string";
 var hasMethod = (obj, methodName) => isString(methodName) && (methodName in obj) && isFunction(obj[methodName]);
 var isElement = (node) => node.nodeType === Node.ELEMENT_NODE;
 var isCustomElement = (element) => element.localName.includes("-");
 var elementName = (el) => el ? `<${el.localName}${idString(el.id)}${classString(el.classList)}>` : "<unknown>";
-var valueString = (value) => isString(value) ? `"${value}"` : isDefinedObject(value) ? JSON.stringify(value) : String(value);
+var valueString2 = (value) => isString(value) ? `"${value}"` : !!value && typeof value === "object" ? JSON.stringify(value) : String(value);
 var typeString = (value) => {
   if (value === null)
     return "null";
@@ -311,33 +749,26 @@ class CircularMutationError extends Error {
   }
 }
 
-class InvalidComponentNameError extends Error {
+class InvalidComponentNameError extends TypeError {
   constructor(component) {
     super(`Invalid component name "${component}". Custom element names must contain a hyphen, start with a lowercase letter, and contain only lowercase letters, numbers, and hyphens.`);
     this.name = "InvalidComponentNameError";
   }
 }
 
-class InvalidPropertyNameError extends Error {
+class InvalidPropertyNameError extends TypeError {
   constructor(component, prop, reason) {
     super(`Invalid property name "${prop}" for component <${component}>. ${reason}`);
     this.name = "InvalidPropertyNameError";
   }
 }
 
-class InvalidEffectsError extends Error {
+class InvalidEffectsError extends TypeError {
   constructor(host, cause) {
     super(`Invalid effects in component ${elementName(host)}. Effects must be an array of effects, a single effect function, or a Promise that resolves to effects.`);
     this.name = "InvalidEffectsError";
     if (cause)
       this.cause = cause;
-  }
-}
-
-class InvalidSignalError extends Error {
-  constructor(host, prop) {
-    super(`Expected signal as value for property "${String(prop)}" in component ${elementName(host)}.`);
-    this.name = "InvalidSignalError";
   }
 }
 
@@ -352,6 +783,20 @@ class DependencyTimeoutError extends Error {
   constructor(host, missing) {
     super(`Timeout waiting for: [${missing.join(", ")}] in component ${elementName(host)}.`);
     this.name = "DependencyTimeoutError";
+  }
+}
+
+class InvalidReactivesError extends TypeError {
+  constructor(host, target, reactives) {
+    super(`Expected reactives passed from ${elementName(host)} to ${elementName(target)} to be a record of signals, reactive property names or functions. Got ${valueString2(reactives)}.`);
+    this.name = "InvalidReactivesError";
+  }
+}
+
+class InvalidCustomElementError extends TypeError {
+  constructor(target, where) {
+    super(`Target ${elementName(target)} is not a custom element in ${where}.`);
+    this.name = "InvalidCustomElementError";
   }
 }
 
@@ -378,13 +823,51 @@ var runEffects = (effects, host, target = host) => {
 };
 var resolveReactive = (reactive, host, target, context) => {
   try {
-    return isString(reactive) ? host.getSignal(reactive).get() : isSignal(reactive) ? reactive.get() : isFunction(reactive) ? reactive(target) : RESET;
+    return isString(reactive) ? host[reactive] : isSignal(reactive) ? reactive.get() : isFunction(reactive) ? reactive(target) : RESET;
   } catch (error) {
     if (context) {
-      log(error, `Failed to resolve value of ${valueString(reactive)}${context ? ` for ${context}` : ""} in ${elementName(target)}${host !== target ? ` in ${elementName(host)}` : ""}`, LOG_ERROR);
+      log(error, `Failed to resolve value of ${valueString2(reactive)}${context ? ` for ${context}` : ""} in ${elementName(target)}${host !== target ? ` in ${elementName(host)}` : ""}`, LOG_ERROR);
     }
     return RESET;
   }
+};
+var pass = (props) => (host, target) => {
+  if (!isCustomElement(target))
+    throw new InvalidCustomElementError(target, `pass from ${elementName(host)}`);
+  const reactives = isFunction(props) ? props(target) : props;
+  if (!isRecord(reactives))
+    throw new InvalidReactivesError(host, target, reactives);
+  const resetProperties = {};
+  const getGetter = (value) => {
+    if (isSignal(value))
+      return value.get;
+    const fn = isString(value) && value in host ? () => host[value] : isComputedCallback(value) ? value : undefined;
+    return fn ? computed(fn).get : undefined;
+  };
+  for (const [prop, reactive] of Object.entries(reactives)) {
+    if (reactive == null)
+      continue;
+    const descriptor = Object.getOwnPropertyDescriptor(target, prop);
+    if (!(prop in target) || !descriptor?.configurable)
+      continue;
+    const applied = isFunction(reactive) && reactive.length === 1 ? reactive(target) : reactive;
+    const isArray = Array.isArray(applied) && applied.length === 2;
+    const getter = getGetter(isArray ? applied[0] : applied);
+    const setter = isArray && isFunction(applied[1]) ? applied[1] : undefined;
+    if (!getter)
+      continue;
+    resetProperties[prop] = descriptor;
+    Object.defineProperty(target, prop, {
+      configurable: true,
+      enumerable: true,
+      get: getter,
+      set: setter
+    });
+    descriptor.set?.call(target, UNSET);
+  }
+  return () => {
+    Object.defineProperties(target, resetProperties);
+  };
 };
 
 // src/core/dom.ts
@@ -623,9 +1106,9 @@ function component(name, init = {}, setup) {
       for (const [prop, initializer] of Object.entries(init)) {
         if (initializer == null || prop in this)
           continue;
-        const result = isFunction(initializer) ? initializer(this, null) : initializer;
+        const result = isFunction(initializer) ? initializer(this) : initializer;
         if (result != null)
-          this.setSignal(prop, toSignal(result));
+          this.#setAccessor(prop, result);
       }
       const [helpers, getDependencies] = getHelpers(this);
       const effects = setup(this, helpers);
@@ -666,40 +1149,31 @@ function component(name, init = {}, setup) {
         return;
       const parsed = parser(this, value, old);
       if (DEV_MODE && this.debug)
-        log(value, `Attribute "${String(attr)}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`);
+        log(value, `Attribute "${String(attr)}" of ${elementName(this)} changed from ${valueString2(old)} to ${valueString2(value)}, parsed as <${typeString(parsed)}> ${valueString2(parsed)}`);
       if (attr in this)
         this[attr] = parsed;
       else
-        this.setSignal(attr, toSignal(parsed));
+        this.#setAccessor(attr, parsed);
     }
-    getSignal(key) {
-      const signal = this.#signals[key];
-      if (DEV_MODE && this.debug)
-        log(signal, `Get ${typeString(signal)} "${String(key)}" in ${elementName(this)}`);
-      return signal;
-    }
-    setSignal(key, signal) {
-      const error = validatePropertyName(String(key));
-      if (error)
-        throw new InvalidPropertyNameError(this.localName, key, error);
-      if (!isSignal(signal))
-        throw new InvalidSignalError(this, key);
+    #setAccessor(key, value) {
+      const signal = isSignal(value) ? value : isComputedCallback(value) ? computed(value) : state(value);
       const prev = this.#signals[key];
-      const writable = isState(signal);
+      const mutable = isMutableSignal(signal);
       this.#signals[key] = signal;
       Object.defineProperty(this, key, {
         get: signal.get,
-        set: writable ? signal.set : undefined,
+        set: mutable ? signal.set : undefined,
         enumerable: true,
-        configurable: writable
+        configurable: mutable
       });
-      if (prev && isState(prev))
+      if (prev && isState(prev) || isStore(prev))
         prev.set(UNSET);
       if (DEV_MODE && this.debug)
-        log(signal, `Set ${typeString(signal)} "${String(key)} in ${elementName(this)}`);
+        log(signal, `Set ${typeString(signal)} "${String(key)}" in ${elementName(this)}`);
     }
   }
   customElements.define(name, CustomElement);
+  return customElements.get(name);
 }
 // src/core/context.ts
 var CONTEXT_REQUEST = "context-request";
@@ -707,7 +1181,7 @@ var CONTEXT_REQUEST = "context-request";
 class ContextRequestEvent extends Event {
   context;
   callback;
-  subscribe2;
+  subscribe;
   constructor(context, callback, subscribe2 = false) {
     super(CONTEXT_REQUEST, {
       bubbles: true,
@@ -723,16 +1197,16 @@ var provideContexts = (contexts) => (host) => {
     const { context, callback } = e;
     if (contexts.includes(context) && isFunction(callback)) {
       e.stopImmediatePropagation();
-      callback(host.getSignal(String(context)));
+      callback(() => host[String(context)]);
     }
   };
   host.addEventListener(CONTEXT_REQUEST, listener);
   return () => host.removeEventListener(CONTEXT_REQUEST, listener);
 };
 var fromContext = (context, fallback) => (host) => {
-  let consumed = toSignal(getFallback(host, fallback));
-  host.dispatchEvent(new ContextRequestEvent(context, (value) => {
-    consumed = value;
+  let consumed = () => getFallback(host, fallback);
+  host.dispatchEvent(new ContextRequestEvent(context, (getter) => {
+    consumed = getter;
   }));
   return consumed;
 };
@@ -759,7 +1233,7 @@ var fromEvents = (selector, events, initialize) => (host) => {
             target: source,
             value
           });
-          if (newValue == null)
+          if (newValue == null || newValue instanceof Promise)
             return;
           if (!Object.is(newValue, value)) {
             value = newValue;
@@ -799,7 +1273,7 @@ var fromEvents = (selector, events, initialize) => (host) => {
 var on = (type, handler, options = false) => (host, target) => {
   const listener = (e) => {
     const result = handler({ host, target, event: e });
-    if (!isDefinedObject(result))
+    if (!isRecord(result))
       return;
     batch(() => {
       for (const [key, value] of Object.entries(result)) {
@@ -903,7 +1377,7 @@ var insertOrRemoveElement = (reactive, inserter) => (host, target) => {
     if (isFunction(inserter?.resolve)) {
       inserter.resolve(target);
     } else {
-      const signal = isSignal(reactive) ? reactive : isString(reactive) ? host.getSignal(reactive) : undefined;
+      const signal = isSignal(reactive) ? reactive : undefined;
       if (isState(signal))
         signal.set(0);
     }
@@ -913,8 +1387,8 @@ var insertOrRemoveElement = (reactive, inserter) => (host, target) => {
     inserter?.reject?.(error);
   };
   return effect(() => {
-    const diff = resolveReactive(reactive, host, target, "insertion or deletion");
-    const resolvedDiff = diff === RESET ? 0 : diff;
+    const diff2 = resolveReactive(reactive, host, target, "insertion or deletion");
+    const resolvedDiff = diff2 === RESET ? 0 : diff2;
     if (resolvedDiff > 0) {
       if (!inserter)
         throw new TypeError(`No inserter provided`);
@@ -1057,17 +1531,6 @@ var dangerouslySetInnerHTML = (reactive, options = {}) => updateElement(reactive
     return " with scripts";
   }
 });
-var pass = (reactives) => (host, target) => {
-  if (!isDefinedObject(reactives))
-    throw new TypeError(`Reactives must be an object of passed signals`);
-  if (!isCustomElement(target))
-    throw new TypeError(`Target ${elementName(target)} is not a custom element`);
-  if (!hasMethod(target, "setSignal"))
-    throw new TypeError(`Target ${elementName(target)} is not a UIElement component`);
-  for (const [prop, reactive] of Object.entries(reactives)) {
-    target.setSignal(prop, isString(reactive) ? host.getSignal(reactive) : toSignal(reactive));
-  }
-};
 // src/lib/extractors.ts
 var getText = () => (element) => element.textContent?.trim();
 var getIdrefText = (attr) => (element) => {
@@ -1132,6 +1595,8 @@ export {
   toggleClass,
   toggleAttribute,
   toSignal,
+  toError,
+  store,
   state,
   show,
   setText,
@@ -1139,14 +1604,27 @@ export {
   setProperty,
   setAttribute,
   resolveReactive,
+  resolve,
   provideContexts,
   pass,
   on,
+  match,
   log,
+  isSymbol,
+  isString,
+  isStore,
   isState,
   isSignal,
+  isRecordOrArray,
+  isRecord,
   isParser,
+  isNumber,
+  isMutableSignal,
+  isFunction,
+  isEqual,
   isComputed,
+  isAsyncFunction,
+  isAbortError,
   insertOrRemoveElement,
   hasClass,
   hasAttribute,
@@ -1165,6 +1643,7 @@ export {
   enqueue,
   emitEvent,
   effect,
+  diff,
   dangerouslySetInnerHTML,
   computed,
   component,
@@ -1177,17 +1656,24 @@ export {
   asEnum,
   asBoolean,
   UNSET,
+  StoreKeyReadonlyError,
+  StoreKeyRangeError,
+  StoreKeyExistsError,
   RESET,
+  NullishSignalValueError,
   MissingElementError,
   LOG_WARN,
   LOG_INFO,
   LOG_ERROR,
   LOG_DEBUG,
-  InvalidSignalError,
+  InvalidSignalValueError,
+  InvalidReactivesError,
   InvalidPropertyNameError,
   InvalidEffectsError,
+  InvalidCustomElementError,
   InvalidComponentNameError,
   DependencyTimeoutError,
   DEV_MODE,
-  CircularMutationError
+  CircularMutationError,
+  CircularDependencyError
 };

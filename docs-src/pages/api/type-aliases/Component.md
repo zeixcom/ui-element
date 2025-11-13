@@ -1,16 +1,16 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / Component
+[@zeix/el-truco](../globals.md) / Component
 
 # Type Alias: Component\<P\>
 
 > **Component**\<`P`\> = `HTMLElement` & `P` & `object`
 
-Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/component.ts#L59)
+Defined in: [src/component.ts:62](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/component.ts#L62)
 
-## Type declaration
+## Type Declaration
 
 ### debug?
 
@@ -24,7 +24,7 @@ Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/a2e
 
 ##### K
 
-`K` *extends* `string`
+`K` *extends* `string` \| `number` \| `symbol`
 
 #### Parameters
 
@@ -34,55 +34,11 @@ Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/a2e
 
 ##### oldValue
 
-`null` | `string`
+`string` | `null`
 
 ##### newValue
 
-`null` | `string`
-
-#### Returns
-
-`void`
-
-### getSignal()
-
-> **getSignal**\<`K`\>(`prop`): [`Signal`](Signal.md)\<`P`\[`K`\]\>
-
-#### Type Parameters
-
-##### K
-
-`K` *extends* `string`
-
-#### Parameters
-
-##### prop
-
-`K`
-
-#### Returns
-
-[`Signal`](Signal.md)\<`P`\[`K`\]\>
-
-### setSignal()
-
-> **setSignal**\<`K`\>(`prop`, `signal`): `void`
-
-#### Type Parameters
-
-##### K
-
-`K` *extends* `string`
-
-#### Parameters
-
-##### prop
-
-`K`
-
-##### signal
-
-[`Signal`](Signal.md)\<`P`\[`K`\]\>
+`string` | `null`
 
 #### Returns
 

@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / ComputedCallback
+[@zeix/el-truco](../globals.md) / ComputedCallback
 
 # Type Alias: ComputedCallback\<T\>
 
 > **ComputedCallback**\<`T`\> = (`abort`) => `Promise`\<`T`\> \| () => `T`
 
-Defined in: node\_modules/@zeix/cause-effect/src/computed.ts:23
+Defined in: node\_modules/@zeix/cause-effect/types/src/computed.d.ts:5
 
 ## Type Parameters
 
@@ -18,11 +18,11 @@ Defined in: node\_modules/@zeix/cause-effect/src/computed.ts:23
 
 ## Name
 
-UIElement
+El Truco
 
 ## Version
 
-0.14.0
+0.15.0
 
 ## Author
 

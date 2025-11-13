@@ -185,11 +185,9 @@
 							)(document.body)
 
 							let effectRuns = 0
-							const cleanup = effect({
-								signals: [clickSignal],
-								ok: () => {
-									effectRuns++
-								},
+							const cleanup = effect(() => {
+								clickSignal.get()
+								effectRuns++
 							})
 
 							// Initial effect run

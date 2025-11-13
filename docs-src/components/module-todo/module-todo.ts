@@ -14,7 +14,7 @@ export type ModuleTodoProps = {
 
 import '../form-textbox/form-textbox'
 
-export default component(
+export default component<ModuleTodoProps>(
 	'module-todo',
 	{
 		active: fromSelector('form-checkbox:not([checked])'),

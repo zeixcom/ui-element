@@ -562,41 +562,6 @@
 						document.body.removeChild(counter2)
 					})
 				})
-
-				describe('Signal Management', () => {
-					it('should get and set signals correctly', async () => {
-						const component =
-							document.createElement('basic-counter')
-						component.setAttribute('value', '5')
-						document.body.appendChild(component)
-
-						// Get signal
-						const valueSignal = component.getSignal('value')
-						assert.equal(valueSignal.get(), 5)
-
-						// Set new signal
-						const newSignal = state(10)
-						component.setSignal('value', newSignal)
-
-						assert.equal(component.value, 10)
-
-						document.body.removeChild(component)
-					})
-
-					it('should handle computed signals', async () => {
-						const component =
-							document.createElement('basic-counter')
-						document.body.appendChild(component)
-
-						const doubleSignal = computed(() => component.value * 2)
-						component.setSignal('double', doubleSignal)
-
-						component.value = 5
-						assert.equal(component.double, 10)
-
-						document.body.removeChild(component)
-					})
-				})
 			})
 		</script>
 	</body>

@@ -1,14 +1,14 @@
-[**@zeix/ui-element**](../README.md)
+[**@zeix/el-truco**](../README.md)
 
 ***
 
-[@zeix/ui-element](../globals.md) / Initializer
+[@zeix/el-truco](../globals.md) / Initializer
 
 # Type Alias: Initializer\<T, C\>
 
-> **Initializer**\<`T`, `C`\> = `T` \| [`Parser`](Parser.md)\<`T`, `C`\> \| [`Extractor`](Extractor.md)\<[`MaybeSignal`](MaybeSignal.md)\<`T`\>, `C`\> \| (`host`) => `void`
+> **Initializer**\<`T`, `C`\> = `T` \| [`Parser`](Parser.md)\<`T`, `C`\> \| [`Extractor`](Extractor.md)\<`T`, `C`\> \| (`host`) => `void`
 
-Defined in: [src/component.ts:79](https://github.com/zeixcom/ui-element/blob/a2e3a5bb1b7ab9e964c80c41c9edbb895cf2ce79/src/component.ts#L79)
+Defined in: [src/component.ts:77](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/component.ts#L77)
 
 ## Type Parameters
 
