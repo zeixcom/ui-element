@@ -6,7 +6,7 @@
 
 # Class: MissingElementError
 
-Defined in: [src/core/errors.ts:101](https://github.com/zeixcom/ui-element/blob/8085b01c567eb5438a72e6d26eca9f9f0ad6e39f/src/core/errors.ts#L101)
+Defined in: [src/core/errors.ts:83](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/errors.ts#L83)
 
 Error thrown when a required desacendent element does not exist in a component's DOM subtree
 
@@ -24,7 +24,7 @@ Error thrown when a required desacendent element does not exist in a component's
 
 > **new MissingElementError**(`host`, `selector`, `required`): `MissingElementError`
 
-Defined in: [src/core/errors.ts:107](https://github.com/zeixcom/ui-element/blob/8085b01c567eb5438a72e6d26eca9f9f0ad6e39f/src/core/errors.ts#L107)
+Defined in: [src/core/errors.ts:89](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/errors.ts#L89)
 
 #### Parameters
 

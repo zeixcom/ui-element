@@ -718,12 +718,11 @@ var LOG_WARN = "warn";
 var LOG_ERROR = "error";
 var idString = (id) => id ? `#${id}` : "";
 var classString = (classList) => classList?.length ? `.${Array.from(classList).join(".")}` : "";
-var isDefinedObject2 = (value) => !!value && typeof value === "object";
 var hasMethod = (obj, methodName) => isString(methodName) && (methodName in obj) && isFunction(obj[methodName]);
 var isElement = (node) => node.nodeType === Node.ELEMENT_NODE;
 var isCustomElement = (element) => element.localName.includes("-");
 var elementName = (el) => el ? `<${el.localName}${idString(el.id)}${classString(el.classList)}>` : "<unknown>";
-var valueString2 = (value) => isString(value) ? `"${value}"` : isDefinedObject2(value) ? JSON.stringify(value) : String(value);
+var valueString2 = (value) => isString(value) ? `"${value}"` : !!value && typeof value === "object" ? JSON.stringify(value) : String(value);
 var typeString = (value) => {
   if (value === null)
     return "null";
@@ -770,13 +769,6 @@ class InvalidEffectsError extends TypeError {
     this.name = "InvalidEffectsError";
     if (cause)
       this.cause = cause;
-  }
-}
-
-class InvalidSignalError extends TypeError {
-  constructor(host, prop) {
-    super(`Expected signal as value for property "${String(prop)}" in component ${elementName(host)}.`);
-    this.name = "InvalidSignalError";
   }
 }
 
@@ -1114,7 +1106,7 @@ function component(name, init = {}, setup) {
       for (const [prop, initializer] of Object.entries(init)) {
         if (initializer == null || prop in this)
           continue;
-        const result = isFunction(initializer) ? initializer(this, null) : initializer;
+        const result = isFunction(initializer) ? initializer(this) : initializer;
         if (result != null)
           this.#setAccessor(prop, result);
       }
@@ -1241,7 +1233,7 @@ var fromEvents = (selector, events, initialize) => (host) => {
             target: source,
             value
           });
-          if (newValue == null)
+          if (newValue == null || newValue instanceof Promise)
             return;
           if (!Object.is(newValue, value)) {
             value = newValue;
@@ -1281,7 +1273,7 @@ var fromEvents = (selector, events, initialize) => (host) => {
 var on = (type, handler, options = false) => (host, target) => {
   const listener = (e) => {
     const result = handler({ host, target, event: e });
-    if (!isDefinedObject2(result))
+    if (!isRecord(result))
       return;
     batch(() => {
       for (const [key, value] of Object.entries(result)) {
@@ -1675,7 +1667,6 @@ export {
   LOG_ERROR,
   LOG_DEBUG,
   InvalidSignalValueError,
-  InvalidSignalError,
   InvalidReactivesError,
   InvalidPropertyNameError,
   InvalidEffectsError,

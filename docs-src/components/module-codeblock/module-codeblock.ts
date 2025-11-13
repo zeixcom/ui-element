@@ -15,10 +15,7 @@ export default component(
 	'module-codeblock',
 	{ collapsed: asBoolean() },
 	(el, { first, useElement }) => {
-		const code = useElement(
-			'code',
-			'Needed as source container to copy from.',
-		)
+		const code = useElement('code', 'Needed as source container to copy from.')
 
 		return [
 			toggleAttribute('collapsed'),

@@ -1,4 +1,4 @@
-import { type Cleanup, isFunction, type Signal } from '@zeix/cause-effect'
+import { type Cleanup, isFunction } from '@zeix/cause-effect'
 
 import type { Component, ComponentProps } from '../component'
 import { type Extractor, type Fallback, getFallback } from './dom'
@@ -93,18 +93,18 @@ class ContextRequestEvent<T extends UnknownContext> extends Event {
  * Provide a context for descendant component consumers
  *
  * @since 0.13.3
- * @param {Context<K, Signal<P[K]>>[]} contexts - Array of contexts to provide
+ * @param {Context<K, () => P[K]>[]} contexts - Array of contexts to provide
  * @returns {(host: Component<P>) => Cleanup} Function to add an event listener for ContextRequestEvent returning a cleanup function to remove the event listener
  */
 const provideContexts =
 	<P extends ComponentProps, K extends keyof P>(
-		contexts: Context<K, Signal<P[K]>>[],
+		contexts: Context<K, () => P[K]>[],
 	): ((host: Component<P>) => Cleanup) =>
 	(host: Component<P>) => {
 		const listener = (e: ContextRequestEvent<UnknownContext>) => {
 			const { context, callback } = e
 			if (
-				contexts.includes(context as Context<K, Signal<P[K]>>) &&
+				contexts.includes(context as Context<K, () => P[K]>) &&
 				isFunction(callback)
 			) {
 				e.stopImmediatePropagation()

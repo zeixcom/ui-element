@@ -13,7 +13,7 @@ import {
 	setStyle,
 	state,
 } from '../../..'
-import { asOklch } from '../_shared/asOklch'
+import { asOklch, CONTRAST_THRESHOLD } from '../_shared/color'
 import { rafThrottle } from '../_shared/rafThrottle'
 
 export type FormColorsliderProps = {
@@ -26,7 +26,6 @@ export type FormColorsliderProps = {
 const inP3Gamut = inGamut('p3')
 const inRGBGamut = inGamut('rgb')
 const TRACK_OFFSET = 20 // pixels
-const CONTRAST_THRESHOLD = 0.71 // lightness
 
 export default component<FormColorsliderProps>(
 	'form-colorslider',
@@ -90,10 +89,7 @@ export default component<FormColorsliderProps>(
 		const formatNumber = (value: number) => {
 			const v = axis === 'l' ? value * 100 : value
 			return v.toFixed(
-				Math.min(
-					String(v).split('.')[1]?.length || 0,
-					axis === 'c' ? 4 : 2,
-				),
+				Math.min(String(v).split('.')[1]?.length || 0, axis === 'c' ? 4 : 2),
 			)
 		}
 		const commit = (color: Oklch) => {
@@ -186,9 +182,7 @@ export default component<FormColorsliderProps>(
 						ctx.clearRect(0, 0, 360, 1)
 						const n = Math.round(trackWidth.get())
 						for (let x = 0; x < n; x++) {
-							ctx.fillStyle = formatCss(
-								getColorFromPosition(x / n),
-							)
+							ctx.fillStyle = formatCss(getColorFromPosition(x / n))
 							ctx.fillRect(x, 0, 1, 1)
 						}
 					}),
@@ -202,9 +196,7 @@ export default component<FormColorsliderProps>(
 							`${Math.round((el.value * trackWidth.get()) / max) + TRACK_OFFSET}px`,
 					),
 					setStyle('--color-border', () =>
-						lightness.get() > CONTRAST_THRESHOLD
-							? 'black'
-							: 'white',
+						lightness.get() > CONTRAST_THRESHOLD ? 'black' : 'white',
 					),
 				],
 				'Add a <.thumb> element as a drag knob to control the color.',
@@ -234,10 +226,7 @@ export default component<FormColorsliderProps>(
 				const { key, shiftKey } = event
 				if ((key === 'ArrowLeft' || key === '-') && el.value > 0)
 					el.stepDown(shiftKey ? bigStep : step)
-				else if (
-					(key === 'ArrowRight' || key === '+') &&
-					el.value < max
-				)
+				else if ((key === 'ArrowRight' || key === '+') && el.value < max)
 					el.stepUp(shiftKey ? bigStep : step)
 			}),
 		]

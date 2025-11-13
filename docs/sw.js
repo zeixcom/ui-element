@@ -1,15 +1,15 @@
 // El Truco Docs Service Worker
-// Generated at 2025-11-12T17:31:42.793Z
+// Generated at 2025-11-13T12:03:28.007Z
 // Auto-generated - do not edit manually
 
-const CACHE_NAME = 'el-truco-docs-v1762968702793';
+const CACHE_NAME = 'el-truco-docs-v1763035408007';
 
 // Assets to cache on install
 const STATIC_ASSETS = [
 	'/',
 	'/index.html',
-	'/assets/main.mhwa1p3d.css',
-	'/assets/main.mhwa1p3d.js'
+	'/assets/main.mhxdrf5z.css',
+	'/assets/main.mhxdrf5z.js'
 ];
 
 self.addEventListener('install', (event) => {

@@ -14,7 +14,6 @@
 - [InvalidEffectsError](classes/InvalidEffectsError.md)
 - [InvalidPropertyNameError](classes/InvalidPropertyNameError.md)
 - [InvalidReactivesError](classes/InvalidReactivesError.md)
-- [InvalidSignalError](classes/InvalidSignalError.md)
 - [InvalidSignalValueError](classes/InvalidSignalValueError.md)
 - [MissingElementError](classes/MissingElementError.md)
 - [NullishSignalValueError](classes/NullishSignalValueError.md)

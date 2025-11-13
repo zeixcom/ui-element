@@ -3,7 +3,6 @@ import {
 	type Context,
 	component,
 	provideContexts,
-	type State,
 	state,
 } from '../../../'
 
@@ -18,19 +17,19 @@ export type ContextMediaProps = {
 
 export const MEDIA_MOTION = 'media-motion' as Context<
 	'media-motion',
-	State<boolean>
+	() => boolean
 >
 export const MEDIA_THEME = 'media-theme' as Context<
 	'media-theme',
-	State<'light' | 'dark'>
+	() => 'light' | 'dark'
 >
 export const MEDIA_VIEWPORT = 'media-viewport' as Context<
 	'media-viewport',
-	State<'xs' | 'sm' | 'md' | 'lg' | 'xl'>
+	() => 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 >
 export const MEDIA_ORIENTATION = 'media-orientation' as Context<
 	'media-orientation',
-	State<'portrait' | 'landscape'>
+	() => 'portrait' | 'landscape'
 >
 
 /* === Component === */
@@ -68,18 +67,10 @@ export default component(
 				const v = parseFloat(trimmed)
 				return Number.isFinite(v) ? v + unit : fallback
 			}
-			const mqlSM = matchMedia(
-				`(min-width: ${getBreakpoint('sm', '32em')})`,
-			)
-			const mqlMD = matchMedia(
-				`(min-width: ${getBreakpoint('md', '48em')})`,
-			)
-			const mqlLG = matchMedia(
-				`(min-width: ${getBreakpoint('lg', '72em')})`,
-			)
-			const mqlXL = matchMedia(
-				`(min-width: ${getBreakpoint('xl', '104em')})`,
-			)
+			const mqlSM = matchMedia(`(min-width: ${getBreakpoint('sm', '32em')})`)
+			const mqlMD = matchMedia(`(min-width: ${getBreakpoint('md', '48em')})`)
+			const mqlLG = matchMedia(`(min-width: ${getBreakpoint('lg', '72em')})`)
+			const mqlXL = matchMedia(`(min-width: ${getBreakpoint('xl', '104em')})`)
 			const getViewport = () => {
 				if (mqlXL.matches) return 'xl'
 				if (mqlLG.matches) return 'lg'

@@ -3,7 +3,7 @@ import {
 	type Cleanup,
 	type Computed,
 	effect,
-	// isState,
+	isRecord,
 	notify,
 	subscribe,
 	TYPE_COMPUTED,
@@ -18,7 +18,7 @@ import {
 	type ParserOrFallback,
 } from './dom'
 import { type Effect, RESET, type Reactive, resolveReactive } from './reactive'
-import { elementName, isDefinedObject, LOG_ERROR, log } from './util'
+import { elementName, LOG_ERROR, log } from './util'
 
 /* === Types === */
 
@@ -31,7 +31,12 @@ type EventTransformer<
 	E extends Element,
 	C extends HTMLElement,
 	Evt extends Event,
-> = (context: { event: Evt; host: C; target: E; value: T }) => T | void
+> = (context: {
+	event: Evt
+	host: C
+	target: E
+	value: T
+}) => T | void | Promise<void>
 
 type EventTransformers<
 	T extends {},
@@ -49,7 +54,7 @@ type EventHandler<
 	event: Evt
 	host: Component<P>
 	target: E
-}) => { [K in keyof P]?: P[K] } | void
+}) => { [K in keyof P]?: P[K] } | void | Promise<void>
 
 /* === Exported Functions === */
 
@@ -97,7 +102,8 @@ const fromEvents =
 							target: source,
 							value,
 						})
-						if (newValue == null) return
+						if (newValue == null || newValue instanceof Promise)
+							return
 						if (!Object.is(newValue, value)) {
 							value = newValue
 							if (watchers.size > 0) notify(watchers)
@@ -156,7 +162,7 @@ const on =
 	(host, target): Cleanup => {
 		const listener = (e: Event) => {
 			const result = handler({ host, target, event: e as EventType<K> })
-			if (!isDefinedObject(result)) return
+			if (!isRecord(result)) return
 			batch(() => {
 				for (const [key, value] of Object.entries(result)) {
 					try {
@@ -168,14 +174,6 @@ const on =
 							LOG_ERROR,
 						)
 					}
-					/* const signal = host.getSignal(key)
-					if (isState(signal)) signal.set(value)
-					else
-						log(
-							value,
-							`Reactive property "${key}" on ${elementName(host)} from event ${type} on ${elementName(target)} could not be set, because it is read-only.`,
-							LOG_ERROR,
-						) */
 				}
 			})
 		}

@@ -6,7 +6,7 @@
 
 # Class: InvalidReactivesError
 
-Defined in: [src/core/errors.ts:138](https://github.com/zeixcom/ui-element/blob/8085b01c567eb5438a72e6d26eca9f9f0ad6e39f/src/core/errors.ts#L138)
+Defined in: [src/core/errors.ts:120](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/errors.ts#L120)
 
 Error thrown when reactives passed to a component are invalid
 
@@ -24,7 +24,7 @@ Error thrown when reactives passed to a component are invalid
 
 > **new InvalidReactivesError**(`host`, `target`, `reactives`): `InvalidReactivesError`
 
-Defined in: [src/core/errors.ts:144](https://github.com/zeixcom/ui-element/blob/8085b01c567eb5438a72e6d26eca9f9f0ad6e39f/src/core/errors.ts#L144)
+Defined in: [src/core/errors.ts:126](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/errors.ts#L126)
 
 #### Parameters
 

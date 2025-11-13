@@ -8,7 +8,7 @@
 
 > **ElementsUsage** = \{\<`S`\>(`selector`, `required?`): [`ElementFromSelector`](ElementFromSelector.md)\<`S`\>[]; \<`E`\>(`selector`, `required?`): `E`[]; \}
 
-Defined in: [src/core/dom.ts:81](https://github.com/zeixcom/ui-element/blob/8085b01c567eb5438a72e6d26eca9f9f0ad6e39f/src/core/dom.ts#L81)
+Defined in: [src/core/dom.ts:81](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/dom.ts#L81)
 
 ## Call Signature
 

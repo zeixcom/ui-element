@@ -8,7 +8,13 @@
 		<script type="module">
 			import { runTests } from '@web/test-runner-mocha'
 			import { assert } from '@esm-bundle/chai'
-			import { show, state, RESET, UNSET } from '../../index.dev.js'
+			import {
+				component,
+				show,
+				state,
+				RESET,
+				UNSET,
+			} from '../../index.dev.js'
 
 			const animationFrame = async () =>
 				new Promise(requestAnimationFrame)
@@ -21,7 +27,7 @@
 						document.body.appendChild(element)
 
 						// Create a mock component as host
-						const host = { getSignal: () => ({ get: () => false }) }
+						const host = {}
 
 						try {
 							// Initially visible
@@ -96,9 +102,7 @@
 
 						try {
 							// Create a mock host component
-							const host = {
-								getSignal: () => ({ get: () => true }),
-							}
+							const host = {}
 
 							// Apply show effects like in module-todo using reactive signals
 							const cleanup1 = show(
@@ -198,17 +202,15 @@
 
 					it('should work with property name strings', function () {
 						// Create reactive component with signal
-						const visibilitySignal = state(true)
-						const component = {
-							isVisible: true,
-							getSignal: function (prop) {
-								if (prop === 'isVisible')
-									return visibilitySignal
-								return { get: () => this[prop] }
+						component(
+							'show-test',
+							{
+								visible: true,
 							},
-						}
+							el => [show('visible')],
+						)
 
-						const element = document.createElement('div')
+						const element = document.createElement('show-test')
 						document.body.appendChild(element)
 
 						try {
@@ -221,19 +223,17 @@
 							assert.equal(
 								element.hidden,
 								false,
-								'Element should be visible when isVisible is true',
+								'Element should be visible when visible is true',
 							)
 
 							// Change signal value (not direct property)
-							visibilitySignal.set(false)
+							element.visible = false
 
 							assert.equal(
 								element.hidden,
 								true,
-								'Element should be hidden when isVisible is false',
+								'Element should be hidden when visible is false',
 							)
-
-							cleanup()
 						} finally {
 							element.remove()
 						}
@@ -245,7 +245,7 @@
 						document.body.appendChild(element)
 
 						// Create a mock host component
-						const host = { getSignal: () => ({ get: () => true }) }
+						const host = {}
 
 						try {
 							const cleanup = show(signal)(host, element)
@@ -292,9 +292,7 @@
 
 						try {
 							// Create a mock host component
-							const host = {
-								getSignal: () => ({ get: () => true }),
-							}
+							const host = {}
 
 							// Apply show effect like in form-textbox using reactive signal
 							const cleanup = show(() => !!lengthSignal.get())(
@@ -340,9 +338,7 @@
 
 						try {
 							// Create a mock host component
-							const host = {
-								getSignal: () => ({ get: () => true }),
-							}
+							const host = {}
 
 							// Test RESET - should revert to original DOM value
 							const cleanup1 = show(() => RESET)(host, element)

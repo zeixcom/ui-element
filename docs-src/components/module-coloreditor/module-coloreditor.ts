@@ -81,21 +81,18 @@ export default component(
 			pass(target => {
 				const grade = target.dataset.grade
 				const numGrade = parseInt(grade || '500')
-				if (
-					!Number.isInteger(numGrade) ||
+				return !Number.isInteger(numGrade) ||
 					numGrade < 0 ||
 					numGrade > 1000 ||
 					numGrade === 500
-				)
-					return {
-						color: 'color' as keyof ModuleColoreditorProps,
-						name: () => `${el.name} 500`,
-					}
-				else
-					return {
-						color: () => getStepColor(el.color, numGrade / 1000),
-						name: () => `${el.name} ${grade}`,
-					}
+					? {
+							color: 'color' as keyof ModuleColoreditorProps,
+							name: () => `${el.name} 500`,
+						}
+					: {
+							color: () => getStepColor(el.color, numGrade / 1000),
+							name: () => `${el.name} ${grade}`,
+						}
 			}),
 		),
 	],

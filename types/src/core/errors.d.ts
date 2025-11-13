@@ -47,18 +47,6 @@ declare class InvalidEffectsError extends TypeError {
     constructor(host: HTMLElement, cause?: Error);
 }
 /**
- * Error thrown when setSignal on component is called with a non-signal value
- *
- * @since 0.14.0
- */
-declare class InvalidSignalError extends TypeError {
-    /**
-     * @param {HTMLElement} host - Host component
-     * @param {string} prop - Property name
-     */
-    constructor(host: HTMLElement, prop: string);
-}
-/**
  * Error thrown when a required desacendent element does not exist in a component's DOM subtree
  *
  * @since 0.14.0
@@ -108,4 +96,4 @@ declare class InvalidCustomElementError extends TypeError {
      */
     constructor(target: HTMLElement, where: string);
 }
-export { CircularMutationError, DependencyTimeoutError, InvalidComponentNameError, InvalidCustomElementError, InvalidPropertyNameError, InvalidEffectsError, InvalidReactivesError, InvalidSignalError, MissingElementError, };
+export { CircularMutationError, DependencyTimeoutError, InvalidComponentNameError, InvalidCustomElementError, InvalidPropertyNameError, InvalidEffectsError, InvalidReactivesError, MissingElementError, };

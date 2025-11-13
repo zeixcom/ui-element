@@ -9,15 +9,12 @@ import {
 	getText,
 	setText,
 } from '../../..'
-import { asOklch } from '../_shared/asOklch'
-import { getStepColor } from '../_shared/getStepColor'
+import { asOklch, CONTRAST_THRESHOLD, getStepColor } from '../_shared/color'
 
 export type CardColorscaleProps = {
 	name: string
 	color: Oklch
 }
-
-const CONTRAST_THRESHOLD = 0.71 // lightness
 
 export default component(
 	'card-colorscale',
@@ -32,28 +29,27 @@ export default component(
 			setText(() => formatHex(el.color)),
 		),
 		() =>
-			effect((): undefined => {
-				const props = new Map()
-				const isLight = el.color.l > CONTRAST_THRESHOLD
-				const softStep = isLight ? 0.1 : 0.9
-				props.set('base', formatCss(el.color))
-				props.set('text', isLight ? 'black' : 'white')
-				props.set(
-					'text-soft',
-					formatCss(getStepColor(el.color, softStep)),
-				)
+			effect(() => {
+				const setStyleProp = (key: string, value: string) =>
+					el.style.setProperty(`--color-${key}`, value)
+				setStyleProp('base', formatCss(el.color))
 				for (let i = 4; i > 0; i--)
-					props.set(
+					setStyleProp(
 						`lighten${i * 20}`,
 						formatCss(getStepColor(el.color, (5 + i) / 10)),
 					)
 				for (let i = 1; i < 5; i++)
-					props.set(
+					setStyleProp(
 						`darken${i * 20}`,
 						formatCss(getStepColor(el.color, (5 - i) / 10)),
 					)
-				for (const [key, value] of props)
-					el.style.setProperty(`--color-${key}`, value)
+				if (el.color.l > CONTRAST_THRESHOLD) {
+					setStyleProp('text', 'black')
+					setStyleProp('text-soft', 'var(--color-darken80)')
+				} else {
+					setStyleProp('text', 'white')
+					setStyleProp('text-soft', 'var(--color-lighten80)')
+				}
 			}),
 	],
 )

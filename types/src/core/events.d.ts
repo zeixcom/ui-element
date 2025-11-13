@@ -8,7 +8,7 @@ type EventTransformer<T extends {}, E extends Element, C extends HTMLElement, Ev
     host: C;
     target: E;
     value: T;
-}) => T | void;
+}) => T | void | Promise<void>;
 type EventTransformers<T extends {}, E extends Element, C extends HTMLElement> = {
     [K in keyof HTMLElementEventMap]?: EventTransformer<T, E, C, EventType<K>>;
 };
@@ -18,7 +18,7 @@ type EventHandler<P extends ComponentProps, E extends Element, Evt extends Event
     target: E;
 }) => {
     [K in keyof P]?: P[K];
-} | void;
+} | void | Promise<void>;
 /**
  * Produce a computed signal from transformed event data
  *

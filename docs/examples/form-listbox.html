@@ -160,7 +160,7 @@
 <span class="line"><span style="color:#F8F8F2">	value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
 <span class="line"><span style="color:#F8F8F2">	filter</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span></span>
 <span class="line"><span style="color:#F8F8F2">	src</span><span style="color:#F92672">:</span><span style="color:#F8F8F2"> { value</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2">; error</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> string</span><span style="color:#F8F8F2"> }</span></span>
-<span class="line"><span style="color:#F8F8F2">	options</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[]</span></span>
+<span class="line"><span style="color:#F92672">	readonly</span><span style="color:#F8F8F2"> options</span><span style="color:#F92672">:</span><span> </span><span style="color:#A6E22E;text-decoration:underline">HTMLElement</span><span style="color:#F8F8F2">[]</span></span>
 <span class="line"><span style="color:#F8F8F2">	index</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> number</span></span>
 <span class="line"><span style="color:#F8F8F2">}</span></span>
 <span class="line"></span>
@@ -171,7 +171,7 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> LAST_KEY </span><span style="color:#F92672">=</span><span style="color:#E6DB74"> 'End'</span></span>
 <span class="line"><span style="color:#66D9EF;font-style:italic">const</span><span style="color:#F8F8F2"> FOCUS_KEYS </span><span style="color:#F92672">=</span><span style="color:#F8F8F2"> [</span><span style="color:#F92672">...</span><span style="color:#F8F8F2">DECREMENT_KEYS, </span><span style="color:#F92672">...</span><span style="color:#F8F8F2">INCREMENT_KEYS, FIRST_KEY, LAST_KEY]</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span></span>
+<span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">&#x3C;</span><span style="color:#A6E22E;text-decoration:underline">FormListboxProps</span><span style="color:#F8F8F2">>(</span></span>
 <span class="line"><span style="color:#E6DB74">	'form-listbox'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">	{</span></span>
 <span class="line"><span style="color:#F8F8F2">		value: </span><span style="color:#E6DB74">''</span><span style="color:#F8F8F2">,</span></span>
@@ -293,7 +293,7 @@
 <span class="line"><span style="color:#66D9EF;font-style:italic">					const</span><span style="color:#F8F8F2"> visible </span><span style="color:#F92672">=</span><span style="color:#A6E22E"> fromSelector</span><span style="color:#F8F8F2">(</span></span>
 <span class="line"><span style="color:#E6DB74">						'[role="option"]:not([hidden])'</span><span style="color:#F8F8F2">,</span></span>
 <span class="line"><span style="color:#F8F8F2">					)(target)</span></span>
-<span class="line"><span style="color:#F92672">					return</span><span style="color:#A6E22E"> effect</span><span style="color:#F8F8F2">(()</span><span style="color:#F92672">:</span><span style="color:#66D9EF;font-style:italic"> undefined</span><span style="color:#66D9EF;font-style:italic"> =></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F92672">					return</span><span style="color:#A6E22E"> effect</span><span style="color:#F8F8F2">(() </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> {</span></span>
 <span class="line"><span style="color:#F8F8F2">						target.hidden </span><span style="color:#F92672">=</span><span style="color:#F92672"> !</span><span style="color:#F8F8F2">visible.</span><span style="color:#A6E22E">get</span><span style="color:#F8F8F2">().length</span></span>
 <span class="line"><span style="color:#F8F8F2">					})</span></span>
 <span class="line"><span style="color:#F8F8F2">				},</span></span>

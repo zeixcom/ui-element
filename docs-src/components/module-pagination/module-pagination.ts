@@ -37,10 +37,7 @@ export default component(
 			'input',
 			[
 				on('change', ({ target }) => {
-					el.value = Math.max(
-						1,
-						Math.min(target.valueAsNumber, el.max),
-					)
+					el.value = Math.max(1, Math.min(target.valueAsNumber, el.max))
 				}),
 				setProperty('value', () => String(el.value)),
 				setProperty('max', () => String(el.max)),

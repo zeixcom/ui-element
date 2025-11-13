@@ -36,10 +36,6 @@ const classString = (classList: DOMTokenList | undefined | null): string =>
 
 /* === Exported Functions === */
 
-const isDefinedObject = /*#__PURE__*/ (
-	value: unknown,
-): value is Record<string, unknown> => !!value && typeof value === 'object'
-
 const hasMethod = /*#__PURE__*/ <T extends object, K extends PropertyKey, R>(
 	obj: T,
 	methodName: K,
@@ -101,7 +97,7 @@ const elementName = /*#__PURE__*/ (el: Element | undefined | null): string =>
 const valueString = /*#__PURE__*/ (value: unknown): string =>
 	isString(value)
 		? `"${value}"`
-		: isDefinedObject(value)
+		: !!value && typeof value === 'object'
 			? JSON.stringify(value)
 			: String(value)
 
@@ -144,7 +140,6 @@ const log = <T>(value: T, msg: string, level: LogLevel = LOG_DEBUG): T => {
 export {
 	type LogLevel,
 	hasMethod,
-	isDefinedObject,
 	isElement,
 	isCustomElement,
 	isUpgradedComponent,

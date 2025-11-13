@@ -31,11 +31,6 @@ core_api: >
   - first(selector, effects, required?) - apply effects to first matching descendant
   - all(selector, effects, required?) - apply effects to all matching descendants
 
-  Component signal management:
-  - host.getSignal(prop) - get signal for a component property
-  - host.setSignal(prop, signal) - set signal for a component property
-  - Automatic dependency resolution for custom elements in DOM queries
-
   Effects system:
   - Effects are functions: (host, target) => Cleanup | void
   - Effects can be single function, array of functions, or Promise resolving to effects

@@ -100,7 +100,6 @@ export {
 	InvalidEffectsError,
 	InvalidPropertyNameError,
 	InvalidReactivesError,
-	InvalidSignalError,
 	MissingElementError,
 } from './src/core/errors'
 export {

@@ -1,3 +1,4 @@
+import { type ComputedCallback, type Signal } from '@zeix/cause-effect';
 import { type Extractor, type Helpers, type Parser } from './core/dom';
 import { type Effects } from './core/reactive';
 type ReservedWords = 'constructor' | 'prototype' | '__proto__' | 'toString' | 'valueOf' | 'hasOwnProperty' | 'isPrototypeOf' | 'propertyIsEnumerable' | 'toLocaleString';
@@ -12,6 +13,7 @@ type Component<P extends ComponentProps> = HTMLElement & P & {
     attributeChangedCallback<K extends keyof P>(name: K, oldValue: string | null, newValue: string | null): void;
     debug?: boolean;
 };
+type MaybeSignal<T extends {}> = T | Signal<T> | ComputedCallback<T>;
 type Initializer<T extends {}, C extends HTMLElement> = T | Parser<T, C> | Extractor<T, C> | ((host: C) => void);
 type Setup<P extends ComponentProps> = (host: Component<P>, helpers: Helpers<P>) => Effects<P, Component<P>>;
 /**
@@ -25,4 +27,4 @@ type Setup<P extends ComponentProps> = (host: Component<P>, helpers: Helpers<P>)
  * @throws {InvalidPropertyNameError} If property name is invalid
  */
 declare function component<P extends ComponentProps & ValidateComponentProps<P>>(name: string, init: { [K in keyof P]: Initializer<P[K] & {}, Component<P>>; } | undefined, setup: Setup<P>): Component<P>;
-export { type Component, type ComponentProps, type ReservedWords, type ValidPropertyKey, type ValidateComponentProps, type Initializer, type Setup, component, };
+export { type Component, type ComponentProps, type MaybeSignal, type ReservedWords, type ValidPropertyKey, type ValidateComponentProps, type Initializer, type Setup, component, };

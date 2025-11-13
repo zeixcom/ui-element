@@ -8,6 +8,8 @@ import {
 import { isNumber, isRecord } from '../../..'
 import type { Parser } from '../../../types'
 
+export const CONTRAST_THRESHOLD = 0.71
+
 export const asOklch =
 	(
 		fallback: Oklch = { mode: 'oklch', l: 0.48, c: 0.23, h: 263 },

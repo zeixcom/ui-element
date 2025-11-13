@@ -35,7 +35,7 @@ type FormListboxProps = {
 	value: string
 	filter: string
 	src: { value: string; error: string }
-	options: HTMLElement[]
+	readonly options: HTMLElement[]
 	index: number
 }
 
@@ -46,7 +46,7 @@ const FIRST_KEY = 'Home'
 const LAST_KEY = 'End'
 const FOCUS_KEYS = [...DECREMENT_KEYS, ...INCREMENT_KEYS, FIRST_KEY, LAST_KEY]
 
-component(
+component<FormListboxProps>(
 	'form-listbox',
 	{
 		value: '',
@@ -168,7 +168,7 @@ component(
 					const visible = fromSelector(
 						'[role="option"]:not([hidden])',
 					)(target)
-					return effect((): undefined => {
+					return effect(() => {
 						target.hidden = !visible.get().length
 					})
 				},

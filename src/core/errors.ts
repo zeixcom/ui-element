@@ -76,24 +76,6 @@ class InvalidEffectsError extends TypeError {
 }
 
 /**
- * Error thrown when setSignal on component is called with a non-signal value
- *
- * @since 0.14.0
- */
-class InvalidSignalError extends TypeError {
-	/**
-	 * @param {HTMLElement} host - Host component
-	 * @param {string} prop - Property name
-	 */
-	constructor(host: HTMLElement, prop: string) {
-		super(
-			`Expected signal as value for property "${String(prop)}" in component ${elementName(host)}.`,
-		)
-		this.name = 'InvalidSignalError'
-	}
-}
-
-/**
  * Error thrown when a required desacendent element does not exist in a component's DOM subtree
  *
  * @since 0.14.0
@@ -175,6 +157,5 @@ export {
 	InvalidPropertyNameError,
 	InvalidEffectsError,
 	InvalidReactivesError,
-	InvalidSignalError,
 	MissingElementError,
 }

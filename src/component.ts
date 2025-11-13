@@ -72,6 +72,8 @@ type Component<P extends ComponentProps> = HTMLElement &
 		debug?: boolean
 	}
 
+type MaybeSignal<T extends {}> = T | Signal<T> | ComputedCallback<T>
+
 type Initializer<T extends {}, C extends HTMLElement> =
 	| T
 	| Parser<T, C>
@@ -193,7 +195,7 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 			for (const [prop, initializer] of Object.entries(init)) {
 				if (initializer == null || prop in this) continue
 				const result = isFunction(initializer)
-					? initializer(this, null)
+					? initializer(this)
 					: initializer
 				if (result != null) this.#setAccessor(prop, result)
 			}
@@ -285,11 +287,11 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 		 *
 		 * @since 0.15.0
 		 * @param {K} key - Key to set accessor for
-		 * @param {Signal<P[K]>} value - Initial value, signal or computed callback to create signal
+		 * @param {MaybeSignal<P[K]>} value - Initial value, signal or computed callback to create signal
 		 */
 		#setAccessor<K extends keyof P>(
 			key: K,
-			value: P[K] | Signal<P[K]> | ComputedCallback<P[K]>,
+			value: MaybeSignal<P[K]>,
 		): void {
 			const signal = isSignal(value)
 				? value
@@ -321,6 +323,7 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 export {
 	type Component,
 	type ComponentProps,
+	type MaybeSignal,
 	type ReservedWords,
 	type ValidPropertyKey,
 	type ValidateComponentProps,

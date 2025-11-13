@@ -14,7 +14,7 @@
 				state,
 				asString,
 				asInteger,
-			} from '../index.dev.js'
+			} from '../../index.dev.js'
 
 			runTests(() => {
 				describe('Component Definition Errors', () => {
@@ -103,80 +103,6 @@
 					})
 				})
 
-				describe('Runtime Property Errors', () => {
-					before(() => {
-						// Define a test component for runtime tests
-						component(
-							'test-runtime-errors',
-							{
-								validProp: asString('valid'),
-							},
-							() => [],
-						)
-					})
-
-					it('should throw InvalidSignalError for non-signal values', () => {
-						const instance = document.createElement(
-							'test-runtime-errors',
-						)
-
-						assert.throws(
-							() => {
-								instance.setSignal(
-									'invalidProp',
-									'not a signal',
-								)
-							},
-							Error,
-							'Expected signal as value',
-						)
-
-						assert.throws(
-							() => {
-								instance.setSignal('anotherInvalid', {
-									not: 'a signal',
-								})
-							},
-							Error,
-							'Expected signal as value',
-						)
-					})
-
-					it('should throw InvalidPropertyNameError for reserved words at runtime', () => {
-						const instance = document.createElement(
-							'test-runtime-errors',
-						)
-
-						assert.throws(
-							() => {
-								instance.setSignal(
-									'constructor',
-									state('invalid'),
-								)
-							},
-							Error,
-							'Property name "constructor" is a reserved word',
-						)
-					})
-
-					it('should throw InvalidPropertyNameError for HTMLElement conflicts at runtime', () => {
-						const instance = document.createElement(
-							'test-runtime-errors',
-						)
-
-						assert.throws(
-							() => {
-								instance.setSignal(
-									'innerHTML',
-									state('invalid'),
-								)
-							},
-							Error,
-							'Property name "innerHTML" conflicts with inherited HTMLElement property',
-						)
-					})
-				})
-
 				describe('Missing Element Errors', () => {
 					it('should verify error types are defined', () => {
 						// Test that the error constructors exist and work
@@ -189,24 +115,6 @@
 							Error,
 							'Missing required element',
 						)
-					})
-
-					it('should verify components can be created despite potential setup errors', () => {
-						// Test that components with potential missing elements can be defined
-						component(
-							'test-missing-simple',
-							{},
-							(_, { useElement }) => {
-								// Don't actually call useElement with required param to avoid error
-								// This tests the component definition itself
-								return []
-							},
-						)
-
-						const instance = document.createElement(
-							'test-missing-simple',
-						)
-						assert.instanceOf(instance, HTMLElement)
 					})
 
 					it('should verify error handling infrastructure works', () => {
