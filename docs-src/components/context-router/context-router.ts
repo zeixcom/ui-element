@@ -1,13 +1,11 @@
 import {
 	type Component,
-	type Computed,
 	type Context,
 	component,
 	computed,
 	dangerouslySetInnerHTML,
 	on,
 	provideContexts,
-	type State,
 	setText,
 	show,
 	state,
@@ -26,12 +24,12 @@ export type ContextRouterProps = {
 
 export const ROUTER_PATHNAME = 'router-pathname' as Context<
 	'router-pathname',
-	State<string>
+	() => string
 >
 
 export const ROUTER_QUERY = 'router-query' as Context<
 	'router-query',
-	Computed<Record<string, string>>
+	() => Record<string, string>
 >
 
 /* === Component === */

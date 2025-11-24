@@ -1,12 +1,12 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / InvalidCustomElementError
+[@zeix/le-truc](../globals.md) / InvalidCustomElementError
 
 # Class: InvalidCustomElementError
 
-Defined in: [src/core/errors.ts:139](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/errors.ts#L139)
+Defined in: [src/core/errors.ts:139](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/core/errors.ts#L139)
 
 Error thrown when target element is not a custom element as expected
 
@@ -24,7 +24,7 @@ Error thrown when target element is not a custom element as expected
 
 > **new InvalidCustomElementError**(`target`, `where`): `InvalidCustomElementError`
 
-Defined in: [src/core/errors.ts:144](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/errors.ts#L144)
+Defined in: [src/core/errors.ts:144](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/core/errors.ts#L144)
 
 #### Parameters
 

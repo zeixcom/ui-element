@@ -1,14 +1,14 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / fromDOM
+[@zeix/le-truc](../globals.md) / fromDOM
 
 # Function: fromDOM()
 
 > **fromDOM**\<`T`, `C`, `S`\>(`extractors`, `fallback`): [`Extractor`](../type-aliases/Extractor.md)\<`T`, `C`\>
 
-Defined in: [src/core/dom.ts:188](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/dom.ts#L188)
+Defined in: [src/core/dom.ts:188](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/core/dom.ts#L188)
 
 Get a value from elements in the DOM
 

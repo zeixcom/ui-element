@@ -1,14 +1,14 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / ElementsUsage
+[@zeix/le-truc](../globals.md) / ElementsUsage
 
 # Type Alias: ElementsUsage()
 
 > **ElementsUsage** = \{\<`S`\>(`selector`, `required?`): [`ElementFromSelector`](ElementFromSelector.md)\<`S`\>[]; \<`E`\>(`selector`, `required?`): `E`[]; \}
 
-Defined in: [src/core/dom.ts:81](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/dom.ts#L81)
+Defined in: [src/core/dom.ts:81](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/core/dom.ts#L81)
 
 ## Call Signature
 

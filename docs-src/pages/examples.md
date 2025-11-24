@@ -9,7 +9,7 @@ description: 'Common use cases and demos'
 # 🍽️ Examples & Recipes
 
 <div>
-  <p class="lead">Discover practical examples and patterns for building reactive, modular components with El Truco. Each example focuses on showcasing a specific feature or best practice, guiding you through real-world use cases.</p>
+  <p class="lead">Discover practical examples and patterns for building reactive, modular components with Le Truc. Each example focuses on showcasing a specific feature or best practice, guiding you through real-world use cases.</p>
   {{ toc }}
 </div>
 </section-hero>

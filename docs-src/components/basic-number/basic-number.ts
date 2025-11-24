@@ -102,13 +102,17 @@ function getNumberFormatter(
 	}
 }
 
-export default component('basic-number', { value: asNumber() }, el => {
-	const formatter = getNumberFormatter(
-		el.closest('[lang]')?.getAttribute('lang') || FALLBACK_LOCALE,
-		el.getAttribute('options'),
-	)
-	return [setText(() => formatter.format(el.value))]
-})
+export default component<BasicNumberProps>(
+	'basic-number',
+	{ value: asNumber() },
+	el => {
+		const formatter = getNumberFormatter(
+			el.closest('[lang]')?.getAttribute('lang') || FALLBACK_LOCALE,
+			el.getAttribute('options'),
+		)
+		return [setText(() => formatter.format(el.value))]
+	},
+)
 
 declare global {
 	interface HTMLElementTagNameMap {

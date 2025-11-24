@@ -1,14 +1,14 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / asJSON
+[@zeix/le-truc](../globals.md) / asJSON
 
 # Function: asJSON()
 
 > **asJSON**\<`T`, `E`\>(`fallback`): [`Parser`](../type-aliases/Parser.md)\<`T`, `E`\>
 
-Defined in: [src/lib/parsers.ts:111](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/lib/parsers.ts#L111)
+Defined in: [src/lib/parsers.ts:111](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/lib/parsers.ts#L111)
 
 Parse a string as a JSON serialized object with a fallback
 

@@ -1,11 +1,11 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / LOG\_INFO
+[@zeix/le-truc](../globals.md) / LOG\_INFO
 
 # Variable: LOG\_INFO
 
 > `const` **LOG\_INFO**: [`LogLevel`](../type-aliases/LogLevel.md) = `'info'`
 
-Defined in: [src/core/util.ts:12](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/util.ts#L12)
+Defined in: [src/core/util.ts:12](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/core/util.ts#L12)

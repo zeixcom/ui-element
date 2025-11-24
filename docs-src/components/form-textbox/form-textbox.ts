@@ -2,22 +2,19 @@ import {
 	batch,
 	type Component,
 	component,
-	computed,
-	fromDOM,
-	getText,
 	on,
 	setAttribute,
 	setProperty,
 	setText,
 } from '../../..'
-import { clearEffects, clearMethod } from '../_shared/clearInput'
+import { clearEffects, clearMethod } from '../_shared/clear'
 
 export type FormTextboxProps = {
 	value: string
 	length: number
 	error: string
 	description: string
-	clear(): void
+	readonly clear: () => void
 }
 
 export default component<FormTextboxProps>(
@@ -26,7 +23,24 @@ export default component<FormTextboxProps>(
 		value: '',
 		length: 0,
 		error: '',
-		description: fromDOM({ '.description': getText() }, ''),
+		description: (el: HTMLElement & { length: number }) => {
+			const description = el.querySelector<HTMLElement>('.description')
+			if (description) {
+				const input = el.querySelector<
+					HTMLInputElement | HTMLTextAreaElement
+				>('input, textarea')
+				if (input && input.maxLength && description.dataset.remaining) {
+					return () =>
+						description.dataset.remaining!.replace(
+							'${n}',
+							String(input.maxLength - el.length),
+						)
+				}
+				return description.textContent?.trim() ?? ''
+			} else {
+				return ''
+			}
+		},
 		clear: clearMethod<HTMLInputElement | HTMLTextAreaElement>(
 			'input, textarea',
 		),
@@ -37,23 +51,8 @@ export default component<FormTextboxProps>(
 			'Native input or textarea needed.',
 		)
 
-		// Initialize description with existing content or set up computed signal for remaining characters
-		const description = el.querySelector<HTMLElement>('.description')
-		if (description?.dataset.remaining && input.maxLength) {
-			el.setSignal(
-				'description',
-				computed(() =>
-					description.dataset.remaining!.replace(
-						'${n}',
-						String(input.maxLength - el.length),
-					),
-				),
-			)
-		} else if (description?.textContent) {
-			el.description = description.textContent.trim()
-		}
 		const errorId = el.querySelector('.error')?.id
-		const descriptionId = description?.id
+		const descriptionId = el.querySelector('.description')?.id
 
 		return [
 			setAttribute('value'),

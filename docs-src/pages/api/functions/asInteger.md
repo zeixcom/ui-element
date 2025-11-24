@@ -1,14 +1,14 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / asInteger
+[@zeix/le-truc](../globals.md) / asInteger
 
 # Function: asInteger()
 
 > **asInteger**\<`E`\>(`fallback?`): [`Parser`](../type-aliases/Parser.md)\<`number`, `E`\>
 
-Defined in: [src/lib/parsers.ts:36](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/lib/parsers.ts#L36)
+Defined in: [src/lib/parsers.ts:36](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/lib/parsers.ts#L36)
 
 Parse a string as a number forced to integer with a fallback
 

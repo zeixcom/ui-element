@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / EffectCallback
+[@zeix/le-truc](../globals.md) / EffectCallback
 
 # Type Alias: EffectCallback
 
@@ -12,7 +12,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/effect.d.ts:3
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

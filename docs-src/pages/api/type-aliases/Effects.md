@@ -1,14 +1,14 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / Effects
+[@zeix/le-truc](../globals.md) / Effects
 
 # Type Alias: Effects\<P, E\>
 
 > **Effects**\<`P`, `E`\> = [`Effect`](Effect.md)\<`P`, `E`\> \| [`Effect`](Effect.md)\<`P`, `E`\>[] \| `Promise`\<[`Effect`](Effect.md)\<`P`, `E`\>\> \| `Promise`\<[`Effect`](Effect.md)\<`P`, `E`\>[]\>
 
-Defined in: [src/core/reactive.ts:36](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/reactive.ts#L36)
+Defined in: [src/core/reactive.ts:36](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/core/reactive.ts#L36)
 
 ## Type Parameters
 

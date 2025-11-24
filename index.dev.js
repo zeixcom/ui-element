@@ -1083,7 +1083,7 @@ var validatePropertyName = (prop) => {
     return `Property name "${prop}" conflicts with inherited HTMLElement property`;
   return null;
 };
-function component(name, init = {}, setup) {
+function component(name, init, setup) {
   if (!name.includes("-") || !name.match(/^[a-z][a-z0-9-]*$/))
     throw new InvalidComponentNameError(name);
   for (const prop of Object.keys(init)) {
@@ -1103,12 +1103,15 @@ function component(name, init = {}, setup) {
         if (this.debug)
           log(this, "Connected");
       }
+      const createSignal = (key, initializer) => {
+        const result = isFunction(initializer) ? initializer(this) : initializer;
+        if (result != null)
+          this.#setAccessor(key, result);
+      };
       for (const [prop, initializer] of Object.entries(init)) {
         if (initializer == null || prop in this)
           continue;
-        const result = isFunction(initializer) ? initializer(this) : initializer;
-        if (result != null)
-          this.#setAccessor(prop, result);
+        createSignal(prop, initializer);
       }
       const [helpers, getDependencies] = getHelpers(this);
       const effects = setup(this, helpers);
@@ -1141,19 +1144,19 @@ function component(name, init = {}, setup) {
       if (DEV_MODE && this.debug)
         log(this, "Disconnected");
     }
-    attributeChangedCallback(attr, old, value) {
-      if (value === old || isComputed(this.#signals[attr]))
+    attributeChangedCallback(name2, oldValue, newValue) {
+      if (newValue === oldValue || isComputed(this.#signals[name2]))
         return;
-      const parser = init[attr];
+      const parser = init[name2];
       if (!isParser(parser))
         return;
-      const parsed = parser(this, value, old);
+      const parsed = parser(this, newValue, oldValue);
       if (DEV_MODE && this.debug)
-        log(value, `Attribute "${String(attr)}" of ${elementName(this)} changed from ${valueString2(old)} to ${valueString2(value)}, parsed as <${typeString(parsed)}> ${valueString2(parsed)}`);
-      if (attr in this)
-        this[attr] = parsed;
+        log(newValue, `Attribute "${String(name2)}" of ${elementName(this)} changed from ${valueString2(oldValue)} to ${valueString2(newValue)}, parsed as <${typeString(parsed)}> ${valueString2(parsed)}`);
+      if (name2 in this)
+        this[name2] = parsed;
       else
-        this.#setAccessor(attr, parsed);
+        this.#setAccessor(name2, parsed);
     }
     #setAccessor(key, value) {
       const signal = isSignal(value) ? value : isComputedCallback(value) ? computed(value) : state(value);

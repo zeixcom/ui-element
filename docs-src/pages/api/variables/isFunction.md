@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / isFunction
+[@zeix/le-truc](../globals.md) / isFunction
 
 # Variable: isFunction()
 
@@ -28,7 +28,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/util.d.ts:5
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

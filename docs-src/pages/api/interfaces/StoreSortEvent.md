@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / StoreSortEvent
+[@zeix/le-truc](../globals.md) / StoreSortEvent
 
 # Interface: StoreSortEvent
 
@@ -10,7 +10,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/store.d.ts:53
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

@@ -1,21 +1,21 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / Initializer
+[@zeix/le-truc](../globals.md) / Initializer
 
-# Type Alias: Initializer\<T, C\>
+# Type Alias: Initializer\<K, P\>
 
-> **Initializer**\<`T`, `C`\> = `T` \| [`Parser`](Parser.md)\<`T`, `C`\> \| [`Extractor`](Extractor.md)\<`T`, `C`\> \| (`host`) => `void`
+> **Initializer**\<`K`, `P`\> = `P`\[`K`\] \| [`Parser`](Parser.md)\<`P`\[`K`\], [`Component`](Component.md)\<`P`\>\> \| [`Extractor`](Extractor.md)\<[`MaybeSignal`](MaybeSignal.md)\<`P`\[`K`\]\>, [`Component`](Component.md)\<`P`\>\> \| (`host`) => `void`
 
-Defined in: [src/component.ts:77](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/component.ts#L77)
+Defined in: [src/component.ts:59](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/component.ts#L59)
 
 ## Type Parameters
 
-### T
+### K
 
-`T` *extends* `object`
+`K` *extends* [`ComponentProp`](ComponentProp.md)
 
-### C
+### P
 
-`C` *extends* `HTMLElement`
+`P` *extends* [`ComponentProps`](ComponentProps.md)

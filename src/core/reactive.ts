@@ -135,7 +135,7 @@ const resolveReactive = <
 }
 
 /**
- * Effect for passing reactive values to a descendant El Truco component.
+ * Effect for passing reactive values to a descendant Le Truc component.
  *
  * @since 0.15.0
  * @param {MutableReactives<Component<Q>, P>} props - Reactive values to pass

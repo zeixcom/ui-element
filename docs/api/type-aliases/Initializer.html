@@ -3,24 +3,24 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Initializer\<T, C\> – El Truco Docs</title>
+		<title>Initializer\<K, P\> – Le Truc Docs</title>
 		<meta name="description" content="" />
 		<link
 			rel="preload"
-			href="../../assets/main.css?v=mhxdrgfx"
+			href="../../assets/main.css?v=mic7yvv5"
 			as="style"
 		/>
 		<link
 			rel="modulepreload"
-			href="../../assets/main.js?v=mhxdrgfx"
+			href="../../assets/main.js?v=mic7yvv5"
 		/>
 		<link
 			rel="stylesheet"
-			href="../../assets/main.css?v=mhxdrgfx"
+			href="../../assets/main.css?v=mic7yvv5"
 		/>
 		<script
 			type="module"
-			src="../../assets/main.js?v=mhxdrgfx"
+			src="../../assets/main.js?v=mic7yvv5"
 		></script>
 	</head>
 	<body class="api">
@@ -30,7 +30,7 @@
 					Skip to main content
 				</a>
 				<h1 class="content">
-					El Truco Docs <small>Version 0.15.0</small>
+					Le Truc Docs <small>Version 0.15.0</small>
 				</h1>
 				<section-menu>
 	<nav>
@@ -82,7 +82,7 @@
 			<a href="index.html">
 				<span class="icon">📖</span>
 				<strong>Introduction</strong>
-				<small>Overview and key benefits of El Truco</small>
+				<small>Overview and key benefits of Le Truc</small>
 			</a>
 		</li><li>
 			<a href="styling.html">
@@ -99,36 +99,36 @@
 				</card-callout>
 			</header>
 			<main id="main" class="content-grid"><section class="api-content">
-<h1 id="type-alias-initializerltt-cgt">
-							<a name="type-alias-initializerltt-cgt" class="anchor" href="#type-alias-initializerltt-cgt">
+<h1 id="type-alias-initializerltk-pgt">
+							<a name="type-alias-initializerltk-pgt" class="anchor" href="#type-alias-initializerltk-pgt">
 								<span class="permalink">🔗</span>
-								<span class="title">Type Alias: Initializer&lt;T, C&gt;</span>
+								<span class="title">Type Alias: Initializer&lt;K, P&gt;</span>
 							</a>
 						</h1>
 <blockquote>
-<p><strong>Initializer</strong>&lt;<code>T</code>, <code>C</code>&gt; = <code>T</code> | <a href="Parser.html"><code>Parser</code></a>&lt;<code>T</code>, <code>C</code>&gt; | <a href="Extractor.html"><code>Extractor</code></a>&lt;<code>T</code>, <code>C</code>&gt; | (<code>host</code>) =&gt; <code>void</code></p>
+<p><strong>Initializer</strong>&lt;<code>K</code>, <code>P</code>&gt; = <code>P</code>[<code>K</code>] | <a href="Parser.html"><code>Parser</code></a>&lt;<code>P</code>[<code>K</code>], <a href="Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;&gt; | <a href="Extractor.html"><code>Extractor</code></a>&lt;<a href="MaybeSignal.html"><code>MaybeSignal</code></a>&lt;<code>P</code>[<code>K</code>]&gt;, <a href="Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;&gt; | (<code>host</code>) =&gt; <code>void</code></p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/component.ts#L77">src/component.ts:77</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/component.ts#L59">src/component.ts:59</a></p>
 <h2 id="type-parameters">
 							<a name="type-parameters" class="anchor" href="#type-parameters">
 								<span class="permalink">🔗</span>
 								<span class="title">Type Parameters</span>
 							</a>
 						</h2>
-<h3 id="t">
-							<a name="t" class="anchor" href="#t">
+<h3 id="k">
+							<a name="k" class="anchor" href="#k">
 								<span class="permalink">🔗</span>
-								<span class="title">T</span>
+								<span class="title">K</span>
 							</a>
 						</h3>
-<p><code>T</code> <em>extends</em> <code>object</code></p>
-<h3 id="c">
-							<a name="c" class="anchor" href="#c">
+<p><code>K</code> <em>extends</em> <a href="ComponentProp.html"><code>ComponentProp</code></a></p>
+<h3 id="p">
+							<a name="p" class="anchor" href="#p">
 								<span class="permalink">🔗</span>
-								<span class="title">C</span>
+								<span class="title">P</span>
 							</a>
 						</h3>
-<p><code>C</code> <em>extends</em> <code>HTMLElement</code></p>
+<p><code>P</code> <em>extends</em> <a href="ComponentProps.html"><code>ComponentProps</code></a></p>
 
 </section></main>
 			<footer class="content-grid">

@@ -1,14 +1,14 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / ElementInserter
+[@zeix/le-truc](../globals.md) / ElementInserter
 
 # Type Alias: ElementInserter\<E\>
 
 > **ElementInserter**\<`E`\> = `object`
 
-Defined in: [src/lib/effects.ts:33](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/lib/effects.ts#L33)
+Defined in: [src/lib/effects.ts:33](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/lib/effects.ts#L33)
 
 ## Type Parameters
 
@@ -22,7 +22,7 @@ Defined in: [src/lib/effects.ts:33](https://github.com/zeixcom/ui-element/blob/9
 
 > **create**: (`parent`) => `Element` \| `null`
 
-Defined in: [src/lib/effects.ts:35](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/lib/effects.ts#L35)
+Defined in: [src/lib/effects.ts:35](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/lib/effects.ts#L35)
 
 #### Parameters
 
@@ -40,7 +40,7 @@ Defined in: [src/lib/effects.ts:35](https://github.com/zeixcom/ui-element/blob/9
 
 > `optional` **position**: `InsertPosition`
 
-Defined in: [src/lib/effects.ts:34](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/lib/effects.ts#L34)
+Defined in: [src/lib/effects.ts:34](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/lib/effects.ts#L34)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [src/lib/effects.ts:34](https://github.com/zeixcom/ui-element/blob/9
 
 > `optional` **reject**: (`error`) => `void`
 
-Defined in: [src/lib/effects.ts:37](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/lib/effects.ts#L37)
+Defined in: [src/lib/effects.ts:37](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/lib/effects.ts#L37)
 
 #### Parameters
 
@@ -66,7 +66,7 @@ Defined in: [src/lib/effects.ts:37](https://github.com/zeixcom/ui-element/blob/9
 
 > `optional` **resolve**: (`parent`) => `void`
 
-Defined in: [src/lib/effects.ts:36](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/lib/effects.ts#L36)
+Defined in: [src/lib/effects.ts:36](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/lib/effects.ts#L36)
 
 #### Parameters
 

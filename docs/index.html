@@ -3,24 +3,24 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Introduction – El Truco Docs</title>
-		<meta name="description" content="Overview and key benefits of El Truco" />
+		<title>Introduction – Le Truc Docs</title>
+		<meta name="description" content="Overview and key benefits of Le Truc" />
 		<link
 			rel="preload"
-			href="./assets/main.css?v=mhxdrgfz"
+			href="./assets/main.css?v=mic7yvv1"
 			as="style"
 		/>
 		<link
 			rel="modulepreload"
-			href="./assets/main.js?v=mhxdrgfz"
+			href="./assets/main.js?v=mic7yvv1"
 		/>
 		<link
 			rel="stylesheet"
-			href="./assets/main.css?v=mhxdrgfz"
+			href="./assets/main.css?v=mic7yvv1"
 		/>
 		<script
 			type="module"
-			src="./assets/main.js?v=mhxdrgfz"
+			src="./assets/main.js?v=mic7yvv1"
 		></script>
 	</head>
 	<body class="">
@@ -30,7 +30,7 @@
 					Skip to main content
 				</a>
 				<h1 class="content">
-					El Truco Docs <small>Version 0.15.0</small>
+					Le Truc Docs <small>Version 0.15.0</small>
 				</h1>
 				<section-menu>
 	<nav>
@@ -82,7 +82,7 @@
 			<a href="index.html">
 				<span class="icon">📖</span>
 				<strong>Introduction</strong>
-				<small>Overview and key benefits of El Truco</small>
+				<small>Overview and key benefits of Le Truc</small>
 			</a>
 		</li><li>
 			<a href="styling.html">
@@ -107,14 +107,14 @@
 							</a>
 						</h1>
 <div>
-  <p class="lead"><strong>Web development doesn't need to be complicated</strong>. El Truco lets you create reactive Web Components that enhance your existing HTML.</p>
+  <p class="lead"><strong>Web development doesn't need to be complicated</strong>. Le Truc lets you create reactive Web Components that enhance your existing HTML.</p>
   <module-toc>
 		<nav>
 			<h2>On This Page</h2>
 			<ol><li>
-			<a href="#what-is-el-truco">What is El Truco?</a>
+			<a href="#what-is-le-truc">What is Le Truc?</a>
 		</li><li>
-			<a href="#why-choose-el-truco">Why Choose El Truco?</a>
+			<a href="#why-choose-le-truc">Why Choose Le Truc?</a>
 		</li><li>
 			<a href="#next-steps">Next Steps</a>
 		</li></ol>
@@ -125,10 +125,10 @@
 
 <section class="breakout">
 
-<h2 id="what-is-el-truco">
-							<a name="what-is-el-truco" class="anchor" href="#what-is-el-truco">
+<h2 id="what-is-le-truc">
+							<a name="what-is-le-truc" class="anchor" href="#what-is-le-truc">
 								<span class="permalink">🔗</span>
-								<span class="title">What is El Truco?</span>
+								<span class="title">What is Le Truc?</span>
 							</a>
 						</h2>
 <module-carousel>
@@ -160,7 +160,7 @@
 							</a>
 						</h3>
       <div class="slide-content">
-        <p>El Truco assumes you start with semantic HTML and want to enhance it with behavior:</p>
+        <p>Le Truc assumes you start with semantic HTML and want to enhance it with behavior:</p>
         <module-codeblock language="html" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
          	<p class="meta"><span class="file">hello-world.html</span><span class="language">html</span></p>
 <pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F8F8F2">&#x3C;</span><span style="color:#F92672">hello-world</span><span style="color:#F8F8F2">></span></span>
@@ -186,7 +186,7 @@
         <p>Progressively enhance the user experience by adding interactivity:</p>
         <module-codeblock language="js" copy-success="Copied!" copy-error="Error trying to copy to clipboard!">
           <p class="meta"><span class="file">hello-world.js</span><span class="language">js</span></p>
-<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asString, component, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/el-truco'</span></span>
+<pre class="shiki monokai" style="background-color:#272822;color:#F8F8F2" tabindex="0"><code><span class="line"><span style="color:#F92672">import</span><span style="color:#F8F8F2"> { asString, component, setText } </span><span style="color:#F92672">from</span><span style="color:#E6DB74"> '@zeix/le-truc'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#A6E22E">component</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'hello-world'</span><span style="color:#F8F8F2">, { name: </span><span style="color:#A6E22E">asString</span><span style="color:#F8F8F2">() }, (</span><span style="color:#FD971F;font-style:italic">_</span><span style="color:#F8F8F2">, { </span><span style="color:#FD971F;font-style:italic">first</span><span style="color:#F8F8F2"> }) </span><span style="color:#66D9EF;font-style:italic">=></span><span style="color:#F8F8F2"> [</span></span>
 <span class="line"><span style="color:#A6E22E">  first</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'span'</span><span style="color:#F8F8F2">, </span><span style="color:#A6E22E">setText</span><span style="color:#F8F8F2">(</span><span style="color:#E6DB74">'name'</span><span style="color:#F8F8F2">)),</span></span>
@@ -198,7 +198,7 @@
             </button>
          	</basic-button>
         </module-codeblock>
-        <p>El Truco augments what the platform already provides. It leverages the Web Components standard while adding just enough convenience functions to make reactive UI behaviors easy to implement.</p>
+        <p>Le Truc augments what the platform already provides. It leverages the Web Components standard while adding just enough convenience functions to make reactive UI behaviors easy to implement.</p>
       </div>
     </div>
     <div id="slide4" role="tabpanel" aria-current="false" style="background: var(--color-green-20);">
@@ -227,7 +227,7 @@
 						</h3>
       <div class="slide-content">
         <p>Because we add less abstractions, we can keep the library small (approximately 5kB gzipped).</p>
-        <p>El Truco is a lightweight library that provides a simple and efficient way to build reactive user interfaces. It is designed to be easy to use and understand, while still providing powerful features for building complex applications.</p>
+        <p>Le Truc is a lightweight library that provides a simple and efficient way to build reactive user interfaces. It is designed to be easy to use and understand, while still providing powerful features for building complex applications.</p>
         <p>HTML ain't broken. CSS ain't broken. JavaScript ain't broken. We just want to split it in chunks (components), detect bugs early (type safety), and have predictable updates without tight coupling (reactivity). That's what we stand for.</p>
       </div>
     </div>
@@ -295,13 +295,13 @@
 
 <section>
 
-<h2 id="why-choose-el-truco">
-							<a name="why-choose-el-truco" class="anchor" href="#why-choose-el-truco">
+<h2 id="why-choose-le-truc">
+							<a name="why-choose-le-truc" class="anchor" href="#why-choose-le-truc">
 								<span class="permalink">🔗</span>
-								<span class="title">Why Choose El Truco?</span>
+								<span class="title">Why Choose Le Truc?</span>
 							</a>
 						</h2>
-<p>El Truco shines when you want:</p>
+<p>Le Truc shines when you want:</p>
 <ul>
 <li><strong>Server-rendered content</strong> with client-side enhancements</li>
 <li><strong>High performance</strong> on all devices (no virtual DOM overhead)</li>
@@ -326,7 +326,7 @@
 								<span class="title">Next Steps</span>
 							</a>
 						</h2>
-<p>Now that you understand what El Truco is and its core philosophy, you&#39;re ready to:</p>
+<p>Now that you understand what Le Truc is and its core philosophy, you&#39;re ready to:</p>
 <ul>
 <li>Move on to <a href="getting-started.html">Getting Started</a> to install the library and build your first component</li>
 </ul>

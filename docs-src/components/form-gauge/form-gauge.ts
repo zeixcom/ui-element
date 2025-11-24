@@ -22,7 +22,7 @@ export type FormGaugeThreshold = {
 	color: string
 }
 
-export default component(
+export default component<FormGaugeProps>(
 	'form-gauge',
 	{ value: asInteger(fromDOM({ progress: getProperty('value') }, 0)) },
 	(el, { first, useElement }) => {

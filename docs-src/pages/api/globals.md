@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](README.md)
+[**@zeix/le-truc**](README.md)
 
 ***
 
-# @zeix/el-truco
+# @zeix/le-truc
 
 ## Classes
 
@@ -32,6 +32,7 @@
 
 - [Cleanup](type-aliases/Cleanup.md)
 - [Component](type-aliases/Component.md)
+- [ComponentProp](type-aliases/ComponentProp.md)
 - [ComponentProps](type-aliases/ComponentProps.md)
 - [Computed](type-aliases/Computed.md)
 - [ComputedCallback](type-aliases/ComputedCallback.md)
@@ -62,6 +63,7 @@
 - [LooseExtractor](type-aliases/LooseExtractor.md)
 - [MatchHandlers](type-aliases/MatchHandlers.md)
 - [MaybeCleanup](type-aliases/MaybeCleanup.md)
+- [MaybeSignal](type-aliases/MaybeSignal.md)
 - [Parser](type-aliases/Parser.md)
 - [ParserOrFallback](type-aliases/ParserOrFallback.md)
 - [PassedProp](type-aliases/PassedProp.md)
@@ -76,8 +78,6 @@
 - [StoreEventMap](type-aliases/StoreEventMap.md)
 - [UnknownContext](type-aliases/UnknownContext.md)
 - [UpdateOperation](type-aliases/UpdateOperation.md)
-- [ValidateComponentProps](type-aliases/ValidateComponentProps.md)
-- [ValidPropertyKey](type-aliases/ValidPropertyKey.md)
 
 ## Variables
 

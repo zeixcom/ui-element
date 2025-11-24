@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / MatchHandlers
+[@zeix/le-truc](../globals.md) / MatchHandlers
 
 # Type Alias: MatchHandlers\<S\>
 
@@ -12,7 +12,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/match.d.ts:3
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / Signal
+[@zeix/le-truc](../globals.md) / Signal
 
 # Type Alias: Signal\<T\>
 
@@ -12,7 +12,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/signal.d.ts:4
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

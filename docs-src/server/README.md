@@ -26,7 +26,7 @@ Defines reactive signals for different file types:
   - `pageInfos`: Computed signal generating page navigation data
   - `fullyProcessed`: Computed signal with complete markdown→HTML transformation
 
-- **`libraryScripts`**: TypeScript files from `./src/` (El Truco library source)
+- **`libraryScripts`**: TypeScript files from `./src/` (Le Truc library source)
 - **`docsScripts`**: TypeScript files from `./docs-src/` (documentation scripts)
 - **`componentScripts`**: Component TypeScript from `./docs-src/components/`
 - **`templateScripts`**: Template functions from `./docs-src/templates/`

@@ -1,10 +1,10 @@
 /**
- * @name El Truco
+ * @name Le Truc
  * @version 0.15.0
  * @author Esther Brunner
  */
 export { batch, CircularDependencyError, type Cleanup, type Computed, type ComputedCallback, computed, type DiffResult, diff, type EffectCallback, effect, enqueue, InvalidSignalValueError, isAbortError, isAsyncFunction, isComputed, isEqual, isFunction, isMutableSignal, isNumber, isRecord, isRecordOrArray, isSignal, isState, isStore, isString, isSymbol, type MatchHandlers, type MaybeCleanup, match, NullishSignalValueError, type ResolveResult, resolve, type Signal, type State, type Store, type StoreAddEvent, type StoreChangeEvent, type StoreEventMap, StoreKeyExistsError, StoreKeyRangeError, StoreKeyReadonlyError, type StoreRemoveEvent, type StoreSortEvent, state, store, toError, toSignal, UNSET, } from '@zeix/cause-effect';
-export { type Component, type ComponentProps, component, type Initializer, type ReservedWords, type Setup, type ValidateComponentProps, type ValidPropertyKey, } from './src/component';
+export { type Component, type ComponentProp, type ComponentProps, component, type Initializer, type MaybeSignal, type ReservedWords, type Setup, } from './src/component';
 export { type Context, type ContextType, fromContext, provideContexts, type UnknownContext, } from './src/core/context';
 export { type ElementEffects, type ElementFromSelector, type ElementsUsage, type ElementUsage, type Extractor, type ExtractTag, type Fallback, fromDOM, fromSelector, getFallback, type Helpers, isParser, type KnownTag, type LooseExtractor, type Parser, type ParserOrFallback, } from './src/core/dom';
 export { CircularMutationError, DependencyTimeoutError, InvalidComponentNameError, InvalidCustomElementError, InvalidEffectsError, InvalidPropertyNameError, InvalidReactivesError, MissingElementError, } from './src/core/errors';

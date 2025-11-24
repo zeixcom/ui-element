@@ -4,6 +4,18 @@
 			"settings": {
 				"require_config_file": true
 			}
+		},
+		"eslint": {
+			"settings": {
+				"onIgnoredFiles": "off",
+				"rules": {
+					"@typescript-eslint/no-empty-object-type": "off",
+					"@typescript-eslint/no-explicit-any": "off"
+				},
+				"experimental": {
+					"useFlatConfig": true
+				}
+			}
 		}
 	},
 	"languages": {

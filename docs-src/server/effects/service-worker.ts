@@ -37,7 +37,7 @@ export const serviceWorkerEffect = () =>
 						const config: ServiceWorkerConfig = {
 							cssHash,
 							jsHash,
-							cacheName: `el-truco-docs-v${Date.now()}`,
+							cacheName: `le-truc-docs-v${Date.now()}`,
 							staticAssets: ['/', '/index.html'],
 						}
 

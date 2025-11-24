@@ -1,5 +1,4 @@
 import {
-	type Cleanup,
 	type ComputedCallback,
 	computed,
 	isComputed,
@@ -9,6 +8,7 @@ import {
 	isSignal,
 	isState,
 	isStore,
+	type MaybeCleanup,
 	type Signal,
 	state,
 	UNSET,
@@ -49,36 +49,18 @@ type ReservedWords =
 	| 'propertyIsEnumerable'
 	| 'toLocaleString'
 
-type ValidPropertyKey<T> = T extends keyof HTMLElement | ReservedWords
-	? never
-	: T
+type ComponentProp = Exclude<string, keyof HTMLElement | ReservedWords>
+type ComponentProps = Record<ComponentProp, NonNullable<unknown>>
 
-type ValidateComponentProps<P> = {
-	[K in keyof P]: ValidPropertyKey<K> extends never ? never : P[K]
-}
-
-type ComponentProps = { [K in string as ValidPropertyKey<K>]: unknown & {} }
-
-type Component<P extends ComponentProps> = HTMLElement &
-	P & {
-		// Common Web Component lifecycle hooks
-		attributeChangedCallback<K extends keyof P>(
-			name: K,
-			oldValue: string | null,
-			newValue: string | null,
-		): void
-
-		// Custom element properties
-		debug?: boolean
-	}
+type Component<P extends ComponentProps> = HTMLElement & P & { debug?: boolean }
 
 type MaybeSignal<T extends {}> = T | Signal<T> | ComputedCallback<T>
 
-type Initializer<T extends {}, C extends HTMLElement> =
-	| T
-	| Parser<T, C>
-	| Extractor<T, C>
-	| ((host: C) => void)
+type Initializer<K extends ComponentProp, P extends ComponentProps> =
+	| P[K]
+	| Parser<P[K], Component<P>>
+	| Extractor<MaybeSignal<P[K]>, Component<P>>
+	| ((host: Component<P>) => void)
 
 type Setup<P extends ComponentProps> = (
 	host: Component<P>,
@@ -147,17 +129,15 @@ const validatePropertyName = (prop: string): string | null => {
  *
  * @since 0.14.0
  * @param {string} name - Name of the custom element
- * @param {{ [K in keyof P]: Initializer<P[K] & {}, Component<P>> }} init - Signals of the component
+ * @param {{ [K in keyof P]: Initializer<P[K], Component<P>> }} init - Signals of the component
  * @param {Setup<P>} setup - Setup function to be called after dependencies are resolved
  * @throws {InvalidComponentNameError} If component name is invalid
  * @throws {InvalidPropertyNameError} If property name is invalid
  */
-function component<P extends ComponentProps & ValidateComponentProps<P>>(
+function component<P extends ComponentProps>(
 	name: string,
 	init: {
-		[K in keyof P]: Initializer<P[K] & {}, Component<P>>
-	} = {} as {
-		[K in keyof P]: Initializer<P[K] & {}, Component<P>>
+		[K in keyof P]: K extends ComponentProp ? Initializer<K, P> : never
 	},
 	setup: Setup<P>,
 ): Component<P> {
@@ -170,12 +150,8 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 
 	class CustomElement extends HTMLElement {
 		debug?: boolean
-		#signals: {
-			[K in keyof P]: Signal<P[K]>
-		} = {} as {
-			[K in keyof P]: Signal<P[K]>
-		}
-		#cleanup: Cleanup | undefined
+		#signals = {} as { [K in keyof P]: Signal<P[K]> }
+		#cleanup: MaybeCleanup
 
 		static observedAttributes =
 			Object.entries(init)
@@ -192,12 +168,18 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 			}
 
 			// Initialize signals
+			const createSignal = <K extends keyof P & string>(
+				key: K,
+				initializer: Initializer<K, P>,
+			) => {
+				const result = isFunction<MaybeSignal<P[K]>>(initializer)
+					? initializer(this as unknown as Component<P>)
+					: (initializer as P[K])
+				if (result != null) this.#setAccessor(key, result)
+			}
 			for (const [prop, initializer] of Object.entries(init)) {
 				if (initializer == null || prop in this) continue
-				const result = isFunction(initializer)
-					? initializer(this)
-					: initializer
-				if (result != null) this.#setAccessor(prop, result)
+				createSignal(prop, initializer)
 			}
 
 			// Getting effects collects dependencies as a side-effect
@@ -221,7 +203,7 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 					Promise.all(
 						deps.map(dep => customElements.whenDefined(dep)),
 					),
-					new Promise<never>((_, reject) => {
+					new Promise((_, reject) => {
 						setTimeout(() => {
 							reject(
 								new DependencyTimeoutError(
@@ -260,26 +242,26 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 		/**
 		 * Native callback function when an observed attribute of the custom element changes
 		 *
-		 * @param {K} attr - Name of the modified attribute
-		 * @param {string | null} old - Old value of the modified attribute
-		 * @param {string | null} value - New value of the modified attribute
+		 * @param {K} name - Name of the modified attribute
+		 * @param {string | null} oldValue - Old value of the modified attribute
+		 * @param {string | null} newValue - New value of the modified attribute
 		 */
 		attributeChangedCallback<K extends keyof P>(
-			attr: K,
-			old: string | null,
-			value: string | null,
+			name: K,
+			oldValue: string | null,
+			newValue: string | null,
 		) {
-			if (value === old || isComputed(this.#signals[attr])) return // unchanged or controlled by computed
-			const parser = init[attr]
+			if (newValue === oldValue || isComputed(this.#signals[name])) return // unchanged or controlled by computed
+			const parser = init[name]
 			if (!isParser<P[K]>(parser)) return
-			const parsed = parser(this, value, old)
+			const parsed = parser(this, newValue, oldValue)
 			if (DEV_MODE && this.debug)
 				log(
-					value,
-					`Attribute "${String(attr)}" of ${elementName(this)} changed from ${valueString(old)} to ${valueString(value)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`,
+					newValue,
+					`Attribute "${String(name)}" of ${elementName(this)} changed from ${valueString(oldValue)} to ${valueString(newValue)}, parsed as <${typeString(parsed)}> ${valueString(parsed)}`,
 				)
-			if (attr in this) (this as unknown as P)[attr] = parsed
-			else this.#setAccessor(attr, parsed)
+			if (name in this) (this as unknown as P)[name] = parsed
+			else this.#setAccessor(name, parsed)
 		}
 
 		/**
@@ -322,11 +304,10 @@ function component<P extends ComponentProps & ValidateComponentProps<P>>(
 
 export {
 	type Component,
+	type ComponentProp,
 	type ComponentProps,
 	type MaybeSignal,
 	type ReservedWords,
-	type ValidPropertyKey,
-	type ValidateComponentProps,
 	type Initializer,
 	type Setup,
 	component,

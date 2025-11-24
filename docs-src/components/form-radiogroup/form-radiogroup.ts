@@ -14,7 +14,7 @@ export type FormRadiogroupProps = {
 	readonly value: string
 }
 
-export default component(
+export default component<FormRadiogroupProps>(
 	'form-radiogroup',
 	{
 		value: fromEvents(

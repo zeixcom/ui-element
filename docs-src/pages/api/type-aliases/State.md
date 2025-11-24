@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / State
+[@zeix/le-truc](../globals.md) / State
 
 # Type Alias: State\<T\>
 
@@ -12,7 +12,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/state.d.ts:1
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

@@ -1,17 +1,17 @@
-name: @zeix/el-truco
-description: A HTML-first library for building reactive Web Components using signals and declarative effects. El Truco allows developers to progressively enhance server-rendered HTML with encapsulated logic and state, avoiding virtual DOM complexity. It integrates with any backend or static site generator.
+name: @zeix/le-truc
+description: A HTML-first library for building reactive Web Components using signals and declarative effects. Le Truc allows developers to progressively enhance server-rendered HTML with encapsulated logic and state, avoiding virtual DOM complexity. It integrates with any backend or static site generator.
 
 entry_points: index.js, index.dev.js
-docs: https://zeixcom.github.io/el-truco/
-examples: https://github.com/zeixcom/el-truco/tree/main/docs-src/components
-test: https://github.com/zeixcom/el-truco/tree/main/test
+docs: https://zeixcom.github.io/le-truc/
+examples: https://github.com/zeixcom/le-truc/tree/main/docs-src/components
+test: https://github.com/zeixcom/le-truc/tree/main/test
 dependencies: @zeix/cause-effect, typescript
 
 license: MIT
 author: Esther Brunner
 
 architecture_overview: >
-  El Truco extends HTMLElement to create reactive Web Components with three main parts:
+  Le Truc extends HTMLElement to create reactive Web Components with three main parts:
   1. Reactive properties defined with initializers (direct values, attribute parsers like asBoolean/asInteger, or signal producers like fromEvents/fromSelector)
   2. A setup function that receives helper functions and returns effects to run on component connection
   3. A rich effects system for declarative DOM manipulation with proper cleanup management

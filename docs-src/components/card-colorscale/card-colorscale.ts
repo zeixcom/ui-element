@@ -16,7 +16,7 @@ export type CardColorscaleProps = {
 	color: Oklch
 }
 
-export default component(
+export default component<CardColorscaleProps>(
 	'card-colorscale',
 	{
 		name: asString(fromDOM({ '.label strong': getText() }, '')),

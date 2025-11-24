@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / ResolveResult
+[@zeix/le-truc](../globals.md) / ResolveResult
 
 # Type Alias: ResolveResult\<S\>
 
@@ -18,7 +18,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/resolve.d.ts:2
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

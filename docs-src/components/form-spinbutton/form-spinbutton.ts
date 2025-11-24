@@ -14,7 +14,7 @@ export type FormSpinbuttonProps = {
 	readonly value: number
 }
 
-export default component(
+export default component<FormSpinbuttonProps>(
 	'form-spinbutton',
 	{
 		value: fromEvents<number>(

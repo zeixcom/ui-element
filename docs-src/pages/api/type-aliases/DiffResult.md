@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / DiffResult
+[@zeix/le-truc](../globals.md) / DiffResult
 
 # Type Alias: DiffResult\<T\>
 
@@ -12,7 +12,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/diff.d.ts:7
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

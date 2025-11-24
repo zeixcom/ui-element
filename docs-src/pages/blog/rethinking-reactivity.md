@@ -329,9 +329,9 @@ The native signals proposal focuses on the reactive primitives (`Signal.State` a
 
 ## A Thin Layer You Can Use Today
 
-While native signals are still being standardized, you can use this model right now. Libraries like **Cause & Effect** (which powers El Truco) implement the same contract with near-zero overhead and an almost identical API.
+While native signals are still being standardized, you can use this model right now. Libraries like **Cause & Effect** (which powers Le Truc) implement the same contract with near-zero overhead and an almost identical API.
 
-In the next article, we'll dive into **how El Truco implements reactivity** – not with a big framework, but with a minimal toolkit that:
+In the next article, we'll dive into **how Le Truc implements reactivity** – not with a big framework, but with a minimal toolkit that:
 
 - Tracks dependencies,
 - Updates only what changed,

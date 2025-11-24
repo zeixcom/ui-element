@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / StoreAddEvent
+[@zeix/le-truc](../globals.md) / StoreAddEvent
 
 # Interface: StoreAddEvent\<T\>
 
@@ -10,7 +10,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/store.d.ts:41
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

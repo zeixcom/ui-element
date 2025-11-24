@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / StoreKeyRangeError
+[@zeix/le-truc](../globals.md) / StoreKeyRangeError
 
 # Class: StoreKeyRangeError
 
@@ -10,7 +10,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/errors.d.ts:13
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

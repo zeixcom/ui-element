@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / StoreKeyReadonlyError
+[@zeix/le-truc](../globals.md) / StoreKeyReadonlyError
 
 # Class: StoreKeyReadonlyError
 
@@ -10,7 +10,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/errors.d.ts:16
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

@@ -12,7 +12,7 @@ export type HelloWorldProps = {
 	name: string
 }
 
-export default component(
+export default component<HelloWorldProps>(
 	'hello-world',
 	{ name: asString(fromDOM({ span: getText() }, '')) },
 	(el, { first }) => {

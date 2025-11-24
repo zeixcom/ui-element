@@ -1,11 +1,11 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / ComponentProps
+[@zeix/le-truc](../globals.md) / ComponentProps
 
 # Type Alias: ComponentProps
 
-> **ComponentProps** = `{ [K in string as ValidPropertyKey<K>]: unknown & {} }`
+> **ComponentProps** = `Record`\<[`ComponentProp`](ComponentProp.md), `NonNullable`\<`unknown`\>\>
 
-Defined in: [src/component.ts:60](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/component.ts#L60)
+Defined in: [src/component.ts:53](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/component.ts#L53)

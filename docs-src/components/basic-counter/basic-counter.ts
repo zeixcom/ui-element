@@ -12,7 +12,7 @@ export type BasicCounterProps = {
 	readonly count: number
 }
 
-export default component(
+export default component<BasicCounterProps>(
 	'basic-counter',
 	{
 		count: fromEvents<number>(

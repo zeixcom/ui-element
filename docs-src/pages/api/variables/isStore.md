@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / isStore
+[@zeix/le-truc](../globals.md) / isStore
 
 # Variable: isStore()
 

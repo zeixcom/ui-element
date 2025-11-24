@@ -52,7 +52,9 @@ export default component(
 				if (scrolling) cancelAnimationFrame(scrolling)
 				scrolling = requestAnimationFrame(() => {
 					scrolling = null
-					el.overflowStart = isHorizontal ? el.scrollLeft > 0 : el.scrollTop > 0
+					el.overflowStart = isHorizontal
+						? el.scrollLeft > 0
+						: el.scrollTop > 0
 					el.overflowEnd = isHorizontal
 						? el.scrollLeft < el.scrollWidth - el.offsetWidth
 						: el.scrollTop < el.scrollHeight - el.offsetHeight

@@ -1,14 +1,14 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / PassedProp
+[@zeix/le-truc](../globals.md) / PassedProp
 
 # Type Alias: PassedProp\<T, P, E\>
 
 > **PassedProp**\<`T`, `P`, `E`\> = [`Reactive`](Reactive.md)\<`T`, `P`, `E`\> \| \[[`Reactive`](Reactive.md)\<`T`, `P`, `E`\>, (`value`) => `void`\]
 
-Defined in: [src/core/reactive.ts:47](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/reactive.ts#L47)
+Defined in: [src/core/reactive.ts:47](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/core/reactive.ts#L47)
 
 ## Type Parameters
 

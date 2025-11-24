@@ -1,7 +1,7 @@
 /**
  * Development server configuration
  */
-export const BASE_URL = 'https://zeixcom.github.io/el-truco'
+export const BASE_URL = 'https://zeixcom.github.io/le-truc'
 
 // Path constants
 export const INPUT_DIR = './docs-src'

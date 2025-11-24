@@ -3,24 +3,24 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>component – El Truco Docs</title>
+		<title>component – Le Truc Docs</title>
 		<meta name="description" content="" />
 		<link
 			rel="preload"
-			href="../../assets/main.css?v=mhxdrgfx"
+			href="../../assets/main.css?v=mic7yvv1"
 			as="style"
 		/>
 		<link
 			rel="modulepreload"
-			href="../../assets/main.js?v=mhxdrgfx"
+			href="../../assets/main.js?v=mic7yvv1"
 		/>
 		<link
 			rel="stylesheet"
-			href="../../assets/main.css?v=mhxdrgfx"
+			href="../../assets/main.css?v=mic7yvv1"
 		/>
 		<script
 			type="module"
-			src="../../assets/main.js?v=mhxdrgfx"
+			src="../../assets/main.js?v=mic7yvv1"
 		></script>
 	</head>
 	<body class="api">
@@ -30,7 +30,7 @@
 					Skip to main content
 				</a>
 				<h1 class="content">
-					El Truco Docs <small>Version 0.15.0</small>
+					Le Truc Docs <small>Version 0.15.0</small>
 				</h1>
 				<section-menu>
 	<nav>
@@ -82,7 +82,7 @@
 			<a href="index.html">
 				<span class="icon">📖</span>
 				<strong>Introduction</strong>
-				<small>Overview and key benefits of El Truco</small>
+				<small>Overview and key benefits of Le Truc</small>
 			</a>
 		</li><li>
 			<a href="styling.html">
@@ -108,7 +108,7 @@
 <blockquote>
 <p><strong>component</strong>&lt;<code>P</code>&gt;(<code>name</code>, <code>init</code>, <code>setup</code>): <a href="../type-aliases/Component.html"><code>Component</code></a>&lt;<code>P</code>&gt;</p>
 </blockquote>
-<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/component.ts#L155">src/component.ts:155</a></p>
+<p>Defined in: <a href="https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/component.ts#L137">src/component.ts:137</a></p>
 <p>Define a component with dependency resolution and setup function (connectedCallback)</p>
 <h2 id="type-parameters">
 							<a name="type-parameters" class="anchor" href="#type-parameters">
@@ -122,7 +122,7 @@
 								<span class="title">P</span>
 							</a>
 						</h3>
-<p><code>P</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a> &amp; <a href="../type-aliases/ValidateComponentProps.html"><code>ValidateComponentProps</code></a>&lt;<code>P</code>&gt;</p>
+<p><code>P</code> <em>extends</em> <a href="../type-aliases/ComponentProps.html"><code>ComponentProps</code></a></p>
 <h2 id="parameters">
 							<a name="parameters" class="anchor" href="#parameters">
 								<span class="permalink">🔗</span>
@@ -143,7 +143,7 @@
 								<span class="title">init</span>
 							</a>
 						</h3>
-<p>{ [K in string | number | symbol]: Initializer&lt;P[K], Component&lt;P&gt;&gt; } = <code>...</code></p>
+<p>{ [K in string | number | symbol]: K extends string ? Initializer&lt;K&lt;K&gt;, P&gt; : never }</p>
 <p>Signals of the component</p>
 <h3 id="setup">
 							<a name="setup" class="anchor" href="#setup">

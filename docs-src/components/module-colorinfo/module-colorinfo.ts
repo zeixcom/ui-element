@@ -9,14 +9,17 @@ import {
 	setText,
 } from '../../..'
 import 'culori/css'
+import type { Oklch } from 'culori/fn'
 import {
-	formatCss,
-	formatHex,
-	formatHsl,
-	formatRgb,
-	type Oklch,
-} from 'culori/fn'
-import { asOklch } from '../_shared/color'
+	asOklch,
+	computedChroma,
+	computedCSS,
+	computedHex,
+	computedHsl,
+	computedHue,
+	computedLightness,
+	computedRgb,
+} from '../_shared/color'
 
 export type ModuleColorinfoProps = {
 	name: string
@@ -30,18 +33,18 @@ export type ModuleColorinfoProps = {
 	readonly hue: number
 }
 
-export default component(
+export default component<ModuleColorinfoProps>(
 	'module-colorinfo',
 	{
 		name: asString(fromDOM({ '.label strong': getText() }, '')),
 		color: asOklch(),
-		css: (el: HTMLElement & { color: Oklch }) => () => formatCss(el.color),
-		hex: (el: HTMLElement & { color: Oklch }) => () => formatHex(el.color),
-		rgb: (el: HTMLElement & { color: Oklch }) => () => formatRgb(el.color),
-		hsl: (el: HTMLElement & { color: Oklch }) => () => formatHsl(el.color),
-		lightness: (el: HTMLElement & { color: Oklch }) => () => el.color.l,
-		chroma: (el: HTMLElement & { color: Oklch }) => () => el.color.c,
-		hue: (el: HTMLElement & { color: Oklch }) => () => el.color.h ?? 0,
+		css: computedCSS,
+		hex: computedHex,
+		rgb: computedRgb,
+		hsl: computedHsl,
+		lightness: computedLightness,
+		chroma: computedChroma,
+		hue: computedHue,
 	},
 	(_, { all, first }) => [
 		setStyle('--color-swatch', 'css'),

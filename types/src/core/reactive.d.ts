@@ -22,7 +22,7 @@ declare const RESET: any;
 declare const runEffects: <P extends ComponentProps, E extends Element = Component<P>>(effects: Effects<P, E>, host: Component<P>, target?: E) => void | Cleanup;
 declare const resolveReactive: <T extends {}, P extends ComponentProps, E extends Element = Component<P>>(reactive: Reactive<T, P, E>, host: Component<P>, target: E, context?: string) => T;
 /**
- * Effect for passing reactive values to a descendant El Truco component.
+ * Effect for passing reactive values to a descendant Le Truc component.
  *
  * @since 0.15.0
  * @param {MutableReactives<Component<Q>, P>} props - Reactive values to pass

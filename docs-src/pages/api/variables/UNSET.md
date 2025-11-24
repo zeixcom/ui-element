@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / UNSET
+[@zeix/le-truc](../globals.md) / UNSET
 
 # Variable: UNSET
 
@@ -12,7 +12,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/util.d.ts:1
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

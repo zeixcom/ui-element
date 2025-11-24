@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / Store
+[@zeix/le-truc](../globals.md) / Store
 
 # Type Alias: Store\<T\>
 
@@ -18,7 +18,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/store.d.ts:57
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

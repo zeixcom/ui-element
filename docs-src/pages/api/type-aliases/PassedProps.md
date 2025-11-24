@@ -1,14 +1,14 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / PassedProps
+[@zeix/le-truc](../globals.md) / PassedProps
 
 # Type Alias: PassedProps\<P, Q\>
 
 > **PassedProps**\<`P`, `Q`\> = `{ [K in keyof Q & string]?: PassedProp<Q[K], P, Component<Q>> }`
 
-Defined in: [src/core/reactive.ts:53](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/reactive.ts#L53)
+Defined in: [src/core/reactive.ts:53](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/core/reactive.ts#L53)
 
 ## Type Parameters
 

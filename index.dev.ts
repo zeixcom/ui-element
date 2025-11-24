@@ -1,5 +1,5 @@
 /**
- * @name El Truco DEV_MODE
+ * @name Le Truc DEV_MODE
  * @version 0.15.0
  * @author Esther Brunner
  */
@@ -59,13 +59,13 @@ export {
 // Core
 export {
 	type Component,
+	type ComponentProp,
 	type ComponentProps,
 	component,
 	type Initializer,
+	type MaybeSignal,
 	type ReservedWords,
 	type Setup,
-	type ValidateComponentProps,
-	type ValidPropertyKey,
 } from './src/component'
 export {
 	type Context,

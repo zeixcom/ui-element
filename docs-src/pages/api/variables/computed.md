@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / computed
+[@zeix/le-truc](../globals.md) / computed
 
 # Variable: computed()
 

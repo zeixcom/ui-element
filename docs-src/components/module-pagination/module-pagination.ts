@@ -16,7 +16,7 @@ export type ModulePaginationProps = {
 	max: number
 }
 
-export default component(
+export default component<ModulePaginationProps>(
 	'module-pagination',
 	{
 		value: asInteger(fromDOM({ input: getProperty('value') }, 1)),
@@ -37,7 +37,10 @@ export default component(
 			'input',
 			[
 				on('change', ({ target }) => {
-					el.value = Math.max(1, Math.min(target.valueAsNumber, el.max))
+					el.value = Math.max(
+						1,
+						Math.min(target.valueAsNumber, el.max),
+					)
 				}),
 				setProperty('value', () => String(el.value)),
 				setProperty('max', () => String(el.max)),

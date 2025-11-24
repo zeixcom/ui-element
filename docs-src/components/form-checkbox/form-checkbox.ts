@@ -16,6 +16,12 @@ export type FormCheckboxProps = {
 	label: string
 }
 
+declare global {
+	interface HTMLElementTagNameMap {
+		'form-checkbox': Component<FormCheckboxProps>
+	}
+}
+
 export default component(
 	'form-checkbox',
 	{
@@ -31,9 +37,3 @@ export default component(
 		return [toggleAttribute('checked'), first('.label', setText('label'))]
 	},
 )
-
-declare global {
-	interface HTMLElementTagNameMap {
-		'form-checkbox': Component<FormCheckboxProps>
-	}
-}

@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / Cleanup
+[@zeix/le-truc](../globals.md) / Cleanup
 
 # Type Alias: Cleanup()
 
@@ -16,7 +16,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/scheduler.d.ts:1
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

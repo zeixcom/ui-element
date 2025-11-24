@@ -1,7 +1,7 @@
 {
-	"name": "@zeix/el-truco",
+	"name": "@zeix/le-truc",
 	"version": "0.15.0",
-	"description": "El Truco - a HTML-first library for reactive Web Components",
+	"description": "Le Truc - a HTML-first library for reactive Web Components",
 	"main": "index.js",
 	"types": "types/index.d.ts",
 	"scripts": {
@@ -27,7 +27,7 @@
 		"test:all": "bun run test && bun run test:components && bun run test:server"
 	},
 	"keywords": [
-		"El Truco",
+		"Le Truc",
 		"Web Components",
 		"Custom Elements",
 		"Reactivity",

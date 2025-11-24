@@ -1,14 +1,14 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / Extractor
+[@zeix/le-truc](../globals.md) / Extractor
 
 # Type Alias: Extractor()\<T, E\>
 
 > **Extractor**\<`T`, `E`\> = (`element`) => `T`
 
-Defined in: [src/core/dom.ts:52](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/dom.ts#L52)
+Defined in: [src/core/dom.ts:52](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/core/dom.ts#L52)
 
 ## Type Parameters
 

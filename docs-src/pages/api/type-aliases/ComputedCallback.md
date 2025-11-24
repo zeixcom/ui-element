@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / ComputedCallback
+[@zeix/le-truc](../globals.md) / ComputedCallback
 
 # Type Alias: ComputedCallback\<T\>
 
@@ -18,7 +18,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/computed.d.ts:5
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

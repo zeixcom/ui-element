@@ -6,7 +6,7 @@ export type ModuleDialogProps = {
 
 const SCROLL_LOCK_CLASS = 'scroll-lock'
 
-export default component(
+export default component<ModuleDialogProps>(
 	'module-dialog',
 	{
 		open: false,

@@ -1,14 +1,14 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / provideContexts
+[@zeix/le-truc](../globals.md) / provideContexts
 
 # Function: provideContexts()
 
-> **provideContexts**\<`P`, `K`\>(`contexts`): (`host`) => [`Cleanup`](../type-aliases/Cleanup.md)
+> **provideContexts**\<`P`\>(`contexts`): (`host`) => [`Cleanup`](../type-aliases/Cleanup.md)
 
-Defined in: [src/core/context.ts:100](https://github.com/zeixcom/ui-element/blob/975417e4fd6cf23617fcf9b7b600f45b8f632860/src/core/context.ts#L100)
+Defined in: [src/core/context.ts:100](https://github.com/zeixcom/ui-element/blob/95bb6f2fa5df3c16f08fcbbecd9622c693742c39/src/core/context.ts#L100)
 
 Provide a context for descendant component consumers
 
@@ -18,15 +18,11 @@ Provide a context for descendant component consumers
 
 `P` *extends* [`ComponentProps`](../type-aliases/ComponentProps.md)
 
-### K
-
-`K` *extends* `string` \| `number` \| `symbol`
-
 ## Parameters
 
 ### contexts
 
-[`Context`](../type-aliases/Context.md)\<`K`, () => `P`\[`K`\]\>[]
+keyof `P`[]
 
 Array of contexts to provide
 

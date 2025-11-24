@@ -1,8 +1,8 @@
-[**@zeix/el-truco**](../README.md)
+[**@zeix/le-truc**](../README.md)
 
 ***
 
-[@zeix/el-truco](../globals.md) / isAbortError
+[@zeix/le-truc](../globals.md) / isAbortError
 
 # Variable: isAbortError()
 
@@ -22,7 +22,7 @@ Defined in: node\_modules/@zeix/cause-effect/types/src/util.d.ts:12
 
 ## Name
 
-El Truco
+Le Truc
 
 ## Version
 

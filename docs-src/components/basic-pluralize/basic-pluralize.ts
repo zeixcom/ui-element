@@ -6,7 +6,7 @@ export type BasicPluralizeProps = {
 
 const FALLBACK_LOCALE = 'en'
 
-export default component(
+export default component<BasicPluralizeProps>(
 	'basic-pluralize',
 	{ count: asInteger() },
 	(el, { first }) => {
