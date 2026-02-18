@@ -1,3 +1,13 @@
+# UIElement is now Le Truc
+
+See: https://github.com/zeixcom/le-truc
+
+This repository with explorations that led to the stable Le Truc library will not be updated anymore.
+
+Le Truc is built on the Cause & Effect library 0.18+, which is much faster and includes composite signal primitives like Store, List, and Collection, and features better primitives for integration with external APIs like Sensor (events-based state) and Slot (swappable backing signal, doubles as property descriptor). Besides these improvement in the underlying reactivity engine, Le Truc also features a more coherent way to access descendant elements, and components have no proprietary methods anymore. We strongly suggest you switch to Le Truc, which is and will be maintained.
+
+---
+
 # UIElement
 
 Version 0.14.0
